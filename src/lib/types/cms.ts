@@ -1,188 +1,129 @@
-// =============================================================================
-// Stratifit Digital Agency — CMS Type Definitions
-// Strict TypeScript types for dynamic Page, Section, and ContentBlock payloads.
-// No `any` — every CMS data shape is explicitly typed.
-// =============================================================================
+// ============================================================================
+// Stratifit — CMS Type Definitions
+// Strict TypeScript types (no `any`) for the multilingual CMS data model.
+// ============================================================================
 
-// -----------------------------------------------------------------------------
-// Content Block Types
-// -----------------------------------------------------------------------------
+/** Supported content languages */
+export type CmsLanguage = "en" | "fr" | "de" | "es";
 
-export type HeadingBlockData = {
-  text: string;
-  level: 'h1' | 'h2' | 'h3';
-  align: 'left' | 'center' | 'right';
-};
+/** Social links stored as a JSONB object in settings */
+export type SocialLinks = Record<string, string>;
 
-export type RichTextBlockData = {
-  html_content: string;
-  formatted: boolean;
-};
-
-export type CardBlockData = {
-  title: string;
-  description: string;
-  icon_name: string;
-  media_id: string | null;
-};
-
-export type ButtonBlockData = {
-  label: string;
-  href: string;
-  variant: 'primary' | 'secondary' | 'outline';
-};
-
-export type MediaEmbedBlockData = {
-  media_id: string;
-  caption?: string;
-  aspect_ratio: string;
-};
-
-export type ContentBlockData =
-  | HeadingBlockData
-  | RichTextBlockData
-  | CardBlockData
-  | ButtonBlockData
-  | MediaEmbedBlockData;
-
-export type ContentBlockType =
-  | 'heading'
-  | 'rich_text'
-  | 'card'
-  | 'button'
-  | 'media_embed';
-
-export type ContentBlock = {
+/** Overrides for a single field path in a given language */
+export interface CmsTranslation {
   id: string;
-  section_id: string;
-  block_type: ContentBlockType;
-  data: ContentBlockData;
-  display_order: number;
-};
+  entityType: "page" | "section" | "content_block";
+  entityId: string;
+  language: CmsLanguage;
+  fieldPath: string;
+  translatedText: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
-// -----------------------------------------------------------------------------
-// Section Types
-// -----------------------------------------------------------------------------
-
-export type SectionVisibility = {
-  device?: 'all' | 'mobile' | 'desktop';
-};
-
-export type SectionComponentType =
-  | 'hero-primary'
-  | 'feature-grid'
-  | 'cta-banner'
-  | 'pricing-table'
-  | 'contact-form';
-
-export type Section = {
+/** A content block belongs to a section (e.g. a single service, stat, testimonial) */
+export interface CmsContentBlock {
   id: string;
-  page_id: string;
-  component_type: SectionComponentType;
-  display_order: number;
-  visibility: SectionVisibility;
-  content_blocks: ContentBlock[];
-};
+  sectionId: string;
+  blockType: string;
+  displayOrder: number;
+  payload: Record<string, unknown>;
+  translations: CmsTranslation[];
+  createdAt: string;
+  updatedAt: string;
+}
 
-// -----------------------------------------------------------------------------
-// Page Types
-// -----------------------------------------------------------------------------
+/** A section is a template mapped to a React component (e.g. HeroSection) */
+export interface CmsSection {
+  id: string;
+  pageId: string;
+  componentType: string;
+  displayOrder: number;
+  payload: Record<string, unknown>;
+  contentBlocks: CmsContentBlock[];
+  translations: CmsTranslation[];
+  createdAt: string;
+  updatedAt: string;
+}
 
-export type PageStatus = 'draft' | 'published' | 'archived';
-
-export type PageMetaData = {
-  meta_title?: string;
-  meta_description?: string;
-  og_image?: string;
-  canonical_url?: string;
-};
-
-export type Page = {
+/** A page is the top-level CMS entity, identified by slug + language */
+export interface CmsPage {
   id: string;
   slug: string;
   title: string;
-  status: PageStatus;
-  meta_data: PageMetaData;
-  sections: Section[];
-};
+  language: CmsLanguage;
+  metaTitle: string | null;
+  metaDescription: string | null;
+  published: boolean;
+  sections: CmsSection[];
+  translations: CmsTranslation[];
+  createdAt: string;
+  updatedAt: string;
+}
 
-// -----------------------------------------------------------------------------
-// Navigation Types
-// -----------------------------------------------------------------------------
-
-export type MenuType = 'header' | 'footer' | 'sidebar';
-
-export type NavigationItem = {
+/** A media asset stored in Supabase Storage */
+export interface CmsMedia {
   id: string;
-  page_id: string | null;
-  label: string;
-  target_url: string;
-  menu_type: MenuType;
-  display_order: number;
-};
+  filename: string;
+  altText: string | null;
+  url: string;
+  mimeType: string | null;
+  width: number | null;
+  height: number | null;
+  createdAt: string;
+}
 
-// -----------------------------------------------------------------------------
-// Translation Types
-// -----------------------------------------------------------------------------
-
-export type EntityType = 'pages' | 'sections' | 'content_blocks';
-
-export type Locale = 'en' | 'de';
-
-export type Translation = {
+/** Site-wide settings */
+export interface CmsSettings {
   id: string;
-  entity_type: EntityType;
-  entity_id: string;
-  locale: Locale;
-  translated_fields: Record<string, unknown>;
-};
+  siteName: string;
+  logoMediaId: string | null;
+  primaryLanguage: CmsLanguage;
+  availableLanguages: CmsLanguage[];
+  socialLinks: SocialLinks;
+  createdAt: string;
+  updatedAt: string;
+}
 
-// -----------------------------------------------------------------------------
-// Settings Types
-// -----------------------------------------------------------------------------
-
-export type SocialLinks = {
-  github?: string;
-  twitter?: string;
-  linkedin?: string;
-};
-
-export type SiteSettings = {
-  site_name: string;
-  site_description: string;
-  default_locale: Locale;
-  supported_locales: Locale[];
-  social_links: SocialLinks;
-};
-
-// -----------------------------------------------------------------------------
-// Media Types
-// -----------------------------------------------------------------------------
-
-export type MediaDimensions = {
-  width?: number;
-  height?: number;
-  aspect_ratio?: string;
-};
-
-export type Media = {
+/** AI content generation audit log */
+export interface AiLog {
   id: string;
-  storage_path: string;
-  public_url: string;
-  alt_text: string;
-  mime_type: string;
-  dimensions: MediaDimensions;
-};
+  prompt: string;
+  response: string;
+  model: string;
+  tokensUsed: number | null;
+  durationMs: number | null;
+  createdAt: string;
+}
 
-// -----------------------------------------------------------------------------
-// AI Log Types
-// -----------------------------------------------------------------------------
+/** Shape of the resolved page data after applying translations */
+export interface ResolvedPage {
+  page: CmsPage;
+  resolvedSections: ResolvedSection[];
+}
 
-export type AiLog = {
-  id: string;
-  agent_role: string;
-  action: string;
-  input_payload: Record<string, unknown>;
-  output_payload: Record<string, unknown>;
-  created_at: string;
-};
+/** A section with all its block payloads resolved against translations */
+export interface ResolvedSection {
+  section: CmsSection;
+  resolvedPayload: Record<string, unknown>;
+  resolvedBlocks: ResolvedBlock[];
+}
+
+/** A content block with its payload resolved against translations */
+export interface ResolvedBlock {
+  block: CmsContentBlock;
+  resolvedPayload: Record<string, unknown>;
+}
+
+// ============================================================================
+// Section component type constants
+// ============================================================================
+export const SECTION_COMPONENTS = [
+  "HeroSection",
+  "ServicesSection",
+  "StatsSection",
+  "TestimonialsSection",
+  "CtaSection",
+] as const;
+
+export type SectionComponentType = (typeof SECTION_COMPONENTS)[number];

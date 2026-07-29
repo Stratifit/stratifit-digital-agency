@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Stratifit — Global Styles
+   ========================================================================== */
+
+/* Satoshi font — loaded via @font-face (replace URL with your font host) */
+@font-face {
+  font-family: "Satoshi";
+  src: url("/fonts/Satoshi-Variable.woff2") format("woff2");
+  font-weight: 300 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-surface-dark text-neutral-200 font-body antialiased;
+  min-height: 100vh;
+}
+
+/* Selection */
+::selection {
+  @apply bg-brand-gold/20 text-brand-gold-300;
+}
+
+/* Focus ring */
+*:focus-visible {
+  @apply outline-none ring-2 ring-brand-gold/50 ring-offset-2 ring-offset-surface-dark rounded-md;
+}
+
+/* Scrollbar (dark) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-surface-dark;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-surface-darkBorder rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-surface-darkHover;
+}
+
+/* Remove default border on images */
+img {
+  @apply block max-w-full;
+}
+
+/* Links */
+a {
+  @apply text-inherit no-underline;
+}
+
+/* Prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
