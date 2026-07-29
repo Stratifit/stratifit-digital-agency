@@ -6,6 +6,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseAdminClient } from "@/lib/supabase/client";
 import { announcementSlideSchema } from "@/lib/cms/validation-announcement";
+import { mapAnnouncementSlide } from "@/lib/types/announcement";
+import type { AnnouncementSlideRow } from "@/lib/types/announcement";
 
 // ============================================================================
 // GET /api/cms/announcement-slides
@@ -23,7 +25,10 @@ export async function GET() {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json(data);
+    const mapped = (data ?? []).map((row) =>
+      mapAnnouncementSlide(row as unknown as AnnouncementSlideRow)
+    );
+    return NextResponse.json(mapped);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Internal server error";
     return NextResponse.json({ error: message }, { status: 500 });
@@ -86,7 +91,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json(data, { status: 201 });
+    const mapped = data
+      ? mapAnnouncementSlide(data as unknown as AnnouncementSlideRow)
+      : null;
+    return NextResponse.json(mapped, { status: 201 });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Internal server error";
     return NextResponse.json({ error: message }, { status: 500 });

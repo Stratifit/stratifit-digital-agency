@@ -6,6 +6,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseAdminClient } from "@/lib/supabase/client";
 import { announcementSlideSchema } from "@/lib/cms/validation-announcement";
+import { mapAnnouncementSlide } from "@/lib/types/announcement";
+import type { AnnouncementSlideRow } from "@/lib/types/announcement";
 
 // ============================================================================
 // GET /api/cms/announcement-slides/[id]
@@ -27,7 +29,9 @@ export async function GET(
       return NextResponse.json({ error: error.message }, { status: 404 });
     }
 
-    return NextResponse.json(data);
+    return NextResponse.json(
+      mapAnnouncementSlide(data as unknown as AnnouncementSlideRow)
+    );
   } catch (err) {
     const message = err instanceof Error ? err.message : "Internal server error";
     return NextResponse.json({ error: message }, { status: 500 });
@@ -72,7 +76,9 @@ export async function PUT(
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json(data);
+    return NextResponse.json(
+      mapAnnouncementSlide(data as unknown as AnnouncementSlideRow)
+    );
   } catch (err) {
     const message = err instanceof Error ? err.message : "Internal server error";
     return NextResponse.json({ error: message }, { status: 500 });
