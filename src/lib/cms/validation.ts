@@ -4,6 +4,7 @@
 // ============================================================================
 
 import { z } from "zod";
+import { announcementBarSectionPayloadSchema } from "./validation-announcement";
 
 // ============================================================================
 // Shared Primitives
@@ -60,6 +61,7 @@ const sectionComponentTypes = [
   "StatsSection",
   "TestimonialsSection",
   "CtaSection",
+  "AnnouncementBarSection",
 ] as const;
 
 export const sectionSchema = z.object({
@@ -129,6 +131,7 @@ export const sectionPayloadSchemas: Record<string, z.ZodSchema> = {
   StatsSection: statsSectionPayloadSchema,
   TestimonialsSection: testimonialsSectionPayloadSchema,
   CtaSection: ctaSectionPayloadSchema,
+  AnnouncementBarSection: announcementBarSectionPayloadSchema,
 };
 
 // ============================================================================

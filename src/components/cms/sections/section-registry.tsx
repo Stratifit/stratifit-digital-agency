@@ -36,6 +36,10 @@ const componentMap: Record<string, () => Promise<{ default: SectionComponent }>>
     import("@/components/cms/sections/CtaSection").then((m) => ({
       default: m.CtaSection as SectionComponent,
     })),
+  AnnouncementBarSection: () =>
+    import("@/components/cms/sections/AnnouncementBarSection").then((m) => ({
+      default: m.AnnouncementBarSection as SectionComponent,
+    })),
 };
 
 // Dynamic wrappers — these are lazy-loaded React components

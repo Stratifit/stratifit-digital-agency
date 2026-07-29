@@ -7,6 +7,7 @@ import Link from "next/link";
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/admin", icon: "◉" },
   { label: "Pages", href: "/admin/pages", icon: "⊞" },
+  { label: "Announcement Bar", href: "/admin/announcement-bar", icon: "📢" },
   { label: "Media", href: "/admin/media", icon: "▣" },
   { label: "Settings", href: "/admin/settings", icon: "⚙" },
 ] as const;
