@@ -1,32 +1,84 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  Stratifit Digital Agency platform & CMS.
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+  Tech Stack:
+    - Next.js (App Router, Server Components)
+    - TypeScript (Strict typing, no `any`, type aliases for props)
+    - Supabase (PostgreSQL, RLS, Storage CDN)
+    - Tailwind CSS (Token-driven design system)
+    - GSAP (@gsap/react, useGSAP, prefers-reduced-motion)
+    - Vitest + React Testing Library
+    - Internationalization: English (default) + German with runtime fallbacks
 
-# Per-operation guidance (optional)
-# Add advisory guidance for how apply and archive work should be conducted.
-# This is separate from artifact rules above.
-# Example:
-#   operations:
-#     apply:
-#       guidance:
-#         - Keep test summaries concise
-#     archive:
-#       guidance:
-#         - Summarize the archive outcome before finishing
+  Architecture:
+    - CMS-driven rendering: Pages → Sections → Blocks → Translations
+    - Component hierarchy: layout → ui → cms
+    - No arbitrary Tailwind values; use tokens only
+    - Font system: Satoshi (display) + Inter (sans)
+    - All AI operations logged to `ai_logs`
+    - All CMS + DB changes validated via Zod schemas
+
+  Documentation Stack:
+    - PROJECT_RULES.md
+    - ARCHITECTURE.md
+    - DATABASE.md
+    - CMS.md
+    - DESIGN_SYSTEM.md
+    - COMPONENT_STANDARDS.md
+
+rules:
+  proposal:
+    - Must describe explicit architectural or feature changes.
+    - Must include a "Non-goals" section.
+    - "Any change affecting CMS schemas, DB tables, or design tokens must specify required updates to:"
+    - CMS.md
+    - DATABASE.md
+    - DESIGN_SYSTEM.md
+    - COMPONENT_STANDARDS.md
+    - Must specify whether new components belong to layout/ui/cms.
+
+  specs:
+    - Must define strict TypeScript types.
+    - Must include Zod validation schemas for all data models.
+    - UI specs must define dark/light mode token mappings.
+    - CMS section specs must map 1:1 to `component_type` keys in `section-registry.ts`.
+    - Must specify motion tokens (`motion.fast`, `motion.normal`, `motion.slow`) when animations are involved.
+    - Must specify GSAP cleanup requirements.
+
+  tasks:
+    - Must break work into granular steps:
+        - DB Migration (SQL)
+        - Zod Schema
+        - TypeScript Types
+        - UI Component
+        - CMS Integration
+        - Tests (Vitest + RTL)
+    - DB changes must include explicit SQL migrations under `supabase/migrations/`.
+    - Must specify file paths for Next.js, Supabase, and CMS layers.
+
+  design:
+    - Must reference tokens defined in DESIGN_SYSTEM.md and tailwind.config.ts.
+    - Must specify motion tokens and GSAP cleanup.
+    - Must specify typography tokens (Satoshi/Inter).
+    - Must specify spacing, radii, shadows, gradients using tokens only.
+
+operations:
+  apply:
+    guidance:
+      - Ensure zero TypeScript or ESLint errors before marking tasks complete.
+      - Ensure all layout components implement accessibility (`aria-*`, `focus-visible`, `alt` text).
+      - Ensure GSAP animations exist only in client components using `useGSAP()`.
+      - Ensure CMS components validate incoming data via Zod schemas.
+      - Ensure dark/light mode tokens are correctly applied.
+
+  archive:
+    guidance:
+      - Summarize all modified schema files, database migrations, and added components.
+      - Verify documentation remains synchronized:
+          - CMS.md
+          - DESIGN_SYSTEM.md
+          - COMPONENT_STANDARDS.md
+          - DATABASE.md
+      - Log all AI operations to `ai_logs`.
