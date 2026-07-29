@@ -25,6 +25,7 @@ export function AnnouncementBarSection({
   return (
     <AnnouncementBarCarousel
       autoSlideInterval={autoSlideInterval}
+      locale={locale}
     />
   );
 }

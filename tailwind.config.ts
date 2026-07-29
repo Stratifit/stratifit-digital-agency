@@ -123,6 +123,20 @@ const config: Config = {
         "out-expo":  "cubic-bezier(0.19, 1, 0.22, 1)",
         "in-out-cubic": "cubic-bezier(0.65, 0, 0.35, 1)",
       },
+      keyframes: {
+        slideLeft: {
+          "0%": { transform: "translateX(1rem)", opacity: "0" },
+          "100%": { transform: "translateX(0)", opacity: "1" },
+        },
+        slideRight: {
+          "0%": { transform: "translateX(-1rem)", opacity: "0" },
+          "100%": { transform: "translateX(0)", opacity: "1" },
+        },
+      },
+      animation: {
+        "slide-left": "slideLeft 300ms cubic-bezier(0.19, 1, 0.22, 1) forwards",
+        "slide-right": "slideRight 300ms cubic-bezier(0.19, 1, 0.22, 1) forwards",
+      },
     },
   },
   plugins: [],
