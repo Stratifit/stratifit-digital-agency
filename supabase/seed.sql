@@ -56,7 +56,21 @@ with home_page as (
     from home_page
     returning id
 )
--- 2b. Services Section
+-- 2b. Announcement Bar Section (renders before hero at position -1)
+, announcement_bar_section as (
+    insert into sections (id, page_id, component_type, display_order, payload)
+    select
+        gen_random_uuid(),
+        home_page.id,
+        'AnnouncementBarSection',
+        -1,
+        '{
+            "autoSlideInterval": 5000
+        }'::jsonb
+    from home_page
+    returning id
+)
+-- 2c. Services Section
 , services_section as (
     insert into sections (id, page_id, component_type, display_order, payload)
     select
@@ -71,7 +85,7 @@ with home_page as (
     from home_page
     returning id
 )
--- 2c. Stats Section
+-- 2d. Stats Section
 , stats_section as (
     insert into sections (id, page_id, component_type, display_order, payload)
     select
@@ -85,7 +99,7 @@ with home_page as (
     from home_page
     returning id
 )
--- 2d. Testimonials Section
+-- 2e. Testimonials Section
 , testimonials_section as (
     insert into sections (id, page_id, component_type, display_order, payload)
     select
@@ -100,7 +114,7 @@ with home_page as (
     from home_page
     returning id
 )
--- 2e. CTA Section
+-- 2f. CTA Section
 , cta_section as (
     insert into sections (id, page_id, component_type, display_order, payload)
     select
@@ -448,5 +462,35 @@ with home_page as (
     ('section', (select cta_id from section_ids), 'es', 'payload.heading',    '¿Listo para empezar?'),
     ('section', (select cta_id from section_ids), 'es', 'payload.description', 'Construyamos algo grandioso juntos.'),
     ('section', (select cta_id from section_ids), 'es', 'payload.cta_text',   'Contáctenos')
+)
+) -- ============================================================================
+-- 5. Announcement Slides
+-- ============================================================================
+, announcement_slides_seed as (
+    insert into announcement_slides (display_order, sticky, url, message_translations) values
+    (0, false, '/announcement/launch',
+      jsonb_build_object(
+        'en', '🚀 We just launched our new platform! Check it out.',
+        'fr', '🚀 Nous venons de lancer notre nouvelle plateforme ! Découvrez-la.',
+        'de', '🚀 Wir haben gerade unsere neue Plattform gestartet! Schauen Sie vorbei.',
+        'es', '🚀 ¡Acabamos de lanzar nuestra nueva plataforma! Échale un vistazo.'
+      )
+    ),
+    (1, false, '/announcement/webinar',
+      jsonb_build_object(
+        'en', '📅 Join our free webinar on digital transformation — March 15th.',
+        'fr', '📅 Participez à notre webinaire gratuit sur la transformation numérique — 15 mars.',
+        'de', '📅 Nehmen Sie an unserem kostenlosen Webinar zur digitalen Transformation teil — 15. März.',
+        'es', '📅 Únase a nuestro seminario web gratuito sobre transformación digital — 15 de marzo.'
+      )
+    ),
+    (2, false, '/announcement/hiring',
+      jsonb_build_object(
+        'en', '💼 We are hiring! Join the Stratifit team.',
+        'fr', '💼 Nous recrutons ! Rejoignez l''équipe Stratifit.',
+        'de', '💼 Wir stellen ein! Werden Sie Teil des Stratifit-Teams.',
+        'es', '💼 ¡Estamos contratando! Únete al equipo de Stratifit.'
+      )
+    )
 )
 select 'Seed complete' as result;
