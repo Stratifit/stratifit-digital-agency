@@ -1,6 +1,6 @@
 // ============================================================================
 // Stratifit — Announcement Bar Carousel
-// Client component with auto-slide, close, and CTA arrow.
+// Client component: fetches slides from API, auto-slides, close, CTA arrow.
 // ============================================================================
 
 "use client";
@@ -15,16 +15,59 @@ interface LocalizedSlide {
 }
 
 interface AnnouncementBarCarouselProps {
-  slides: LocalizedSlide[];
   autoSlideInterval: number;
 }
 
 export function AnnouncementBarCarousel({
-  slides,
   autoSlideInterval,
 }: AnnouncementBarCarouselProps) {
+  const [slides, setSlides] = useState<LocalizedSlide[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [dismissed, setDismissed] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch slides from the API on mount
+  useEffect(() => {
+    async function fetchSlides() {
+      try {
+        const res = await fetch("/api/cms/announcement-slides");
+        if (res.ok) {
+          const data = await res.json();
+          // Map API response (camelCase from API) to localized slides
+          // The API returns messageTranslations as { en, fr, de, es }
+          // For now, we just use the English messages. Language selection
+          // can be added when we pass locale context.
+          const mapped: LocalizedSlide[] = data.map(
+            (slide: {
+              id: string;
+              displayOrder: number;
+              sticky: boolean;
+              url: string;
+              messageTranslations: { en: string };
+            }) => ({
+              id: slide.id,
+              message: slide.messageTranslations?.en ?? "",
+              sticky: slide.sticky,
+              url: slide.url,
+            })
+          );
+          setSlides(mapped);
+        } else {
+          console.error(
+            "[AnnouncementBarCarousel] API error:",
+            res.status,
+            await res.text()
+          );
+        }
+      } catch (err) {
+        console.error("[AnnouncementBarCarousel] Failed to fetch slides:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchSlides();
+  }, []);
 
   // Auto-slide logic
   const goToNext = useCallback(() => {
@@ -37,11 +80,12 @@ export function AnnouncementBarCarousel({
     return () => clearInterval(timer);
   }, [goToNext, autoSlideInterval, slides.length]);
 
-  // Determine if the current slide is sticky
+  // Loading / empty / dismissed states
+  if (loading) return null;
+  if (dismissed || slides.length === 0) return null;
+
   const currentSlide = slides[currentIndex];
   const isSticky = currentSlide?.sticky ?? false;
-
-  if (dismissed || slides.length === 0) return null;
 
   return (
     <div

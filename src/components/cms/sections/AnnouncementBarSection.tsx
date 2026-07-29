@@ -1,10 +1,9 @@
 // ============================================================================
 // Stratifit — Announcement Bar Section
-// Server component: fetches slides and renders the interactive carousel.
+// Synchronous server component: renders the client carousel.
+// The carousel fetches slides client-side via the API.
 // ============================================================================
 
-import { createSupabaseClient } from "@/lib/supabase/client";
-import { mapAnnouncementSlide, getLocalizedMessage } from "@/lib/types/announcement";
 import { AnnouncementBarCarousel } from "./AnnouncementBarCarousel";
 import type { CmsLanguage, ResolvedBlock } from "@/lib/types/cms";
 
@@ -14,7 +13,7 @@ interface AnnouncementBarSectionProps {
   locale: CmsLanguage;
 }
 
-export async function AnnouncementBarSection({
+export function AnnouncementBarSection({
   payload,
   locale,
 }: AnnouncementBarSectionProps) {
@@ -23,27 +22,8 @@ export async function AnnouncementBarSection({
       ? payload.autoSlideInterval
       : 5000;
 
-  const supabase = createSupabaseClient();
-  const { data: slides } = await supabase
-    .from("announcement_slides")
-    .select("*")
-    .order("display_order", { ascending: true });
-
-  const mappedSlides = (slides ?? []).map(mapAnnouncementSlide);
-
-  if (mappedSlides.length === 0) return null;
-
-  // Resolve localized messages
-  const localizedSlides = mappedSlides.map((slide) => ({
-    id: slide.id,
-    message: getLocalizedMessage(slide.messageTranslations, locale),
-    sticky: slide.sticky,
-    url: slide.url,
-  }));
-
   return (
     <AnnouncementBarCarousel
-      slides={localizedSlides}
       autoSlideInterval={autoSlideInterval}
     />
   );
