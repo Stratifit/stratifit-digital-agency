@@ -62,6 +62,16 @@ a {
   @apply text-inherit no-underline;
 }
 
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
   *,

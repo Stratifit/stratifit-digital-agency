@@ -125,6 +125,7 @@ export const SECTION_COMPONENTS = [
   "TestimonialsSection",
   "CtaSection",
   "AnnouncementBarSection",
+  "NavigationHeaderSection",
 ] as const;
 
 export type SectionComponentType = (typeof SECTION_COMPONENTS)[number];

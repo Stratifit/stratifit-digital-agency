@@ -4,9 +4,12 @@
 // No hardcoded content — that is the CMS's job.
 // ============================================================================
 
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { AnnouncementBar } from "@/components/AnnouncementBar";
+import { GlobalNavigation } from "@/components/GlobalNavigation";
+import { getServerLocale } from "@/lib/locale.server";
 import "./globals.css";
 
 const inter = Inter({
@@ -24,15 +27,20 @@ export const metadata: Metadata = {
     "Stratifit helps brands scale with modern design, engineering, and strategy.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getServerLocale();
+
   return (
-    <html lang="en" className="dark">
+    <html lang={locale} className="dark">
       <body className={`${inter.variable} font-body antialiased`}>
         <AnnouncementBar />
+        <Suspense fallback={null}>
+          <GlobalNavigation locale={locale} />
+        </Suspense>
         {children}
       </body>
     </html>

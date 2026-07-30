@@ -7,6 +7,7 @@
 // ============================================================================
 
 import { createSupabaseClient } from "@/lib/supabase/client";
+import { getServerLocale } from "@/lib/locale.server";
 import { getSectionComponent } from "@/components/cms/sections/section-registry";
 import { resolveEntityTranslations } from "@/lib/cms/translations";
 import {
@@ -44,13 +45,6 @@ export const revalidate = 0;
 function resolveSlug(slugSegments: string[] | undefined): string {
   if (!slugSegments || slugSegments.length === 0) return "home";
   return slugSegments[0];
-}
-
-/** Resolve the requested language from search params, falling back to "en". */
-function resolveLanguage(searchParams: URLSearchParams): CmsLanguage {
-  const lang = searchParams.get("lang");
-  if (lang === "fr" || lang === "de" || lang === "es") return lang;
-  return "en";
 }
 
 /**
@@ -283,18 +277,10 @@ interface PageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export default async function CatchAllPage({ params, searchParams }: PageProps) {
+export default async function CatchAllPage({ params }: PageProps) {
   const resolvedParams = await params;
-  const resolvedSearchParams = await searchParams;
-
   const slug = resolveSlug(resolvedParams.slug);
-  const searchParamsObj = new URLSearchParams();
-  for (const [key, value] of Object.entries(resolvedSearchParams)) {
-    if (typeof value === "string") {
-      searchParamsObj.set(key, value);
-    }
-  }
-  const language = resolveLanguage(searchParamsObj);
+  const language = await getServerLocale();
 
   // Fetch all content
   let data: FetchedPageData | null = null;

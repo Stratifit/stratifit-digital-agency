@@ -53,6 +53,21 @@ export function AnnouncementBarCarousel({
   const [slideDir, setSlideDir] = useState<"left" | "right">("left");
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
 
+  const DISMISSAL_KEY = "stratifit:announcement-dismissed";
+
+  // Restore dismissal state from localStorage so the bar stays hidden across
+  // page loads and navigation.
+  useEffect(() => {
+    try {
+      const stored = window.localStorage.getItem(DISMISSAL_KEY);
+      if (stored === "true") {
+        setDismissed(true);
+      }
+    } catch {
+      // localStorage may be unavailable in some environments; ignore silently.
+    }
+  }, []);
+
   // Fetch slides from the API on mount if no server-provided slides
   useEffect(() => {
     if (initialSlides) {
@@ -147,12 +162,32 @@ export function AnnouncementBarCarousel({
     touchStartRef.current = null;
   }, []);
 
-  // Loading / empty / dismissed states
-  if (loading) return null;
-  if (dismissed || slides.length === 0) return null;
+  const handleDismiss = useCallback(() => {
+    setDismissed(true);
+    try {
+      window.localStorage.setItem(DISMISSAL_KEY, "true");
+    } catch {
+      // Ignore localStorage write failures.
+    }
+  }, []);
 
   const currentSlide = slides[currentIndex];
   const isSticky = currentSlide?.sticky ?? false;
+
+  // Sync the sticky state with the rest of the layout so the nav can adjust
+  // its top offset without prop drilling. Keep this before any early returns.
+  useEffect(() => {
+    const isVisible = !loading && !dismissed && slides.length > 0;
+    if (isVisible && isSticky) {
+      document.body.classList.add("has-sticky-bar");
+      return () => document.body.classList.remove("has-sticky-bar");
+    }
+    document.body.classList.remove("has-sticky-bar");
+  }, [loading, dismissed, slides.length, isSticky]);
+
+  // Loading / empty / dismissed states
+  if (loading) return null;
+  if (dismissed || slides.length === 0) return null;
 
   const Dot = ({ index }: { index: number }) => (
     <button
@@ -174,7 +209,7 @@ export function AnnouncementBarCarousel({
     <div
       data-testid="announcement-bar"
       className={`w-full touch-pan-y bg-brand-gold border-b border-brand-gold-600 ${
-        isSticky ? "fixed top-0 left-0 right-0 z-50" : ""
+        isSticky ? "sticky top-0 z-50" : ""
       }`}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
@@ -237,7 +272,7 @@ export function AnnouncementBarCarousel({
         <div className="flex items-center justify-end">
           <button
             type="button"
-            onClick={() => setDismissed(true)}
+            onClick={handleDismiss}
             onTouchStart={(e) => e.stopPropagation()}
             onTouchEnd={(e) => e.stopPropagation()}
             className="inline-flex items-center justify-center w-6 h-6 rounded-full text-surface-dark/70 hover:text-surface-dark hover:bg-surface-dark/10 transition-colors duration-fast cursor-pointer"

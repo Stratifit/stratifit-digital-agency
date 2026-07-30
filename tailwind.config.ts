@@ -132,10 +132,20 @@ const config: Config = {
           "0%": { transform: "translateX(-1rem)", opacity: "0" },
           "100%": { transform: "translateX(0)", opacity: "1" },
         },
+        slideIn: {
+          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        menuIn: {
+          "0%": { opacity: "0", transform: "translateX(-100%)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
       },
       animation: {
         "slide-left": "slideLeft 300ms cubic-bezier(0.19, 1, 0.22, 1) forwards",
         "slide-right": "slideRight 300ms cubic-bezier(0.19, 1, 0.22, 1) forwards",
+        "slide-in": "slideIn 300ms ease-out forwards",
+        "menu-in": "menuIn 300ms ease-out forwards",
       },
     },
   },

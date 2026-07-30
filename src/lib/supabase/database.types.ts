@@ -204,6 +204,35 @@ export interface Database {
           updated_at?: string;
         };
       };
+      section_navigation_header: {
+        Row: {
+          id: string;
+          display_order: number;
+          sticky: boolean;
+          content: Record<string, unknown>;
+          translations: Record<string, Record<string, string>>;
+          url: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          display_order?: number;
+          sticky?: boolean;
+          content?: Record<string, unknown>;
+          translations?: Record<string, Record<string, string>>;
+          url?: string;
+        };
+        Update: {
+          id?: string;
+          display_order?: number;
+          sticky?: boolean;
+          content?: Record<string, unknown>;
+          translations?: Record<string, Record<string, string>>;
+          url?: string;
+          updated_at?: string;
+        };
+      };
       ai_logs: {
         Row: {
           id: string;
