@@ -281,28 +281,118 @@ with home_page as (
     )
     returning id
 )
--- 2d. Stats Section
+-- 2d. How We Work Section
+, how_we_work_section_data as (
+    insert into how_we_work_section (id, display_order, subtitle_translations, title_translations, description_translations)
+    values (
+        'c1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+        0,
+        '{
+            "en": "Process",
+            "fr": "Processus",
+            "de": "Prozess",
+            "es": "Proceso"
+        }'::jsonb,
+        '{
+            "en": "How We Work",
+            "fr": "Comment Nous Travaillons",
+            "de": "Wir Wir Arbeiten",
+            "es": "Cómo Trabajamos"
+        }'::jsonb,
+        '{
+            "en": "A proven framework that takes you from idea to scale — predictably and efficiently.",
+            "fr": "Un cadre éprouvé qui vous conduit de l''idée à l''échelle — de manière prévisible et efficace.",
+            "de": "Ein bewährter Rahmen, der Sie von der Idee zur Skalierung führt — vorhersehbar und effizient.",
+            "es": "Un marco probado que lo lleva de la idea a la escala — de manera predecible y eficiente."
+        }'::jsonb
+    )
+    returning id
+)
+, how_we_work_step_1 as (
+    insert into how_we_work_steps (id, parent_section, step_number, icon, title_translations, description_translations, display_order)
+    values (
+        gen_random_uuid(),
+        (select id from how_we_work_section_data),
+        1,
+        'discovery',
+        '{"en":"Discovery","fr":"Découverte","de":"Entdeckung","es":"Descubrimiento"}'::jsonb,
+        '{"en":"We dive deep into your business goals, audience, and challenges to build a rock-solid foundation for every decision.","fr":"Nous explorons en profondeur vos objectifs commerciaux, votre audience et vos défis pour bâtir une base solide pour chaque décision.","de":"Wir tief in Ihre Geschäftsziele, Zielgruppe und Herausforderungen ein, um ein solides Fundament für jede Entscheidung zu schaffen.","es":"Nos sumergimos en sus objetivos comerciales, audiencia y desafíos para construir una base sólida para cada decisión."}'::jsonb,
+        0
+    )
+    returning id
+)
+, how_we_work_step_2 as (
+    insert into how_we_work_steps (id, parent_section, step_number, icon, title_translations, description_translations, display_order)
+    values (
+        gen_random_uuid(),
+        (select id from how_we_work_section_data),
+        2,
+        'strategy',
+        '{"en":"Strategy","fr":"Stratégie","de":"Strategie","es":"Estrategia"}'::jsonb,
+        '{"en":"We design a comprehensive plan covering brand, web, AI, and growth — aligned with your revenue targets.","fr":"Nous concevons un plan complet couvrant la marque, le web, l''IA et la croissance — aligné sur vos objectifs de revenus.","de":"Wir entwickeln einen umfassenden Plan für Marke, Web, KI und Wachstum — abgestimmt auf Ihre Umsatzziele.","es":"Diseñamos un plan integral que cubre marca, web, IA y crecimiento — alineado con sus objetivos de ingresos."}'::jsonb,
+        1
+    )
+    returning id
+)
+, how_we_work_step_3 as (
+    insert into how_we_work_steps (id, parent_section, step_number, icon, title_translations, description_translations, display_order)
+    values (
+        gen_random_uuid(),
+        (select id from how_we_work_section_data),
+        3,
+        'build',
+        '{"en":"Build","fr":"Construction","de":"Aufbau","es":"Construcción"}'::jsonb,
+        '{"en":"Our team implements systems, websites, automations, and campaigns with precision engineering.","fr":"Notre équipe implémente des systèmes, des sites web, des automatisations et des campagnes avec une ingénierie de précision.","de":"Unser Team implementiert Systeme, Websites, Automatisierungen und Kampagnen mit präziser Engineering-Qualität.","es":"Nuestro equipo implementa sistemas, sitios web, automatizaciones y campañas con ingeniería de precisión."}'::jsonb,
+        2
+    )
+    returning id
+)
+, how_we_work_step_4 as (
+    insert into how_we_work_steps (id, parent_section, step_number, icon, title_translations, description_translations, display_order)
+    values (
+        gen_random_uuid(),
+        (select id from how_we_work_section_data),
+        4,
+        'launch',
+        '{"en":"Launch & Grow","fr":"Lancer & Croître","de":"Starten & Wachsen","es":"Lanzar & Crecer"}'::jsonb,
+        '{"en":"We optimize, scale, and measure everything. Continuous improvement is built into our DNA.","fr":"Nous optimisons, mettons à l''échelle et mesurons tout. L''amélioration continue est inscrite dans notre ADN.","de":"Wir optimieren, skalieren und messen alles. Kontinuierliche Verbesserung ist in unserer DNA verankert.","es":"Optimizamos, escalamos y medimos todo. La mejora continua está en nuestro ADN."}'::jsonb,
+        3
+    )
+    returning id
+)
+, how_we_work_section as (
+    insert into sections (id, page_id, component_type, display_order, payload)
+    select
+        gen_random_uuid(),
+        home_page.id,
+        'how_we_work',
+        2,
+        '{"howWeWorkSectionId": "c1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d"}'::jsonb
+    from home_page
+    returning id
+)
+-- 2e. Stats Section
 , stats_section as (
     insert into sections (id, page_id, component_type, display_order, payload)
     select
         gen_random_uuid(),
         home_page.id,
         'StatsSection',
-        2,
+        3,
         '{
             "heading": "By the Numbers"
         }'::jsonb
     from home_page
     returning id
 )
--- 2e. Testimonials Section
+-- 2f. Testimonials Section
 , testimonials_section as (
     insert into sections (id, page_id, component_type, display_order, payload)
     select
         gen_random_uuid(),
         home_page.id,
         'TestimonialsSection',
-        3,
+        4,
         '{
             "heading":    "Client Stories",
             "description": "Hear from the teams we have partnered with."
@@ -310,14 +400,14 @@ with home_page as (
     from home_page
     returning id
 )
--- 2f. CTA Section
+-- 2g. CTA Section
 , cta_section as (
     insert into sections (id, page_id, component_type, display_order, payload)
     select
         gen_random_uuid(),
         home_page.id,
         'CtaSection',
-        4,
+        5,
         '{
             "heading":    "Ready to Start?",
             "description": "Let''s build something great together.",

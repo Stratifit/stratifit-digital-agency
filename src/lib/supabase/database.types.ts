@@ -344,6 +344,64 @@ export interface Database {
           updated_at?: string;
         };
       };
+      how_we_work_section: {
+        Row: {
+          id: string;
+          display_order: number;
+          subtitle_translations: Record<string, string>;
+          title_translations: Record<string, string>;
+          description_translations: Record<string, string>;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          display_order?: number;
+          subtitle_translations?: Record<string, string>;
+          title_translations?: Record<string, string>;
+          description_translations?: Record<string, string>;
+        };
+        Update: {
+          id?: string;
+          display_order?: number;
+          subtitle_translations?: Record<string, string>;
+          title_translations?: Record<string, string>;
+          description_translations?: Record<string, string>;
+          updated_at?: string;
+        };
+      };
+      how_we_work_steps: {
+        Row: {
+          id: string;
+          parent_section: string;
+          step_number: number;
+          icon: string;
+          title_translations: Record<string, string>;
+          description_translations: Record<string, string>;
+          display_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          parent_section: string;
+          step_number?: number;
+          icon?: string;
+          title_translations?: Record<string, string>;
+          description_translations?: Record<string, string>;
+          display_order?: number;
+        };
+        Update: {
+          id?: string;
+          parent_section?: string;
+          step_number?: number;
+          icon?: string;
+          title_translations?: Record<string, string>;
+          description_translations?: Record<string, string>;
+          display_order?: number;
+          updated_at?: string;
+        };
+      };
       ai_logs: {
         Row: {
           id: string;

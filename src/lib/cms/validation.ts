@@ -5,6 +5,10 @@
 
 import { z } from "zod";
 import { announcementBarSectionPayloadSchema } from "./validation-announcement";
+import {
+  howWeWorkSectionPayloadSchema,
+  type HowWeWorkSectionPayload as HowWeWorkSectionPayloadImported,
+} from "./validation-how-we-work";
 
 // ============================================================================
 // Shared Primitives
@@ -58,6 +62,7 @@ export type PageInput = z.infer<typeof pageSchema>;
 const sectionComponentTypes = [
   "HeroSection",
   "services",
+  "how_we_work",
   "ServicesSection",
   "StatsSection",
   "TestimonialsSection",
@@ -98,6 +103,8 @@ export type ServicesSectionPayload = z.infer<
   typeof servicesSectionPayloadSchema
 >;
 
+export type HowWeWorkSectionPayload = HowWeWorkSectionPayloadImported;
+
 export const statsSectionPayloadSchema = z.object({
   heading: z.string().min(1, "Stats heading is required"),
 });
@@ -126,6 +133,7 @@ export type CtaSectionPayload = z.infer<typeof ctaSectionPayloadSchema>;
 export const sectionPayloadSchemas: Record<string, z.ZodSchema> = {
   HeroSection: heroSectionPayloadSchema,
   services: servicesSectionPayloadSchema,
+  how_we_work: howWeWorkSectionPayloadSchema,
   ServicesSection: servicesSectionPayloadSchema,
   StatsSection: statsSectionPayloadSchema,
   TestimonialsSection: testimonialsSectionPayloadSchema,
