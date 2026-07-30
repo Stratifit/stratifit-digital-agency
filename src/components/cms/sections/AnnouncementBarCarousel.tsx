@@ -255,8 +255,6 @@ export function AnnouncementBarCarousel({
           <button
             type="button"
             onClick={handleDismiss}
-            onTouchStart={(e) => e.stopPropagation()}
-            onTouchEnd={(e) => e.stopPropagation()}
             className="inline-flex items-center justify-center w-6 h-6 rounded-full text-surface-dark/70 hover:text-surface-dark hover:bg-surface-dark/10 transition-colors duration-fast cursor-pointer"
             aria-label="Dismiss announcement"
           >

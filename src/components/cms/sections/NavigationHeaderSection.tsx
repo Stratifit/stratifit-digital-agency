@@ -339,6 +339,26 @@ function MobileMenu({
 }) {
   const [langOpen, setLangOpen] = useState(false);
 
+  // Close on escape and lock body scroll while the menu is open.
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const t = (path: string, fallback: string) =>
@@ -348,7 +368,7 @@ function MobileMenu({
     content.languages.find((l) => l.id === locale) ?? content.languages[0];
 
   return (
-    <div className="fixed inset-0 z-[90] flex justify-center bg-surface-dark h-[100dvh] overflow-hidden animate-menu-in">
+    <div className="fixed inset-0 z-[90] flex justify-center bg-surface-dark h-screen overflow-hidden animate-menu-in pointer-events-auto">
       <div className="w-full max-w-[430px] bg-surface-dark h-[100dvh] relative flex flex-col border-l border-r border-surface-darkBorder overflow-hidden">
         <header className="flex justify-between items-center px-6 py-5 border-b border-surface-darkBorder flex-shrink-0 relative z-10 bg-surface-dark">
           <Link href={getLocalePath("/", locale)} className="select-none">
