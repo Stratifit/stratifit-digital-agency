@@ -182,19 +182,103 @@ with home_page as (
     from home_page
     returning id
 )
--- 2c. Services Section
+-- 2c. Services Section (dedicated table)
+, services_section_data as (
+    insert into services_section (id, display_order, subtitle_translations, title_translations, description_translations)
+    values (
+        'b1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+        0,
+        '{
+            "en": "Services",
+            "fr": "Services",
+            "de": "Services",
+            "es": "Servicios"
+        }'::jsonb,
+        '{
+            "en": "Our Services",
+            "fr": "Nos Services",
+            "de": "Unsere Leistungen",
+            "es": "Nuestros Servicios"
+        }'::jsonb,
+        '{
+            "en": "Websites, branding, and AI systems designed to help your business grow.",
+            "fr": "Des sites web, du branding et des systèmes IA conçus pour faire croître votre entreprise.",
+            "de": "Websites, Branding und KI-Systeme, die Ihr Unternehmen wachsen lassen.",
+            "es": "Sitios web, branding y sistemas de IA diseñados para hacer crecer tu negocio."
+        }'::jsonb
+    )
+    returning id
+)
 , services_section as (
     insert into sections (id, page_id, component_type, display_order, payload)
     select
         gen_random_uuid(),
         home_page.id,
-        'ServicesSection',
+        'services',
         1,
-        '{
-            "heading":    "What We Do",
-            "description": "Full-service capabilities to take your product from concept to scale."
-        }'::jsonb
+        '{"servicesSectionId": "b1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d"}'::jsonb
     from home_page
+    returning id
+)
+-- Service cards
+, service_card_1 as (
+    insert into service_cards (id, parent_section, icon, title_translations, description_translations, deliverables, url, display_order, active)
+    values (
+        gen_random_uuid(),
+        (select id from services_section_data),
+        'diamond',
+        '{"en":"Brand Design","fr":"Design de Marque","de":"Markendesign","es":"Diseño de Marca"}'::jsonb,
+        '{"en":"Crafting unique identities that resonate and leave a lasting impression on your market.","fr":"Création d''identités uniques qui résonnent et laissent une impression durable sur votre marché.","de":"Entwicklung einzigartiger Identitäten, die resonieren und einen bleibenden Eindruck auf Ihrem Markt hinterlassen.","es":"Creación de identidades únicas que resuenen y dejen una impresión duradera en su mercado."}'::jsonb,
+        '[{"en":"Brand Strategy","fr":"Stratégie de Marque","de":"Markenstrategie","es":"Estrategia de Marca"},{"en":"Logo Design","fr":"Conception de Logo","de":"Logo-Design","es":"Diseño de Logo"},{"en":"Visual Identity","fr":"Identité Visuelle","de":"Visuelle Identität","es":"Identidad Visual"},{"en":"Brand Guidelines","fr":"Guide de Marque","de":"Markenrichtlinien","es":"Guías de Marca"}]'::jsonb,
+        '/brand-design',
+        0,
+        true
+    )
+    returning id
+)
+, service_card_2 as (
+    insert into service_cards (id, parent_section, icon, title_translations, description_translations, deliverables, url, display_order, active)
+    values (
+        gen_random_uuid(),
+        (select id from services_section_data),
+        'code',
+        '{"en":"Website Development","fr":"Développement Web","de":"Webentwicklung","es":"Desarrollo Web"}'::jsonb,
+        '{"en":"High-performance websites and web apps engineered for speed, scale, and conversion.","fr":"Des sites web et applications web performants conçus pour la vitesse, l''échelle et la conversion.","de":"Hochleistungsfähige Websites und Web-Apps, die für Geschwindigkeit, Skalierung und Konversion entwickelt wurden.","es":"Sitios web y aplicaciones web de alto rendimiento diseñados para la velocidad, la escala y la conversión."}'::jsonb,
+        '[{"en":"Custom Websites","fr":"Sites Web Sur Mesure","de":"Individuelle Websites","es":"Sitios Web Personalizados"},{"en":"E-commerce","fr":"E-commerce","de":"E-Commerce","es":"Comercio Electrónico"},{"en":"Web Applications","fr":"Applications Web","de":"Webanwendungen","es":"Aplicaciones Web"},{"en":"CMS Integration","fr":"Intégration CMS","de":"CMS-Integration","es":"Integración CMS"}]'::jsonb,
+        '/website-development',
+        1,
+        true
+    )
+    returning id
+)
+, service_card_3 as (
+    insert into service_cards (id, parent_section, icon, title_translations, description_translations, deliverables, url, display_order, active)
+    values (
+        gen_random_uuid(),
+        (select id from services_section_data),
+        'smart_toy',
+        '{"en":"AI & Automation","fr":"IA & Automatisation","de":"KI & Automatisierung","es":"IA y Automatización"}'::jsonb,
+        '{"en":"Intelligent automation that streamlines operations, qualifies leads, and scales support 24/7.","fr":"Une automatisation intelligente qui rationalise les opérations, qualifie les leads et met à l''échelle le support 24/7.","de":"Intelligente Automatisierung, die Abläufe optimiert, Leads qualifiziert und den Support 24/7 skaliert.","es":"Automatización inteligente que optimiza operaciones, califica leads y escala el soporte 24/7."}'::jsonb,
+        '[{"en":"AI Lead Qualification","fr":"Qualification de Leads IA","de":"KI-Lead-Qualifizierung","es":"Calificación de Leads con IA"},{"en":"AI Chatbots","fr":"Chatbots IA","de":"KI-Chatbots","es":"Chatbots de IA"},{"en":"Workflow Automation","fr":"Automatisation des Flux","de":"Workflow-Automatisierung","es":"Automatización de Flujos"},{"en":"Custom APIs","fr":"APIs Sur Mesure","de":"Individuelle APIs","es":"APIs Personalizadas"}]'::jsonb,
+        '/ai-automation',
+        2,
+        true
+    )
+    returning id
+)
+, service_card_4 as (
+    insert into service_cards (id, parent_section, icon, title_translations, description_translations, deliverables, url, display_order, active)
+    values (
+        gen_random_uuid(),
+        (select id from services_section_data),
+        'rocket_launch',
+        '{"en":"Growth & Marketing","fr":"Croissance & Marketing","de":"Wachstum & Marketing","es":"Crecimiento y Marketing"}'::jsonb,
+        '{"en":"Data-driven campaigns that amplify your brand and drive measurable revenue growth.","fr":"Des campagnes basées sur les données qui amplifient votre marque et génèrent une croissance des revenus mesurable.","de":"Datengesteuerte Kampagnen, die Ihre Marke verstärken und messbares Umsatzwachstum vorantreiben.","es":"Campañas basadas en datos que amplifican su marca e impulsan un crecimiento de ingresos medible."}'::jsonb,
+        '[{"en":"Performance Marketing","fr":"Marketing de Performance","de":"Performance-Marketing","es":"Marketing de Rendimiento"},{"en":"SEO & SEM","fr":"SEO & SEM","de":"SEO & SEM","es":"SEO y SEM"},{"en":"Content Strategy","fr":"Stratégie de Contenu","de":"Content-Strategie","es":"Estrategia de Contenido"},{"en":"Social Media","fr":"Réseaux Sociaux","de":"Social Media","es":"Redes Sociales"}]'::jsonb,
+        '/growth-marketing',
+        3,
+        true
+    )
     returning id
 )
 -- 2d. Stats Section
@@ -246,52 +330,6 @@ with home_page as (
 -- --------------------------------------------------------------------------
 -- 3. Content Blocks
 -- --------------------------------------------------------------------------
--- Services blocks
-, service_block_1 as (
-    insert into content_blocks (id, section_id, block_type, display_order, payload)
-    select
-        gen_random_uuid(),
-        services_section.id,
-        'service',
-        0,
-        '{
-            "title":       "Web Development",
-            "description": "Scalable, performant web applications using modern frameworks.",
-            "icon":        "code"
-        }'::jsonb
-    from services_section
-    returning id
-)
-, service_block_2 as (
-    insert into content_blocks (id, section_id, block_type, display_order, payload)
-    select
-        gen_random_uuid(),
-        services_section.id,
-        'service',
-        1,
-        '{
-            "title":       "UI / UX Design",
-            "description": "Human-centered design that delights users and drives conversion.",
-            "icon":        "palette"
-        }'::jsonb
-    from services_section
-    returning id
-)
-, service_block_3 as (
-    insert into content_blocks (id, section_id, block_type, display_order, payload)
-    select
-        gen_random_uuid(),
-        services_section.id,
-        'service',
-        2,
-        '{
-            "title":       "Brand Strategy",
-            "description": "Positioning, messaging, and visual identity for modern brands.",
-            "icon":        "strategy"
-        }'::jsonb
-    from services_section
-    returning id
-)
 -- Stats blocks
 , stat_block_1 as (
     insert into content_blocks (id, section_id, block_type, display_order, payload)
@@ -415,12 +453,7 @@ with home_page as (
         (select id from testimonials_section),
         (select id from cta_section)
 )
-, block_ids_services (s1_id, s2_id, s3_id) as (
-    select
-        (select id from service_block_1),
-        (select id from service_block_2),
-        (select id from service_block_3)
-)
+
 , block_ids_stats (st1_id, st2_id, st3_id, st4_id) as (
     select
         (select id from stat_block_1),
@@ -449,14 +482,6 @@ with home_page as (
     -- Services section
     ('section', (select services_id from section_ids), 'fr', 'payload.heading',    'Notre Expertise'),
     ('section', (select services_id from section_ids), 'fr', 'payload.description', 'Des services complets pour propulser votre produit du concept à l''échelle.'),
-
-    -- Service blocks
-    ('content_block', (select s1_id from block_ids_services), 'fr', 'payload.title',       'Développement Web'),
-    ('content_block', (select s1_id from block_ids_services), 'fr', 'payload.description', 'Applications web performantes et évolutives avec les frameworks modernes.'),
-    ('content_block', (select s2_id from block_ids_services), 'fr', 'payload.title',       'Design UI / UX'),
-    ('content_block', (select s2_id from block_ids_services), 'fr', 'payload.description', 'Un design centré sur l''humain qui séduit les utilisateurs et booste les conversions.'),
-    ('content_block', (select s3_id from block_ids_services), 'fr', 'payload.title',       'Stratégie de Marque'),
-    ('content_block', (select s3_id from block_ids_services), 'fr', 'payload.description', 'Positionnement, message et identité visuelle pour les marques modernes.'),
 
     -- Stats section
     ('section', (select stats_id from section_ids), 'fr', 'payload.heading', 'Chiffres Clés'),
@@ -497,14 +522,6 @@ with home_page as (
     ('section', (select services_id from section_ids), 'de', 'payload.heading',    'Unser Angebot'),
     ('section', (select services_id from section_ids), 'de', 'payload.description', 'Komplettdienstleistungen, um Ihr Produkt vom Konzept zur Skalierung zu bringen.'),
 
-    -- Service blocks
-    ('content_block', (select s1_id from block_ids_services), 'de', 'payload.title',       'Webentwicklung'),
-    ('content_block', (select s1_id from block_ids_services), 'de', 'payload.description', 'Skalierbare, leistungsstarke Webanwendungen mit modernen Frameworks.'),
-    ('content_block', (select s2_id from block_ids_services), 'de', 'payload.title',       'UI / UX Design'),
-    ('content_block', (select s2_id from block_ids_services), 'de', 'payload.description', 'Menschzentriertes Design, das begeistert und Konversionen steigert.'),
-    ('content_block', (select s3_id from block_ids_services), 'de', 'payload.title',       'Markenstrategie'),
-    ('content_block', (select s3_id from block_ids_services), 'de', 'payload.description', 'Positionierung, Botschaften und visuelle Identität für moderne Marken.'),
-
     -- Stats section
     ('section', (select stats_id from section_ids), 'de', 'payload.heading', 'Zahlen & Fakten'),
 
@@ -543,14 +560,6 @@ with home_page as (
     -- Services section
     ('section', (select services_id from section_ids), 'es', 'payload.heading',    'Nuestros Servicios'),
     ('section', (select services_id from section_ids), 'es', 'payload.description', 'Capacidades integrales para llevar tu producto del concepto a la escala.'),
-
-    -- Service blocks
-    ('content_block', (select s1_id from block_ids_services), 'es', 'payload.title',       'Desarrollo Web'),
-    ('content_block', (select s1_id from block_ids_services), 'es', 'payload.description', 'Aplicaciones web escalables y de alto rendimiento usando frameworks modernos.'),
-    ('content_block', (select s2_id from block_ids_services), 'es', 'payload.title',       'Diseño UI / UX'),
-    ('content_block', (select s2_id from block_ids_services), 'es', 'payload.description', 'Diseño centrado en el ser humano que deleita a los usuarios e impulsa la conversión.'),
-    ('content_block', (select s3_id from block_ids_services), 'es', 'payload.title',       'Estrategia de Marca'),
-    ('content_block', (select s3_id from block_ids_services), 'es', 'payload.description', 'Posicionamiento, mensajes e identidad visual para marcas modernas.'),
 
     -- Stats section
     ('section', (select stats_id from section_ids), 'es', 'payload.heading', 'Números Clave'),

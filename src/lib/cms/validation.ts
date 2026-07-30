@@ -57,6 +57,7 @@ export type PageInput = z.infer<typeof pageSchema>;
 
 const sectionComponentTypes = [
   "HeroSection",
+  "services",
   "ServicesSection",
   "StatsSection",
   "TestimonialsSection",
@@ -88,7 +89,8 @@ export const heroSectionPayloadSchema = z.object({
 export type HeroSectionPayload = z.infer<typeof heroSectionPayloadSchema>;
 
 export const servicesSectionPayloadSchema = z.object({
-  heading: z.string().min(1, "Services heading is required"),
+  servicesSectionId: z.string().uuid("Services section id is required").optional(),
+  heading: z.string().optional().default(""),
   description: z.string().optional().default(""),
 });
 
@@ -123,6 +125,7 @@ export type CtaSectionPayload = z.infer<typeof ctaSectionPayloadSchema>;
 /** Map of component_type → Zod schema for payload validation */
 export const sectionPayloadSchemas: Record<string, z.ZodSchema> = {
   HeroSection: heroSectionPayloadSchema,
+  services: servicesSectionPayloadSchema,
   ServicesSection: servicesSectionPayloadSchema,
   StatsSection: statsSectionPayloadSchema,
   TestimonialsSection: testimonialsSectionPayloadSchema,

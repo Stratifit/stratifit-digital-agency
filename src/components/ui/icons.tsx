@@ -347,6 +347,140 @@ export function AtomIcon({ className = "w-5 h-5", ...props }: IconProps) {
   );
 }
 
+export function DiamondIcon({ className = "w-5 h-5", ...props }: IconProps) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="M6 3h12l5 7-11 11-11-11z" />
+      <path d="M11 3 8 10h8l-3-7z" />
+      <path d="M6 10l6 11 6-11" />
+    </svg>
+  );
+}
+
+export function SmartToyIcon({ className = "w-5 h-5", ...props }: IconProps) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="M18 10.5V7a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v3.5" />
+      <path d="M4 13.5h16" />
+      <path d="M4 13.5l1.5 4.5h12.5l1.5-4.5" />
+      <circle cx="9" cy="17" r="1" />
+      <circle cx="15" cy="17" r="1" />
+      <path d="M8 7.5h.01" />
+      <path d="M16 7.5h.01" />
+    </svg>
+  );
+}
+
+export function RocketLaunchIcon({
+  className = "w-5 h-5",
+  ...props
+}: IconProps) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="M12 2s6 3 6 10-6 10-6 10-6-3-6-10 6-10 6-10z" />
+      <path d="M12 14a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />
+      <path d="M12 14v8" />
+    </svg>
+  );
+}
+
+export function CheckCircleIcon({
+  className = "w-5 h-5",
+  ...props
+}: IconProps) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="M9 12l2 2 4-4" />
+      <circle cx="12" cy="12" r="10" />
+    </svg>
+  );
+}
+
+export function ArrowForwardIcon({
+  className = "w-5 h-5",
+  ...props
+}: IconProps) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <line x1="5" y1="12" x2="19" y2="12" />
+      <polyline points="12 5 19 12 12 19" />
+    </svg>
+  );
+}
+
+export const SERVICES_SECTION_ICONS = {
+  diamond: DiamondIcon,
+  code: CodeIcon,
+  smart_toy: SmartToyIcon,
+  rocket_launch: RocketLaunchIcon,
+} as const;
+
+export const SERVICES_SECTION_ICON_IDS = Object.keys(
+  SERVICES_SECTION_ICONS
+) as unknown as readonly [
+  keyof typeof SERVICES_SECTION_ICONS,
+  ...(keyof typeof SERVICES_SECTION_ICONS)[]
+];
+
+export type ServicesSectionIconId = (typeof SERVICES_SECTION_ICON_IDS)[number];
+
+export const SERVICES_SECTION_ICON_LABELS: Record<ServicesSectionIconId, string> = {
+  diamond: "Diamond",
+  code: "Code",
+  smart_toy: "Smart Toy",
+  rocket_launch: "Rocket Launch",
+};
+
 export const SERVICE_ICONS = {
   brand: BrandIcon,
   web: WebDevIcon,

@@ -120,6 +120,7 @@ export interface ResolvedBlock {
 // ============================================================================
 export const SECTION_COMPONENTS = [
   "HeroSection",
+  "services",
   "ServicesSection",
   "StatsSection",
   "TestimonialsSection",

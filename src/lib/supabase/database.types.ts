@@ -277,6 +277,73 @@ export interface Database {
           updated_at?: string;
         };
       };
+      services_section: {
+        Row: {
+          id: string;
+          display_order: number;
+          subtitle_translations: Record<string, string>;
+          title_translations: Record<string, string>;
+          description_translations: Record<string, string>;
+          services: Record<string, unknown>;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          display_order?: number;
+          subtitle_translations?: Record<string, string>;
+          title_translations?: Record<string, string>;
+          description_translations?: Record<string, string>;
+          services?: Record<string, unknown>;
+        };
+        Update: {
+          id?: string;
+          display_order?: number;
+          subtitle_translations?: Record<string, string>;
+          title_translations?: Record<string, string>;
+          description_translations?: Record<string, string>;
+          services?: Record<string, unknown>;
+          updated_at?: string;
+        };
+      };
+      service_cards: {
+        Row: {
+          id: string;
+          parent_section: string;
+          icon: string;
+          title_translations: Record<string, string>;
+          description_translations: Record<string, string>;
+          deliverables: Record<string, string>[];
+          url: string;
+          display_order: number;
+          active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          parent_section: string;
+          icon?: string;
+          title_translations?: Record<string, string>;
+          description_translations?: Record<string, string>;
+          deliverables?: Record<string, string>[];
+          url?: string;
+          display_order?: number;
+          active?: boolean;
+        };
+        Update: {
+          id?: string;
+          parent_section?: string;
+          icon?: string;
+          title_translations?: Record<string, string>;
+          description_translations?: Record<string, string>;
+          deliverables?: Record<string, string>[];
+          url?: string;
+          display_order?: number;
+          active?: boolean;
+          updated_at?: string;
+        };
+      };
       ai_logs: {
         Row: {
           id: string;

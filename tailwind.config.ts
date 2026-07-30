@@ -96,6 +96,7 @@ const config: Config = {
         xl:     "0.75rem",
         "2xl":  "1rem",
         "3xl":  "1.25rem",
+        "4xl":  "2rem",
         full:   "9999px",
       },
 

@@ -28,6 +28,10 @@ const componentMap: Record<string, () => Promise<{ default: SectionComponent }>>
     import("@/components/cms/sections/HeroSection").then((m) => ({
       default: m.HeroSection as SectionComponent,
     })),
+  services: () =>
+    import("@/components/cms/sections/ServicesSection").then((m) => ({
+      default: m.ServicesSection as SectionComponent,
+    })),
   ServicesSection: () =>
     import("@/components/cms/sections/ServicesSection").then((m) => ({
       default: m.ServicesSection as SectionComponent,
