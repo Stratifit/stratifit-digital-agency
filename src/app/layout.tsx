@@ -37,7 +37,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} className="dark">
       <body className={`${inter.variable} font-body antialiased`}>
-        <AnnouncementBar />
+        <AnnouncementBar locale={locale} />
         <Suspense fallback={null}>
           <GlobalNavigation locale={locale} />
         </Suspense>
