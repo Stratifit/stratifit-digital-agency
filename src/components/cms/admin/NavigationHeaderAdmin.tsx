@@ -44,7 +44,7 @@ const EMPTY_FORM: NavigationHeaderInput = {
       { id: "portfolio", label: "Portfolio", href: "/portfolio" },
       { id: "insights", label: "Insights", href: "/insights" },
       { id: "about", label: "About", href: "/about" },
-      { id: "faq", label: "FAQ", href: "/faq" },
+      { id: "buy-a-business", label: "Buy a Business", href: "/buy-a-business" },
       { id: "contact", label: "Contact", href: "/contact" },
     ],
     cta: { id: "cta", label: "Start a Project", href: "/contact" },
