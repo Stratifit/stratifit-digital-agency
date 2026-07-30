@@ -209,17 +209,6 @@ with home_page as (
     )
     returning id
 )
-, services_section as (
-    insert into sections (id, page_id, component_type, display_order, payload)
-    select
-        gen_random_uuid(),
-        home_page.id,
-        'services',
-        1,
-        '{"servicesSectionId": "b1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d"}'::jsonb
-    from home_page
-    returning id
-)
 -- Service cards
 , service_card_1 as (
     insert into service_cards (id, parent_section, icon, title_translations, description_translations, deliverables, url, display_order, active)
@@ -358,17 +347,6 @@ with home_page as (
         '{"en":"We optimize, scale, and measure everything. Continuous improvement is built into our DNA.","fr":"Nous optimisons, mettons à l''échelle et mesurons tout. L''amélioration continue est inscrite dans notre ADN.","de":"Wir optimieren, skalieren und messen alles. Kontinuierliche Verbesserung ist in unserer DNA verankert.","es":"Optimizamos, escalamos y medimos todo. La mejora continua está en nuestro ADN."}'::jsonb,
         3
     )
-    returning id
-)
-, how_we_work_section as (
-    insert into sections (id, page_id, component_type, display_order, payload)
-    select
-        gen_random_uuid(),
-        home_page.id,
-        'how_we_work',
-        2,
-        '{"howWeWorkSectionId": "c1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d"}'::jsonb
-    from home_page
     returning id
 )
 -- 2e. Stats Section
@@ -535,10 +513,9 @@ with home_page as (
 
 -- We'll capture all section and block IDs into variables.
 -- Use a second CTE chain to insert translations.
-, section_ids (hero_id, services_id, stats_id, testimonials_id, cta_id) as (
+, section_ids (hero_id, stats_id, testimonials_id, cta_id) as (
     select
         (select id from hero_section),
-        (select id from services_section),
         (select id from stats_section),
         (select id from testimonials_section),
         (select id from cta_section)
@@ -568,10 +545,6 @@ with home_page as (
     ('section', (select hero_id from section_ids), 'fr', 'payload.subheading', 'Stratifit aide les marques à se développer grâce au design et à la technologie.'),
     ('section', (select hero_id from section_ids), 'fr', 'payload.cta_primary.text', 'Commencer'),
     ('section', (select hero_id from section_ids), 'fr', 'payload.cta_secondary.text', 'Nos Réalisations'),
-
-    -- Services section
-    ('section', (select services_id from section_ids), 'fr', 'payload.heading',    'Notre Expertise'),
-    ('section', (select services_id from section_ids), 'fr', 'payload.description', 'Des services complets pour propulser votre produit du concept à l''échelle.'),
 
     -- Stats section
     ('section', (select stats_id from section_ids), 'fr', 'payload.heading', 'Chiffres Clés'),
@@ -608,10 +581,6 @@ with home_page as (
     ('section', (select hero_id from section_ids), 'de', 'payload.cta_primary.text',   'Loslegen'),
     ('section', (select hero_id from section_ids), 'de', 'payload.cta_secondary.text', 'Unsere Arbeiten'),
 
-    -- Services section
-    ('section', (select services_id from section_ids), 'de', 'payload.heading',    'Unser Angebot'),
-    ('section', (select services_id from section_ids), 'de', 'payload.description', 'Komplettdienstleistungen, um Ihr Produkt vom Konzept zur Skalierung zu bringen.'),
-
     -- Stats section
     ('section', (select stats_id from section_ids), 'de', 'payload.heading', 'Zahlen & Fakten'),
 
@@ -646,10 +615,6 @@ with home_page as (
     ('section', (select hero_id from section_ids), 'es', 'payload.subheading', 'Stratifit ayuda a las marcas a escalar con diseño e ingeniería modernos.'),
     ('section', (select hero_id from section_ids), 'es', 'payload.cta_primary.text',   'Comenzar'),
     ('section', (select hero_id from section_ids), 'es', 'payload.cta_secondary.text', 'Nuestro Trabajo'),
-
-    -- Services section
-    ('section', (select services_id from section_ids), 'es', 'payload.heading',    'Nuestros Servicios'),
-    ('section', (select services_id from section_ids), 'es', 'payload.description', 'Capacidades integrales para llevar tu producto del concepto a la escala.'),
 
     -- Stats section
     ('section', (select stats_id from section_ids), 'es', 'payload.heading', 'Números Clave'),
