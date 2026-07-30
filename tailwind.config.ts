@@ -140,12 +140,17 @@ const config: Config = {
           "0%": { opacity: "0", transform: "translateX(-100%)" },
           "100%": { opacity: "1", transform: "translateX(0)" },
         },
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
       },
       animation: {
         "slide-left": "slideLeft 300ms cubic-bezier(0.19, 1, 0.22, 1) forwards",
         "slide-right": "slideRight 300ms cubic-bezier(0.19, 1, 0.22, 1) forwards",
         "slide-in": "slideIn 300ms ease-out forwards",
         "menu-in": "menuIn 300ms ease-out forwards",
+        marquee: "marquee 25s linear infinite",
       },
     },
   },

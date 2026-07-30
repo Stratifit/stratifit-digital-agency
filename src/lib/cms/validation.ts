@@ -82,11 +82,7 @@ export type SectionInput = z.infer<typeof sectionSchema>;
 // --------------------------------------------------------------------------
 
 export const heroSectionPayloadSchema = z.object({
-  heading: z.string().min(1, "Hero heading is required"),
-  subheading: z.string().optional().default(""),
-  ctaPrimary: ctaLinkSchema.optional(),
-  ctaSecondary: ctaLinkSchema.optional(),
-  backgroundImage: z.string().nullable().optional(),
+  heroSectionId: z.string().uuid("Hero section id is required").optional(),
 });
 
 export type HeroSectionPayload = z.infer<typeof heroSectionPayloadSchema>;

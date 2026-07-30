@@ -233,6 +233,50 @@ export interface Database {
           updated_at?: string;
         };
       };
+      hero_section: {
+        Row: {
+          id: string;
+          display_order: number;
+          sticky: boolean;
+          subtitle_translations: Record<string, string>;
+          title_translations: Record<string, string>;
+          title_highlight_translations: Record<string, string>;
+          description_translations: Record<string, string>;
+          ctas: Record<string, unknown>[];
+          trust_badges: Record<string, unknown>[];
+          tech_stack: Record<string, unknown>;
+          url: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          display_order?: number;
+          sticky?: boolean;
+          subtitle_translations?: Record<string, string>;
+          title_translations?: Record<string, string>;
+          title_highlight_translations?: Record<string, string>;
+          description_translations?: Record<string, string>;
+          ctas?: Record<string, unknown>[];
+          trust_badges?: Record<string, unknown>[];
+          tech_stack?: Record<string, unknown>;
+          url?: string;
+        };
+        Update: {
+          id?: string;
+          display_order?: number;
+          sticky?: boolean;
+          subtitle_translations?: Record<string, string>;
+          title_translations?: Record<string, string>;
+          title_highlight_translations?: Record<string, string>;
+          description_translations?: Record<string, string>;
+          ctas?: Record<string, unknown>[];
+          trust_badges?: Record<string, unknown>[];
+          tech_stack?: Record<string, unknown>;
+          url?: string;
+          updated_at?: string;
+        };
+      };
       ai_logs: {
         Row: {
           id: string;
