@@ -11,7 +11,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { CmsLanguage } from "@/lib/types/cms";
 import type { ResolvedBlock } from "@/lib/types/cms";
-import { setLocaleCookie } from "@/lib/locale.client";
 import type {
   CmsNavigationHeader,
   NavigationHeaderContent,
@@ -36,11 +35,9 @@ function getIconForService(iconId: string) {
   return (SERVICE_ICONS as Record<string, typeof BrandIcon>)[iconId] ?? BrandIcon;
 }
 
-/** Build the canonical URL for a given locale from the current path. */
+/** Build the language-switch URL for a given locale from the current path. */
 function getLocalePath(currentPath: string, locale: CmsLanguage): string {
-  const withoutLocale = currentPath.replace(/^\/(fr|de|es)(?=\/|$)/, "") || "/";
-  if (locale === "en") return withoutLocale;
-  return withoutLocale === "/" ? `/${locale}` : `/${locale}${withoutLocale}`;
+  return `${currentPath}?lang=${locale}`;
 }
 
 function resolveTranslation(
@@ -196,7 +193,6 @@ export function NavigationHeaderSection({
                     <a
                       key={l.id}
                       href={getLocalePath(pathname, l.id)}
-                      onClick={() => setLocaleCookie(l.id)}
                       className={`flex items-center gap-2.5 px-3 py-2.5 text-body-sm font-medium rounded-md transition-all ${
                         currentLang.id === l.id
                           ? "bg-brand-gold/10 text-brand-gold"
@@ -365,10 +361,7 @@ function MobileMenu({
                   <a
                     key={l.id}
                     href={getLocalePath(pathname, l.id)}
-                    onClick={() => {
-                      setLocaleCookie(l.id);
-                      onClose();
-                    }}
+                    onClick={() => onClose()}
                     className={`flex items-center gap-2.5 px-3 py-2.5 text-body-sm font-medium rounded-md transition-all ${
                       currentLang.id === l.id
                         ? "bg-brand-gold/10 text-brand-gold"

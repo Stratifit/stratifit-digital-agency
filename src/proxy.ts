@@ -10,7 +10,6 @@ import {
   DEFAULT_LOCALE,
   isValidLocale,
   LOCALE_COOKIE_NAME,
-  SUPPORTED_LOCALES,
 } from "@/lib/locale";
 import type { CmsLanguage } from "@/lib/types/cms";
 
@@ -39,79 +38,36 @@ export async function proxy(request: NextRequest) {
   }
 
   // -------------------------------------------------------------------------
-  // Public pages: path-prefixed locales.
+  // Public pages: single-root URL with internal language switching.
   // -------------------------------------------------------------------------
-  const localeResult = resolveLocaleFromPath(request);
 
-  // Redirect legacy /?lang=xx URLs to the canonical path-prefixed form.
-  if (localeResult.redirect) {
-    return NextResponse.redirect(localeResult.redirectUrl);
-  }
-
-  // Rewrite /fr/<rest> -> /<rest> so the existing catch-all page works.
-  const response = localeResult.rewrite
-    ? NextResponse.rewrite(
-        new URL(
-          `${localeResult.targetPath}${request.nextUrl.search}`,
-          request.url
-        )
-      )
-    : NextResponse.next({ request });
-
-  // Persist the locale in a cookie so Server Components can read it.
-  return setLocaleCookie(response, localeResult.locale);
-}
-
-interface LocaleResolution {
-  locale: CmsLanguage;
-  rewrite: boolean;
-  targetPath: string;
-  redirect: boolean;
-  redirectUrl: string;
-}
-
-/** Resolve locale from the URL path or legacy ?lang= query param. */
-function resolveLocaleFromPath(request: NextRequest): LocaleResolution {
-  const pathname = request.nextUrl.pathname;
-  const searchParams = request.nextUrl.searchParams;
-
-  // Legacy query-param locale: redirect to canonical path.
-  const queryLang = searchParams.get("lang");
+  // 1. ?lang=xx query param: set cookie and redirect to clean URL.
+  const queryLang = request.nextUrl.searchParams.get("lang");
   if (queryLang && isValidLocale(queryLang)) {
-    const newUrl = new URL(request.url);
-    newUrl.searchParams.delete("lang");
-    newUrl.pathname = queryLang === "en" ? "/" : `/${queryLang}`;
-    return {
-      locale: queryLang,
-      rewrite: false,
-      targetPath: "/",
-      redirect: true,
-      redirectUrl: newUrl.toString(),
-    };
+    const cleanUrl = request.nextUrl.clone();
+    cleanUrl.searchParams.delete("lang");
+    const response = NextResponse.redirect(cleanUrl);
+    return setLocaleCookie(response, queryLang);
   }
 
-  // Path-prefixed locale: /fr, /de, /es (and /en if ever used explicitly).
-  const match = pathname.match(LOCALE_PATH_REGEX);
-  if (match) {
-    const locale = match[1] as CmsLanguage;
-    const targetPath = pathname.replace(LOCALE_PATH_REGEX, "/") || "/";
-    return {
-      locale,
-      rewrite: targetPath !== pathname,
-      targetPath,
-      redirect: false,
-      redirectUrl: "",
-    };
+  // 2. Legacy path-prefixed locales: /fr, /de, /es -> redirect to clean URL.
+  const pathMatch = pathname.match(LOCALE_PATH_REGEX);
+  if (pathMatch) {
+    const locale = pathMatch[1] as CmsLanguage;
+    const cleanPath = pathname.replace(LOCALE_PATH_REGEX, "/") || "/";
+    const cleanUrl = new URL(cleanPath, request.url);
+    const response = NextResponse.redirect(cleanUrl);
+    return setLocaleCookie(response, locale);
   }
 
-  // No prefix: default to English on "/".
-  return {
-    locale: DEFAULT_LOCALE,
-    rewrite: false,
-    targetPath: pathname,
-    redirect: false,
-    redirectUrl: "",
-  };
+  // 3. Normal request: resolve locale from cookie or default, and pass through.
+  const existingLocale = request.cookies.get(LOCALE_COOKIE_NAME)?.value;
+  const locale =
+    existingLocale && isValidLocale(existingLocale)
+      ? existingLocale
+      : DEFAULT_LOCALE;
+  const response = NextResponse.next({ request });
+  return setLocaleCookie(response, locale);
 }
 
 /** Store the locale in a first-party cookie and return the updated response. */
