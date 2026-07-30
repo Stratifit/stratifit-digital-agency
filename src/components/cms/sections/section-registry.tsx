@@ -1,11 +1,20 @@
 // ============================================================================
 // Stratifit — Section Registry
-// Maps component_type strings to lazy-loaded React server components.
+// Maps component_type strings to React server/client section components.
 // ============================================================================
 
-import dynamic from "next/dynamic";
 import type { ComponentType } from "react";
 import type { CmsLanguage, ResolvedBlock } from "@/lib/types/cms";
+import { HeroSection } from "./HeroSection";
+import { ServicesSection } from "./ServicesSection";
+import { HowWeWorkSection } from "./HowWeWorkSection";
+import { WhyUsSection } from "./WhyUsSection";
+import { InsightsSection } from "./InsightsSection";
+import { PortfolioSection } from "./PortfolioSection";
+import { AcquisitionSection } from "./AcquisitionSection";
+import { CtaSection } from "./CtaSection";
+import { AnnouncementBarSection } from "./AnnouncementBarSection";
+import { NavigationHeaderSection } from "./NavigationHeaderSection";
 
 // ============================================================================
 // Shared props contract — every section component receives these.
@@ -20,65 +29,23 @@ export interface SectionComponentProps {
 export type SectionComponent = ComponentType<SectionComponentProps>;
 
 // ============================================================================
-// Dynamic imports — each section component is code-split independently.
+// Static component map — direct imports avoid next/dynamic issues with
+// async Server Components in the App Router.
 // ============================================================================
-
-const componentMap: Record<string, () => Promise<{ default: SectionComponent }>> = {
-  HeroSection: () =>
-    import("@/components/cms/sections/HeroSection").then((m) => ({
-      default: m.HeroSection as SectionComponent,
-    })),
-  services: () =>
-    import("@/components/cms/sections/ServicesSection").then((m) => ({
-      default: m.ServicesSection as SectionComponent,
-    })),
-  how_we_work: () =>
-    import("@/components/cms/sections/HowWeWorkSection").then((m) => ({
-      default: m.HowWeWorkSection as SectionComponent,
-    })),
-  why_us: () =>
-    import("@/components/cms/sections/WhyUsSection").then((m) => ({
-      default: m.WhyUsSection as SectionComponent,
-    })),
-  insights: () =>
-    import("@/components/cms/sections/InsightsSection").then((m) => ({
-      default: m.InsightsSection as SectionComponent,
-    })),
-  portfolio: () =>
-    import("@/components/cms/sections/PortfolioSection").then((m) => ({
-      default: m.PortfolioSection as SectionComponent,
-    })),
-  acquisition: () =>
-    import("@/components/cms/sections/AcquisitionSection").then((m) => ({
-      default: m.AcquisitionSection as SectionComponent,
-    })),
-  ServicesSection: () =>
-    import("@/components/cms/sections/ServicesSection").then((m) => ({
-      default: m.ServicesSection as SectionComponent,
-    })),
-  CtaSection: () =>
-    import("@/components/cms/sections/CtaSection").then((m) => ({
-      default: m.CtaSection as SectionComponent,
-    })),
-  AnnouncementBarSection: () =>
-    import("@/components/cms/sections/AnnouncementBarSection").then((m) => ({
-      default: m.AnnouncementBarSection as SectionComponent,
-    })),
-  NavigationHeaderSection: () =>
-    import("@/components/cms/sections/NavigationHeaderSection").then((m) => ({
-      default: m.NavigationHeaderSection as SectionComponent,
-    })),
+const componentMap: Record<string, SectionComponent> = {
+  HeroSection,
+  services: ServicesSection,
+  how_we_work: HowWeWorkSection,
+  why_us: WhyUsSection,
+  insights: InsightsSection,
+  portfolio: PortfolioSection,
+  acquisition: AcquisitionSection,
+  // Legacy alias kept for backwards compatibility
+  ServicesSection: ServicesSection,
+  CtaSection: CtaSection as unknown as SectionComponent,
+  AnnouncementBarSection,
+  NavigationHeaderSection,
 };
-
-// Dynamic wrappers — these are lazy-loaded React components
-const dynamicComponents: Record<string, SectionComponent> = {};
-
-for (const [type, importer] of Object.entries(componentMap)) {
-  dynamicComponents[type] = dynamic(importer, {
-    ssr: true,
-    loading: () => <SectionSkeleton />,
-  });
-}
 
 // ============================================================================
 // Public API
@@ -91,7 +58,7 @@ for (const [type, importer] of Object.entries(componentMap)) {
 export function getSectionComponent(
   componentType: string
 ): SectionComponent {
-  const Component = dynamicComponents[componentType];
+  const Component = componentMap[componentType];
   if (!Component) {
     console.warn(
       `[section-registry] Unknown section type: "${componentType}". Using NullSection fallback.`
@@ -104,12 +71,6 @@ export function getSectionComponent(
 // ============================================================================
 // Fallbacks
 // ============================================================================
-
-function SectionSkeleton() {
-  return (
-    <div className="w-full h-64 bg-surface-darkCard animate-pulse rounded-2xl" />
-  );
-}
 
 function NullSection({ payload }: SectionComponentProps) {
   return (
