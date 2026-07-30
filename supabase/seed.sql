@@ -705,3 +705,12 @@ with home_page as (
     )
 )
 select 'Seed complete' as result;
+
+-- ============================================================================
+-- 6. Additional dedicated sections (Why Us, Insights) and homepage linkage
+-- ============================================================================
+-- These files use fixed UUIDs and ON CONFLICT DO UPDATE so they are safe
+-- to run after the main seed above.
+\ir seed_why_us_section.sql
+\ir seed_insights_section.sql
+\ir seed_home_sections_linkage.sql
