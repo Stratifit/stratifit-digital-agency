@@ -8,7 +8,6 @@ values (
     0,
     false,
     '{
-      "logo": "Stratifit",
       "links": [
         {"id": "services", "label": "Services", "href": "/services"},
         {"id": "portfolio", "label": "Portfolio", "href": "/portfolio"},
@@ -58,7 +57,6 @@ values (
     }'::jsonb,
     '{
       "fr": {
-        "logo": "Stratifit",
         "links.services.label": "Services",
         "links.portfolio.label": "Portfolio",
         "links.insights.label": "Perspectives",
@@ -92,7 +90,6 @@ values (
         "copyright": "© 2026 Stratifit Agency"
       },
       "de": {
-        "logo": "Stratifit",
         "links.services.label": "Leistungen",
         "links.portfolio.label": "Portfolio",
         "links.insights.label": "Insights",
@@ -126,7 +123,6 @@ values (
         "copyright": "© 2026 Stratifit Agency"
       },
       "es": {
-        "logo": "Stratifit",
         "links.services.label": "Servicios",
         "links.portfolio.label": "Portafolio",
         "links.insights.label": "Perspectivas",

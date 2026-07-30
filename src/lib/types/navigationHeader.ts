@@ -61,7 +61,6 @@ export interface NavigationHeaderChatLanguage {
 
 /** Shape of the `content` JSONB column */
 export interface NavigationHeaderContent {
-  logo: string;
   links: NavigationHeaderLink[];
   cta: NavigationHeaderLink;
   languages: NavigationHeaderLanguage[];

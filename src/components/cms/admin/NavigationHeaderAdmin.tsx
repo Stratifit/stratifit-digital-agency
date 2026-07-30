@@ -39,7 +39,6 @@ const EMPTY_FORM: NavigationHeaderInput = {
   sticky: false,
   url: "",
   content: {
-    logo: "Stratifit",
     links: [
       { id: "services", label: "Services", href: "/services" },
       { id: "portfolio", label: "Portfolio", href: "/portfolio" },
@@ -376,7 +375,6 @@ export function NavigationHeaderAdmin() {
               <thead>
                 <tr className="border-b border-surface-darkBorder">
                   <th className="text-left font-body text-caption text-neutral-500 uppercase tracking-wider px-4 py-3 w-16">Order</th>
-                  <th className="text-left font-body text-caption text-neutral-500 uppercase tracking-wider px-4 py-3">Logo</th>
                   <th className="text-left font-body text-caption text-neutral-500 uppercase tracking-wider px-4 py-3 w-24">Sticky</th>
                   <th className="text-right font-body text-caption text-neutral-500 uppercase tracking-wider px-4 py-3 w-56">Actions</th>
                 </tr>
@@ -388,7 +386,6 @@ export function NavigationHeaderAdmin() {
                     className="border-b border-surface-darkBorder last:border-b-0 hover:bg-surface-darkHover/50 transition-colors"
                   >
                     <td className="px-4 py-3 font-body text-body-sm text-neutral-400">{row.displayOrder}</td>
-                    <td className="px-4 py-3 font-body text-body-sm text-white truncate max-w-md">{row.content.logo}</td>
                     <td className="px-4 py-3">
                       {row.sticky ? (
                         <span className="text-brand-gold text-body-sm">Yes</span>
@@ -443,7 +440,6 @@ export function NavigationHeaderAdmin() {
         <div className="space-y-6">
           {activeTab === "general" && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <Input label="Logo Text" value={form.content.logo} onChange={(e) => updateContent("logo", e.target.value)} />
               <Input label="CTA Label" value={form.content.cta.label} onChange={(e) => updateContent("cta", { ...form.content.cta, label: e.target.value })} />
               <Input label="CTA Href" value={form.content.cta.href} onChange={(e) => updateContent("cta", { ...form.content.cta, href: e.target.value })} />
               <Input label="Desktop Chat Pill" value={form.content.desktopChatPill} onChange={(e) => updateContent("desktopChatPill", e.target.value)} />
@@ -716,7 +712,6 @@ function AddCustomTranslation({ onAdd }: { onAdd: (key: string, value: string) =
 
 function buildTranslationKeys(content: NavigationHeaderInput["content"]): string[] {
   const keys = [
-    "logo",
     "desktopChatPill",
     "builtBy",
     "copyright",

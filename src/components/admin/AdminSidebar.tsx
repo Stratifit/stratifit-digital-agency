@@ -2,6 +2,7 @@
 // Stratifit — Admin Sidebar
 // ============================================================================
 
+import Image from "next/image";
 import Link from "next/link";
 
 const NAV_ITEMS = [
@@ -18,12 +19,15 @@ export function AdminSidebar() {
     <aside className="w-64 min-h-screen bg-surface-darkAlt border-r border-surface-darkBorder flex flex-col">
       {/* Brand */}
       <div className="px-6 py-6 border-b border-surface-darkBorder">
-        <Link href="/admin" className="font-display text-heading-md text-white">
-          Stratifit
+        <Link href="/admin" className="select-none">
+          <Image
+            src="/stratifit-logo.png"
+            alt="Stratifit"
+            width={40}
+            height={40}
+            className="h-10 w-auto rounded-md object-contain"
+          />
         </Link>
-        <p className="font-body text-caption text-neutral-500 mt-0.5">
-          Admin Panel
-        </p>
       </div>
 
       {/* Navigation */}

@@ -7,8 +7,10 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { setLocaleCookie } from "@/lib/locale.client";
 import type { CmsLanguage } from "@/lib/types/cms";
 import type { ResolvedBlock } from "@/lib/types/cms";
 import type {
@@ -60,10 +62,12 @@ interface NavigationHeaderSectionProps {
 }
 
 export function NavigationHeaderSection({
-  locale,
+  locale: initialLocale,
   initialData,
 }: NavigationHeaderSectionProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [activeLocale, setActiveLocale] = useState<CmsLanguage>(initialLocale);
   const [data, setData] = useState<CmsNavigationHeader | null>(
     initialData ?? null
   );
@@ -112,10 +116,20 @@ export function NavigationHeaderSection({
   const { content, translations } = data;
 
   const t = (path: string, fallback: string) =>
-    resolveTranslation(content, translations, locale, path, fallback);
+    resolveTranslation(content, translations, activeLocale, path, fallback);
 
   const currentLang =
-    content.languages.find((l) => l.id === locale) ?? content.languages[0];
+    content.languages.find((l) => l.id === activeLocale) ?? content.languages[0];
+
+  const handleLanguageChange = useCallback(
+    (newLocale: CmsLanguage) => {
+      setActiveLocale(newLocale);
+      setLocaleCookie(newLocale);
+      setLangOpen(false);
+      router.refresh();
+    },
+    [router]
+  );
 
   const chatLangs = content.chatLanguages;
 
@@ -134,7 +148,7 @@ export function NavigationHeaderSection({
           </button>
 
           <div className="flex-1 flex justify-center">
-            <Logo logo={content.logo} href={getLocalePath("/", locale)} />
+            <Logo href={getLocalePath("/", activeLocale)} />
           </div>
 
           <button
@@ -150,12 +164,12 @@ export function NavigationHeaderSection({
       {/* Desktop top bar */}
       <header className="hidden lg:flex sticky top-0 z-40 w-full bg-surface-dark border-b border-surface-darkBorder [.has-sticky-bar_&]:top-8 sm:[.has-sticky-bar_&]:top-9">
         <div className="mx-auto max-w-7xl w-full flex items-center justify-between px-4 sm:px-6 lg:px-8 h-20">
-          <Logo logo={content.logo} href={getLocalePath("/", locale)} />
+          <Logo href={getLocalePath("/", activeLocale)} />
 
           <div className="flex items-center gap-6">
             <nav className="flex items-center gap-6">
               <Link
-                href={getLocalePath("/", locale)}
+                href={getLocalePath("/", activeLocale)}
                 className="text-white text-sm font-medium hover:text-brand-gold transition-colors font-body"
               >
                 {t("links.home.label", "Home")}
@@ -190,10 +204,10 @@ export function NavigationHeaderSection({
               {langOpen && (
                 <div className="absolute top-[calc(100%+8px)] right-0 bg-surface-darkCard border border-surface-darkBorder rounded-xl p-1.5 min-w-[130px] z-20 shadow-card animate-slide-in">
                   {content.languages.map((l) => (
-                    <a
+                    <button
                       key={l.id}
-                      href={getLocalePath(pathname, l.id)}
-                      className={`flex items-center gap-2.5 px-3 py-2.5 text-body-sm font-medium rounded-md transition-all ${
+                      onClick={() => handleLanguageChange(l.id)}
+                      className={`w-full flex items-center gap-2.5 px-3 py-2.5 text-body-sm font-medium rounded-md transition-all text-left ${
                         currentLang.id === l.id
                           ? "bg-brand-gold/10 text-brand-gold"
                           : "text-neutral-400 hover:bg-surface-darkHover hover:text-white"
@@ -202,7 +216,7 @@ export function NavigationHeaderSection({
                       <span className="font-body">
                         {l.flag} {t(`languages.${l.id}.name`, l.name)}
                       </span>
-                    </a>
+                    </button>
                   ))}
                 </div>
               )}
@@ -229,7 +243,8 @@ export function NavigationHeaderSection({
         <MobileMenu
           content={content}
           translations={translations}
-          locale={locale}
+          locale={activeLocale}
+          onLanguageChange={handleLanguageChange}
           activeDot={activeDot}
           onDotChange={setActiveDot}
           onClose={() => setMenuOpen(false)}
@@ -247,7 +262,7 @@ export function NavigationHeaderSection({
         <ChatOverlay
           content={content}
           translations={translations}
-          locale={locale}
+          locale={activeLocale}
           chatLangs={chatLangs}
           onClose={() => setChatOpen(false)}
         />
@@ -257,18 +272,17 @@ export function NavigationHeaderSection({
 }
 
 // ---- Logo ----
-function Logo({ logo, href }: { logo: string; href: string }) {
+function Logo({ href }: { href: string }) {
   return (
-    <Link href={href} className="flex items-center gap-2.5 select-none">
-      <div
-        className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-md bg-brand-gold text-surface-dark font-extrabold tracking-tight text-sm sm:text-base shadow-gold-glow"
-        aria-hidden="true"
-      >
-        SF
-      </div>
-      <span className="text-white font-semibold uppercase tracking-[0.15em] text-body-sm sm:text-body-md font-display">
-        {logo}
-      </span>
+    <Link href={href} className="select-none">
+      <Image
+        src="/stratifit-logo.png"
+        alt="Stratifit"
+        width={40}
+        height={40}
+        className="h-10 w-auto rounded-md shadow-gold-glow object-contain"
+        priority
+      />
     </Link>
   );
 }
@@ -303,6 +317,7 @@ function MobileMenu({
   content,
   translations,
   locale,
+  onLanguageChange,
   activeDot,
   onDotChange,
   onClose,
@@ -313,6 +328,7 @@ function MobileMenu({
   content: NavigationHeaderContent;
   translations: Partial<NavigationHeaderTranslations>;
   locale: CmsLanguage;
+  onLanguageChange: (locale: CmsLanguage) => void;
   activeDot: number;
   onDotChange: (index: number) => void;
   onClose: () => void;
@@ -332,14 +348,15 @@ function MobileMenu({
     <div className="fixed inset-0 z-[90] flex justify-center bg-surface-dark h-[100dvh] overflow-hidden animate-menu-in">
       <div className="w-full max-w-[430px] bg-surface-dark h-[100dvh] relative flex flex-col border-l border-r border-surface-darkBorder overflow-hidden">
         <header className="flex justify-between items-center px-6 py-5 border-b border-surface-darkBorder flex-shrink-0 relative z-10 bg-surface-dark">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 bg-brand-gold rounded-md flex items-center justify-center font-extrabold text-surface-dark text-sm font-display">
-              S
-            </div>
-            <span className="text-lg font-bold tracking-wide text-white font-display">
-              STRATIFIT
-            </span>
-          </div>
+          <Link href={getLocalePath("/", locale)} className="select-none">
+            <Image
+              src="/stratifit-logo.png"
+              alt="Stratifit"
+              width={40}
+              height={40}
+              className="h-10 w-auto rounded-md object-contain"
+            />
+          </Link>
 
           <div className="flex items-center gap-3 relative">
             <button
@@ -358,11 +375,13 @@ function MobileMenu({
             {langOpen && (
               <div className="absolute top-[calc(100%+8px)] right-0 bg-surface-darkCard border border-surface-darkBorder rounded-xl p-1.5 min-w-[130px] z-20 shadow-card animate-slide-in">
                 {content.languages.map((l) => (
-                  <a
+                  <button
                     key={l.id}
-                    href={getLocalePath(pathname, l.id)}
-                    onClick={() => onClose()}
-                    className={`flex items-center gap-2.5 px-3 py-2.5 text-body-sm font-medium rounded-md transition-all ${
+                    onClick={() => {
+                      onLanguageChange(l.id);
+                      onClose();
+                    }}
+                    className={`w-full flex items-center gap-2.5 px-3 py-2.5 text-body-sm font-medium rounded-md transition-all text-left ${
                       currentLang.id === l.id
                         ? "bg-brand-gold/10 text-brand-gold"
                         : "text-neutral-400 hover:bg-surface-darkHover hover:text-white"
@@ -371,7 +390,7 @@ function MobileMenu({
                     <span className="font-body">
                       {l.flag} {t(`languages.${l.id}.name`, l.name)}
                     </span>
-                  </a>
+                  </button>
                 ))}
               </div>
             )}

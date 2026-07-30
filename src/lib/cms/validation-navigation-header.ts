@@ -55,7 +55,6 @@ const chatSchema = z.object({
 });
 
 export const navigationHeaderContentSchema = z.object({
-  logo: z.string().min(1, "Logo text is required"),
   links: z.array(navLinkSchema).min(1, "At least one link is required"),
   cta: navLinkSchema,
   languages: z.array(languageOptionSchema).min(1, "At least one language is required"),
