@@ -53,20 +53,7 @@ export function AnnouncementBarCarousel({
   const [slideDir, setSlideDir] = useState<"left" | "right">("left");
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
 
-  const DISMISSAL_KEY = "stratifit:announcement-dismissed";
-
-  // Restore dismissal state from localStorage so the bar stays hidden across
-  // page loads and navigation.
-  useEffect(() => {
-    try {
-      const stored = window.localStorage.getItem(DISMISSAL_KEY);
-      if (stored === "true") {
-        setDismissed(true);
-      }
-    } catch {
-      // localStorage may be unavailable in some environments; ignore silently.
-    }
-  }, []);
+  // Dismissal is in-memory only so the bar reappears on every page refresh.
 
   // Fetch slides from the API on mount if no server-provided slides
   useEffect(() => {
@@ -164,11 +151,6 @@ export function AnnouncementBarCarousel({
 
   const handleDismiss = useCallback(() => {
     setDismissed(true);
-    try {
-      window.localStorage.setItem(DISMISSAL_KEY, "true");
-    } catch {
-      // Ignore localStorage write failures.
-    }
   }, []);
 
   const currentSlide = slides[currentIndex];
