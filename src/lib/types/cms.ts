@@ -122,6 +122,7 @@ export const SECTION_COMPONENTS = [
   "HeroSection",
   "services",
   "how_we_work",
+  "why_us",
   "ServicesSection",
   "StatsSection",
   "TestimonialsSection",

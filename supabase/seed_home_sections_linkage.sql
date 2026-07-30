@@ -1,8 +1,8 @@
 -- ============================================================================
 -- Stratifit — Home Page Section Linkage Seed
--- Links the Services and How We Work dedicated sections to the home page.
+-- Links the Services, How We Work, and Why Us dedicated sections to the home page.
 -- Idempotent: safe to run multiple times.
--- Run this after seed_services_section.sql and seed_how_we_work_section.sql.
+-- Run this after seed_services_section.sql, seed_how_we_work_section.sql, and seed_why_us_section.sql.
 -- ============================================================================
 
 do $$
@@ -45,6 +45,20 @@ begin
       'how_we_work',
       2,
       '{"howWeWorkSectionId": "c1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d"}'::jsonb
+    );
+  end if;
+
+  -- Link Why Us Section
+  if not exists (
+    select 1 from sections
+    where page_id = v_page_id and component_type = 'why_us'
+  ) then
+    insert into sections (page_id, component_type, display_order, payload)
+    values (
+      v_page_id,
+      'why_us',
+      3,
+      '{"whyUsSectionId": "d1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d"}'::jsonb
     );
   end if;
 end $$;
