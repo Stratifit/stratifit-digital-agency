@@ -123,6 +123,7 @@ export const SECTION_COMPONENTS = [
   "services",
   "how_we_work",
   "why_us",
+  "insights",
   "ServicesSection",
   "StatsSection",
   "TestimonialsSection",
