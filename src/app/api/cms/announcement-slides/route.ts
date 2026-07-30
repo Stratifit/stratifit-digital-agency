@@ -4,7 +4,7 @@
 // ============================================================================
 
 import { NextRequest, NextResponse } from "next/server";
-import { createSupabaseAdminClient } from "@/lib/supabase/client";
+import { getAdminClient } from "@/lib/supabase/admin";
 import { announcementSlideSchema } from "@/lib/cms/validation-announcement";
 import { mapAnnouncementSlide } from "@/lib/types/announcement";
 import type { AnnouncementSlideRow } from "@/lib/types/announcement";
@@ -15,7 +15,7 @@ import type { AnnouncementSlideRow } from "@/lib/types/announcement";
 // ============================================================================
 export async function GET() {
   try {
-    const supabase = createSupabaseAdminClient();
+    const supabase = getAdminClient();
     const { data, error } = await supabase
       .from("announcement_slides")
       .select("*")
@@ -43,6 +43,8 @@ export async function GET() {
 // ============================================================================
 export async function POST(request: NextRequest) {
   try {
+    const supabase = getAdminClient();
+
     const body = await request.json();
     const parsed = announcementSlideSchema.safeParse(body);
 
@@ -53,7 +55,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = createSupabaseAdminClient();
     const { displayOrder, sticky, url, messageTranslations } = parsed.data;
 
     // 1. Shift existing slides at displayOrder and above

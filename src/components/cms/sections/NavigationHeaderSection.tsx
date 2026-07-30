@@ -239,23 +239,22 @@ export function NavigationHeaderSection({
       />
 
       {/* Mobile menu overlay */}
-      {menuOpen && (
-        <MobileMenu
-          content={content}
-          translations={translations}
-          locale={activeLocale}
-          onLanguageChange={handleLanguageChange}
-          activeDot={activeDot}
-          onDotChange={setActiveDot}
-          onClose={() => setMenuOpen(false)}
-          onChatOpen={() => {
-            setMenuOpen(false);
-            setChatOpen(true);
-          }}
-          carouselRef={carouselRef}
-          onScroll={handleScroll}
-        />
-      )}
+      <MobileMenu
+        isOpen={menuOpen}
+        content={content}
+        translations={translations}
+        locale={activeLocale}
+        onLanguageChange={handleLanguageChange}
+        activeDot={activeDot}
+        onDotChange={setActiveDot}
+        onClose={() => setMenuOpen(false)}
+        onChatOpen={() => {
+          setMenuOpen(false);
+          setChatOpen(true);
+        }}
+        carouselRef={carouselRef}
+        onScroll={handleScroll}
+      />
 
       {/* Chat overlay */}
       {chatOpen && (
@@ -314,6 +313,7 @@ function DesktopChatPill({
 
 // ---- Mobile Menu ----
 function MobileMenu({
+  isOpen,
   content,
   translations,
   locale,
@@ -325,6 +325,7 @@ function MobileMenu({
   carouselRef,
   onScroll,
 }: {
+  isOpen: boolean;
   content: NavigationHeaderContent;
   translations: Partial<NavigationHeaderTranslations>;
   locale: CmsLanguage;
@@ -336,8 +337,10 @@ function MobileMenu({
   carouselRef: React.RefObject<HTMLDivElement | null>;
   onScroll: () => void;
 }) {
-  const pathname = usePathname();
   const [langOpen, setLangOpen] = useState(false);
+
+  if (!isOpen) return null;
+
   const t = (path: string, fallback: string) =>
     resolveTranslation(content, translations, locale, path, fallback);
 

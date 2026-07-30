@@ -102,13 +102,16 @@ export function AnnouncementBarAdmin() {
       }
 
       if (!res.ok) {
-        const errData = await res.json();
+        const errData = (await res.json().catch(() => ({}))) as { error?: unknown };
+        console.error("[AnnouncementBarAdmin] Save failed:", res.status, errData);
         if (errData.error) {
           setErrors(
             typeof errData.error === "string"
               ? { general: errData.error }
-              : errData.error
+              : { general: JSON.stringify(errData.error) }
           );
+        } else {
+          setErrors({ general: `Save failed with status ${res.status}` });
         }
         return;
       }

@@ -4,7 +4,7 @@
 // ============================================================================
 
 import { NextRequest, NextResponse } from "next/server";
-import { createSupabaseAdminClient } from "@/lib/supabase/client";
+import { getAdminClient } from "@/lib/supabase/admin";
 import { announcementSlideSchema } from "@/lib/cms/validation-announcement";
 import { mapAnnouncementSlide } from "@/lib/types/announcement";
 import type { AnnouncementSlideRow } from "@/lib/types/announcement";
@@ -18,7 +18,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const supabase = createSupabaseAdminClient();
+    const supabase = getAdminClient();
     const { data, error } = await supabase
       .from("announcement_slides")
       .select("*")
@@ -47,6 +47,8 @@ export async function PUT(
 ) {
   try {
     const { id } = await params;
+    const supabase = getAdminClient();
+
     const body = await request.json();
     const parsed = announcementSlideSchema.safeParse(body);
 
@@ -57,7 +59,6 @@ export async function PUT(
       );
     }
 
-    const supabase = createSupabaseAdminClient();
     const { displayOrder, sticky, url, messageTranslations } = parsed.data;
 
     const { data, error } = await supabase
@@ -94,7 +95,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    const supabase = createSupabaseAdminClient();
+    const supabase = getAdminClient();
     const { error } = await supabase
       .from("announcement_slides")
       .delete()
