@@ -21,6 +21,10 @@ import {
   portfolioSectionPayloadSchema,
   type PortfolioSectionPayload as PortfolioSectionPayloadImported,
 } from "./validation-portfolio";
+import {
+  acquisitionSectionPayloadSchema,
+  type AcquisitionSectionPayload as AcquisitionSectionPayloadImported,
+} from "./validation-acquisition";
 
 // ============================================================================
 // Shared Primitives
@@ -78,6 +82,7 @@ const sectionComponentTypes = [
   "why_us",
   "insights",
   "portfolio",
+  "acquisition",
   "ServicesSection",
   "StatsSection",
   "TestimonialsSection",
@@ -126,6 +131,8 @@ export type InsightsSectionPayload = InsightsSectionPayloadImported;
 
 export type PortfolioSectionPayload = PortfolioSectionPayloadImported;
 
+export type AcquisitionSectionPayload = AcquisitionSectionPayloadImported;
+
 export const statsSectionPayloadSchema = z.object({
   heading: z.string().min(1, "Stats heading is required"),
 });
@@ -159,6 +166,7 @@ export const sectionPayloadSchemas: Record<string, z.ZodSchema> = {
   insights: insightsSectionPayloadSchema,
   portfolio: portfolioSectionPayloadSchema,
   ServicesSection: servicesSectionPayloadSchema,
+  acquisition: acquisitionSectionPayloadSchema,
   StatsSection: statsSectionPayloadSchema,
   TestimonialsSection: testimonialsSectionPayloadSchema,
   CtaSection: ctaSectionPayloadSchema,

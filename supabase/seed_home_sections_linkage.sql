@@ -89,4 +89,18 @@ begin
       '{"portfolioSectionId": "91b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d"}'::jsonb
     );
   end if;
+
+  -- Link Acquisition / Buy a Business Section
+  if not exists (
+    select 1 from sections
+    where page_id = v_page_id and component_type = 'acquisition'
+  ) then
+    insert into sections (page_id, component_type, display_order, payload)
+    values (
+      v_page_id,
+      'acquisition',
+      9,
+      '{"acquisitionSectionId": "11b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d"}'::jsonb
+    );
+  end if;
 end $$;
