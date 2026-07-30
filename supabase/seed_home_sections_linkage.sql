@@ -48,7 +48,7 @@ begin
     );
   end if;
 
-  -- Link Why Us Section (use display_order 5 to avoid collision with StatsSection=3 and TestimonialsSection=4 in seed.sql)
+  -- Link Why Us Section (use display_order 6 to avoid collision with StatsSection=3, TestimonialsSection=4 and CtaSection=5 in seed.sql)
   if not exists (
     select 1 from sections
     where page_id = v_page_id and component_type = 'why_us'
@@ -57,12 +57,12 @@ begin
     values (
       v_page_id,
       'why_us',
-      5,
+      6,
       '{"whyUsSectionId": "d1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d"}'::jsonb
     );
   end if;
 
-  -- Link Insights Section (use display_order 6 to avoid collision with StatsSection=3 and TestimonialsSection=4 in seed.sql)
+  -- Link Insights Section (use display_order 7 to avoid collision with CtaSection=5 in seed.sql)
   if not exists (
     select 1 from sections
     where page_id = v_page_id and component_type = 'insights'
@@ -71,8 +71,22 @@ begin
     values (
       v_page_id,
       'insights',
-      6,
+      7,
       '{"insightsSectionId": "f1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d"}'::jsonb
+    );
+  end if;
+
+  -- Link Portfolio Section
+  if not exists (
+    select 1 from sections
+    where page_id = v_page_id and component_type = 'portfolio'
+  ) then
+    insert into sections (page_id, component_type, display_order, payload)
+    values (
+      v_page_id,
+      'portfolio',
+      8,
+      '{"portfolioSectionId": "g1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d"}'::jsonb
     );
   end if;
 end $$;

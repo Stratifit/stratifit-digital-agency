@@ -124,6 +124,7 @@ export const SECTION_COMPONENTS = [
   "how_we_work",
   "why_us",
   "insights",
+  "portfolio",
   "ServicesSection",
   "StatsSection",
   "TestimonialsSection",

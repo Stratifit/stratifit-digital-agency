@@ -15,6 +15,7 @@ const NAV_ITEMS = [
   { label: "How We Work", href: "/admin/how-we-work", icon: "→" },
   { label: "Why Us", href: "/admin/why-us", icon: "★" },
   { label: "Insights", href: "/admin/insights", icon: "◆" },
+  { label: "Portfolio", href: "/admin/portfolio", icon: "◈" },
   { label: "Media", href: "/admin/media", icon: "▣" },
   { label: "Settings", href: "/admin/settings", icon: "⚙" },
 ] as const;

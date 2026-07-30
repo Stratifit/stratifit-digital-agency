@@ -678,4 +678,5 @@ select 'Seed complete' as result;
 -- to run after the main seed above.
 \ir seed_why_us_section.sql
 \ir seed_insights_section.sql
+\ir seed_portfolio_section.sql
 \ir seed_home_sections_linkage.sql
