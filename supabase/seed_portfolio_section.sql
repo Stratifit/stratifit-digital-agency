@@ -16,7 +16,7 @@ insert into portfolio_section (
     filters
 )
 values (
-    'g1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    '91b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
     0,
     '{
         "en": "Portfolio",
@@ -74,8 +74,8 @@ insert into portfolio_items (
     active
 )
 values (
-    'g2b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
-    'g1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    '92b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    '91b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
     'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=600&fit=crop&auto=format',
     'Brand Design',
     '{
@@ -117,8 +117,8 @@ insert into portfolio_items (
     active
 )
 values (
-    'g3b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
-    'g1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    '93b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    '91b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
     'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1200&h=600&fit=crop&auto=format',
     'Brand Design',
     '{
@@ -160,8 +160,8 @@ insert into portfolio_items (
     active
 )
 values (
-    'g4b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
-    'g1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    '94b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    '91b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
     'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=600&fit=crop&auto=format',
     'Brand Design',
     '{
@@ -203,8 +203,8 @@ insert into portfolio_items (
     active
 )
 values (
-    'g5b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
-    'g1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    '95b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    '91b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
     'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=600&fit=crop&auto=format',
     'Website Development',
     '{
@@ -246,8 +246,8 @@ insert into portfolio_items (
     active
 )
 values (
-    'g6b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
-    'g1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    '96b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    '91b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
     'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=600&fit=crop&auto=format',
     'Website Development',
     '{
@@ -289,8 +289,8 @@ insert into portfolio_items (
     active
 )
 values (
-    'g7b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
-    'g1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    '97b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    '91b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
     'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=600&fit=crop&auto=format',
     'AI & Automation',
     '{
@@ -332,8 +332,8 @@ insert into portfolio_items (
     active
 )
 values (
-    'g8b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
-    'g1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    '98b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    '91b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
     'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=600&fit=crop&auto=format',
     'Growth & Marketing',
     '{
@@ -375,8 +375,8 @@ insert into portfolio_items (
     active
 )
 values (
-    'g9b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
-    'g1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    '99b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    '91b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
     'https://images.unsplash.com/photo-1467232004584-a241de8a7c0d?w=1200&h=600&fit=crop&auto=format',
     'Website Development',
     '{

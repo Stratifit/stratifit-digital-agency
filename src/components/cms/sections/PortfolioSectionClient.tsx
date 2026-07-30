@@ -68,7 +68,7 @@ export function PortfolioSectionClient({ section, locale }: PortfolioSectionClie
               onClick={() => setActiveFilter(filter)}
               className={`px-5 py-2.5 rounded-full font-bold text-sm shrink-0 transition-all font-body ${
                 activeFilter === filter
-                  ? "bg-brand-gold text-surface-dark shadow-[0_0_20px_rgba(245,158,11,0.3)]"
+                  ? "bg-brand-gold text-surface-dark shadow-gold-glow"
                   : "bg-white/5 border border-white/10 text-white hover:border-brand-gold/30"
               }`}
             >

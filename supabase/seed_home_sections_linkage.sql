@@ -86,7 +86,7 @@ begin
       v_page_id,
       'portfolio',
       8,
-      '{"portfolioSectionId": "g1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d"}'::jsonb
+      '{"portfolioSectionId": "91b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d"}'::jsonb
     );
   end if;
 end $$;
