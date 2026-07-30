@@ -181,7 +181,7 @@ export function AnnouncementBarCarousel({
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchCancel}
     >
-      <div className="grid grid-cols-[1fr_auto_1fr] gap-3 sm:gap-4 items-center h-7 sm:h-8 px-6 sm:px-10">
+      <div className="grid grid-cols-[1fr_auto_1fr] gap-3 sm:gap-4 items-center h-8 sm:h-9 px-6 sm:px-10">
         {/* Left spacer — keeps content centered in the available space */}
         <div />
 
@@ -193,7 +193,7 @@ export function AnnouncementBarCarousel({
               slideDir === "left" ? "animate-slide-left" : "animate-slide-right"
             }`}
           >
-            <span className="font-body text-caption sm:text-body-sm text-surface-dark text-center truncate">
+            <span className="font-body font-semibold text-caption sm:text-body-sm text-surface-dark text-center truncate">
               {currentSlide?.message ?? ""}
             </span>
 
@@ -214,7 +214,7 @@ export function AnnouncementBarCarousel({
                 >
                   <path
                     d="M2 1L6 5L2 9"
-                    strokeWidth="1.5"
+                    strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
@@ -225,7 +225,7 @@ export function AnnouncementBarCarousel({
 
           {/* Dots indicator */}
           {slides.length > 1 && (
-            <div className="hidden sm:flex items-center gap-0 ml-2">
+            <div className="flex items-center gap-0 ml-2">
               {slides.map((_, idx) => (
                 <Dot key={idx} index={idx} />
               ))}
@@ -253,7 +253,7 @@ export function AnnouncementBarCarousel({
             >
               <path
                 d="M1 1L11 11M11 1L1 11"
-                strokeWidth="1.5"
+                strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
@@ -262,14 +262,7 @@ export function AnnouncementBarCarousel({
         </div>
       </div>
 
-      {/* Mobile-only centered dots below the message */}
-      {slides.length > 1 && (
-        <div className="flex sm:hidden items-center justify-center gap-0 pb-0.5">
-          {slides.map((_, idx) => (
-            <Dot key={idx} index={idx} />
-          ))}
-        </div>
-      )}
+
     </div>
   );
 }
