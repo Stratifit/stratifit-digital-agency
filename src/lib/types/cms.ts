@@ -128,6 +128,7 @@ export const SECTION_COMPONENTS = [
   "acquisition",
   "testimonials",
   "pricing",
+  "faq",
   "ServicesSection",
   "StatsSection",
   "TestimonialsSection",

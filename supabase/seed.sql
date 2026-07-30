@@ -682,4 +682,5 @@ select 'Seed complete' as result;
 \ir seed_acquisition_section.sql
 \ir seed_testimonials_section.sql
 \ir seed_pricing_section.sql
+\ir seed_faq_section.sql
 \ir seed_home_sections_linkage.sql
