@@ -44,9 +44,7 @@ export function AnnouncementBarCarousel({
   locale = "en",
   initialSlides,
 }: AnnouncementBarCarouselProps) {
-  const [slides, setSlides] = useState<LocalizedSlide[]>(() =>
-    initialSlides ? initialSlides.map((s) => localizeSlide(s, locale)) : []
-  );
+  const [fetchedSlides, setFetchedSlides] = useState<CmsAnnouncementSlide[] | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [dismissed, setDismissed] = useState(false);
   const [loading, setLoading] = useState(!initialSlides);
@@ -54,6 +52,13 @@ export function AnnouncementBarCarousel({
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
 
   // Dismissal is in-memory only so the bar reappears on every page refresh.
+  // It is also reset whenever the active language changes.
+
+  // Reset dismissal when the language changes so the bar reappears in the
+  // newly selected language.
+  useEffect(() => {
+    setDismissed(false);
+  }, [locale]);
 
   // Fetch slides from the API on mount if no server-provided slides
   useEffect(() => {
@@ -67,8 +72,7 @@ export function AnnouncementBarCarousel({
         const res = await fetch("/api/cms/announcement-slides");
         if (res.ok) {
           const data = (await res.json()) as CmsAnnouncementSlide[];
-          const mapped = data.map((slide) => localizeSlide(slide, locale));
-          setSlides(mapped);
+          setFetchedSlides(data);
         } else {
           console.error(
             "[AnnouncementBarCarousel] API error:",
@@ -84,7 +88,10 @@ export function AnnouncementBarCarousel({
     }
 
     fetchSlides();
-  }, [initialSlides, locale]);
+  }, [initialSlides]);
+
+  const rawSlides = initialSlides ?? fetchedSlides ?? [];
+  const slides = rawSlides.map((slide) => localizeSlide(slide, locale));
 
   // Auto-slide logic
   const goToNext = useCallback(() => {

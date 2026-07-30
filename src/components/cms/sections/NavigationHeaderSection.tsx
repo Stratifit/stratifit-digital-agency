@@ -83,7 +83,11 @@ export function NavigationHeaderSection({
   // server component parent. This keeps the section reusable inside
   // dynamic CMS pages without requiring them to pre-fetch it.
   useEffect(() => {
-    if (initialData) return;
+    if (initialData) {
+      setData(initialData);
+      setLoading(false);
+      return;
+    }
 
     async function fetchData() {
       try {
