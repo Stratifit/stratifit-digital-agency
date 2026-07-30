@@ -71,7 +71,7 @@ with home_page as (
         }'::jsonb,
         '{
             "en": "We help startups and growing businesses build websites, brands, and AI-powered systems that turn visitors into customers.",
-            "fr": "Nous aidons les startups et les entreprises en croissance à construire des sites web, des marques et des systèmes alimentés par l'IA qui transforment les visiteurs en clients.",
+            "fr": "Nous aidons les startups et les entreprises en croissance à construire des sites web, des marques et des systèmes alimentés par l''IA qui transforment les visiteurs en clients.",
             "de": "Wir helfen Startups und wachsenden Unternehmen, Websites, Marken und KI-gestützte Systeme zu entwickeln, die Besucher in Kunden verwandeln.",
             "es": "Ayudamos a startups y empresas en crecimiento a crear sitios web, marcas y sistemas impulsados por IA que convierten visitantes en clientes."
         }'::jsonb,
@@ -115,7 +115,7 @@ with home_page as (
                 "value": "7+",
                 "labelTranslations": {
                     "en": "Years Experience",
-                    "fr": "Années d'Expérience",
+                    "fr": "Années d''Expérience",
                     "de": "Jahre Erfahrung",
                     "es": "Años de Experiencia"
                 }
