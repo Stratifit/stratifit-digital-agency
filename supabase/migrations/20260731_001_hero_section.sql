@@ -47,7 +47,8 @@ alter table hero_section enable row level security;
 
 -- Public read access
 -- --------------------------------------------------------------------------
-create or replace policy "Public can read hero_section"
+drop policy if exists "Public can read hero_section" on hero_section;
+create policy "Public can read hero_section"
     on hero_section
     for select
     to anon, authenticated
@@ -55,7 +56,8 @@ create or replace policy "Public can read hero_section"
 
 -- Only admins can write
 -- --------------------------------------------------------------------------
-create or replace policy "Only admins can insert hero_section"
+drop policy if exists "Only admins can insert hero_section" on hero_section;
+create policy "Only admins can insert hero_section"
     on hero_section
     for insert
     to authenticated
@@ -63,7 +65,8 @@ create or replace policy "Only admins can insert hero_section"
         select user_id from profiles where role = 'admin'
     ));
 
-create or replace policy "Only admins can update hero_section"
+drop policy if exists "Only admins can update hero_section" on hero_section;
+create policy "Only admins can update hero_section"
     on hero_section
     for update
     to authenticated
@@ -74,7 +77,8 @@ create or replace policy "Only admins can update hero_section"
         select user_id from profiles where role = 'admin'
     ));
 
-create or replace policy "Only admins can delete hero_section"
+drop policy if exists "Only admins can delete hero_section" on hero_section;
+create policy "Only admins can delete hero_section"
     on hero_section
     for delete
     to authenticated
