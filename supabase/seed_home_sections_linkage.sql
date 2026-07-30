@@ -117,4 +117,18 @@ begin
       '{"testimonialsSectionId": "b1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6e"}'::jsonb
     );
   end if;
+
+  -- Link Pricing / Service Packages Section
+  if not exists (
+    select 1 from sections
+    where page_id = v_page_id and component_type = 'pricing'
+  ) then
+    insert into sections (page_id, component_type, display_order, payload)
+    values (
+      v_page_id,
+      'pricing',
+      11,
+      '{"pricingSectionId": "f1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c7e"}'::jsonb
+    );
+  end if;
 end $$;

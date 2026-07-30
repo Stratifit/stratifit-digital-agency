@@ -127,6 +127,7 @@ export const SECTION_COMPONENTS = [
   "portfolio",
   "acquisition",
   "testimonials",
+  "pricing",
   "ServicesSection",
   "StatsSection",
   "TestimonialsSection",
