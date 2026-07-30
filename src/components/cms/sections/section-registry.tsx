@@ -12,6 +12,7 @@ import { WhyUsSection } from "./WhyUsSection";
 import { InsightsSection } from "./InsightsSection";
 import { PortfolioSection } from "./PortfolioSection";
 import { AcquisitionSection } from "./AcquisitionSection";
+import { TestimonialsSection } from "./TestimonialsSection";
 import { CtaSection } from "./CtaSection";
 import { AnnouncementBarSection } from "./AnnouncementBarSection";
 import { NavigationHeaderSection } from "./NavigationHeaderSection";
@@ -40,6 +41,7 @@ const componentMap: Record<string, SectionComponent> = {
   insights: InsightsSection,
   portfolio: PortfolioSection,
   acquisition: AcquisitionSection,
+  testimonials: TestimonialsSection,
   // Legacy alias kept for backwards compatibility
   ServicesSection: ServicesSection,
   CtaSection: CtaSection as unknown as SectionComponent,

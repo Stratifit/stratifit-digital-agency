@@ -17,6 +17,7 @@ const NAV_ITEMS = [
   { label: "Insights", href: "/admin/insights", icon: "◆" },
   { label: "Portfolio", href: "/admin/portfolio", icon: "◈" },
   { label: "Acquisition", href: "/admin/acquisition", icon: "◇" },
+  { label: "Testimonials", href: "/admin/testimonials", icon: "★" },
   { label: "Media", href: "/admin/media", icon: "▣" },
   { label: "Settings", href: "/admin/settings", icon: "⚙" },
 ] as const;

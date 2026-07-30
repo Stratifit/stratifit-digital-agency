@@ -25,6 +25,10 @@ import {
   acquisitionSectionPayloadSchema,
   type AcquisitionSectionPayload as AcquisitionSectionPayloadImported,
 } from "./validation-acquisition";
+import {
+  testimonialsSectionPayloadSchema,
+  type TestimonialsSectionPayload as TestimonialsSectionPayloadImported,
+} from "./validation-testimonials";
 
 // ============================================================================
 // Shared Primitives
@@ -83,6 +87,7 @@ const sectionComponentTypes = [
   "insights",
   "portfolio",
   "acquisition",
+  "testimonials",
   "ServicesSection",
   "StatsSection",
   "TestimonialsSection",
@@ -133,20 +138,13 @@ export type PortfolioSectionPayload = PortfolioSectionPayloadImported;
 
 export type AcquisitionSectionPayload = AcquisitionSectionPayloadImported;
 
+export type TestimonialsSectionPayload = TestimonialsSectionPayloadImported;
+
 export const statsSectionPayloadSchema = z.object({
   heading: z.string().min(1, "Stats heading is required"),
 });
 
 export type StatsSectionPayload = z.infer<typeof statsSectionPayloadSchema>;
-
-export const testimonialsSectionPayloadSchema = z.object({
-  heading: z.string().min(1, "Testimonials heading is required"),
-  description: z.string().optional().default(""),
-});
-
-export type TestimonialsSectionPayload = z.infer<
-  typeof testimonialsSectionPayloadSchema
->;
 
 export const ctaSectionPayloadSchema = z.object({
   heading: z.string().min(1, "CTA heading is required"),
@@ -167,6 +165,7 @@ export const sectionPayloadSchemas: Record<string, z.ZodSchema> = {
   portfolio: portfolioSectionPayloadSchema,
   ServicesSection: servicesSectionPayloadSchema,
   acquisition: acquisitionSectionPayloadSchema,
+  testimonials: testimonialsSectionPayloadSchema,
   StatsSection: statsSectionPayloadSchema,
   TestimonialsSection: testimonialsSectionPayloadSchema,
   CtaSection: ctaSectionPayloadSchema,
