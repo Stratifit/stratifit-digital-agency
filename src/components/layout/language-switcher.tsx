@@ -76,10 +76,10 @@ export function LanguageSwitcher({ currentLocale = "en" }: { currentLocale?: str
               role="menuitem"
               onClick={() => handleSelect(locale)}
               className={cn(
-                "flex w-full items-center gap-2 rounded-radius-xs border px-3 py-2 text-left text-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2",
+                "flex items-center gap-2 rounded-radius-xs border px-3 py-2 text-left text-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2",
                 locale === currentLocale
-                  ? "border-card-border-active bg-card-active font-medium text-primary"
-                  : "border-transparent text-text-secondary hover:bg-primary/8 hover:text-primary"
+                  ? "mx-1 w-auto rounded-[8px] border-card-border-active bg-card-active font-medium text-primary"
+                  : "w-full border-transparent text-text-secondary hover:bg-primary/8 hover:text-primary"
               )}
             >
               <span>{LOCALE_META[locale].flag}</span>
