@@ -1,27 +1,121 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { getMediaPublicUrl } from "@/lib/media";
 
 export interface PublicInsight {
   slug: string;
   title_translations: Record<string, string> | null;
   excerpt_translations: Record<string, string> | null;
   featured_media_id: string | null;
+  featured_media_url: string | null;
+  category_slugs: string[];
 }
 
-export async function getPublicInsights(limit = 3): Promise<PublicInsight[]> {
+export async function getPublicInsights(limit = 4): Promise<PublicInsight[]> {
   const supabase = await createSupabaseServerClient();
 
   const { data, error } = await supabase
     .from("insights")
-    .select("slug, title_translations, excerpt_translations, featured_media_id")
+    .select("id, slug, title_translations, excerpt_translations, featured_media_id")
     .eq("status", "published")
     .order("published_at", { ascending: false })
     .limit(limit);
 
-  if (error) {
+  if (error || !data) {
     return [];
   }
 
-  return (data ?? []) as PublicInsight[];
+  const insights = data as (typeof data)[number][];
+
+  const { data: linkRows } = await supabase
+    .from("insight_category_links")
+    .select("insight_id, category_id");
+
+  const categoryIds = [
+    ...new Set((linkRows ?? []).map((l) => l.category_id)),
+  ] as string[];
+
+  let categoriesResult: { data: { id: string; slug: string }[] | null };
+  if (categoryIds.length > 0) {
+    categoriesResult = await supabase
+      .from("insight_categories")
+      .select("id, slug")
+      .in("id", categoryIds);
+  } else {
+    categoriesResult = { data: [] };
+  }
+
+  const categorySlugById = new Map(
+    (categoriesResult.data ?? []).map((c) => [c.id, c.slug])
+  );
+
+  const mediaIds = [
+    ...new Set(
+      insights
+        .map((i) => i.featured_media_id as string | null)
+        .filter(Boolean)
+    ),
+  ] as string[];
+
+  let mediaResult: {
+    data: { id: string; bucket_name: string; storage_path: string }[] | null;
+  };
+  if (mediaIds.length > 0) {
+    mediaResult = await supabase
+      .from("media_assets")
+      .select("id, bucket_name, storage_path")
+      .in("id", mediaIds);
+  } else {
+    mediaResult = { data: [] };
+  }
+
+  const mediaById = new Map(
+    (mediaResult.data ?? []).map((m) => [
+      m.id,
+      getMediaPublicUrl(m.bucket_name, m.storage_path),
+    ])
+  );
+
+  return insights.map((insight) => {
+    const insightId = insight.id as string;
+    const linkedCategoryIds = (linkRows ?? [])
+      .filter((l) => l.insight_id === insightId)
+      .map((l) => l.category_id);
+    const mediaId = insight.featured_media_id as string | null;
+
+    return {
+      slug: insight.slug as string,
+      title_translations:
+        insight.title_translations as Record<string, string> | null,
+      excerpt_translations:
+        insight.excerpt_translations as Record<string, string> | null,
+      featured_media_id: mediaId,
+      featured_media_url: mediaId ? (mediaById.get(mediaId) ?? null) : null,
+      category_slugs: linkedCategoryIds
+        .map((id) => categorySlugById.get(id))
+        .filter(Boolean) as string[],
+    };
+  });
+}
+
+export interface PublicInsightCategory {
+  slug: string;
+  name_translations: Record<string, string> | null;
+}
+
+export async function getPublicInsightCategories(): Promise<
+  PublicInsightCategory[]
+> {
+  const supabase = await createSupabaseServerClient();
+
+  const { data, error } = await supabase
+    .from("insight_categories")
+    .select("slug, name_translations");
+
+  if (error || !data) {
+    return [];
+  }
+
+  return data as PublicInsightCategory[];
 }
 
 export interface PublicInsightDetail {
