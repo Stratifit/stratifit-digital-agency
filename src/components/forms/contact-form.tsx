@@ -60,12 +60,12 @@ export function ContactForm() {
         <div className="space-y-2">
           <Label htmlFor="name">Name</Label>
           <Input id="name" placeholder="Your name" {...register("name")} />
-          {errors.name ? <p className="text-sm text-error">{errors.name.message}</p> : null}
+          {errors.name ? <p className="mt-1 text-xs text-error">{errors.name.message}</p> : null}
         </div>
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input id="email" type="email" placeholder="you@company.com" {...register("email")} />
-          {errors.email ? <p className="text-sm text-error">{errors.email.message}</p> : null}
+          {errors.email ? <p className="mt-1 text-xs text-error">{errors.email.message}</p> : null}
         </div>
         <div className="space-y-2">
           <Label htmlFor="phone">Phone (optional)</Label>
@@ -83,7 +83,7 @@ export function ContactForm() {
           placeholder="Tell us about your project…"
           {...register("message")}
         />
-        {errors.message ? <p className="text-sm text-error">{errors.message.message}</p> : null}
+        {errors.message ? <p className="mt-1 text-xs text-error">{errors.message.message}</p> : null}
       </div>
 
       {serverError ? (
@@ -98,3 +98,4 @@ export function ContactForm() {
     </form>
   );
 }
+

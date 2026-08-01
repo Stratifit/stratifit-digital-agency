@@ -109,6 +109,13 @@
   --card-border-disabled: rgba(255, 255, 255, 0.05);
 
   /* ---------------------------------------------------------------------------
+     Form Field Tokens
+     Inputs, textareas, selects, and dropdown surfaces.
+     --------------------------------------------------------------------------- */
+  --success-green: #10B981;
+  --success-green-border: rgba(16, 185, 129, 0.40);
+
+  /* ---------------------------------------------------------------------------
      Primary Amber Scale
      Primary brand usage should center on amber-500, amber-600, amber-400
      --------------------------------------------------------------------------- */
@@ -190,6 +197,7 @@
   --radius-xl: 24px;
   --radius-card: 32px;
   --radius-full: 9999px;
+  --radius-input: 6px;
 
   /* ---------------------------------------------------------------------------
      Shadow Tokens
@@ -333,6 +341,10 @@
   --color-card-disabled: var(--card-disabled);
   --color-card-border-disabled: var(--card-border-disabled);
 
+  /* Form Field Colors */
+  --color-success-green: var(--success-green);
+  --color-success-green-border: var(--success-green-border);
+
   /* Extended Text Colors */
   --color-text-subtle: var(--text-subtle);
   --color-text-tertiary: var(--text-tertiary);
@@ -412,6 +424,7 @@
   --radius-xl: var(--radius-xl);
   --radius-card: var(--radius-card);
   --radius-full: var(--radius-full);
+  --radius-input: var(--radius-input);
 
   /* Shadow Tokens */
   --shadow-xs: var(--shadow-xs);

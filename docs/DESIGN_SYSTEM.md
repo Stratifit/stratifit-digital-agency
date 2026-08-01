@@ -378,6 +378,26 @@ Three button styles are approved for the public site.
 | Active / press | `#141414` | `rgba(245,158,11,0.40)` | No lift |
 | Focus | — | — | `outline: 2px solid rgba(245,158,11,0.60)`, `offset: 2px` |
 
+### 4.10 Form fields
+
+Inputs, textareas, and select triggers share one field system.
+
+| State | Background | Border | Outline |
+|---|---|---|---|
+| Default | `#161616` | `#1C1C1C` | none |
+| Hover | `#161616` | `rgba(245,158,11,0.25)` | none |
+| Focus | `#161616` | `rgba(245,158,11,0.40)` | `2px rgba(245,158,11,0.60)` + `2px offset` |
+| Active | `#141414` | `rgba(245,158,11,0.40)` | none |
+| Disabled | `#1A1A1A` | `rgba(255,255,255,0.05)` | `opacity 0.6`, `cursor: not-allowed` |
+| Error | `#161616` | `rgba(239,68,68,0.60)` | none |
+| Success | `#161616` | `rgba(16,185,129,0.40)` | none |
+
+- Placeholder text: `rgba(255,255,255,0.35)`
+- Field radius: `6px`; error text: `#EF4444`, `12px`, `4px` top margin
+- Dropdown menu: `#161616` bg, `#1C1C1C` border, `6px` radius; option hover `rgba(245,158,11,0.08)` + amber text; selected `rgba(245,158,11,0.10)` + amber text
+- Checkbox: `20px`, `#161616` bg, `#1C1C1C` border, `4px` radius; checked amber fill + dark check; hover `#F7A623`
+- Toggle: `42×24px` track, `18px` white thumb; amber track + dark thumb when on; hover `#F7A623`
+
 ---
 
 ## 5. Color Usage Rules
