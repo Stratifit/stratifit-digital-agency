@@ -679,6 +679,34 @@ Components should:
 
 Avoid overly abstract generic components that make the design harder to understand.
 
+### 11.6 Public and CMS styling boundaries
+
+Shared UI components are used by both the public website and the CMS. Context
+differences are expressed through approved variants, composition, and
+surrounding layout styles — never through generic `isPublic` or `isCms` props on
+every component.
+
+Public context MAY use:
+
+- Larger Satoshi-led display typography on approved headings and card titles
+- Controlled amber glow on primary surfaces
+- Limited indigo accents in AI, automation, analytics, and informational contexts
+- Richer but approved shadow and motion tokens
+- More expressive composition
+
+CMS context SHALL:
+
+- Keep Inter dominant
+- Use neutral, operational surfaces
+- Keep shadows and glows restrained
+- Keep motion minimal
+- Prioritize form clarity, statuses, tables, and predictable actions
+
+Explicit variants (for example `Card` `standard` vs `featured`, or `Button`
+`primary` vs `secondary`) are preferred only where behavior genuinely differs.
+Do not create duplicate public and CMS component libraries. Shared components
+live once in `src/components/ui/` and are reused by both contexts.
+
 ---
 
 ## 12. Server and Client Component Rules

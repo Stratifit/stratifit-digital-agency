@@ -1,26 +1,628 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* =============================================================================
+   Stratifit Design System - Centralized Design Tokens
+   =============================================================================
+   This file defines all approved design tokens as CSS custom properties.
+   These tokens are mapped through Tailwind CSS v4 @theme configuration.
+   
+   IMPORTANT: Only use exact values defined in docs/DESIGN_SYSTEM.md.
+   Do not invent undocumented color values, spacing, or other tokens.
+   ============================================================================= */
+
+/* Satoshi display font (local, properly licensed files in public/satoshi/) */
+@font-face {
+  font-family: "Satoshi";
+  src: url("/satoshi/Satoshi-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
+
+@font-face {
+  font-family: "Satoshi";
+  src: url("/satoshi/Satoshi-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Satoshi";
+  src: url("/satoshi/Satoshi-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Satoshi";
+  src: url("/satoshi/Satoshi-Black.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ---------------------------------------------------------------------------
+     Core Brand Colors
+     --------------------------------------------------------------------------- */
+  --background: #0B0F17;
+  --surface: #111827;
+  --surface-elevated: #172033;
+  --primary: #F59E0B;
+  --primary-hover: #D97706;
+  --primary-light: #FBBF24;
+  --secondary: #4F46E5;
+  --text-primary: #FFFFFF;
+  --text-secondary: #B8C0CC;
+  --text-muted: #9CA3AF;
+  --border: #1F2937;
+
+  /* ---------------------------------------------------------------------------
+     Extended Dark Surfaces
+     --------------------------------------------------------------------------- */
+  --background-deep: #070A10;
+  --surface-soft: #131C2B;
+  --surface-hover: #1B2638;
+  --surface-active: #223047;
+  --overlay: rgba(7, 10, 16, 0.72);
+
+  /* ---------------------------------------------------------------------------
+     Extended Text Colors
+     --------------------------------------------------------------------------- */
+  --text-subtle: #6B7280;
+  --text-inverse: #0B0F17;
+
+  /* ---------------------------------------------------------------------------
+     Primary Amber Scale
+     Primary brand usage should center on amber-500, amber-600, amber-400
+     --------------------------------------------------------------------------- */
+  --amber-50: #FFFBEB;
+  --amber-100: #FEF3C7;
+  --amber-200: #FDE68A;
+  --amber-300: #FCD34D;
+  --amber-400: #FBBF24;
+  --amber-500: #F59E0B;
+  --amber-600: #D97706;
+  --amber-700: #B45309;
+  --amber-800: #92400E;
+  --amber-900: #78350F;
+
+  /* ---------------------------------------------------------------------------
+     Secondary Indigo Scale
+     Indigo must not compete with amber as the main brand identity
+     --------------------------------------------------------------------------- */
+  --indigo-100: #E0E7FF;
+  --indigo-300: #A5B4FC;
+  --indigo-500: #6366F1;
+  --indigo-600: #4F46E5;
+  --indigo-700: #4338CA;
+
+  /* ---------------------------------------------------------------------------
+     Semantic Colors
+     --------------------------------------------------------------------------- */
+  --success: #22C55E;
+  --success-soft: rgba(34, 197, 94, 0.12);
+  --success-border: rgba(34, 197, 94, 0.35);
+  --warning: #F59E0B;
+  --warning-soft: rgba(245, 158, 11, 0.12);
+  --warning-border: rgba(245, 158, 11, 0.35);
+  --error: #EF4444;
+  --error-soft: rgba(239, 68, 68, 0.12);
+  --error-border: rgba(239, 68, 68, 0.35);
+  --info: #4F46E5;
+  --info-soft: rgba(79, 70, 229, 0.12);
+  --info-border: rgba(79, 70, 229, 0.35);
+
+  /* ---------------------------------------------------------------------------
+     Light Surface Tokens
+     NOTE: These do not establish a full light theme.
+     They are for isolated light surfaces, previews, or approved components.
+     --------------------------------------------------------------------------- */
+  --light-background: #FFFFFF;
+  --light-surface: #F8FAFC;
+  --light-card: #F1F5F9;
+  --light-text-primary: #0F172A;
+  --light-text-secondary: #475569;
+  --light-border: #E2E8F0;
+
+  /* ---------------------------------------------------------------------------
+     Border Tokens
+     --------------------------------------------------------------------------- */
+  --border-default: #1F2937;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-interactive: rgba(245, 158, 11, 0.35);
+  --border-focus: #F59E0B;
+
+  /* ---------------------------------------------------------------------------
+     Spacing Scale (4px foundation)
+     --------------------------------------------------------------------------- */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* ---------------------------------------------------------------------------
+     Border Radius Tokens
+     --------------------------------------------------------------------------- */
+  --radius-none: 0px;
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* ---------------------------------------------------------------------------
+     Shadow Tokens
+     --------------------------------------------------------------------------- */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.18);
+  --shadow-sm: 0 6px 20px rgba(0, 0, 0, 0.22);
+  --shadow-md: 0 16px 48px rgba(0, 0, 0, 0.30);
+  --shadow-lg: 0 28px 80px rgba(0, 0, 0, 0.38);
+  --shadow-amber: 0 0 40px rgba(245, 158, 11, 0.20);
+  --shadow-indigo: 0 0 36px rgba(79, 70, 229, 0.18);
+
+  /* ---------------------------------------------------------------------------
+     Gradient Tokens
+     --------------------------------------------------------------------------- */
+  --gradient-primary: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
+  --gradient-dark-surface: linear-gradient(180deg, #111827 0%, #0B0F17 100%);
+  --gradient-hero-ambient: radial-gradient(circle at 70% 20%, rgba(245, 158, 11, 0.14) 0%, rgba(245, 158, 11, 0.04) 35%, transparent 70%);
+  --gradient-ai-accent: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  --gradient-mixed-premium: linear-gradient(135deg, #F59E0B 0%, #FBBF24 55%, #4F46E5 140%);
+
+  /* ---------------------------------------------------------------------------
+     Layout Width Tokens
+     --------------------------------------------------------------------------- */
+  --container-sm: 768px;
+  --container-md: 1024px;
+  --container-lg: 1280px;
+  --container-xl: 1440px;
+
+  /* ---------------------------------------------------------------------------
+     Motion Duration Tokens
+     --------------------------------------------------------------------------- */
+  --motion-instant: 120ms;
+  --motion-fast: 200ms;
+  --motion-standard: 350ms;
+  --motion-medium: 500ms;
+  --motion-slow: 800ms;
+  --motion-cinematic: 1200ms;
+
+  /* ---------------------------------------------------------------------------
+     Motion Easing Tokens
+     --------------------------------------------------------------------------- */
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ---------------------------------------------------------------------------
+     Typography Tokens
+     --------------------------------------------------------------------------- */
+  --font-display: "Satoshi", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Display Scale */
+  --text-display-xl: clamp(3rem, 7vw, 5.5rem);
+  --text-display-lg: clamp(2.5rem, 6vw, 4.5rem);
+  --text-display-md: clamp(2rem, 5vw, 3.5rem);
+  --text-display-sm: clamp(1.75rem, 4vw, 2.75rem);
+
+  /* Heading Scale */
+  --text-h1: clamp(2.75rem, 6vw, 5rem);
+  --text-h2: clamp(2.125rem, 5vw, 3.75rem);
+  --text-h3: clamp(1.5rem, 3.5vw, 2.25rem);
+  --text-h4: clamp(1.25rem, 2.5vw, 1.5rem);
+  --text-h5: clamp(1.125rem, 2vw, 1.25rem);
+  --text-h6: clamp(1rem, 1.5vw, 1.125rem);
+
+  /* Body Scale */
+  --text-body-lg: 1.125rem;
+  --text-body-md: 1rem;
+  --text-body-sm: 0.875rem;
+  --text-caption: 0.75rem;
+  --text-overline: 0.75rem;
+
+  /* Line Heights */
+  --leading-display: 0.95;
+  --leading-heading: 1.1;
+  --leading-body-lg: 1.7;
+  --leading-body-md: 1.65;
+  --leading-body-sm: 1.55;
+  --leading-caption: 1.45;
+  --leading-overline: 1.2;
+
+  /* Font Weights */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-extrabold: 800;
+
+  /* Letter Spacing */
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+}
+
+/* =============================================================================
+   Tailwind CSS v4 Theme Configuration
+   =============================================================================
+   Maps CSS custom properties to Tailwind utilities.
+   ============================================================================= */
 
 @theme inline {
+  /* Color Tokens */
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
+  --color-secondary: var(--secondary);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-border: var(--border);
+
+  /* Extended Surface Colors */
+  --color-background-deep: var(--background-deep);
+  --color-surface-soft: var(--surface-soft);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-active: var(--surface-active);
+  --color-overlay: var(--overlay);
+
+  /* Extended Text Colors */
+  --color-text-subtle: var(--text-subtle);
+  --color-text-inverse: var(--text-inverse);
+
+  /* Amber Scale */
+  --color-amber-50: var(--amber-50);
+  --color-amber-100: var(--amber-100);
+  --color-amber-200: var(--amber-200);
+  --color-amber-300: var(--amber-300);
+  --color-amber-400: var(--amber-400);
+  --color-amber-500: var(--amber-500);
+  --color-amber-600: var(--amber-600);
+  --color-amber-700: var(--amber-700);
+  --color-amber-800: var(--amber-800);
+  --color-amber-900: var(--amber-900);
+
+  /* Indigo Scale */
+  --color-indigo-100: var(--indigo-100);
+  --color-indigo-300: var(--indigo-300);
+  --color-indigo-500: var(--indigo-500);
+  --color-indigo-600: var(--indigo-600);
+  --color-indigo-700: var(--indigo-700);
+
+  /* Semantic Colors */
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-success-border: var(--success-border);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-warning-border: var(--warning-border);
+  --color-error: var(--error);
+  --color-error-soft: var(--error-soft);
+  --color-error-border: var(--error-border);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-info-border: var(--info-border);
+
+  /* Light Surface Colors */
+  --color-light-background: var(--light-background);
+  --color-light-surface: var(--light-surface);
+  --color-light-card: var(--light-card);
+  --color-light-text-primary: var(--light-text-primary);
+  --color-light-text-secondary: var(--light-text-secondary);
+  --color-light-border: var(--light-border);
+
+  /* Border Colors */
+  --color-border-default: var(--border-default);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-interactive: var(--border-interactive);
+  --color-border-focus: var(--border-focus);
+
+  /* Spacing Tokens */
+  --spacing-space-0: var(--space-0);
+  --spacing-space-1: var(--space-1);
+  --spacing-space-2: var(--space-2);
+  --spacing-space-3: var(--space-3);
+  --spacing-space-4: var(--space-4);
+  --spacing-space-5: var(--space-5);
+  --spacing-space-6: var(--space-6);
+  --spacing-space-8: var(--space-8);
+  --spacing-space-10: var(--space-10);
+  --spacing-space-12: var(--space-12);
+  --spacing-space-16: var(--space-16);
+  --spacing-space-20: var(--space-20);
+  --spacing-space-24: var(--space-24);
+  --spacing-space-32: var(--space-32);
+
+  /* Border Radius Tokens */
+  --radius-none: var(--radius-none);
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-full: var(--radius-full);
+
+  /* Shadow Tokens */
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-amber: var(--shadow-amber);
+  --shadow-indigo: var(--shadow-indigo);
+
+  /* Gradient Tokens */
+  --gradient-primary: var(--gradient-primary);
+  --gradient-dark-surface: var(--gradient-dark-surface);
+  --gradient-hero-ambient: var(--gradient-hero-ambient);
+  --gradient-ai-accent: var(--gradient-ai-accent);
+  --gradient-mixed-premium: var(--gradient-mixed-premium);
+
+  /* Layout Width Tokens */
+  --container-sm: var(--container-sm);
+  --container-md: var(--container-md);
+  --container-lg: var(--container-lg);
+  --container-xl: var(--container-xl);
+
+  /* Motion Duration Tokens */
+  --motion-instant: var(--motion-instant);
+  --motion-fast: var(--motion-fast);
+  --motion-standard: var(--motion-standard);
+  --motion-medium: var(--motion-medium);
+  --motion-slow: var(--motion-slow);
+  --motion-cinematic: var(--motion-cinematic);
+
+  /* Motion Easing Tokens */
+  --ease-standard: var(--ease-standard);
+  --ease-in: var(--ease-in);
+  --ease-out: var(--ease-out);
+  --ease-in-out: var(--ease-in-out);
+
+  /* Typography Tokens */
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  /* Display Scale */
+  --text-display-xl: var(--text-display-xl);
+  --text-display-lg: var(--text-display-lg);
+  --text-display-md: var(--text-display-md);
+  --text-display-sm: var(--text-display-sm);
+
+  /* Heading Scale */
+  --text-h1: var(--text-h1);
+  --text-h2: var(--text-h2);
+  --text-h3: var(--text-h3);
+  --text-h4: var(--text-h4);
+  --text-h5: var(--text-h5);
+  --text-h6: var(--text-h6);
+
+  /* Body Scale */
+  --text-body-lg: var(--text-body-lg);
+  --text-body-md: var(--text-body-md);
+  --text-body-sm: var(--text-body-sm);
+  --text-caption: var(--text-caption);
+  --text-overline: var(--text-overline);
+
+  /* Line Heights */
+  --leading-display: var(--leading-display);
+  --leading-heading: var(--leading-heading);
+  --leading-body-lg: var(--leading-body-lg);
+  --leading-body-md: var(--leading-body-md);
+  --leading-body-sm: var(--leading-body-sm);
+  --leading-caption: var(--leading-caption);
+  --leading-overline: var(--leading-overline);
+
+  /* Font Weights */
+  --weight-regular: var(--weight-regular);
+  --weight-medium: var(--weight-medium);
+  --weight-semibold: var(--weight-semibold);
+  --weight-bold: var(--weight-bold);
+  --weight-extrabold: var(--weight-extrabold);
+
+  /* Letter Spacing */
+  --tracking-tight: var(--tracking-tight);
+  --tracking-normal: var(--tracking-normal);
+  --tracking-wide: var(--tracking-wide);
+  --tracking-wider: var(--tracking-wider);
+  --tracking-widest: var(--tracking-widest);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* =============================================================================
+   Base Styles
+   ============================================================================= */
+
+body {
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =============================================================================
+   Focus Styles
+   =============================================================================
+   Visible focus indicators for keyboard navigation.
+   Uses primary amber token as default focus-ring color.
+   ============================================================================= */
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Remove default outline for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* =============================================================================
+   Reduced Motion
+   =============================================================================
+   Respects prefers-reduced-motion: reduce.
+   Removes non-essential animation and transition.
+   ============================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* =============================================================================
+   Skip Link Foundation
+   =============================================================================
+   Provides visible-on-focus skip link styling for keyboard users.
+   ============================================================================= */
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--primary);
+  color: var(--text-inverse);
+  padding: var(--space-2) var(--space-4);
+  z-index: 100;
+  transition: top var(--motion-fast) var(--ease-out);
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* =============================================================================
+   Selection Styles
+   ============================================================================= */
+
+::selection {
+  background-color: rgba(245, 158, 11, 0.3);
+  color: var(--text-primary);
+}
+
+/* =============================================================================
+   Scrollbar Styles (Optional - for consistent appearance)
+   ============================================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* =============================================================================
+   Dialog and Drawer Motion
+   =============================================================================
+   Radix-based modal enter/exit animations using approved motion tokens.
+   Reduced-motion is handled by the global prefers-reduced-motion override.
+   ============================================================================= */
+
+@keyframes stratifit-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes stratifit-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes stratifit-zoom-in {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.95); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes stratifit-zoom-out {
+  from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  to { opacity: 0; transform: translate(-50%, -50%) scale(0.95); }
+}
+
+@keyframes stratifit-slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes stratifit-slide-out-right {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+
+@keyframes stratifit-slide-in-left {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes stratifit-slide-out-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+.overlay-anim[data-state="open"] {
+  animation: stratifit-fade-in var(--motion-standard) var(--ease-standard);
+}
+
+.overlay-anim[data-state="closed"] {
+  animation: stratifit-fade-out var(--motion-fast) var(--ease-standard);
+}
+
+.dialog-anim[data-state="open"] {
+  animation: stratifit-zoom-in var(--motion-standard) var(--ease-standard);
+}
+
+.dialog-anim[data-state="closed"] {
+  animation: stratifit-zoom-out var(--motion-fast) var(--ease-standard);
+}
+
+.drawer-anim-right[data-state="open"] {
+  animation: stratifit-slide-in-right var(--motion-standard) var(--ease-standard);
+}
+
+.drawer-anim-right[data-state="closed"] {
+  animation: stratifit-slide-out-right var(--motion-fast) var(--ease-standard);
+}
+
+.drawer-anim-left[data-state="open"] {
+  animation: stratifit-slide-in-left var(--motion-standard) var(--ease-standard);
+}
+
+.drawer-anim-left[data-state="closed"] {
+  animation: stratifit-slide-out-left var(--motion-fast) var(--ease-standard);
 }

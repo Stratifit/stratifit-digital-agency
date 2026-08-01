@@ -1,32 +1,207 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  Project: Stratifit Digital Agency Platform
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+  Product:
+    - Premium multilingual digital agency website
+    - Custom visual CMS
+    - Supabase backend
+    - AI chatbot and AI FAQ
+    - Human takeover and conversation inbox
+    - Resend transactional email
+    - Vercel deployment
 
-# Per-operation guidance (optional)
-# Add advisory guidance for how apply and archive work should be conducted.
-# This is separate from artifact rules above.
-# Example:
-#   operations:
-#     apply:
-#       guidance:
-#         - Keep test summaries concise
-#     archive:
-#       guidance:
-#         - Summarize the archive outcome before finishing
+  Primary stack:
+    - Next.js 16
+    - React 19
+    - TypeScript
+    - App Router
+    - React Server Components
+    - Server Actions
+    - Route Handlers
+    - Tailwind CSS v4
+    - shadcn/ui
+    - Radix primitives where already installed
+    - Lucide Icons
+    - GSAP and @gsap/react
+    - Supabase PostgreSQL
+    - Supabase Auth
+    - Supabase Storage
+    - Supabase Row Level Security
+    - Zod
+    - React Hook Form
+    - Resend
+    - Vercel
+    - npm
+
+  Required reading:
+    - AGENTS.md
+    - docs/PROJECT.md
+    - docs/ARCHITECTURE.md
+    - docs/DESIGN_SYSTEM.md
+    - docs/FRONTEND.md
+    - docs/CMS.md
+    - docs/DATABASE.md
+    - docs/CHAT_SYSTEM.md
+    - docs/EMAIL_SYSTEM.md
+    - docs/ROADMAP.md
+
+  Core architecture:
+    - Use Server Components by default
+    - Keep Client Component boundaries minimal
+    - Use purpose-built database tables
+    - Do not recreate a generic pages/sections/content_blocks page builder
+    - Use multilingual JSONB fields for en, de, fr, and es
+    - English is the default fallback language
+    - Use Supabase migrations for all schema changes
+    - Keep RLS enabled
+    - Never expose service-role, Resend, AI-provider, or webhook secrets
+    - Keep public, CMS, chat, and email responsibilities clearly separated
+    - Use the Section Registry for dynamic public sections
+    - Do not allow arbitrary component names, CSS, JavaScript, Tailwind, or GSAP from the CMS
+
+  Design system:
+    - Dark-mode-first
+    - Background: #0B0F17
+    - Surface: #111827
+    - Elevated surface: #172033
+    - Primary accent: #F59E0B
+    - Primary hover: #D97706
+    - Primary light: #FBBF24
+    - Secondary accent: #4F46E5
+    - Text primary: #FFFFFF
+    - Text secondary: #B8C0CC
+    - Text muted: #9CA3AF
+    - Border: #1F2937
+    - Satoshi for display typography when properly licensed files are available
+    - Inter for body, navigation, forms, CMS, tables, labels, and chat
+    - Amber is the dominant accent
+    - Indigo remains a limited supporting accent
+    - Public UI may be expressive
+    - CMS UI must remain restrained and operational
+    - Respect prefers-reduced-motion
+    - Do not invent undocumented tokens
+
+  Homepage order:
+    1. Announcement Bar
+    2. Header / Navigation
+    3. Hero
+    4. Trusted By
+    5. Services
+    6. Process
+    7. Why Choose Us
+    8. Insights & Expertise
+    9. Portfolio
+    10. Acquisition — Buy a Business
+    11. Testimonials
+    12. Pricing
+    13. FAQ
+    14. Final CTA
+    15. Footer
+
+  Version 1 exclusions:
+    - Multi-tenant SaaS
+    - Customer portal
+    - Subscription billing
+    - White-label CMS
+    - General drag-and-drop page builder
+    - Arbitrary design editing
+    - Voice AI
+    - Full CRM
+    - Complex marketing automation
+    - Autonomous quoting
+    - Full application-wide light mode unless separately approved
+
+  Development rules:
+    - Use npm
+    - Inspect package.json before running or inventing scripts
+    - Reuse existing dependencies before adding packages
+    - Do not add duplicate component libraries
+    - Do not download or commit unverified font files
+    - Do not perform destructive production actions without explicit approval
+    - Keep changes small, reviewable, and scoped
+    - Update documentation when architecture or behavior changes
+    - Run npm run lint and npm run build before completion
+    - Run relevant tests
+    - Be explicit about checks not run or failures encountered
+
+rules:
+  proposal:
+    - Explain the business and architectural reason for the change.
+    - Include a clear What Changes section.
+    - Include New Capabilities and Modified Capabilities.
+    - Include a Non-Goals section for all meaningful changes.
+    - Include an Impact section covering affected architecture, routes, database, CMS, security, accessibility, performance, and dependencies where relevant.
+    - Reference the relevant Stratifit documentation.
+    - Keep the proposal focused on one coherent change.
+    - Do not include implementation code.
+    - Do not silently expand version 1 scope.
+    - Do not invent business claims, content, prices, timelines, testimonials, or results.
+
+  design:
+    - Begin with current repository context and the problem being solved.
+    - Include Goals and Non-Goals.
+    - Document important technical decisions with Choice, Rationale, constraints, and alternatives considered.
+    - Include explicit security, accessibility, performance, responsive, and dependency decisions where relevant.
+    - Include risks and mitigations.
+    - Include an implementation or migration plan.
+    - Include rollback guidance for changes that can regress existing behavior.
+    - Resolve open questions where the documentation already provides an answer.
+    - Leave only genuinely unresolved repository-dependent questions open.
+    - Prefer the approved stack and existing patterns.
+    - Keep Server Component compatibility by default.
+    - Do not weaken RLS, validation, or secret boundaries.
+    - Do not invent undocumented design tokens or database models.
+
+  specs:
+    - Use normative SHALL, SHOULD, MAY, and MUST language consistently.
+    - Define observable and testable requirements.
+    - Use WHEN, THEN, and AND scenario format.
+    - Include positive behavior, error behavior, accessibility, responsive behavior, security, and verification scenarios where relevant.
+    - Name exact statuses, roles, locales, variants, and token values when already approved.
+    - Avoid vague phrases such as appropriate, proper, or supported unless the criteria are also defined.
+    - Preserve the fixed homepage order.
+    - Preserve multilingual support for en, de, fr, and es.
+    - Preserve public-versus-CMS boundaries.
+    - Preserve RLS and private-data boundaries.
+    - Preserve explicit human takeover behavior for chat.
+    - Preserve idempotency and open-relay prevention for email.
+
+  tasks:
+    - Organize work in dependency order.
+    - Start with repository inspection and prerequisite checks.
+    - Break work into numbered sections and checkable tasks.
+    - Keep tasks concrete and verifiable.
+    - Include schema, migration, RLS, seed, type-generation, and documentation tasks for database changes.
+    - Include keyboard, focus, reduced-motion, mobile, tablet, desktop, and overflow checks for UI changes.
+    - Include provider failure, rate limiting, privacy, and fallback checks for chat or email changes.
+    - Include npm run lint and npm run build.
+    - Include project type checking when a script exists.
+    - Include relevant tests and OpenCode Review when available.
+    - Include scope-control checks.
+    - Do not mark tasks complete until the related verification actually passes.
+
+operations:
+  apply:
+    guidance:
+      - Read AGENTS.md, all relevant docs, and every artifact in the selected change before editing code.
+      - Inspect the repository before creating or replacing files.
+      - Follow tasks in dependency order.
+      - Keep changes limited to the selected OpenSpec change.
+      - Reuse existing dependencies and utilities.
+      - Do not expose secrets.
+      - Do not weaken RLS or bypass authorization for convenience.
+      - Do not add unapproved major dependencies.
+      - Do not download or commit unverified font files.
+      - Run relevant tests, npm run lint, and npm run build.
+      - Report exactly what changed, checks run, failures, limitations, and remaining tasks.
+      - Do not claim completion while required tasks or checks are incomplete.
+
+  archive:
+    guidance:
+      - Archive only after implementation and required verification are complete.
+      - Confirm tasks are accurately marked.
+      - Confirm required specs are synchronized when applicable.
+      - Summarize the implemented capability, verification results, deferred tests, and known limitations.
+      - Do not archive changes with unresolved blocking failures.
