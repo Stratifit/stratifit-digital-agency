@@ -83,7 +83,7 @@ export async function ServicesSection() {
             return (
               <div
                 key={service.slug}
-                className="group relative flex flex-col overflow-hidden rounded-radius-card border border-card-border bg-card-dark p-6 shadow-shadow-lg transition-[border-color,transform,background-color] duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-card-border-hover active:translate-y-0 active:border-card-border-active active:bg-card-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2 md:p-8"
+                className="group relative flex flex-col overflow-hidden rounded-[10px] border border-card-border bg-card-dark p-6 shadow-shadow-lg transition-[border-color,transform,background-color] duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-card-border-hover active:translate-y-0 active:border-card-border-active active:bg-card-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2 md:p-8"
               >
                 <div
                   aria-hidden="true"
