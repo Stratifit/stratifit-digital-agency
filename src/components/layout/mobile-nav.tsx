@@ -206,7 +206,7 @@ export function MobileNav({
             </nav>
           </div>
 
-          <footer className="shrink-0 border-t border-border-subtle bg-background-deep px-6 pb-6 pt-4">
+          <footer className="shrink-0 border-t border-white/5 bg-background px-6 pb-6 pt-4">
             <div className="flex flex-col items-center gap-4">
               <p className="text-[0.7rem] font-medium tracking-wide text-white/70">
                 <a
