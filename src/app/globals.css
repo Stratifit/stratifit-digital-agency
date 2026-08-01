@@ -642,6 +642,19 @@ body {
   to { transform: translateX(0); }
 }
 
+@keyframes stratifit-scroll-x {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-scroll {
+  animation: stratifit-scroll-x 25s linear infinite;
+}
+
+.marquee-pause:hover .marquee-scroll {
+  animation-play-state: paused;
+}
+
 @keyframes stratifit-slide-out-right {
   from { transform: translateX(0); }
   to { transform: translateX(100%); }

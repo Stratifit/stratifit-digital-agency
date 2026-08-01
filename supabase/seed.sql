@@ -112,7 +112,7 @@ ON CONFLICT (id) DO UPDATE SET
 -- Hero (Singleton)
 -- =============================================================================
 
-INSERT INTO public.hero (singleton_key, eyebrow_translations, title_translations, highlight_translations, description_translations, primary_cta_label_translations, primary_cta_url, secondary_cta_label_translations, secondary_cta_url, variant, is_visible)
+INSERT INTO public.hero (singleton_key, eyebrow_translations, title_translations, highlight_translations, description_translations, primary_cta_label_translations, primary_cta_url, secondary_cta_label_translations, secondary_cta_url, metrics, variant, is_visible)
 VALUES (
   true,
   '{"en": "Premium Digital Agency", "de": "Premium-Digitalagentur", "fr": "Agence Digitale Premium", "es": "Agencia Digital Premium"}'::jsonb,
@@ -123,6 +123,7 @@ VALUES (
   '/contact',
   '{"en": "View Our Work", "de": "Unsere Arbeiten ansehen", "fr": "Voir nos réalisations", "es": "Ver nuestro trabajo"}'::jsonb,
   '/work',
+  '[{"value": "59+", "label_translations": {"en": "Projects Delivered", "de": "Gelieferte Projekte", "fr": "Projets livrés", "es": "Proyectos entregados"}}, {"value": "7+", "label_translations": {"en": "Years Experience", "de": "Jahre Erfahrung", "fr": "Années d''expérience", "es": "Años de experiencia"}}, {"value": "98%", "label_translations": {"en": "Client Satisfaction", "de": "Kundenzufriedenheit", "fr": "Satisfaction client", "es": "Satisfacción del cliente"}}]'::jsonb,
   'default',
   true
 )
@@ -134,7 +135,8 @@ ON CONFLICT (singleton_key) DO UPDATE SET
   primary_cta_label_translations = EXCLUDED.primary_cta_label_translations,
   primary_cta_url = EXCLUDED.primary_cta_url,
   secondary_cta_label_translations = EXCLUDED.secondary_cta_label_translations,
-  secondary_cta_url = EXCLUDED.secondary_cta_url;
+  secondary_cta_url = EXCLUDED.secondary_cta_url,
+  metrics = EXCLUDED.metrics;
 
 -- =============================================================================
 -- Services (4 Core Services)
