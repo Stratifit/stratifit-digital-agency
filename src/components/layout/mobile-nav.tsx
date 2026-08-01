@@ -25,15 +25,10 @@ function ArrowIcon() {
       viewBox="0 0 24 24"
       fill="none"
       aria-hidden="true"
-      className="size-4 text-primary transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-0.5"
+      className="size-4 shrink-0 text-[#ffb300] opacity-70 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-0.5 group-hover:opacity-100"
     >
-      <path
-        d="M5 12h13M13 6l6 6-6 6"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <line x1="7" y1="17" x2="17" y2="7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      <polyline points="7 7 17 7 17 17" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -140,18 +135,20 @@ export function MobileNav({
                             key={service.slug}
                             href={service.cta_url ?? "/contact"}
                             onClick={() => setOpen(false)}
-                            className="group flex w-[78%] min-w-[220px] shrink-0 snap-start flex-col rounded-radius-md border border-white/10 bg-card-dark p-4 shadow-shadow-sm transition-[border-color,background-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-surface-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                            className="group flex flex-[0_0_70%] snap-start flex-col rounded-[10px] border border-[#1f1f1f] bg-[#111] p-3.5 transition-[border-color,background-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-[#ffb300]/40 hover:bg-[#161616] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                           >
-                            <div className="flex items-center gap-3">
-                              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
-                                <ServiceIcon name={service.icon_name} className="!size-4" />
-                              </span>
-                              <span className="min-w-0 flex-1 truncate text-sm font-bold text-text-primary">
-                                {resolveTranslation(service.title_translations, locale)}
-                              </span>
+                            <div className="mb-2.5 flex items-center justify-between">
+                              <div className="flex items-center gap-2.5">
+                                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#ffb300] text-black">
+                                  <ServiceIcon name={service.icon_name} className="!size-4" />
+                                </span>
+                                <span className="text-[15px] font-semibold text-white">
+                                  {resolveTranslation(service.title_translations, locale)}
+                                </span>
+                              </div>
                               <ArrowIcon />
                             </div>
-                            <p className="mt-3 line-clamp-2 text-xs leading-5 text-text-muted">
+                            <p className="min-h-[31.2px] overflow-hidden text-xs leading-[1.3] text-[#888]">
                               {resolveTranslation(
                                 service.short_description_translations,
                                 locale
