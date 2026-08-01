@@ -747,7 +747,7 @@ Approved foundation:
 
 - Background: `#0B0F17`
 - Surface: `#111827`
-- Elevated surface: `#172033`
+- Elevated surface: `#182235`
 - Primary: `#F59E0B`
 - Secondary: `#4F46E5`
 - Primary text: `#FFFFFF`

@@ -73,7 +73,7 @@ export async function Header() {
 
           <a
             href="/contact"
-            className="flex items-center gap-2 rounded-radius-md bg-primary px-5 py-2.5 text-sm font-bold text-text-inverse transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-hover active:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-interactive focus-visible:ring-offset-2 focus-visible:ring-offset-background-deep"
+            className="flex items-center gap-2 rounded-radius-md bg-primary px-5 py-2.5 text-sm font-bold text-text-inverse transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-hover active:bg-primary-active focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-interactive focus-visible:ring-offset-2 focus-visible:ring-offset-background-deep"
           >
             Start a Project
           </a>

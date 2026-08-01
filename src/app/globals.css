@@ -48,34 +48,51 @@
      Core Brand Colors
      --------------------------------------------------------------------------- */
   --background: #0B0F17;
+  --background-deep: #070A10;
   --surface: #111827;
-  --surface-elevated: #172033;
+  --surface-soft: #151E2D;
+  --surface-elevated: #182235;
+  --surface-hover: #1D293B;
+  --surface-active: #243249;
   --primary: #F59E0B;
-  --primary-hover: #D97706;
-  --hover: #E89008;
+  --primary-hover: #E89008;
+  --primary-active: #D97706;
   --primary-light: #FBBF24;
+  --primary-dark: #B45309;
   --secondary: #4F46E5;
+  --secondary-hover: #4338CA;
+  --secondary-light: #6366F1;
   --text-primary: #FFFFFF;
   --text-secondary: #B8C0CC;
-  --text-muted: #9CA3AF;
-  --border: #1F2937;
-
-  /* ---------------------------------------------------------------------------
-     Extended Dark Surfaces
-     --------------------------------------------------------------------------- */
-  --background-deep: #070A10;
-  --card-dark: #0D1320;
-  --surface-soft: #131C2B;
-  --surface-hover: #1B2638;
-  --surface-active: #223047;
-  --overlay: rgba(7, 10, 16, 0.72);
-
-  /* ---------------------------------------------------------------------------
-     Extended Text Colors
-     --------------------------------------------------------------------------- */
-  --text-subtle: #6B7280;
   --text-tertiary: #D1D5DB;
+  --text-muted: #9CA3AF;
+  --text-subtle: #6B7280;
   --text-inverse: #0B0F17;
+
+  /* ---------------------------------------------------------------------------
+     Border / Divider Tokens
+     --------------------------------------------------------------------------- */
+  --border: #1F2937;
+  --border-soft: #18212F;
+  --border-strong: #2B374A;
+  --border-default: #1F2937;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-interactive: rgba(245, 158, 11, 0.35);
+  --border-focus: #F59E0B;
+
+  /* ---------------------------------------------------------------------------
+     Overlay Tokens
+     --------------------------------------------------------------------------- */
+  --overlay: rgba(7, 10, 16, 0.72);
+  --overlay-strong: rgba(7, 10, 16, 0.88);
+
+  /* ---------------------------------------------------------------------------
+     Legacy Aliases (kept for existing utilities)
+     --hover matches the approved --primary-hover value.
+     --card-dark maps to the approved --surface-soft value.
+     --------------------------------------------------------------------------- */
+  --hover: #E89008;
+  --card-dark: #151E2D;
 
   /* ---------------------------------------------------------------------------
      Primary Amber Scale
@@ -114,9 +131,9 @@
   --error: #EF4444;
   --error-soft: rgba(239, 68, 68, 0.12);
   --error-border: rgba(239, 68, 68, 0.35);
-  --info: #4F46E5;
-  --info-soft: rgba(79, 70, 229, 0.12);
-  --info-border: rgba(79, 70, 229, 0.35);
+  --info: #6366F1;
+  --info-soft: rgba(99, 102, 241, 0.12);
+  --info-border: rgba(99, 102, 241, 0.35);
 
   /* ---------------------------------------------------------------------------
      Light Surface Tokens
@@ -125,18 +142,10 @@
      --------------------------------------------------------------------------- */
   --light-background: #FFFFFF;
   --light-surface: #F8FAFC;
-  --light-card: #F1F5F9;
-  --light-text-primary: #0F172A;
+  --light-surface-muted: #F1F5F9;
+  --light-text: #0B0F17;
   --light-text-secondary: #475569;
   --light-border: #E2E8F0;
-
-  /* ---------------------------------------------------------------------------
-     Border Tokens
-     --------------------------------------------------------------------------- */
-  --border-default: #1F2937;
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-interactive: rgba(245, 158, 11, 0.35);
-  --border-focus: #F59E0B;
 
   /* ---------------------------------------------------------------------------
      Spacing Scale (4px foundation)
@@ -278,9 +287,13 @@
   --color-surface-elevated: var(--surface-elevated);
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
-  --color-hover: var(--hover);
+  --color-primary-active: var(--primary-active);
   --color-primary-light: var(--primary-light);
+  --color-primary-dark: var(--primary-dark);
+  --color-hover: var(--hover);
   --color-secondary: var(--secondary);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-secondary-light: var(--secondary-light);
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
@@ -293,6 +306,7 @@
   --color-surface-hover: var(--surface-hover);
   --color-surface-active: var(--surface-active);
   --color-overlay: var(--overlay);
+  --color-overlay-strong: var(--overlay-strong);
 
   /* Extended Text Colors */
   --color-text-subtle: var(--text-subtle);
@@ -335,8 +349,8 @@
   /* Light Surface Colors */
   --color-light-background: var(--light-background);
   --color-light-surface: var(--light-surface);
-  --color-light-card: var(--light-card);
-  --color-light-text-primary: var(--light-text-primary);
+  --color-light-surface-muted: var(--light-surface-muted);
+  --color-light-text: var(--light-text);
   --color-light-text-secondary: var(--light-text-secondary);
   --color-light-border: var(--light-border);
 
@@ -345,6 +359,8 @@
   --color-border-subtle: var(--border-subtle);
   --color-border-interactive: var(--border-interactive);
   --color-border-focus: var(--border-focus);
+  --color-border-soft: var(--border-soft);
+  --color-border-strong: var(--border-strong);
 
   /* Spacing Tokens */
   --spacing-space-0: var(--space-0);

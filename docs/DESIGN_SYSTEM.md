@@ -208,26 +208,38 @@ Purposeful GSAP motion
 | Token | Value | Primary usage |
 |---|---:|---|
 | `background` | `#0B0F17` | Main public page background |
+| `background-deep` | `#070A10` | Very dark cinematic areas |
 | `surface` | `#111827` | Section surfaces, cards, navigation |
-| `surface-elevated` | `#172033` | Elevated cards, modal surfaces |
+| `surface-soft` | `#151E2D` | Soft section separation |
+| `surface-elevated` | `#182235` | Elevated cards, modal surfaces |
+| `surface-hover` | `#1D293B` | Hovered dark cards |
+| `surface-active` | `#243249` | Selected admin controls |
 | `primary` | `#F59E0B` | Main amber brand accent |
-| `primary-hover` | `#D97706` | Amber hover and pressed states |
+| `primary-hover` | `#E89008` | Amber hover state |
+| `primary-active` | `#D97706` | Amber pressed state |
 | `primary-light` | `#FBBF24` | Highlights and subtle gradient endpoints |
+| `primary-dark` | `#B45309` | Deep amber accents |
 | `secondary` | `#4F46E5` | Controlled indigo support accent |
+| `secondary-hover` | `#4338CA` | Indigo hover state |
+| `secondary-light` | `#6366F1` | Indigo highlights |
 | `text-primary` | `#FFFFFF` | Main text on dark surfaces |
 | `text-secondary` | `#B8C0CC` | Supporting text |
 | `text-muted` | `#9CA3AF` | Metadata, captions, quiet labels |
+| `text-subtle` | `#6B7280` | Disabled or very low-emphasis text |
 | `border` | `#1F2937` | Default structural border |
+| `border-soft` | `#18212F` | Subtle dividers |
+| `border-strong` | `#2B374A` | Emphasized borders |
 
 ### 4.2 Extended dark surfaces
 
 | Token | Value | Usage |
 |---|---:|---|
 | `background-deep` | `#070A10` | Very dark cinematic areas |
-| `surface-soft` | `#131C2B` | Soft section separation |
-| `surface-hover` | `#1B2638` | Hovered dark cards |
-| `surface-active` | `#223047` | Selected admin controls |
+| `surface-soft` | `#151E2D` | Soft section separation |
+| `surface-hover` | `#1D293B` | Hovered dark cards |
+| `surface-active` | `#243249` | Selected admin controls |
 | `overlay` | `rgba(7, 10, 16, 0.72)` | Modal and drawer overlays |
+| `overlay-strong` | `rgba(7, 10, 16, 0.88)` | Strong modal overlays |
 
 ### 4.3 Text colors
 
@@ -1493,9 +1505,10 @@ Example concept:
 :root {
   --color-background: #0b0f17;
   --color-surface: #111827;
-  --color-surface-elevated: #172033;
+  --color-surface-elevated: #182235;
   --color-primary: #f59e0b;
-  --color-primary-hover: #d97706;
+  --color-primary-hover: #e89008;
+  --color-primary-active: #d97706;
   --color-secondary: #4f46e5;
   --color-text-primary: #ffffff;
   --color-text-secondary: #b8c0cc;
@@ -1666,7 +1679,7 @@ Stratifit uses a premium dark visual system based on:
 
 - Background `#0B0F17`
 - Surface `#111827`
-- Elevated surface `#172033`
+- Elevated surface `#182235`
 - Amber primary `#F59E0B`
 - Indigo secondary `#4F46E5`
 - White primary text

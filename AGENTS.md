@@ -539,16 +539,27 @@ Approved foundation:
 
 ```text
 Background:       #0B0F17
+Background Deep:  #070A10
 Surface:          #111827
-Elevated Surface: #172033
+Surface Soft:     #151E2D
+Elevated Surface: #182235
+Surface Hover:    #1D293B
+Surface Active:   #243249
 Primary:          #F59E0B
-Primary Hover:    #D97706
+Primary Hover:    #E89008
+Primary Active:   #D97706
 Primary Light:    #FBBF24
+Primary Dark:     #B45309
 Secondary:        #4F46E5
+Secondary Hover:  #4338CA
+Secondary Light:  #6366F1
 Text Primary:     #FFFFFF
 Text Secondary:   #B8C0CC
 Text Muted:       #9CA3AF
+Text Subtle:      #6B7280
 Border:           #1F2937
+Border Soft:      #18212F
+Border Strong:    #2B374A
 ```
 
 Amber is the dominant brand accent.

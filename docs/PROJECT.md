@@ -953,9 +953,10 @@ Stratifit uses a premium, dark-mode-first visual identity designed to communicat
 
 - Background: `#0B0F17`
 - Surface: `#111827`
-- Elevated surface: `#172033`
+- Elevated surface: `#182235`
 - Primary accent: `#F59E0B`
-- Primary hover: `#D97706`
+- Primary hover: `#E89008`
+- Primary active: `#D97706`
 - Primary light: `#FBBF24`
 - Secondary accent: `#4F46E5`
 - Primary text: `#FFFFFF`
