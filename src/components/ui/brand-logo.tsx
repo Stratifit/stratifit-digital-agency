@@ -12,10 +12,10 @@ export function BrandLogo({
 }) {
   return (
     <Image
-      src="/stratifit-logo.svg"
+      src="/stratifit-main-logo.png"
       alt={alt}
-      width={320}
-      height={64}
+      width={1592}
+      height={227}
       priority={priority}
       className={cn("h-auto w-full object-contain", className)}
     />
