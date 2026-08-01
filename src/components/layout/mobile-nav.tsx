@@ -164,7 +164,7 @@ export function MobileNav({
                             data-service-card
                             href={service.cta_url ?? "/contact"}
                             onClick={() => setOpen(false)}
-                            className="group flex flex-[0_0_70%] snap-start flex-col rounded-[10px] border border-border bg-surface p-3.5 transition-[border-color,background-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-surface-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                            className="group flex flex-[0_0_70%] snap-start flex-col rounded-[10px] border border-border bg-card-dark p-3.5 transition-[border-color,background-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-surface-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                           >
                             <div className="mb-2.5 flex items-center justify-between">
                               <div className="flex min-w-0 items-center gap-2.5">

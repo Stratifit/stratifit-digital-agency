@@ -951,7 +951,7 @@ Stratifit uses a premium, dark-mode-first visual identity designed to communicat
 
 ### 18.2 Core colors
 
-- Background: `#0B0F17`
+- Background: `#0A0A0A`
 - Surface: `#111827`
 - Elevated surface: `#182235`
 - Primary accent: `#F59E0B`

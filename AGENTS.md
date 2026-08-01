@@ -538,7 +538,7 @@ Rule:
 Approved foundation:
 
 ```text
-Background:       #0B0F17
+Background:       #0A0A0A
 Background Deep:  #070A10
 Surface:          #111827
 Surface Soft:     #151E2D

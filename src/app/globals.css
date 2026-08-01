@@ -47,7 +47,7 @@
   /* ---------------------------------------------------------------------------
      Core Brand Colors
      --------------------------------------------------------------------------- */
-  --background: #0B0F17;
+  --background: #0A0A0A;
   --background-deep: #070A10;
   --surface: #111827;
   --surface-soft: #151E2D;
@@ -92,7 +92,7 @@
      --card-dark maps to the approved --surface-soft value.
      --------------------------------------------------------------------------- */
   --hover: #E89008;
-  --card-dark: #151E2D;
+  --card-dark: #161616;
 
   /* ---------------------------------------------------------------------------
      Primary Amber Scale
@@ -191,7 +191,7 @@
      Gradient Tokens
      --------------------------------------------------------------------------- */
   --gradient-primary: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
-  --gradient-dark-surface: linear-gradient(180deg, #111827 0%, #0B0F17 100%);
+  --gradient-dark-surface: linear-gradient(180deg, #111827 0%, #0A0A0A 100%);
   --gradient-hero-ambient: radial-gradient(circle at 70% 20%, rgba(245, 158, 11, 0.14) 0%, rgba(245, 158, 11, 0.04) 35%, transparent 70%);
   --gradient-ai-accent: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
   --gradient-mixed-premium: linear-gradient(135deg, #F59E0B 0%, #FBBF24 55%, #4F46E5 140%);

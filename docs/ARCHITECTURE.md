@@ -1196,7 +1196,7 @@ The design system must be shared across the public website and CMS while allowin
 
 The approved starting palette is:
 
-- Background: `#0B0F17`
+- Background: `#0A0A0A`
 - Surface: `#111827`
 - Elevated surface: `#182235`
 - Primary accent: `#F59E0B`

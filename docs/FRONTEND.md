@@ -745,7 +745,7 @@ The frontend must follow `DESIGN_SYSTEM.md`.
 
 Approved foundation:
 
-- Background: `#0B0F17`
+- Background: `#0A0A0A`
 - Surface: `#111827`
 - Elevated surface: `#182235`
 - Primary: `#F59E0B`

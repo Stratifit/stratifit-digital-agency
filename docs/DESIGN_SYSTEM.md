@@ -207,7 +207,7 @@ Purposeful GSAP motion
 
 | Token | Value | Primary usage |
 |---|---:|---|
-| `background` | `#0B0F17` | Main public page background |
+| `background` | `#0A0A0A` | Main public page background |
 | `background-deep` | `#070A10` | Very dark cinematic areas |
 | `surface` | `#111827` | Section surfaces, cards, navigation |
 | `surface-soft` | `#151E2D` | Soft section separation |
@@ -730,7 +730,7 @@ linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%)
 #### Dark surface gradient
 
 ```css
-linear-gradient(180deg, #111827 0%, #0B0F17 100%)
+linear-gradient(180deg, #111827 0%, #0A0A0A 100%)
 ```
 
 #### Hero ambient glow
@@ -1677,7 +1677,7 @@ Feature-specific design changes should be documented through OpenSpec.
 
 Stratifit uses a premium dark visual system based on:
 
-- Background `#0B0F17`
+- Background `#0A0A0A`
 - Surface `#111827`
 - Elevated surface `#182235`
 - Amber primary `#F59E0B`
