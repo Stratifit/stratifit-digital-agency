@@ -119,11 +119,11 @@ export function MobileNav({
       <Drawer open={open} onOpenChange={setOpen}>
         <DrawerContent
           direction="right"
-          className="flex h-[100dvh] max-w-[430px] flex-col overflow-hidden border-l border-border-subtle bg-background-deep p-0 shadow-lg sm:max-w-[430px]"
+          className="flex h-[100dvh] max-w-[430px] flex-col overflow-hidden border-l border-border-subtle bg-background p-0 shadow-lg sm:max-w-[430px]"
         >
           <DrawerTitle className="sr-only">Navigation menu</DrawerTitle>
 
-          <header className="relative z-20 flex min-h-20 shrink-0 items-center justify-between border-b border-border-subtle bg-black px-6 pr-16">
+          <header className="relative z-20 flex min-h-20 shrink-0 items-center justify-between border-b border-border-subtle bg-background px-6 pr-16">
             <div className="flex min-w-0 items-center">
               <div className="flex w-[160px] items-center">
                 <BrandLogo alt={siteName} />
@@ -133,7 +133,7 @@ export function MobileNav({
             <LanguageSwitcher currentLocale={locale} />
           </header>
 
-          <div className="flex-1 overflow-y-auto bg-black">
+          <div className="flex-1 overflow-y-auto bg-background">
             <nav className="flex flex-col" aria-label="Mobile">
               {items.map((item) => (
                 <React.Fragment key={item.id}>
@@ -151,7 +151,7 @@ export function MobileNav({
                   {item.href === "/services" && services.length > 0 ? (
                     <section
                       aria-label="Services"
-                      className="border-b border-border-subtle bg-black px-4 py-4"
+                      className="border-b border-border-subtle bg-background px-4 py-4"
                     >
                       <div
                         ref={servicesScrollRef}
@@ -206,7 +206,7 @@ export function MobileNav({
             </nav>
           </div>
 
-          <footer className="shrink-0 border-t border-border-subtle bg-black px-6 pb-6 pt-4">
+          <footer className="shrink-0 border-t border-border-subtle bg-background px-6 pb-6 pt-4">
             <div className="flex flex-col items-center gap-4">
               <p className="text-[0.7rem] font-medium tracking-wide text-white/70">
                 <a

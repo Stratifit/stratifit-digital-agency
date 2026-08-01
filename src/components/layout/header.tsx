@@ -34,7 +34,7 @@ export async function Header() {
   const socialLinks = settings?.social_links ?? null;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background-deep/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur-md">
       <Container className="relative flex h-16 items-center justify-between sm:h-20">
         {/* Mobile: hamburger (left) */}
         <div className="md:hidden">

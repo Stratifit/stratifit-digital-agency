@@ -17,7 +17,7 @@ export async function Footer() {
   const socialLinks = settings?.social_links ?? null;
 
   return (
-    <footer className="border-t border-border bg-background-deep">
+    <footer className="border-t border-border bg-background">
       <div className="mx-auto max-w-7xl px-6 pb-8 pt-16">
         <FooterContent
           groups={groups}

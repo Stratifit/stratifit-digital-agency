@@ -25,7 +25,7 @@ export async function HeroSection() {
   );
 
   return (
-    <section className="relative overflow-hidden border-b border-border bg-background-deep">
+    <section className="relative overflow-hidden border-b border-border bg-background">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
