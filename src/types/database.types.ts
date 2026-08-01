@@ -17,6 +17,7 @@ export type Database = {
       acquisition_section: {
         Row: {
           benefits: Json
+          businesses: Json
           created_at: string
           cta_label_translations: Json
           cta_url: string | null
@@ -30,6 +31,7 @@ export type Database = {
         }
         Insert: {
           benefits?: Json
+          businesses?: Json
           created_at?: string
           cta_label_translations?: Json
           cta_url?: string | null
@@ -43,6 +45,7 @@ export type Database = {
         }
         Update: {
           benefits?: Json
+          businesses?: Json
           created_at?: string
           cta_label_translations?: Json
           cta_url?: string | null

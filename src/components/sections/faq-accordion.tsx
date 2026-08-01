@@ -27,26 +27,18 @@ function ChevronIcon() {
 }
 
 export function FaqAccordion({ items }: { items: FaqItem[] }) {
-  const [openIds, setOpenIds] = React.useState<Set<string>>(
-    () => new Set(items.length > 0 ? [items[0].id] : [])
+  const [openId, setOpenId] = React.useState<string | null>(
+    items.length > 0 ? items[0].id : null
   );
 
   function toggle(id: string) {
-    setOpenIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-      return next;
-    });
+    setOpenId((prev) => (prev === id ? null : id));
   }
 
   return (
     <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
       {items.map((item) => {
-        const open = openIds.has(item.id);
+        const open = openId === item.id;
         return (
           <div
             key={item.id}

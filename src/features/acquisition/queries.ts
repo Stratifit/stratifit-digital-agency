@@ -1,11 +1,28 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
+export interface AcquisitionBusiness {
+  slug: string;
+  name: string;
+  domain: string;
+  emoji: string;
+  category: string;
+  tagline: string;
+  tags: string[];
+  accent: string;
+  price: string;
+  url: string;
+  action_label: string;
+  trust: string[];
+  tiles: string[];
+}
+
 export interface PublicAcquisitionSection {
   title_translations: Record<string, string> | null;
   description_translations: Record<string, string> | null;
   benefits: unknown[] | null;
   cta_label_translations: Record<string, string> | null;
   cta_url: string | null;
+  businesses: AcquisitionBusiness[] | null;
 }
 
 export async function getPublicAcquisitionSection(): Promise<PublicAcquisitionSection | null> {
@@ -14,7 +31,7 @@ export async function getPublicAcquisitionSection(): Promise<PublicAcquisitionSe
   const { data, error } = await supabase
     .from("acquisition_section")
     .select(
-      "title_translations, description_translations, benefits, cta_label_translations, cta_url"
+      "title_translations, description_translations, benefits, cta_label_translations, cta_url, businesses"
     )
     .eq("is_visible", true)
     .single();
@@ -23,5 +40,8 @@ export async function getPublicAcquisitionSection(): Promise<PublicAcquisitionSe
     return null;
   }
 
-  return data as PublicAcquisitionSection;
+  return {
+    ...data,
+    businesses: (data.businesses as unknown as AcquisitionBusiness[] | null) ?? null,
+  } as PublicAcquisitionSection;
 }
