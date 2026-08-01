@@ -38,7 +38,7 @@ export default async function ImprintPage() {
                 {settings?.contact_email ? (
                   <>
                     Email:{" "}
-                    <a href={`mailto:${settings.contact_email}`} className="hover:text-primary">
+                    <a href={`mailto:${settings.contact_email}`} className="hover:text-hover">
                       {settings.contact_email}
                     </a>
                     <br />
@@ -67,4 +67,5 @@ export default async function ImprintPage() {
     </>
   );
 }
+
 

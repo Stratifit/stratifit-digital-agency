@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import * as React from "react";
 import { sendVisitorMessage } from "@/features/chat/mutations";
@@ -154,7 +154,7 @@ export function ChatWidget() {
         type="button"
         aria-label="Open chat"
         onClick={() => setOpen((v) => !v)}
-        className="flex size-14 items-center justify-center rounded-full bg-primary text-text-inverse shadow-shadow-amber transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="flex size-14 items-center justify-center rounded-full bg-primary text-text-inverse shadow-shadow-amber transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
         <svg className="size-6" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path
@@ -169,3 +169,4 @@ export function ChatWidget() {
     </div>
   );
 }
+

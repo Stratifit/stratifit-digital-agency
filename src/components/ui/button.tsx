@@ -1,4 +1,4 @@
-import * as React from "react";
+﻿import * as React from "react";
 import { cn } from "@/lib/cn";
 
 type ButtonVariant = "primary" | "secondary" | "tertiary" | "destructive";
@@ -14,11 +14,11 @@ export interface ButtonProps
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    "bg-primary text-text-inverse hover:bg-primary-hover active:bg-primary-hover shadow-shadow-amber",
+    "bg-primary text-text-inverse hover:bg-hover active:bg-primary-hover shadow-shadow-amber",
   secondary:
-    "border border-border bg-surface text-text-primary hover:border-primary hover:text-primary active:border-primary active:text-primary",
+    "border border-border bg-surface text-text-primary hover:border-hover hover:text-hover active:border-primary active:text-primary",
   tertiary:
-    "bg-transparent text-text-secondary underline-offset-4 hover:text-primary hover:underline active:text-primary",
+    "bg-transparent text-text-secondary underline-offset-4 hover:text-hover hover:underline active:text-primary",
   destructive:
     "bg-error text-white hover:bg-error-border active:bg-error-border",
 };
@@ -71,3 +71,4 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 Button.displayName = "Button";
+

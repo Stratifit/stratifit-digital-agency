@@ -42,7 +42,7 @@ export async function Header() {
                 href={item.href}
                 target={item.open_in_new_tab ? "_blank" : undefined}
                 rel={item.open_in_new_tab ? "noopener noreferrer" : undefined}
-                className="text-sm font-medium text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="text-sm font-medium text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 {resolveTranslation(item.label_translations, locale)}
               </a>
@@ -53,7 +53,7 @@ export async function Header() {
 
           <a
             href="/contact"
-            className="flex items-center gap-2 rounded-radius-md bg-primary px-5 py-2.5 text-sm font-bold text-text-inverse transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary-light active:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-interactive focus-visible:ring-offset-2 focus-visible:ring-offset-background-deep"
+            className="flex items-center gap-2 rounded-radius-md bg-primary px-5 py-2.5 text-sm font-bold text-text-inverse transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-hover active:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-interactive focus-visible:ring-offset-2 focus-visible:ring-offset-background-deep"
           >
             Start a Project
           </a>
@@ -66,3 +66,4 @@ export async function Header() {
     </header>
   );
 }
+

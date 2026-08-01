@@ -41,7 +41,7 @@ export default async function ContactPage() {
                   <li>
                     <a
                       href={`mailto:${settings.contact_email}`}
-                      className="hover:text-primary"
+                      className="hover:text-hover"
                     >
                       {settings.contact_email}
                     </a>
@@ -72,4 +72,5 @@ export default async function ContactPage() {
     </>
   );
 }
+
 

@@ -41,7 +41,7 @@ export async function Footer() {
                       href={link.href}
                       target={link.is_external ? "_blank" : undefined}
                       rel={link.is_external ? "noopener noreferrer" : undefined}
-                      className="text-sm text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                      className="text-sm text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                     >
                       {resolveTranslation(link.label_translations, locale)}
                     </a>
@@ -56,7 +56,7 @@ export async function Footer() {
           <div className="mt-10 border-t border-border pt-6 text-sm text-text-muted">
             <a
               href={`mailto:${settings.contact_email}`}
-              className="hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className="hover:text-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               {settings.contact_email}
             </a>
@@ -66,5 +66,6 @@ export async function Footer() {
     </footer>
   );
 }
+
 
 

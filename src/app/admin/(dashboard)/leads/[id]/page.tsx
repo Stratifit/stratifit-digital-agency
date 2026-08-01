@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+﻿import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getAdminLead, LEAD_STATUSES } from "@/features/leads/admin-queries";
 import { updateLeadStatus, deleteLead } from "@/features/leads/admin-mutations";
@@ -32,7 +32,7 @@ export default async function LeadDetailPage({
         <div className="flex gap-2">
           <Link
             href="/admin/leads"
-            className="rounded-radius-sm px-3 py-2 text-sm text-text-secondary hover:text-primary"
+            className="rounded-radius-sm px-3 py-2 text-sm text-text-secondary hover:text-hover"
           >
             Back
           </Link>
@@ -111,3 +111,4 @@ export default async function LeadDetailPage({
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import * as React from "react";
 import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
@@ -29,7 +29,7 @@ export function MobileNav({ items, locale }: MobileNavProps) {
         aria-label="Open navigation menu"
         aria-expanded={open}
         onClick={() => setOpen(true)}
-        className="inline-flex size-10 items-center justify-center rounded-radius-sm text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:hidden"
+        className="inline-flex size-10 items-center justify-center rounded-radius-sm text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:hidden"
       >
         <svg
           className="size-6"
@@ -57,7 +57,7 @@ export function MobileNav({ items, locale }: MobileNavProps) {
                 target={item.open_in_new_tab ? "_blank" : undefined}
                 rel={item.open_in_new_tab ? "noopener noreferrer" : undefined}
                 onClick={() => setOpen(false)}
-                className="rounded-radius-sm px-3 py-3 text-base font-medium text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-surface-hover hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="rounded-radius-sm px-3 py-3 text-base font-medium text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-surface-hover hover:text-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 {resolveTranslation(item.label_translations, locale)}
               </a>
@@ -68,3 +68,4 @@ export function MobileNav({ items, locale }: MobileNavProps) {
     </>
   );
 }
+

@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+﻿import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getAdminConversation } from "@/features/chat/admin-queries";
 import { ConversationDetail } from "@/components/admin/conversations/conversation-detail";
@@ -20,7 +20,7 @@ export default async function ConversationDetailPage({
       <div>
         <Link
           href="/admin/conversations"
-          className="text-sm text-text-secondary hover:text-primary"
+          className="text-sm text-text-secondary hover:text-hover"
         >
           ← Back to conversations
         </Link>
@@ -32,3 +32,4 @@ export default async function ConversationDetailPage({
     </div>
   );
 }
+

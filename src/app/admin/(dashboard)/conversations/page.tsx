@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { getAdminConversations } from "@/features/chat/admin-queries";
 import { AdminList } from "@/components/admin/admin-list";
 import { Badge } from "@/components/ui/badge";
@@ -26,7 +26,7 @@ export default async function AdminConversationsPage() {
         {
           header: "Conversation",
           render: (c) => (
-            <Link href={`/admin/conversations/${c.id}`} className="font-medium hover:text-primary">
+            <Link href={`/admin/conversations/${c.id}`} className="font-medium hover:text-hover">
               {c.id.slice(0, 8)}…
             </Link>
           ),
@@ -47,7 +47,7 @@ export default async function AdminConversationsPage() {
       actions={(c) => (
         <Link
           href={`/admin/conversations/${c.id}`}
-          className="rounded-radius-xs px-2 py-1 text-sm text-text-secondary hover:text-primary"
+          className="rounded-radius-xs px-2 py-1 text-sm text-text-secondary hover:text-hover"
         >
           Open
         </Link>
@@ -55,3 +55,4 @@ export default async function AdminConversationsPage() {
     />
   );
 }
+
