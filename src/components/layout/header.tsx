@@ -17,31 +17,47 @@ export async function Header() {
   const siteName = settings?.site_name ?? "Stratifit";
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur-md">
-      <Container className="flex h-16 items-center justify-between gap-4">
+    <header className="sticky top-0 z-40 border-b border-border bg-background-deep/90 backdrop-blur-md">
+      <Container className="flex h-20 items-center justify-between">
         <Link
           href="/"
-          className="font-display text-lg font-bold tracking-tight text-text-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          className="flex select-none items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
-          {siteName}
+          <span
+            aria-hidden="true"
+            className="flex h-9 w-9 items-center justify-center rounded-radius-md bg-primary text-sm font-extrabold tracking-tight text-text-inverse sm:h-10 sm:w-10 sm:text-base shadow-[rgba(245,158,11,0.25)_0px_6px_20px]"
+          >
+            SF
+          </span>
+          <span className="text-sm font-semibold uppercase tracking-[0.15em] text-text-primary sm:text-base">
+            {siteName}
+          </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
-          {items.map((item) => (
-            <a
-              key={item.id}
-              href={item.href}
-              target={item.open_in_new_tab ? "_blank" : undefined}
-              rel={item.open_in_new_tab ? "noopener noreferrer" : undefined}
-              className="rounded-radius-sm px-3 py-2 text-sm font-medium text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-            >
-              {resolveTranslation(item.label_translations, locale)}
-            </a>
-          ))}
-        </nav>
+        <div className="flex items-center gap-6">
+          <nav className="hidden items-center gap-6 md:flex" aria-label="Main">
+            {items.map((item) => (
+              <a
+                key={item.id}
+                href={item.href}
+                target={item.open_in_new_tab ? "_blank" : undefined}
+                rel={item.open_in_new_tab ? "noopener noreferrer" : undefined}
+                className="text-sm font-medium text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                {resolveTranslation(item.label_translations, locale)}
+              </a>
+            ))}
+          </nav>
 
-        <div className="flex items-center gap-2">
           <LanguageSwitcher currentLocale={locale} />
+
+          <a
+            href="/contact"
+            className="flex items-center gap-2 rounded-radius-md bg-primary px-5 py-2.5 text-sm font-bold text-text-inverse transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary-light active:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-interactive focus-visible:ring-offset-2 focus-visible:ring-offset-background-deep"
+          >
+            Start a Project
+          </a>
+
           <div className="md:hidden">
             <MobileNav items={items} locale={locale} />
           </div>
@@ -50,5 +66,3 @@ export async function Header() {
     </header>
   );
 }
-
-

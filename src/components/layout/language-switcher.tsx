@@ -4,26 +4,20 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { setLocale } from "@/actions/locale";
 import { SUPPORTED_LOCALES } from "@/lib/i18n/resolve-translation";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/cn";
 
-const LOCALE_LABELS: Record<string, string> = {
-  en: "EN",
-  de: "DE",
-  fr: "FR",
-  es: "ES",
-};
-
-const LOCALE_NAMES: Record<string, string> = {
-  en: "English",
-  de: "Deutsch",
-  fr: "Français",
-  es: "Español",
+const LOCALE_META: Record<string, { flag: string; code: string; name: string }> = {
+  en: { flag: "🇺🇸", code: "EN", name: "English" },
+  de: { flag: "🇩🇪", code: "DE", name: "Deutsch" },
+  fr: { flag: "🇫🇷", code: "FR", name: "Français" },
+  es: { flag: "🇪🇸", code: "ES", name: "Español" },
 };
 
 export function LanguageSwitcher({ currentLocale = "en" }: { currentLocale?: string }) {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const ref = React.useRef<HTMLDivElement>(null);
+  const meta = LOCALE_META[currentLocale] ?? LOCALE_META.en;
 
   React.useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -44,15 +38,29 @@ export function LanguageSwitcher({ currentLocale = "en" }: { currentLocale?: str
 
   return (
     <div ref={ref} className="relative">
-      <Button
-        variant="secondary"
-        size="small"
+      <button
+        type="button"
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
+        className="flex cursor-pointer items-center gap-1.5 rounded-2xl border border-border-default px-3 py-1.5 text-[13px] font-semibold text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-surface-hover hover:border-border-interactive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       >
-        {LOCALE_LABELS[currentLocale] ?? currentLocale}
-      </Button>
+        <span>{meta.flag}</span>
+        <span>{meta.code}</span>
+        <svg
+          className="size-3"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
+
       {open ? (
         <div
           role="menu"
@@ -64,13 +72,15 @@ export function LanguageSwitcher({ currentLocale = "en" }: { currentLocale?: str
               type="button"
               role="menuitem"
               onClick={() => handleSelect(locale)}
-              className={`block w-full rounded-radius-xs px-3 py-2 text-left text-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+              className={cn(
+                "flex w-full items-center gap-2 rounded-radius-xs px-3 py-2 text-left text-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
                 locale === currentLocale
                   ? "font-medium text-primary"
                   : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
-              }`}
+              )}
             >
-              {LOCALE_NAMES[locale]}
+              <span>{LOCALE_META[locale].flag}</span>
+              {LOCALE_META[locale].name}
             </button>
           ))}
         </div>
