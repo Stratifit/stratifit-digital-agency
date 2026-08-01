@@ -148,9 +148,9 @@ export async function HeroSection() {
         ) : null}
 
         {primaryLabel || secondaryLabel ? (
-          <div className="mx-auto mt-[26px] flex w-full max-w-xl flex-col gap-3 sm:flex-row sm:gap-4">
+          <div className="mx-auto mt-[26px] flex w-full max-w-3xl flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4">
             {primaryLabel && hero.primary_cta_url ? (
-              <Button size="medium" className="flex-1">
+              <Button size="medium" className="!h-12 w-full sm:w-[370px] sm:flex-none">
                 <a
                   href={hero.primary_cta_url}
                   className="flex items-center justify-center gap-2 sm:gap-3"
@@ -172,7 +172,7 @@ export async function HeroSection() {
               </Button>
             ) : null}
             {secondaryLabel && hero.secondary_cta_url ? (
-              <Button variant="secondary" size="medium" className="flex-1">
+              <Button variant="secondary" size="medium" className="!h-12 w-full sm:w-[370px] sm:flex-none">
                 <a
                   href={hero.secondary_cta_url}
                   className="flex items-center justify-center gap-2 sm:gap-3"
