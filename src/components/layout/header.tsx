@@ -17,7 +17,7 @@ export async function Header() {
   const siteName = settings?.site_name ?? "Stratifit";
 
   return (
-    <header className="border-b border-border bg-background">
+    <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur-md">
       <Container className="flex h-16 items-center justify-between gap-4">
         <Link
           href="/"
