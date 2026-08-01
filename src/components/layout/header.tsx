@@ -41,7 +41,7 @@ export async function Header() {
       <Container className="flex h-16 items-center justify-between sm:h-20">
         {/* Mobile: hamburger (left) */}
         <div className="md:hidden">
-          <MobileNav items={items} locale={locale} />
+          <MobileNav items={items} locale={locale} siteName={siteName} />
         </div>
 
         {/* Brand: centered on mobile, left on desktop */}
