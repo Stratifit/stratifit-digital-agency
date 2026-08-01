@@ -150,7 +150,7 @@ export function MobileNav({
         >
           <DrawerTitle className="sr-only">Navigation menu</DrawerTitle>
 
-          <header className="relative z-20 flex min-h-20 shrink-0 items-center justify-between border-b border-border-subtle bg-black px-6 pr-20">
+          <header className="relative z-20 flex min-h-20 shrink-0 items-center justify-between border-b border-border-subtle bg-black px-6 pr-16">
             <div className="flex min-w-0 items-center">
               <div className="flex w-[160px] items-center">
                 <BrandLogo alt={siteName} />
