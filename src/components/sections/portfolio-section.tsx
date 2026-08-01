@@ -1,4 +1,5 @@
-import Link from "next/link";
+﻿import Link from "next/link";
+import { getLocale } from "@/lib/i18n/get-locale";
 import { getPublicPortfolioProjects } from "@/features/portfolio/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
@@ -6,7 +7,8 @@ import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-export async function PortfolioSection({ locale = "en" }: { locale?: string }) {
+export async function PortfolioSection() {
+  const locale = await getLocale();
   const projects = await getPublicPortfolioProjects(3);
 
   if (projects.length === 0) {
@@ -46,3 +48,5 @@ export async function PortfolioSection({ locale = "en" }: { locale?: string }) {
     </Section>
   );
 }
+
+

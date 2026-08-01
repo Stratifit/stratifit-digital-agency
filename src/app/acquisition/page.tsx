@@ -1,4 +1,5 @@
 ﻿import { getPublicAcquisitionSection } from "@/features/acquisition/queries";
+import { getLocale } from "@/lib/i18n/get-locale";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { FinalCtaSection } from "@/components/sections/final-cta-section";
 
 export default async function AcquisitionPage() {
+  const locale = await getLocale();
   const section = await getPublicAcquisitionSection();
 
   return (
@@ -24,12 +26,12 @@ export default async function AcquisitionPage() {
           </p>
           <h1 className="mt-4 max-w-3xl font-display text-4xl font-bold tracking-tight text-text-primary md:text-5xl">
             {section
-              ? resolveTranslation(section.title_translations, "en")
+              ? resolveTranslation(section.title_translations, locale)
               : "Buy a Business"}
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-text-secondary">
             {section
-              ? resolveTranslation(section.description_translations, "en")
+              ? resolveTranslation(section.description_translations, locale)
               : "Looking to acquire a digital business? We help you find and evaluate opportunities."}
           </p>
         </Container>
@@ -48,7 +50,7 @@ export default async function AcquisitionPage() {
                     (benefit, index) => (
                       <li key={index} className="flex items-center gap-3 text-text-primary">
                         <span className="font-medium text-primary">✓</span>
-                        {resolveTranslation(benefit.text, "en")}
+                        {resolveTranslation(benefit.text, locale)}
                       </li>
                     )
                   )}
@@ -58,7 +60,7 @@ export default async function AcquisitionPage() {
                 <div className="mt-8">
                   <Button size="large">
                     <a href={section.cta_url}>
-                      {resolveTranslation(section.cta_label_translations, "en")}
+                      {resolveTranslation(section.cta_label_translations, locale)}
                     </a>
                   </Button>
                 </div>
@@ -72,4 +74,5 @@ export default async function AcquisitionPage() {
     </>
   );
 }
+
 

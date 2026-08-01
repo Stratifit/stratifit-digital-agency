@@ -1,4 +1,5 @@
-import { notFound } from "next/navigation";
+﻿import { notFound } from "next/navigation";
+import { getLocale } from "@/lib/i18n/get-locale";
 import type { Metadata } from "next";
 import { getPublicInsightDetail } from "@/features/insights/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
@@ -11,11 +12,12 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  const locale = await getLocale();
   const insight = await getPublicInsightDetail(slug);
   if (!insight) return {};
   return {
-    title: `${resolveTranslation(insight.title_translations, "en")} — Stratifit`,
-    description: resolveTranslation(insight.excerpt_translations, "en"),
+    title: `${resolveTranslation(insight.title_translations, locale)} — Stratifit`,
+    description: resolveTranslation(insight.excerpt_translations, locale),
   };
 }
 
@@ -25,13 +27,14 @@ export default async function InsightDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const locale = await getLocale();
   const insight = await getPublicInsightDetail(slug);
 
   if (!insight) {
     notFound();
   }
 
-  const content = resolveTranslation(insight.content_translations, "en");
+  const content = resolveTranslation(insight.content_translations, locale);
   const paragraphs = content.split(/\n\n+/).filter(Boolean);
 
   return (
@@ -44,10 +47,10 @@ export default async function InsightDetailPage({
               : "Insight"}
           </p>
           <h1 className="mt-4 max-w-3xl font-display text-4xl font-bold tracking-tight text-text-primary md:text-5xl">
-            {resolveTranslation(insight.title_translations, "en")}
+            {resolveTranslation(insight.title_translations, locale)}
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-text-secondary">
-            {resolveTranslation(insight.excerpt_translations, "en")}
+            {resolveTranslation(insight.excerpt_translations, locale)}
           </p>
         </Container>
       </section>
@@ -66,3 +69,4 @@ export default async function InsightDetailPage({
     </>
   );
 }
+

@@ -1,9 +1,11 @@
-import { getPublicHero } from "@/features/hero/queries";
+﻿import { getPublicHero } from "@/features/hero/queries";
+import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 
-export async function HeroSection({ locale = "en" }: { locale?: string }) {
+export async function HeroSection() {
+  const locale = await getLocale();
   const hero = await getPublicHero();
 
   if (!hero) {
@@ -70,3 +72,5 @@ export async function HeroSection({ locale = "en" }: { locale?: string }) {
     </section>
   );
 }
+
+

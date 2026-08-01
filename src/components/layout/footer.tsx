@@ -1,9 +1,11 @@
-import { getPublicFooterGroups } from "@/features/footer/queries";
+﻿import { getPublicFooterGroups } from "@/features/footer/queries";
+import { getLocale } from "@/lib/i18n/get-locale";
 import { getPublicSiteSettings } from "@/features/site-settings/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 
-export async function Footer({ locale = "en" }: { locale?: string }) {
+export async function Footer() {
+  const locale = await getLocale();
   const [groups, settings] = await Promise.all([
     getPublicFooterGroups(),
     getPublicSiteSettings(),
@@ -64,3 +66,5 @@ export async function Footer({ locale = "en" }: { locale?: string }) {
     </footer>
   );
 }
+
+

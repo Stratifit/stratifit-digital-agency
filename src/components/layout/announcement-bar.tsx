@@ -1,8 +1,10 @@
-import { getPublicAnnouncement } from "@/features/announcement/queries";
+﻿import { getPublicAnnouncement } from "@/features/announcement/queries";
+import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 
-export async function AnnouncementBar({ locale = "en" }: { locale?: string }) {
+export async function AnnouncementBar() {
+  const locale = await getLocale();
   const announcement = await getPublicAnnouncement();
 
   if (!announcement) {
@@ -35,3 +37,5 @@ export async function AnnouncementBar({ locale = "en" }: { locale?: string }) {
     </div>
   );
 }
+
+

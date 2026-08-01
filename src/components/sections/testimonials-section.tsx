@@ -1,10 +1,12 @@
-import { getPublicTestimonials } from "@/features/testimonials/queries";
+﻿import { getPublicTestimonials } from "@/features/testimonials/queries";
+import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
 
-export async function TestimonialsSection({ locale = "en" }: { locale?: string }) {
+export async function TestimonialsSection() {
+  const locale = await getLocale();
   const testimonials = await getPublicTestimonials(3);
 
   if (testimonials.length === 0) {
@@ -43,3 +45,5 @@ export async function TestimonialsSection({ locale = "en" }: { locale?: string }
     </Section>
   );
 }
+
+

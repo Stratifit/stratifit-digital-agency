@@ -1,11 +1,13 @@
-import { getPublicFinalCta } from "@/features/final-cta/queries";
+﻿import { getPublicFinalCta } from "@/features/final-cta/queries";
+import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-export async function FinalCtaSection({ locale = "en" }: { locale?: string }) {
+export async function FinalCtaSection() {
+  const locale = await getLocale();
   const data = await getPublicFinalCta();
 
   if (!data) {
@@ -50,3 +52,5 @@ export async function FinalCtaSection({ locale = "en" }: { locale?: string }) {
     </Section>
   );
 }
+
+

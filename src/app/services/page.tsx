@@ -1,4 +1,5 @@
 ﻿import { getPublicServices } from "@/features/services/queries";
+import { getLocale } from "@/lib/i18n/get-locale";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,6 +13,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export default async function ServicesPage() {
+  const locale = await getLocale();
   const services = await getPublicServices();
 
   return (
@@ -47,21 +49,21 @@ export default async function ServicesPage() {
                       </p>
                     ) : null}
                     <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-text-primary">
-                      {resolveTranslation(service.title_translations, "en")}
+                      {resolveTranslation(service.title_translations, locale)}
                     </h2>
                     <p className="mt-2 text-sm leading-6 text-text-secondary">
-                      {resolveTranslation(service.short_description_translations, "en")}
+                      {resolveTranslation(service.short_description_translations, locale)}
                     </p>
                   </div>
                   <div className="lg:col-span-2">
                     <p className="text-base leading-7 text-text-secondary">
-                      {resolveTranslation(service.full_description_translations, "en")}
+                      {resolveTranslation(service.full_description_translations, locale)}
                     </p>
                     {service.cta_label_translations &&
-                    resolveTranslation(service.cta_label_translations, "en") ? (
+                    resolveTranslation(service.cta_label_translations, locale) ? (
                       <Button size="small" className="mt-6">
                         <a href={service.cta_url ?? "/contact"}>
-                          {resolveTranslation(service.cta_label_translations, "en")}
+                          {resolveTranslation(service.cta_label_translations, locale)}
                         </a>
                       </Button>
                     ) : null}
@@ -75,4 +77,5 @@ export default async function ServicesPage() {
     </>
   );
 }
+
 

@@ -1,4 +1,5 @@
-import { getPublicWhyChooseUs } from "@/features/why-choose-us/queries";
+﻿import { getPublicWhyChooseUs } from "@/features/why-choose-us/queries";
+import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
@@ -10,7 +11,8 @@ interface WhyChooseUsItem {
   description?: Record<string, string>;
 }
 
-export async function WhyChooseUsSection({ locale = "en" }: { locale?: string }) {
+export async function WhyChooseUsSection() {
+  const locale = await getLocale();
   const data = await getPublicWhyChooseUs();
 
   if (!data) {
@@ -60,3 +62,5 @@ export async function WhyChooseUsSection({ locale = "en" }: { locale?: string })
     </Section>
   );
 }
+
+

@@ -1,4 +1,5 @@
-import { getPublicServices } from "@/features/services/queries";
+﻿import { getPublicServices } from "@/features/services/queries";
+import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
@@ -6,7 +7,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-export async function ServicesSection({ locale = "en" }: { locale?: string }) {
+export async function ServicesSection() {
+  const locale = await getLocale();
   const services = await getPublicServices();
 
   if (services.length === 0) {
@@ -62,3 +64,5 @@ export async function ServicesSection({ locale = "en" }: { locale?: string }) {
     </Section>
   );
 }
+
+

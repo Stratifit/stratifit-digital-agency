@@ -1,4 +1,5 @@
 ﻿import { getPublicWhyChooseUs } from "@/features/why-choose-us/queries";
+import { getLocale } from "@/lib/i18n/get-locale";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { FinalCtaSection } from "@/components/sections/final-cta-section";
 
 export default async function AboutPage() {
+  const locale = await getLocale();
   const [why, process, testimonials, cta] = await Promise.all([
     getPublicWhyChooseUs(),
     getPublicProcessSteps(),
@@ -46,10 +48,10 @@ export default async function AboutPage() {
             <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
               <div>
                 <h2 className="font-display text-3xl font-bold tracking-tight text-text-primary md:text-4xl">
-                  {resolveTranslation(why.title_translations, "en")}
+                  {resolveTranslation(why.title_translations, locale)}
                 </h2>
                 <p className="mt-4 text-lg leading-8 text-text-secondary">
-                  {resolveTranslation(why.description_translations, "en")}
+                  {resolveTranslation(why.description_translations, locale)}
                 </p>
               </div>
               <div className="grid gap-6 sm:grid-cols-2">
@@ -58,10 +60,10 @@ export default async function AboutPage() {
                       (item, index) => (
                         <Card key={index}>
                           <h3 className="font-display text-lg font-semibold text-text-primary">
-                            {resolveTranslation(item.title, "en")}
+                            {resolveTranslation(item.title, locale)}
                           </h3>
                           <p className="mt-2 text-sm leading-6 text-text-secondary">
-                            {resolveTranslation(item.description, "en")}
+                            {resolveTranslation(item.description, locale)}
                           </p>
                         </Card>
                       )
@@ -86,10 +88,10 @@ export default async function AboutPage() {
                     {step.number.toString().padStart(2, "0")}
                   </span>
                   <h3 className="mt-3 font-display text-lg font-semibold text-text-primary">
-                    {resolveTranslation(step.title_translations, "en")}
+                    {resolveTranslation(step.title_translations, locale)}
                   </h3>
                   <p className="mt-2 text-sm leading-6 text-text-secondary">
-                    {resolveTranslation(step.description_translations, "en")}
+                    {resolveTranslation(step.description_translations, locale)}
                   </p>
                 </Card>
               ))}
@@ -108,12 +110,12 @@ export default async function AboutPage() {
               {testimonials.map((t, index) => (
                 <Card key={index} className="flex flex-col">
                   <p className="flex-1 text-base leading-7 text-text-primary">
-                    &ldquo;{resolveTranslation(t.quote_translations, "en")}&rdquo;
+                    &ldquo;{resolveTranslation(t.quote_translations, locale)}&rdquo;
                   </p>
                   <div className="mt-6">
                     <p className="font-medium text-text-primary">{t.person_name}</p>
                     <p className="text-sm text-text-muted">
-                      {resolveTranslation(t.person_role_translations, "en")}
+                      {resolveTranslation(t.person_role_translations, locale)}
                       {t.company_name ? ` — ${t.company_name}` : ""}
                     </p>
                   </div>
@@ -138,4 +140,5 @@ export default async function AboutPage() {
     </>
   );
 }
+
 

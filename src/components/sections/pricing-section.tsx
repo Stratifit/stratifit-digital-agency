@@ -1,4 +1,5 @@
-import { getPublicPricingPlans } from "@/features/pricing/queries";
+﻿import { getPublicPricingPlans } from "@/features/pricing/queries";
+import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
@@ -14,7 +15,8 @@ interface FeaturesTranslations {
   [key: string]: unknown;
 }
 
-export async function PricingSection({ locale = "en" }: { locale?: string }) {
+export async function PricingSection() {
+  const locale = await getLocale();
   const plans = await getPublicPricingPlans();
 
   if (plans.length === 0) {
@@ -91,3 +93,5 @@ export async function PricingSection({ locale = "en" }: { locale?: string }) {
     </Section>
   );
 }
+
+

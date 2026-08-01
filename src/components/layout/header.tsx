@@ -1,4 +1,5 @@
-import Link from "next/link";
+﻿import Link from "next/link";
+import { getLocale } from "@/lib/i18n/get-locale";
 import { getPublicNavigation } from "@/features/navigation/queries";
 import { getPublicSiteSettings } from "@/features/site-settings/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
@@ -6,7 +7,8 @@ import { Container } from "@/components/ui/container";
 import { MobileNav } from "./mobile-nav";
 import { LanguageSwitcher } from "./language-switcher";
 
-export async function Header({ locale = "en" }: { locale?: string }) {
+export async function Header() {
+  const locale = await getLocale();
   const [items, settings] = await Promise.all([
     getPublicNavigation("header"),
     getPublicSiteSettings(),
@@ -48,3 +50,5 @@ export async function Header({ locale = "en" }: { locale?: string }) {
     </header>
   );
 }
+
+

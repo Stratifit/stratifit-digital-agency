@@ -1,10 +1,12 @@
-import { getPublicProcessSteps } from "@/features/process/queries";
+﻿import { getPublicProcessSteps } from "@/features/process/queries";
+import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
 
-export async function ProcessSection({ locale = "en" }: { locale?: string }) {
+export async function ProcessSection() {
+  const locale = await getLocale();
   const steps = await getPublicProcessSteps();
 
   if (steps.length === 0) {
@@ -38,3 +40,5 @@ export async function ProcessSection({ locale = "en" }: { locale?: string }) {
     </Section>
   );
 }
+
+

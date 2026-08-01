@@ -1,4 +1,5 @@
-import { notFound } from "next/navigation";
+﻿import { notFound } from "next/navigation";
+import { getLocale } from "@/lib/i18n/get-locale";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getPublicPortfolioDetail } from "@/features/portfolio/queries";
@@ -14,11 +15,12 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  const locale = await getLocale();
   const project = await getPublicPortfolioDetail(slug);
   if (!project) return {};
   return {
-    title: `${resolveTranslation(project.title_translations, "en")} — Stratifit`,
-    description: resolveTranslation(project.summary_translations, "en"),
+    title: `${resolveTranslation(project.title_translations, locale)} — Stratifit`,
+    description: resolveTranslation(project.summary_translations, locale),
   };
 }
 
@@ -41,6 +43,7 @@ export default async function WorkDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const locale = await getLocale();
   const project = await getPublicPortfolioDetail(slug);
 
   if (!project) {
@@ -61,10 +64,10 @@ export default async function WorkDetailPage({
             {project.client_name}
           </p>
           <h1 className="mt-4 max-w-3xl font-display text-4xl font-bold tracking-tight text-text-primary md:text-5xl">
-            {resolveTranslation(project.title_translations, "en")}
+            {resolveTranslation(project.title_translations, locale)}
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-text-secondary">
-            {resolveTranslation(project.summary_translations, "en")}
+            {resolveTranslation(project.summary_translations, locale)}
           </p>
         </Container>
       </section>
@@ -72,10 +75,10 @@ export default async function WorkDetailPage({
       <Section>
         <Container>
           <div className="space-y-8">
-            {block("Challenge", resolveTranslation(project.challenge_translations, "en"))}
-            {block("Approach", resolveTranslation(project.approach_translations, "en"))}
-            {block("Solution", resolveTranslation(project.solution_translations, "en"))}
-            {block("Results", resolveTranslation(project.results_translations, "en"))}
+            {block("Challenge", resolveTranslation(project.challenge_translations, locale))}
+            {block("Approach", resolveTranslation(project.approach_translations, locale))}
+            {block("Solution", resolveTranslation(project.solution_translations, locale))}
+            {block("Results", resolveTranslation(project.results_translations, locale))}
 
             {deliverables.length > 0 ? (
               <div>
@@ -111,3 +114,4 @@ export default async function WorkDetailPage({
     </>
   );
 }
+

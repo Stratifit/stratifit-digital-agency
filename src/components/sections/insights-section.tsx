@@ -1,4 +1,5 @@
-import Link from "next/link";
+﻿import Link from "next/link";
+import { getLocale } from "@/lib/i18n/get-locale";
 import { getPublicInsights } from "@/features/insights/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
@@ -6,7 +7,8 @@ import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-export async function InsightsSection({ locale = "en" }: { locale?: string }) {
+export async function InsightsSection() {
+  const locale = await getLocale();
   const insights = await getPublicInsights(3);
 
   if (insights.length === 0) {
@@ -43,3 +45,5 @@ export async function InsightsSection({ locale = "en" }: { locale?: string }) {
     </Section>
   );
 }
+
+

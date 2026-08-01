@@ -1,4 +1,5 @@
-import { getPublicAcquisitionSection } from "@/features/acquisition/queries";
+﻿import { getPublicAcquisitionSection } from "@/features/acquisition/queries";
+import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
@@ -10,7 +11,8 @@ interface Benefit {
   text?: Record<string, string>;
 }
 
-export async function AcquisitionSection({ locale = "en" }: { locale?: string }) {
+export async function AcquisitionSection() {
+  const locale = await getLocale();
   const data = await getPublicAcquisitionSection();
 
   if (!data) {
@@ -64,3 +66,5 @@ export async function AcquisitionSection({ locale = "en" }: { locale?: string })
     </Section>
   );
 }
+
+
