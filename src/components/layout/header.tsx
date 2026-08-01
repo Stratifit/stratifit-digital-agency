@@ -6,6 +6,26 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { MobileNav } from "./mobile-nav";
 import { LanguageSwitcher } from "./language-switcher";
+import { HeaderChatButton } from "./header-chat-button";
+
+function Brand({ siteName }: { siteName: string }) {
+  return (
+    <Link
+      href="/"
+      className="flex select-none items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+    >
+      <span
+        aria-hidden="true"
+        className="flex h-9 w-9 items-center justify-center rounded-radius-md bg-primary text-sm font-extrabold tracking-tight text-text-inverse sm:h-10 sm:w-10 sm:text-base shadow-[rgba(245,158,11,0.25)_0px_6px_20px]"
+      >
+        SF
+      </span>
+      <span className="text-sm font-semibold uppercase tracking-[0.15em] text-text-primary sm:text-base">
+        {siteName}
+      </span>
+    </Link>
+  );
+}
 
 export async function Header() {
   const locale = await getLocale();
@@ -18,24 +38,20 @@ export async function Header() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background-deep/90 backdrop-blur-md">
-      <Container className="flex h-20 items-center justify-between">
-        <Link
-          href="/"
-          className="flex select-none items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-        >
-          <span
-            aria-hidden="true"
-            className="flex h-9 w-9 items-center justify-center rounded-radius-md bg-primary text-sm font-extrabold tracking-tight text-text-inverse sm:h-10 sm:w-10 sm:text-base shadow-[rgba(245,158,11,0.25)_0px_6px_20px]"
-          >
-            SF
-          </span>
-          <span className="text-sm font-semibold uppercase tracking-[0.15em] text-text-primary sm:text-base">
-            {siteName}
-          </span>
-        </Link>
+      <Container className="flex h-16 items-center justify-between sm:h-20">
+        {/* Mobile: hamburger (left) */}
+        <div className="md:hidden">
+          <MobileNav items={items} locale={locale} />
+        </div>
 
-        <div className="flex items-center gap-6">
-          <nav className="hidden items-center gap-6 md:flex" aria-label="Main">
+        {/* Brand: centered on mobile, left on desktop */}
+        <div className="flex flex-1 justify-center md:flex-none md:justify-start">
+          <Brand siteName={siteName} />
+        </div>
+
+        {/* Desktop: nav + language + CTA */}
+        <div className="hidden items-center gap-6 md:flex">
+          <nav className="flex items-center gap-6" aria-label="Main">
             {items.map((item) => (
               <a
                 key={item.id}
@@ -57,13 +73,13 @@ export async function Header() {
           >
             Start a Project
           </a>
+        </div>
 
-          <div className="md:hidden">
-            <MobileNav items={items} locale={locale} />
-          </div>
+        {/* Mobile: chat button (right) */}
+        <div className="md:hidden">
+          <HeaderChatButton />
         </div>
       </Container>
     </header>
   );
 }
-

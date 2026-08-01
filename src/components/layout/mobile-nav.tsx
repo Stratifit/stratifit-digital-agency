@@ -29,20 +29,17 @@ export function MobileNav({ items, locale }: MobileNavProps) {
         aria-label="Open navigation menu"
         aria-expanded={open}
         onClick={() => setOpen(true)}
-        className="inline-flex size-10 items-center justify-center rounded-radius-sm text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:hidden"
+        className="inline-flex size-11 items-center justify-center rounded-radius-md text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-surface active:bg-background-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:size-12"
       >
         <svg
-          className="size-6"
+          className="size-7 sm:size-8"
           viewBox="0 0 24 24"
           fill="none"
           aria-hidden="true"
         >
-          <path
-            d="M4 6h16M4 12h16M4 18h16"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
+          <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
 

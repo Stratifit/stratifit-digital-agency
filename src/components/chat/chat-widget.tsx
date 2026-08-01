@@ -38,6 +38,14 @@ export function ChatWidget() {
   );
 
   React.useEffect(() => {
+    function handleOpen() {
+      setOpen(true);
+    }
+    window.addEventListener("stratifit:open-chat", handleOpen);
+    return () => window.removeEventListener("stratifit:open-chat", handleOpen);
+  }, []);
+
+  React.useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, open]);
 
