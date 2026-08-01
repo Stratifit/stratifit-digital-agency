@@ -48,21 +48,21 @@ export function AnnouncementBarView({ slides, linkUrl, linkLabel }: Announcement
   }
 
   return (
-    <div className="border-b border-border bg-surface">
+    <div className="border-b border-border bg-primary">
       <Container className="flex h-10 items-center gap-3">
         <div
           className="flex min-w-0 flex-1 touch-pan-y items-center gap-2"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          <span key={index} className="truncate text-sm text-text-secondary">
+          <span key={index} className="truncate text-sm font-medium text-text-inverse">
             {message}
           </span>
           {linkUrl ? (
             <a
               href={linkUrl}
               aria-label={linkLabel ?? "Learn more"}
-              className="flex shrink-0 items-center gap-1 text-sm font-medium text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-primary-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className="flex shrink-0 items-center gap-1 text-sm font-bold text-text-inverse transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-text-inverse/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-inverse"
             >
               <span className="hidden sm:inline">{linkLabel}</span>
               <svg className="size-4" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -87,10 +87,10 @@ export function AnnouncementBarView({ slides, linkUrl, linkLabel }: Announcement
                   aria-current={dotIndex === index ? "true" : undefined}
                   onClick={() => setIndex(dotIndex)}
                   className={cn(
-                    "size-1.5 rounded-full transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                    "size-1.5 rounded-full transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-inverse",
                     dotIndex === index
-                      ? "bg-primary"
-                      : "bg-text-muted/50 hover:bg-text-muted"
+                      ? "bg-text-inverse"
+                      : "bg-text-inverse/30 hover:bg-text-inverse/50"
                   )}
                 />
               ))}
@@ -101,7 +101,7 @@ export function AnnouncementBarView({ slides, linkUrl, linkLabel }: Announcement
           type="button"
           aria-label="Dismiss announcement"
           onClick={() => setDismissed(true)}
-          className="shrink-0 rounded-radius-xs p-1 text-text-muted transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          className="shrink-0 rounded-radius-xs p-1 text-text-inverse transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-text-inverse/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-inverse"
         >
           <svg className="size-4" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path
