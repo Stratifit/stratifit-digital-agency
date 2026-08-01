@@ -140,17 +140,20 @@ export function MobileNav({
                             className="group flex flex-[0_0_70%] snap-start flex-col rounded-[10px] border border-[#1f1f1f] bg-[#111] p-3.5 transition-[border-color,background-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-[#ffb300]/40 hover:bg-[#161616] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                           >
                             <div className="mb-2.5 flex items-center justify-between">
-                              <div className="flex items-center gap-2.5">
+                              <div className="flex min-w-0 items-center gap-2.5">
                                 <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#ffb300] text-black">
-                                  <ServiceIcon name={service.icon_name} className="!size-4" />
+                                  <ServiceIcon
+                                    name={service.icon_name}
+                                    className="!size-4 !text-black !drop-shadow-none"
+                                  />
                                 </span>
-                                <span className="text-[15px] font-semibold text-white">
+                                <span className="min-w-0 truncate text-[15px] font-semibold text-white">
                                   {resolveTranslation(service.title_translations, locale)}
                                 </span>
                               </div>
                               <ArrowIcon />
                             </div>
-                            <p className="min-h-[31.2px] overflow-hidden text-xs leading-[1.3] text-[#888]">
+                            <p className="line-clamp-2 min-h-[31.2px] overflow-hidden text-xs leading-[1.3] text-[#888]">
                               {resolveTranslation(
                                 service.short_description_translations,
                                 locale
