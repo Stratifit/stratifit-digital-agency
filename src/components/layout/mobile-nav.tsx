@@ -25,7 +25,7 @@ function ArrowIcon() {
       viewBox="0 0 24 24"
       fill="none"
       aria-hidden="true"
-      className="size-4 shrink-0 text-[#ffb300] opacity-70 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-0.5 group-hover:opacity-100"
+      className="size-4 shrink-0 text-primary opacity-70 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-0.5 group-hover:opacity-100"
     >
       <line x1="7" y1="17" x2="17" y2="7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
       <polyline points="7 7 17 7 17 17" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -164,23 +164,23 @@ export function MobileNav({
                             data-service-card
                             href={service.cta_url ?? "/contact"}
                             onClick={() => setOpen(false)}
-                            className="group flex flex-[0_0_70%] snap-start flex-col rounded-[10px] border border-[#1f1f1f] bg-[#111] p-3.5 transition-[border-color,background-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-[#ffb300]/40 hover:bg-[#161616] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                            className="group flex flex-[0_0_70%] snap-start flex-col rounded-[10px] border border-border bg-surface p-3.5 transition-[border-color,background-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-surface-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                           >
                             <div className="mb-2.5 flex items-center justify-between">
                               <div className="flex min-w-0 items-center gap-2.5">
-                                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#ffb300] text-black">
+                                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-text-inverse">
                                   <ServiceIcon
                                     name={service.icon_name}
-                                    className="!size-4 !text-black !drop-shadow-none"
+                                    className="!size-4 !text-text-inverse !drop-shadow-none"
                                   />
                                 </span>
-                                <span className="min-w-0 truncate text-[15px] font-semibold text-white">
+                                <span className="min-w-0 truncate text-[15px] font-semibold text-text-primary">
                                   {resolveTranslation(service.title_translations, locale)}
                                 </span>
                               </div>
                               <ArrowIcon />
                             </div>
-                            <p className="line-clamp-2 min-h-[31.2px] overflow-hidden text-xs leading-[1.3] text-[#888]">
+                            <p className="line-clamp-2 min-h-[31.2px] overflow-hidden text-xs leading-[1.3] text-text-muted">
                               {resolveTranslation(
                                 service.short_description_translations,
                                 locale

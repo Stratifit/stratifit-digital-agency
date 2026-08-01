@@ -39,7 +39,7 @@ export function FooterContent({
       <div className="space-y-4">
         <div className="flex items-center gap-2">
           <div className="flex size-6 shrink-0 items-center justify-center rounded bg-primary">
-            <span className="text-[10px] font-extrabold text-black">
+            <span className="text-[10px] font-extrabold text-text-inverse">
               {siteName.slice(0, 2).toUpperCase()}
             </span>
           </div>

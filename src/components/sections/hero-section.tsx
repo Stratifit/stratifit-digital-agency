@@ -30,8 +30,7 @@ export async function HeroSection() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
         style={{
-          background:
-            "radial-gradient(circle at 70% 20%, rgba(245,158,11,0.14) 0%, rgba(245,158,11,0.04) 35%, transparent 70%)",
+          background: "var(--gradient-hero-ambient)",
         }}
       />
       <Container className="relative py-20 md:py-28 lg:py-36">
