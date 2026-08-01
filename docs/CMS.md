@@ -220,6 +220,7 @@ Website
 Content
 ├── Sections (eyebrow / title / highlight / description for homepage sections)
 ├── Services
+├── Process Steps
 ├── Portfolio Projects
 ├── Insights
 ├── Testimonials
