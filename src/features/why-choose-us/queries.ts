@@ -1,10 +1,18 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
+export interface WhyChooseUsItem {
+  icon: string | null;
+  title: Record<string, string> | null;
+  description: Record<string, string> | null;
+  stat_value: string;
+  stat_label: Record<string, string> | null;
+}
+
 export interface PublicWhyChooseUs {
   eyebrow_translations: Record<string, string> | null;
   title_translations: Record<string, string> | null;
   description_translations: Record<string, string> | null;
-  items: unknown[] | null;
+  items: WhyChooseUsItem[] | null;
 }
 
 export async function getPublicWhyChooseUs(): Promise<PublicWhyChooseUs | null> {

@@ -6,11 +6,13 @@ export function SectionHeader({
   settings,
   locale,
   align = "left",
+  dot = false,
   className,
 }: {
   settings: PublicSectionSettings | null;
   locale: string;
   align?: "left" | "center";
+  dot?: boolean;
   className?: string;
 }) {
   if (!settings) {
@@ -40,6 +42,12 @@ export function SectionHeader({
             centered && "mx-auto"
           )}
         >
+          {dot ? (
+            <span
+              aria-hidden="true"
+              className="mr-2 inline-block size-2 animate-pulse rounded-full bg-primary align-middle"
+            />
+          ) : null}
           {eyebrow}
         </p>
       ) : null}

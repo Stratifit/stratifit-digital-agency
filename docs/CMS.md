@@ -221,6 +221,7 @@ Content
 ├── Sections (eyebrow / title / highlight / description for homepage sections)
 ├── Services
 ├── Process Steps
+├── Why Choose Us (feature cards)
 ├── Portfolio Projects
 ├── Insights
 ├── Testimonials

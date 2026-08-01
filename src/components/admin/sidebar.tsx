@@ -13,6 +13,7 @@ const NAV_SECTIONS: { label: string; items: { href: string; label: string }[] }[
       { href: "/admin/content/sections", label: "Sections" },
       { href: "/admin/content/services", label: "Services" },
       { href: "/admin/content/process", label: "Process" },
+      { href: "/admin/content/why-choose-us", label: "Why Choose Us" },
       { href: "/admin/content/portfolio", label: "Portfolio" },
       { href: "/admin/content/insights", label: "Insights" },
       { href: "/admin/content/testimonials", label: "Testimonials" },
