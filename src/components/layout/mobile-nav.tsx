@@ -118,8 +118,8 @@ export function MobileNav({
 
       <Drawer open={open} onOpenChange={setOpen}>
         <DrawerContent
-          direction="right"
-          className="flex h-[100dvh] max-w-[430px] flex-col overflow-hidden border-l border-border-subtle bg-background p-0 shadow-lg sm:max-w-[430px]"
+          direction="left"
+          className="flex h-[100dvh] max-w-[430px] flex-col overflow-hidden border-r border-border-subtle bg-background p-0 shadow-lg sm:max-w-[430px]"
         >
           <DrawerTitle className="sr-only">Navigation menu</DrawerTitle>
 
