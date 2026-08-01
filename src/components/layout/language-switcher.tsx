@@ -43,7 +43,10 @@ export function LanguageSwitcher({ currentLocale = "en" }: { currentLocale?: str
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="flex cursor-pointer items-center gap-1.5 rounded-2xl border border-border-default px-3 py-1.5 text-[13px] font-semibold text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-surface-hover hover:border-border-interactive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        className={cn(
+          "flex cursor-pointer items-center gap-1.5 rounded-2xl border px-3 py-1.5 text-[13px] font-semibold text-text-primary transition-[background-color,border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-surface-hover hover:border-card-border-hover active:bg-card-active active:border-card-border-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2",
+          open ? "border-card-border-active bg-card-active" : "border-card-border"
+        )}
       >
         <span>{meta.flag}</span>
         <span>{meta.code}</span>
@@ -64,7 +67,7 @@ export function LanguageSwitcher({ currentLocale = "en" }: { currentLocale?: str
       {open ? (
         <div
           role="menu"
-          className="absolute right-0 top-full z-50 mt-2 w-36 rounded-radius-md border border-border bg-surface-elevated p-1 shadow-shadow-md"
+          className="absolute right-0 top-full z-50 mt-2 w-36 rounded-[10px] border border-card-border bg-card-dark p-1 shadow-shadow-md"
         >
           {SUPPORTED_LOCALES.map((locale) => (
             <button
@@ -73,10 +76,10 @@ export function LanguageSwitcher({ currentLocale = "en" }: { currentLocale?: str
               role="menuitem"
               onClick={() => handleSelect(locale)}
               className={cn(
-                "flex w-full items-center gap-2 rounded-radius-xs px-3 py-2 text-left text-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                "flex w-full items-center gap-2 rounded-radius-xs px-3 py-2 text-left text-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2",
                 locale === currentLocale
-                  ? "font-medium text-primary"
-                  : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+                  ? "font-medium bg-primary/10 text-primary"
+                  : "text-text-secondary hover:bg-primary/8 hover:text-primary"
               )}
             >
               <span>{LOCALE_META[locale].flag}</span>
