@@ -172,7 +172,7 @@ export async function HeroSection() {
               </Button>
             ) : null}
             {secondaryLabel && hero.secondary_cta_url ? (
-              <Button variant="secondary" size="medium" className="!h-12 w-full sm:w-[370px] sm:flex-none">
+              <Button variant="tertiary" size="medium" className="!h-12 w-full !rounded-[6px] sm:w-[370px] sm:flex-none">
                 <a
                   href={hero.secondary_cta_url}
                   className="flex items-center justify-center gap-2 sm:gap-3"
