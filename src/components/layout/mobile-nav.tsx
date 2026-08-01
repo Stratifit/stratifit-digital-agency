@@ -4,6 +4,7 @@ import * as React from "react";
 import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
 import { LanguageSwitcher } from "./language-switcher";
 import { ServiceIcon } from "@/components/ui/service-icon";
+import { BrandLogo } from "@/components/ui/brand-logo";
 import type { PublicFooterGroup } from "@/features/footer/queries";
 import type { PublicNavigationItem } from "@/features/navigation/queries";
 import type { PublicServiceDetail } from "@/features/services/queries";
@@ -102,13 +103,8 @@ export function MobileNav({
 
           <header className="relative z-20 flex min-h-20 shrink-0 items-center justify-between border-b border-border-subtle bg-black px-6 pr-20">
             <div className="flex min-w-0 items-center">
-              <div className="flex items-center gap-2.5">
-                <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-[#ffb300] text-sm font-extrabold text-black">
-                  {siteName.charAt(0)}
-                </div>
-                <span className="truncate text-lg font-bold uppercase tracking-wide text-white">
-                  {siteName}
-                </span>
+              <div className="flex w-[196px] items-center">
+                <BrandLogo alt={siteName} />
               </div>
             </div>
 
