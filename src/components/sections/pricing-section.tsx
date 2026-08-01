@@ -20,7 +20,7 @@ export async function PricingSection() {
   return (
     <Section>
       <Container>
-        <SectionHeader settings={settings} locale={locale} align="center" />
+        <SectionHeader settings={settings} locale={locale} align="left" />
         <PricingPlans plans={plans} locale={locale} />
       </Container>
     </Section>

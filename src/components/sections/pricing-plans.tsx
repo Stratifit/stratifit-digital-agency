@@ -12,7 +12,7 @@ function CheckIcon() {
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden="true"
-      className="mt-0.5 shrink-0 text-primary"
+      className="mt-0.5 size-4 shrink-0 text-primary"
     >
       <path
         fillRule="evenodd"
@@ -51,7 +51,7 @@ function PlanCard({
   return (
     <div
       className={cn(
-        "relative flex flex-col rounded-2xl border bg-card-dark p-6 transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)]",
+        "relative flex flex-col rounded-2xl border bg-card-dark p-6 transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] md:p-8",
         mobile
           ? "min-w-[280px] w-[80vw] max-w-[320px] h-[500px] shrink-0 snap-center"
           : "h-full",
@@ -100,7 +100,7 @@ function PlanCard({
           "block w-full rounded-xl py-3.5 text-center text-sm font-bold uppercase tracking-wide transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
           plan.is_featured
             ? "border border-transparent bg-primary text-text-inverse shadow-lg shadow-primary/20 hover:bg-primary-bright"
-            : "border border-primary/25 text-primary hover:bg-primary/10"
+            : "border border-primary text-primary hover:bg-primary/10"
         )}
       >
         {ctaLabel}
@@ -141,7 +141,7 @@ export function PricingPlans({
 
   return (
     <div>
-      <div className="mt-12 hidden gap-6 md:grid md:grid-cols-2 lg:grid-cols-4">
+      <div className="hidden gap-6 md:grid md:grid-cols-2 lg:grid-cols-4">
         {plans.map((plan) => (
           <PlanCard key={plan.slug} plan={plan} locale={locale} />
         ))}
@@ -151,7 +151,7 @@ export function PricingPlans({
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="-mx-6 mt-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pt-5 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {plans.map((plan) => (
             <div key={plan.slug} data-plan-card>
