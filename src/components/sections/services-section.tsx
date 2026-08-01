@@ -112,15 +112,15 @@ export async function ServicesSection() {
             return (
               <div
                 key={service.slug}
-                className="group relative flex flex-col overflow-hidden rounded-radius-card border border-border-subtle bg-surface p-6 shadow-shadow-lg transition-colors duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:border-primary/20 md:p-8"
+                className="group relative flex flex-col overflow-hidden rounded-radius-card border border-white/5 bg-card-dark p-6 shadow-shadow-lg transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:border-primary/20 md:p-8"
               >
                 <div
                   aria-hidden="true"
-                  className="pointer-events-none absolute -right-20 -top-20 h-40 w-40 rounded-full bg-primary/5 blur-3xl transition-colors duration-[var(--motion-medium)] ease-[var(--ease-standard)] group-hover:bg-primary/10"
+                  className="pointer-events-none absolute -right-20 -top-20 h-40 w-40 rounded-full bg-primary/5 blur-3xl transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] group-hover:bg-primary/10"
                 />
 
                 <div className="relative z-10 flex flex-col gap-6">
-                  <div className="flex size-14 items-center justify-center rounded-full border border-primary/30 bg-gradient-to-br from-primary/20 to-primary/5 shadow-shadow-amber">
+                  <div className="flex size-14 items-center justify-center rounded-full border border-primary/30 bg-gradient-to-br from-primary/20 to-primary/5 shadow-[0_0_15px_rgba(245,158,11,0.1)]">
                     <ServiceIcon name={service.icon_name} />
                   </div>
 
@@ -160,7 +160,7 @@ export async function ServicesSection() {
 
                   <a
                     href={service.cta_url ?? "/contact"}
-                    className="group/link mt-2 flex w-full items-center justify-center gap-2 rounded-radius-md border border-white/10 bg-white/5 py-4 text-sm font-bold text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/30 hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                    className="group/link mt-2 flex w-full items-center justify-center gap-2 rounded-radius-md border border-white/10 bg-white/5 py-4 text-sm font-bold text-primary transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/30 hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                   >
                     {ctaLabel}
                     <ArrowIcon />

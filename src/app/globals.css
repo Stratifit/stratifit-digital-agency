@@ -63,6 +63,7 @@
      Extended Dark Surfaces
      --------------------------------------------------------------------------- */
   --background-deep: #070A10;
+  --card-dark: #0D1320;
   --surface-soft: #131C2B;
   --surface-hover: #1B2638;
   --surface-active: #223047;
@@ -285,6 +286,7 @@
 
   /* Extended Surface Colors */
   --color-background-deep: var(--background-deep);
+  --color-card-dark: var(--card-dark);
   --color-surface-soft: var(--surface-soft);
   --color-surface-hover: var(--surface-hover);
   --color-surface-active: var(--surface-active);
