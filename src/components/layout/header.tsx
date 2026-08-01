@@ -3,7 +3,6 @@ import { getLocale } from "@/lib/i18n/get-locale";
 import { getPublicNavigation } from "@/features/navigation/queries";
 import { getPublicSiteSettings } from "@/features/site-settings/queries";
 import { getPublicServices } from "@/features/services/queries";
-import { getPublicFooterGroups } from "@/features/footer/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { BrandLogo } from "@/components/ui/brand-logo";
@@ -25,16 +24,13 @@ function Brand({ siteName }: { siteName: string }) {
 
 export async function Header() {
   const locale = await getLocale();
-  const [items, settings, services, footerGroups] = await Promise.all([
+  const [items, settings, services] = await Promise.all([
     getPublicNavigation("header"),
     getPublicSiteSettings(),
     getPublicServices(),
-    getPublicFooterGroups(),
   ]);
 
   const siteName = settings?.site_name ?? "Stratifit";
-  const siteDescription =
-    resolveTranslation(settings?.site_description_translations, locale) ?? null;
   const socialLinks = settings?.social_links ?? null;
 
   return (
@@ -46,10 +42,8 @@ export async function Header() {
             items={items}
             locale={locale}
             siteName={siteName}
-            siteDescription={siteDescription}
             socialLinks={socialLinks}
             services={services}
-            footerGroups={footerGroups}
             currentYear={new Date().getFullYear()}
           />
         </div>

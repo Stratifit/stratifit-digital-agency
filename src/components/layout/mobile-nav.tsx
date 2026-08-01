@@ -5,7 +5,7 @@ import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
 import { LanguageSwitcher } from "./language-switcher";
 import { ServiceIcon } from "@/components/ui/service-icon";
 import { BrandLogo } from "@/components/ui/brand-logo";
-import type { PublicFooterGroup } from "@/features/footer/queries";
+import { SocialIcons } from "@/components/ui/social-icons";
 import type { PublicNavigationItem } from "@/features/navigation/queries";
 import type { PublicServiceDetail } from "@/features/services/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
@@ -14,30 +14,10 @@ interface MobileNavProps {
   items: PublicNavigationItem[];
   locale: string;
   siteName: string;
-  siteDescription: string | null;
   socialLinks: Record<string, string> | null;
   services: PublicServiceDetail[];
-  footerGroups: PublicFooterGroup[];
   currentYear: number;
 }
-
-const SOCIAL_ICONS: { key: string; label: string; path: string }[] = [
-  {
-    key: "linkedin",
-    label: "LinkedIn",
-    path: "M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z",
-  },
-  {
-    key: "twitter",
-    label: "Twitter",
-    path: "M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z",
-  },
-  {
-    key: "instagram",
-    label: "Instagram",
-    path: "M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z",
-  },
-];
 
 function ArrowIcon() {
   return (
@@ -76,16 +56,13 @@ export function MobileNav({
   items,
   locale,
   siteName,
-  siteDescription,
   socialLinks,
   services,
-  footerGroups,
   currentYear,
 }: MobileNavProps) {
   const [open, setOpen] = React.useState(false);
   const [activeService, setActiveService] = React.useState(0);
   const servicesScrollRef = React.useRef<HTMLDivElement>(null);
-  const navScrollRef = React.useRef<HTMLDivElement>(null);
   const mounted = React.useSyncExternalStore(
     () => () => {},
     () => true,
@@ -116,10 +93,6 @@ export function MobileNav({
       }
     });
     setActiveService(best);
-  }
-
-  function scrollNavToTop() {
-    navScrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   return (
@@ -160,7 +133,7 @@ export function MobileNav({
             <LanguageSwitcher currentLocale={locale} />
           </header>
 
-          <div ref={navScrollRef} className="flex-1 overflow-y-auto bg-black">
+          <div className="flex-1 overflow-y-auto bg-black">
             <nav className="flex flex-col" aria-label="Mobile">
               {items.map((item) => (
                 <React.Fragment key={item.id}>
@@ -233,88 +206,39 @@ export function MobileNav({
             </nav>
           </div>
 
-          <footer className="shrink-0 border-t border-border-subtle bg-black px-6 pb-6 pt-5">
-            <div className="space-y-5">
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <div className="flex size-6 shrink-0 items-center justify-center rounded bg-primary">
-                    <span className="text-[10px] font-extrabold text-black">
-                      {siteName.slice(0, 2).toUpperCase()}
-                    </span>
-                  </div>
-                  <span className="font-display text-base font-extrabold uppercase tracking-tight text-white">
-                    {siteName}
-                  </span>
-                </div>
-                {siteDescription ? (
-                  <p className="max-w-[80%] text-sm font-medium leading-relaxed text-text-subtle">
-                    {siteDescription}
-                  </p>
-                ) : null}
-              </div>
+          <footer className="shrink-0 border-t border-border-subtle bg-black px-6 pb-6 pt-4">
+            <div className="flex flex-col items-center gap-4">
+              <p className="text-[0.7rem] font-medium tracking-wide text-white/70">
+                <a
+                  href="/privacy"
+                  onClick={() => setOpen(false)}
+                  className="transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  Privacy Policy
+                </a>
+                <span className="mx-1">.</span>
+                <a
+                  href="/terms-conditions"
+                  onClick={() => setOpen(false)}
+                  className="transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  Terms of Service
+                </a>
+                <span className="mx-1">.</span>
+                <a
+                  href="/cookie-policy"
+                  onClick={() => setOpen(false)}
+                  className="transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  Cookie Policy
+                </a>
+              </p>
 
-              <div className="grid grid-cols-3 gap-4">
-                {footerGroups.map((group) => (
-                  <div key={group.id} className="flex flex-col gap-2.5">
-                    <h4 className="mb-0.5 text-xs font-bold uppercase tracking-wider text-white">
-                      {resolveTranslation(group.title_translations, locale)}
-                    </h4>
-                    {group.links.map((link) => (
-                      <a
-                        key={link.id}
-                        href={link.href}
-                        target={link.is_external ? "_blank" : undefined}
-                        rel={link.is_external ? "noopener noreferrer" : undefined}
-                        onClick={() => setOpen(false)}
-                        className="text-xs text-text-subtle transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                      >
-                        {resolveTranslation(link.label_translations, locale)}
-                      </a>
-                    ))}
-                  </div>
-                ))}
-              </div>
+              <SocialIcons socialLinks={socialLinks} />
 
-              <div className="flex gap-4">
-                {SOCIAL_ICONS.map(({ key, label, path }) => {
-                  const href = socialLinks?.[key] ?? "#";
-                  return (
-                    <a
-                      key={key}
-                      href={href}
-                      target={href !== "#" ? "_blank" : undefined}
-                      rel={href !== "#" ? "noopener noreferrer" : undefined}
-                      aria-label={label}
-                      className="group flex size-8 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                    >
-                      <svg
-                        viewBox="0 0 448 512"
-                        className="size-4 text-primary transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:scale-110"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path d={path} />
-                      </svg>
-                    </a>
-                  );
-                })}
-              </div>
-
-              <div className="space-y-4">
-                <div className="h-px w-full bg-primary/30" />
-                <div className="flex items-center justify-between">
-                  <p className="text-[10px] font-medium text-text-subtle">
-                    © {currentYear} {siteName}. All rights reserved.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={scrollNavToTop}
-                    className="text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                  >
-                    Back to Top
-                  </button>
-                </div>
-              </div>
+              <p className="text-[10px] font-medium text-text-subtle">
+                © {currentYear} {siteName}. All rights reserved.
+              </p>
             </div>
           </footer>
         </DrawerContent>
