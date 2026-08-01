@@ -72,6 +72,7 @@
      Extended Text Colors
      --------------------------------------------------------------------------- */
   --text-subtle: #6B7280;
+  --text-tertiary: #D1D5DB;
   --text-inverse: #0B0F17;
 
   /* ---------------------------------------------------------------------------
@@ -162,6 +163,7 @@
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 24px;
+  --radius-card: 32px;
   --radius-full: 9999px;
 
   /* ---------------------------------------------------------------------------
@@ -290,6 +292,7 @@
 
   /* Extended Text Colors */
   --color-text-subtle: var(--text-subtle);
+  --color-text-tertiary: var(--text-tertiary);
   --color-text-inverse: var(--text-inverse);
 
   /* Amber Scale */
@@ -362,6 +365,7 @@
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
   --radius-xl: var(--radius-xl);
+  --radius-card: var(--radius-card);
   --radius-full: var(--radius-full);
 
   /* Shadow Tokens */

@@ -87,10 +87,10 @@ export function AnnouncementBarView({ slides, linkUrl, linkLabel }: Announcement
                   aria-current={dotIndex === index ? "true" : undefined}
                   onClick={() => setIndex(dotIndex)}
                   className={cn(
-                    "h-1.5 rounded-full transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                    "size-1.5 rounded-full transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
                     dotIndex === index
-                      ? "w-4 bg-primary"
-                      : "w-1.5 bg-text-muted/50 hover:bg-text-muted"
+                      ? "bg-primary"
+                      : "bg-text-muted/50 hover:bg-text-muted"
                   )}
                 />
               ))}
