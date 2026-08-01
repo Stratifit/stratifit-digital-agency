@@ -397,6 +397,8 @@ Inputs, textareas, and select triggers share one field system.
 - Dropdown menu: `#161616` bg, `#1C1C1C` border, `6px` radius; option hover `rgba(245,158,11,0.08)` + amber text; selected `rgba(245,158,11,0.10)` + amber text
 - Checkbox: `20px`, `#161616` bg, `#1C1C1C` border, `4px` radius; checked amber fill + dark check; hover `#F7A623`
 - Toggle: `42×24px` track, `18px` white thumb; amber track + dark thumb when on; hover `#F7A623`
+- Slider: `6px` track `#161616` + `#1C1C1C`; amber fill; `18px` white thumb with `2px` amber border; thumb hover `scale(1.05)` + amber/40, press `scale(0.95)` + amber/60, focus amber outline; disabled `#1A1A1A` track / `#2A2A2A` thumb
+- Radio: `20px`, `#161616` bg, `2px` `#1C1C1C` border; hover amber/25; press `#141414` + amber/40; checked amber ring + `10px` amber dot; checked hover `#F7A623`; focus amber outline; disabled `#1A1A1A` + white/5
 
 ---
 
