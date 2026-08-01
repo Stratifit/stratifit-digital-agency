@@ -229,9 +229,6 @@ export async function HeroSection() {
           </p>
 
           <div className="marquee-pause relative overflow-hidden py-4">
-            <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-16 bg-gradient-to-r from-background to-transparent sm:w-32" />
-            <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-16 bg-gradient-to-l from-background to-transparent sm:w-32" />
-
             <div className="marquee-scroll flex w-max gap-10 whitespace-nowrap sm:gap-12">
               {[...TECH_STACK, ...TECH_STACK].map((tech, index) => (
                 <div
