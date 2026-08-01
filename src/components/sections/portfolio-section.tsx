@@ -1,15 +1,20 @@
 ﻿import Link from "next/link";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { getPublicPortfolioProjects } from "@/features/portfolio/queries";
+import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { SectionHeader } from "@/components/ui/section-header";
 
 export async function PortfolioSection() {
   const locale = await getLocale();
-  const projects = await getPublicPortfolioProjects(3);
+  const [projects, settings] = await Promise.all([
+    getPublicPortfolioProjects(3),
+    getPublicSectionSetting("portfolio"),
+  ]);
 
   if (projects.length === 0) {
     return null;
@@ -18,14 +23,7 @@ export async function PortfolioSection() {
   return (
     <Section>
       <Container>
-        <div className="flex items-end justify-between gap-4">
-          <h2 className="font-display text-3xl font-bold tracking-tight text-text-primary md:text-4xl">
-            Our Work
-          </h2>
-          <Button variant="tertiary" size="small">
-            <Link href="/work">View all</Link>
-          </Button>
-        </div>
+        <SectionHeader settings={settings} locale={locale} />
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {projects.map((project) => (
             <Card key={project.slug} className="flex flex-col">
@@ -43,6 +41,11 @@ export async function PortfolioSection() {
               </Button>
             </Card>
           ))}
+        </div>
+        <div className="mt-8 flex justify-end">
+          <Button variant="tertiary" size="small">
+            <Link href="/work">View all</Link>
+          </Button>
         </div>
       </Container>
     </Section>

@@ -10,6 +10,7 @@ const NAV_SECTIONS: { label: string; items: { href: string; label: string }[] }[
   {
     label: "Content",
     items: [
+      { href: "/admin/content/sections", label: "Sections" },
       { href: "/admin/content/services", label: "Services" },
       { href: "/admin/content/portfolio", label: "Portfolio" },
       { href: "/admin/content/insights", label: "Insights" },

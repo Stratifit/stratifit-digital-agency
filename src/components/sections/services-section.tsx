@@ -1,9 +1,11 @@
 import { getPublicServices } from "@/features/services/queries";
+import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { ServiceIcon } from "@/components/ui/service-icon";
+import { SectionHeader } from "@/components/ui/section-header";
 
 function CheckIcon() {
   return (
@@ -43,7 +45,10 @@ function ArrowIcon() {
 
 export async function ServicesSection() {
   const locale = await getLocale();
-  const services = await getPublicServices();
+  const [services, settings] = await Promise.all([
+    getPublicServices(),
+    getPublicSectionSetting("services"),
+  ]);
 
   if (services.length === 0) {
     return null;
@@ -52,18 +57,7 @@ export async function ServicesSection() {
   return (
     <Section>
       <Container>
-        <div className="mb-10 md:mb-16">
-          <p className="mb-4 text-xs font-bold uppercase tracking-widest text-primary">
-            Services
-          </p>
-          <h2 className="mb-3 font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
-            Our Core <span className="text-primary">Services</span>
-          </h2>
-          <p className="mt-3 max-w-2xl border-l-2 border-primary/50 pl-4 text-sm leading-relaxed text-text-muted sm:pl-6 sm:text-base md:text-lg">
-            Strategic solutions engineered to scale your digital presence with
-            precision and luxury.
-          </p>
-        </div>
+        <SectionHeader settings={settings} locale={locale} />
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {services.map((service) => {

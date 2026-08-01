@@ -1,9 +1,11 @@
 ﻿import { getPublicWhyChooseUs } from "@/features/why-choose-us/queries";
+import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
+import { SectionHeader } from "@/components/ui/section-header";
 
 interface WhyChooseUsItem {
   icon?: string;
@@ -13,7 +15,10 @@ interface WhyChooseUsItem {
 
 export async function WhyChooseUsSection() {
   const locale = await getLocale();
-  const data = await getPublicWhyChooseUs();
+  const [data, settings] = await Promise.all([
+    getPublicWhyChooseUs(),
+    getPublicSectionSetting("why-choose-us"),
+  ]);
 
   if (!data) {
     return null;
@@ -27,19 +32,7 @@ export async function WhyChooseUsSection() {
     <Section>
       <Container>
         <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
-          <div>
-            {data.eyebrow_translations ? (
-              <p className="text-sm font-medium uppercase tracking-widest text-primary">
-                {resolveTranslation(data.eyebrow_translations, locale)}
-              </p>
-            ) : null}
-            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-text-primary md:text-4xl">
-              {resolveTranslation(data.title_translations, locale)}
-            </h2>
-            <p className="mt-4 text-lg leading-8 text-text-secondary">
-              {resolveTranslation(data.description_translations, locale)}
-            </p>
-          </div>
+          <SectionHeader settings={settings} locale={locale} />
           <div className="grid gap-6 sm:grid-cols-2">
             {items.map((item, index) => (
               <Card key={index}>

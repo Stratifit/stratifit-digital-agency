@@ -1,13 +1,18 @@
 ﻿import { getPublicTestimonials } from "@/features/testimonials/queries";
+import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
+import { SectionHeader } from "@/components/ui/section-header";
 
 export async function TestimonialsSection() {
   const locale = await getLocale();
-  const testimonials = await getPublicTestimonials(3);
+  const [testimonials, settings] = await Promise.all([
+    getPublicTestimonials(3),
+    getPublicSectionSetting("testimonials"),
+  ]);
 
   if (testimonials.length === 0) {
     return null;
@@ -16,11 +21,7 @@ export async function TestimonialsSection() {
   return (
     <Section>
       <Container>
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="font-display text-3xl font-bold tracking-tight text-text-primary md:text-4xl">
-            What Our Clients Say
-          </h2>
-        </div>
+        <SectionHeader settings={settings} locale={locale} align="center" />
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {testimonials.map((testimonial, index) => (
             <Card key={index} className="flex flex-col">

@@ -1,15 +1,20 @@
 ﻿import Link from "next/link";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { getPublicInsights } from "@/features/insights/queries";
+import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { SectionHeader } from "@/components/ui/section-header";
 
 export async function InsightsSection() {
   const locale = await getLocale();
-  const insights = await getPublicInsights(3);
+  const [insights, settings] = await Promise.all([
+    getPublicInsights(3),
+    getPublicSectionSetting("insights"),
+  ]);
 
   if (insights.length === 0) {
     return null;
@@ -18,14 +23,7 @@ export async function InsightsSection() {
   return (
     <Section>
       <Container>
-        <div className="flex items-end justify-between gap-4">
-          <h2 className="font-display text-3xl font-bold tracking-tight text-text-primary md:text-4xl">
-            Insights & Expertise
-          </h2>
-          <Button variant="tertiary" size="small">
-            <Link href="/insights">View all</Link>
-          </Button>
-        </div>
+        <SectionHeader settings={settings} locale={locale} />
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {insights.map((insight) => (
             <Card key={insight.slug} className="flex flex-col">
@@ -40,6 +38,11 @@ export async function InsightsSection() {
               </Button>
             </Card>
           ))}
+        </div>
+        <div className="mt-8 flex justify-end">
+          <Button variant="tertiary" size="small">
+            <Link href="/insights">View all</Link>
+          </Button>
         </div>
       </Container>
     </Section>

@@ -218,6 +218,7 @@ Website
 └── Footer
 
 Content
+├── Sections (eyebrow / title / highlight / description for homepage sections)
 ├── Services
 ├── Portfolio Projects
 ├── Insights

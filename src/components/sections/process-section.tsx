@@ -1,13 +1,18 @@
 ﻿import { getPublicProcessSteps } from "@/features/process/queries";
+import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
+import { SectionHeader } from "@/components/ui/section-header";
 
 export async function ProcessSection() {
   const locale = await getLocale();
-  const steps = await getPublicProcessSteps();
+  const [steps, settings] = await Promise.all([
+    getPublicProcessSteps(),
+    getPublicSectionSetting("process"),
+  ]);
 
   if (steps.length === 0) {
     return null;
@@ -16,11 +21,7 @@ export async function ProcessSection() {
   return (
     <Section>
       <Container>
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="font-display text-3xl font-bold tracking-tight text-text-primary md:text-4xl">
-            Our Process
-          </h2>
-        </div>
+        <SectionHeader settings={settings} locale={locale} />
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {steps.map((step) => (
             <Card key={step.step_key} className="relative">

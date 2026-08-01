@@ -1,12 +1,17 @@
 ﻿import { getPublicFaqs } from "@/features/faq/queries";
+import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
+import { SectionHeader } from "@/components/ui/section-header";
 
 export async function FaqSection() {
   const locale = await getLocale();
-  const faqs = await getPublicFaqs();
+  const [faqs, settings] = await Promise.all([
+    getPublicFaqs(),
+    getPublicSectionSetting("faq"),
+  ]);
 
   if (faqs.length === 0) {
     return null;
@@ -15,11 +20,7 @@ export async function FaqSection() {
   return (
     <Section>
       <Container>
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="font-display text-3xl font-bold tracking-tight text-text-primary md:text-4xl">
-            Frequently Asked Questions
-          </h2>
-        </div>
+        <SectionHeader settings={settings} locale={locale} align="center" />
         <div className="mx-auto mt-12 max-w-3xl space-y-3">
           {faqs.map((faq) => (
             <details

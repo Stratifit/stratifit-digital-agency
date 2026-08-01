@@ -1,4 +1,5 @@
 ﻿import { getPublicPricingPlans } from "@/features/pricing/queries";
+import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
@@ -6,6 +7,7 @@ import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { SectionHeader } from "@/components/ui/section-header";
 
 interface FeaturesTranslations {
   en?: string[];
@@ -17,7 +19,10 @@ interface FeaturesTranslations {
 
 export async function PricingSection() {
   const locale = await getLocale();
-  const plans = await getPublicPricingPlans();
+  const [plans, settings] = await Promise.all([
+    getPublicPricingPlans(),
+    getPublicSectionSetting("pricing"),
+  ]);
 
   if (plans.length === 0) {
     return null;
@@ -26,11 +31,7 @@ export async function PricingSection() {
   return (
     <Section>
       <Container>
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="font-display text-3xl font-bold tracking-tight text-text-primary md:text-4xl">
-            Pricing
-          </h2>
-        </div>
+        <SectionHeader settings={settings} locale={locale} align="center" />
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {plans.map((plan) => {
             const features = (
