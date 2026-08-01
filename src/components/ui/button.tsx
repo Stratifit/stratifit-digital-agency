@@ -14,11 +14,11 @@ export interface ButtonProps
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    "bg-primary text-text-inverse hover:bg-hover active:bg-primary-active shadow-shadow-amber",
+    "border border-transparent bg-primary text-text-inverse hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-bright active:translate-y-0 active:border-primary/60 active:bg-primary-deep shadow-shadow-amber",
   secondary:
-    "border border-border bg-surface text-text-primary hover:border-hover hover:text-hover active:border-primary active:text-primary",
+    "border border-card-border bg-card-dark text-text-primary hover:-translate-y-0.5 hover:border-primary/25 active:translate-y-0 active:border-primary/40 active:bg-card-active",
   tertiary:
-    "bg-transparent text-text-secondary underline-offset-4 hover:text-hover hover:underline active:text-primary",
+    "border border-primary/25 bg-transparent text-primary hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary/8 active:translate-y-0 active:border-primary/60 active:bg-primary/15",
   destructive:
     "bg-error text-white hover:bg-error-border active:bg-error-border",
 };
@@ -49,7 +49,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={cn(
-          "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap font-medium transition-[background-color,border-color,color,box-shadow] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50",
+          "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap font-medium transition-[background-color,border-color,color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/60 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50",
           variantClasses[variant],
           sizeClasses[size],
           className

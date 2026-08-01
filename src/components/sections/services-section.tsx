@@ -131,7 +131,7 @@ export async function ServicesSection() {
 
                   <a
                     href={service.cta_url ?? "/contact"}
-                    className="group/link mt-2 flex w-full items-center justify-center gap-2 rounded-radius-md border border-white/10 bg-white/5 py-4 text-sm font-bold text-primary transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-hover/30 hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                    className="group/link mt-2 flex w-full items-center justify-center gap-2 rounded-radius-md border border-primary/25 bg-transparent py-4 text-sm font-bold text-primary transition-[background-color,border-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary/8 active:translate-y-0 active:border-primary/60 active:bg-primary/15 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/60 focus-visible:outline-offset-2"
                   >
                     {ctaLabel}
                     <ArrowIcon />

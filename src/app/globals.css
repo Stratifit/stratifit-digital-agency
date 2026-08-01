@@ -57,6 +57,8 @@
   --primary: #F59E0B;
   --primary-hover: #E89008;
   --primary-active: #D97706;
+  --primary-bright: #F7A623;
+  --primary-deep: #D88A0A;
   --primary-light: #FBBF24;
   --primary-dark: #B45309;
   --secondary: #4F46E5;
@@ -300,6 +302,8 @@
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
   --color-primary-active: var(--primary-active);
+  --color-primary-bright: var(--primary-bright);
+  --color-primary-deep: var(--primary-deep);
   --color-primary-light: var(--primary-light);
   --color-primary-dark: var(--primary-dark);
   --color-hover: var(--hover);

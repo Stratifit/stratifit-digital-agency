@@ -347,6 +347,37 @@ Cards use a defined interaction model across the public site.
 | Focus (keyboard) | — | — | `outline: 2px solid rgba(245,158,11,0.60)`, `offset: 2px` |
 | Disabled | `#1A1A1A` | `rgba(255,255,255,0.05)` | `opacity: 0.6`, `cursor: not-allowed` |
 
+### 4.9 Button states
+
+Three button styles are approved for the public site.
+
+**Primary** (main actions: CTA, submit, contact, hire us)
+
+| State | Background | Border | Other |
+|---|---:|---:|---|
+| Default | `#F59E0B` | transparent | Text `#0A0A0A` |
+| Hover | `#F7A623` | `rgba(245,158,11,0.40)` | `translateY(-2px)` |
+| Active / press | `#D88A0A` | `rgba(245,158,11,0.60)` | No lift |
+| Focus | — | — | `outline: 2px solid rgba(245,158,11,0.60)`, `offset: 2px` |
+
+**Ghost** (secondary actions: learn more, view project, read case study)
+
+| State | Background | Border | Other |
+|---|---:|---:|---|
+| Default | transparent | `rgba(245,158,11,0.25)` | Text `#F59E0B` |
+| Hover | `rgba(245,158,11,0.08)` | `rgba(245,158,11,0.40)` | `translateY(-2px)` |
+| Active / press | `rgba(245,158,11,0.15)` | `rgba(245,158,11,0.60)` | No lift |
+| Focus | — | — | `outline: 2px solid rgba(245,158,11,0.60)`, `offset: 2px` |
+
+**Outline** (neutral bordered action)
+
+| State | Background | Border | Other |
+|---|---:|---:|---|
+| Default | `#161616` | `1px solid #1C1C1C` | Text `#FFFFFF` |
+| Hover | `#161616` | `rgba(245,158,11,0.25)` | `translateY(-2px)` |
+| Active / press | `#141414` | `rgba(245,158,11,0.40)` | No lift |
+| Focus | — | — | `outline: 2px solid rgba(245,158,11,0.60)`, `offset: 2px` |
+
 ---
 
 ## 5. Color Usage Rules
