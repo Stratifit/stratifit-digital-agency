@@ -9,8 +9,9 @@ import { LEAD_STATUSES } from "./admin-queries";
 async function requireAdmin() {
   const supabase = await createSupabaseServerClient();
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
+  const user = session?.user;
   if (!user) {
     redirect("/admin/login");
   }
