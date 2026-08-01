@@ -9,6 +9,7 @@ import { signIn } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { BrandLogo } from "@/components/ui/brand-logo";
 
 const loginSchema = z.object({
   email: z.string().email("Enter a valid email address"),
@@ -44,6 +45,9 @@ export default function AdminLoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="w-full max-w-sm">
+        <div className="mb-8 w-64">
+          <BrandLogo alt="Stratifit" priority />
+        </div>
         <h1 className="font-display text-2xl font-bold tracking-tight text-text-primary">
           Admin Sign In
         </h1>

@@ -1,8 +1,9 @@
-﻿import { getPublicFooterGroups } from "@/features/footer/queries";
+import { getPublicFooterGroups } from "@/features/footer/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { getPublicSiteSettings } from "@/features/site-settings/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
+import { BrandLogo } from "@/components/ui/brand-logo";
 
 export async function Footer() {
   const locale = await getLocale();
@@ -21,9 +22,9 @@ export async function Footer() {
       <Container className="py-12 md:py-16">
         <div className="grid gap-10 md:grid-cols-4">
           <div className="md:col-span-1">
-            <p className="font-display text-lg font-bold tracking-tight text-text-primary">
-              {settings?.site_name ?? "Stratifit"}
-            </p>
+            <div className="w-56">
+              <BrandLogo alt={settings?.site_name ?? "Stratifit"} />
+            </div>
             {description ? (
               <p className="mt-3 text-sm text-text-secondary">{description}</p>
             ) : null}

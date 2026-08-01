@@ -357,9 +357,9 @@ ON CONFLICT (slug) DO UPDATE SET
 -- FAQs
 -- =============================================================================
 
-INSERT INTO public.faqs (question_translations, answer_translations, category, display_order, is_featured, is_visible, is_ai_eligible, status)
+INSERT INTO public.faqs (id, question_translations, answer_translations, category, display_order, is_featured, is_visible, is_ai_eligible, status)
 VALUES
-  ('{"en": "What services does Stratifit offer?", "de": "Welche Dienstleistungen bietet Stratifit an?", "fr": "Quels services offre Stratifit ?", "es": "¿Qué servicios ofrece Stratifit?"}'::jsonb,
+  ('40000000-0000-4000-8000-000000000001', '{"en": "What services does Stratifit offer?", "de": "Welche Dienstleistungen bietet Stratifit an?", "fr": "Quels services offre Stratifit ?", "es": "¿Qué servicios ofrece Stratifit?"}'::jsonb,
    '{"en": "We offer brand design, website development, AI & automation, and growth marketing services.", "de": "Wir bieten Markengestaltung, Webentwicklung, KI & Automatisierung und Growth Marketing an.", "fr": "Nous offrons design de marque, développement web, IA & automatisation et marketing de croissance.", "es": "Ofrecemos diseño de marca, desarrollo web, IA y automatización, y marketing de crecimiento."}'::jsonb,
    'general',
    1,
@@ -368,7 +368,7 @@ VALUES
    true,
    'published'
   ),
-  ('{"en": "How long does a typical project take?", "de": "Wie lange dauert ein typisches Projekt?", "fr": "Combien de temps dure un projet typique ?", "es": "¿Cuánto tiempo dura un proyecto típico?"}'::jsonb,
+    ('40000000-0000-4000-8000-000000000002', '{"en": "How long does a typical project take?", "de": "Wie lange dauert ein typisches Projekt?", "fr": "Combien de temps dure un projet typique ?", "es": "¿Cuánto tiempo dura un proyecto típico?"}'::jsonb,
    '{"en": "Project timelines vary based on scope. A typical website project takes 4-8 weeks.", "de": "Projektzeitpläne variieren je nach Umfang. Ein typisches Website-Projekt dauert 4-8 Wochen.", "fr": "Les délais varient selon la portée. Un projet de site web typique prend 4 à 8 semaines.", "es": "Los plazos varían según el alcance. Un proyecto de sitio web típico toma 4-8 semanas."}'::jsonb,
    'general',
    2,
@@ -377,7 +377,7 @@ VALUES
    true,
    'published'
   ),
-  ('{"en": "Do you work with international clients?", "de": "Arbeiten Sie mit internationalen Kunden?", "fr": "Travaillez-vous avec des clients internationaux ?", "es": "¿Trabajan con clientes internacionales?"}'::jsonb,
+    ('40000000-0000-4000-8000-000000000003', '{"en": "Do you work with international clients?", "de": "Arbeiten Sie mit internationalen Kunden?", "fr": "Travaillez-vous avec des clients internationaux ?", "es": "¿Trabajan con clientes internacionales?"}'::jsonb,
    '{"en": "Yes, we work with clients worldwide and support multilingual projects in English, German, French, and Spanish.", "de": "Ja, wir arbeiten mit Kunden weltweit und unterstützen mehrsprachige Projekte in Englisch, Deutsch, Französisch und Spanisch.", "fr": "Oui, nous travaillons avec des clients du monde entier et supportons les projets multilingues en anglais, allemand, français et espagnol.", "es": "Sí, trabajamos con clientes de todo el mundo y apoyamos proyectos multilingües en inglés, alemán, francés y español."}'::jsonb,
    'general',
    3,
@@ -386,7 +386,7 @@ VALUES
    true,
    'published'
   ),
-  ('{"en": "What is your pricing structure?", "de": "Wie ist Ihre Preisstruktur?", "fr": "Quelle est votre structure de prix ?", "es": "¿Cuál es su estructura de precios?"}'::jsonb,
+    ('40000000-0000-4000-8000-000000000004', '{"en": "What is your pricing structure?", "de": "Wie ist Ihre Preisstruktur?", "fr": "Quelle est votre structure de prix ?", "es": "¿Cuál es su estructura de precios?"}'::jsonb,
    '{"en": "We offer project-based pricing starting from $2,990. Contact us for a custom quote.", "de": "Wir bieten projektbasierte Preise ab $2.990. Kontaktieren Sie uns für ein individuelles Angebot.", "fr": "Nous proposons des tarifs basés sur les projets à partir de 2 990 $. Contactez-nous pour un devis personnalisé.", "es": "Ofrecemos precios por proyecto desde $2,990. Contáctanos para una cotización personalizada."}'::jsonb,
    'pricing',
    4,
@@ -395,7 +395,7 @@ VALUES
    true,
    'published'
   ),
-  ('{"en": "Do you provide ongoing support?", "de": "Bieten Sie laufenden Support an?", "fr": "Offrez-vous un support continu ?", "es": "¿Ofrecen soporte continuo?"}'::jsonb,
+    ('40000000-0000-4000-8000-000000000005', '{"en": "Do you provide ongoing support?", "de": "Bieten Sie laufenden Support an?", "fr": "Offrez-vous un support continu ?", "es": "¿Ofrecen soporte continuo?"}'::jsonb,
    '{"en": "Yes, all projects include support periods. We also offer ongoing maintenance plans.", "de": "Ja, alle Projekte beinhalten Support-Zeiträume. Wir bieten auch laufende Wartungspläne an.", "fr": "Oui, tous les projets incluent des périodes de support. Nous offrons aussi des plans de maintenance continue.", "es": "Sí, todos los proyectos incluyen períodos de soporte. También ofrecemos planes de mantenimiento continuo."}'::jsonb,
    'general',
    5,
@@ -404,7 +404,15 @@ VALUES
    true,
    'published'
   )
-ON CONFLICT DO NOTHING;
+ON CONFLICT (id) DO UPDATE SET
+  question_translations = EXCLUDED.question_translations,
+  answer_translations = EXCLUDED.answer_translations,
+  category = EXCLUDED.category,
+  display_order = EXCLUDED.display_order,
+  is_featured = EXCLUDED.is_featured,
+  is_visible = EXCLUDED.is_visible,
+  is_ai_eligible = EXCLUDED.is_ai_eligible,
+  status = EXCLUDED.status;
 
 -- =============================================================================
 -- Chatbot Settings (Singleton)
@@ -526,3 +534,5 @@ ON CONFLICT (id) DO UPDATE SET
   person_name = EXCLUDED.person_name,
   is_visible = EXCLUDED.is_visible,
   is_verified = EXCLUDED.is_verified;
+
+

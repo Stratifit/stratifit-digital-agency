@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/lib/cn";
+import { BrandLogo } from "@/components/ui/brand-logo";
 
 const NAV_SECTIONS: { label: string; items: { href: string; label: string }[] }[] = [
   {
@@ -40,9 +41,10 @@ export function Sidebar() {
       <div className="flex h-16 items-center border-b border-border px-5">
         <Link
           href="/admin/dashboard"
-          className="font-display text-base font-bold tracking-tight text-text-primary"
+          aria-label="Stratifit CMS dashboard"
+          className="block w-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
-          Stratifit CMS
+          <BrandLogo alt="Stratifit" />
         </Link>
       </div>
       <nav className="space-y-6 px-3 py-5" aria-label="Admin">

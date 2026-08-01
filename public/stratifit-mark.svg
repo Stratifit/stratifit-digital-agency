@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" role="img" aria-labelledby="title">
+  <title id="title">Stratifit mark</title>
+  <path fill="#F59E0B" d="M16 106c0-47 38-85 85-85h189l-20 37c-8 15-23 24-40 24H100c-24 0-43 19-43 43s19 43 43 43h70l-27 48H101c-47 0-85-38-85-85v-25Z"/>
+  <path fill="#fff" d="M82 107h190l-28 48H82c-20 0-36-16-36-36s16-12 36-12Z"/>
+  <path fill="#fff" d="M171 156h88l-48 86c-10 18-29 29-50 29H19l24-42c7-13 21-21 36-21h45l47-52Z"/>
+  <path fill="#fff" d="M123 73h151l-20 35H123c-14 0-25-11-25-25s11-10 25-10Z" opacity=".98"/>
+</svg>

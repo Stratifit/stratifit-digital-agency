@@ -1,9 +1,12 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { getPublicNavigation } from "@/features/navigation/queries";
 import { getPublicSiteSettings } from "@/features/site-settings/queries";
+import { getPublicServices } from "@/features/services/queries";
+import { getPublicFooterGroups } from "@/features/footer/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
+import { BrandLogo } from "@/components/ui/brand-logo";
 import { MobileNav } from "./mobile-nav";
 import { LanguageSwitcher } from "./language-switcher";
 import { HeaderChatButton } from "./header-chat-button";
@@ -12,26 +15,21 @@ function Brand({ siteName }: { siteName: string }) {
   return (
     <Link
       href="/"
-      className="flex select-none items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      aria-label={`${siteName} home`}
+      className="flex w-[170px] select-none items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:w-[220px]"
     >
-      <span
-        aria-hidden="true"
-        className="flex h-9 w-9 items-center justify-center rounded-radius-md bg-primary text-sm font-extrabold tracking-tight text-text-inverse sm:h-10 sm:w-10 sm:text-base shadow-[rgba(245,158,11,0.25)_0px_6px_20px]"
-      >
-        SF
-      </span>
-      <span className="text-sm font-semibold uppercase tracking-[0.15em] text-text-primary sm:text-base">
-        {siteName}
-      </span>
+      <BrandLogo alt={siteName} priority />
     </Link>
   );
 }
 
 export async function Header() {
   const locale = await getLocale();
-  const [items, settings] = await Promise.all([
+  const [items, settings, services, footerGroups] = await Promise.all([
     getPublicNavigation("header"),
     getPublicSiteSettings(),
+    getPublicServices(),
+    getPublicFooterGroups(),
   ]);
 
   const siteName = settings?.site_name ?? "Stratifit";
@@ -41,7 +39,14 @@ export async function Header() {
       <Container className="flex h-16 items-center justify-between sm:h-20">
         {/* Mobile: hamburger (left) */}
         <div className="md:hidden">
-          <MobileNav items={items} locale={locale} siteName={siteName} />
+          <MobileNav
+            items={items}
+            locale={locale}
+            siteName={siteName}
+            services={services}
+            footerGroups={footerGroups}
+            currentYear={new Date().getFullYear()}
+          />
         </div>
 
         {/* Brand: centered on mobile, left on desktop */}
@@ -56,8 +61,8 @@ export async function Header() {
               <a
                 key={item.id}
                 href={item.href}
-                target={item.open_in_new_tab ? "_blank" : undefined}
-                rel={item.open_in_new_tab ? "noopener noreferrer" : undefined}
+                target={item.open_in_new_tab || item.is_external ? "_blank" : undefined}
+                rel={item.open_in_new_tab || item.is_external ? "noopener noreferrer" : undefined}
                 className="text-sm font-medium text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 {resolveTranslation(item.label_translations, locale)}
