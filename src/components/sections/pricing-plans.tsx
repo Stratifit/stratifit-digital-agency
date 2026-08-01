@@ -117,7 +117,28 @@ export function PricingPlans({
   locale: string;
 }) {
   const scrollRef = React.useRef<HTMLDivElement>(null);
-  const [active, setActive] = React.useState(0);
+  const featuredIndex = Math.max(
+    0,
+    plans.findIndex((plan) => plan.is_featured)
+  );
+  const [active, setActive] = React.useState(featuredIndex);
+
+  React.useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const cards = Array.from(
+      el.querySelectorAll<HTMLElement>("[data-plan-card]")
+    );
+    const card = cards[featuredIndex];
+    if (!card) return;
+    const elRect = el.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+    const target =
+      el.scrollLeft +
+      (cardRect.left - elRect.left) -
+      (elRect.width - cardRect.width) / 2;
+    el.scrollTo({ left: target, behavior: "auto" });
+  }, [featuredIndex]);
 
   function handleScroll() {
     const el = scrollRef.current;
