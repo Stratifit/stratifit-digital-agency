@@ -33,6 +33,9 @@ export async function Header() {
   ]);
 
   const siteName = settings?.site_name ?? "Stratifit";
+  const siteDescription =
+    resolveTranslation(settings?.site_description_translations, locale) ?? null;
+  const socialLinks = settings?.social_links ?? null;
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background-deep/90 backdrop-blur-md">
@@ -43,6 +46,8 @@ export async function Header() {
             items={items}
             locale={locale}
             siteName={siteName}
+            siteDescription={siteDescription}
+            socialLinks={socialLinks}
             services={services}
             footerGroups={footerGroups}
             currentYear={new Date().getFullYear()}

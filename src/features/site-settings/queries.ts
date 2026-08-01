@@ -7,6 +7,7 @@ export interface PublicSiteSettings {
   contact_phone: string | null;
   address_translations: Record<string, string> | null;
   default_locale: string;
+  social_links: Record<string, string> | null;
 }
 
 export async function getPublicSiteSettings(): Promise<PublicSiteSettings | null> {
@@ -15,7 +16,7 @@ export async function getPublicSiteSettings(): Promise<PublicSiteSettings | null
   const { data, error } = await supabase
     .from("site_settings")
     .select(
-      "site_name, site_description_translations, contact_email, contact_phone, address_translations, default_locale"
+      "site_name, site_description_translations, contact_email, contact_phone, address_translations, default_locale, social_links"
     )
     .single();
 
@@ -23,5 +24,8 @@ export async function getPublicSiteSettings(): Promise<PublicSiteSettings | null
     return null;
   }
 
-  return data as PublicSiteSettings;
+  return {
+    ...(data as Omit<PublicSiteSettings, "social_links">),
+    social_links: (data.social_links as Record<string, string> | null) ?? null,
+  };
 }
