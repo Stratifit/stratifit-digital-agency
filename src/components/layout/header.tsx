@@ -36,7 +36,7 @@ export async function Header() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background-deep/90 backdrop-blur-md">
-      <Container className="flex h-16 items-center justify-between sm:h-20">
+      <Container className="relative flex h-16 items-center justify-between sm:h-20">
         {/* Mobile: hamburger (left) */}
         <div className="md:hidden">
           <MobileNav
@@ -50,7 +50,7 @@ export async function Header() {
         </div>
 
         {/* Brand: centered on mobile, left on desktop */}
-        <div className="flex flex-1 justify-center md:flex-none md:justify-start">
+        <div className="absolute left-1/2 flex -translate-x-1/2 md:static md:flex-1 md:translate-x-0 md:justify-start">
           <Brand siteName={siteName} />
         </div>
 
