@@ -2,6 +2,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export interface PublicAnnouncement {
   message_translations: Record<string, string> | null;
+  slides: Record<string, string>[] | null;
   link_label_translations: Record<string, string> | null;
   link_url: string | null;
 }
@@ -12,7 +13,7 @@ export async function getPublicAnnouncement(): Promise<PublicAnnouncement | null
   const { data, error } = await supabase
     .from("announcement_bar")
     .select(
-      "message_translations, link_label_translations, link_url, is_enabled, starts_at, ends_at"
+      "message_translations, slides, link_label_translations, link_url, is_enabled, starts_at, ends_at"
     )
     .single();
 
@@ -40,6 +41,7 @@ export async function getPublicAnnouncement(): Promise<PublicAnnouncement | null
 
   return {
     message_translations: announcement.message_translations,
+    slides: announcement.slides,
     link_label_translations: announcement.link_label_translations,
     link_url: announcement.link_url,
   };

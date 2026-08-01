@@ -13,16 +13,26 @@ export async function AnnouncementBar() {
     return null;
   }
 
-  const message = resolveTranslation(announcement.message_translations, locale);
-  const linkLabel = resolveTranslation(announcement.link_label_translations, locale);
+  const slides = Array.isArray(announcement.slides)
+    ? announcement.slides
+        .map((slide) => resolveTranslation(slide, locale))
+        .filter(Boolean)
+    : [];
 
-  if (!message) {
+  if (slides.length === 0) {
+    const fallback = resolveTranslation(announcement.message_translations, locale);
+    if (fallback) slides.push(fallback);
+  }
+
+  if (slides.length === 0) {
     return null;
   }
 
+  const linkLabel = resolveTranslation(announcement.link_label_translations, locale);
+
   return (
     <AnnouncementBarView
-      message={message}
+      slides={slides}
       linkUrl={announcement.link_url ?? undefined}
       linkLabel={linkLabel || undefined}
     />

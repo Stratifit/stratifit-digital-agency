@@ -3,34 +3,37 @@
 import * as React from "react";
 import { Container } from "@/components/ui/container";
 
-const CLOSED_KEY = "stratifit-announcement-closed";
+const SLIDE_MS = 4000;
 
 interface AnnouncementViewProps {
-  message: string;
+  slides: string[];
   linkUrl?: string;
   linkLabel?: string;
 }
 
-export function AnnouncementBarView({ message, linkUrl, linkLabel }: AnnouncementViewProps) {
+export function AnnouncementBarView({ slides, linkUrl, linkLabel }: AnnouncementViewProps) {
+  const [index, setIndex] = React.useState(0);
   const [dismissed, setDismissed] = React.useState(false);
-  const storedClosed = React.useSyncExternalStore(
-    () => () => {},
-    () => (typeof window !== "undefined" && window.localStorage.getItem(CLOSED_KEY) === "1") || false,
-    () => false
-  );
 
-  function handleClose() {
-    setDismissed(true);
-    window.localStorage.setItem(CLOSED_KEY, "1");
-  }
+  React.useEffect(() => {
+    if (slides.length <= 1) return;
+    const timer = setInterval(() => {
+      setIndex((i) => (i + 1) % slides.length);
+    }, SLIDE_MS);
+    return () => clearInterval(timer);
+  }, [slides.length]);
 
-  if (dismissed || storedClosed) return null;
+  if (dismissed) return null;
+
+  const message = slides[index] ?? slides[0];
 
   return (
     <div className="border-b border-border bg-surface">
       <Container className="flex h-10 items-center gap-3">
         <div className="flex min-w-0 flex-1 items-center gap-2">
-          <span className="truncate text-sm text-text-secondary">{message}</span>
+          <span key={index} className="truncate text-sm text-text-secondary">
+            {message}
+          </span>
           {linkUrl ? (
             <a
               href={linkUrl}
@@ -53,7 +56,7 @@ export function AnnouncementBarView({ message, linkUrl, linkLabel }: Announcemen
         <button
           type="button"
           aria-label="Dismiss announcement"
-          onClick={handleClose}
+          onClick={() => setDismissed(true)}
           className="shrink-0 rounded-radius-xs p-1 text-text-muted transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
           <svg className="size-4" viewBox="0 0 16 16" fill="none" aria-hidden="true">
