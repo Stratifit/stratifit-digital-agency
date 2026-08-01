@@ -328,12 +328,24 @@ Light surfaces may be used selectively for:
 |---|---:|
 | `light-background` | `#FFFFFF` |
 | `light-surface` | `#F8FAFC` |
-| `light-card` | `#F1F5F9` |
-| `light-text-primary` | `#0F172A` |
+| `light-surface-muted` | `#F1F5F9` |
+| `light-text` | `#0B0F17` |
 | `light-text-secondary` | `#475569` |
 | `light-border` | `#E2E8F0` |
 
 Light mode should not be introduced inconsistently across random components.
+
+### 4.8 Card interaction states
+
+Cards use a defined interaction model across the public site.
+
+| State | Background | Border | Other |
+|---|---:|---:|---|
+| Default | `#161616` (`card-dark`) | `1px solid #1C1C1C` | — |
+| Hover | `#161616` | `rgba(245,158,11,0.25)` | `translateY(-2px)` |
+| Active / press | `#141414` | `rgba(245,158,11,0.40)` | Back to neutral (no lift) |
+| Focus (keyboard) | — | — | `outline: 2px solid rgba(245,158,11,0.60)`, `offset: 2px` |
+| Disabled | `#1A1A1A` | `rgba(255,255,255,0.05)` | `opacity: 0.6`, `cursor: not-allowed` |
 
 ---
 

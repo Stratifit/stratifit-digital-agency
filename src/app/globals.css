@@ -95,6 +95,18 @@
   --card-dark: #161616;
 
   /* ---------------------------------------------------------------------------
+     Card State Tokens
+     Default / hover / active / focus / disabled interaction states.
+     --------------------------------------------------------------------------- */
+  --card-border: #1C1C1C;
+  --card-border-hover: rgba(245, 158, 11, 0.25);
+  --card-active: #141414;
+  --card-border-active: rgba(245, 158, 11, 0.40);
+  --card-focus: rgba(245, 158, 11, 0.60);
+  --card-disabled: #1A1A1A;
+  --card-border-disabled: rgba(255, 255, 255, 0.05);
+
+  /* ---------------------------------------------------------------------------
      Primary Amber Scale
      Primary brand usage should center on amber-500, amber-600, amber-400
      --------------------------------------------------------------------------- */
@@ -307,6 +319,15 @@
   --color-surface-active: var(--surface-active);
   --color-overlay: var(--overlay);
   --color-overlay-strong: var(--overlay-strong);
+
+  /* Card State Colors */
+  --color-card-border: var(--card-border);
+  --color-card-border-hover: var(--card-border-hover);
+  --color-card-active: var(--card-active);
+  --color-card-border-active: var(--card-border-active);
+  --color-card-focus: var(--card-focus);
+  --color-card-disabled: var(--card-disabled);
+  --color-card-border-disabled: var(--card-border-disabled);
 
   /* Extended Text Colors */
   --color-text-subtle: var(--text-subtle);
