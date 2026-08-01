@@ -42,3 +42,6 @@ yarn-error.log*
 next-env.d.ts
 
 supabase/.temp/
+
+# Affinity Designer lock files
+*.af~lock~
