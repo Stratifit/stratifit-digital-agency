@@ -195,9 +195,11 @@
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 24px;
-  --radius-card: 32px;
+  --radius-card: 14px;
+  --radius-card-lg: 16px;
   --radius-full: 9999px;
-  --radius-input: 12px;
+  --radius-button: 10px;
+  --radius-input: 10px;
 
   /* ---------------------------------------------------------------------------
      Shadow Tokens
@@ -423,7 +425,9 @@
   --radius-lg: var(--radius-lg);
   --radius-xl: var(--radius-xl);
   --radius-card: var(--radius-card);
+  --radius-card-lg: var(--radius-card-lg);
   --radius-full: var(--radius-full);
+  --radius-button: var(--radius-button);
   --radius-input: var(--radius-input);
 
   /* Shadow Tokens */

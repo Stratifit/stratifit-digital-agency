@@ -37,7 +37,7 @@ export default async function ContactPage() {
 
       <Section>
         <Container>
-          <div className="overflow-hidden rounded-[32px] border border-card-border bg-card-dark">
+          <div className="overflow-hidden rounded-radius-card-lg border border-card-border bg-card-dark">
             <div className="grid lg:grid-cols-5">
               <div className="p-8 sm:p-10 lg:col-span-2 lg:border-r lg:border-card-border">
                 <h2 className="font-display text-lg font-semibold text-text-primary">

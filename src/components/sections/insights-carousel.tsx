@@ -43,7 +43,7 @@ export function InsightCard({
   };
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-card-border bg-card-dark transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:border-primary/20">
+    <article className="group flex flex-col overflow-hidden rounded-radius-card-lg border border-card-border bg-card-dark transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:border-primary/20">
       <div className="relative aspect-[16/10] overflow-hidden bg-surface-soft">
         {insight.featured_media_url ? (
           // eslint-disable-next-line @next/next/no-img-element

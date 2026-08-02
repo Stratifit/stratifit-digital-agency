@@ -15,7 +15,7 @@ function WhyCard({
   compact?: boolean;
 }) {
   return (
-    <div className="relative flex w-[300px] shrink-0 snap-center flex-col overflow-hidden rounded-[32px] border border-white/5 bg-card-dark p-6 shadow-xl shadow-black/50">
+    <div className="relative flex w-[300px] shrink-0 snap-center flex-col overflow-hidden rounded-radius-card-lg border border-white/5 bg-card-dark p-6 shadow-xl shadow-black/50">
       <div className="pointer-events-none absolute -right-20 -top-20 size-40 rounded-full bg-primary/5 blur-3xl" />
       <div className="relative z-10 flex flex-1 flex-col gap-4">
         <div
