@@ -1,6 +1,7 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export interface PublicService {
+  id: string;
   slug: string;
   title_translations: Record<string, string> | null;
   short_description_translations: Record<string, string> | null;
@@ -21,7 +22,7 @@ export async function getPublicServices(): Promise<PublicServiceDetail[]> {
   const { data, error } = await supabase
     .from("services")
     .select(
-      "slug, title_translations, short_description_translations, full_description_translations, deliverables_translations, icon_name, cta_label_translations, cta_url, display_order"
+      "id, slug, title_translations, short_description_translations, full_description_translations, deliverables_translations, icon_name, cta_label_translations, cta_url, display_order"
     )
     .eq("status", "published")
     .eq("is_visible", true)
@@ -42,7 +43,7 @@ export async function getPublicServiceBySlug(
   const { data, error } = await supabase
     .from("services")
     .select(
-      "slug, title_translations, short_description_translations, full_description_translations, deliverables_translations, icon_name, cta_label_translations, cta_url, display_order"
+      "id, slug, title_translations, short_description_translations, full_description_translations, deliverables_translations, icon_name, cta_label_translations, cta_url, display_order"
     )
     .eq("slug", slug)
     .eq("status", "published")

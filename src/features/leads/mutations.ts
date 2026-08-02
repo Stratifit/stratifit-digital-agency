@@ -25,6 +25,8 @@ export async function submitLead(input: LeadFormValues): Promise<ActionResult> {
     email: parsed.data.email,
     phone: parsed.data.phone || null,
     company: parsed.data.company || null,
+    requested_service_id: parsed.data.requested_service_id || null,
+    budget_range: parsed.data.custom_budget || parsed.data.budget_range || null,
     message: parsed.data.message,
     preferred_locale: parsed.data.preferred_locale,
     source: parsed.data.source,
