@@ -11,7 +11,6 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select } from "@/components/ui/select";
 import { cn } from "@/lib/cn";
 
 const BUDGET_RANGES = [
@@ -41,6 +40,35 @@ function ChevronIcon({ open }: { open: boolean }) {
   );
 }
 
+function CheckIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      className="size-3"
+    >
+      <path
+        fillRule="evenodd"
+        d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l4.894 4.893 8.48-12.72a.75.75 0 0 1 1.04-.208Z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
+function dropdownTriggerClass() {
+  return cn(
+    "flex h-11 w-full items-center gap-3 rounded-[10px] border border-card-border bg-card-dark px-4 text-left transition-[background-color,border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover active:border-card-border-active active:bg-card-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2"
+  );
+}
+
+function dropdownPanelClass() {
+  return cn(
+    "absolute z-50 mt-2 w-full rounded-[10px] border border-card-border bg-card-dark p-1 shadow-shadow-md"
+  );
+}
+
 export function ContactForm({
   services = [],
   locale = "en",
@@ -50,16 +78,21 @@ export function ContactForm({
 }) {
   const [submitted, setSubmitted] = React.useState(false);
   const [serverError, setServerError] = React.useState<string | null>(null);
+  const [servicesOpen, setServicesOpen] = React.useState(false);
   const [budgetOpen, setBudgetOpen] = React.useState(false);
-  const [budgetValue, setBudgetValue] = React.useState("");
+  const [selectedServiceId, setSelectedServiceId] = React.useState("");
+  const [budgetRange, setBudgetRange] = React.useState("");
+  const [customBudget, setCustomBudget] = React.useState("");
+  const servicesRef = React.useRef<HTMLDivElement>(null);
   const budgetRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (
-        budgetRef.current &&
-        !budgetRef.current.contains(event.target as Node)
-      ) {
+      const target = event.target as Node;
+      if (servicesRef.current && !servicesRef.current.contains(target)) {
+        setServicesOpen(false);
+      }
+      if (budgetRef.current && !budgetRef.current.contains(target)) {
         setBudgetOpen(false);
       }
     }
@@ -82,10 +115,14 @@ export function ContactForm({
       company: "",
       requested_service_id: "",
       budget_range: "",
+      custom_budget: "",
       message: "",
       honeypot: "",
     },
   });
+
+  const selectedService = services.find((s) => s.id === selectedServiceId);
+  const budgetLabel = customBudget || budgetRange;
 
   async function onSubmit(values: z.input<typeof leadSchema>) {
     setServerError(null);
@@ -96,6 +133,9 @@ export function ContactForm({
     } as LeadFormValues);
     if (result.success) {
       setSubmitted(true);
+      setSelectedServiceId("");
+      setBudgetRange("");
+      setCustomBudget("");
       reset();
     } else {
       setServerError(result.error);
@@ -164,17 +204,76 @@ export function ContactForm({
       </div>
 
       {services.length > 0 ? (
-        <div>
-          <Select id="service" {...register("requested_service_id")}>
-            <option value="" disabled>
-              Select services you&apos;re interested in
-            </option>
-            {services.map((service) => (
-              <option key={service.slug} value={service.id}>
-                {resolveTranslation(service.title_translations, locale)}
-              </option>
-            ))}
-          </Select>
+        <div ref={servicesRef} className="relative">
+          <button
+            type="button"
+            aria-haspopup="listbox"
+            aria-expanded={servicesOpen}
+            onClick={() => setServicesOpen((v) => !v)}
+            className={dropdownTriggerClass()}
+          >
+            <span
+              className={cn(
+                "min-w-0 flex-1 truncate text-sm",
+                selectedService ? "text-text-primary" : "text-text-subtle"
+              )}
+            >
+              {selectedService
+                ? resolveTranslation(selectedService.title_translations, locale)
+                : "Select services you're interested in"}
+            </span>
+            <ChevronIcon open={servicesOpen} />
+          </button>
+          {servicesOpen ? (
+            <div
+              role="listbox"
+              aria-label="Services"
+              className={cn(dropdownPanelClass(), "max-h-64 overflow-y-auto")}
+            >
+              {services.map((service) => {
+                const selected = service.id === selectedServiceId;
+                return (
+                  <button
+                    key={service.id}
+                    type="button"
+                    role="option"
+                    aria-selected={selected}
+                    onClick={() => {
+                      const next = selected ? "" : service.id;
+                      setSelectedServiceId(next);
+                      setValue("requested_service_id", next);
+                      setServicesOpen(false);
+                    }}
+                    className={cn(
+                      "flex w-full cursor-pointer items-center gap-3 px-3 py-2.5 text-left transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
+                      selected ? "bg-white/5" : "hover:bg-white/5"
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "flex size-4 shrink-0 items-center justify-center rounded border transition-all duration-150",
+                        selected
+                          ? "border-primary bg-primary/10 text-primary"
+                          : "border-white/20 text-transparent"
+                      )}
+                    >
+                      <CheckIcon />
+                    </span>
+                    <span
+                      className={cn(
+                        "truncate text-sm",
+                        selected
+                          ? "font-medium text-text-primary"
+                          : "text-text-secondary"
+                      )}
+                    >
+                      {resolveTranslation(service.title_translations, locale)}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          ) : null}
         </div>
       ) : null}
 
@@ -184,7 +283,7 @@ export function ContactForm({
           aria-haspopup="listbox"
           aria-expanded={budgetOpen}
           onClick={() => setBudgetOpen((v) => !v)}
-          className="flex h-11 w-full items-center gap-3 rounded-[10px] border border-card-border bg-card-dark px-4 text-left transition-[background-color,border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover active:border-card-border-active active:bg-card-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2"
+          className={dropdownTriggerClass()}
         >
           <span className="shrink-0 text-xs font-bold uppercase tracking-wider text-text-muted">
             Project Budget
@@ -192,40 +291,66 @@ export function ContactForm({
           <span
             className={cn(
               "min-w-0 flex-1 truncate text-sm",
-              budgetValue ? "text-text-primary" : "text-text-subtle"
+              budgetLabel ? "text-text-primary" : "text-text-subtle"
             )}
           >
-            {budgetValue || "Select a range"}
+            {budgetLabel || "Select a range"}
           </span>
           <ChevronIcon open={budgetOpen} />
         </button>
         {budgetOpen ? (
           <div
             role="listbox"
-            aria-label="Project budget range"
-            className="absolute z-50 mt-2 w-full rounded-[10px] border border-card-border bg-card-dark p-1 shadow-shadow-md"
+            aria-label="Project budget"
+            className={dropdownPanelClass()}
           >
-            {BUDGET_RANGES.map((range) => (
-              <button
-                key={range}
-                type="button"
-                role="option"
-                aria-selected={budgetValue === range}
-                onClick={() => {
-                  setBudgetValue(range);
-                  setValue("budget_range", range);
-                  setBudgetOpen(false);
-                }}
-                className={cn(
-                  "block w-full rounded-radius-xs border px-3 py-2 text-left text-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
-                  budgetValue === range
-                    ? "border-card-border-active bg-card-active font-medium text-primary"
-                    : "border-transparent text-text-secondary hover:bg-primary/8 hover:text-primary"
-                )}
+            {BUDGET_RANGES.map((range) => {
+              const selected = budgetRange === range;
+              return (
+                <button
+                  key={range}
+                  type="button"
+                  role="option"
+                  aria-selected={selected}
+                  onClick={() => {
+                    const next = selected ? "" : range;
+                    setBudgetRange(next);
+                    setCustomBudget("");
+                    setValue("budget_range", next);
+                    setValue("custom_budget", "");
+                    setBudgetOpen(false);
+                  }}
+                  className={cn(
+                    "block w-full rounded-radius-xs border px-3 py-2 text-left text-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
+                    selected
+                      ? "border-card-border-active bg-card-active font-medium text-primary"
+                      : "border-transparent text-text-secondary hover:bg-primary/8 hover:text-primary"
+                  )}
+                >
+                  {range}
+                </button>
+              );
+            })}
+            <div className="my-1 border-t border-card-border" />
+            <div className="px-3 py-2">
+              <label
+                htmlFor="budget-custom"
+                className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-text-muted"
               >
-                {range}
-              </button>
-            ))}
+                Custom budget
+              </label>
+              <input
+                id="budget-custom"
+                type="text"
+                placeholder="e.g. $7,500"
+                value={customBudget}
+                onChange={(event) => {
+                  setCustomBudget(event.target.value);
+                  setValue("custom_budget", event.target.value);
+                }}
+                className="h-9 w-full rounded-radius-input border border-card-border bg-background/40 px-3 text-sm text-text-primary placeholder:text-text-subtle transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover focus-visible:border-card-border-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2"
+              />
+            </div>
           </div>
         ) : null}
       </div>
