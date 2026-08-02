@@ -26,7 +26,7 @@ export async function Footer() {
           siteDescription={siteDescription}
           socialLinks={socialLinks}
           currentYear={new Date().getFullYear()}
-          className="space-y-10"
+          className="space-y-8"
         />
       </div>
     </footer>
