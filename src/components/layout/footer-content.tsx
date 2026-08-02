@@ -48,7 +48,7 @@ export function FooterContent({
           </span>
         </div>
         {siteDescription ? (
-          <p className="max-w-[80%] text-sm font-medium leading-relaxed text-text-subtle">
+          <p className="max-w-[80%] text-sm font-medium leading-relaxed text-text-subtle line-clamp-2 sm:line-clamp-none">
             {siteDescription}
           </p>
         ) : null}
