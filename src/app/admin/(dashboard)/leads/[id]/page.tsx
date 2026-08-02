@@ -88,6 +88,12 @@ export default async function LeadDetailPage({
             <dd className="mt-1 text-text-primary">{lead.company ?? "—"}</dd>
           </div>
           <div>
+            <dt className="text-sm text-text-muted">Business of Interest</dt>
+            <dd className="mt-1 text-text-primary">
+              {lead.business_interest ?? "—"}
+            </dd>
+          </div>
+          <div>
             <dt className="text-sm text-text-muted">Preferred Language</dt>
             <dd className="mt-1 text-text-primary">{lead.preferred_locale}</dd>
           </div>

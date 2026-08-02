@@ -12,6 +12,7 @@ import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FinalCtaSection } from "@/components/sections/final-cta-section";
+import { AcquisitionEnquiryForm } from "@/components/forms/acquisition-enquiry-form";
 
 export default async function AcquisitionPage() {
   const locale = await getLocale();
@@ -69,6 +70,36 @@ export default async function AcquisitionPage() {
           </Container>
         </Section>
       ) : null}
+
+      <Section>
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
+            <div>
+              <p className="text-sm font-medium uppercase tracking-widest text-primary">
+                Enquire
+              </p>
+              <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-text-primary md:text-4xl">
+                Interested in a business?
+              </h2>
+              <p className="mt-6 max-w-lg leading-8 text-text-secondary">
+                Tell us which business you are interested in and what you are
+                looking for. We will get back to you within 24 hours to discuss
+                next steps.
+              </p>
+            </div>
+            <Card variant="featured">
+              <AcquisitionEnquiryForm
+                businesses={
+                  section
+                    ? section.businesses?.map((b) => b.name) ?? []
+                    : []
+                }
+                locale={locale}
+              />
+            </Card>
+          </div>
+        </Container>
+      </Section>
 
       <FinalCtaSection />
     </>

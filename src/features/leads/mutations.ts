@@ -3,8 +3,12 @@
 import { headers } from "next/headers";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { ActionResult } from "@/types/action-result";
-import { leadSchema, type LeadFormValues } from "./schemas";
-
+import {
+  acquisitionEnquirySchema,
+  leadSchema,
+  type AcquisitionEnquiryFormValues,
+  type LeadFormValues,
+} from "./schemas";
 
 const RATE_WINDOW_MS = 10 * 60 * 1000;
 const MAX_SUBMISSIONS_PER_EMAIL = 5;
@@ -25,6 +29,58 @@ function isRateLimited(key: string, max: number): boolean {
   return false;
 }
 
+interface LeadRecord {
+  name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  requested_service_id?: string;
+  budget_range?: string;
+  business_interest?: string;
+  message: string;
+  preferred_locale: string;
+  source: string;
+}
+
+async function recordLead(values: LeadRecord): Promise<ActionResult> {
+  const forwarded = (await headers()).get("x-forwarded-for");
+  const ip = forwarded?.split(",")[0]?.trim() ?? "unknown";
+  const emailKey = values.email.toLowerCase();
+
+  if (
+    isRateLimited(`email:${emailKey}`, MAX_SUBMISSIONS_PER_EMAIL) ||
+    isRateLimited(`ip:${ip}`, MAX_SUBMISSIONS_PER_IP)
+  ) {
+    return {
+      success: false,
+      error: "Too many submissions. Please try again later.",
+    };
+  }
+
+  const supabase = await createSupabaseServerClient();
+
+  const { error } = await supabase.from("leads").insert({
+    name: values.name,
+    email: values.email,
+    phone: values.phone || null,
+    company: values.company || null,
+    requested_service_id: values.requested_service_id || null,
+    budget_range: values.budget_range || null,
+    business_interest: values.business_interest || null,
+    message: values.message,
+    preferred_locale: values.preferred_locale,
+    source: values.source,
+    consent_data: {},
+  });
+
+  if (error) {
+    console.error("Lead insert error:", error.message);
+    return { success: false, error: "Something went wrong. Please try again." };
+  }
+
+  return { success: true };
+}
+
 export async function submitLead(input: LeadFormValues): Promise<ActionResult> {
   const parsed = leadSchema.safeParse(input);
 
@@ -40,39 +96,45 @@ export async function submitLead(input: LeadFormValues): Promise<ActionResult> {
     return { success: true };
   }
 
-  const forwarded = (await headers()).get("x-forwarded-for");
-  const ip = forwarded?.split(",")[0]?.trim() ?? "unknown";
-  const emailKey = parsed.data.email.toLowerCase();
-
-  if (
-    isRateLimited(`email:${emailKey}`, MAX_SUBMISSIONS_PER_EMAIL) ||
-    isRateLimited(`ip:${ip}`, MAX_SUBMISSIONS_PER_IP)
-  ) {
-    return {
-      success: false,
-      error: "Too many submissions. Please try again later.",
-    };
-  }
-
-  const supabase = await createSupabaseServerClient();
-
-  const { error } = await supabase.from("leads").insert({
+  return recordLead({
     name: parsed.data.name,
     email: parsed.data.email,
-    phone: parsed.data.phone || null,
-    company: parsed.data.company || null,
-    requested_service_id: parsed.data.requested_service_id || null,
-    budget_range: parsed.data.custom_budget || parsed.data.budget_range || null,
+    phone: parsed.data.phone,
+    company: parsed.data.company,
+    requested_service_id: parsed.data.requested_service_id,
+    budget_range: parsed.data.custom_budget || parsed.data.budget_range,
     message: parsed.data.message,
     preferred_locale: parsed.data.preferred_locale,
     source: parsed.data.source,
-    consent_data: {},
   });
+}
 
-  if (error) {
-    console.error("Lead insert error:", error.message);
-    return { success: false, error: "Something went wrong. Please try again." };
+export async function submitAcquisitionEnquiry(
+  input: AcquisitionEnquiryFormValues
+): Promise<ActionResult> {
+  const parsed = acquisitionEnquirySchema.safeParse(input);
+
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: "Please check the form for errors.",
+      fieldErrors: parsed.error.flatten().fieldErrors,
+    };
   }
 
-  return { success: true };
+  if (parsed.data.honeypot) {
+    return { success: true };
+  }
+
+  return recordLead({
+    name: parsed.data.name,
+    email: parsed.data.email,
+    phone: parsed.data.phone,
+    company: parsed.data.company,
+    budget_range: parsed.data.custom_budget || parsed.data.budget_range,
+    business_interest: parsed.data.business_interest,
+    message: parsed.data.message,
+    preferred_locale: parsed.data.preferred_locale,
+    source: parsed.data.source,
+  });
 }
