@@ -131,12 +131,30 @@ export async function sendVisitorMessage(
   }
 
   // Generate AI reply from approved knowledge
-  const knowledge = await getApprovedKnowledge();
+  const knowledge = await getApprovedKnowledge(parsed.data.locale);
+
+  const { data: recentMessages } = await supabase
+    .from("chat_messages")
+    .select("sender_type, content")
+    .eq("conversation_id", conversation.id)
+    .eq("is_internal", false)
+    .in("sender_type", ["visitor", "ai"])
+    .order("created_at", { ascending: true })
+    .limit(20);
+
+  const history = (recentMessages ?? [])
+    .filter((m) => m.content?.trim())
+    .map((m) => ({
+      role: m.sender_type === "visitor" ? ("user" as const) : ("assistant" as const),
+      content: m.content as string,
+    }));
+
   const provider = await getChatProvider();
   const ai = await provider.generateResponse({
     message: parsed.data.message,
     locale: parsed.data.locale,
     knowledge,
+    history,
   });
 
   const escalated = ai.escalated;

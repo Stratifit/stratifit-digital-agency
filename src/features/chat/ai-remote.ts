@@ -1,5 +1,23 @@
 import type { ChatProvider, ChatRequest, ChatResponse } from "./ai";
 
+export function buildSystemPrompt(
+  knowledge: ChatRequest["knowledge"],
+  locale: string
+): string {
+  const knowledgeText = knowledge
+    .map((k) => `- ${k.title ?? k.question}: ${k.content ?? k.answer}`)
+    .join("\n");
+
+  return [
+    "You are the Stratifit support assistant.",
+    `You respond in the visitor's language. The visitor's locale is: ${locale}.`,
+    "Answer ONLY from the approved knowledge below.",
+    "Never invent prices, discounts, timelines, availability, testimonials, results, guarantees, or human approvals.",
+    "If the knowledge does not cover the question, reply with the exact word: ESCALATE",
+    `Approved knowledge:\n${knowledgeText}`,
+  ].join("\n");
+}
+
 /**
  * Remote provider used when AI_API_KEY is configured. Calls a compatible
  * OpenAI-style chat completions endpoint. The response must stay grounded in
@@ -11,9 +29,15 @@ export class RemoteChatProvider implements ChatProvider {
     const baseUrl = process.env.AI_BASE_URL ?? "https://api.openai.com/v1";
     const model = process.env.AI_MODEL ?? "gpt-4o-mini";
 
-    const knowledgeText = input.knowledge
-      .map((k) => `- ${k.title ?? k.question}: ${k.content ?? k.answer}`)
-      .join("\n");
+    const messages: { role: "system" | "user" | "assistant"; content: string }[] = [
+      { role: "system", content: buildSystemPrompt(input.knowledge, input.locale) },
+    ];
+
+    for (const entry of input.history ?? []) {
+      messages.push({ role: entry.role, content: entry.content });
+    }
+
+    messages.push({ role: "user", content: input.message });
 
     const res = await fetch(`${baseUrl}/chat/completions`, {
       method: "POST",
@@ -24,19 +48,7 @@ export class RemoteChatProvider implements ChatProvider {
       body: JSON.stringify({
         model,
         temperature: 0.3,
-        messages: [
-          {
-            role: "system",
-            content: [
-              "You are the Stratifit support assistant.",
-              "Answer ONLY from the approved knowledge below.",
-              "Never invent prices, timelines, guarantees, or results.",
-              "If the knowledge does not cover the question, reply with the exact word: ESCALATE",
-              `Knowledge:\n${knowledgeText}`,
-            ].join("\n"),
-          },
-          { role: "user", content: input.message },
-        ],
+        messages,
       }),
     });
 

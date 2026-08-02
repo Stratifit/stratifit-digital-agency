@@ -68,7 +68,10 @@ export function ChatWidget() {
     const result = await sendVisitorMessage({
       visitor_token: getToken(),
       message: trimmed,
-      locale: "en",
+      locale:
+        typeof document !== "undefined"
+          ? document.documentElement.lang || "en"
+          : "en",
       source_page: typeof window !== "undefined" ? window.location.pathname : "/",
     });
 

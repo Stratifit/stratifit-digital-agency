@@ -1,9 +1,15 @@
 import type { KnowledgeEntry } from "./knowledge";
 
+export interface ChatMessageHistory {
+  role: "user" | "assistant";
+  content: string;
+}
+
 export interface ChatRequest {
   message: string;
   locale: string;
   knowledge: KnowledgeEntry[];
+  history?: ChatMessageHistory[];
 }
 
 export interface ChatResponse {

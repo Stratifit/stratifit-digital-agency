@@ -1,4 +1,5 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 
 export interface KnowledgeEntry {
   question?: string;
@@ -30,11 +31,20 @@ export async function getChatbotSettings(): Promise<ChatbotSettings | null> {
   return data as ChatbotSettings;
 }
 
-export async function getApprovedKnowledge(): Promise<KnowledgeEntry[]> {
+function translations(
+  value: unknown
+): Record<string, string> | null {
+  if (!value || typeof value !== "object") return null;
+  return value as Record<string, string>;
+}
+
+export async function getApprovedKnowledge(
+  locale = "en"
+): Promise<KnowledgeEntry[]> {
   const supabase = await createSupabaseServerClient();
   const entries: KnowledgeEntry[] = [];
 
-  const [{ data: faqs }, { data: services }] = await Promise.all([
+  const [faqsResult, servicesResult, manualResult] = await Promise.all([
     supabase
       .from("faqs")
       .select("question_translations, answer_translations, category")
@@ -46,21 +56,53 @@ export async function getApprovedKnowledge(): Promise<KnowledgeEntry[]> {
       .select("title_translations, short_description_translations, slug")
       .eq("status", "published")
       .eq("is_visible", true),
+    supabase
+      .from("chatbot_knowledge")
+      .select("title_translations, content_translations, category, priority")
+      .eq("is_enabled", true)
+      .eq("is_ai_eligible", true)
+      .order("priority", { ascending: false }),
   ]);
 
-  for (const faq of faqs ?? []) {
+  for (const faq of faqsResult.data ?? []) {
     entries.push({
-      question: (faq.question_translations as Record<string, string> | null)?.en,
-      answer: (faq.answer_translations as Record<string, string> | null)?.en,
+      question: resolveTranslation(
+        translations(faq.question_translations),
+        locale
+      ),
+      answer: resolveTranslation(
+        translations(faq.answer_translations),
+        locale
+      ),
       category: faq.category,
     });
   }
 
-  for (const service of services ?? []) {
+  for (const service of servicesResult.data ?? []) {
     entries.push({
-      title: (service.title_translations as Record<string, string> | null)?.en,
-      content: (service.short_description_translations as Record<string, string> | null)?.en,
+      title: resolveTranslation(
+        translations(service.title_translations),
+        locale
+      ),
+      content: resolveTranslation(
+        translations(service.short_description_translations),
+        locale
+      ),
       category: "services",
+    });
+  }
+
+  for (const item of manualResult.data ?? []) {
+    entries.push({
+      title: resolveTranslation(
+        translations(item.title_translations),
+        locale
+      ),
+      content: resolveTranslation(
+        translations(item.content_translations),
+        locale
+      ),
+      category: item.category,
     });
   }
 
