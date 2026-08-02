@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Stratifit Digital Agency Platform
+
+Premium multilingual digital agency platform — public marketing website, custom visual CMS, Supabase backend, AI chatbot, leads, and transactional email.
+
+## Stack
+
+- **Next.js 16** (App Router, React Server Components, Server Actions, Route Handlers)
+- **React 19** + TypeScript (strict)
+- **Tailwind CSS v4** with a token-based design system (dark-first, amber primary)
+- **GSAP** for hero / scroll storytelling
+- **Supabase** (PostgreSQL, Auth, Storage, RLS) with local CLI + migrations
+- **Zod** + **React Hook Form**
+- **Resend** for transactional email
+- **OpenSpec** for feature planning
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
+cp .env.example .env.local   # then fill in real values
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+See `.env.example`. Key groups:
 
-## Learn More
+- `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` — public Supabase
+- `SUPABASE_SERVICE_ROLE_KEY` — server-only (used only for email event logging)
+- `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_WEBHOOK_SIGNING_SECRET` — transactional email
+- `AI_API_KEY`, `AI_BASE_URL`, `AI_MODEL` — AI chatbot provider (OpenAI-compatible)
+- `NEXT_PUBLIC_SITE_URL` — canonical site URL for SEO
 
-To learn more about Next.js, take a look at the following resources:
+Never commit `.env.local`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Database
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+All changes go through migrations in `supabase/migrations/`.
 
-## Deploy on Vercel
+```bash
+npx supabase start        # local stack (Docker)
+npx supabase db push      # apply pending migrations to linked project
+npx supabase gen types typescript --linked > src/types/database.types.ts
+npx supabase migration list
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run dev      # development
+npm run build    # production build
+npm run start    # serve production build
+npm run lint     # eslint
+```
+
+## Project Structure
+
+```text
+src/
+├── app/               # routes (public + /admin CMS)
+├── components/
+│   ├── ui/            # design-system primitives
+│   ├── sections/      # public homepage sections
+│   ├── forms/         # public forms
+│   ├── layout/        # header / footer / navigation
+│   ├── chat/          # chat widget
+│   └── admin/         # CMS components
+├── features/          # feature modules (queries, mutations, schemas)
+├── lib/               # shared infrastructure
+├── registry/          # section registry
+└── types/             # generated Supabase types
+supabase/migrations/   # database migrations
+docs/                  # architecture, design system, roadmap
+openspec/              # feature specs
+```
+
+## Documentation
+
+- `docs/PROJECT.md` — product scope and version 1
+- `docs/ARCHITECTURE.md` — technical architecture
+- `docs/DESIGN_SYSTEM.md` — tokens, typography, components
+- `docs/ROADMAP.md` — delivery phases
+- `AGENTS.md` — operating rules for AI agents
+
+## Contact
+
+Stratifit Digital Agency

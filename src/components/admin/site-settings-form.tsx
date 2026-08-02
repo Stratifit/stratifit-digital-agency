@@ -18,10 +18,10 @@ const siteSettingsSchema = z.object({
   contact_phone: z.string(),
   address_en: z.string(),
   default_locale: z.string(),
-  social_twitter: z.string(),
   social_linkedin: z.string(),
-  social_github: z.string(),
   social_instagram: z.string(),
+  social_facebook: z.string(),
+  social_tiktok: z.string(),
 });
 
 type SiteSettingsFormValues = z.infer<typeof siteSettingsSchema>;
@@ -57,10 +57,10 @@ export function SiteSettingsForm({
       contact_phone: initial.contact_phone,
       address_en: initial.address_en,
       default_locale: initial.default_locale,
-      social_twitter: initial.social.twitter ?? "",
       social_linkedin: initial.social.linkedin ?? "",
-      social_github: initial.social.github ?? "",
       social_instagram: initial.social.instagram ?? "",
+      social_facebook: initial.social.facebook ?? "",
+      social_tiktok: initial.social.tiktok ?? "",
     },
   });
 
@@ -139,10 +139,10 @@ export function SiteSettingsForm({
         <div className="grid gap-4 sm:grid-cols-2">
           {(
             [
-              ["social_twitter", "Twitter / X"],
               ["social_linkedin", "LinkedIn"],
-              ["social_github", "GitHub"],
               ["social_instagram", "Instagram"],
+              ["social_facebook", "Facebook"],
+              ["social_tiktok", "TikTok"],
             ] as const
           ).map(([name, label]) => (
             <div key={name} className="space-y-2">
