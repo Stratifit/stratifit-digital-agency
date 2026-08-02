@@ -1,9 +1,11 @@
 import { Container } from "@/components/ui/container";
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Privacy Policy — Stratifit",
-};
+  description: "How Stratifit collects, uses, and protects personal data.",
+  path: "/privacy",
+});
 
 import { Section } from "@/components/ui/section";
 

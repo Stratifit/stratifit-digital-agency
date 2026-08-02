@@ -1,9 +1,12 @@
 ﻿import { getLocale } from "@/lib/i18n/get-locale";
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Our Work — Stratifit",
-};
+  description:
+    "Selected case studies and projects by Stratifit across web, brand, and growth.",
+  path: "/work",
+});
 
 import { getPublicPortfolioProjects } from "@/features/portfolio/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";

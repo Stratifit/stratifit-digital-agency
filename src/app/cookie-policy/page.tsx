@@ -1,10 +1,12 @@
-import type { Metadata } from "next";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Cookie Policy — Stratifit",
-};
+  description: "How Stratifit uses cookies.",
+  path: "/cookie-policy",
+});
 
 export default function CookiePolicyPage() {
   return (

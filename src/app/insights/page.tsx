@@ -1,8 +1,11 @@
-﻿import type { Metadata } from "next";
+﻿import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Insights — Stratifit",
-};
+  description:
+    "Insights and expertise from the Stratifit team on design, development, AI, and growth.",
+  path: "/insights",
+});
 
 import { getPublicInsights } from "@/features/insights/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";

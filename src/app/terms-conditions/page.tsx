@@ -1,10 +1,12 @@
-import type { Metadata } from "next";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Terms of Service — Stratifit",
-};
+  description: "Terms and conditions for using the Stratifit website.",
+  path: "/terms-conditions",
+});
 
 export default function TermsConditionsPage() {
   return (

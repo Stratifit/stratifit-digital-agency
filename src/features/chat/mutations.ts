@@ -217,5 +217,10 @@ export async function getVisitorMessages(
     .eq("conversation_id", conversationId)
     .eq("is_internal", false)
     .order("created_at", { ascending: true });
-  return (data ?? []) as never[];
+  return (data ?? []).map((message) => ({
+    id: message.id,
+    sender_type: message.sender_type,
+    content: message.content ?? "",
+    created_at: message.created_at,
+  }));
 }

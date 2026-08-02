@@ -1,13 +1,13 @@
 ﻿import { notFound } from "next/navigation";
 import { getLocale } from "@/lib/i18n/get-locale";
-import Link from "next/link";
 import type { Metadata } from "next";
 import { getPublicPortfolioDetail } from "@/features/portfolio/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { articleJsonLd, canonical, pageMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link-button";
 
 export async function generateMetadata({
   params,
@@ -18,9 +18,17 @@ export async function generateMetadata({
   const locale = await getLocale();
   const project = await getPublicPortfolioDetail(slug);
   if (!project) return {};
+  const title = `${resolveTranslation(project.title_translations, locale)} — Stratifit`;
+  const description = resolveTranslation(project.summary_translations, locale);
   return {
-    title: `${resolveTranslation(project.title_translations, locale)} — Stratifit`,
-    description: resolveTranslation(project.summary_translations, locale),
+    ...pageMetadata({ title, description, path: `/work/${slug}` }),
+    openGraph: {
+      title,
+      description,
+      url: canonical(`/work/${slug}`),
+      type: "article",
+      siteName: "Stratifit",
+    },
   };
 }
 
@@ -56,18 +64,34 @@ export default async function WorkDetailPage({
     ] ?? []
   ) as string[];
 
+  const projectTitle = resolveTranslation(project.title_translations, locale);
+  const projectSummary = resolveTranslation(project.summary_translations, locale);
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            articleJsonLd({
+              title: projectTitle,
+              description: projectSummary,
+              url: canonical(`/work/${slug}`),
+              publishedAt: project.published_at,
+            })
+          ),
+        }}
+      />
       <section className="border-b border-border bg-background-deep">
         <Container className="py-20 md:py-24">
           <p className="text-sm font-medium uppercase tracking-widest text-primary">
             {project.client_name}
           </p>
           <h1 className="mt-4 max-w-3xl font-display text-4xl font-bold tracking-tight text-text-primary md:text-5xl">
-            {resolveTranslation(project.title_translations, locale)}
+            {projectTitle}
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-text-secondary">
-            {resolveTranslation(project.summary_translations, locale)}
+            {projectSummary}
           </p>
         </Container>
       </section>
@@ -103,9 +127,9 @@ export default async function WorkDetailPage({
                 Interested in a similar project?
               </p>
               <div className="mt-4">
-                <Button>
-                  <Link href="/contact">Start a Conversation</Link>
-                </Button>
+                <LinkButton href="/contact">
+                  Start a Conversation
+                </LinkButton>
               </div>
             </Card>
           </div>

@@ -1,10 +1,13 @@
 ﻿import { getPublicServices } from "@/features/services/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Services — Stratifit",
-};
+  description:
+    "Explore Stratifit's core services: brand design, website development, AI & automation, and growth marketing.",
+  path: "/services",
+});
 
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";

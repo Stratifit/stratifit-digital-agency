@@ -1,10 +1,13 @@
 ﻿import { getPublicWhyChooseUs } from "@/features/why-choose-us/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "About — Stratifit",
-};
+  description:
+    "Learn about Stratifit, a premium digital agency for web, brand, AI, and growth.",
+  path: "/about",
+});
 
 import { getPublicProcessSteps } from "@/features/process/queries";
 import { getPublicTestimonials } from "@/features/testimonials/queries";

@@ -16,6 +16,7 @@ const LOCALE_META: Record<string, { flag: string; code: string; name: string }> 
 export function LanguageSwitcher({ currentLocale = "en" }: { currentLocale?: string }) {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
+  const [activeLocale, setActiveLocale] = React.useState(currentLocale);
   const ref = React.useRef<HTMLDivElement>(null);
   const meta = LOCALE_META[currentLocale] ?? LOCALE_META.en;
 
@@ -29,10 +30,15 @@ export function LanguageSwitcher({ currentLocale = "en" }: { currentLocale?: str
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  React.useEffect(() => {
+    document.documentElement.lang = activeLocale;
+  }, [activeLocale]);
+
   async function handleSelect(locale: string) {
     setOpen(false);
     if (locale === currentLocale) return;
     await setLocale(locale);
+    setActiveLocale(locale);
     router.refresh();
   }
 

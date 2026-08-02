@@ -1,9 +1,11 @@
 import { getPublicSiteSettings } from "@/features/site-settings/queries";
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Imprint — Stratifit",
-};
+  description: "Imprint and legal information for Stratifit.",
+  path: "/imprint",
+});
 
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";

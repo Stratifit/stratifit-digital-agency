@@ -1,10 +1,13 @@
 ﻿import { getPublicAcquisitionSection } from "@/features/acquisition/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Buy a Business — Stratifit",
-};
+  description:
+    "Explore digital businesses for acquisition. Stratifit helps you find and evaluate opportunities.",
+  path: "/acquisition",
+});
 
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";

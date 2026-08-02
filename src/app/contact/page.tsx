@@ -2,11 +2,14 @@ import { getPublicSiteSettings } from "@/features/site-settings/queries";
 import { getPublicServices } from "@/features/services/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Contact — Stratifit",
-};
+  description:
+    "Get in touch with Stratifit. We reply to every enquiry within 24 hours.",
+  path: "/contact",
+});
 
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
