@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import type { PublicInsight } from "@/features/insights/queries";
 import type { PublicInsightCategory } from "@/features/insights/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
@@ -46,12 +47,12 @@ export function InsightCard({
     <article className="group flex flex-col overflow-hidden rounded-card border border-card-border bg-card-dark transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:border-primary/20">
       <div className="relative aspect-[16/10] overflow-hidden bg-surface-soft">
         {insight.featured_media_url ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={insight.featured_media_url}
             alt={resolveTranslation(insight.title_translations, locale) || "Insight"}
-            loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-standard)] group-hover:scale-110"
+            fill
+            sizes="(max-width: 768px) 100vw, 380px"
+            className="object-cover transition-transform duration-700 ease-[var(--ease-standard)] group-hover:scale-110"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/15 via-card-dark to-card-dark">

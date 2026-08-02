@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import type { PublicPortfolioProject } from "@/features/portfolio/queries";
 import type { PublicServiceDetail } from "@/features/services/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
@@ -151,12 +152,12 @@ export function PortfolioGallery({
             >
               <div className="relative aspect-[4/3] overflow-hidden bg-surface-soft">
                 {project.featured_media_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <Image
                     src={project.featured_media_url}
                     alt={resolveTranslation(project.title_translations, locale) || project.client_name}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-standard)] group-hover:scale-110"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 380px"
+                    className="object-cover transition-transform duration-700 ease-[var(--ease-standard)] group-hover:scale-110"
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/15 via-card-dark to-card-dark">

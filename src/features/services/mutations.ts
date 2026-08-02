@@ -4,6 +4,7 @@ import type { ActionResult } from "@/types/action-result";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { recordAuditLog } from "@/lib/audit";
 import { serviceSchema, type ServiceFormValues } from "./schemas";
 
 
@@ -90,6 +91,8 @@ export async function deleteService(slug: string): Promise<void> {
   const supabase = await requireAdmin();
 
   await supabase.from("services").delete().eq("slug", slug);
+
+  await recordAuditLog({ action: "delete", target_table: "services", metadata: { slug } });
 
   revalidatePath("/");
   revalidatePath("/admin/content/services");

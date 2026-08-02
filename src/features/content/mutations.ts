@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { recordAuditLog } from "@/lib/audit";
 
 async function requireAdmin() {
   const supabase = await createSupabaseServerClient();
@@ -26,29 +27,34 @@ async function requireAdmin() {
 export async function deletePortfolioProject(slug: string): Promise<void> {
   const supabase = await requireAdmin();
   await supabase.from("portfolio_projects").delete().eq("slug", slug);
+  await recordAuditLog({ action: "delete", target_table: "portfolio_projects", metadata: { slug } });
   revalidatePath("/admin/content/portfolio");
 }
 
 export async function deleteInsight(slug: string): Promise<void> {
   const supabase = await requireAdmin();
   await supabase.from("insights").delete().eq("slug", slug);
+  await recordAuditLog({ action: "delete", target_table: "insights", metadata: { slug } });
   revalidatePath("/admin/content/insights");
 }
 
 export async function deleteTestimonial(id: string): Promise<void> {
   const supabase = await requireAdmin();
   await supabase.from("testimonials").delete().eq("id", id);
+  await recordAuditLog({ action: "delete", target_table: "testimonials", target_id: id });
   revalidatePath("/admin/content/testimonials");
 }
 
 export async function deletePricingPlan(slug: string): Promise<void> {
   const supabase = await requireAdmin();
   await supabase.from("pricing_plans").delete().eq("slug", slug);
+  await recordAuditLog({ action: "delete", target_table: "pricing_plans", metadata: { slug } });
   revalidatePath("/admin/content/pricing");
 }
 
 export async function deleteFaq(id: string): Promise<void> {
   const supabase = await requireAdmin();
   await supabase.from("faqs").delete().eq("id", id);
+  await recordAuditLog({ action: "delete", target_table: "faqs", target_id: id });
   revalidatePath("/admin/content/faq");
 }

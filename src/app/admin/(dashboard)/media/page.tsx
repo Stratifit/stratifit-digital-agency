@@ -5,6 +5,7 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { MediaUploadForm } from "@/components/admin/media/media-upload-form";
 import { ConfirmDelete } from "@/components/admin/confirm-delete";
 import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -59,12 +60,12 @@ export default async function AdminMediaPage() {
                 >
                   <div className="relative aspect-video overflow-hidden bg-background-deep">
                     {url && asset.mime_type.startsWith("image/") ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                      <Image
                         src={url}
                         alt={altText || asset.original_filename}
-                        className="h-full w-full object-cover"
-                        loading="lazy"
+                        fill
+                        sizes="(max-width: 768px) 100vw, 300px"
+                        className="object-cover"
                       />
                     ) : (
                       <div className="flex h-full items-center justify-center text-text-muted">

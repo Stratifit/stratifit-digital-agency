@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { recordAuditLog } from "@/lib/audit";
 
 export type SettingsActionResult =
   | { success: true }
@@ -52,6 +53,12 @@ export async function updateSiteSettings(
   if (error) {
     return { success: false, error: "Failed to update site settings." };
   }
+
+  await recordAuditLog({
+    action: "settings.update",
+    target_table: "site_settings",
+    metadata: { site_name: values.site_name },
+  });
 
   revalidatePath("/admin/settings");
   revalidatePath("/", "layout");

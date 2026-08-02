@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { recordAuditLog } from "@/lib/audit";
 import { LEAD_STATUSES } from "./admin-queries";
 
 async function requireAdmin() {
@@ -46,5 +47,6 @@ export async function updateLeadStatus(
 export async function deleteLead(id: string): Promise<void> {
   const supabase = await requireAdmin();
   await supabase.from("leads").delete().eq("id", id);
+  await recordAuditLog({ action: "delete", target_table: "leads", target_id: id });
   revalidatePath("/admin/leads");
 }

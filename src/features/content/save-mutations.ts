@@ -4,6 +4,7 @@ import type { ActionResult } from "@/types/action-result";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { recordAuditLog } from "@/lib/audit";
 import {
   portfolioSchema,
   insightSchema,
@@ -67,6 +68,12 @@ export async function savePortfolio(
     ? await supabase.from("portfolio_projects").update(row).eq("slug", slug)
     : await supabase.from("portfolio_projects").insert(row);
   if (error) return { success: false, error: formatError(error) };
+  await recordAuditLog({
+    action: parsed.data.status === "published" ? "publish" : "save",
+    target_table: "portfolio_projects",
+    target_id: slug ?? null,
+    metadata: { slug: parsed.data.slug, status: parsed.data.status },
+  });
   revalidatePath("/admin/content/portfolio");
   revalidatePath("/");
   return { success: true };
@@ -97,6 +104,12 @@ export async function saveInsight(
     ? await supabase.from("insights").update(row).eq("slug", slug)
     : await supabase.from("insights").insert(row);
   if (error) return { success: false, error: formatError(error) };
+  await recordAuditLog({
+    action: parsed.data.status === "published" ? "publish" : "save",
+    target_table: "insights",
+    target_id: slug ?? null,
+    metadata: { slug: parsed.data.slug, status: parsed.data.status },
+  });
   revalidatePath("/admin/content/insights");
   revalidatePath("/");
   return { success: true };
@@ -126,6 +139,12 @@ export async function saveTestimonial(
     ? await supabase.from("testimonials").update(row).eq("id", id)
     : await supabase.from("testimonials").insert(row);
   if (error) return { success: false, error: formatError(error) };
+  await recordAuditLog({
+    action: "save",
+    target_table: "testimonials",
+    target_id: id ?? null,
+    metadata: { person_name: parsed.data.person_name, is_visible: parsed.data.is_visible },
+  });
   revalidatePath("/admin/content/testimonials");
   revalidatePath("/");
   return { success: true };
@@ -157,6 +176,12 @@ export async function savePricing(
     ? await supabase.from("pricing_plans").update(row).eq("slug", slug)
     : await supabase.from("pricing_plans").insert(row);
   if (error) return { success: false, error: formatError(error) };
+  await recordAuditLog({
+    action: parsed.data.status === "published" ? "publish" : "save",
+    target_table: "pricing_plans",
+    target_id: slug ?? null,
+    metadata: { slug: parsed.data.slug, status: parsed.data.status },
+  });
   revalidatePath("/admin/content/pricing");
   revalidatePath("/");
   return { success: true };
@@ -185,6 +210,12 @@ export async function saveFaq(input: FaqFormValues, id?: string): Promise<Action
     ? await supabase.from("faqs").update(row).eq("id", id)
     : await supabase.from("faqs").insert(row);
   if (error) return { success: false, error: formatError(error) };
+  await recordAuditLog({
+    action: parsed.data.status === "published" ? "publish" : "save",
+    target_table: "faqs",
+    target_id: id ?? null,
+    metadata: { status: parsed.data.status },
+  });
   revalidatePath("/admin/content/faq");
   revalidatePath("/");
   return { success: true };
