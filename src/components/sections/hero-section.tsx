@@ -1,7 +1,6 @@
 ﻿import { getPublicHero } from "@/features/hero/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
-import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 
 interface HeroMetric {
@@ -128,7 +127,7 @@ export async function HeroSection() {
         <div className="absolute left-1/2 top-1/4 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
       </div>
 
-      <Container className="relative mx-auto flex w-full max-w-5xl flex-col items-center text-center">
+      <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center px-4 text-center lg:px-8">
         {eyebrow ? (
           <div className="mb-[31px] inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-3 py-1.5 text-xs font-medium tracking-wide text-primary">
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
@@ -252,7 +251,7 @@ export async function HeroSection() {
             </div>
           </div>
         ) : null}
-      </Container>
+      </div>
     </section>
   );
 }
