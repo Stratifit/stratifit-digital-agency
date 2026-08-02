@@ -67,7 +67,7 @@ export function LanguageSwitcher({ currentLocale = "en" }: { currentLocale?: str
       {open ? (
         <div
           role="menu"
-          className="absolute right-0 top-full z-50 mt-2 w-36 rounded-[10px] border border-card-border bg-card-dark p-1 shadow-shadow-md"
+          className="absolute right-0 top-full z-50 mt-2 w-36 rounded-radius-input border border-card-border bg-card-dark p-1 shadow-shadow-md"
         >
           {SUPPORTED_LOCALES.map((locale) => (
             <button

@@ -34,7 +34,7 @@ export async function WhyChooseUsSection() {
           {items.map((item, index) => (
             <div
               key={index}
-              className="group relative flex flex-col overflow-hidden rounded-[32px] border border-white/5 bg-card-dark p-6 shadow-xl shadow-black/50 transition-all duration-500 hover:-translate-y-0.5 hover:border-primary/20 md:p-8"
+              className="group relative flex flex-col overflow-hidden rounded-radius-card border border-white/5 bg-card-dark p-6 shadow-xl shadow-black/50 transition-all duration-500 hover:-translate-y-0.5 hover:border-primary/20 md:p-8"
             >
               <div className="pointer-events-none absolute -right-20 -top-20 size-40 rounded-full bg-primary/5 blur-3xl transition-all duration-500 group-hover:bg-primary/10" />
 

@@ -116,7 +116,7 @@ export function TestimonialsCarousel({
             <article
               key={index}
               data-testimonial-card
-              className="min-w-[300px] w-[300px] shrink-0 snap-center rounded-2xl border border-card-border bg-card-dark p-6 transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/20 md:p-8 sm:w-[360px] md:w-[400px]"
+              className="min-w-[300px] w-[300px] shrink-0 snap-center rounded-radius-card border border-card-border bg-card-dark p-6 transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/20 md:p-8 sm:w-[360px] md:w-[400px]"
             >
               <div className="mb-6 flex items-center gap-3">
                 <div className="flex size-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br from-surface-hover to-surface-active text-sm font-bold text-white">

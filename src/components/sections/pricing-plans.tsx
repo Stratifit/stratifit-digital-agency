@@ -51,7 +51,7 @@ function PlanCard({
   return (
     <div
       className={cn(
-        "relative flex flex-col rounded-2xl border bg-card-dark p-6 transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] md:p-8",
+        "relative flex flex-col rounded-radius-card border bg-card-dark p-6 transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] md:p-8",
         mobile
           ? "min-w-[280px] w-[80vw] max-w-[320px] h-[500px] shrink-0 snap-center"
           : "h-full",
@@ -97,7 +97,7 @@ function PlanCard({
       <Link
         href={plan.cta_url ?? "/contact"}
         className={cn(
-          "block w-full rounded-xl py-3.5 text-center text-sm font-bold uppercase tracking-wide transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
+          "block w-full rounded-radius-button py-3.5 text-center text-sm font-bold uppercase tracking-wide transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
           plan.is_featured
             ? "border border-transparent bg-primary text-text-inverse shadow-lg shadow-primary/20 hover:bg-primary-bright"
             : "border border-primary text-primary hover:bg-primary/10"
