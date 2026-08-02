@@ -19,7 +19,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
         ref={ref}
         aria-disabled={disabled || undefined}
         className={cn(
-          "rounded-radius-card border p-6 transition-[border-color,box-shadow,transform,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
+          "rounded-[10px] border p-6 transition-[border-color,box-shadow,transform,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
           variant === "standard" &&
             "border-card-border bg-card-dark shadow-shadow-sm",
           variant === "featured" &&

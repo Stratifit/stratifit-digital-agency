@@ -89,7 +89,7 @@ function ShieldIcon() {
 
 function BusinessCard({ business }: { business: AcquisitionBusiness }) {
   return (
-    <article className="group flex w-[300px] shrink-0 snap-center flex-col overflow-hidden rounded-radius-card-lg border border-card-border bg-card-dark transition-all duration-300 hover:border-primary/20 sm:w-[340px] md:w-[380px]">
+    <article className="group flex w-[300px] shrink-0 snap-center flex-col overflow-hidden rounded-2xl border border-card-border bg-card-dark transition-all duration-300 hover:border-primary/20 sm:w-[340px] md:w-[380px]">
       <div className="flex items-center gap-1.5 border-b border-white/5 bg-[#1a1a1a] px-3 py-2">
         <div className="flex shrink-0 items-center gap-1">
           <span className="size-2 rounded-full bg-red-500/60" />
