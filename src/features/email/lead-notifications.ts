@@ -10,36 +10,40 @@ export interface LeadNotificationInput {
   name?: string | null;
   email?: string | null;
   company?: string | null;
-  requestedServiceId?: string | null;
+  requestedServiceIds?: string[];
   budgetRange?: string | null;
   businessInterest?: string | null;
   message?: string | null;
   locale: string;
 }
 
-async function resolveServiceName(serviceId?: string | null): Promise<string | null> {
-  if (!serviceId) {
+async function resolveServiceNames(serviceIds?: string[]): Promise<string | null> {
+  if (!serviceIds || serviceIds.length === 0) {
     return null;
   }
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("services")
     .select("title_translations")
-    .eq("id", serviceId)
-    .single();
-  if (error || !data?.title_translations) {
+    .in("id", serviceIds);
+  if (error || !data) {
     return null;
   }
-  return resolveTranslation(
-    data.title_translations as Record<string, string>,
-    "en"
-  );
+  const names = data
+    .map((service) =>
+      resolveTranslation(
+        service.title_translations as Record<string, string>,
+        "en"
+      )
+    )
+    .filter(Boolean);
+  return names.length > 0 ? names.join(", ") : null;
 }
 
 export async function sendLeadEmails(input: LeadNotificationInput) {
   const siteSettings = await getPublicSiteSettings();
   const adminEmail = siteSettings?.contact_email ?? null;
-  const serviceName = await resolveServiceName(input.requestedServiceId);
+  const serviceNames = await resolveServiceNames(input.requestedServiceIds);
   const tasks: Promise<unknown>[] = [];
 
   if (input.email) {
@@ -83,7 +87,7 @@ export async function sendLeadEmails(input: LeadNotificationInput) {
           name: input.name,
           email: input.email,
           company: input.company,
-          requested_service: serviceName,
+          requested_service: serviceNames,
           budget_range: input.budgetRange,
           message: input.message,
           locale: input.locale,

@@ -35,7 +35,7 @@ interface LeadRecord {
   email: string;
   phone?: string;
   company?: string;
-  requested_service_id?: string;
+  requested_service_ids?: string[];
   budget_range?: string;
   business_interest?: string;
   message: string;
@@ -68,7 +68,10 @@ async function recordLead(values: LeadRecord): Promise<ActionResult> {
     email: values.email,
     phone: values.phone || null,
     company: values.company || null,
-    requested_service_id: values.requested_service_id || null,
+    requested_service_id: values.requested_service_ids?.[0] ?? null,
+    requested_service_ids: values.requested_service_ids?.length
+      ? values.requested_service_ids
+      : null,
     budget_range: values.budget_range || null,
     business_interest: values.business_interest || null,
     message: values.message,
@@ -89,7 +92,7 @@ async function recordLead(values: LeadRecord): Promise<ActionResult> {
     name: values.name,
     email: values.email,
     company: values.company,
-    requestedServiceId: values.requested_service_id,
+    requestedServiceIds: values.requested_service_ids,
     budgetRange: values.budget_range,
     businessInterest: values.business_interest,
     message: values.message,
@@ -119,7 +122,7 @@ export async function submitLead(input: LeadFormValues): Promise<ActionResult> {
     email: parsed.data.email,
     phone: parsed.data.phone,
     company: parsed.data.company,
-    requested_service_id: parsed.data.requested_service_id,
+    requested_service_ids: parsed.data.requested_service_ids,
     budget_range: parsed.data.custom_budget || parsed.data.budget_range,
     message: parsed.data.message,
     preferred_locale: parsed.data.preferred_locale,

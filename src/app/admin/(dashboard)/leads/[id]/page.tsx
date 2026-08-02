@@ -1,6 +1,8 @@
 ﻿import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getAdminLead, LEAD_STATUSES } from "@/features/leads/admin-queries";
+import { getPublicServices } from "@/features/services/queries";
+import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { updateLeadStatus, deleteLead } from "@/features/leads/admin-mutations";
 import { ConfirmDelete } from "@/components/admin/confirm-delete";
 import { Card } from "@/components/ui/card";
@@ -17,6 +19,11 @@ export default async function LeadDetailPage({
   if (!lead) {
     notFound();
   }
+
+  const services = await getPublicServices();
+  const leadServices = (lead.requested_service_ids ?? [])
+    .map((serviceId) => services.find((s) => s.id === serviceId))
+    .filter((s): s is NonNullable<typeof s> => Boolean(s));
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
@@ -91,6 +98,16 @@ export default async function LeadDetailPage({
             <dt className="text-sm text-text-muted">Business of Interest</dt>
             <dd className="mt-1 text-text-primary">
               {lead.business_interest ?? "—"}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-sm text-text-muted">Services</dt>
+            <dd className="mt-1 text-text-primary">
+              {leadServices.length > 0
+                ? leadServices
+                    .map((s) => resolveTranslation(s.title_translations, "en"))
+                    .join(", ")
+                : "—"}
             </dd>
           </div>
           <div>

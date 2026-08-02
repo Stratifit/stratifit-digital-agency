@@ -5,7 +5,7 @@ export const leadSchema = z.object({
   email: z.string().email("Enter a valid email address"),
   phone: z.string().optional(),
   company: z.string().optional(),
-  requested_service_id: z.string().optional(),
+  requested_service_ids: z.array(z.string()).optional(),
   budget_range: z.string().optional(),
   custom_budget: z.string().optional(),
   honeypot: z.string().optional(),

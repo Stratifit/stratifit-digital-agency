@@ -11,6 +11,7 @@ export interface AdminLeadRow {
   created_at: string;
   message: string | null;
   business_interest: string | null;
+  requested_service_ids: string[] | null;
 }
 
 export async function getAdminLeads(): Promise<AdminLeadRow[]> {
@@ -18,7 +19,7 @@ export async function getAdminLeads(): Promise<AdminLeadRow[]> {
 
   const { data, error } = await supabase
     .from("leads")
-    .select("id, name, email, company, source, status, preferred_locale, created_at, message, business_interest")
+    .select("id, name, email, company, source, status, preferred_locale, created_at, message, business_interest, requested_service_ids")
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -33,7 +34,7 @@ export async function getAdminLead(id: string): Promise<AdminLeadRow | null> {
 
   const { data, error } = await supabase
     .from("leads")
-    .select("id, name, email, company, source, status, preferred_locale, created_at, message, business_interest")
+    .select("id, name, email, company, source, status, preferred_locale, created_at, message, business_interest, requested_service_ids")
     .eq("id", id)
     .single();
 

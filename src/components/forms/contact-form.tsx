@@ -80,7 +80,9 @@ export function ContactForm({
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [servicesOpen, setServicesOpen] = React.useState(false);
   const [budgetOpen, setBudgetOpen] = React.useState(false);
-  const [selectedServiceId, setSelectedServiceId] = React.useState("");
+  const [selectedServiceIds, setSelectedServiceIds] = React.useState<string[]>(
+    []
+  );
   const [budgetRange, setBudgetRange] = React.useState("");
   const [customBudget, setCustomBudget] = React.useState("");
   const servicesRef = React.useRef<HTMLDivElement>(null);
@@ -113,7 +115,7 @@ export function ContactForm({
       email: "",
       phone: "",
       company: "",
-      requested_service_id: "",
+      requested_service_ids: [],
       budget_range: "",
       custom_budget: "",
       message: "",
@@ -121,7 +123,17 @@ export function ContactForm({
     },
   });
 
-  const selectedService = services.find((s) => s.id === selectedServiceId);
+  const selectedServices = services.filter((s) =>
+    selectedServiceIds.includes(s.id)
+  );
+
+  function toggleService(serviceId: string) {
+    const next = selectedServiceIds.includes(serviceId)
+      ? selectedServiceIds.filter((id) => id !== serviceId)
+      : [...selectedServiceIds, serviceId];
+    setSelectedServiceIds(next);
+    setValue("requested_service_ids", next);
+  }
   const budgetLabel = customBudget || budgetRange;
 
   async function onSubmit(values: z.input<typeof leadSchema>) {
@@ -133,7 +145,7 @@ export function ContactForm({
     } as LeadFormValues);
     if (result.success) {
       setSubmitted(true);
-      setSelectedServiceId("");
+      setSelectedServiceIds([]);
       setBudgetRange("");
       setCustomBudget("");
       reset();
@@ -215,35 +227,35 @@ export function ContactForm({
             <span
               className={cn(
                 "min-w-0 flex-1 truncate text-sm",
-                selectedService ? "text-text-primary" : "text-text-subtle"
+                selectedServices.length > 0
+                  ? "text-text-primary"
+                  : "text-text-subtle"
               )}
             >
-              {selectedService
-                ? resolveTranslation(selectedService.title_translations, locale)
-                : "Select services you're interested in"}
+              {selectedServices.length === 0
+                ? "Select services you're interested in"
+                : selectedServices.length === 1
+                  ? resolveTranslation(selectedServices[0].title_translations, locale)
+                  : `${selectedServices.length} services selected`}
             </span>
             <ChevronIcon open={servicesOpen} />
           </button>
           {servicesOpen ? (
             <div
               role="listbox"
+              aria-multiselectable="true"
               aria-label="Services"
               className={cn(dropdownPanelClass(), "max-h-64 overflow-y-auto")}
             >
               {services.map((service) => {
-                const selected = service.id === selectedServiceId;
+                const selected = selectedServiceIds.includes(service.id);
                 return (
                   <button
                     key={service.id}
                     type="button"
                     role="option"
                     aria-selected={selected}
-                    onClick={() => {
-                      const next = selected ? "" : service.id;
-                      setSelectedServiceId(next);
-                      setValue("requested_service_id", next);
-                      setServicesOpen(false);
-                    }}
+                    onClick={() => toggleService(service.id)}
                     className={cn(
                       "flex w-full cursor-pointer items-center gap-3 px-3 py-2.5 text-left transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
                       selected ? "bg-white/5" : "hover:bg-white/5"
