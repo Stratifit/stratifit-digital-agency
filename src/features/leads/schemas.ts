@@ -8,6 +8,7 @@ export const leadSchema = z.object({
   requested_service_id: z.string().optional(),
   budget_range: z.string().optional(),
   custom_budget: z.string().optional(),
+  honeypot: z.string().optional(),
   message: z.string().min(10, "Message must be at least 10 characters"),
   preferred_locale: z.string().default("en"),
   source: z.literal("contact_form"),

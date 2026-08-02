@@ -4,10 +4,6 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
-export type ActionResult<T = undefined> =
-  | { success: true; data?: T }
-  | { success: false; error: string };
-
 async function requireAdmin() {
   const supabase = await createSupabaseServerClient();
   const {

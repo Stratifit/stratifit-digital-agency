@@ -1,14 +1,11 @@
 "use server";
+import type { ActionResult } from "@/types/action-result";
 
 import { createHash } from "crypto";
 import { z } from "zod";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getChatbotSettings, getApprovedKnowledge } from "./knowledge";
 import { getChatProvider } from "./ai";
-
-export type ActionResult<T = undefined> =
-  | { success: true; data?: T }
-  | { success: false; error: string };
 
 const messageSchema = z.object({
   visitor_token: z.string().min(16),

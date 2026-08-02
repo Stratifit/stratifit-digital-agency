@@ -46,6 +46,7 @@ export function ContactForm({
       budget_range: "",
       custom_budget: "",
       message: "",
+      honeypot: "",
     },
   });
 
@@ -85,6 +86,14 @@ export function ContactForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <input
+        type="text"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-[9999px] h-0 w-0 opacity-0"
+        {...register("honeypot")}
+      />
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <Input

@@ -1,17 +1,11 @@
 "use server";
+import type { ActionResult } from "@/types/action-result";
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { serviceSchema, type ServiceFormValues } from "./schemas";
 
-export type ActionResult<T = undefined> =
-  | { success: true; data?: T }
-  | {
-      success: false;
-      error: string;
-      fieldErrors?: Record<string, string[]>;
-    };
 
 async function requireAdmin() {
   const supabase = await createSupabaseServerClient();

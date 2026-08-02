@@ -1,11 +1,29 @@
 "use server";
 
+import { headers } from "next/headers";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import type { ActionResult } from "@/types/action-result";
 import { leadSchema, type LeadFormValues } from "./schemas";
 
-export type ActionResult<T = undefined> =
-  | { success: true; data?: T }
-  | { success: false; error: string; fieldErrors?: Record<string, string[]> };
+
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+const MAX_SUBMISSIONS_PER_EMAIL = 5;
+const MAX_SUBMISSIONS_PER_IP = 20;
+
+const submissionLog = new Map<string, number[]>();
+
+function isRateLimited(key: string, max: number): boolean {
+  const now = Date.now();
+  const recent = (submissionLog.get(key) ?? []).filter(
+    (timestamp) => now - timestamp < RATE_WINDOW_MS
+  );
+  if (recent.length >= max) {
+    return true;
+  }
+  recent.push(now);
+  submissionLog.set(key, recent);
+  return false;
+}
 
 export async function submitLead(input: LeadFormValues): Promise<ActionResult> {
   const parsed = leadSchema.safeParse(input);
@@ -15,6 +33,24 @@ export async function submitLead(input: LeadFormValues): Promise<ActionResult> {
       success: false,
       error: "Please check the form for errors.",
       fieldErrors: parsed.error.flatten().fieldErrors,
+    };
+  }
+
+  if (parsed.data.honeypot) {
+    return { success: true };
+  }
+
+  const forwarded = (await headers()).get("x-forwarded-for");
+  const ip = forwarded?.split(",")[0]?.trim() ?? "unknown";
+  const emailKey = parsed.data.email.toLowerCase();
+
+  if (
+    isRateLimited(`email:${emailKey}`, MAX_SUBMISSIONS_PER_EMAIL) ||
+    isRateLimited(`ip:${ip}`, MAX_SUBMISSIONS_PER_IP)
+  ) {
+    return {
+      success: false,
+      error: "Too many submissions. Please try again later.",
     };
   }
 

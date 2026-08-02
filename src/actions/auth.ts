@@ -1,16 +1,10 @@
 "use server";
+import type { ActionResult } from "@/types/action-result";
 
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
-export type ActionResult<T = undefined> =
-  | { success: true; data?: T }
-  | {
-      success: false;
-      error: string;
-      fieldErrors?: Record<string, string[]>;
-    };
 
 const signInSchema = z.object({
   email: z.string().email("Enter a valid email address"),

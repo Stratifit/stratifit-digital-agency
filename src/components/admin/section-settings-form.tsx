@@ -15,6 +15,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { SectionHeader } from "@/components/ui/section-header";
+import { cn } from "@/lib/cn";
+import type { PublicSectionSettings } from "@/features/section-settings/queries";
 
 const LOCALE_NAMES: Record<string, string> = {
   en: "English",
@@ -64,6 +67,12 @@ export function SectionSettingsForm({
 }) {
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [saved, setSaved] = React.useState(false);
+  const [frame, setFrame] = React.useState<"mobile" | "tablet" | "desktop">(
+    "desktop"
+  );
+  const [previewAlign, setPreviewAlign] = React.useState<"left" | "center">(
+    "left"
+  );
 
   const {
     register,
@@ -77,6 +86,26 @@ export function SectionSettingsForm({
   });
 
   const isVisible = useWatch({ control, name: "is_visible" });
+  const eyebrowTranslations = useWatch({ control, name: "eyebrow_translations" });
+  const titleTranslations = useWatch({ control, name: "title_translations" });
+  const highlightTranslations = useWatch({
+    control,
+    name: "highlight_translations",
+  });
+  const descriptionTranslations = useWatch({
+    control,
+    name: "description_translations",
+  });
+
+  const previewSettings: PublicSectionSettings = {
+    section_key: settings.section_key,
+    label: settings.label,
+    eyebrow_translations: eyebrowTranslations,
+    title_translations: titleTranslations,
+    highlight_translations: highlightTranslations,
+    description_translations: descriptionTranslations,
+    is_visible: isVisible,
+  };
 
   async function onSubmit(values: SectionSettingsFormValues) {
     setServerError(null);
@@ -105,6 +134,76 @@ export function SectionSettingsForm({
           onCheckedChange={(checked) => setValue("is_visible", checked)}
           aria-label="Section visible"
         />
+      </div>
+
+      <div className="rounded-radius-md border border-border bg-background p-4">
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm font-medium text-text-primary">
+            Live preview
+          </p>
+          <div className="flex items-center gap-2">
+            <div className="flex overflow-hidden rounded-radius-xs border border-border">
+              {(
+                [
+                  ["mobile", "Mobile"],
+                  ["tablet", "Tablet"],
+                  ["desktop", "Desktop"],
+                ] as const
+              ).map(([key, label]) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setFrame(key)}
+                  className={cn(
+                    "px-3 py-1.5 text-xs font-medium transition-colors",
+                    frame === key
+                      ? "bg-primary text-text-inverse"
+                      : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+                  )}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            <div className="flex overflow-hidden rounded-radius-xs border border-border">
+              {(
+                [
+                  ["left", "Left"],
+                  ["center", "Center"],
+                ] as const
+              ).map(([key, label]) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setPreviewAlign(key)}
+                  className={cn(
+                    "px-3 py-1.5 text-xs font-medium transition-colors",
+                    previewAlign === key
+                      ? "bg-primary text-text-inverse"
+                      : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+                  )}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div
+          className={cn(
+            "mx-auto overflow-hidden rounded-radius-sm border border-border-subtle bg-background px-4 py-6 sm:px-6",
+            frame === "mobile" && "max-w-[375px]",
+            frame === "tablet" && "max-w-[768px]",
+            frame === "desktop" && "w-full"
+          )}
+        >
+          <SectionHeader
+            settings={previewSettings}
+            locale="en"
+            align={previewAlign}
+          />
+        </div>
       </div>
 
       <div className="space-y-6">
