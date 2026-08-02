@@ -172,7 +172,7 @@ export function PricingPlans({
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pt-5 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:px-6"
+          className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pt-5 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:-mx-8 lg:px-8"
         >
           {plans.map((plan) => (
             <div key={plan.slug} data-plan-card>

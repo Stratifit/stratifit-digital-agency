@@ -128,7 +128,7 @@ export async function HeroSection() {
         <div className="absolute left-1/2 top-1/4 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
       </div>
 
-      <Container className="relative mx-auto flex w-full max-w-5xl flex-col items-center px-4 text-center sm:px-6 lg:px-8">
+      <Container className="relative mx-auto flex w-full max-w-5xl flex-col items-center text-center">
         {eyebrow ? (
           <div className="mb-[31px] inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-3 py-1.5 text-xs font-medium tracking-wide text-primary">
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />

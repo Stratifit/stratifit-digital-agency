@@ -59,13 +59,13 @@ function CheckIcon() {
 
 function dropdownTriggerClass() {
   return cn(
-    "flex h-11 w-full items-center gap-3 rounded-[10px] border border-card-border bg-card-dark px-4 text-left transition-[background-color,border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover active:border-card-border-active active:bg-card-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2"
+    "flex h-11 w-full items-center gap-3 rounded-radius-input border border-card-border bg-card-dark px-4 text-left transition-[background-color,border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover active:border-card-border-active active:bg-card-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2"
   );
 }
 
 function dropdownPanelClass() {
   return cn(
-    "absolute z-50 mt-2 w-full rounded-[10px] border border-card-border bg-card-dark p-1 shadow-shadow-md"
+    "absolute z-50 mt-2 w-full rounded-radius-input border border-card-border bg-card-dark p-1 shadow-shadow-md"
   );
 }
 
