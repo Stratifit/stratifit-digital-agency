@@ -4,7 +4,7 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link-button";
 
 export async function FinalCtaSection() {
   const locale = await getLocale();
@@ -36,14 +36,14 @@ export async function FinalCtaSection() {
           {(primaryLabel || secondaryLabel) ? (
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               {primaryLabel && data.primary_cta_url ? (
-                <Button size="large">
-                  <a href={data.primary_cta_url}>{primaryLabel}</a>
-                </Button>
+                <LinkButton href={data.primary_cta_url} size="large">
+                  {primaryLabel}
+                </LinkButton>
               ) : null}
               {secondaryLabel && data.secondary_cta_url ? (
-                <Button variant="secondary" size="large">
-                  <a href={data.secondary_cta_url}>{secondaryLabel}</a>
-                </Button>
+                <LinkButton href={data.secondary_cta_url} variant="secondary" size="large">
+                  {secondaryLabel}
+                </LinkButton>
               ) : null}
             </div>
           ) : null}

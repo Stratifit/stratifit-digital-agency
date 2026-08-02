@@ -1,5 +1,4 @@
-﻿import Link from "next/link";
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Insights — Stratifit",
@@ -10,7 +9,7 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link-button";
 
 export default async function InsightsPage() {
   const insights = await getPublicInsights(100);
@@ -45,9 +44,14 @@ export default async function InsightsPage() {
                   <p className="mt-2 flex-1 text-sm leading-6 text-text-secondary">
                     {resolveTranslation(insight.excerpt_translations, "en")}
                   </p>
-                  <Button variant="tertiary" size="small" className="mt-4 self-start">
-                    <Link href={`/insights/${insight.slug}`}>Read more</Link>
-                  </Button>
+                  <LinkButton
+                    href={`/insights/${insight.slug}`}
+                    variant="tertiary"
+                    size="small"
+                    className="mt-4 self-start"
+                  >
+                    Read more
+                  </LinkButton>
                 </Card>
               ))}
             </div>

@@ -55,9 +55,8 @@ export async function getCurrentAdmin(): Promise<CurrentAdmin | null> {
   const supabase = await createSupabaseServerClient();
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  const user = session?.user;
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) {
     return null;

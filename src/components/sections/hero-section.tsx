@@ -1,7 +1,7 @@
 ﻿import { getPublicHero } from "@/features/hero/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
-import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link-button";
 
 interface HeroMetric {
   value: string;
@@ -153,48 +153,47 @@ export async function HeroSection() {
         {primaryLabel || secondaryLabel ? (
           <div className="mx-auto mt-[26px] flex w-full max-w-3xl flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4">
             {primaryLabel && hero.primary_cta_url ? (
-              <Button size="medium" className="!h-12 w-full !font-semibold sm:w-[370px] sm:flex-none">
-                <a
-                  href={hero.primary_cta_url}
-                  className="flex items-center justify-center gap-2 sm:gap-3"
+              <LinkButton
+                href={hero.primary_cta_url}
+                size="medium"
+                className="group !h-12 w-full !font-semibold sm:w-[370px] sm:flex-none"
+              >
+                {primaryLabel}
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  className="size-4 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1"
                 >
-                  {primaryLabel}
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    aria-hidden="true"
-                    className="size-4 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M12.97 3.97a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06l6.22-6.22H3a.75.75 0 0 1 0-1.5h16.19l-6.22-6.22a.75.75 0 0 1 0-1.06Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </a>
-              </Button>
+                  <path
+                    fillRule="evenodd"
+                    d="M12.97 3.97a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06l6.22-6.22H3a.75.75 0 0 1 0-1.5h16.19l-6.22-6.22a.75.75 0 0 1 0-1.06Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </LinkButton>
             ) : null}
             {secondaryLabel && hero.secondary_cta_url ? (
-              <Button variant="tertiary" size="medium" className="!h-12 w-full !rounded-[6px] sm:w-[370px] sm:flex-none">
-                <a
-                  href={hero.secondary_cta_url}
-                  className="flex items-center justify-center gap-2 sm:gap-3"
+              <LinkButton
+                href={hero.secondary_cta_url}
+                variant="tertiary"
+                size="medium"
+                className="group !h-12 w-full !rounded-[6px] sm:w-[370px] sm:flex-none"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  className="size-4 shrink-0"
                 >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    aria-hidden="true"
-                    className="size-4 shrink-0"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M9 4.5a.75.75 0 0 1 .721.544l.813 2.846a3.75 3.75 0 0 0 2.576 2.576l2.846.813a.75.75 0 0 1 0 1.442l-2.846.813a3.75 3.75 0 0 0-2.576 2.576l-.813 2.846a.75.75 0 0 1-1.442 0l-.813-2.846a3.75 3.75 0 0 0-2.576-2.576l-2.846-.813a.75.75 0 0 1 0-1.442l2.846-.813A3.75 3.75 0 0 0 7.466 7.89l.813-2.846A.75.75 0 0 1 9 4.5ZM18 1.5a.75.75 0 0 1 .728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 0 1 0 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 0 1-1.456 0l-.258-1.036a2.625 2.625 0 0 0-1.91-1.91l-1.036-.258a.75.75 0 0 1 0-1.456l1.036-.258a2.625 2.625 0 0 0 1.91-1.91l.258-1.036A.75.75 0 0 1 18 1.5ZM16.5 15a.75.75 0 0 1 .712.513l.394 1.183c.15.447.5.799.948.948l1.183.395a.75.75 0 0 1 0 1.422l-1.183.395c-.447.15-.799.5-.948.948l-.395 1.183a.75.75 0 0 1-1.422 0l-.395-1.183a1.5 1.5 0 0 0-.948-.948l-1.183-.395a.75.75 0 0 1 0-1.422l1.183-.395c.447-.15.799-.5.948-.948l.395-1.183A.75.75 0 0 1 16.5 15Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  {secondaryLabel}
-                </a>
-              </Button>
+                  <path
+                    fillRule="evenodd"
+                    d="M9 4.5a.75.75 0 0 1 .721.544l.813 2.846a3.75 3.75 0 0 0 2.576 2.576l2.846.813a.75.75 0 0 1 0 1.442l-2.846.813a3.75 3.75 0 0 0-2.576 2.576l-.813 2.846a.75.75 0 0 1-1.442 0l-.813-2.846a3.75 3.75 0 0 0-2.576-2.576l-2.846-.813a.75.75 0 0 1 0-1.442l2.846-.813A3.75 3.75 0 0 0 7.466 7.89l.813-2.846A.75.75 0 0 1 9 4.5ZM18 1.5a.75.75 0 0 1 .728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 0 1 0 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 0 1-1.456 0l-.258-1.036a2.625 2.625 0 0 0-1.91-1.91l-1.036-.258a.75.75 0 0 1 0-1.456l1.036-.258a2.625 2.625 0 0 0 1.91-1.91l.258-1.036A.75.75 0 0 1 18 1.5ZM16.5 15a.75.75 0 0 1 .712.513l.394 1.183c.15.447.5.799.948.948l1.183.395a.75.75 0 0 1 0 1.422l-1.183.395c-.447.15-.799.5-.948.948l-.395 1.183a.75.75 0 0 1-1.422 0l-.395-1.183a1.5 1.5 0 0 0-.948-.948l-1.183-.395a.75.75 0 0 1 0-1.422l1.183-.395c.447-.15.799-.5.948-.948l.395-1.183A.75.75 0 0 1 16.5 15Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                {secondaryLabel}
+              </LinkButton>
             ) : null}
           </div>
         ) : null}

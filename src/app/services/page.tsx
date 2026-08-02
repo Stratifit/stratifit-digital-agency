@@ -10,7 +10,7 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link-button";
 
 export default async function ServicesPage() {
   const locale = await getLocale();
@@ -61,11 +61,13 @@ export default async function ServicesPage() {
                     </p>
                     {service.cta_label_translations &&
                     resolveTranslation(service.cta_label_translations, locale) ? (
-                      <Button size="small" className="mt-6">
-                        <a href={service.cta_url ?? "/contact"}>
-                          {resolveTranslation(service.cta_label_translations, locale)}
-                        </a>
-                      </Button>
+                      <LinkButton
+                        href={service.cta_url ?? "/contact"}
+                        size="small"
+                        className="mt-6"
+                      >
+                        {resolveTranslation(service.cta_label_translations, locale)}
+                      </LinkButton>
                     ) : null}
                   </div>
                 </div>

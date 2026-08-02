@@ -10,7 +10,7 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link-button";
 import { FinalCtaSection } from "@/components/sections/final-cta-section";
 import { AcquisitionEnquiryForm } from "@/components/forms/acquisition-enquiry-form";
 
@@ -59,11 +59,9 @@ export default async function AcquisitionPage() {
               ) : null}
               {section.cta_label_translations && section.cta_url ? (
                 <div className="mt-8">
-                  <Button size="large">
-                    <a href={section.cta_url}>
-                      {resolveTranslation(section.cta_label_translations, locale)}
-                    </a>
-                  </Button>
+                  <LinkButton href={section.cta_url} size="large">
+                    {resolveTranslation(section.cta_label_translations, locale)}
+                  </LinkButton>
                 </div>
               ) : null}
             </Card>

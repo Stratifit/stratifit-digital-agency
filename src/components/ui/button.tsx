@@ -12,6 +12,12 @@ export interface ButtonProps
   children: React.ReactNode;
 }
 
+export interface ButtonClassesOptions {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  className?: string;
+}
+
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
     "border border-transparent bg-primary text-text-inverse hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-bright active:translate-y-0 active:border-primary/60 active:bg-primary-deep shadow-shadow-amber",
@@ -29,6 +35,23 @@ const sizeClasses: Record<ButtonSize, string> = {
   large: "h-[52px] px-6 text-base",
   hero: "h-[58px] px-8 text-base",
 };
+
+/**
+ * Shared button styling for non-<button> elements (e.g. <Link>/<a>).
+ * Use this instead of nesting a link inside <Button> (which is invalid HTML).
+ */
+export function buttonClasses({
+  variant = "primary",
+  size = "medium",
+  className,
+}: ButtonClassesOptions = {}): string {
+  return cn(
+    "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-button font-medium transition-[background-color,border-color,color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/60 focus-visible:outline-offset-2",
+    variantClasses[variant],
+    sizeClasses[size],
+    className
+  );
+}
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
@@ -48,12 +71,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         ref={ref}
-        className={cn(
-          "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-button font-medium transition-[background-color,border-color,color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/60 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50",
-          variantClasses[variant],
-          sizeClasses[size],
-          className
-        )}
+        className={buttonClasses({ variant, size, className })}
         disabled={isDisabled}
         aria-busy={loading || undefined}
         {...props}

@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link-button";
 
 interface AdminListColumn<T> {
   header: string;
@@ -38,9 +37,9 @@ export function AdminList<T>({
             <p className="mt-1 text-sm text-text-secondary">{description}</p>
           ) : null}
         </div>
-        <Button size="small">
-          <Link href={createHref}>{createLabel}</Link>
-        </Button>
+        <LinkButton href={createHref} size="small">
+          {createLabel}
+        </LinkButton>
       </div>
 
       {rows.length === 0 ? (

@@ -10,9 +10,8 @@ import { serviceSchema, type ServiceFormValues } from "./schemas";
 async function requireAdmin() {
   const supabase = await createSupabaseServerClient();
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  const user = session?.user;
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) {
     redirect("/admin/login");
   }

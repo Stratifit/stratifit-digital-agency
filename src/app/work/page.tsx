@@ -1,5 +1,4 @@
-﻿import Link from "next/link";
-import { getLocale } from "@/lib/i18n/get-locale";
+﻿import { getLocale } from "@/lib/i18n/get-locale";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,7 +10,7 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link-button";
 
 export default async function WorkPage() {
   const locale = await getLocale();
@@ -50,9 +49,14 @@ export default async function WorkPage() {
                   <p className="mt-2 flex-1 text-sm leading-6 text-text-secondary">
                     {resolveTranslation(project.summary_translations, locale)}
                   </p>
-                  <Button variant="tertiary" size="small" className="mt-4 self-start">
-                    <Link href={`/work/${project.slug}`}>View case study</Link>
-                  </Button>
+                  <LinkButton
+                    href={`/work/${project.slug}`}
+                    variant="tertiary"
+                    size="small"
+                    className="mt-4 self-start"
+                  >
+                    View case study
+                  </LinkButton>
                 </Card>
               ))}
             </div>

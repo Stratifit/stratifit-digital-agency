@@ -6,6 +6,7 @@ import { getPublicServices } from "@/features/services/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { BrandLogo } from "@/components/ui/brand-logo";
+import { buttonClasses } from "@/components/ui/button";
 import { MobileNav } from "./mobile-nav";
 import { LanguageSwitcher } from "./language-switcher";
 import { HeaderChatButton } from "./header-chat-button";
@@ -56,27 +57,39 @@ export async function Header() {
         {/* Desktop: nav + language + CTA */}
         <div className="hidden items-center gap-6 md:flex">
           <nav className="flex items-center gap-6" aria-label="Main">
-            {items.map((item) => (
-              <a
-                key={item.id}
-                href={item.href}
-                target={item.open_in_new_tab || item.is_external ? "_blank" : undefined}
-                rel={item.open_in_new_tab || item.is_external ? "noopener noreferrer" : undefined}
-                className="text-sm font-medium text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              >
-                {resolveTranslation(item.label_translations, locale)}
-              </a>
-            ))}
+            {items.map((item) =>
+              item.is_external ? (
+                <a
+                  key={item.id}
+                  href={item.href}
+                  target={item.open_in_new_tab ? "_blank" : undefined}
+                  rel={item.open_in_new_tab ? "noopener noreferrer" : undefined}
+                  className="text-sm font-medium text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  {resolveTranslation(item.label_translations, locale)}
+                </a>
+              ) : (
+                <Link
+                  key={item.id}
+                  href={item.href}
+                  className="text-sm font-medium text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  {resolveTranslation(item.label_translations, locale)}
+                </Link>
+              )
+            )}
           </nav>
 
           <LanguageSwitcher currentLocale={locale} />
 
-          <a
+          <Link
             href="/contact"
-            className="flex items-center gap-2 rounded-button border border-transparent bg-primary px-5 py-2.5 text-sm font-bold text-text-inverse transition-[background-color,border-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-bright active:translate-y-0 active:border-primary/60 active:bg-primary-deep focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/60 focus-visible:outline-offset-2"
+            className={buttonClasses({
+              className: "px-5 py-2.5 text-sm font-bold",
+            })}
           >
             Start a Project
-          </a>
+          </Link>
         </div>
 
         {/* Mobile: chat button (right) */}

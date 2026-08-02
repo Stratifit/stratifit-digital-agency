@@ -13,7 +13,7 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link-button";
 import { FinalCtaSection } from "@/components/sections/final-cta-section";
 
 export default async function AboutPage() {
@@ -131,9 +131,9 @@ export default async function AboutPage() {
       ) : (
         <Section>
           <Container className="text-center">
-            <Button size="large">
-              <a href="/contact">Start Your Project</a>
-            </Button>
+            <LinkButton href="/contact" size="large">
+              Start Your Project
+            </LinkButton>
           </Container>
         </Section>
       )}
