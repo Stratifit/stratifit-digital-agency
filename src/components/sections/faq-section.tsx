@@ -27,7 +27,7 @@ export async function FaqSection() {
   return (
     <Section>
       <Container>
-        <SectionHeader settings={settings} locale={locale} align="center" />
+        <SectionHeader settings={settings} locale={locale} />
         <div className="mx-auto mt-12 max-w-6xl">
           <FaqAccordion items={items} />
         </div>
