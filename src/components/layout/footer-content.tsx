@@ -57,7 +57,7 @@ export function FooterContent({
       <div className="grid grid-cols-3 gap-4">
         {groups.map((group) => (
           <div key={group.id} className="flex flex-col gap-2.5">
-            <h4 className="mb-0.5 text-xs font-bold uppercase tracking-wider text-white">
+            <h4 className="mb-0.5 text-sm font-bold uppercase tracking-wider text-white">
               {resolveTranslation(group.title_translations, locale)}
             </h4>
             {group.links.map((link) => (
