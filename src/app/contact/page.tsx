@@ -1,4 +1,7 @@
 ﻿import { getPublicSiteSettings } from "@/features/site-settings/queries";
+import { getPublicServices } from "@/features/services/queries";
+import { getLocale } from "@/lib/i18n/get-locale";
+import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,11 +10,14 @@ export const metadata: Metadata = {
 
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
-import { Card } from "@/components/ui/card";
 import { ContactForm } from "@/components/forms/contact-form";
 
 export default async function ContactPage() {
-  const settings = await getPublicSiteSettings();
+  const locale = await getLocale();
+  const [settings, services] = await Promise.all([
+    getPublicSiteSettings(),
+    getPublicServices(),
+  ]);
 
   return (
     <>
@@ -31,40 +37,43 @@ export default async function ContactPage() {
 
       <Section>
         <Container>
-          <div className="grid gap-10 lg:grid-cols-5">
-            <Card className="p-6 lg:col-span-2">
-              <h2 className="font-display text-lg font-semibold text-text-primary">
-                Contact details
-              </h2>
-              <ul className="mt-4 space-y-3 text-sm text-text-secondary">
-                {settings?.contact_email ? (
-                  <li>
-                    <a
-                      href={`mailto:${settings.contact_email}`}
-                      className="hover:text-hover"
-                    >
-                      {settings.contact_email}
-                    </a>
-                  </li>
-                ) : null}
-                {settings?.contact_phone ? <li>{settings.contact_phone}</li> : null}
-              </ul>
-              {settings?.address_translations ? (
-                <p className="mt-4 text-sm text-text-secondary">
-                  {(settings.address_translations as Record<string, string>)?.en}
-                </p>
-              ) : null}
-            </Card>
-
-            <div className="lg:col-span-3">
-              <Card className="p-6">
+          <div className="overflow-hidden rounded-[32px] border border-card-border bg-card-dark">
+            <div className="grid lg:grid-cols-5">
+              <div className="p-8 sm:p-10 lg:col-span-2 lg:border-r lg:border-card-border">
                 <h2 className="font-display text-lg font-semibold text-text-primary">
-                  Send us a message
+                  Contact details
                 </h2>
-                <div className="mt-4">
-                  <ContactForm />
-                </div>
-              </Card>
+                <ul className="mt-4 space-y-3 text-sm text-text-secondary">
+                  {settings?.contact_email ? (
+                    <li>
+                      <a
+                        href={`mailto:${settings.contact_email}`}
+                        className="text-primary transition-colors hover:text-primary-bright"
+                      >
+                        {settings.contact_email}
+                      </a>
+                    </li>
+                  ) : null}
+                  {settings?.contact_phone ? (
+                    <li>{settings.contact_phone}</li>
+                  ) : null}
+                </ul>
+                {settings?.address_translations ? (
+                  <p className="mt-4 text-sm text-text-secondary">
+                    {resolveTranslation(
+                      settings.address_translations,
+                      locale
+                    )}
+                  </p>
+                ) : null}
+                <p className="mt-8 rounded-[16px] border border-card-border bg-background/40 p-4 text-sm leading-relaxed text-text-muted">
+                  We reply to every enquiry within 24 hours. Prefer email?
+                  Reach us directly at the address above.
+                </p>
+              </div>
+              <div className="p-8 sm:p-10 lg:col-span-3">
+                <ContactForm services={services} locale={locale} />
+              </div>
             </div>
           </div>
         </Container>
@@ -72,5 +81,3 @@ export default async function ContactPage() {
     </>
   );
 }
-
-

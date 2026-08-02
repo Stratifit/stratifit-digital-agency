@@ -82,7 +82,6 @@ export function ContactForm({
       company: "",
       requested_service_id: "",
       budget_range: "",
-      custom_budget: "",
       message: "",
       honeypot: "",
     },
@@ -180,18 +179,23 @@ export function ContactForm({
       ) : null}
 
       <div ref={budgetRef} className="relative">
-        <p className="mb-3 text-xs font-bold uppercase tracking-wider text-text-muted">
-          Project Budget
-        </p>
         <button
           type="button"
           aria-haspopup="listbox"
           aria-expanded={budgetOpen}
           onClick={() => setBudgetOpen((v) => !v)}
-          className="flex h-11 w-full items-center justify-between gap-2 rounded-[10px] border border-card-border bg-card-dark px-4 text-left text-sm transition-[background-color,border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover active:border-card-border-active active:bg-card-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2"
+          className="flex h-11 w-full items-center gap-3 rounded-[10px] border border-card-border bg-card-dark px-4 text-left transition-[background-color,border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover active:border-card-border-active active:bg-card-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2"
         >
-          <span className={budgetValue ? "text-text-primary" : "text-text-subtle"}>
-            {budgetValue || "Select range"}
+          <span className="shrink-0 text-xs font-bold uppercase tracking-wider text-text-muted">
+            Project Budget
+          </span>
+          <span
+            className={cn(
+              "min-w-0 flex-1 truncate text-sm",
+              budgetValue ? "text-text-primary" : "text-text-subtle"
+            )}
+          >
+            {budgetValue || "Select a range"}
           </span>
           <ChevronIcon open={budgetOpen} />
         </button>
@@ -224,12 +228,6 @@ export function ContactForm({
             ))}
           </div>
         ) : null}
-        <Input
-          id="budget-custom"
-          placeholder="Custom budget"
-          className="mt-3"
-          {...register("custom_budget")}
-        />
       </div>
 
       <div>
