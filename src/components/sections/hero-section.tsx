@@ -39,15 +39,6 @@ const FALLBACK_STATS: HeroMetric[] = [
   },
 ];
 
-const TECH_STACK: { name: string; icon: string }[] = [
-  { name: "Tailwind CSS", icon: "brush" },
-  { name: "Framer Motion", icon: "zap" },
-  { name: "GSAP", icon: "zap" },
-  { name: "Next.js", icon: "code" },
-  { name: "React", icon: "atom" },
-  { name: "TypeScript", icon: "code" },
-];
-
 function TechIcon({ name }: { name: string }) {
   const svgProps = {
     viewBox: "0 0 24 24",
@@ -117,6 +108,16 @@ export async function HeroSection() {
 
   const dbMetrics = (hero.metrics as HeroMetric[] | null) ?? [];
   const stats = dbMetrics.length > 0 ? dbMetrics : FALLBACK_STATS;
+
+  const techStack = hero.tech_stack ?? [];
+  const techStackHeading = resolveTranslation(
+    hero.tech_stack_heading_translations,
+    locale
+  );
+  const techStackDescription = resolveTranslation(
+    hero.tech_stack_description_translations,
+    locale
+  );
 
   return (
     <section
@@ -219,33 +220,38 @@ export async function HeroSection() {
           </div>
         ) : null}
 
-        <div className="mx-auto mt-[30px] w-full max-w-4xl">
-          <h2 className="mb-1.5 text-center text-xl font-bold tracking-tight text-text-primary sm:text-2xl">
-            Our <span className="text-primary">Tech</span>{" "}
-            <span className="text-text-secondary">Stack</span>
-          </h2>
-          <p className="mx-auto mb-0 max-w-2xl px-4 text-center text-xs font-medium leading-snug text-text-secondary sm:text-sm">
-            We build with trusted, modern technologies.
-          </p>
+        {techStack.length > 0 ? (
+          <div className="mx-auto mt-[30px] w-full max-w-4xl">
+            {techStackHeading ? (
+              <h2 className="mb-1.5 text-center text-xl font-bold tracking-tight text-text-primary sm:text-2xl">
+                {techStackHeading}
+              </h2>
+            ) : null}
+            {techStackDescription ? (
+              <p className="mx-auto mb-0 max-w-2xl px-4 text-center text-xs font-medium leading-snug text-text-secondary sm:text-sm">
+                {techStackDescription}
+              </p>
+            ) : null}
 
-          <div className="marquee-pause relative overflow-hidden py-4">
-            <div className="marquee-scroll flex w-max gap-10 whitespace-nowrap sm:gap-12">
-              {[...TECH_STACK, ...TECH_STACK].map((tech, index) => (
-                <div
-                  key={`${tech.name}-${index}`}
-                  className="group flex cursor-pointer flex-row items-center justify-center gap-2.5 text-white/70 transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-white"
-                >
-                  <span className="text-primary transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:scale-110">
-                    <TechIcon name={tech.icon} />
-                  </span>
-                  <span className="text-base font-semibold tracking-wide sm:text-lg">
-                    {tech.name}
-                  </span>
-                </div>
-              ))}
+            <div className="marquee-pause relative overflow-hidden py-4">
+              <div className="marquee-scroll flex w-max gap-10 whitespace-nowrap sm:gap-12">
+                {[...techStack, ...techStack].map((tech, index) => (
+                  <div
+                    key={`${tech.name}-${index}`}
+                    className="group flex cursor-pointer flex-row items-center justify-center gap-2.5 text-white/70 transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-white"
+                  >
+                    <span className="text-primary transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:scale-110">
+                      <TechIcon name={tech.icon} />
+                    </span>
+                    <span className="text-base font-semibold tracking-wide sm:text-lg">
+                      {tech.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        ) : null}
       </Container>
     </section>
   );

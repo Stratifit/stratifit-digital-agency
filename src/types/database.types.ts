@@ -838,6 +838,9 @@ export type Database = {
           secondary_cta_label_translations: Json
           secondary_cta_url: string | null
           singleton_key: boolean
+          tech_stack: Json
+          tech_stack_description_translations: Json
+          tech_stack_heading_translations: Json
           title_translations: Json
           updated_at: string
           variant: string
@@ -856,6 +859,9 @@ export type Database = {
           secondary_cta_label_translations?: Json
           secondary_cta_url?: string | null
           singleton_key?: boolean
+          tech_stack?: Json
+          tech_stack_description_translations?: Json
+          tech_stack_heading_translations?: Json
           title_translations?: Json
           updated_at?: string
           variant?: string
@@ -874,6 +880,9 @@ export type Database = {
           secondary_cta_label_translations?: Json
           secondary_cta_url?: string | null
           singleton_key?: boolean
+          tech_stack?: Json
+          tech_stack_description_translations?: Json
+          tech_stack_heading_translations?: Json
           title_translations?: Json
           updated_at?: string
           variant?: string

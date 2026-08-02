@@ -11,7 +11,6 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 
 const BUDGET_RANGES = [
@@ -86,9 +85,8 @@ export function ContactForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div className="space-y-2">
-          <Label htmlFor="name">Name</Label>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
           <Input
             id="name"
             placeholder="Your name *"
@@ -98,8 +96,7 @@ export function ContactForm({
             <p className="mt-1 text-xs text-error">{errors.name.message}</p>
           ) : null}
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
+        <div>
           <Input
             id="email"
             type="email"
@@ -112,8 +109,7 @@ export function ContactForm({
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="company">Company</Label>
+      <div>
         <Input
           id="company"
           placeholder="Company name"
@@ -122,10 +118,7 @@ export function ContactForm({
       </div>
 
       {services.length > 0 ? (
-        <div className="space-y-2">
-          <Label htmlFor="service">
-            Services you&apos;re interested in
-          </Label>
+        <div>
           <Select id="service" {...register("requested_service_id")}>
             <option value="" disabled>
               Select services you&apos;re interested in
@@ -139,9 +132,11 @@ export function ContactForm({
         </div>
       ) : null}
 
-      <div className="space-y-2">
-        <Label htmlFor="budget">Project budget</Label>
-        <div className="grid gap-3 sm:grid-cols-2">
+      <div>
+        <p className="mb-3 text-xs font-bold uppercase tracking-wider text-text-muted">
+          Project Budget
+        </p>
+        <div className="grid grid-cols-2 gap-3">
           <Select id="budget" {...register("budget_range")}>
             <option value="" disabled>
               Select range
@@ -160,8 +155,7 @@ export function ContactForm({
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="message">Message</Label>
+      <div>
         <Textarea
           id="message"
           rows={4}
