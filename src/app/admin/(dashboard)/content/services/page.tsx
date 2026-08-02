@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { getAdminServices } from "@/features/services/admin-queries";
 import { deleteService } from "@/features/services/mutations";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
@@ -53,7 +53,7 @@ export default async function AdminServicesPage() {
         <div className="flex justify-end gap-2">
           <Link
             href={`/admin/content/services/${s.slug}/edit`}
-            className="rounded-radius-xs px-2 py-1 text-sm text-text-secondary hover:text-hover"
+            className="rounded-xs px-2 py-1 text-sm text-text-secondary hover:text-hover"
           >
             Edit
           </Link>

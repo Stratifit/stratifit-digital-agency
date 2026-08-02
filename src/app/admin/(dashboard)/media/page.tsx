@@ -1,4 +1,4 @@
-﻿import { getAdminMedia } from "@/features/media/queries";
+import { getAdminMedia } from "@/features/media/queries";
 import { deleteMediaAsset } from "@/features/media/mutations";
 import { getMediaPublicUrl } from "@/lib/media";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
@@ -34,7 +34,7 @@ export default async function AdminMediaPage() {
         </h2>
 
         {media.length === 0 ? (
-          <div className="mt-4 rounded-radius-md border border-border bg-surface p-10 text-center">
+          <div className="mt-4 rounded-md border border-border bg-surface p-10 text-center">
             <p className="text-sm text-text-secondary">No media assets yet.</p>
             <p className="mt-1 text-sm text-text-muted">
               Upload your first image using the form above.
@@ -55,7 +55,7 @@ export default async function AdminMediaPage() {
               return (
                 <div
                   key={asset.id}
-                  className="group overflow-hidden rounded-radius-md border border-border bg-surface transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-border-interactive"
+                  className="group overflow-hidden rounded-md border border-border bg-surface transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-border-interactive"
                 >
                   <div className="relative aspect-video overflow-hidden bg-background-deep">
                     {url && asset.mime_type.startsWith("image/") ? (

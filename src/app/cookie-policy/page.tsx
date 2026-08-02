@@ -44,7 +44,7 @@ export default function CookiePolicyPage() {
               For questions about this cookie policy, contact us through the contact
               page.
             </p>
-            <p className="rounded-radius-sm border border-border bg-surface p-4 text-text-muted">
+            <p className="rounded-sm border border-border bg-surface p-4 text-text-muted">
               Note: This placeholder must be reviewed and finalized by qualified
               legal counsel before launch.
             </p>

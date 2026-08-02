@@ -45,7 +45,7 @@ export default async function AdminProcessStepsPage() {
         <div className="flex justify-end gap-2">
           <Link
             href={`/admin/content/process/${r.step_key}/edit`}
-            className="rounded-radius-xs px-2 py-1 text-sm text-text-secondary hover:text-hover"
+            className="rounded-xs px-2 py-1 text-sm text-text-secondary hover:text-hover"
           >
             Edit
           </Link>

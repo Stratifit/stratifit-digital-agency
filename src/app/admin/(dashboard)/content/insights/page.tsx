@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { getAdminInsights } from "@/features/content/admin-queries";
 import { deleteInsight } from "@/features/content/mutations";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
@@ -38,7 +38,7 @@ export default async function AdminInsightsPage() {
         <div className="flex justify-end gap-2">
           <Link
             href={`/admin/content/insights/${r.slug}/edit`}
-            className="rounded-radius-xs px-2 py-1 text-sm text-text-secondary hover:text-hover"
+            className="rounded-xs px-2 py-1 text-sm text-text-secondary hover:text-hover"
           >
             Edit
           </Link>

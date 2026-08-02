@@ -102,7 +102,7 @@ export function MobileNav({
         aria-label="Open navigation menu"
         aria-expanded={open}
         onClick={() => setOpen(true)}
-        className="inline-flex size-11 items-center justify-center rounded-radius-md text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-surface active:bg-background-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:size-12"
+        className="inline-flex size-11 items-center justify-center rounded-md text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-surface active:bg-background-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:size-12"
       >
         <svg
           className="size-7 sm:size-8"
@@ -164,7 +164,7 @@ export function MobileNav({
                             data-service-card
                             href={service.cta_url ?? "/contact"}
                             onClick={() => setOpen(false)}
-                            className="group flex flex-[0_0_70%] snap-start flex-col rounded-radius-card border border-card-border bg-card-dark p-3.5 transition-[border-color,background-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-card-border-hover active:translate-y-0 active:bg-card-active active:border-card-border-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2"
+                            className="group flex flex-[0_0_70%] snap-start flex-col rounded-card border border-card-border bg-card-dark p-3.5 transition-[border-color,background-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-card-border-hover active:translate-y-0 active:bg-card-active active:border-card-border-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2"
                           >
                             <div className="mb-2.5 flex items-center justify-between">
                               <div className="flex min-w-0 items-center gap-2.5">

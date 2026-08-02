@@ -30,7 +30,7 @@ export default async function AdminWhyChooseUsPage() {
           <span className="text-text-primary">Sections</span>.
         </p>
       </div>
-      <div className="rounded-radius-md border border-border bg-surface p-6">
+      <div className="rounded-md border border-border bg-surface p-6">
         <WhyChooseUsForm items={items} />
       </div>
     </div>

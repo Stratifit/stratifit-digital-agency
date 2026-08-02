@@ -24,7 +24,7 @@ export default async function EditSectionSettingsPage({
           Update the heading shown above this section on the public website.
         </p>
       </div>
-      <div className="rounded-radius-md border border-border bg-surface p-6">
+      <div className="rounded-md border border-border bg-surface p-6">
         <SectionSettingsForm settings={settings} />
       </div>
     </div>

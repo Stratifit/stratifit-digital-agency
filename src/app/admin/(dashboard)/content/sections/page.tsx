@@ -18,7 +18,7 @@ export default async function AdminSectionsPage() {
         </p>
       </div>
 
-      <div className="overflow-hidden rounded-radius-md border border-border bg-surface">
+      <div className="overflow-hidden rounded-md border border-border bg-surface">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-border bg-surface-soft">
             <tr>
@@ -60,7 +60,7 @@ export default async function AdminSectionsPage() {
                 <td className="px-5 py-3 text-right">
                   <Link
                     href={`/admin/content/sections/${row.section_key}/edit`}
-                    className="rounded-radius-xs px-2 py-1 text-sm text-text-secondary hover:text-hover"
+                    className="rounded-xs px-2 py-1 text-sm text-text-secondary hover:text-hover"
                   >
                     Edit
                   </Link>

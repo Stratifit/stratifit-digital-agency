@@ -67,7 +67,7 @@ export function LanguageSwitcher({ currentLocale = "en" }: { currentLocale?: str
       {open ? (
         <div
           role="menu"
-          className="absolute right-0 top-full z-50 mt-2 w-36 rounded-radius-input border border-card-border bg-card-dark p-1 shadow-shadow-md"
+          className="absolute right-0 top-full z-50 mt-2 w-36 rounded-input border border-card-border bg-card-dark p-1 shadow-shadow-md"
         >
           {SUPPORTED_LOCALES.map((locale) => (
             <button
@@ -76,7 +76,7 @@ export function LanguageSwitcher({ currentLocale = "en" }: { currentLocale?: str
               role="menuitem"
               onClick={() => handleSelect(locale)}
               className={cn(
-                "flex items-center gap-2 rounded-radius-xs border px-3 py-2 text-left text-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2",
+                "flex items-center gap-2 rounded-xs border px-3 py-2 text-left text-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2",
                 locale === currentLocale
                   ? "mx-1 w-auto rounded-[8px] border-card-border-active bg-card-active font-medium text-primary"
                   : "w-full border-transparent text-text-secondary hover:bg-primary/8 hover:text-primary"

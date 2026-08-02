@@ -46,7 +46,7 @@ export default async function EditServicePage({
         </h1>
         <p className="mt-1 text-sm text-text-secondary">{slug}</p>
       </div>
-      <div className="rounded-radius-md border border-border bg-surface p-6">
+      <div className="rounded-md border border-border bg-surface p-6">
         <ServiceForm slug={slug} initial={toFormValues(data)} />
       </div>
     </div>

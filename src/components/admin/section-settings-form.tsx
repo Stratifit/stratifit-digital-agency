@@ -120,7 +120,7 @@ export function SectionSettingsForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-      <div className="flex items-center justify-between rounded-radius-md border border-border bg-background px-4 py-3">
+      <div className="flex items-center justify-between rounded-md border border-border bg-background px-4 py-3">
         <div>
           <p className="text-sm font-medium text-text-primary">
             Show this section on the website
@@ -136,13 +136,13 @@ export function SectionSettingsForm({
         />
       </div>
 
-      <div className="rounded-radius-md border border-border bg-background p-4">
+      <div className="rounded-md border border-border bg-background p-4">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm font-medium text-text-primary">
             Live preview
           </p>
           <div className="flex items-center gap-2">
-            <div className="flex overflow-hidden rounded-radius-xs border border-border">
+            <div className="flex overflow-hidden rounded-xs border border-border">
               {(
                 [
                   ["mobile", "Mobile"],
@@ -165,7 +165,7 @@ export function SectionSettingsForm({
                 </button>
               ))}
             </div>
-            <div className="flex overflow-hidden rounded-radius-xs border border-border">
+            <div className="flex overflow-hidden rounded-xs border border-border">
               {(
                 [
                   ["left", "Left"],
@@ -192,7 +192,7 @@ export function SectionSettingsForm({
 
         <div
           className={cn(
-            "mx-auto overflow-hidden rounded-radius-sm border border-border-subtle bg-background px-4 py-6 sm:px-6",
+            "mx-auto overflow-hidden rounded-sm border border-border-subtle bg-background px-4 py-6 sm:px-6",
             frame === "mobile" && "max-w-[375px]",
             frame === "tablet" && "max-w-[768px]",
             frame === "desktop" && "w-full"
@@ -210,7 +210,7 @@ export function SectionSettingsForm({
         {SUPPORTED_LOCALES.map((locale) => (
           <fieldset
             key={locale}
-            className="rounded-radius-md border border-border bg-background p-5"
+            className="rounded-md border border-border bg-background p-5"
           >
             <legend className="px-2 text-sm font-semibold text-text-primary">
               {LOCALE_NAMES[locale]}
@@ -270,13 +270,13 @@ export function SectionSettingsForm({
       </div>
 
       {serverError ? (
-        <p role="alert" className="rounded-radius-sm bg-error-soft px-3 py-2 text-sm text-error">
+        <p role="alert" className="rounded-sm bg-error-soft px-3 py-2 text-sm text-error">
           {serverError}
         </p>
       ) : null}
 
       {saved ? (
-        <p role="status" className="rounded-radius-sm bg-success-soft px-3 py-2 text-sm text-success">
+        <p role="status" className="rounded-sm bg-success-soft px-3 py-2 text-sm text-success">
           Saved successfully.
         </p>
       ) : null}

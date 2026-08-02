@@ -55,7 +55,7 @@ function ToastCard({
     <div
       role={toast.type === "error" ? "alert" : "status"}
       className={cn(
-        "pointer-events-auto w-full max-w-sm rounded-radius-md border bg-surface-elevated px-4 py-3 shadow-shadow-md",
+        "pointer-events-auto w-full max-w-sm rounded-md border bg-surface-elevated px-4 py-3 shadow-shadow-md",
         typeClasses[toast.type]
       )}
       onMouseEnter={() => setPaused(true)}
@@ -80,7 +80,7 @@ function ToastCard({
           type="button"
           aria-label="Dismiss notification"
           onClick={() => onDismiss(toast.id)}
-          className="shrink-0 rounded-radius-xs px-1.5 text-text-muted transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          className="shrink-0 rounded-xs px-1.5 text-text-muted transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
           <svg
             className="size-4"

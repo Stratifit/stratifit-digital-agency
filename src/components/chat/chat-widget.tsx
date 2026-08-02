@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import * as React from "react";
 import { sendVisitorMessage } from "@/features/chat/mutations";
@@ -103,14 +103,14 @@ export function ChatWidget() {
   return (
     <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-3">
       {open ? (
-        <div className="flex h-[480px] w-[min(92vw,360px)] flex-col overflow-hidden rounded-radius-lg border border-border bg-surface-elevated shadow-shadow-lg">
+        <div className="flex h-[480px] w-[min(92vw,360px)] flex-col overflow-hidden rounded-lg border border-border bg-surface-elevated shadow-shadow-lg">
           <div className="flex items-center justify-between border-b border-border px-4 py-3">
             <p className="font-medium text-text-primary">Stratifit Chat</p>
             <button
               type="button"
               aria-label="Close chat"
               onClick={() => setOpen(false)}
-              className="rounded-radius-xs p-1 text-text-muted hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className="rounded-xs p-1 text-text-muted hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               ✕
             </button>
@@ -125,7 +125,7 @@ export function ChatWidget() {
               messages.map((m) => (
                 <div
                   key={m.id}
-                  className={`max-w-[85%] rounded-radius-md px-3 py-2 text-sm ${
+                  className={`max-w-[85%] rounded-md px-3 py-2 text-sm ${
                     m.sender === "visitor"
                       ? "ml-auto bg-primary text-text-inverse"
                       : m.sender === "system"
@@ -138,7 +138,7 @@ export function ChatWidget() {
               ))
             )}
             {loading ? (
-              <div className="w-fit rounded-radius-md bg-surface px-3 py-2 text-sm text-text-muted">
+              <div className="w-fit rounded-md bg-surface px-3 py-2 text-sm text-text-muted">
                 …
               </div>
             ) : null}

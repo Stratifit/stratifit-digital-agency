@@ -44,14 +44,14 @@ export function AdminList<T>({
       </div>
 
       {rows.length === 0 ? (
-        <div className="rounded-radius-md border border-border bg-surface p-10 text-center">
+        <div className="rounded-md border border-border bg-surface p-10 text-center">
           <p className="text-sm text-text-secondary">No items yet.</p>
           <p className="mt-1 text-sm text-text-muted">
             Create your first item to get started.
           </p>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-radius-md border border-border bg-surface">
+        <div className="overflow-x-auto rounded-md border border-border bg-surface">
           <table className="w-full text-left text-sm">
             <thead>
               <tr className="border-b border-border text-text-muted">

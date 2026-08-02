@@ -1,4 +1,4 @@
-﻿import { notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getAdminLead, LEAD_STATUSES } from "@/features/leads/admin-queries";
 import { getPublicServices } from "@/features/services/queries";
@@ -39,7 +39,7 @@ export default async function LeadDetailPage({
         <div className="flex gap-2">
           <Link
             href="/admin/leads"
-            className="rounded-radius-sm px-3 py-2 text-sm text-text-secondary hover:text-hover"
+            className="rounded-sm px-3 py-2 text-sm text-text-secondary hover:text-hover"
           >
             Back
           </Link>
@@ -67,7 +67,7 @@ export default async function LeadDetailPage({
             <select
               name="status"
               defaultValue={lead.status}
-              className="h-9 rounded-radius-sm border border-border bg-surface px-2 text-sm text-text-primary"
+              className="h-9 rounded-sm border border-border bg-surface px-2 text-sm text-text-primary"
             >
               {LEAD_STATUSES.map((s) => (
                 <option key={s} value={s}>
@@ -77,7 +77,7 @@ export default async function LeadDetailPage({
             </select>
             <button
               type="submit"
-              className="rounded-radius-sm bg-primary px-3 text-sm font-medium text-text-inverse"
+              className="rounded-sm bg-primary px-3 text-sm font-medium text-text-inverse"
             >
               Update
             </button>

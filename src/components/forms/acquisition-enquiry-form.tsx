@@ -68,7 +68,7 @@ export function AcquisitionEnquiryForm({
 
   if (submitted) {
     return (
-      <div className="rounded-radius-md border border-success-border bg-success-soft p-8 text-center">
+      <div className="rounded-md border border-success-border bg-success-soft p-8 text-center">
         <p className="font-medium text-success">Thank you!</p>
         <p className="mt-2 text-sm text-text-secondary">
           Your acquisition enquiry has been received. We will get back to you
@@ -193,7 +193,7 @@ export function AcquisitionEnquiryForm({
       {serverError ? (
         <p
           role="alert"
-          className="rounded-radius-sm bg-error-soft px-3 py-2 text-sm text-error"
+          className="rounded-sm bg-error-soft px-3 py-2 text-sm text-error"
         >
           {serverError}
         </p>

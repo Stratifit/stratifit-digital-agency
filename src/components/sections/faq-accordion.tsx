@@ -43,7 +43,7 @@ export function FaqAccordion({ items }: { items: FaqItem[] }) {
           <div
             key={item.id}
             className={cn(
-              "h-full rounded-radius-card border transition-all duration-300 ease-[var(--ease-standard)]",
+              "h-full rounded-card border transition-all duration-300 ease-[var(--ease-standard)]",
               open
                 ? "border-primary/30 shadow-[0_0_20px_rgba(245,158,11,0.05)]"
                 : "border-card-border hover:border-white/10"

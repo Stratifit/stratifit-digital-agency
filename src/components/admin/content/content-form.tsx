@@ -321,7 +321,7 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
       </div>
 
       {serverError ? (
-        <p role="alert" className="rounded-radius-sm bg-error-soft px-3 py-2 text-sm text-error">
+        <p role="alert" className="rounded-sm bg-error-soft px-3 py-2 text-sm text-error">
           {serverError}
         </p>
       ) : null}

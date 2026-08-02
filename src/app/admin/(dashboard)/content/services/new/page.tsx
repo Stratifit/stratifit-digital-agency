@@ -12,7 +12,7 @@ export default function NewServicePage() {
           Create a new service offering.
         </p>
       </div>
-      <div className="rounded-radius-md border border-border bg-surface p-6">
+      <div className="rounded-md border border-border bg-surface p-6">
         <ServiceForm initial={emptyServiceForm()} />
       </div>
     </div>

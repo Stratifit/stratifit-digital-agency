@@ -1,4 +1,4 @@
-﻿import { Container } from "@/components/ui/container";
+import { Container } from "@/components/ui/container";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -51,7 +51,7 @@ export default function PrivacyPage() {
               For privacy questions, contact us through the contact page or email
               the address listed on this website.
             </p>
-            <p className="rounded-radius-sm border border-border bg-surface p-4 text-text-muted">
+            <p className="rounded-sm border border-border bg-surface p-4 text-text-muted">
               Note: This placeholder must be reviewed and finalized by qualified
               legal counsel before launch.
             </p>

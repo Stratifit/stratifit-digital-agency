@@ -82,7 +82,7 @@ export function WhyChooseUsForm({ items }: { items: WhyChooseUsItem[] }) {
       {fields.map((field, index) => (
         <div
           key={field.id}
-          className="rounded-radius-md border border-border bg-background p-5"
+          className="rounded-md border border-border bg-background p-5"
         >
           <div className="mb-4 flex items-center justify-between">
             <h3 className="font-display text-base font-semibold text-text-primary">
@@ -128,7 +128,7 @@ export function WhyChooseUsForm({ items }: { items: WhyChooseUsItem[] }) {
             {LOCALES.map((locale) => (
               <div
                 key={locale}
-                className="grid gap-3 rounded-radius-sm border border-border-subtle p-3 sm:grid-cols-2"
+                className="grid gap-3 rounded-sm border border-border-subtle p-3 sm:grid-cols-2"
               >
                 <div className="space-y-2">
                   <Label htmlFor={`title-${index}-${locale}`}>
@@ -168,7 +168,7 @@ export function WhyChooseUsForm({ items }: { items: WhyChooseUsItem[] }) {
       ))}
 
       {errors.items?.message ? (
-        <p className="rounded-radius-sm bg-error-soft px-3 py-2 text-sm text-error">
+        <p className="rounded-sm bg-error-soft px-3 py-2 text-sm text-error">
           {errors.items.message}
         </p>
       ) : null}
@@ -182,13 +182,13 @@ export function WhyChooseUsForm({ items }: { items: WhyChooseUsItem[] }) {
       </Button>
 
       {serverError ? (
-        <p role="alert" className="rounded-radius-sm bg-error-soft px-3 py-2 text-sm text-error">
+        <p role="alert" className="rounded-sm bg-error-soft px-3 py-2 text-sm text-error">
           {serverError}
         </p>
       ) : null}
 
       {saved ? (
-        <p role="status" className="rounded-radius-sm bg-success-soft px-3 py-2 text-sm text-success">
+        <p role="status" className="rounded-sm bg-success-soft px-3 py-2 text-sm text-success">
           Saved successfully.
         </p>
       ) : null}

@@ -147,7 +147,7 @@ export function PortfolioGallery({
             <article
               key={project.slug}
               data-project-card
-              className="group w-[300px] shrink-0 snap-center overflow-hidden rounded-radius-card border border-card-border bg-card-dark transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:border-primary/20 sm:w-[340px] md:w-[380px]"
+              className="group w-[300px] shrink-0 snap-center overflow-hidden rounded-card border border-card-border bg-card-dark transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:border-primary/20 sm:w-[340px] md:w-[380px]"
             >
               <div className="relative aspect-[4/3] overflow-hidden bg-surface-soft">
                 {project.featured_media_url ? (

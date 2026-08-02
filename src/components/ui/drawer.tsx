@@ -50,7 +50,7 @@ export const DrawerContent = React.forwardRef<
       {children}
       <DialogPrimitive.Close
         aria-label="Close drawer"
-        className="absolute right-4 top-5 z-30 rounded-radius-xs p-2 text-text-muted transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        className="absolute right-4 top-5 z-30 rounded-xs p-2 text-text-muted transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       >
         <svg className="size-6" viewBox="0 0 16 16" fill="none" aria-hidden="true">
           <path

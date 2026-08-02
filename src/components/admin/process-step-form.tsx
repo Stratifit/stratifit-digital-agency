@@ -146,7 +146,7 @@ export function ProcessStepForm({
             <p className="mt-1 text-xs text-error">{errors.icon_name.message}</p>
           ) : null}
         </div>
-        <div className="flex items-center justify-between rounded-radius-md border border-border bg-background px-4 py-3">
+        <div className="flex items-center justify-between rounded-md border border-border bg-background px-4 py-3">
           <div>
             <p className="text-sm font-medium text-text-primary">Show this step</p>
             <p className="text-xs text-text-muted">
@@ -165,7 +165,7 @@ export function ProcessStepForm({
         {LOCALES.map((locale) => (
           <fieldset
             key={locale}
-            className="rounded-radius-md border border-border bg-background p-5"
+            className="rounded-md border border-border bg-background p-5"
           >
             <legend className="px-2 text-sm font-semibold text-text-primary">
               {LOCALE_NAMES[locale]}
@@ -194,24 +194,24 @@ export function ProcessStepForm({
       </div>
 
       {errors.title_translations?.en?.message ? (
-        <p className="rounded-radius-sm bg-error-soft px-3 py-2 text-sm text-error">
+        <p className="rounded-sm bg-error-soft px-3 py-2 text-sm text-error">
           {errors.title_translations.en.message}
         </p>
       ) : null}
       {errors.description_translations?.en?.message ? (
-        <p className="rounded-radius-sm bg-error-soft px-3 py-2 text-sm text-error">
+        <p className="rounded-sm bg-error-soft px-3 py-2 text-sm text-error">
           {errors.description_translations.en.message}
         </p>
       ) : null}
 
       {serverError ? (
-        <p role="alert" className="rounded-radius-sm bg-error-soft px-3 py-2 text-sm text-error">
+        <p role="alert" className="rounded-sm bg-error-soft px-3 py-2 text-sm text-error">
           {serverError}
         </p>
       ) : null}
 
       {saved ? (
-        <p role="status" className="rounded-radius-sm bg-success-soft px-3 py-2 text-sm text-success">
+        <p role="status" className="rounded-sm bg-success-soft px-3 py-2 text-sm text-success">
           Saved successfully.
         </p>
       ) : null}

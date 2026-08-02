@@ -62,7 +62,7 @@ export function Sidebar() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "block rounded-radius-sm px-3 py-2 text-sm text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-surface-hover hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                      "block rounded-sm px-3 py-2 text-sm text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-surface-hover hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                     )}
                   >
                     {item.label}

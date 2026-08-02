@@ -1,4 +1,4 @@
-﻿import { getPublicSiteSettings } from "@/features/site-settings/queries";
+import { getPublicSiteSettings } from "@/features/site-settings/queries";
 import { getPublicServices } from "@/features/services/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
@@ -37,7 +37,7 @@ export default async function ContactPage() {
 
       <Section>
         <Container>
-          <div className="overflow-hidden rounded-radius-card-lg border border-card-border bg-card-dark">
+          <div className="overflow-hidden rounded-card-lg border border-card-border bg-card-dark">
             <div className="grid lg:grid-cols-5">
               <div className="p-8 sm:p-10 lg:col-span-2 lg:border-r lg:border-card-border">
                 <h2 className="font-display text-lg font-semibold text-text-primary">

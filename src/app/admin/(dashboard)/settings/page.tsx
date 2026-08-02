@@ -28,7 +28,7 @@ export default async function AdminSettingsPage() {
           Manage your site identity, contact details, and social links.
         </p>
       </div>
-      <div className="rounded-radius-md border border-border bg-surface p-6">
+      <div className="rounded-md border border-border bg-surface p-6">
         <SiteSettingsForm initial={initial} />
       </div>
     </div>

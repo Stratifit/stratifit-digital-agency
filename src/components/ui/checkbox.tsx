@@ -10,7 +10,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         <input ref={ref} type="checkbox" className="peer sr-only" {...props} />
         <span
           aria-hidden="true"
-          className="flex size-5 items-center justify-center rounded-radius-xs border border-card-border bg-card-dark transition-[background-color,border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] peer-hover:border-card-border-hover peer-active:border-card-border-active peer-active:bg-card-active peer-checked:border-primary peer-checked:bg-primary peer-checked:hover:border-primary-bright peer-checked:hover:bg-primary-bright peer-disabled:cursor-not-allowed peer-disabled:border-card-border-disabled peer-disabled:bg-card-disabled peer-disabled:opacity-60"
+          className="flex size-5 items-center justify-center rounded-xs border border-card-border bg-card-dark transition-[background-color,border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] peer-hover:border-card-border-hover peer-active:border-card-border-active peer-active:bg-card-active peer-checked:border-primary peer-checked:bg-primary peer-checked:hover:border-primary-bright peer-checked:hover:bg-primary-bright peer-disabled:cursor-not-allowed peer-disabled:border-card-border-disabled peer-disabled:bg-card-disabled peer-disabled:opacity-60"
         >
           <svg
             viewBox="0 0 16 16"

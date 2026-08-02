@@ -11,7 +11,7 @@ export default function NewProcessStepPage() {
           Add a step to the How We Work section.
         </p>
       </div>
-      <div className="rounded-radius-md border border-border bg-surface p-6">
+      <div className="rounded-md border border-border bg-surface p-6">
         <ProcessStepForm step={null} isNew />
       </div>
     </div>

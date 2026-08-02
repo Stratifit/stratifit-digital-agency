@@ -101,7 +101,7 @@ export function AnnouncementBarView({ slides, linkUrl, linkLabel }: Announcement
           type="button"
           aria-label="Dismiss announcement"
           onClick={() => setDismissed(true)}
-          className="shrink-0 rounded-radius-xs p-1 text-text-inverse transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-text-inverse/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-inverse"
+          className="shrink-0 rounded-xs p-1 text-text-inverse transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-text-inverse/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-inverse"
         >
           <svg className="size-4" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path

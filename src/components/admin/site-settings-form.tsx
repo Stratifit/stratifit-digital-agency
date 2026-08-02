@@ -132,7 +132,7 @@ export function SiteSettingsForm({
         <Input id="address_en" {...register("address_en")} />
       </div>
 
-      <fieldset className="rounded-radius-md border border-border bg-background p-5">
+      <fieldset className="rounded-md border border-border bg-background p-5">
         <legend className="px-2 text-sm font-semibold text-text-primary">
           Social links
         </legend>
@@ -160,7 +160,7 @@ export function SiteSettingsForm({
       {serverError ? (
         <p
           role="alert"
-          className="rounded-radius-sm bg-error-soft px-3 py-2 text-sm text-error"
+          className="rounded-sm bg-error-soft px-3 py-2 text-sm text-error"
         >
           {serverError}
         </p>
@@ -169,7 +169,7 @@ export function SiteSettingsForm({
       {saved ? (
         <p
           role="status"
-          className="rounded-radius-sm bg-success-soft px-3 py-2 text-sm text-success"
+          className="rounded-sm bg-success-soft px-3 py-2 text-sm text-success"
         >
           Saved successfully.
         </p>

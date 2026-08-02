@@ -12,7 +12,7 @@ export default async function EditFaqPage({ params }: { params: Promise<{ id: st
       <div>
         <h1 className="font-display text-2xl font-bold tracking-tight text-text-primary">Edit FAQ</h1>
       </div>
-      <div className="rounded-radius-md border border-border bg-surface p-6">
+      <div className="rounded-md border border-border bg-surface p-6">
         <ContentForm type="faq" id={id} initial={item} />
       </div>
     </div>

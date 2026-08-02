@@ -94,14 +94,14 @@ export function ConversationDetail({ conversation }: { conversation: DetailData 
         </div>
       </div>
 
-      <div className="space-y-3 rounded-radius-md border border-border bg-surface p-4">
+      <div className="space-y-3 rounded-md border border-border bg-surface p-4">
         {conversation.messages.length === 0 ? (
           <p className="text-sm text-text-muted">No messages yet.</p>
         ) : (
           conversation.messages.map((m) => (
             <div
               key={m.id}
-              className={`max-w-[85%] rounded-radius-md px-3 py-2 text-sm ${
+              className={`max-w-[85%] rounded-md px-3 py-2 text-sm ${
                 m.sender_type === "visitor"
                   ? "bg-primary text-text-inverse"
                   : m.is_internal

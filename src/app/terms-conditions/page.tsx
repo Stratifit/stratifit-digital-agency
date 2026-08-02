@@ -43,7 +43,7 @@ export default function TermsConditionsPage() {
             <p>
               For questions about these terms, contact us through the contact page.
             </p>
-            <p className="rounded-radius-sm border border-border bg-surface p-4 text-text-muted">
+            <p className="rounded-sm border border-border bg-surface p-4 text-text-muted">
               Note: This placeholder must be reviewed and finalized by qualified
               legal counsel before launch.
             </p>

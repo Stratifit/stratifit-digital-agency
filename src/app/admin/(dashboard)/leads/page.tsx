@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { getAdminLeads } from "@/features/leads/admin-queries";
 import { deleteLead } from "@/features/leads/admin-mutations";
 import { AdminList } from "@/components/admin/admin-list";
@@ -50,7 +50,7 @@ export default async function AdminLeadsPage() {
         <div className="flex justify-end gap-2">
           <Link
             href={`/admin/leads/${l.id}`}
-            className="rounded-radius-xs px-2 py-1 text-sm text-text-secondary hover:text-hover"
+            className="rounded-xs px-2 py-1 text-sm text-text-secondary hover:text-hover"
           >
             View
           </Link>

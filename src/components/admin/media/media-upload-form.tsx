@@ -67,7 +67,7 @@ export function MediaUploadForm() {
             type="file"
             accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml,image/avif"
             required
-            className="block w-full cursor-pointer rounded-radius-input border border-card-border bg-card-dark text-sm text-text-secondary file:mr-4 file:cursor-pointer file:rounded-radius-sm file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-medium file:text-text-inverse transition-[border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover focus-visible:border-card-border-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2"
+            className="block w-full cursor-pointer rounded-input border border-card-border bg-card-dark text-sm text-text-secondary file:mr-4 file:cursor-pointer file:rounded-sm file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-medium file:text-text-inverse transition-[border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover focus-visible:border-card-border-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2"
           />
           <p className="text-xs text-text-muted">
             Max 10 MB. Allowed: JPG, PNG, WebP, GIF, SVG, AVIF.
@@ -98,7 +98,7 @@ export function MediaUploadForm() {
         {state && !state.success ? (
           <p
             role="alert"
-            className="rounded-radius-sm bg-error-soft px-3 py-2 text-sm text-error"
+            className="rounded-sm bg-error-soft px-3 py-2 text-sm text-error"
           >
             {state.error}
           </p>
@@ -106,7 +106,7 @@ export function MediaUploadForm() {
         {state?.success ? (
           <p
             role="status"
-            className="rounded-radius-sm bg-success-soft px-3 py-2 text-sm text-success"
+            className="rounded-sm bg-success-soft px-3 py-2 text-sm text-success"
           >
             Asset uploaded successfully.
           </p>

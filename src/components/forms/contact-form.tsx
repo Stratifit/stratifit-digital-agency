@@ -59,13 +59,13 @@ function CheckIcon() {
 
 function dropdownTriggerClass() {
   return cn(
-    "flex h-11 w-full items-center gap-3 rounded-radius-input border border-card-border bg-card-dark px-4 text-left transition-[background-color,border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover active:border-card-border-active active:bg-card-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2"
+    "flex h-11 w-full items-center gap-3 rounded-input border border-card-border bg-card-dark px-4 text-left transition-[background-color,border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover active:border-card-border-active active:bg-card-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2"
   );
 }
 
 function dropdownPanelClass() {
   return cn(
-    "absolute z-50 mt-2 w-full rounded-radius-input border border-card-border bg-card-dark p-1 shadow-shadow-md"
+    "absolute z-50 mt-2 w-full rounded-input border border-card-border bg-card-dark p-1 shadow-shadow-md"
   );
 }
 
@@ -156,7 +156,7 @@ export function ContactForm({
 
   if (submitted) {
     return (
-      <div className="rounded-radius-md border border-success-border bg-success-soft p-8 text-center">
+      <div className="rounded-md border border-success-border bg-success-soft p-8 text-center">
         <p className="font-medium text-success">Thank you!</p>
         <p className="mt-2 text-sm text-text-secondary">
           Your message has been received. We will get back to you shortly.
@@ -333,7 +333,7 @@ export function ContactForm({
                     setBudgetOpen(false);
                   }}
                   className={cn(
-                    "block w-full rounded-radius-xs border px-3 py-2 text-left text-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
+                    "block w-full rounded-xs border px-3 py-2 text-left text-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
                     selected
                       ? "border-card-border-active bg-card-active font-medium text-primary"
                       : "border-transparent text-text-secondary hover:bg-primary/8 hover:text-primary"
@@ -360,7 +360,7 @@ export function ContactForm({
                   setCustomBudget(event.target.value);
                   setValue("custom_budget", event.target.value);
                 }}
-                className="h-9 w-full rounded-radius-input border border-card-border bg-background/40 px-3 text-sm text-text-primary placeholder:text-text-subtle transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover focus-visible:border-card-border-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2"
+                className="h-9 w-full rounded-input border border-card-border bg-background/40 px-3 text-sm text-text-primary placeholder:text-text-subtle transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover focus-visible:border-card-border-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2"
               />
             </div>
           </div>
@@ -382,7 +382,7 @@ export function ContactForm({
       {serverError ? (
         <p
           role="alert"
-          className="rounded-radius-sm bg-error-soft px-3 py-2 text-sm text-error"
+          className="rounded-sm bg-error-soft px-3 py-2 text-sm text-error"
         >
           {serverError}
         </p>

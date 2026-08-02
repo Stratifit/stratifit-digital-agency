@@ -1,4 +1,4 @@
-﻿import { getPublicSiteSettings } from "@/features/site-settings/queries";
+import { getPublicSiteSettings } from "@/features/site-settings/queries";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -57,7 +57,7 @@ export default async function ImprintPage() {
               <h2 className="text-lg font-semibold text-text-primary">Responsible for content</h2>
               <p className="mt-2">To be provided.</p>
             </div>
-            <p className="rounded-radius-sm border border-border bg-surface p-4 text-text-muted">
+            <p className="rounded-sm border border-border bg-surface p-4 text-text-muted">
               Note: This placeholder must be completed with the legally required
               company information before launch.
             </p>
