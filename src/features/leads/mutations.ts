@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { ActionResult } from "@/types/action-result";
+import { sendLeadEmails } from "@/features/email/lead-notifications";
 import {
   acquisitionEnquirySchema,
   leadSchema,
@@ -59,7 +60,10 @@ async function recordLead(values: LeadRecord): Promise<ActionResult> {
 
   const supabase = await createSupabaseServerClient();
 
+  const leadId = crypto.randomUUID();
+
   const { error } = await supabase.from("leads").insert({
+    id: leadId,
     name: values.name,
     email: values.email,
     phone: values.phone || null,
@@ -77,6 +81,20 @@ async function recordLead(values: LeadRecord): Promise<ActionResult> {
     console.error("Lead insert error:", error.message);
     return { success: false, error: "Something went wrong. Please try again." };
   }
+
+  const source = values.source === "acquisition" ? "acquisition" : "contact_form";
+  await sendLeadEmails({
+    leadId,
+    source,
+    name: values.name,
+    email: values.email,
+    company: values.company,
+    requestedServiceId: values.requested_service_id,
+    budgetRange: values.budget_range,
+    businessInterest: values.business_interest,
+    message: values.message,
+    locale: values.preferred_locale,
+  });
 
   return { success: true };
 }
