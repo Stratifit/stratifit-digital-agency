@@ -2,6 +2,7 @@
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { LinkButton } from "@/components/ui/link-button";
+import { CountUp } from "@/components/ui/count-up";
 import { HeroEntrance } from "./hero-entrance";
 
 interface HeroMetric {
@@ -221,7 +222,7 @@ export async function HeroSection() {
                   className={`flex flex-col items-center px-2 text-center ${index !== 0 ? "border-white/10 sm:border-l" : ""}`}
                 >
                   <div className="mb-1 text-2xl font-extrabold tracking-tight text-primary sm:mb-2 sm:text-3xl">
-                    {stat.value}
+                    <CountUp value={stat.value} />
                   </div>
                   <div className="text-[9px] font-semibold uppercase tracking-[0.1em] text-text-secondary sm:text-[11px]">
                     {resolveTranslation(stat.label_translations, locale)}

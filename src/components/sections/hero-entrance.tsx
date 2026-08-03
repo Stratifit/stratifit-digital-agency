@@ -39,5 +39,9 @@ export function HeroEntrance({ children }: { children: React.ReactNode }) {
     { scope: ref }
   );
 
-  return <div ref={ref}>{children}</div>;
+  return (
+    <div ref={ref} className="flex w-full flex-col items-center">
+      {children}
+    </div>
+  );
 }
