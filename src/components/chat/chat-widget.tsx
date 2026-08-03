@@ -16,9 +16,13 @@ import { cn } from "@/lib/cn";
 
 interface WidgetMessage {
   id: string;
-  sender: "visitor" | "ai" | "system";
+  sender: "visitor" | "ai" | "system" | "question";
   content: string;
   created_at: string;
+  /** Selected choice for onboarding question messages. */
+  choice?: "yes" | "later" | null;
+  /** Whether the onboarding question has already been answered. */
+  answered?: boolean;
 }
 
 const TOKEN_KEY = "stratifit-chat-token";
@@ -334,6 +338,41 @@ function groupMessages(messages: WidgetMessage[]): WidgetMessage[][] {
   return groups;
 }
 
+/**
+ * Builds the synthetic email-question message so it can live inside the
+ * conversation history instead of vanishing once the user answers.
+ */
+function buildQuestionMessage(
+  locale: string,
+  name: string,
+  choice: "yes" | "later" | null,
+  answered: boolean
+): WidgetMessage {
+  return {
+    id: "email-question",
+    sender: "question",
+    content: t(locale, "chatEmailQuestion").replace(
+      "{name}",
+      name || t(locale, "chatVisitor")
+    ),
+    created_at: new Date().toISOString(),
+    choice,
+    answered,
+  };
+}
+
+/**
+ * Inserts a message right after the first stored message (the visitor's name
+ * message, which the onboarding flow always writes first).
+ */
+function insertQuestion(
+  messages: WidgetMessage[],
+  question: WidgetMessage
+): WidgetMessage[] {
+  if (messages.length === 0) return [question];
+  return [messages[0], question, ...messages.slice(1)];
+}
+
 /** Locale-aware time label; shows the date too when not today. */
 function formatMessageTime(iso: string, locale: string): string {
   const date = new Date(iso);
@@ -510,7 +549,21 @@ export function ChatWidget() {
       if (cancelled || !result.success || !result.data) return;
       const data = result.data;
       setVisitor(data.visitor);
-      setMessages(toWidgetMessages(data.messages));
+      const stored = toWidgetMessages(data.messages);
+      // Keep the email-question bubble inside the history once it was asked.
+      setMessages(
+        data.visitor.name
+          ? insertQuestion(
+              stored,
+              buildQuestionMessage(
+                lang,
+                data.visitor.name,
+                data.visitor.email_choice ?? null,
+                Boolean(data.visitor.email_choice)
+              )
+            )
+          : stored
+      );
       setStage(
         !data.visitor.name
           ? "name"
@@ -610,8 +663,9 @@ export function ChatWidget() {
       return;
     }
     const data = result.data;
+    const stored = toWidgetMessages(data.messages);
     setVisitor((v) => ({ ...v, name: data.name }));
-    setMessages(toWidgetMessages(data.messages));
+    setMessages(insertQuestion(stored, buildQuestionMessage(lang, data.name, null, false)));
     setInput("");
     setStage("emailQuestion");
   }
@@ -636,8 +690,9 @@ export function ChatWidget() {
       setError(t(lang, "chatError"));
       return;
     }
+    const stored = toWidgetMessages(result.data.messages);
     setVisitor((v) => ({ ...v, email, email_choice: "yes", onboarding_complete: true }));
-    setMessages(toWidgetMessages(result.data.messages));
+    setMessages(insertQuestion(stored, buildQuestionMessage(lang, visitor.name, "yes", true)));
     setInput("");
     setStage("chat");
   }
@@ -646,7 +701,15 @@ export function ChatWidget() {
     if (loading) return;
     setError(null);
     if (choice === "yes") {
-      // Ask for the email first — the thanks reply is only sent after it.
+      // Mark the choice on the persisted question bubble (turns amber), then
+      // ask for the email — the thanks reply is only sent after it.
+      setMessages((m) =>
+        m.map((msg) =>
+          msg.sender === "question"
+            ? { ...msg, choice: "yes" as const, answered: true }
+            : msg
+        )
+      );
       setInput("");
       setStage("emailInput");
       return;
@@ -666,8 +729,9 @@ export function ChatWidget() {
       setError(t(lang, "chatError"));
       return;
     }
+    const stored = toWidgetMessages(result.data.messages);
     setVisitor((v) => ({ ...v, email_choice: "later", onboarding_complete: true }));
-    setMessages(toWidgetMessages(result.data.messages));
+    setMessages(insertQuestion(stored, buildQuestionMessage(lang, visitor.name, "later", true)));
     setStage("chat");
   }
 
@@ -773,10 +837,6 @@ export function ChatWidget() {
   const welcomeBody = welcomeParts[1]
     ? welcomeParts[1].charAt(0).toUpperCase() + welcomeParts[1].slice(1)
     : null;
-  const emailQuestion = t(locale, "chatEmailQuestion").replace(
-    "{name}",
-    visitor.name
-  );
 
   return (
     <>
@@ -1091,6 +1151,52 @@ export function ChatWidget() {
                         );
                       }
 
+                      if (m.sender === "question") {
+                        return (
+                          <div key={m.id} className="flex justify-start gap-2">
+                            <AiAvatar />
+                            <div className="min-w-0 max-w-[82%]">
+                              <AiSenderLabel locale={locale} />
+                              <div className="relative overflow-hidden rounded-2xl rounded-bl-md border border-card-border bg-card-dark px-4 py-3.5">
+                                <div className="relative">
+                                  <p className="text-sm leading-relaxed text-text-secondary">
+                                    {m.content}
+                                  </p>
+                                  <div className="mt-3 flex items-center justify-between gap-2 border-t border-border pt-2.5">
+                                    <button
+                                      type="button"
+                                      disabled={loading || m.answered}
+                                      onClick={() => handleChoice("yes")}
+                                      className={cn(
+                                        "rounded-md border bg-transparent px-2.5 py-1.5 text-[9px] font-semibold transition-all active:scale-[0.98] disabled:cursor-not-allowed",
+                                        m.choice === "yes"
+                                          ? "border-primary/40 bg-primary/10 text-primary disabled:opacity-100"
+                                          : "border-border text-text-secondary hover:border-primary/40 hover:bg-primary/10 hover:text-primary disabled:opacity-40"
+                                      )}
+                                    >
+                                      {t(locale, "chatYes")}
+                                    </button>
+                                    <button
+                                      type="button"
+                                      disabled={loading || m.answered}
+                                      onClick={() => handleChoice("later")}
+                                      className={cn(
+                                        "rounded-md border bg-transparent px-2.5 py-1.5 text-[9px] font-semibold transition-all active:scale-[0.98] disabled:cursor-not-allowed",
+                                        m.choice === "later"
+                                          ? "border-primary/40 bg-primary/10 text-primary disabled:opacity-100"
+                                          : "border-border text-text-secondary hover:border-primary/40 hover:bg-primary/10 hover:text-primary disabled:opacity-40"
+                                      )}
+                                    >
+                                      {t(locale, "chatMaybeLater")}
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      }
+
                       // AI message
                       return (
                         <div key={m.id} className="flex justify-start gap-2">
@@ -1122,42 +1228,6 @@ export function ChatWidget() {
                 );
               })}
 
-              {/* Email question bubble — shown while asking and while typing the email */}
-              {stage === "emailQuestion" || stage === "emailInput" ? (
-                <div className="chat-msg-in flex justify-start gap-2">
-                  <AiAvatar />
-                  <div className="min-w-0 max-w-[82%]">
-                    <AiSenderLabel locale={locale} />
-                    <div className="relative overflow-hidden rounded-2xl rounded-bl-md border border-card-border bg-card-dark px-4 py-3.5">
-                      <div className="relative">
-                        <p className="text-sm leading-relaxed text-text-secondary">
-                          {emailQuestion}
-                        </p>
-                        {stage === "emailQuestion" ? (
-                          <div className="mt-3 flex items-center justify-between gap-2 border-t border-border pt-2.5">
-                            <button
-                              type="button"
-                              disabled={loading}
-                              onClick={() => handleChoice("yes")}
-                              className="rounded-md border border-border bg-transparent px-2.5 py-1.5 text-[9px] font-semibold text-text-secondary transition-all hover:border-primary/40 hover:bg-primary/10 hover:text-primary active:scale-[0.98] disabled:opacity-50"
-                            >
-                              {t(locale, "chatYes")}
-                            </button>
-                            <button
-                              type="button"
-                              disabled={loading}
-                              onClick={() => handleChoice("later")}
-                              className="rounded-md border border-border bg-transparent px-2.5 py-1.5 text-[9px] font-semibold text-text-secondary transition-all hover:border-primary/40 hover:bg-primary/10 hover:text-primary active:scale-[0.98] disabled:opacity-50"
-                            >
-                              {t(locale, "chatMaybeLater")}
-                            </button>
-                          </div>
-                        ) : null}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : null}
             </div>
 
             {loading ? (
