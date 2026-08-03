@@ -2,6 +2,7 @@
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { LinkButton } from "@/components/ui/link-button";
+import { Reveal } from "@/components/ui/reveal";
 
 interface HeroMetric {
   value: string;
@@ -128,6 +129,7 @@ export async function HeroSection() {
       </div>
 
       <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center px-4 text-center lg:px-8">
+        <Reveal immediate stagger className="flex w-full flex-col items-center">
         {eyebrow ? (
           <div className="mb-[31px] inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-3 py-1.5 text-xs font-medium tracking-wide text-primary">
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
@@ -250,6 +252,7 @@ export async function HeroSection() {
             </div>
           </div>
         ) : null}
+        </Reveal>
       </div>
     </section>
   );

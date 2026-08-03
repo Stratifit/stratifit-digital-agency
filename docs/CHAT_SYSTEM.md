@@ -1377,3 +1377,15 @@ The Stratifit chat system combines:
 The AI helps visitors but does not make binding commitments.
 
 Human takeover is explicit, and automatic AI replies stop while a human controls the conversation.
+
+---
+
+## 60. Anonymous Chat Access Model (Implementation)
+
+Anonymous visitors have no Supabase user session, so the chat write flow cannot rely on user-scoped RLS. The approved V1 model is:
+
+- **Public read on `chatbot_settings`** — a `SELECT` policy (`USING (true)`) exposes only public-facing operational config (enabled flag, welcome/offline/escalation/fallback messages, lead-capture mode, human-support flag). This mirrors `site_settings`. No secrets are stored in `chatbot_settings`.
+- **Service-role mediation for chat writes** — the server action `sendVisitorMessage` (`src/features/chat/mutations.ts`) uses the service-role client (server-only, never imported by Client Components) for all reads/writes of `chat_visitors`, `chat_conversations`, `chat_messages`, and `conversation_events`. The action validates all input with Zod and constructs every payload, so visitors cannot control privileged fields (sender type, conversation mode, status).
+- **Private data stays admin-only** — no `anon` SELECT policies exist on the chat tables, so visitors cannot read other visitors' conversations or messages. Admin actions (`adminReply`, `takeOverConversation`, …) use the user-session server client and are governed by `is_admin()` RLS policies.
+
+See migration `00024_anon_chat_access.sql`.

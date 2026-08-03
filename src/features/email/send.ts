@@ -96,9 +96,21 @@ async function logEmailEvent(input: {
   return error ? { inserted: false, error } : { inserted: true, error: null };
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function renderEmailHtml(title: string, bodyLines: string[]): string {
   const body = bodyLines
-    .map((line) => `<p style="margin:0 0 12px 0;line-height:1.6;">${line}</p>`)
+    .map(
+      (line) =>
+        `<p style="margin:0 0 12px 0;line-height:1.6;">${escapeHtml(line)}</p>`
+    )
     .join("");
   return `<!DOCTYPE html>
 <html lang="en">
@@ -114,7 +126,7 @@ function renderEmailHtml(title: string, bodyLines: string[]): string {
             </tr>
             <tr>
               <td style="padding:24px 0;">
-                <h1 style="font-family:Inter,Arial,sans-serif;font-size:22px;font-weight:700;color:#FFFFFF;margin:0 0 16px 0;">${title}</h1>
+                <h1 style="font-family:Inter,Arial,sans-serif;font-size:22px;font-weight:700;color:#FFFFFF;margin:0 0 16px 0;">${escapeHtml(title)}</h1>
                 ${body}
               </td>
             </tr>

@@ -39,6 +39,12 @@ export async function updateLeadStatus(
   }
   const { error } = await supabase.from("leads").update({ status: parsed.data }).eq("id", id);
   if (error) return { success: false, error: "Failed to update lead." };
+  await recordAuditLog({
+    action: "status.update",
+    target_table: "leads",
+    target_id: id,
+    metadata: { status: parsed.data },
+  });
   revalidatePath("/admin/leads");
   revalidatePath(`/admin/leads/${id}`);
   return { success: true };

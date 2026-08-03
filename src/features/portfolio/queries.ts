@@ -113,6 +113,7 @@ export interface PublicPortfolioDetail {
   results_translations: Record<string, string> | null;
   metrics: unknown[] | null;
   featured_media_id: string | null;
+  featured_media_url: string | null;
   published_at: string | null;
 }
 
@@ -134,5 +135,17 @@ export async function getPublicPortfolioDetail(
     return null;
   }
 
-  return data as PublicPortfolioDetail;
+  let featured_media_url: string | null = null;
+  if (data.featured_media_id) {
+    const { data: media } = await supabase
+      .from("media_assets")
+      .select("bucket_name, storage_path")
+      .eq("id", data.featured_media_id)
+      .single();
+    if (media) {
+      featured_media_url = getMediaPublicUrl(media.bucket_name, media.storage_path);
+    }
+  }
+
+  return { ...(data as Omit<PublicPortfolioDetail, "featured_media_url">), featured_media_url };
 }

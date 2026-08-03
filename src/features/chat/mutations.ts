@@ -3,7 +3,7 @@ import type { ActionResult } from "@/types/action-result";
 
 import { createHash } from "crypto";
 import { z } from "zod";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseServiceRoleClient } from "@/lib/supabase/service-role";
 import { getChatbotSettings, getApprovedKnowledge } from "./knowledge";
 import { getChatProvider } from "./ai";
 
@@ -36,7 +36,11 @@ export async function sendVisitorMessage(
     return { success: false, error: "Chat is currently offline." };
   }
 
-  const supabase = await createSupabaseServerClient();
+  // Anonymous chat has no user session. The server action is the trusted
+  // mediator, so chat-table writes use the service-role client (server-only,
+  // never exposed to the browser). Public chatbot settings are read via the
+  // anon client + RLS (see migration 00024_anon_chat_access).
+  const supabase = createSupabaseServiceRoleClient();
   const tokenHash = hashToken(parsed.data.visitor_token);
 
   // Resolve or create visitor
@@ -207,20 +211,3 @@ export async function sendVisitorMessage(
   };
 }
 
-export async function getVisitorMessages(
-  conversationId: string
-): Promise<{ id: string; sender_type: string; content: string; created_at: string }[]> {
-  const supabase = await createSupabaseServerClient();
-  const { data } = await supabase
-    .from("chat_messages")
-    .select("id, sender_type, content, created_at")
-    .eq("conversation_id", conversationId)
-    .eq("is_internal", false)
-    .order("created_at", { ascending: true });
-  return (data ?? []).map((message) => ({
-    id: message.id,
-    sender_type: message.sender_type,
-    content: message.content ?? "",
-    created_at: message.created_at,
-  }));
-}

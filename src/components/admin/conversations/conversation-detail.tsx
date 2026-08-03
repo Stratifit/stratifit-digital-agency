@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import {
   adminReply,
   takeOverConversation,
@@ -25,8 +26,10 @@ interface DetailData {
 }
 
 export function ConversationDetail({ conversation }: { conversation: DetailData }) {
+  const router = useRouter();
   const [reply, setReply] = React.useState("");
   const [busy, setBusy] = React.useState<string | null>(null);
+  const [isInternal, setIsInternal] = React.useState(false);
 
   async function run(action: string, fn: () => Promise<unknown>) {
     setBusy(action);
@@ -39,10 +42,11 @@ export function ConversationDetail({ conversation }: { conversation: DetailData 
     const content = reply.trim();
     if (!content) return;
     setBusy("reply");
-    await adminReply(conversation.id, { content, is_internal: false });
+    await adminReply(conversation.id, { content, is_internal: isInternal });
     setReply("");
+    setIsInternal(false);
     setBusy(null);
-    window.location.reload();
+    router.refresh();
   }
 
   return (
@@ -58,7 +62,7 @@ export function ConversationDetail({ conversation }: { conversation: DetailData 
               size="small"
               variant="secondary"
               loading={busy === "takeover"}
-              onClick={() => run("takeover", () => takeOverConversation(conversation.id).then(() => window.location.reload()))}
+              onClick={() => run("takeover", () => takeOverConversation(conversation.id).then(() => router.refresh()))}
             >
               Take Over
             </Button>
@@ -67,7 +71,7 @@ export function ConversationDetail({ conversation }: { conversation: DetailData 
               size="small"
               variant="secondary"
               loading={busy === "return"}
-              onClick={() => run("return", () => returnToAi(conversation.id).then(() => window.location.reload()))}
+              onClick={() => run("return", () => returnToAi(conversation.id).then(() => router.refresh()))}
             >
               Return to AI
             </Button>
@@ -76,7 +80,7 @@ export function ConversationDetail({ conversation }: { conversation: DetailData 
             <Button
               size="small"
               loading={busy === "resolve"}
-              onClick={() => run("resolve", () => resolveConversation(conversation.id).then(() => window.location.reload()))}
+              onClick={() => run("resolve", () => resolveConversation(conversation.id).then(() => router.refresh()))}
             >
               Resolve
             </Button>
@@ -86,7 +90,7 @@ export function ConversationDetail({ conversation }: { conversation: DetailData 
               size="small"
               variant="destructive"
               loading={busy === "archive"}
-              onClick={() => run("archive", () => archiveConversation(conversation.id).then(() => window.location.reload()))}
+              onClick={() => run("archive", () => archiveConversation(conversation.id).then(() => router.refresh()))}
             >
               Archive
             </Button>
@@ -127,8 +131,17 @@ export function ConversationDetail({ conversation }: { conversation: DetailData 
           placeholder="Reply as the Stratifit team…"
           className="min-h-[100px]"
         />
+        <label className="flex items-center gap-2 text-sm text-text-secondary">
+          <input
+            type="checkbox"
+            checked={isInternal}
+            onChange={(e) => setIsInternal(e.target.checked)}
+            className="size-4"
+          />
+          Internal note (only visible to admins)
+        </label>
         <Button type="submit" loading={busy === "reply"} disabled={!reply.trim()}>
-          Send Reply
+          {isInternal ? "Add Note" : "Send Reply"}
         </Button>
       </form>
     </div>

@@ -14,6 +14,7 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
 import { LinkButton } from "@/components/ui/link-button";
+import { ServiceIcon } from "@/components/ui/service-icon";
 
 export default async function ServicesPage() {
   const locale = await getLocale();
@@ -47,9 +48,9 @@ export default async function ServicesPage() {
                 <div className="grid gap-6 lg:grid-cols-3 lg:items-start">
                   <div>
                     {service.icon_name ? (
-                      <p className="text-sm font-medium text-primary">
-                        {service.icon_name}
-                      </p>
+                      <span className="text-primary">
+                        <ServiceIcon name={service.icon_name} />
+                      </span>
                     ) : null}
                     <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-text-primary">
                       {resolveTranslation(service.title_translations, locale)}

@@ -1583,3 +1583,13 @@ It uses:
 - Strong SEO and performance practices
 
 The frontend must look impressive enough to demonstrate Stratifit’s capabilities while remaining trustworthy, usable, and maintainable.
+
+---
+
+## 48. Locale Strategy (V1 Implementation)
+
+V1 uses a **cookie-based locale** (`stratifit_locale`) resolved server-side via `getLocale()` (`src/lib/i18n/get-locale.ts`). The `<html lang>` attribute is set dynamically from this cookie. There is one URL per page regardless of language (no locale-prefixed routes).
+
+**Trade-off (accepted for V1):** search engines cannot index separate per-language URLs, and no `hreflang` tags are emitted. This is intentional for the single-instance agency site where the CMS controls translations. If per-language indexing becomes a requirement, migrate to locale-prefixed routes (`/de/…`, `/fr/…`) with `hreflang` and update the sitemap accordingly.
+
+Content translations are stored as JSONB objects (`{ en, de, fr, es }`) with English fallback via `resolveTranslation()`. CMS save mutations **merge** the edited locale into the existing translation object (rather than replacing it), so editing English never clobbers `de`/`fr`/`es` values.

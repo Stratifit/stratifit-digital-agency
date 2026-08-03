@@ -8,6 +8,7 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
 import { LinkButton } from "@/components/ui/link-button";
+import Image from "next/image";
 
 export async function generateMetadata({
   params,
@@ -58,11 +59,15 @@ export default async function WorkDetailPage({
     notFound();
   }
 
-  const deliverables = (
+  const deliverablesRaw =
+    (project.deliverables_translations as Record<string, unknown> | null)?.[
+      locale
+    ] ??
     (project.deliverables_translations as Record<string, unknown> | null)?.[
       "en"
-    ] ?? []
-  ) as string[];
+    ] ??
+    [];
+  const deliverables = deliverablesRaw as string[];
 
   const projectTitle = resolveTranslation(project.title_translations, locale);
   const projectSummary = resolveTranslation(project.summary_translations, locale);
@@ -95,6 +100,21 @@ export default async function WorkDetailPage({
           </p>
         </Container>
       </section>
+
+      {project.featured_media_url ? (
+        <Container className="max-w-4xl -mt-8 pb-4">
+          <div className="relative aspect-[1200/630] w-full overflow-hidden rounded-card-lg border border-card-border">
+            <Image
+              src={project.featured_media_url}
+              alt={projectTitle ?? project.client_name}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 768px"
+              priority
+            />
+          </div>
+        </Container>
+      ) : null}
 
       <Section>
         <Container>

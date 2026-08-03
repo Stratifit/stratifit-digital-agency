@@ -27,6 +27,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/contact`, lastModified: new Date() },
     { url: `${BASE_URL}/privacy`, lastModified: new Date() },
     { url: `${BASE_URL}/imprint`, lastModified: new Date() },
+    { url: `${BASE_URL}/terms-conditions`, lastModified: new Date() },
+    { url: `${BASE_URL}/cookie-policy`, lastModified: new Date() },
   ];
 
   const portfolioRoutes: MetadataRoute.Sitemap = (portfolio ?? []).map((p) => ({

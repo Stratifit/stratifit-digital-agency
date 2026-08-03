@@ -22,8 +22,6 @@ export default async function AdminLeadsPage() {
     <AdminList
       title="Leads"
       description="Enquiries submitted through public forms and chat."
-      createHref="/admin/leads"
-      createLabel="Refresh"
       rows={leads}
       rowKey={(l) => l.id}
       columns={[
@@ -64,4 +62,3 @@ export default async function AdminLeadsPage() {
     />
   );
 }
-

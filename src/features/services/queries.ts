@@ -29,7 +29,7 @@ export async function getPublicServices(): Promise<PublicServiceDetail[]> {
     .order("display_order", { ascending: true });
 
   if (error) {
-    throw new Error("Failed to load services");
+    return [];
   }
 
   return (data ?? []) as PublicServiceDetail[];

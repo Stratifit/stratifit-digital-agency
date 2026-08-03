@@ -6,6 +6,7 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { articleJsonLd, canonical, pageMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
+import Image from "next/image";
 
 export async function generateMetadata({
   params,
@@ -79,6 +80,21 @@ export default async function InsightDetailPage({
           </p>
         </Container>
       </section>
+
+      {insight.featured_media_url ? (
+        <Container className="max-w-3xl -mt-8 pb-4">
+          <div className="relative aspect-[1200/630] w-full overflow-hidden rounded-card-lg border border-card-border">
+            <Image
+              src={insight.featured_media_url}
+              alt={insightTitle}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 768px"
+              priority
+            />
+          </div>
+        </Container>
+      ) : null}
 
       <Section>
         <Container className="max-w-3xl">

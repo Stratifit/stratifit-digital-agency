@@ -50,5 +50,5 @@ export async function getAdminConversation(
     .eq("conversation_id", id)
     .order("created_at", { ascending: true });
 
-  return { ...(conversation as AdminConversationRow), messages: (messages ?? []) as never[] };
+  return { ...(conversation as AdminConversationRow), messages: (messages ?? []) as AdminConversationDetail["messages"] };
 }

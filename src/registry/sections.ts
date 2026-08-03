@@ -11,6 +11,7 @@ import { TestimonialsSection } from "@/components/sections/testimonials-section"
 import { PricingSection } from "@/components/sections/pricing-section";
 import { FaqSection } from "@/components/sections/faq-section";
 import { ContactSection } from "@/components/sections/contact-section";
+import { FinalCtaSection } from "@/components/sections/final-cta-section";
 
 export type SectionKey =
   | "hero"
@@ -24,6 +25,7 @@ export type SectionKey =
   | "testimonials"
   | "pricing"
   | "faq"
+  | "finalCta"
   | "contact";
 
 export interface RegisteredSection {
@@ -43,7 +45,7 @@ export const HOMEPAGE_SECTION_KEYS: SectionKey[] = [
   "testimonials",
   "pricing",
   "faq",
-  "contact",
+  "finalCta",
 ];
 
 export const sectionRegistry: Record<SectionKey, RegisteredSection> = {
@@ -58,5 +60,6 @@ export const sectionRegistry: Record<SectionKey, RegisteredSection> = {
   testimonials: { key: "testimonials", component: TestimonialsSection },
   pricing: { key: "pricing", component: PricingSection },
   faq: { key: "faq", component: FaqSection },
+  finalCta: { key: "finalCta", component: FinalCtaSection },
   contact: { key: "contact", component: ContactSection },
 };

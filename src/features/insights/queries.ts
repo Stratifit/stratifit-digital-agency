@@ -124,6 +124,7 @@ export interface PublicInsightDetail {
   excerpt_translations: Record<string, string> | null;
   content_translations: Record<string, string> | null;
   featured_media_id: string | null;
+  featured_media_url: string | null;
   reading_time_minutes: number | null;
   published_at: string | null;
 }
@@ -146,5 +147,17 @@ export async function getPublicInsightDetail(
     return null;
   }
 
-  return data as PublicInsightDetail;
+  let featured_media_url: string | null = null;
+  if (data.featured_media_id) {
+    const { data: media } = await supabase
+      .from("media_assets")
+      .select("bucket_name, storage_path")
+      .eq("id", data.featured_media_id)
+      .single();
+    if (media) {
+      featured_media_url = getMediaPublicUrl(media.bucket_name, media.storage_path);
+    }
+  }
+
+  return { ...(data as Omit<PublicInsightDetail, "featured_media_url">), featured_media_url };
 }

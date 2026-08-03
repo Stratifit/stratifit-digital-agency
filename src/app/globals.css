@@ -598,6 +598,21 @@ html {
 }
 
 /* =============================================================================
+   GSAP Reveal — FOUC-safe initial state
+   See src/components/ui/reveal.tsx. Content starts hidden so there is no flash
+   before hydration; GSAP animates to visible. Reduced-motion restores opacity.
+   A <noscript> rule in the root layout covers no-JS.
+   ============================================================================= */
+.gsap-reveal {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .gsap-reveal {
+    opacity: 1;
+  }
+}
+
+/* =============================================================================
    Scrollbar Styles (Optional - for consistent appearance)
    ============================================================================= */
 

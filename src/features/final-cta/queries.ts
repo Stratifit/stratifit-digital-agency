@@ -26,3 +26,25 @@ export async function getPublicFinalCta(): Promise<PublicFinalCta | null> {
 
   return data as PublicFinalCta;
 }
+
+export interface AdminFinalCta extends PublicFinalCta {
+  is_visible: boolean;
+}
+
+export async function getAdminFinalCta(): Promise<AdminFinalCta | null> {
+  const supabase = await createSupabaseServerClient();
+
+  const { data, error } = await supabase
+    .from("final_cta")
+    .select(
+      "title_translations, description_translations, primary_cta_label_translations, primary_cta_url, secondary_cta_label_translations, secondary_cta_url, is_visible"
+    )
+    .eq("singleton_key", true)
+    .single();
+
+  if (error) {
+    return null;
+  }
+
+  return data as AdminFinalCta;
+}

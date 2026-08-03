@@ -70,9 +70,30 @@ export async function updateService(
     };
   }
 
+  // Merge submitted translations into existing ones to preserve de/fr/es.
+  const { data: existing } = await supabase
+    .from("services")
+    .select("title_translations, short_description_translations, cta_label_translations")
+    .eq("slug", slug)
+    .single();
+  const merged = {
+    ...parsed.data,
+    title_translations: {
+      ...((existing?.title_translations as Record<string, string> | null) ?? {}),
+      ...parsed.data.title_translations,
+    },
+    short_description_translations: {
+      ...((existing?.short_description_translations as Record<string, string> | null) ?? {}),
+      ...parsed.data.short_description_translations,
+    },
+    cta_label_translations: {
+      ...((existing?.cta_label_translations as Record<string, string> | null) ?? {}),
+      ...parsed.data.cta_label_translations,
+    },
+  };
   const { error } = await supabase
     .from("services")
-    .update(parsed.data)
+    .update(merged)
     .eq("slug", slug);
 
   if (error) {

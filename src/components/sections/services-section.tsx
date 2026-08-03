@@ -6,6 +6,8 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { ServiceIcon } from "@/components/ui/service-icon";
 import { SectionHeader } from "@/components/ui/section-header";
+import Link from "next/link";
+import { Reveal } from "@/components/ui/reveal";
 
 function CheckIcon() {
   return (
@@ -13,8 +15,7 @@ function CheckIcon() {
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden="true"
-      className="mt-[-1px] shrink-0 text-primary"
-      style={{ width: 18, height: 18 }}
+      className="mt-[-1px] size-[18px] shrink-0 text-primary"
     >
       <path
         fillRule="evenodd"
@@ -31,8 +32,7 @@ function ArrowIcon() {
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden="true"
-      className="text-lg transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover/link:translate-x-1"
-      style={{ width: 18, height: 18 }}
+      className="size-[18px] transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover/link:translate-x-1"
     >
       <path
         fillRule="evenodd"
@@ -59,7 +59,7 @@ export async function ServicesSection() {
       <Container>
         <SectionHeader settings={settings} locale={locale} />
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <Reveal stagger className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {services.map((service) => {
             const deliverables = (
               (service.deliverables_translations as Record<string, unknown> | null)?.[
@@ -123,18 +123,18 @@ export async function ServicesSection() {
 
                   <div className="flex-1" />
 
-                  <a
+                  <Link
                     href={service.cta_url ?? "/contact"}
                     className="group/link mt-2 flex w-full items-center justify-center gap-2 rounded-button border border-transparent bg-primary py-4 text-sm font-bold text-text-inverse transition-[background-color,border-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-bright active:translate-y-0 active:border-primary/60 active:bg-primary-deep focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/60 focus-visible:outline-offset-2"
                   >
                     {ctaLabel}
                     <ArrowIcon />
-                  </a>
+                  </Link>
                 </div>
               </div>
             );
           })}
-        </div>
+        </Reveal>
       </Container>
     </Section>
   );

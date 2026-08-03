@@ -1,10 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { AnnouncementBar } from "@/components/layout/announcement-bar";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
-import { ChatWidget } from "@/components/chat/chat-widget";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { getSiteUrl, organizationJsonLd } from "@/lib/seo";
 
@@ -43,19 +39,7 @@ export default async function RootLayout({
             __html: JSON.stringify(organizationJsonLd()),
           }}
         />
-        <a
-          href="#main"
-          className="skip-link"
-        >
-          Skip to content
-        </a>
-        <AnnouncementBar />
-        <Header />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <Footer />
-        <ChatWidget />
+        {children}
       </body>
     </html>
   );

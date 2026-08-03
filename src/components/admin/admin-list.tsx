@@ -8,8 +8,8 @@ interface AdminListColumn<T> {
 interface AdminListProps<T> {
   title: string;
   description?: string;
-  createHref: string;
-  createLabel: string;
+  createHref?: string;
+  createLabel?: string;
   columns: AdminListColumn<T>[];
   rows: T[];
   rowKey: (row: T) => string;
@@ -37,9 +37,11 @@ export function AdminList<T>({
             <p className="mt-1 text-sm text-text-secondary">{description}</p>
           ) : null}
         </div>
-        <LinkButton href={createHref} size="small">
-          {createLabel}
-        </LinkButton>
+        {createHref && createLabel ? (
+          <LinkButton href={createHref} size="small">
+            {createLabel}
+          </LinkButton>
+        ) : null}
       </div>
 
       {rows.length === 0 ? (

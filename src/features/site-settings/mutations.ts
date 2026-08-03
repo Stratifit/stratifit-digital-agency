@@ -32,16 +32,28 @@ export async function updateSiteSettings(
   if (values.social_facebook) social_links.facebook = values.social_facebook;
   if (values.social_tiktok) social_links.tiktok = values.social_tiktok;
 
+  // Merge English into existing translations so de/fr/es are preserved on edit.
+  const { data: existing } = await supabase
+    .from("site_settings")
+    .select("site_description_translations, address_translations")
+    .eq("singleton_key", true)
+    .single();
+  const existingDescription =
+    (existing?.site_description_translations as Record<string, string> | null) ?? {};
+  const existingAddress =
+    (existing?.address_translations as Record<string, string> | null) ?? {};
   const { error } = await supabase
     .from("site_settings")
     .update({
       site_name: values.site_name,
       site_description_translations: {
+        ...existingDescription,
         en: values.site_description_en,
       },
       contact_email: values.contact_email || null,
       contact_phone: values.contact_phone || null,
       address_translations: {
+        ...existingAddress,
         en: values.address_en,
       },
       default_locale: values.default_locale,

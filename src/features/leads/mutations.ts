@@ -19,6 +19,12 @@ const submissionLog = new Map<string, number[]>();
 
 function isRateLimited(key: string, max: number): boolean {
   const now = Date.now();
+  // Bound memory growth: if the log has grown very large, reset it. Combined
+  // with the time-window filter below this keeps rate limiting effective for a
+  // single-instance V1 deployment without unbounded key accumulation.
+  if (submissionLog.size > 10_000) {
+    submissionLog.clear();
+  }
   const recent = (submissionLog.get(key) ?? []).filter(
     (timestamp) => now - timestamp < RATE_WINDOW_MS
   );
