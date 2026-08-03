@@ -59,7 +59,7 @@ function CheckIcon() {
 
 function dropdownTriggerClass() {
   return cn(
-    "flex h-11 w-full items-center gap-3 rounded-input border border-field-border bg-field-bg px-4 text-left transition-[background-color,border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover active:border-field-border-hover focus-visible:border-primary focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/60 focus-visible:outline-offset-2"
+    "flex h-11 w-full items-center gap-3 rounded-input border border-field-border bg-field-bg px-4 text-left transition-[background-color,border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover active:border-field-border-hover focus-visible:border-primary focus-visible:outline-none focus-visible:outline-offset-2"
   );
 }
 
@@ -360,7 +360,7 @@ export function ContactForm({
                   setCustomBudget(event.target.value);
                   setValue("custom_budget", event.target.value);
                 }}
-                className="h-9 w-full rounded-input border border-field-border bg-field-bg px-3 text-sm text-field-text placeholder:text-field-placeholder transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover focus-visible:border-primary focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/60 focus-visible:outline-offset-2"
+                className="h-9 w-full rounded-input border border-field-border bg-field-bg px-3 text-sm text-field-text placeholder:text-field-placeholder transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover focus-visible:border-primary focus-visible:outline-none focus-visible:outline-offset-2"
               />
             </div>
           </div>
