@@ -41,19 +41,18 @@ export function SectionHeadingReveal({
       });
 
       mm.add("(prefers-reduced-motion: no-preference) and (max-width: 767px)", () => {
-        const parts = gsap.utils.toArray<HTMLElement>("[data-sh]", el);
-        const tl = gsap.timeline({
-          defaults: { ease: "power3.out" },
-          scrollTrigger: { trigger: el, start: "top 90%", once: true },
-        });
         const specs = [
           { y: 15, duration: 0.65 },
           { y: 30, duration: 0.8 },
           { y: 22, duration: 0.75 },
         ];
-        parts.forEach((part, index) => {
-          const spec = specs[index] ?? { y: 20, duration: 0.7 };
-          tl.from(part, { opacity: 0, ...spec }, index === 0 ? 0 : "-=0.35");
+        gsap.from("[data-sh]", {
+          opacity: 0,
+          y: (index: number) => specs[index]?.y ?? 20,
+          duration: (index: number) => specs[index]?.duration ?? 0.7,
+          stagger: 0.08,
+          ease: "power3.out",
+          scrollTrigger: { trigger: el, start: "top 90%", once: true },
         });
       });
 
