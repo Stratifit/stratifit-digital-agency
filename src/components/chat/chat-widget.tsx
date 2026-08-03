@@ -933,8 +933,9 @@ export function ChatWidget() {
                   </div>
                 </div>
               ) : null}
-              {/* Welcome bubble */}
-              {stage === "name" ? (
+              {/* Welcome bubble — stays in the scroll history after onboarding so
+                  users can scroll up and read the privacy note */}
+              {stage !== "loading" ? (
                 <div className="chat-msg-in flex justify-start gap-2">
                   <AiAvatar />
                   <div className="min-w-0 max-w-[82%]">
