@@ -898,8 +898,8 @@ export function ChatWidget() {
               closing ? "chat-panel-out" : "chat-panel-in"
             )}
           >
-          {/* Header */}
-          <div className="relative flex flex-none items-center justify-between overflow-hidden rounded-t-2xl border-b border-border bg-background/95 px-4 py-3">
+          {/* Header — z-30 keeps the language dropdown above the messages area */}
+          <div className="relative z-30 flex flex-none items-center justify-between rounded-t-2xl border-b border-border bg-background/95 px-4 py-3">
             {/* Ambient amber glow */}
             <div
               aria-hidden="true"
