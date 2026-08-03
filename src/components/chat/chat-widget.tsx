@@ -255,6 +255,14 @@ function AiSenderLabel({ locale }: { locale: string }) {
   );
 }
 
+function VisitorAvatar() {
+  return (
+    <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary/25 to-primary/10 text-primary ring-1 ring-primary/20">
+      <UserIcon className="size-3.5" />
+    </span>
+  );
+}
+
 // ============================================================================
 // Chat widget
 // ============================================================================
@@ -921,7 +929,7 @@ export function ChatWidget() {
 
                       if (m.sender === "visitor") {
                         return (
-                          <div key={m.id} className="flex justify-end">
+                          <div key={m.id} className="flex justify-end gap-2">
                             <div className="min-w-0 max-w-[82%]">
                               {isFirst ? (
                                 <div className="mb-1 flex items-center justify-end gap-1.5">
@@ -961,7 +969,7 @@ export function ChatWidget() {
                                     </>
                                   ) : (
                                     <>
-                                      <span className="text-[11px] font-bold uppercase tracking-wide text-text-secondary">
+                                      <span className="text-[11px] font-semibold uppercase tracking-wide text-primary/70">
                                         {visitor.name || t(locale, "chatVisitor")}
                                       </span>
                                       <button
@@ -994,6 +1002,11 @@ export function ChatWidget() {
                                 />
                               ) : null}
                             </div>
+                            {isFirst ? (
+                              <VisitorAvatar />
+                            ) : (
+                              <span aria-hidden="true" className="size-7 shrink-0" />
+                            )}
                           </div>
                         );
                       }
