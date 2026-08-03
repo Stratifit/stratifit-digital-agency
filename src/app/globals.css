@@ -559,6 +559,14 @@ html {
   outline-offset: 2px;
 }
 
+/* Form fields show focus via their own amber border only — never the global
+   2px solid outline. */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+}
+
 /* Remove default outline for mouse users */
 :focus:not(:focus-visible) {
   outline: none;
