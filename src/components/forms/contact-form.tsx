@@ -170,7 +170,7 @@ function ArrowRightIcon() {
 // ============================================================================
 
 const fieldBase =
-  "h-11 w-full rounded-xl border border-field-border bg-field-bg text-sm text-field-text placeholder:text-field-placeholder outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60 sm:h-12 sm:rounded-2xl";
+  "h-11 w-full rounded-xl border border-field-border bg-field-bg text-sm text-field-text placeholder:text-field-placeholder outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60 sm:h-12 sm:rounded-2xl";
 
 const fieldWithLeftIcon = "pl-11 pr-4";
 const fieldWithRightChevron = "pr-9";
@@ -362,7 +362,7 @@ export function ContactForm({
               </option>
             ))}
           </select>
-          <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-text-muted">
+          <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-primary">
             <ChevronDownIcon />
           </span>
         </FieldShell>
@@ -396,7 +396,7 @@ export function ContactForm({
               </option>
             ))}
           </select>
-          <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-text-muted">
+          <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-primary">
             <ChevronDownIcon />
           </span>
         </FieldShell>
@@ -416,7 +416,7 @@ export function ContactForm({
         <textarea
           rows={compact ? 3 : 4}
           className={cn(
-            "w-full resize-none rounded-xl border border-field-border bg-field-bg py-3 pl-11 pr-4 text-sm leading-5 text-field-text placeholder:text-field-placeholder outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60 sm:rounded-2xl",
+            "w-full resize-none rounded-xl border border-field-border bg-field-bg py-3 pl-11 pr-4 text-sm leading-5 text-field-text placeholder:text-field-placeholder outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60 sm:rounded-2xl",
             compact ? "h-[82px]" : "h-28"
           )}
           placeholder={t(locale, "tellUsProject").replace(" *", "")}

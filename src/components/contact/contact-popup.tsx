@@ -71,9 +71,7 @@ function TrustBadges({ locale }: { locale: string }) {
           key={idx}
           className="flex items-start justify-center gap-2 px-2 text-center sm:gap-2.5"
         >
-          <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-md border border-card-border bg-surface-soft text-text-muted sm:size-7">
-            {badge.icon}
-          </span>
+          <span className="mt-0.5 shrink-0 text-primary">{badge.icon}</span>
           <div className="min-w-0 text-left leading-snug">
             <p className="whitespace-nowrap text-[9px] font-semibold text-text-primary sm:text-[11px]">
               {badge.title}
@@ -226,7 +224,7 @@ export function ContactPopup({
 
         {/* Header */}
         <header className="relative pr-12 sm:pr-16">
-          <div className="mb-3 flex items-center gap-2 sm:mb-4">
+          <div className="mb-3 mt-2 flex items-center gap-2 sm:mb-4 sm:mt-0">
             <span className="flex size-7 items-center justify-center rounded-lg border border-primary/30 bg-surface-soft text-primary sm:size-9">
               <SparklesIcon />
             </span>
