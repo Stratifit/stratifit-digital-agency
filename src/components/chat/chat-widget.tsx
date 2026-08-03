@@ -1048,7 +1048,7 @@ export function ChatWidget() {
                               ) : null}
                               <div
                                 className={cn(
-                                  "border border-card-border bg-gradient-to-b from-card-dark to-surface px-4 py-3 text-sm leading-relaxed text-text-primary",
+                                  "border border-card-border bg-card-dark px-4 py-3 text-sm leading-relaxed text-text-primary",
                                   isLast
                                     ? "rounded-2xl rounded-br-md"
                                     : "rounded-2xl"
@@ -1107,7 +1107,7 @@ export function ChatWidget() {
                             {isFirst ? <AiSenderLabel locale={locale} /> : null}
                             <div
                               className={cn(
-                                "whitespace-pre-line border border-card-border bg-gradient-to-b from-card-dark to-surface px-4 py-3 text-sm leading-relaxed text-text-primary",
+                                "whitespace-pre-line border border-card-border bg-card-dark px-4 py-3 text-sm leading-relaxed text-text-primary",
                                 isLast
                                   ? "rounded-2xl rounded-bl-md"
                                   : "rounded-2xl"
@@ -1132,7 +1132,7 @@ export function ChatWidget() {
                   <AiAvatar />
                   <div className="min-w-0 max-w-[82%]">
                     <AiSenderLabel locale={locale} />
-                    <div className="relative overflow-hidden rounded-2xl rounded-bl-md border border-card-border bg-gradient-to-b from-card-dark to-surface px-4 py-3.5">
+                    <div className="relative overflow-hidden rounded-2xl rounded-bl-md border border-card-border bg-card-dark px-4 py-3.5">
                       <div
                         aria-hidden="true"
                         className="pointer-events-none absolute -right-10 -top-14 size-32 rounded-full bg-primary/10 blur-2xl"
