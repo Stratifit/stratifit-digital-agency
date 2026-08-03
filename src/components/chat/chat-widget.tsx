@@ -1183,71 +1183,74 @@ export function ChatWidget() {
             <footer className="flex flex-none flex-col border-t border-border bg-background">
               <form
                 onSubmit={handleSubmit}
-                className="flex items-center gap-2 px-4 pb-2 pt-3"
+                className="px-4 pb-2 pt-3"
               >
-                <div className="relative min-w-0 flex-1">
-                  {stage === "name" ? (
-                    <UserIcon className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-text-muted" />
-                  ) : stage === "emailInput" ? (
-                    <MailIcon className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-text-muted" />
-                  ) : null}
-                  <input
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    type={stage === "emailInput" ? "email" : "text"}
-                    disabled={loading || stage === "loading"}
-                    enterKeyHint={
-                      stage === "emailInput"
-                        ? "go"
-                        : stage === "chat"
-                          ? "send"
-                          : "done"
-                    }
-                    autoComplete={
-                      stage === "emailInput"
-                        ? "email"
-                        : stage === "name"
-                          ? "name"
-                          : "off"
-                    }
-                    placeholder={
-                      stage === "name"
-                        ? t(locale, "chatYourNamePlaceholder")
-                        : stage === "emailInput"
-                          ? t(locale, "chatYourEmailPlaceholder")
-                          : t(locale, "chatPlaceholder")
-                    }
-                    aria-label={
-                      stage === "name"
-                        ? t(locale, "chatYourNamePlaceholder")
-                        : stage === "emailInput"
-                          ? t(locale, "chatYourEmailPlaceholder")
-                          : t(locale, "chatPlaceholder")
-                    }
-                    className={cn(
-                      "w-full rounded-xl border border-card-border bg-card-dark py-3 pr-4 text-sm text-text-primary placeholder:text-text-muted outline-none transition-all focus:border-primary/60 focus:ring-2 focus:ring-primary/25 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
-                      stage === "name" || stage === "emailInput"
-                        ? "pl-9"
-                        : "pl-4"
-                    )}
-                  />
+                {/* Single merged box: input + upload + send all inside one container */}
+                <div className="flex items-center gap-1 rounded-xl border border-card-border bg-card-dark py-1 pl-1.5 pr-1.5 transition-all focus-within:border-primary/60 focus-within:ring-2 focus-within:ring-primary/25 focus-within:outline-none has-[:disabled]:opacity-60">
+                  <div className="relative min-w-0 flex-1">
+                    {stage === "name" ? (
+                      <UserIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-text-muted" />
+                    ) : stage === "emailInput" ? (
+                      <MailIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-text-muted" />
+                    ) : null}
+                    <input
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      type={stage === "emailInput" ? "email" : "text"}
+                      disabled={loading || stage === "loading"}
+                      enterKeyHint={
+                        stage === "emailInput"
+                          ? "go"
+                          : stage === "chat"
+                            ? "send"
+                            : "done"
+                      }
+                      autoComplete={
+                        stage === "emailInput"
+                          ? "email"
+                          : stage === "name"
+                            ? "name"
+                            : "off"
+                      }
+                      placeholder={
+                        stage === "name"
+                          ? t(locale, "chatYourNamePlaceholder")
+                          : stage === "emailInput"
+                            ? t(locale, "chatYourEmailPlaceholder")
+                            : t(locale, "chatPlaceholder")
+                      }
+                      aria-label={
+                        stage === "name"
+                          ? t(locale, "chatYourNamePlaceholder")
+                          : stage === "emailInput"
+                            ? t(locale, "chatYourEmailPlaceholder")
+                            : t(locale, "chatPlaceholder")
+                      }
+                      className={cn(
+                        "w-full bg-transparent py-2 pr-2 text-sm text-text-primary placeholder:text-text-muted outline-none transition-colors disabled:cursor-not-allowed disabled:opacity-50",
+                        stage === "name" || stage === "emailInput"
+                          ? "pl-8"
+                          : "pl-2.5"
+                      )}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    aria-label={t(locale, "chatUploadFile")}
+                    disabled
+                    className="flex size-9 shrink-0 items-center justify-center rounded-lg text-text-muted transition-colors hover:bg-white/5 hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    <PaperclipIcon className="size-4" />
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={!input.trim() || loading || stage === "loading"}
+                    aria-label={t(locale, "chatSend")}
+                    className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-text-inverse transition-all hover:bg-primary-hover active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
+                  >
+                    <SendIcon />
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  aria-label={t(locale, "chatUploadFile")}
-                  disabled
-                  className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-card-border bg-card-dark text-text-muted disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  <PaperclipIcon className="size-5" />
-                </button>
-                <button
-                  type="submit"
-                  disabled={!input.trim() || loading || stage === "loading"}
-                  aria-label={t(locale, "chatSend")}
-                  className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary text-text-inverse shadow-sm transition-all hover:bg-primary-hover hover:shadow-amber active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
-                >
-                  <SendIcon />
-                </button>
               </form>
 
               {/* Quick actions — only after onboarding */}
