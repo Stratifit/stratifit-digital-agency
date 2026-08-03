@@ -69,7 +69,7 @@ export function SectionHeader({
             "mt-3 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg",
             centered
               ? "mx-auto"
-              : "ml-3 border-l-2 border-primary/50 pl-4 sm:ml-4 sm:pl-6"
+              : "ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6"
           )}
         >
           {description}
