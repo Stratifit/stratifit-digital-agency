@@ -679,11 +679,21 @@ select:focus-visible {
   to { transform: translateX(-50%); }
 }
 
+@keyframes stratifit-scroll-x-reverse {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
 .marquee-scroll {
   animation: stratifit-scroll-x 25s linear infinite;
 }
 
-.marquee-pause:hover .marquee-scroll {
+.marquee-scroll-reverse {
+  animation: stratifit-scroll-x-reverse 25s linear infinite;
+}
+
+.marquee-pause:hover .marquee-scroll,
+.marquee-pause:hover .marquee-scroll-reverse {
   animation-play-state: paused;
 }
 

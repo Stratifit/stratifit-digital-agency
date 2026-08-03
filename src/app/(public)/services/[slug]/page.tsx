@@ -12,6 +12,21 @@ import { Reveal } from "@/components/ui/reveal";
 import { LinkButton } from "@/components/ui/link-button";
 import { PortfolioGallery } from "@/components/sections/portfolio-gallery";
 import { ServicePageIcon } from "@/components/ui/service-page-icon";
+import { CountUp } from "@/components/ui/count-up";
+import { cn } from "@/lib/cn";
+
+const TOOLKIT_ICONS = [
+  "chart",
+  "globe",
+  "rocket",
+  "workshop",
+  "chat",
+  "search",
+  "key",
+  "type",
+  "positioning",
+  "audit",
+];
 
 export async function generateMetadata({
   params,
@@ -164,7 +179,7 @@ export default async function ServicePage({
                       className="flex flex-col items-center px-2 text-center sm:px-4 lg:flex-row lg:justify-center lg:gap-1 lg:whitespace-nowrap"
                     >
                       <div className="mb-0.5 font-display text-2xl font-black leading-none text-primary sm:text-3xl lg:mb-0">
-                        {stat.value}
+                        <CountUp value={stat.value} />
                       </div>
                       <div className="text-[9px] font-bold uppercase tracking-wider text-text-subtle leading-tight sm:text-[10px] lg:text-sm">
                         {resolveTranslation(stat.label_translations, locale)}
@@ -393,17 +408,32 @@ export default async function ServicePage({
                 {toolkitTitle || "Tools & Technologies"}
               </h2>
             </Reveal>
-            <div className="overflow-hidden py-4">
-              <div className="marquee-scroll flex w-max gap-10 whitespace-nowrap">
-                {[...toolkit, ...toolkit].map((tool, index) => (
-                  <span
-                    key={`${tool}-${index}`}
-                    className="text-lg font-medium text-text-secondary sm:text-xl"
-                  >
-                    {tool}
-                  </span>
-                ))}
-              </div>
+            <div className="divide-y divide-border/60">
+              {[toolkit.slice(0, Math.ceil(toolkit.length / 2)), toolkit.slice(Math.ceil(toolkit.length / 2))].map(
+                (row, rowIndex) => (
+                  <div key={rowIndex} className="overflow-hidden py-4 md:py-6">
+                    <div
+                      className={cn(
+                        "flex w-max gap-10 whitespace-nowrap",
+                        rowIndex === 0 ? "marquee-scroll" : "marquee-scroll-reverse"
+                      )}
+                    >
+                      {[...row, ...row].map((tool, index) => (
+                        <span
+                          key={`${rowIndex}-${tool}-${index}`}
+                          className="flex items-center gap-2 text-lg font-medium text-text-secondary sm:text-xl"
+                        >
+                          <ServicePageIcon
+                            name={TOOLKIT_ICONS[index % TOOLKIT_ICONS.length]}
+                            className="size-6 shrink-0 text-text-subtle"
+                          />
+                          {tool}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )
+              )}
             </div>
           </Container>
         </Section>
