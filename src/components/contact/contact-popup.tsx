@@ -65,17 +65,17 @@ function TrustBadges({ locale }: { locale: string }) {
   ];
 
   return (
-    <div className="grid grid-cols-3 divide-x divide-border rounded-xl border border-border bg-primary/5 px-2 py-3 sm:py-4">
+    <div className="grid grid-cols-3 divide-x divide-border rounded-xl border border-border px-2 py-3 sm:py-4">
       {badges.map((badge, idx) => (
         <div
           key={idx}
           className="flex items-start justify-center gap-2 px-2 text-center sm:gap-2.5"
         >
-          <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-md border border-primary/25 bg-primary/10 text-primary sm:size-7">
+          <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-md border border-card-border bg-surface-soft text-text-muted sm:size-7">
             {badge.icon}
           </span>
           <div className="min-w-0 text-left leading-snug">
-            <p className="text-[9px] font-semibold text-text-primary sm:text-[11px]">
+            <p className="whitespace-nowrap text-[9px] font-semibold text-text-primary sm:text-[11px]">
               {badge.title}
             </p>
             <p className="mt-0.5 text-[8px] leading-[1.4] text-text-muted sm:text-[10px]">
@@ -118,8 +118,8 @@ function LockIcon() {
       aria-hidden="true"
       className="size-3.5"
     >
-      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+      <rect width="18" height="11" x="3" y="11" rx="2" />
+      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
     </svg>
   );
 }
@@ -251,7 +251,7 @@ export function ContactPopup({
         </div>
 
         {/* Trust badges */}
-        <div className="relative py-4 sm:py-6">
+        <div className="relative pt-4 sm:pt-8 lg:pt-10">
           <TrustBadges locale={locale} />
         </div>
       </div>

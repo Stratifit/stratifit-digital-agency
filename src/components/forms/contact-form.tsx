@@ -188,7 +188,7 @@ function FieldShell({ label, required, icon, children, error }: FieldShellProps)
     <div className="min-w-0">
       <label className="mb-1.5 block text-xs font-medium text-text-secondary sm:text-sm">
         {label}
-        {required ? <span className="ml-1 text-primary">*</span> : null}
+        {required ? <span className="ml-1 text-field-placeholder">*</span> : null}
       </label>
       <div className="relative">
         <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-primary">
@@ -306,7 +306,7 @@ export function ContactForm({
         <input
           type="text"
           className={cn(fieldBase, fieldWithLeftIcon)}
-          placeholder={t(locale, "yourName")}
+          placeholder={t(locale, "yourName").replace(" *", "")}
           {...register("name")}
         />
       </FieldShell>
@@ -325,7 +325,7 @@ export function ContactForm({
         <input
           type="email"
           className={cn(fieldBase, fieldWithLeftIcon)}
-          placeholder={t(locale, "yourEmail")}
+          placeholder={t(locale, "yourEmail").replace(" *", "")}
           {...register("email")}
         />
       </FieldShell>
@@ -419,7 +419,7 @@ export function ContactForm({
             "w-full resize-none rounded-xl border border-field-border bg-field-bg py-3 pl-11 pr-4 text-sm leading-5 text-field-text placeholder:text-field-placeholder outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60 sm:rounded-2xl",
             compact ? "h-[82px]" : "h-28"
           )}
-          placeholder={t(locale, "tellUsProject")}
+          placeholder={t(locale, "tellUsProject").replace(" *", "")}
           {...register("message")}
         />
       </FieldShell>
