@@ -112,6 +112,12 @@
      Form Field Tokens
      Inputs, textareas, selects, and dropdown surfaces.
      --------------------------------------------------------------------------- */
+  --field-bg: #181818;
+  --field-border: #292929;
+  --field-border-hover: #383838;
+  --field-placeholder: #7F7F87;
+  --field-text: #FFFFFF;
+  --field-label: #B8B8B8;
   --success-green: #10B981;
   --success-green-border: rgba(16, 185, 129, 0.40);
 
@@ -344,6 +350,12 @@
   --color-card-border-disabled: var(--card-border-disabled);
 
   /* Form Field Colors */
+  --color-field-bg: var(--field-bg);
+  --color-field-border: var(--field-border);
+  --color-field-border-hover: var(--field-border-hover);
+  --color-field-placeholder: var(--field-placeholder);
+  --color-field-text: var(--field-text);
+  --color-field-label: var(--field-label);
   --color-success-green: var(--success-green);
   --color-success-green-border: var(--success-green-border);
 

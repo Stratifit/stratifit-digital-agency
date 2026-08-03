@@ -56,7 +56,9 @@ export async function ProcessSection() {
           ))}
         </Reveal>
 
-        <ProcessCarousel steps={steps} locale={locale} />
+        <Reveal cardSelector="[data-step-card]">
+          <ProcessCarousel steps={steps} locale={locale} />
+        </Reveal>
       </Container>
     </Section>
   );

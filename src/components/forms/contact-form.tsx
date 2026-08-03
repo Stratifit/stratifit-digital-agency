@@ -59,13 +59,13 @@ function CheckIcon() {
 
 function dropdownTriggerClass() {
   return cn(
-    "flex h-11 w-full items-center gap-3 rounded-input border border-card-border bg-card-dark px-4 text-left transition-[background-color,border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover active:border-card-border-active active:bg-card-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2"
+    "flex h-11 w-full items-center gap-3 rounded-input border border-field-border bg-field-bg px-4 text-left transition-[background-color,border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover active:border-field-border-hover focus-visible:border-primary focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/60 focus-visible:outline-offset-2"
   );
 }
 
 function dropdownPanelClass() {
   return cn(
-    "absolute z-50 mt-2 w-full rounded-input border border-card-border bg-card-dark p-1 shadow-shadow-md"
+    "absolute z-50 mt-2 w-full rounded-input border border-field-border bg-field-bg p-1 shadow-shadow-md"
   );
 }
 
@@ -228,8 +228,8 @@ export function ContactForm({
               className={cn(
                 "min-w-0 flex-1 truncate text-sm",
                 selectedServices.length > 0
-                  ? "text-text-primary"
-                  : "text-text-subtle"
+                  ? "text-field-text"
+                  : "text-field-placeholder"
               )}
             >
               {selectedServices.length === 0
@@ -297,13 +297,13 @@ export function ContactForm({
           onClick={() => setBudgetOpen((v) => !v)}
           className={dropdownTriggerClass()}
         >
-          <span className="shrink-0 text-xs font-bold uppercase tracking-wider text-text-muted">
+          <span className="shrink-0 text-xs font-bold uppercase tracking-wider text-field-label">
             Project Budget
           </span>
           <span
             className={cn(
               "min-w-0 flex-1 truncate text-sm",
-              budgetLabel ? "text-text-primary" : "text-text-subtle"
+              budgetLabel ? "text-field-text" : "text-field-placeholder"
             )}
           >
             {budgetLabel || "Select a range"}
@@ -347,7 +347,7 @@ export function ContactForm({
             <div className="px-3 py-2">
               <label
                 htmlFor="budget-custom"
-                className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-text-muted"
+                className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-field-label"
               >
                 Custom budget
               </label>
@@ -360,7 +360,7 @@ export function ContactForm({
                   setCustomBudget(event.target.value);
                   setValue("custom_budget", event.target.value);
                 }}
-                className="h-9 w-full rounded-input border border-card-border bg-background/40 px-3 text-sm text-text-primary placeholder:text-text-subtle transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover focus-visible:border-card-border-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2"
+                className="h-9 w-full rounded-input border border-field-border bg-field-bg px-3 text-sm text-field-text placeholder:text-field-placeholder transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover focus-visible:border-primary focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/60 focus-visible:outline-offset-2"
               />
             </div>
           </div>

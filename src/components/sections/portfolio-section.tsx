@@ -24,7 +24,7 @@ export async function PortfolioSection() {
     <Section>
       <Container>
         <SectionHeader settings={settings} locale={locale} />
-        <Reveal variant="card" className="mt-12">
+        <Reveal variant="card" className="mt-12" cardSelector="[data-project-card]">
           <PortfolioGallery
             projects={projects}
             services={services}

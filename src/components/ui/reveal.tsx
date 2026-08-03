@@ -22,6 +22,12 @@ interface RevealProps {
    * approaches the viewport (stacked cards reveal one by one).
    */
   stagger?: boolean;
+  /**
+   * Mobile-only: cascade-reveal matching descendant cards (carousels).
+   * Cards share the same vertical position, so one container trigger fires a
+   * staggered rise — same feel as the services cards.
+   */
+  cardSelector?: string;
   /** Disable the scroll trigger and animate immediately on mount (hero). */
   immediate?: boolean;
   variant?: RevealVariant;
@@ -38,6 +44,7 @@ export function Reveal({
   children,
   className,
   stagger = false,
+  cardSelector,
   immediate = false,
   variant = "revealUp",
 }: RevealProps) {
@@ -70,9 +77,23 @@ export function Reveal({
 
       // Mobile: stronger, clearly visible rise. Staggered groups reveal each
       // card independently with its own ScrollTrigger when it approaches the
-      // bottom of the viewport; single blocks rise as one panel.
+      // bottom of the viewport; single blocks rise as one panel; carousels
+      // (cardSelector) cascade their cards on the container trigger.
       mm.add("(prefers-reduced-motion: no-preference) and (max-width: 767px)", () => {
-        if (stagger) {
+        if (cardSelector) {
+          const cards = gsap.utils.toArray<HTMLElement>(
+            el.querySelectorAll(cardSelector)
+          );
+          if (cards.length > 0) {
+            gsap.from(cards, {
+              ...MOBILE_CARD_FROM,
+              stagger: 0.08,
+              scrollTrigger: immediate
+                ? undefined
+                : { trigger: el, start: MOBILE_TRIGGER_START, once: true },
+            });
+          }
+        } else if (stagger) {
           gsap.utils.toArray<HTMLElement>(el.children).forEach((item) => {
             gsap.from(item, {
               ...MOBILE_CARD_FROM,

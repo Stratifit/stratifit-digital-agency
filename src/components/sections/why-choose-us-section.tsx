@@ -67,7 +67,9 @@ export async function WhyChooseUsSection() {
         </Reveal>
 
         <div className="mt-12 md:hidden">
-          <WhyChooseUsCarousel items={items} locale={locale} />
+          <Reveal cardSelector="[data-why-card]">
+            <WhyChooseUsCarousel items={items} locale={locale} />
+          </Reveal>
         </div>
       </Container>
     </Section>

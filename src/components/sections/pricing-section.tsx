@@ -22,7 +22,7 @@ export async function PricingSection() {
     <Section>
       <Container>
         <SectionHeader settings={settings} locale={locale} align="left" />
-        <Reveal variant="card" className="mt-12">
+        <Reveal variant="card" className="mt-12" cardSelector="[data-plan-card]">
           <PricingPlans plans={plans} locale={locale} />
         </Reveal>
       </Container>
