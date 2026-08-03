@@ -684,6 +684,17 @@ select:focus-visible {
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+@keyframes stratifit-shimmer {
+  0% { background-position: 0% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-line {
+  background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.6), transparent);
+  background-size: 200% 100%;
+  animation: stratifit-shimmer 3s ease-in-out infinite;
+}
+
 .contact-popup-backdrop {
   animation: stratifit-popup-backdrop var(--motion-standard) var(--ease-standard) both;
 }

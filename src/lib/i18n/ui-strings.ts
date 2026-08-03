@@ -69,6 +69,7 @@ export type UiStringKey =
   | "getInTouch"
   | "popupHeadingA"
   | "popupHeadingB"
+  | "noSpamNote"
   | "closePopup";
 
 type UiStrings = Record<UiStringKey, string>;
@@ -145,6 +146,7 @@ const en: UiStrings = {
   getInTouch: "Get in Touch",
   popupHeadingA: "Tell us about your",
   popupHeadingB: "project",
+  noSpamNote: "No spam. Your data stays private.",
   closePopup: "Close",
 };
 
@@ -221,6 +223,7 @@ const de: UiStrings = {
   getInTouch: "Kontakt aufnehmen",
   popupHeadingA: "Erzählen Sie uns von Ihrem",
   popupHeadingB: "Projekt",
+  noSpamNote: "Kein Spam. Ihre Daten bleiben privat.",
   closePopup: "Schließen",
 };
 
@@ -297,6 +300,7 @@ const fr: UiStrings = {
   getInTouch: "Prenez contact",
   popupHeadingA: "Parlez-nous de votre",
   popupHeadingB: "projet",
+  noSpamNote: "Pas de spam. Vos données restent privées.",
   closePopup: "Fermer",
 };
 
@@ -373,6 +377,7 @@ const es: UiStrings = {
   getInTouch: "Ponte en contacto",
   popupHeadingA: "Cuéntanos sobre tu",
   popupHeadingB: "proyecto",
+  noSpamNote: "Sin spam. Tus datos permanecen privados.",
   closePopup: "Cerrar",
 };
 

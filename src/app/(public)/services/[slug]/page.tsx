@@ -5,6 +5,7 @@ import { getPublicServices } from "@/features/services/queries";
 import { getPublicPortfolioProjects } from "@/features/portfolio/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { t } from "@/lib/i18n/ui-strings";
 import { pageMetadata, canonical } from "@/lib/seo";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
@@ -475,30 +476,56 @@ export default async function ServicePage({
         <Section>
           <Container>
             <Reveal variant="cta">
-              <div className="relative overflow-hidden rounded-card-lg border border-card-border bg-background p-6 text-center sm:p-8 lg:p-10">
-                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
+              <div className="relative overflow-hidden rounded-card-lg border border-card-border bg-background p-8 text-center sm:p-10 lg:p-14">
+                <div className="shimmer-line absolute inset-x-0 top-0 h-px" />
                 <div className="pointer-events-none absolute inset-0 overflow-hidden">
                   <div className="absolute -top-24 left-1/2 h-[260px] w-[500px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
+                  <div className="absolute -bottom-20 left-1/3 h-[160px] w-[320px] rounded-full bg-primary/5 blur-[100px]" />
+                  <div className="absolute right-1/4 top-1/2 h-[200px] w-[200px] rounded-full bg-primary/4 blur-[100px]" />
                 </div>
-                <div className="relative z-10 mb-4 flex items-center justify-center gap-2">
+
+                <div className="relative z-10 mb-5 flex items-center justify-center gap-2">
                   <ServicePageIcon name="spark" className="size-4 text-primary" />
                   <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary">
                     Ready When You Are
                   </p>
                 </div>
-                <h2 className="relative z-10 mx-auto mb-3 max-w-xl font-display text-xl font-black leading-[0.95] text-text-primary sm:text-2xl md:text-3xl">
+
+                <h2 className="relative z-10 mx-auto mb-4 max-w-2xl font-display text-2xl font-black leading-[0.95] tracking-tight text-text-primary sm:text-3xl md:text-4xl">
                   {ctaTitle}
                 </h2>
+
                 {ctaSubtitle ? (
-                  <p className="relative z-10 mx-auto mt-3 max-w-xl text-sm leading-relaxed text-text-secondary">
+                  <p className="relative z-10 mx-auto mt-3 max-w-xl text-sm leading-relaxed text-text-secondary sm:text-base">
                     {ctaSubtitle}
                   </p>
                 ) : null}
-                <div className="relative z-10 mt-6">
-                  <ContactAwareLink href="/contact" size="large">
+
+                <div className="relative z-10 mt-8 flex justify-center">
+                  <ContactAwareLink
+                    href="/contact"
+                    size="large"
+                    className="group"
+                  >
                     {ctaButton || "Start Your Project"}
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      className="size-4 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M12.97 3.97a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06l6.22-6.22H3a.75.75 0 0 1 0-1.5h16.19l-6.22-6.22a.75.75 0 0 1 0-1.06Z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
                   </ContactAwareLink>
                 </div>
+
+                <p className="relative z-10 mt-5 text-xs text-text-subtle">
+                  {t(locale, "noSpamNote")}
+                </p>
               </div>
             </Reveal>
           </Container>
