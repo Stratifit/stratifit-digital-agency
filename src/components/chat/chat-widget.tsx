@@ -737,12 +737,11 @@ export function ChatWidget() {
     setError(null);
     if (choice === "yes") {
       // Mark the choice on the persisted question bubble (turns amber), then
-      // ask for the email — the thanks reply is only sent after it.
+      // ask for the email — the question stays unanswered so the visitor can
+      // still change their mind and pick "Maybe later".
       setMessages((m) =>
         m.map((msg) =>
-          msg.sender === "question"
-            ? { ...msg, choice: "yes" as const, answered: true }
-            : msg
+          msg.sender === "question" ? { ...msg, choice: "yes" as const } : msg
         )
       );
       setInput("");
@@ -767,6 +766,7 @@ export function ChatWidget() {
     const stored = toWidgetMessages(result.data.messages);
     setVisitor((v) => ({ ...v, email_choice: "later", onboarding_complete: true }));
     setMessages(insertQuestion(stored, buildQuestionMessage(lang, visitor.name, "later", true)));
+    setInput("");
     setStage("chat");
   }
 
@@ -1200,7 +1200,9 @@ export function ChatWidget() {
                                   <div className="mt-3 flex items-center justify-between gap-2 border-t border-border pt-2.5">
                                     <button
                                       type="button"
-                                      disabled={loading || m.answered}
+                                      disabled={
+                                        loading || m.answered || m.choice === "yes"
+                                      }
                                       onClick={() => handleChoice("yes")}
                                       className={cn(
                                         "rounded-md border bg-transparent px-2.5 py-1.5 text-[9px] font-semibold transition-all active:scale-[0.98] disabled:cursor-not-allowed",
