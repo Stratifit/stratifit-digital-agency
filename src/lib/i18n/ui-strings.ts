@@ -92,6 +92,11 @@ export type UiStringKey =
   | "chatLanguage"
   | "chatRestart"
   | "chatVisitor"
+  | "chatUploadFile"
+  | "chatBookDemo"
+  | "chatGetQuote"
+  | "chatContactUs"
+  | "chatBuiltBy"
   | "heroEyebrowFallback"
   | "viewSite"
   | "contactEyebrow"
@@ -215,6 +220,11 @@ const en: UiStrings = {
   chatLanguage: "Select language",
   chatRestart: "Restart chat",
   chatVisitor: "User",
+  chatUploadFile: "Upload file",
+  chatBookDemo: "Book a Demo",
+  chatGetQuote: "Get a Quote",
+  chatContactUs: "Contact Us",
+  chatBuiltBy: "Built by STRATIFIT team",
   heroEyebrowFallback: "Premium Digital Agency",
   viewSite: "View site",
   contactEyebrow: "Contact",
@@ -339,6 +349,11 @@ const de: UiStrings = {
   chatLanguage: "Sprache auswählen",
   chatRestart: "Chat neu starten",
   chatVisitor: "Benutzer",
+  chatUploadFile: "Datei hochladen",
+  chatBookDemo: "Demo buchen",
+  chatGetQuote: "Angebot anfordern",
+  chatContactUs: "Kontakt aufnehmen",
+  chatBuiltBy: "Erstellt vom STRATIFIT-Team",
   heroEyebrowFallback: "Premium-Digitalagentur",
   viewSite: "Website ansehen",
   contactEyebrow: "Kontakt",
@@ -463,6 +478,11 @@ const fr: UiStrings = {
   chatLanguage: "Choisir la langue",
   chatRestart: "Redémarrer le chat",
   chatVisitor: "Utilisateur",
+  chatUploadFile: "Téléverser un fichier",
+  chatBookDemo: "Réserver une démo",
+  chatGetQuote: "Obtenir un devis",
+  chatContactUs: "Nous contacter",
+  chatBuiltBy: "Créé par l'équipe STRATIFIT",
   heroEyebrowFallback: "Agence digitale premium",
   viewSite: "Voir le site",
   contactEyebrow: "Contact",
@@ -587,6 +607,11 @@ const es: UiStrings = {
   chatLanguage: "Seleccionar idioma",
   chatRestart: "Reiniciar chat",
   chatVisitor: "Usuario",
+  chatUploadFile: "Subir archivo",
+  chatBookDemo: "Reservar una demo",
+  chatGetQuote: "Obtener presupuesto",
+  chatContactUs: "Contáctanos",
+  chatBuiltBy: "Creado por el equipo de STRATIFIT",
   heroEyebrowFallback: "Agencia digital premium",
   viewSite: "Ver sitio",
   contactEyebrow: "Contacto",

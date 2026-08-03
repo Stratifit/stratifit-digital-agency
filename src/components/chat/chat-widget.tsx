@@ -228,6 +228,55 @@ function MailIcon({ className }: { className?: string }) {
   );
 }
 
+function PaperclipIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className={className}
+    >
+      <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+    </svg>
+  );
+}
+
+function CalendarIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path
+        fillRule="evenodd"
+        d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3a.75.75 0 0 1 1.5 0v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
+function PhoneIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path
+        fillRule="evenodd"
+        d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
+function HeartIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+    </svg>
+  );
+}
+
 // ============================================================================
 // Shared AI identity row
 // ============================================================================
@@ -1129,68 +1178,119 @@ export function ChatWidget() {
             <div ref={bottomRef} />
           </div>
 
-          {/* Input / actions */}
+          {/* Footer — input, quick actions, brand */}
           {stage === "emailQuestion" ? null : (
-            <form
-              onSubmit={handleSubmit}
-              className="flex flex-none items-center gap-2 border-t border-border bg-background px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3"
-            >
-              <div className="relative min-w-0 flex-1">
-                {stage === "name" ? (
-                  <UserIcon className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-text-muted" />
-                ) : stage === "emailInput" ? (
-                  <MailIcon className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-text-muted" />
-                ) : null}
-                <input
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  type={stage === "emailInput" ? "email" : "text"}
-                  disabled={loading || stage === "loading"}
-                  enterKeyHint={
-                    stage === "emailInput"
-                      ? "go"
-                      : stage === "chat"
-                        ? "send"
-                        : "done"
-                  }
-                  autoComplete={
-                    stage === "emailInput"
-                      ? "email"
-                      : stage === "name"
-                        ? "name"
-                        : "off"
-                  }
-                  placeholder={
-                    stage === "name"
-                      ? t(locale, "chatYourNamePlaceholder")
-                      : stage === "emailInput"
-                        ? t(locale, "chatYourEmailPlaceholder")
-                        : t(locale, "chatPlaceholder")
-                  }
-                  aria-label={
-                    stage === "name"
-                      ? t(locale, "chatYourNamePlaceholder")
-                      : stage === "emailInput"
-                        ? t(locale, "chatYourEmailPlaceholder")
-                        : t(locale, "chatPlaceholder")
-                  }
-                  className={cn(
-                    "w-full rounded-xl border border-card-border bg-card-dark py-3 pr-4 text-sm text-text-primary placeholder:text-text-muted outline-none transition-all focus:border-primary/60 focus:ring-2 focus:ring-primary/25 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
-                    stage === "name" || stage === "emailInput"
-                      ? "pl-9"
-                      : "pl-4"
-                  )}
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={!input.trim() || loading || stage === "loading"}
-                aria-label={t(locale, "chatSend")}
-                className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary text-text-inverse shadow-sm transition-all hover:bg-primary-hover hover:shadow-amber active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
+            <footer className="flex flex-none flex-col border-t border-border bg-background">
+              <form
+                onSubmit={handleSubmit}
+                className="flex items-center gap-2 px-4 pb-2 pt-3"
               >
-                <SendIcon />
-              </button>
-            </form>
+                <div className="relative min-w-0 flex-1">
+                  {stage === "name" ? (
+                    <UserIcon className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-text-muted" />
+                  ) : stage === "emailInput" ? (
+                    <MailIcon className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-text-muted" />
+                  ) : null}
+                  <input
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    type={stage === "emailInput" ? "email" : "text"}
+                    disabled={loading || stage === "loading"}
+                    enterKeyHint={
+                      stage === "emailInput"
+                        ? "go"
+                        : stage === "chat"
+                          ? "send"
+                          : "done"
+                    }
+                    autoComplete={
+                      stage === "emailInput"
+                        ? "email"
+                        : stage === "name"
+                          ? "name"
+                          : "off"
+                    }
+                    placeholder={
+                      stage === "name"
+                        ? t(locale, "chatYourNamePlaceholder")
+                        : stage === "emailInput"
+                          ? t(locale, "chatYourEmailPlaceholder")
+                          : t(locale, "chatPlaceholder")
+                    }
+                    aria-label={
+                      stage === "name"
+                        ? t(locale, "chatYourNamePlaceholder")
+                        : stage === "emailInput"
+                          ? t(locale, "chatYourEmailPlaceholder")
+                          : t(locale, "chatPlaceholder")
+                    }
+                    className={cn(
+                      "w-full rounded-xl border border-card-border bg-card-dark py-3 pr-4 text-sm text-text-primary placeholder:text-text-muted outline-none transition-all focus:border-primary/60 focus:ring-2 focus:ring-primary/25 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+                      stage === "name" || stage === "emailInput"
+                        ? "pl-9"
+                        : "pl-4"
+                    )}
+                  />
+                </div>
+                <button
+                  type="button"
+                  aria-label={t(locale, "chatUploadFile")}
+                  disabled
+                  className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-card-border bg-card-dark text-text-muted disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  <PaperclipIcon className="size-5" />
+                </button>
+                <button
+                  type="submit"
+                  disabled={!input.trim() || loading || stage === "loading"}
+                  aria-label={t(locale, "chatSend")}
+                  className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary text-text-inverse shadow-sm transition-all hover:bg-primary-hover hover:shadow-amber active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
+                >
+                  <SendIcon />
+                </button>
+              </form>
+
+              {/* Quick actions — only after onboarding */}
+              {stage === "chat" ? (
+                <div className="flex gap-2 px-4 pb-2">
+                  <button
+                    type="button"
+                    disabled={loading}
+                    onClick={() => sendChatMessage(t(locale, "chatBookDemo"))}
+                    className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-card-border bg-card-dark px-2.5 py-2.5 text-xs font-medium text-text-primary transition-all hover:border-primary/30 hover:bg-white/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <CalendarIcon className="size-3.5 text-primary" />
+                    {t(locale, "chatBookDemo")}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={loading}
+                    onClick={() => sendChatMessage(t(locale, "chatGetQuote"))}
+                    className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-card-border bg-card-dark px-2.5 py-2.5 text-xs font-medium text-text-primary transition-all hover:border-primary/30 hover:bg-white/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <DollarIcon className="size-3.5 text-primary" />
+                    {t(locale, "chatGetQuote")}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={loading}
+                    onClick={() => sendChatMessage(t(locale, "chatContactUs"))}
+                    className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-card-border bg-card-dark px-2.5 py-2.5 text-xs font-medium text-text-primary transition-all hover:border-primary/30 hover:bg-white/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <PhoneIcon className="size-3.5 text-primary" />
+                    {t(locale, "chatContactUs")}
+                  </button>
+                </div>
+              ) : null}
+
+              {/* Brand line */}
+              <div className="flex items-center justify-center gap-1.5 border-t border-border-subtle px-4 pb-[calc(0.625rem+env(safe-area-inset-bottom))] pt-2.5">
+                <HeartIcon className="size-3 text-primary/70" />
+                <span className="text-[11px] font-medium text-text-muted">
+                  {t(locale, "chatBuiltBy")}
+                </span>
+              </div>
+            </footer>
           )}
         </div>
         </>
