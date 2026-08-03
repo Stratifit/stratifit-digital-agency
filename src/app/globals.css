@@ -538,6 +538,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
+  /* Allow long words (e.g. German translations) to wrap instead of
+     overflowing — keeps layout stable across all languages. */
+  overflow-wrap: break-word;
 }
 
 html {

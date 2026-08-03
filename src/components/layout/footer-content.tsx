@@ -50,8 +50,8 @@ export function FooterContent({
 
       <div className="grid grid-cols-3 gap-4">
         {groups.map((group) => (
-          <div key={group.id} className="flex flex-col gap-2.5">
-            <h4 className="mb-0.5 text-sm font-bold uppercase tracking-wider text-white">
+          <div key={group.id} className="flex min-w-0 flex-col gap-2.5">
+            <h4 className="mb-0.5 text-xs font-bold uppercase tracking-wider text-white break-words sm:text-sm">
               {resolveTranslation(group.title_translations, locale)}
             </h4>
             {group.links.map((link) => (
@@ -61,7 +61,7 @@ export function FooterContent({
                 target={link.is_external ? "_blank" : undefined}
                 rel={link.is_external ? "noopener noreferrer" : undefined}
                 onClick={onLinkClick}
-                className="text-xs text-text-subtle transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="text-xs text-text-subtle transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary break-words"
               >
                 {resolveTranslation(link.label_translations, locale)}
               </a>
