@@ -65,13 +65,13 @@ function TrustBadges({ locale }: { locale: string }) {
   ];
 
   return (
-    <div className="relative mt-6 grid grid-cols-3 divide-x divide-border border-t border-border pt-4 sm:mt-8">
+    <div className="grid grid-cols-3 divide-x divide-border rounded-xl border border-border bg-primary/5 px-2 py-3 sm:py-4">
       {badges.map((badge, idx) => (
         <div
           key={idx}
-          className="flex items-start justify-center gap-1.5 px-2 text-center sm:gap-2"
+          className="flex items-start justify-center gap-2 px-2 text-center sm:gap-2.5"
         >
-          <span className="mt-[1px] shrink-0 text-primary sm:mt-0.5">
+          <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-md border border-primary/25 bg-primary/10 text-primary sm:size-7">
             {badge.icon}
           </span>
           <div className="min-w-0 text-left leading-snug">
@@ -251,7 +251,7 @@ export function ContactPopup({
         </div>
 
         {/* Trust badges */}
-        <div className="relative mt-6 sm:mt-8">
+        <div className="relative py-4 sm:py-6">
           <TrustBadges locale={locale} />
         </div>
       </div>
