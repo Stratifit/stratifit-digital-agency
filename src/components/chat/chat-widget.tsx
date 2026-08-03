@@ -18,6 +18,7 @@ interface WidgetMessage {
   id: string;
   sender: "visitor" | "ai" | "system";
   content: string;
+  created_at: string;
 }
 
 const TOKEN_KEY = "stratifit-chat-token";
@@ -206,6 +207,54 @@ function RefreshIcon() {
   );
 }
 
+function UserIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path
+        fillRule="evenodd"
+        d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
+function MailIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z" />
+      <path d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z" />
+    </svg>
+  );
+}
+
+// ============================================================================
+// Shared AI identity row
+// ============================================================================
+
+function AiAvatar({ muted = false }: { muted?: boolean }) {
+  return (
+    <span
+      className={cn(
+        "mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full",
+        muted
+          ? "bg-primary/15 text-primary/60"
+          : "bg-gradient-to-br from-primary/25 to-primary/10 text-primary ring-1 ring-primary/20"
+      )}
+    >
+      <ChatIcon className="size-3.5" />
+    </span>
+  );
+}
+
+function AiSenderLabel({ locale }: { locale: string }) {
+  return (
+    <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-primary/70">
+      {t(locale, "chatName")}
+    </span>
+  );
+}
+
 // ============================================================================
 // Chat widget
 // ============================================================================
@@ -232,7 +281,68 @@ function toWidgetMessages(rows: ChatStoredMessage[]): WidgetMessage[] {
           ? "system"
           : "ai",
     content: row.content,
+    created_at: row.created_at,
   }));
+}
+
+/** Groups consecutive messages from the same sender into clusters. */
+function groupMessages(messages: WidgetMessage[]): WidgetMessage[][] {
+  const groups: WidgetMessage[][] = [];
+  for (const message of messages) {
+    const last = groups[groups.length - 1];
+    if (last && last[last.length - 1].sender === message.sender) {
+      last.push(message);
+    } else {
+      groups.push([message]);
+    }
+  }
+  return groups;
+}
+
+/** Locale-aware time label; shows the date too when not today. */
+function formatMessageTime(iso: string, locale: string): string {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "";
+  const now = new Date();
+  const sameDay =
+    date.getFullYear() === now.getFullYear() &&
+    date.getMonth() === now.getMonth() &&
+    date.getDate() === now.getDate();
+  const time = new Intl.DateTimeFormat(locale, {
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
+  if (sameDay) return time;
+  const day = new Intl.DateTimeFormat(locale, {
+    day: "2-digit",
+    month: "short",
+  }).format(date);
+  return `${day}, ${time}`;
+}
+
+/** Timestamp under the last bubble of a group; renders nothing when absent. */
+function MessageTime({
+  iso,
+  locale,
+  align = "left",
+}: {
+  iso: string;
+  locale: string;
+  align?: "left" | "right";
+}) {
+  const label = formatMessageTime(iso, locale);
+  if (!label) return null;
+  return (
+    <time
+      dateTime={iso}
+      className={cn(
+        "mt-1 block text-[11px] font-medium text-text-subtle",
+        align === "right" ? "pr-1 text-right" : "pl-1"
+      )}
+    >
+      {label}
+    </time>
+  );
 }
 
 export function ChatWidget() {
@@ -360,7 +470,15 @@ export function ChatWidget() {
     const trimmed = content.trim();
     if (!trimmed || loading) return;
 
-    setMessages((m) => [...m, { id: crypto.randomUUID(), sender: "visitor", content: trimmed }]);
+    setMessages((m) => [
+      ...m,
+      {
+        id: crypto.randomUUID(),
+        sender: "visitor",
+        content: trimmed,
+        created_at: new Date().toISOString(),
+      },
+    ]);
     setInput("");
     setError(null);
     setLoading(true);
@@ -382,7 +500,12 @@ export function ChatWidget() {
     if (result.data?.ai_reply) {
       setMessages((m) => [
         ...m,
-        { id: crypto.randomUUID(), sender: "ai", content: result.data!.ai_reply! },
+        {
+          id: crypto.randomUUID(),
+          sender: "ai",
+          content: result.data!.ai_reply!,
+          created_at: new Date().toISOString(),
+        },
       ]);
     }
     if (result.data?.escalated) {
@@ -392,6 +515,7 @@ export function ChatWidget() {
           id: crypto.randomUUID(),
           sender: "system",
           content: t(lang, "chatEscalated"),
+          created_at: new Date().toISOString(),
         },
       ]);
     }
@@ -573,7 +697,13 @@ export function ChatWidget() {
   }
 
   const locale = lang;
+  const messageGroups = groupMessages(messages);
+  const firstVisitorGroupId =
+    messageGroups.find((group) => group[0].sender === "visitor")?.[0].id ?? null;
   const welcomeParts = t(locale, "chatWelcome").split(" — ");
+  const welcomeBody = welcomeParts[1]
+    ? welcomeParts[1].charAt(0).toUpperCase() + welcomeParts[1].slice(1)
+    : null;
   const emailQuestion = t(locale, "chatEmailQuestion").replace(
     "{name}",
     visitor.name
@@ -621,7 +751,7 @@ export function ChatWidget() {
                 </p>
                 <span className="mt-0.5 inline-flex items-center gap-1.5 rounded-full bg-success/10 px-2 py-0.5">
                   <span className="size-1.5 rounded-full bg-success" />
-                  <span className="text-[10px] font-medium text-success">
+                  <span className="text-[11px] font-medium text-success">
                     {t(locale, "chatOnline")}
                   </span>
                 </span>
@@ -720,176 +850,249 @@ export function ChatWidget() {
               className="pointer-events-none sticky top-0 z-10 -mx-4 -mt-4 h-5 bg-gradient-to-b from-background to-transparent"
             />
             <div className="space-y-4">
+              {/* Loading skeleton */}
+              {stage === "loading" ? (
+                <div aria-hidden="true" className="flex justify-start gap-2">
+                  <AiAvatar muted />
+                  <div className="w-[70%] space-y-2">
+                    <div className="h-2 w-16 rounded-full bg-surface" />
+                    <div className="rounded-2xl rounded-bl-md border border-card-border bg-card-dark px-4 py-3.5">
+                      <div className="shimmer-line h-2.5 w-full rounded-full" />
+                      <div className="mt-2.5 h-2.5 w-4/5 rounded-full bg-surface" />
+                      <div className="mt-2.5 h-2.5 w-3/5 rounded-full bg-surface" />
+                    </div>
+                  </div>
+                </div>
+              ) : null}
               {/* Welcome bubble */}
               {stage === "name" ? (
                 <div className="chat-msg-in flex justify-start gap-2">
-                  <span className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
-                    <ChatIcon className="size-3.5" />
-                  </span>
-                  <div className="min-w-0 max-w-[80%]">
-                    <span className="mb-1 block text-[10px] font-medium uppercase tracking-wide text-primary/60">
-                      {t(locale, "chatName")}
-                    </span>
-                    <div className="rounded-2xl rounded-bl-md border border-card-border bg-card-dark px-4 py-3">
-                      <p className="whitespace-pre-line text-sm leading-relaxed text-text-secondary">
-                        <strong className="font-semibold text-text-primary">
+                  <AiAvatar />
+                  <div className="min-w-0 max-w-[82%]">
+                    <AiSenderLabel locale={locale} />
+                    <div className="relative overflow-hidden rounded-2xl rounded-bl-md border border-card-border bg-gradient-to-b from-card-dark to-surface px-4 py-3.5">
+                      {/* Soft ambient glow behind the content */}
+                      <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute -right-10 -top-14 size-32 rounded-full bg-primary/10 blur-2xl"
+                      />
+                      <div className="relative">
+                        <p className="text-sm font-semibold leading-snug text-text-primary">
                           {welcomeParts[0]}
-                        </strong>
-                        {welcomeParts[1] ? ` — ${welcomeParts[1]}` : ""}
-                      </p>
-                      <div className="mt-2.5 flex items-center justify-between border-t border-border pt-2">
-                        <span className="flex items-center gap-1 text-[10px] font-medium uppercase tracking-wide text-text-muted">
-                          <LockIcon className="size-2.5" />
+                        </p>
+                        {welcomeBody ? (
+                          <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-text-secondary">
+                            {welcomeBody}
+                          </p>
+                        ) : null}
+                      </div>
+                      <div className="relative mt-3 flex items-center justify-between gap-2 border-t border-border pt-2.5">
+                        <span className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wide text-text-muted">
+                          <LockIcon className="size-3 text-text-subtle" />
                           {t(locale, "chatDataSafe")}
                         </span>
                         <button
                           type="button"
                           onClick={() => setShowPrivacyNote((v) => !v)}
-                          className="text-[10px] font-medium uppercase tracking-wide text-text-muted underline underline-offset-2 transition-colors hover:text-text-primary"
+                          className="text-[11px] font-semibold uppercase tracking-wide text-primary underline decoration-primary/40 underline-offset-2 transition-colors hover:text-primary-hover"
                         >
                           {t(locale, "chatReadMore")}
                         </button>
                       </div>
                       {showPrivacyNote ? (
-                        <p className="mt-2 text-[10px] leading-relaxed text-text-muted">
-                          {t(locale, "chatPrivacyNote")}
-                        </p>
+                        <div className="chat-msg-in relative mt-2.5 rounded-lg border border-border bg-surface-soft/60 px-3 py-2">
+                          <p className="text-[11px] leading-relaxed text-text-muted">
+                            {t(locale, "chatPrivacyNote")}
+                          </p>
+                        </div>
                       ) : null}
                     </div>
                   </div>
                 </div>
               ) : null}
 
-              {/* Stored messages */}
-              {messages.map((m) => {
-                if (m.sender === "visitor") {
-                  return (
-                    <div key={m.id} className="chat-msg-in flex justify-end">
-                      <div className="max-w-[80%] rounded-2xl rounded-br-md bg-surface px-4 py-3">
-                        <div className="mb-1.5 flex items-center justify-end gap-1.5 border-b border-border pb-1.5">
-                          {editingName ? (
-                            <>
-                              <input
-                                ref={editInputRef}
-                                value={nameDraft}
-                                onChange={(e) => setNameDraft(e.target.value)}
-                                onKeyDown={(e) => {
-                                  if (e.key === "Enter") {
-                                    e.preventDefault();
-                                    handleSaveName();
-                                  } else if (e.key === "Escape") {
-                                    handleCancelEdit();
-                                  }
-                                }}
-                                aria-label={t(locale, "chatEditName")}
-                                className="w-full min-w-0 rounded-md border border-primary/40 bg-card-dark px-2 py-1 text-[11px] font-medium text-text-primary outline-none transition-colors focus:border-primary"
-                              />
-                              <button
-                                type="button"
-                                aria-label={t(locale, "chatSave")}
-                                onClick={handleSaveName}
-                                className="shrink-0 p-0.5 text-success transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              {/* Stored messages — grouped by consecutive sender */}
+              {messageGroups.map((group) => {
+                return (
+                  <div key={group[0].id} className="chat-msg-in space-y-1.5">
+                    {group.map((m, mi) => {
+                      const isFirst = mi === 0;
+                      const isLast = mi === group.length - 1;
+
+                      if (m.sender === "visitor") {
+                        return (
+                          <div key={m.id} className="flex justify-end">
+                            <div className="min-w-0 max-w-[82%]">
+                              {isFirst ? (
+                                <div className="mb-1 flex items-center justify-end gap-1.5">
+                                  {editingName && group[0].id === firstVisitorGroupId ? (
+                                    <>
+                                      <input
+                                        ref={editInputRef}
+                                        value={nameDraft}
+                                        onChange={(e) => setNameDraft(e.target.value)}
+                                        onKeyDown={(e) => {
+                                          if (e.key === "Enter") {
+                                            e.preventDefault();
+                                            handleSaveName();
+                                          } else if (e.key === "Escape") {
+                                            handleCancelEdit();
+                                          }
+                                        }}
+                                        aria-label={t(locale, "chatEditName")}
+                                        className="w-full min-w-0 rounded-md border border-primary/40 bg-card-dark px-2 py-1 text-[11px] font-medium text-text-primary outline-none transition-colors focus:border-primary"
+                                      />
+                                      <button
+                                        type="button"
+                                        aria-label={t(locale, "chatSave")}
+                                        onClick={handleSaveName}
+                                        className="shrink-0 p-0.5 text-success transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                                      >
+                                        <CheckIcon className="size-3.5" />
+                                      </button>
+                                      <button
+                                        type="button"
+                                        aria-label={t(locale, "chatCancel")}
+                                        onClick={handleCancelEdit}
+                                        className="shrink-0 p-0.5 text-text-muted transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                                      >
+                                        <XIcon className="size-3.5" />
+                                      </button>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <span className="text-[11px] font-bold uppercase tracking-wide text-text-secondary">
+                                        {visitor.name || t(locale, "chatVisitor")}
+                                      </span>
+                                      <button
+                                        type="button"
+                                        aria-label={t(locale, "chatEditName")}
+                                        onClick={handleStartEdit}
+                                        className="text-text-muted transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                                      >
+                                        <PencilIcon className="size-3" />
+                                      </button>
+                                    </>
+                                  )}
+                                </div>
+                              ) : null}
+                              <div
+                                className={cn(
+                                  "border border-card-border bg-gradient-to-b from-card-dark to-surface px-4 py-3 text-sm leading-relaxed text-text-primary",
+                                  isLast
+                                    ? "rounded-2xl rounded-br-md"
+                                    : "rounded-2xl"
+                                )}
                               >
-                                <CheckIcon className="size-3.5" />
-                              </button>
-                              <button
-                                type="button"
-                                aria-label={t(locale, "chatCancel")}
-                                onClick={handleCancelEdit}
-                                className="shrink-0 p-0.5 text-text-muted transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                                {m.content}
+                              </div>
+                              {isLast ? (
+                                <MessageTime
+                                  iso={m.created_at}
+                                  locale={locale}
+                                  align="right"
+                                />
+                              ) : null}
+                            </div>
+                          </div>
+                        );
+                      }
+
+                      if (m.sender === "system") {
+                        return (
+                          <div key={m.id} className="flex justify-start">
+                            <div className="min-w-0 max-w-[80%]">
+                              <div
+                                className={cn(
+                                  "bg-surface px-4 py-3 text-sm leading-relaxed text-text-muted",
+                                  isLast
+                                    ? "rounded-2xl rounded-bl-md"
+                                    : "rounded-2xl"
+                                )}
                               >
-                                <XIcon className="size-3.5" />
-                              </button>
-                            </>
+                                {m.content}
+                              </div>
+                              {isLast ? (
+                                <MessageTime iso={m.created_at} locale={locale} />
+                              ) : null}
+                            </div>
+                          </div>
+                        );
+                      }
+
+                      // AI message
+                      return (
+                        <div key={m.id} className="flex justify-start gap-2">
+                          {isFirst ? (
+                            <AiAvatar />
                           ) : (
-                            <>
-                              <span className="text-[10px] font-bold uppercase tracking-wide text-text-secondary">
-                                {visitor.name || t(locale, "chatVisitor")}
-                              </span>
-                              <button
-                                type="button"
-                                aria-label={t(locale, "chatEditName")}
-                                onClick={handleStartEdit}
-                                className="text-text-muted transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                              >
-                                <PencilIcon className="size-3" />
-                              </button>
-                            </>
+                            <span aria-hidden="true" className="size-7 shrink-0" />
                           )}
+                          <div className="min-w-0 max-w-[82%]">
+                            {isFirst ? <AiSenderLabel locale={locale} /> : null}
+                            <div
+                              className={cn(
+                                "whitespace-pre-line border border-card-border bg-gradient-to-b from-card-dark to-surface px-4 py-3 text-sm leading-relaxed text-text-primary",
+                                isLast
+                                  ? "rounded-2xl rounded-bl-md"
+                                  : "rounded-2xl"
+                              )}
+                            >
+                              {m.content}
+                            </div>
+                            {isLast ? (
+                              <MessageTime iso={m.created_at} locale={locale} />
+                            ) : null}
+                          </div>
                         </div>
-                        <p className="text-sm leading-relaxed text-text-primary">
-                          {m.content}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                }
-                  if (m.sender === "system") {
-                    return (
-                      <div key={m.id} className="chat-msg-in flex justify-start">
-                        <div className="max-w-[80%] rounded-2xl rounded-bl-md bg-surface px-4 py-3 text-sm leading-relaxed text-text-muted">
-                          {m.content}
-                        </div>
-                      </div>
-                    );
-                  }
-                  return (
-                    <div key={m.id} className="chat-msg-in flex justify-start gap-2">
-                      <span className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
-                        <ChatIcon className="size-3.5" />
-                      </span>
-                      <div className="min-w-0 max-w-[80%]">
-                        <span className="mb-1 block text-[10px] font-medium uppercase tracking-wide text-primary/60">
-                          {t(locale, "chatName")}
-                        </span>
-                        <div className="whitespace-pre-line rounded-2xl rounded-bl-md border border-card-border bg-card-dark px-4 py-3 text-sm leading-relaxed text-text-primary">
-                          {m.content}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+                      );
+                    })}
+                  </div>
+                );
+              })}
 
               {/* Email question bubble — shown while asking and while typing the email */}
               {stage === "emailQuestion" || stage === "emailInput" ? (
                 <div className="chat-msg-in flex justify-start gap-2">
-                  <span className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
-                    <ChatIcon className="size-3.5" />
-                  </span>
-                  <div className="min-w-0 max-w-[80%]">
-                    <span className="mb-1 block text-[10px] font-medium uppercase tracking-wide text-primary/60">
-                      {t(locale, "chatName")}
-                    </span>
-                    <div className="rounded-2xl rounded-bl-md border border-card-border bg-card-dark px-4 py-3">
-                      <p className="text-sm leading-relaxed text-text-secondary">
-                        {emailQuestion}
-                      </p>
-                      <div className="mt-2.5 flex items-center gap-1 border-t border-border pt-2">
-                        <LockIcon className="size-2.5 text-text-muted" />
-                        <span className="text-[10px] font-medium uppercase tracking-wide text-text-muted">
-                          {t(locale, "chatDataSafe")}
-                        </span>
-                      </div>
-                      {stage === "emailQuestion" ? (
-                        <div className="mt-3 flex gap-2">
-                          <button
-                            type="button"
-                            disabled={loading}
-                            onClick={() => handleChoice("yes")}
-                            className="flex-1 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary transition-all hover:bg-primary/20 disabled:opacity-50"
-                          >
-                            {t(locale, "chatYes")}
-                          </button>
-                          <button
-                            type="button"
-                            disabled={loading}
-                            onClick={() => handleChoice("later")}
-                            className="flex-1 rounded-full border border-border bg-white/10 px-3 py-1.5 text-xs font-semibold text-text-primary transition-all hover:border-primary/30 hover:bg-primary/20 disabled:opacity-50"
-                          >
-                            {t(locale, "chatMaybeLater")}
-                          </button>
+                  <AiAvatar />
+                  <div className="min-w-0 max-w-[82%]">
+                    <AiSenderLabel locale={locale} />
+                    <div className="relative overflow-hidden rounded-2xl rounded-bl-md border border-card-border bg-gradient-to-b from-card-dark to-surface px-4 py-3.5">
+                      <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute -right-10 -top-14 size-32 rounded-full bg-primary/10 blur-2xl"
+                      />
+                      <div className="relative">
+                        <p className="text-sm leading-relaxed text-text-secondary">
+                          {emailQuestion}
+                        </p>
+                        <div className="mt-3 flex items-center gap-1.5 border-t border-border pt-2.5">
+                          <LockIcon className="size-3 text-text-subtle" />
+                          <span className="text-[11px] font-medium uppercase tracking-wide text-text-muted">
+                            {t(locale, "chatDataSafe")}
+                          </span>
                         </div>
-                      ) : null}
+                        {stage === "emailQuestion" ? (
+                          <div className="mt-3 flex gap-2">
+                            <button
+                              type="button"
+                              disabled={loading}
+                              onClick={() => handleChoice("yes")}
+                              className="flex-1 rounded-xl bg-primary px-3 py-2.5 text-xs font-semibold text-text-inverse transition-all hover:bg-primary-hover active:scale-[0.98] disabled:opacity-50"
+                            >
+                              {t(locale, "chatYes")}
+                            </button>
+                            <button
+                              type="button"
+                              disabled={loading}
+                              onClick={() => handleChoice("later")}
+                              className="flex-1 rounded-xl border border-primary/25 bg-transparent px-3 py-2.5 text-xs font-semibold text-primary transition-all hover:border-primary/40 hover:bg-primary/10 active:scale-[0.98] disabled:opacity-50"
+                            >
+                              {t(locale, "chatMaybeLater")}
+                            </button>
+                          </div>
+                        ) : null}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -919,32 +1122,58 @@ export function ChatWidget() {
               onSubmit={handleSubmit}
               className="flex flex-none items-center gap-2 border-t border-border bg-background px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3"
             >
-              <input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                type={stage === "emailInput" ? "email" : "text"}
-                disabled={loading || stage === "loading"}
-                placeholder={
-                  stage === "name"
-                    ? t(locale, "chatYourNamePlaceholder")
-                    : stage === "emailInput"
-                      ? t(locale, "chatYourEmailPlaceholder")
-                      : t(locale, "chatPlaceholder")
-                }
-                aria-label={
-                  stage === "name"
-                    ? t(locale, "chatYourNamePlaceholder")
-                    : stage === "emailInput"
-                      ? t(locale, "chatYourEmailPlaceholder")
-                      : t(locale, "chatPlaceholder")
-                }
-                className="flex-1 rounded-xl border border-card-border bg-card-dark px-4 py-3 text-sm text-text-primary placeholder:text-text-muted outline-none transition-colors focus:border-primary/50 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-              />
+              <div className="relative min-w-0 flex-1">
+                {stage === "name" ? (
+                  <UserIcon className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-text-muted" />
+                ) : stage === "emailInput" ? (
+                  <MailIcon className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-text-muted" />
+                ) : null}
+                <input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  type={stage === "emailInput" ? "email" : "text"}
+                  disabled={loading || stage === "loading"}
+                  enterKeyHint={
+                    stage === "emailInput"
+                      ? "go"
+                      : stage === "chat"
+                        ? "send"
+                        : "done"
+                  }
+                  autoComplete={
+                    stage === "emailInput"
+                      ? "email"
+                      : stage === "name"
+                        ? "name"
+                        : "off"
+                  }
+                  placeholder={
+                    stage === "name"
+                      ? t(locale, "chatYourNamePlaceholder")
+                      : stage === "emailInput"
+                        ? t(locale, "chatYourEmailPlaceholder")
+                        : t(locale, "chatPlaceholder")
+                  }
+                  aria-label={
+                    stage === "name"
+                      ? t(locale, "chatYourNamePlaceholder")
+                      : stage === "emailInput"
+                        ? t(locale, "chatYourEmailPlaceholder")
+                        : t(locale, "chatPlaceholder")
+                  }
+                  className={cn(
+                    "w-full rounded-xl border border-card-border bg-card-dark py-3 pr-4 text-sm text-text-primary placeholder:text-text-muted outline-none transition-all focus:border-primary/60 focus:ring-2 focus:ring-primary/25 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+                    stage === "name" || stage === "emailInput"
+                      ? "pl-9"
+                      : "pl-4"
+                  )}
+                />
+              </div>
               <button
                 type="submit"
                 disabled={!input.trim() || loading || stage === "loading"}
                 aria-label={t(locale, "chatSend")}
-                className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary text-text-inverse transition-all hover:bg-primary-hover active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
+                className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary text-text-inverse shadow-sm transition-all hover:bg-primary-hover hover:shadow-amber active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
               >
                 <SendIcon />
               </button>
@@ -960,7 +1189,7 @@ export function ChatWidget() {
           type="button"
           aria-label={t(locale, "chatOpen")}
           onClick={() => setOpen(true)}
-          className="fixed bottom-4 right-4 z-50 flex size-14 items-center justify-center rounded-full bg-primary text-text-inverse shadow-shadow-amber transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:bottom-6 lg:right-6"
+          className="fixed bottom-4 right-4 z-50 flex size-14 items-center justify-center rounded-full bg-primary text-text-inverse shadow-amber transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:bottom-6 lg:right-6"
         >
           <ChatIcon className="size-6" />
         </button>
