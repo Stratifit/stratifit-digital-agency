@@ -24,6 +24,7 @@ interface WidgetMessage {
 const TOKEN_KEY = "stratifit-chat-token";
 const LANG_KEY = "stratifit-chat-lang";
 const OPEN_KEY = "stratifit-chat-open";
+const INPUT_KEY = "stratifit-chat-input";
 const SUPPORTED_LANGS = ["en", "de", "fr", "es"];
 const LANG_FLAGS: Record<string, string> = {
   en: "🇬🇧",
@@ -413,7 +414,14 @@ export function ChatWidget() {
     }
   });
   const [messages, setMessages] = React.useState<WidgetMessage[]>([]);
-  const [input, setInput] = React.useState("");
+  const [input, setInput] = React.useState(() => {
+    if (typeof window === "undefined") return "";
+    try {
+      return window.localStorage.getItem(INPUT_KEY) ?? "";
+    } catch {
+      return "";
+    }
+  });
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [visitor, setVisitor] = React.useState<ChatVisitorState>({
@@ -457,6 +465,15 @@ export function ChatWidget() {
       // Storage unavailable — ignore.
     }
   }, [open]);
+
+  // Keep the draft text in sync with storage so a refresh restores it.
+  React.useEffect(() => {
+    try {
+      window.localStorage.setItem(INPUT_KEY, input);
+    } catch {
+      // Storage unavailable — ignore.
+    }
+  }, [input]);
 
   // Close the language menu on outside click
   React.useEffect(() => {
