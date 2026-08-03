@@ -1,4 +1,5 @@
 ﻿import { getPublicServices } from "@/features/services/queries";
+import { getPublicServicePages } from "@/features/service-pages/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { pageMetadata } from "@/lib/seo";
 
@@ -19,7 +20,11 @@ import { Reveal } from "@/components/ui/reveal";
 
 export default async function ServicesPage() {
   const locale = await getLocale();
-  const services = await getPublicServices();
+  const [services, servicePages] = await Promise.all([
+    getPublicServices(),
+    getPublicServicePages(),
+  ]);
+  const pageSlugs = new Set(servicePages.map((page) => page.slug));
 
   return (
     <>
@@ -67,7 +72,11 @@ export default async function ServicesPage() {
                     {service.cta_label_translations &&
                     resolveTranslation(service.cta_label_translations, locale) ? (
                       <LinkButton
-                        href={service.cta_url ?? "/contact"}
+                        href={
+                          pageSlugs.has(service.slug)
+                            ? `/services/${service.slug}`
+                            : service.cta_url ?? "/contact"
+                        }
                         size="small"
                         className="mt-6"
                       >

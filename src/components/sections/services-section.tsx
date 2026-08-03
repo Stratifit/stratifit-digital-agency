@@ -3,6 +3,7 @@ import { getPublicServicePages } from "@/features/service-pages/queries";
 import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { t } from "@/lib/i18n/ui-strings";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { ServiceIcon } from "@/components/ui/service-icon";
@@ -76,7 +77,8 @@ export async function ServicesSection() {
             ) as string[];
 
             const ctaLabel =
-              resolveTranslation(service.cta_label_translations, locale) || "Learn More";
+              resolveTranslation(service.cta_label_translations, locale) ||
+              t(locale, "learnMore");
 
             return (
               <div
