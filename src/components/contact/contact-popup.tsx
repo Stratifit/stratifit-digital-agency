@@ -79,14 +79,14 @@ export function ContactPopup({
       role="dialog"
       aria-modal="true"
       aria-label={t(locale, "contactEyebrow")}
-      className="fixed inset-0 z-[70] sm:flex sm:items-center sm:justify-center sm:p-6"
+      className="fixed inset-0 z-[70] flex items-center justify-center sm:p-6"
     >
       <div
         aria-hidden="true"
         onClick={() => setOpen(false)}
         className="contact-popup-backdrop fixed inset-0 bg-black/70 backdrop-blur-sm"
       />
-      <div className="contact-popup-panel relative mx-auto flex min-h-[100dvh] w-full max-w-3xl flex-col overflow-y-auto bg-card-dark px-4 py-4 sm:min-h-0 sm:rounded-[24px] sm:border sm:border-card-border sm:px-8 sm:py-8 lg:p-10">
+      <div className="contact-popup-panel relative mx-auto flex min-h-[100dvh] w-full max-w-3xl flex-col overflow-y-auto bg-card-dark px-4 pt-4 sm:min-h-0 sm:rounded-[24px] sm:border sm:border-card-border sm:px-8 sm:pt-8 lg:px-10 lg:pt-10">
         {/* Ambient amber glow (top-right) */}
         <div
           aria-hidden="true"
