@@ -2,9 +2,11 @@
 import type { ActionResult } from "@/types/action-result";
 
 import { createHash } from "crypto";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/service-role";
 import { t } from "@/lib/i18n/ui-strings";
+import { isValidDisplayName } from "@/lib/validate-display-name";
 import type { Json } from "@/types/database.types";
 import { getChatbotSettings, getApprovedKnowledge } from "./knowledge";
 import { getChatProvider } from "./ai";
@@ -442,7 +444,7 @@ export async function resetVisitorChat(input: {
 
 export async function submitVisitorName(
   input: z.infer<typeof identitySchema>
-): Promise<ActionResult<{ conversation_id: string; messages: ChatStoredMessage[] }>> {
+): Promise<ActionResult<{ conversation_id: string; name: string; messages: ChatStoredMessage[] }>> {
   const parsed = identitySchema.safeParse(input);
   if (!parsed.success) return { success: false, error: "Invalid name." };
 
@@ -454,10 +456,17 @@ export async function submitVisitorName(
     parsed.data.source_page
   );
   const name = parsed.data.name.trim();
+  // Low-quality input never becomes the display name — the visitor stays
+  // anonymous ("Visitor") but the conversation continues normally.
+  const storedName = isValidDisplayName(name) ? name : "";
   const meta: Record<string, unknown> = {
     ...((visitor.metadata as Record<string, unknown>) ?? {}),
-    name,
   };
+  if (storedName) {
+    meta.name = storedName;
+  } else {
+    delete meta.name;
+  }
   await supabase
     .from("chat_visitors")
     .update({ metadata: meta as unknown as Json, preferred_locale: parsed.data.locale })
@@ -469,13 +478,14 @@ export async function submitVisitorName(
     content_format: "text",
   });
   const messages = await loadStoredMessages(supabase, conversation.id);
-  return { success: true, data: { conversation_id: conversation.id, messages } };
+  revalidatePath("/admin/conversations");
+  return { success: true, data: { conversation_id: conversation.id, name: storedName, messages } };
 }
 
 export async function updateVisitorName(input: {
   visitor_token: string;
   name: string;
-}): Promise<ActionResult> {
+}): Promise<ActionResult<{ name: string }>> {
   const parsed = z
     .object({ visitor_token: z.string().min(16), name: z.string().min(1).max(80) })
     .safeParse(input);
@@ -489,13 +499,21 @@ export async function updateVisitorName(input: {
   );
   const meta: Record<string, unknown> = {
     ...((visitor.metadata as Record<string, unknown>) ?? {}),
-    name: parsed.data.name.trim(),
   };
+  const storedName = isValidDisplayName(parsed.data.name.trim())
+    ? parsed.data.name.trim()
+    : (typeof meta.name === "string" ? meta.name : "");
+  if (storedName) {
+    meta.name = storedName;
+  } else {
+    delete meta.name;
+  }
   await supabase
     .from("chat_visitors")
     .update({ metadata: meta as unknown as Json })
     .eq("id", visitor.id);
-  return { success: true };
+  revalidatePath("/admin/conversations");
+  return { success: true, data: { name: storedName } };
 }
 
 export async function submitVisitorEmailChoice(

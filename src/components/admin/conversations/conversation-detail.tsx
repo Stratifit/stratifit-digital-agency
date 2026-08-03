@@ -9,6 +9,7 @@ import {
   resolveConversation,
   archiveConversation,
 } from "@/features/chat/admin-mutations";
+import { paddedVisitorNumber, type AdminVisitorSummary } from "@/features/chat/admin-shared";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -16,6 +17,7 @@ interface DetailData {
   id: string;
   status: string;
   mode: string;
+  visitor: AdminVisitorSummary;
   messages: {
     id: string;
     sender_type: string;
@@ -24,6 +26,14 @@ interface DetailData {
     created_at: string;
   }[];
 }
+
+const STATUS_LABEL: Record<string, string> = {
+  open: "Online",
+  waiting_for_admin: "Waiting",
+  waiting_for_visitor: "Human takeover",
+  resolved: "Resolved",
+  archived: "Archived",
+};
 
 export function ConversationDetail({ conversation }: { conversation: DetailData }) {
   const router = useRouter();
@@ -49,8 +59,54 @@ export function ConversationDetail({ conversation }: { conversation: DetailData 
     router.refresh();
   }
 
+  const number = paddedVisitorNumber(conversation.visitor.visitor_number);
+
   return (
     <div className="space-y-6">
+      {/* Visitor header */}
+      <div className="rounded-md border border-border bg-surface p-4">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+          <span className="rounded bg-primary/10 px-1.5 py-0.5 font-mono text-sm font-bold text-primary">
+            {number}
+          </span>
+          <h2 className="font-display text-lg font-bold tracking-tight text-text-primary">
+            {number} — {conversation.visitor.name}
+          </h2>
+        </div>
+        <dl className="mt-3 grid gap-x-6 gap-y-1.5 text-sm sm:grid-cols-2">
+          <div>
+            <dt className="inline text-text-muted">Status · </dt>
+            <dd className="inline font-medium text-text-primary">
+              {STATUS_LABEL[conversation.status] ?? conversation.status}
+            </dd>
+          </div>
+          <div>
+            <dt className="inline text-text-muted">Email · </dt>
+            <dd className="inline text-text-primary">
+              {conversation.visitor.email || "Not provided"}
+            </dd>
+          </div>
+          <div>
+            <dt className="inline text-text-muted">Language · </dt>
+            <dd className="inline uppercase text-text-primary">
+              {conversation.visitor.preferred_locale}
+            </dd>
+          </div>
+          <div>
+            <dt className="inline text-text-muted">Started · </dt>
+            <dd className="inline text-text-primary">
+              {new Date(conversation.visitor.first_seen_at).toLocaleString()}
+            </dd>
+          </div>
+          <div>
+            <dt className="inline text-text-muted">Last activity · </dt>
+            <dd className="inline text-text-primary">
+              {new Date(conversation.visitor.last_seen_at).toLocaleString()}
+            </dd>
+          </div>
+        </dl>
+      </div>
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex gap-2">
           <BadgeLabel label={conversation.status} />

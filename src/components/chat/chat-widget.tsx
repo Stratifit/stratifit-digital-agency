@@ -30,27 +30,6 @@ const LANG_FLAGS: Record<string, string> = {
   es: "🇪🇸",
 };
 
-const GREETING_WORDS = [
-  "hi",
-  "hello",
-  "hey",
-  "heya",
-  "hiya",
-  "yo",
-  "howdy",
-  "hi there",
-  "hello there",
-  "hey there",
-  "good morning",
-  "good afternoon",
-  "good evening",
-];
-
-function isGreetingText(text: string): boolean {
-  const clean = text.toLowerCase().trim().replace(/[!.,?]+$/, "");
-  return GREETING_WORDS.includes(clean);
-}
-
 function getToken(): string {
   if (typeof window === "undefined") return "";
   let token = window.localStorage.getItem(TOKEN_KEY);
@@ -280,7 +259,6 @@ export function ChatWidget() {
   const [closing, setClosing] = React.useState(false);
   const [editingName, setEditingName] = React.useState(false);
   const [nameDraft, setNameDraft] = React.useState("");
-  const [editTargetId, setEditTargetId] = React.useState<string | null>(null);
 
   const mounted = React.useSyncExternalStore(
     () => () => {},
@@ -438,8 +416,9 @@ export function ChatWidget() {
       setError(t(lang, "chatError"));
       return;
     }
-    setVisitor((v) => ({ ...v, name }));
-    setMessages(toWidgetMessages(result.data.messages));
+    const data = result.data;
+    setVisitor((v) => ({ ...v, name: data.name }));
+    setMessages(toWidgetMessages(data.messages));
     setInput("");
     setStage("emailQuestion");
   }
@@ -510,34 +489,30 @@ export function ChatWidget() {
     }, 220);
   }
 
-  function handleStartEdit(messageId: string) {
-    if (loading) return;
+  function handleStartEdit() {
+    if (loading || editingName) return;
     setNameDraft(visitor.name);
-    setEditTargetId(messageId);
     setEditingName(true);
   }
 
   function handleCancelEdit() {
     setEditingName(false);
-    setEditTargetId(null);
   }
 
   async function handleSaveName() {
     const name = nameDraft.trim();
     if (!name || name === visitor.name || loading) {
       setEditingName(false);
-      setEditTargetId(null);
       return;
     }
     const result = await updateVisitorName({
       visitor_token: getToken(),
       name,
     });
-    if (result.success) {
-      setVisitor((v) => ({ ...v, name }));
+    if (result.success && result.data) {
+      setVisitor((v) => ({ ...v, name: result.data!.name }));
     }
     setEditingName(false);
-    setEditTargetId(null);
   }
 
   function handlePanelKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
@@ -637,22 +612,72 @@ export function ChatWidget() {
               className="pointer-events-none absolute inset-x-0 -top-14 h-32 bg-[radial-gradient(60%_100%_at_50%_0%,rgba(245,158,11,0.14),transparent_72%)]"
             />
             <div className="relative z-10 flex items-center gap-2.5">
-              <span className="flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-active text-text-inverse ring-1 ring-primary/40 shadow-[0_0_14px_rgba(245,158,11,0.25)]">
-                <ChatIcon className="size-5" />
-              </span>
-              <div>
-                <p className="font-display text-sm font-black text-text-primary">
-                  {t(locale, "chatName")}
-                </p>
-                <span className="mt-0.5 inline-flex items-center gap-1.5 rounded-full bg-success/10 px-2 py-0.5">
-                  <span className="size-1.5 rounded-full bg-success" />
-                  <span className="text-[10px] font-medium text-success">
-                    {t(locale, "chatOnline")}
+              {editingName ? (
+                <>
+                  <input
+                    ref={editInputRef}
+                    value={nameDraft}
+                    onChange={(e) => setNameDraft(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleSaveName();
+                      } else if (e.key === "Escape") {
+                        handleCancelEdit();
+                      }
+                    }}
+                    aria-label={t(locale, "chatEditName")}
+                    className="w-full min-w-0 rounded-lg border border-primary/40 bg-card-dark px-3 py-2 text-sm text-text-primary outline-none transition-colors focus:border-primary"
+                  />
+                  <button
+                    type="button"
+                    aria-label={t(locale, "chatSave")}
+                    onClick={handleSaveName}
+                    className="shrink-0 p-1.5 text-success transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  >
+                    <CheckIcon className="size-4" />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={t(locale, "chatCancel")}
+                    onClick={handleCancelEdit}
+                    className="shrink-0 p-1.5 text-text-muted transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  >
+                    <XIcon className="size-4" />
+                  </button>
+                </>
+              ) : (
+                <>
+                  <span className="flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-active text-text-inverse ring-1 ring-primary/40 shadow-[0_0_14px_rgba(245,158,11,0.25)]">
+                    <ChatIcon className="size-5" />
                   </span>
-                </span>
-              </div>
+                  <div>
+                    <p className="font-display text-sm font-black text-text-primary">
+                      {t(locale, "chatName")}
+                    </p>
+                    <span className="mt-0.5 inline-flex items-center gap-1.5 rounded-full bg-success/10 px-2 py-0.5">
+                      <span className="size-1.5 rounded-full bg-success" />
+                      <span className="text-[10px] font-medium text-success">
+                        {t(locale, "chatOnline")}
+                      </span>
+                    </span>
+                  </div>
+                </>
+              )}
             </div>
             <div className="relative z-10 flex items-center gap-1">
+              {/* Edit name — header-level action, not per message */}
+              {!editingName && visitor.name ? (
+                <button
+                  type="button"
+                  aria-label={t(locale, "chatEditName")}
+                  onClick={handleStartEdit}
+                  className="p-2 text-text-muted transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  <PencilIcon className="size-[18px]" />
+                </button>
+              ) : null}
+
               {/* Language dropdown */}
               <div ref={langRef} className="relative">
                 <button
@@ -747,37 +772,40 @@ export function ChatWidget() {
             <div className="space-y-4">
               {/* Welcome bubble */}
               {stage === "name" ? (
-                <div className="chat-msg-in flex justify-start">
-                  <div className="max-w-[85%] rounded-2xl rounded-bl-md border border-card-border bg-card-dark px-4 py-3">
-                    <div className="mb-2 flex items-center gap-1.5 border-b border-border pb-2">
-                      <span className="text-[11px] font-bold uppercase tracking-wide text-primary/80">
-                        {t(locale, "chatName")}
-                      </span>
-                    </div>
-                    <p className="whitespace-pre-line text-sm leading-relaxed text-text-secondary">
-                      <strong className="font-semibold text-text-primary">
-                        {welcomeParts[0]}
-                      </strong>
-                      {welcomeParts[1] ? ` — ${welcomeParts[1]}` : ""}
-                    </p>
-                    <div className="mt-2.5 flex items-center justify-between border-t border-border pt-2">
-                      <span className="flex items-center gap-1 text-[10px] font-medium uppercase tracking-wide text-text-muted">
-                        <LockIcon className="size-2.5" />
-                        {t(locale, "chatDataSafe")}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => setShowPrivacyNote((v) => !v)}
-                        className="text-[10px] font-medium uppercase tracking-wide text-text-muted underline underline-offset-2 transition-colors hover:text-text-primary"
-                      >
-                        {t(locale, "chatReadMore")}
-                      </button>
-                    </div>
-                    {showPrivacyNote ? (
-                      <p className="mt-2 text-[10px] leading-relaxed text-text-muted">
-                        {t(locale, "chatPrivacyNote")}
+                <div className="chat-msg-in flex justify-start gap-2">
+                  <span className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
+                    <ChatIcon className="size-3.5" />
+                  </span>
+                  <div className="min-w-0 max-w-[80%]">
+                    <span className="mb-1 block text-[10px] font-medium uppercase tracking-wide text-primary/60">
+                      {t(locale, "chatName")}
+                    </span>
+                    <div className="rounded-2xl rounded-bl-md border border-card-border bg-card-dark px-4 py-3">
+                      <p className="whitespace-pre-line text-sm leading-relaxed text-text-secondary">
+                        <strong className="font-semibold text-text-primary">
+                          {welcomeParts[0]}
+                        </strong>
+                        {welcomeParts[1] ? ` — ${welcomeParts[1]}` : ""}
                       </p>
-                    ) : null}
+                      <div className="mt-2.5 flex items-center justify-between border-t border-border pt-2">
+                        <span className="flex items-center gap-1 text-[10px] font-medium uppercase tracking-wide text-text-muted">
+                          <LockIcon className="size-2.5" />
+                          {t(locale, "chatDataSafe")}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setShowPrivacyNote((v) => !v)}
+                          className="text-[10px] font-medium uppercase tracking-wide text-text-muted underline underline-offset-2 transition-colors hover:text-text-primary"
+                        >
+                          {t(locale, "chatReadMore")}
+                        </button>
+                      </div>
+                      {showPrivacyNote ? (
+                        <p className="mt-2 text-[10px] leading-relaxed text-text-muted">
+                          {t(locale, "chatPrivacyNote")}
+                        </p>
+                      ) : null}
+                    </div>
                   </div>
                 </div>
               ) : null}
@@ -785,63 +813,9 @@ export function ChatWidget() {
               {/* Stored messages */}
               {messages.map((m) => {
                 if (m.sender === "visitor") {
-                  // One stable number per user — this visitor is always 001.
-                  const userLabel = isGreetingText(m.content) ? "001" : visitor.name;
-                  const isEditing = editingName && m.id === editTargetId;
                   return (
                     <div key={m.id} className="chat-msg-in flex justify-end">
                       <div className="max-w-[80%] rounded-2xl rounded-br-md bg-surface px-4 py-3">
-                        <div className="mb-1.5 flex items-center justify-end gap-1.5 border-b border-border pb-1.5">
-                          {isEditing ? (
-                            <>
-                              <input
-                                ref={editInputRef}
-                                value={nameDraft}
-                                onChange={(e) => setNameDraft(e.target.value)}
-                                onKeyDown={(e) => {
-                                  if (e.key === "Enter") {
-                                    e.preventDefault();
-                                    handleSaveName();
-                                  } else if (e.key === "Escape") {
-                                    handleCancelEdit();
-                                  }
-                                }}
-                                aria-label={t(locale, "chatEditName")}
-                                className="w-full min-w-0 rounded-md border border-primary/40 bg-card-dark px-2 py-1 text-[11px] font-medium text-text-primary outline-none transition-colors focus:border-primary"
-                              />
-                              <button
-                                type="button"
-                                aria-label={t(locale, "chatSave")}
-                                onClick={handleSaveName}
-                                className="p-0.5 text-success transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                              >
-                                <CheckIcon className="size-3.5" />
-                              </button>
-                              <button
-                                type="button"
-                                aria-label={t(locale, "chatCancel")}
-                                onClick={handleCancelEdit}
-                                className="p-0.5 text-text-muted transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                              >
-                                <XIcon className="size-3.5" />
-                              </button>
-                            </>
-                          ) : (
-                            <>
-                              <span className="text-[10px] font-bold uppercase tracking-wide text-primary/70">
-                                {userLabel}
-                              </span>
-                              <button
-                                type="button"
-                                aria-label={t(locale, "chatEditName")}
-                                onClick={() => handleStartEdit(m.id)}
-                                className="text-text-muted transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                              >
-                                <PencilIcon className="size-3" />
-                              </button>
-                            </>
-                          )}
-                        </div>
                         <p className="text-sm leading-relaxed text-text-primary">
                           {m.content}
                         </p>
@@ -863,8 +837,13 @@ export function ChatWidget() {
                       <span className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
                         <ChatIcon className="size-3.5" />
                       </span>
-                      <div className="max-w-[80%] whitespace-pre-line rounded-2xl rounded-bl-md border border-card-border bg-card-dark px-4 py-3 text-sm leading-relaxed text-text-primary">
-                        {m.content}
+                      <div className="min-w-0 max-w-[80%]">
+                        <span className="mb-1 block text-[10px] font-medium uppercase tracking-wide text-primary/60">
+                          {t(locale, "chatName")}
+                        </span>
+                        <div className="whitespace-pre-line rounded-2xl rounded-bl-md border border-card-border bg-card-dark px-4 py-3 text-sm leading-relaxed text-text-primary">
+                          {m.content}
+                        </div>
                       </div>
                     </div>
                   );
@@ -872,42 +851,45 @@ export function ChatWidget() {
 
               {/* Email question bubble — shown while asking and while typing the email */}
               {stage === "emailQuestion" || stage === "emailInput" ? (
-                <div className="chat-msg-in flex justify-start">
-                  <div className="max-w-[85%] rounded-2xl rounded-bl-md border border-card-border bg-card-dark px-4 py-3">
-                    <div className="mb-2 flex items-center gap-1.5 border-b border-border pb-2">
-                      <span className="text-[11px] font-bold uppercase tracking-wide text-primary/80">
-                        {t(locale, "chatName")}
-                      </span>
-                    </div>
-                    <p className="text-sm leading-relaxed text-text-secondary">
-                      {emailQuestion}
-                    </p>
-                    <div className="mt-2.5 flex items-center gap-1 border-t border-border pt-2">
-                      <LockIcon className="size-2.5 text-text-muted" />
-                      <span className="text-[10px] font-medium uppercase tracking-wide text-text-muted">
-                        {t(locale, "chatDataSafe")}
-                      </span>
-                    </div>
-                    {stage === "emailQuestion" ? (
-                      <div className="mt-3 flex gap-2">
-                        <button
-                          type="button"
-                          disabled={loading}
-                          onClick={() => handleChoice("yes")}
-                          className="flex-1 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary transition-all hover:bg-primary/20 disabled:opacity-50"
-                        >
-                          {t(locale, "chatYes")}
-                        </button>
-                        <button
-                          type="button"
-                          disabled={loading}
-                          onClick={() => handleChoice("later")}
-                          className="flex-1 rounded-full border border-border bg-white/10 px-3 py-1.5 text-xs font-semibold text-text-primary transition-all hover:border-primary/30 hover:bg-primary/20 disabled:opacity-50"
-                        >
-                          {t(locale, "chatMaybeLater")}
-                        </button>
+                <div className="chat-msg-in flex justify-start gap-2">
+                  <span className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
+                    <ChatIcon className="size-3.5" />
+                  </span>
+                  <div className="min-w-0 max-w-[80%]">
+                    <span className="mb-1 block text-[10px] font-medium uppercase tracking-wide text-primary/60">
+                      {t(locale, "chatName")}
+                    </span>
+                    <div className="rounded-2xl rounded-bl-md border border-card-border bg-card-dark px-4 py-3">
+                      <p className="text-sm leading-relaxed text-text-secondary">
+                        {emailQuestion}
+                      </p>
+                      <div className="mt-2.5 flex items-center gap-1 border-t border-border pt-2">
+                        <LockIcon className="size-2.5 text-text-muted" />
+                        <span className="text-[10px] font-medium uppercase tracking-wide text-text-muted">
+                          {t(locale, "chatDataSafe")}
+                        </span>
                       </div>
-                    ) : null}
+                      {stage === "emailQuestion" ? (
+                        <div className="mt-3 flex gap-2">
+                          <button
+                            type="button"
+                            disabled={loading}
+                            onClick={() => handleChoice("yes")}
+                            className="flex-1 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary transition-all hover:bg-primary/20 disabled:opacity-50"
+                          >
+                            {t(locale, "chatYes")}
+                          </button>
+                          <button
+                            type="button"
+                            disabled={loading}
+                            onClick={() => handleChoice("later")}
+                            className="flex-1 rounded-full border border-border bg-white/10 px-3 py-1.5 text-xs font-semibold text-text-primary transition-all hover:border-primary/30 hover:bg-primary/20 disabled:opacity-50"
+                          >
+                            {t(locale, "chatMaybeLater")}
+                          </button>
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
                 </div>
               ) : null}
@@ -934,7 +916,7 @@ export function ChatWidget() {
           {stage === "emailQuestion" ? null : (
             <form
               onSubmit={handleSubmit}
-              className="flex flex-none items-center gap-2 border-t border-border bg-background px-4 py-3"
+              className="flex flex-none items-center gap-2 border-t border-border bg-background px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3"
             >
               <input
                 value={input}
