@@ -1257,7 +1257,7 @@ export function ChatWidget() {
                     type="button"
                     disabled={loading}
                     onClick={() => sendChatMessage(t(locale, "chatBookDemo"))}
-                    className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-lg border border-card-border bg-card-dark px-1.5 py-1.5 text-[10px] font-medium text-text-primary transition-all hover:border-primary/30 hover:bg-white/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-lg border border-card-border bg-card-dark px-1.5 py-1.5 text-[9px] font-medium text-text-muted transition-all hover:border-primary/30 hover:bg-white/5 hover:text-text-secondary active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <CalendarIcon className="size-3 shrink-0 text-primary" />
                     <span className="truncate whitespace-nowrap">
@@ -1268,7 +1268,7 @@ export function ChatWidget() {
                     type="button"
                     disabled={loading}
                     onClick={() => sendChatMessage(t(locale, "chatGetQuote"))}
-                    className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-lg border border-card-border bg-card-dark px-1.5 py-1.5 text-[10px] font-medium text-text-primary transition-all hover:border-primary/30 hover:bg-white/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-lg border border-card-border bg-card-dark px-1.5 py-1.5 text-[9px] font-medium text-text-muted transition-all hover:border-primary/30 hover:bg-white/5 hover:text-text-secondary active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <DollarIcon className="size-3 shrink-0 text-primary" />
                     <span className="truncate whitespace-nowrap">
@@ -1279,7 +1279,7 @@ export function ChatWidget() {
                     type="button"
                     disabled={loading}
                     onClick={() => sendChatMessage(t(locale, "chatContactUs"))}
-                    className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-lg border border-card-border bg-card-dark px-1.5 py-1.5 text-[10px] font-medium text-text-primary transition-all hover:border-primary/30 hover:bg-white/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-lg border border-card-border bg-card-dark px-1.5 py-1.5 text-[9px] font-medium text-text-muted transition-all hover:border-primary/30 hover:bg-white/5 hover:text-text-secondary active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <PhoneIcon className="size-3 shrink-0 text-primary" />
                     <span className="truncate whitespace-nowrap">
