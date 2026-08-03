@@ -25,7 +25,7 @@ export default function Error({
         <button
           type="button"
           onClick={() => reset()}
-          className="mt-8 inline-flex h-11 items-center justify-center rounded-button bg-primary px-6 text-sm font-semibold text-text-inverse transition-colors hover:bg-primary-bright"
+          className="mt-8 inline-flex h-11 items-center justify-center rounded-button bg-primary px-6 text-sm font-semibold text-text-inverse transition-colors hover:bg-primary-hover active:bg-primary-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
         >
           Try again
         </button>

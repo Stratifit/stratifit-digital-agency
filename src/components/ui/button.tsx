@@ -20,7 +20,7 @@ export interface ButtonClassesOptions {
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    "border border-transparent bg-primary text-text-inverse hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-bright active:translate-y-0 active:border-primary/60 active:bg-primary-deep shadow-shadow-amber",
+    "border border-transparent bg-primary text-text-inverse hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-hover active:translate-y-0 active:border-primary/60 active:bg-primary-active shadow-shadow-amber",
   secondary:
     "border border-card-border bg-card-dark text-text-primary hover:-translate-y-0.5 hover:border-primary/25 active:translate-y-0 active:border-primary/40 active:bg-card-active",
   tertiary:
@@ -46,7 +46,7 @@ export function buttonClasses({
   className,
 }: ButtonClassesOptions = {}): string {
   return cn(
-    "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-button font-medium transition-[background-color,border-color,color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/60 focus-visible:outline-offset-2",
+    "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-button font-medium transition-[background-color,border-color,color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2",
     variantClasses[variant],
     sizeClasses[size],
     className

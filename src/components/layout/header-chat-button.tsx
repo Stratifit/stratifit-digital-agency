@@ -10,7 +10,7 @@ export function HeaderChatButton() {
       type="button"
       aria-label="Open chat"
       onClick={openChat}
-      className="flex size-9 items-center justify-center rounded-full border border-transparent bg-primary text-text-inverse shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-[background-color,border-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:scale-110 hover:border-primary/40 hover:bg-primary-bright active:scale-95 active:border-primary/60 active:bg-primary-deep focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/60 focus-visible:outline-offset-2"
+      className="flex size-9 items-center justify-center rounded-full border border-transparent bg-primary text-text-inverse shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-[background-color,border-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:scale-110 hover:border-primary/40 hover:bg-primary-hover active:scale-95 active:border-primary/60 active:bg-primary-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
     >
       <svg
         viewBox="0 0 24 24"

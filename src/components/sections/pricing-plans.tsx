@@ -99,7 +99,7 @@ function PlanCard({
         className={cn(
           "block w-full rounded-button py-3.5 text-center text-sm font-bold uppercase tracking-wide transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
           plan.is_featured
-            ? "border border-transparent bg-primary text-text-inverse shadow-lg shadow-primary/20 hover:bg-primary-bright"
+            ? "border border-transparent bg-primary text-text-inverse shadow-lg shadow-primary/20 hover:bg-primary-hover active:bg-primary-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
             : "border border-primary text-primary hover:bg-primary/10"
         )}
       >

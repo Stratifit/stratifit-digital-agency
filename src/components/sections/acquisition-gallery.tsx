@@ -240,7 +240,7 @@ function BusinessCard({ business }: { business: AcquisitionBusiness }) {
             href={business.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary py-2.5 text-xs font-bold text-black shadow-[0_0_12px_rgba(245,158,11,0.12)] transition-all hover:bg-primary-bright active:scale-95 sm:text-sm"
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary py-2.5 text-xs font-bold text-black shadow-[0_0_12px_rgba(245,158,11,0.12)] transition-all hover:bg-primary-hover active:bg-primary-active active:scale-95 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 sm:text-sm"
           >
             <GlobeIcon />
             Visit Site
