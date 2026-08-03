@@ -1001,27 +1001,25 @@ export function ChatWidget() {
           {stage === "chat" ? (
             <div className="flex flex-none border-b border-border-subtle bg-background px-4 py-3">
               <div className="-mx-1 flex gap-2 overflow-x-auto px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                {TOPIC_CHIPS.map((chip, index) => (
-                  <button
-                    key={chip.key}
-                    type="button"
-                    onClick={() => sendChatMessage(t(locale, chip.key))}
-                    className={cn(
-                      "flex shrink-0 items-center gap-1.5 rounded-[10px] border px-3.5 py-2 text-xs font-medium transition-all",
-                      index === 0
-                        ? "border-primary bg-primary text-text-inverse"
-                        : "border-border bg-white/5 text-text-primary hover:border-primary/30 hover:bg-white/10"
-                    )}
-                  >
-                    <chip.icon
+                {TOPIC_CHIPS.map((chip, index) => {
+                  const isActive = index === 0;
+                  return (
+                    <button
+                      key={chip.key}
+                      type="button"
+                      onClick={() => sendChatMessage(t(locale, chip.key))}
                       className={cn(
-                        "size-3.5",
-                        index === 0 ? "text-text-inverse" : "text-primary"
+                        "flex shrink-0 items-center gap-1.5 rounded-[10px] border px-3.5 py-2 text-xs font-medium transition-all active:scale-[0.98]",
+                        isActive
+                          ? "border-primary/50 bg-primary/10 text-primary"
+                          : "border-border bg-white/5 text-text-secondary hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
                       )}
-                    />
-                    {t(locale, chip.key)}
-                  </button>
-                ))}
+                    >
+                      <chip.icon className="size-3.5 text-primary" />
+                      {t(locale, chip.key)}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           ) : null}
