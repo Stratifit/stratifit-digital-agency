@@ -1152,7 +1152,7 @@ export function ChatWidget() {
                                 type="button"
                                 disabled={loading}
                                 onClick={() => handleChoice("yes")}
-                                className="rounded-md bg-primary px-2.5 py-1.5 text-[9px] font-semibold text-text-inverse transition-all hover:bg-primary-hover active:scale-[0.98] disabled:opacity-50"
+                                className="rounded-md border border-primary/25 bg-transparent px-2.5 py-1.5 text-[9px] font-semibold text-primary transition-all hover:border-primary/40 hover:bg-primary/10 active:scale-[0.98] disabled:opacity-50"
                               >
                                 {t(locale, "chatYes")}
                               </button>
