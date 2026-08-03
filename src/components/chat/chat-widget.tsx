@@ -1252,33 +1252,39 @@ export function ChatWidget() {
 
               {/* Quick actions — only after onboarding */}
               {stage === "chat" ? (
-                <div className="flex gap-2 px-4 pb-2">
+                <div className="flex gap-1.5 border-t border-border px-4 pb-2 pt-2">
                   <button
                     type="button"
                     disabled={loading}
                     onClick={() => sendChatMessage(t(locale, "chatBookDemo"))}
-                    className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-card-border bg-card-dark px-2.5 py-2.5 text-xs font-medium text-text-primary transition-all hover:border-primary/30 hover:bg-white/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-lg border border-card-border bg-card-dark px-1.5 py-1.5 text-[10px] font-medium text-text-primary transition-all hover:border-primary/30 hover:bg-white/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    <CalendarIcon className="size-3.5 text-primary" />
-                    {t(locale, "chatBookDemo")}
+                    <CalendarIcon className="size-3 shrink-0 text-primary" />
+                    <span className="truncate whitespace-nowrap">
+                      {t(locale, "chatBookDemo")}
+                    </span>
                   </button>
                   <button
                     type="button"
                     disabled={loading}
                     onClick={() => sendChatMessage(t(locale, "chatGetQuote"))}
-                    className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-card-border bg-card-dark px-2.5 py-2.5 text-xs font-medium text-text-primary transition-all hover:border-primary/30 hover:bg-white/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-lg border border-card-border bg-card-dark px-1.5 py-1.5 text-[10px] font-medium text-text-primary transition-all hover:border-primary/30 hover:bg-white/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    <DollarIcon className="size-3.5 text-primary" />
-                    {t(locale, "chatGetQuote")}
+                    <DollarIcon className="size-3 shrink-0 text-primary" />
+                    <span className="truncate whitespace-nowrap">
+                      {t(locale, "chatGetQuote")}
+                    </span>
                   </button>
                   <button
                     type="button"
                     disabled={loading}
                     onClick={() => sendChatMessage(t(locale, "chatContactUs"))}
-                    className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-card-border bg-card-dark px-2.5 py-2.5 text-xs font-medium text-text-primary transition-all hover:border-primary/30 hover:bg-white/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-lg border border-card-border bg-card-dark px-1.5 py-1.5 text-[10px] font-medium text-text-primary transition-all hover:border-primary/30 hover:bg-white/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    <PhoneIcon className="size-3.5 text-primary" />
-                    {t(locale, "chatContactUs")}
+                    <PhoneIcon className="size-3 shrink-0 text-primary" />
+                    <span className="truncate whitespace-nowrap">
+                      {t(locale, "chatContactUs")}
+                    </span>
                   </button>
                 </div>
               ) : null}
