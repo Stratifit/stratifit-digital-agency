@@ -7,6 +7,7 @@ import {
   submitVisitorName,
   updateVisitorName,
   submitVisitorEmailChoice,
+  resetVisitorChat,
   type ChatStoredMessage,
   type ChatVisitorState,
 } from "@/features/chat/mutations";
@@ -20,6 +21,35 @@ interface WidgetMessage {
 }
 
 const TOKEN_KEY = "stratifit-chat-token";
+const LANG_KEY = "stratifit-chat-lang";
+const SUPPORTED_LANGS = ["en", "de", "fr", "es"];
+const LANG_FLAGS: Record<string, string> = {
+  en: "🇬🇧",
+  de: "🇩🇪",
+  fr: "🇫🇷",
+  es: "🇪🇸",
+};
+
+const GREETING_WORDS = [
+  "hi",
+  "hello",
+  "hey",
+  "heya",
+  "hiya",
+  "yo",
+  "howdy",
+  "hi there",
+  "hello there",
+  "hey there",
+  "good morning",
+  "good afternoon",
+  "good evening",
+];
+
+function isGreetingText(text: string): boolean {
+  const clean = text.toLowerCase().trim().replace(/[!.,?]+$/, "");
+  return GREETING_WORDS.includes(clean);
+}
 
 function getToken(): string {
   if (typeof window === "undefined") return "";
@@ -31,10 +61,12 @@ function getToken(): string {
   return token;
 }
 
-function getLocale(): string {
-  return typeof document !== "undefined"
-    ? document.documentElement.lang || "en"
-    : "en";
+function getDefaultLang(): string {
+  if (typeof window === "undefined") return "en";
+  const stored = window.localStorage.getItem(LANG_KEY);
+  if (stored && SUPPORTED_LANGS.includes(stored)) return stored;
+  const doc = document.documentElement.lang;
+  return doc && SUPPORTED_LANGS.includes(doc) ? doc : "en";
 }
 
 type OnboardingStage = "loading" | "name" | "emailQuestion" | "emailInput" | "chat";
@@ -152,6 +184,25 @@ function PencilIcon({ className }: { className?: string }) {
   );
 }
 
+function ChevronDownIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={className}>
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+
+function RefreshIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="size-[18px]">
+      <path d="M3 12a9 9 0 0 1 15.9-5.4" />
+      <path d="M21 12a9 9 0 0 1-15.9 5.4" />
+      <path d="M21 3v6h-6" />
+      <path d="M3 21v-6h6" />
+    </svg>
+  );
+}
+
 // ============================================================================
 // Chat widget
 // ============================================================================
@@ -195,6 +246,9 @@ export function ChatWidget() {
   });
   const [stage, setStage] = React.useState<OnboardingStage>("loading");
   const [showPrivacyNote, setShowPrivacyNote] = React.useState(false);
+  const [lang, setLang] = React.useState<string>(() => getDefaultLang());
+  const [langOpen, setLangOpen] = React.useState(false);
+  const langRef = React.useRef<HTMLDivElement>(null);
   const bottomRef = React.useRef<HTMLDivElement>(null);
 
   const mounted = React.useSyncExternalStore(
@@ -211,6 +265,18 @@ export function ChatWidget() {
     return () => window.removeEventListener("stratifit:open-chat", handleOpen);
   }, []);
 
+  // Close the language menu on outside click
+  React.useEffect(() => {
+    if (!langOpen) return;
+    function onMouseDown(event: MouseEvent) {
+      if (langRef.current && !langRef.current.contains(event.target as Node)) {
+        setLangOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", onMouseDown);
+    return () => document.removeEventListener("mousedown", onMouseDown);
+  }, [langOpen]);
+
   // Load persisted conversation state whenever the widget opens
   React.useEffect(() => {
     if (!open) return;
@@ -218,7 +284,7 @@ export function ChatWidget() {
     (async () => {
       const result = await getVisitorChatState({
         visitor_token: getToken(),
-        locale: getLocale(),
+        locale: lang,
         source_page:
           typeof window !== "undefined" ? window.location.pathname : "/",
       });
@@ -237,6 +303,7 @@ export function ChatWidget() {
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   React.useEffect(() => {
@@ -261,14 +328,14 @@ export function ChatWidget() {
     const result = await sendVisitorMessage({
       visitor_token: getToken(),
       message: trimmed,
-      locale: getLocale(),
+      locale: lang,
       source_page: typeof window !== "undefined" ? window.location.pathname : "/",
     });
 
     setLoading(false);
 
     if (!result.success) {
-      setError(result.error ?? t(getLocale(), "chatError"));
+      setError(result.error ?? t(lang, "chatError"));
       return;
     }
 
@@ -284,7 +351,7 @@ export function ChatWidget() {
         {
           id: crypto.randomUUID(),
           sender: "system",
-          content: t(getLocale(), "chatEscalated"),
+          content: t(lang, "chatEscalated"),
         },
       ]);
     }
@@ -298,15 +365,15 @@ export function ChatWidget() {
     const result = await submitVisitorName({
       visitor_token: getToken(),
       name,
-      locale: getLocale(),
+      locale: lang,
     });
     setLoading(false);
     if (!result.success) {
-      setError(result.error ?? t(getLocale(), "chatError"));
+      setError(result.error ?? t(lang, "chatError"));
       return;
     }
     if (!result.data) {
-      setError(t(getLocale(), "chatError"));
+      setError(t(lang, "chatError"));
       return;
     }
     setVisitor((v) => ({ ...v, name }));
@@ -324,15 +391,15 @@ export function ChatWidget() {
       visitor_token: getToken(),
       choice: "yes",
       email,
-      locale: getLocale(),
+      locale: lang,
     });
     setLoading(false);
     if (!result.success) {
-      setError(result.error ?? t(getLocale(), "chatError"));
+      setError(result.error ?? t(lang, "chatError"));
       return;
     }
     if (!result.data) {
-      setError(t(getLocale(), "chatError"));
+      setError(t(lang, "chatError"));
       return;
     }
     setVisitor((v) => ({ ...v, email, email_choice: "yes", onboarding_complete: true }));
@@ -344,29 +411,35 @@ export function ChatWidget() {
   async function handleChoice(choice: "yes" | "later") {
     if (loading) return;
     setError(null);
+    if (choice === "yes") {
+      // Ask for the email first — the thanks reply is only sent after it.
+      setInput("");
+      setStage("emailInput");
+      return;
+    }
     setLoading(true);
     const result = await submitVisitorEmailChoice({
       visitor_token: getToken(),
-      choice,
-      locale: getLocale(),
+      choice: "later",
+      locale: lang,
     });
     setLoading(false);
     if (!result.success) {
-      setError(result.error ?? t(getLocale(), "chatError"));
+      setError(result.error ?? t(lang, "chatError"));
       return;
     }
     if (!result.data) {
-      setError(t(getLocale(), "chatError"));
+      setError(t(lang, "chatError"));
       return;
     }
-    setVisitor((v) => ({ ...v, email_choice: choice, onboarding_complete: true }));
+    setVisitor((v) => ({ ...v, email_choice: "later", onboarding_complete: true }));
     setMessages(toWidgetMessages(result.data.messages));
-    setStage(choice === "yes" ? "emailInput" : "chat");
+    setStage("chat");
   }
 
   async function handleEditName() {
     const current = visitor.name || "";
-    const next = window.prompt(t(getLocale(), "chatEditName"), current);
+    const next = window.prompt(t(lang, "chatEditName"), current);
     if (!next || !next.trim() || next.trim() === current) return;
     const result = await updateVisitorName({
       visitor_token: getToken(),
@@ -375,6 +448,30 @@ export function ChatWidget() {
     if (result.success) {
       setVisitor((v) => ({ ...v, name: next.trim() }));
     }
+  }
+
+  async function handleRestart() {
+    if (loading) return;
+    setError(null);
+    setLoading(true);
+    const result = await resetVisitorChat({
+      visitor_token: getToken(),
+      locale: lang,
+    });
+    setLoading(false);
+    if (result.success && result.data) {
+      setVisitor(result.data.visitor);
+      setMessages(toWidgetMessages(result.data.messages));
+      setStage("name");
+      setInput("");
+      setShowPrivacyNote(false);
+    }
+  }
+
+  function selectLang(code: string) {
+    setLang(code);
+    setLangOpen(false);
+    window.localStorage.setItem(LANG_KEY, code);
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -388,7 +485,7 @@ export function ChatWidget() {
     }
   }
 
-  const locale = getLocale();
+  const locale = lang;
   const welcomeParts = t(locale, "chatWelcome").split(" — ");
   const emailQuestion = t(locale, "chatEmailQuestion").replace(
     "{name}",
@@ -417,14 +514,61 @@ export function ChatWidget() {
                 </div>
               </div>
             </div>
-            <button
-              type="button"
-              aria-label={t(locale, "chatClose")}
-              onClick={() => setOpen(false)}
-              className="-mr-2 p-2 text-text-muted transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-            >
-              <CloseIcon />
-            </button>
+            <div className="flex items-center gap-1">
+              {/* Language dropdown */}
+              <div ref={langRef} className="relative">
+                <button
+                  type="button"
+                  aria-label={t(locale, "chatLanguage")}
+                  onClick={() => setLangOpen((v) => !v)}
+                  className="flex items-center gap-1 rounded-full border border-white/5 px-2 py-1 text-[11px] font-medium text-text-muted transition-colors hover:bg-white/5 hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  <span>{LANG_FLAGS[lang] ?? "🇬🇧"}</span>
+                  <span className="uppercase">{lang}</span>
+                  <ChevronDownIcon className="size-3" />
+                </button>
+                {langOpen ? (
+                  <div className="absolute right-0 top-[calc(100%+6px)] z-20 min-w-[120px] overflow-hidden rounded-xl border border-border bg-field-bg shadow-2xl">
+                    {SUPPORTED_LANGS.map((code) => (
+                      <button
+                        key={code}
+                        type="button"
+                        onClick={() => selectLang(code)}
+                        className={cn(
+                          "flex w-full items-center gap-2 border-b border-border px-3 py-2 text-xs transition-colors last:border-b-0 hover:bg-white/5",
+                          lang === code
+                            ? "font-semibold text-primary"
+                            : "text-text-secondary hover:text-text-primary"
+                        )}
+                      >
+                        <span>{LANG_FLAGS[code]}</span>
+                        <span className="uppercase">{code}</span>
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+
+              {/* Restart */}
+              <button
+                type="button"
+                aria-label={t(locale, "chatRestart")}
+                onClick={handleRestart}
+                className="p-2 text-text-muted transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                <RefreshIcon />
+              </button>
+
+              {/* Close */}
+              <button
+                type="button"
+                aria-label={t(locale, "chatClose")}
+                onClick={() => setOpen(false)}
+                className="-mr-2 p-2 text-text-muted transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                <CloseIcon />
+              </button>
+            </div>
           </div>
 
           {/* Topic chips — only after onboarding */}
@@ -502,12 +646,16 @@ export function ChatWidget() {
                 return messages.map((m) => {
                   if (m.sender === "visitor") {
                     userCount += 1;
+                    const isGreeting = isGreetingText(m.content);
+                    const userLabel = isGreeting
+                      ? String(userCount).padStart(3, "0")
+                      : visitor.name;
                     return (
                       <div key={m.id} className="flex justify-end">
                         <div className="max-w-[85%] rounded-2xl bg-surface px-4 py-3">
                           <div className="mb-1.5 flex items-center justify-end gap-1.5 border-b border-border pb-1.5">
                             <span className="text-[10px] font-bold uppercase tracking-wide text-primary/70">
-                              {String(userCount).padStart(3, "0")} {visitor.name}
+                              {userLabel}
                             </span>
                             <button
                               type="button"
@@ -544,8 +692,8 @@ export function ChatWidget() {
                 });
               })()}
 
-              {/* Email question bubble */}
-              {stage === "emailQuestion" ? (
+              {/* Email question bubble — shown while asking and while typing the email */}
+              {stage === "emailQuestion" || stage === "emailInput" ? (
                 <div className="flex justify-start">
                   <div className="max-w-[85%] rounded-2xl border border-card-border bg-card-dark px-4 py-3">
                     <div className="mb-2 flex items-center gap-1.5 border-b border-border pb-2">
@@ -562,24 +710,26 @@ export function ChatWidget() {
                         {t(locale, "chatDataSafe")}
                       </span>
                     </div>
-                    <div className="mt-3 flex gap-2">
-                      <button
-                        type="button"
-                        disabled={loading}
-                        onClick={() => handleChoice("yes")}
-                        className="flex-1 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary transition-all hover:bg-primary/20 disabled:opacity-50"
-                      >
-                        {t(locale, "chatYes")}
-                      </button>
-                      <button
-                        type="button"
-                        disabled={loading}
-                        onClick={() => handleChoice("later")}
-                        className="flex-1 rounded-full border border-border bg-white/10 px-3 py-1.5 text-xs font-semibold text-text-primary transition-all hover:border-primary/30 hover:bg-primary/20 disabled:opacity-50"
-                      >
-                        {t(locale, "chatMaybeLater")}
-                      </button>
-                    </div>
+                    {stage === "emailQuestion" ? (
+                      <div className="mt-3 flex gap-2">
+                        <button
+                          type="button"
+                          disabled={loading}
+                          onClick={() => handleChoice("yes")}
+                          className="flex-1 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary transition-all hover:bg-primary/20 disabled:opacity-50"
+                        >
+                          {t(locale, "chatYes")}
+                        </button>
+                        <button
+                          type="button"
+                          disabled={loading}
+                          onClick={() => handleChoice("later")}
+                          className="flex-1 rounded-full border border-border bg-white/10 px-3 py-1.5 text-xs font-semibold text-text-primary transition-all hover:border-primary/30 hover:bg-primary/20 disabled:opacity-50"
+                        >
+                          {t(locale, "chatMaybeLater")}
+                        </button>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
               ) : null}

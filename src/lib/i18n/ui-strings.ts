@@ -86,6 +86,8 @@ export type UiStringKey =
   | "chatYourNamePlaceholder"
   | "chatYourEmailPlaceholder"
   | "chatEditName"
+  | "chatLanguage"
+  | "chatRestart"
   | "heroEyebrowFallback"
   | "viewSite"
   | "contactEyebrow"
@@ -203,6 +205,8 @@ const en: UiStrings = {
   chatYourNamePlaceholder: "Your name...",
   chatYourEmailPlaceholder: "you@company.com",
   chatEditName: "Edit name",
+  chatLanguage: "Select language",
+  chatRestart: "Restart chat",
   heroEyebrowFallback: "Premium Digital Agency",
   viewSite: "View site",
   contactEyebrow: "Contact",
@@ -321,6 +325,8 @@ const de: UiStrings = {
   chatYourNamePlaceholder: "Ihr Name...",
   chatYourEmailPlaceholder: "sie@firma.com",
   chatEditName: "Namen bearbeiten",
+  chatLanguage: "Sprache auswählen",
+  chatRestart: "Chat neu starten",
   heroEyebrowFallback: "Premium-Digitalagentur",
   viewSite: "Website ansehen",
   contactEyebrow: "Kontakt",
@@ -439,6 +445,8 @@ const fr: UiStrings = {
   chatYourNamePlaceholder: "Votre prénom...",
   chatYourEmailPlaceholder: "vous@entreprise.com",
   chatEditName: "Modifier le nom",
+  chatLanguage: "Choisir la langue",
+  chatRestart: "Redémarrer le chat",
   heroEyebrowFallback: "Agence digitale premium",
   viewSite: "Voir le site",
   contactEyebrow: "Contact",
@@ -557,6 +565,8 @@ const es: UiStrings = {
   chatYourNamePlaceholder: "Tu nombre...",
   chatYourEmailPlaceholder: "usted@empresa.com",
   chatEditName: "Editar nombre",
+  chatLanguage: "Seleccionar idioma",
+  chatRestart: "Reiniciar chat",
   heroEyebrowFallback: "Agencia digital premium",
   viewSite: "Ver sitio",
   contactEyebrow: "Contacto",

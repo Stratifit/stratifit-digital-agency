@@ -320,6 +320,13 @@ async function resolveChatContext(
     throw new Error("Could not start a chat session.");
   }
 
+  if (visitor.preferred_locale !== locale) {
+    await supabase
+      .from("chat_visitors")
+      .update({ preferred_locale: locale })
+      .eq("id", visitor.id);
+  }
+
   return { visitor: visitor as ChatVisitorRow, conversation: conversation as ChatConversationRow };
 }
 
@@ -376,6 +383,58 @@ export async function getVisitorChatState(input: {
       visitor: visitorStateFromMeta(
         (visitor.metadata as Record<string, unknown>) ?? {}
       ),
+      messages,
+    },
+  };
+}
+
+export async function resetVisitorChat(input: {
+  visitor_token: string;
+  locale?: string;
+}): Promise<
+  ActionResult<{
+    conversation_id: string;
+    visitor: ChatVisitorState;
+    messages: ChatStoredMessage[];
+  }>
+> {
+  const supabase = createSupabaseServiceRoleClient();
+  const { visitor, conversation } = await resolveChatContext(
+    supabase,
+    hashToken(input.visitor_token),
+    input.locale ?? "en"
+  );
+
+  // Clear onboarding identity so the welcome flow starts afresh.
+  const meta: Record<string, unknown> = {
+    ...((visitor.metadata as Record<string, unknown>) ?? {}),
+  };
+  delete meta.name;
+  delete meta.email;
+  delete meta.email_choice;
+  delete meta.onboarding_complete;
+  await supabase
+    .from("chat_visitors")
+    .update({ metadata: meta as unknown as Json })
+    .eq("id", visitor.id);
+
+  // Start the conversation over — remove the visitor's own messages and
+  // reset to AI mode.
+  await supabase
+    .from("chat_messages")
+    .delete()
+    .eq("conversation_id", conversation.id);
+  await supabase
+    .from("chat_conversations")
+    .update({ status: "open", mode: "ai", lead_id: null })
+    .eq("id", conversation.id);
+
+  const messages = await loadStoredMessages(supabase, conversation.id);
+  return {
+    success: true,
+    data: {
+      conversation_id: conversation.id,
+      visitor: visitorStateFromMeta(meta),
       messages,
     },
   };
@@ -444,6 +503,9 @@ export async function submitVisitorEmailChoice(
 ): Promise<ActionResult<{ conversation_id: string; messages: ChatStoredMessage[] }>> {
   const parsed = emailChoiceSchema.safeParse(input);
   if (!parsed.success) return { success: false, error: "Invalid input." };
+  if (parsed.data.choice === "yes" && !parsed.data.email) {
+    return { success: false, error: "Please provide an email address." };
+  }
 
   const supabase = createSupabaseServiceRoleClient();
   const { visitor, conversation } = await resolveChatContext(
