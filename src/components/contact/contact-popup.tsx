@@ -79,7 +79,7 @@ export function ContactPopup({
       role="dialog"
       aria-modal="true"
       aria-label={t(locale, "contactEyebrow")}
-      className="fixed inset-0 z-[70] flex items-center justify-center sm:p-6"
+      className="fixed inset-0 z-[80] flex items-center justify-center sm:p-6"
     >
       <div
         aria-hidden="true"

@@ -23,6 +23,7 @@ interface WidgetMessage {
 
 const TOKEN_KEY = "stratifit-chat-token";
 const LANG_KEY = "stratifit-chat-lang";
+const OPEN_KEY = "stratifit-chat-open";
 const SUPPORTED_LANGS = ["en", "de", "fr", "es"];
 const LANG_FLAGS: Record<string, string> = {
   en: "🇬🇧",
@@ -403,7 +404,14 @@ function MessageTime({
 }
 
 export function ChatWidget() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      return window.localStorage.getItem(OPEN_KEY) === "1";
+    } catch {
+      return false;
+    }
+  });
   const [messages, setMessages] = React.useState<WidgetMessage[]>([]);
   const [input, setInput] = React.useState("");
   const [loading, setLoading] = React.useState(false);
@@ -441,6 +449,15 @@ export function ChatWidget() {
     return () => window.removeEventListener("stratifit:open-chat", handleOpen);
   }, []);
 
+  // Keep the open/closed state in sync with storage.
+  React.useEffect(() => {
+    try {
+      window.localStorage.setItem(OPEN_KEY, open ? "1" : "0");
+    } catch {
+      // Storage unavailable — ignore.
+    }
+  }, [open]);
+
   // Close the language menu on outside click
   React.useEffect(() => {
     if (!langOpen) return;
@@ -466,10 +483,12 @@ export function ChatWidget() {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key !== "Escape") return;
       const target = event.target as HTMLElement | null;
+      // Only dismiss when focus is inside the chat dialog. Stray Escape
+      // presses — Android back button, other modals like the contact popup —
+      // must never close the chat underneath.
+      if (!target || !panelRef.current?.contains(target)) return;
       // Never dismiss while the visitor is typing in a field.
-      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) {
-        return;
-      }
+      if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") return;
       closeChat();
     }
     window.addEventListener("keydown", onKeyDown);
