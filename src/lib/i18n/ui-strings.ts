@@ -91,6 +91,7 @@ export type UiStringKey =
   | "chatCancel"
   | "chatLanguage"
   | "chatRestart"
+  | "chatVisitor"
   | "heroEyebrowFallback"
   | "viewSite"
   | "contactEyebrow"
@@ -213,6 +214,7 @@ const en: UiStrings = {
   chatCancel: "Cancel",
   chatLanguage: "Select language",
   chatRestart: "Restart chat",
+  chatVisitor: "Visitor",
   heroEyebrowFallback: "Premium Digital Agency",
   viewSite: "View site",
   contactEyebrow: "Contact",
@@ -336,6 +338,7 @@ const de: UiStrings = {
   chatCancel: "Abbrechen",
   chatLanguage: "Sprache auswählen",
   chatRestart: "Chat neu starten",
+  chatVisitor: "Besucher",
   heroEyebrowFallback: "Premium-Digitalagentur",
   viewSite: "Website ansehen",
   contactEyebrow: "Kontakt",
@@ -459,6 +462,7 @@ const fr: UiStrings = {
   chatCancel: "Annuler",
   chatLanguage: "Choisir la langue",
   chatRestart: "Redémarrer le chat",
+  chatVisitor: "Visiteur",
   heroEyebrowFallback: "Agence digitale premium",
   viewSite: "Voir le site",
   contactEyebrow: "Contact",
@@ -582,6 +586,7 @@ const es: UiStrings = {
   chatCancel: "Cancelar",
   chatLanguage: "Seleccionar idioma",
   chatRestart: "Reiniciar chat",
+  chatVisitor: "Visitante",
   heroEyebrowFallback: "Agencia digital premium",
   viewSite: "Ver sitio",
   contactEyebrow: "Contacto",

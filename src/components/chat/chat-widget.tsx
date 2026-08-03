@@ -187,6 +187,15 @@ function PencilIcon({ className }: { className?: string }) {
   );
 }
 
+function UserAvatarIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={className}>
+      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
+  );
+}
+
 function ChevronDownIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={className}>
@@ -612,72 +621,22 @@ export function ChatWidget() {
               className="pointer-events-none absolute inset-x-0 -top-14 h-32 bg-[radial-gradient(60%_100%_at_50%_0%,rgba(245,158,11,0.14),transparent_72%)]"
             />
             <div className="relative z-10 flex items-center gap-2.5">
-              {editingName ? (
-                <>
-                  <input
-                    ref={editInputRef}
-                    value={nameDraft}
-                    onChange={(e) => setNameDraft(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        handleSaveName();
-                      } else if (e.key === "Escape") {
-                        handleCancelEdit();
-                      }
-                    }}
-                    aria-label={t(locale, "chatEditName")}
-                    className="w-full min-w-0 rounded-lg border border-primary/40 bg-card-dark px-3 py-2 text-sm text-text-primary outline-none transition-colors focus:border-primary"
-                  />
-                  <button
-                    type="button"
-                    aria-label={t(locale, "chatSave")}
-                    onClick={handleSaveName}
-                    className="shrink-0 p-1.5 text-success transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                  >
-                    <CheckIcon className="size-4" />
-                  </button>
-                  <button
-                    type="button"
-                    aria-label={t(locale, "chatCancel")}
-                    onClick={handleCancelEdit}
-                    className="shrink-0 p-1.5 text-text-muted transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                  >
-                    <XIcon className="size-4" />
-                  </button>
-                </>
-              ) : (
-                <>
-                  <span className="flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-active text-text-inverse ring-1 ring-primary/40 shadow-[0_0_14px_rgba(245,158,11,0.25)]">
-                    <ChatIcon className="size-5" />
+              <span className="flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-active text-text-inverse ring-1 ring-primary/40 shadow-[0_0_14px_rgba(245,158,11,0.25)]">
+                <ChatIcon className="size-5" />
+              </span>
+              <div>
+                <p className="font-display text-sm font-black text-text-primary">
+                  {t(locale, "chatName")}
+                </p>
+                <span className="mt-0.5 inline-flex items-center gap-1.5 rounded-full bg-success/10 px-2 py-0.5">
+                  <span className="size-1.5 rounded-full bg-success" />
+                  <span className="text-[10px] font-medium text-success">
+                    {t(locale, "chatOnline")}
                   </span>
-                  <div>
-                    <p className="font-display text-sm font-black text-text-primary">
-                      {t(locale, "chatName")}
-                    </p>
-                    <span className="mt-0.5 inline-flex items-center gap-1.5 rounded-full bg-success/10 px-2 py-0.5">
-                      <span className="size-1.5 rounded-full bg-success" />
-                      <span className="text-[10px] font-medium text-success">
-                        {t(locale, "chatOnline")}
-                      </span>
-                    </span>
-                  </div>
-                </>
-              )}
+                </span>
+              </div>
             </div>
             <div className="relative z-10 flex items-center gap-1">
-              {/* Edit name — header-level action, not per message */}
-              {!editingName && visitor.name ? (
-                <button
-                  type="button"
-                  aria-label={t(locale, "chatEditName")}
-                  onClick={handleStartEdit}
-                  className="p-2 text-text-muted transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                >
-                  <PencilIcon className="size-[18px]" />
-                </button>
-              ) : null}
-
               {/* Language dropdown */}
               <div ref={langRef} className="relative">
                 <button
@@ -816,6 +775,60 @@ export function ChatWidget() {
                   return (
                     <div key={m.id} className="chat-msg-in flex justify-end">
                       <div className="max-w-[80%] rounded-2xl rounded-br-md bg-surface px-4 py-3">
+                        <div className="mb-1.5 flex items-center justify-end gap-1.5 border-b border-border pb-1.5">
+                          {editingName ? (
+                            <>
+                              <input
+                                ref={editInputRef}
+                                value={nameDraft}
+                                onChange={(e) => setNameDraft(e.target.value)}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    handleSaveName();
+                                  } else if (e.key === "Escape") {
+                                    handleCancelEdit();
+                                  }
+                                }}
+                                aria-label={t(locale, "chatEditName")}
+                                className="w-full min-w-0 rounded-md border border-primary/40 bg-card-dark px-2 py-1 text-[11px] font-medium text-text-primary outline-none transition-colors focus:border-primary"
+                              />
+                              <button
+                                type="button"
+                                aria-label={t(locale, "chatSave")}
+                                onClick={handleSaveName}
+                                className="shrink-0 p-0.5 text-success transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                              >
+                                <CheckIcon className="size-3.5" />
+                              </button>
+                              <button
+                                type="button"
+                                aria-label={t(locale, "chatCancel")}
+                                onClick={handleCancelEdit}
+                                className="shrink-0 p-0.5 text-text-muted transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                              >
+                                <XIcon className="size-3.5" />
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-surface-hover text-text-secondary">
+                                <UserAvatarIcon className="size-3" />
+                              </span>
+                              <span className="text-[10px] font-bold uppercase tracking-wide text-text-secondary">
+                                {visitor.name || t(locale, "chatVisitor")}
+                              </span>
+                              <button
+                                type="button"
+                                aria-label={t(locale, "chatEditName")}
+                                onClick={handleStartEdit}
+                                className="text-text-muted transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                              >
+                                <PencilIcon className="size-3" />
+                              </button>
+                            </>
+                          )}
+                        </div>
                         <p className="text-sm leading-relaxed text-text-primary">
                           {m.content}
                         </p>
