@@ -86,6 +86,9 @@ export type UiStringKey =
   | "chatYourNamePlaceholder"
   | "chatYourEmailPlaceholder"
   | "chatEditName"
+  | "chatTyping"
+  | "chatSave"
+  | "chatCancel"
   | "chatLanguage"
   | "chatRestart"
   | "heroEyebrowFallback"
@@ -205,6 +208,9 @@ const en: UiStrings = {
   chatYourNamePlaceholder: "Your name...",
   chatYourEmailPlaceholder: "you@company.com",
   chatEditName: "Edit name",
+  chatTyping: "Stratifit AI is typing…",
+  chatSave: "Save",
+  chatCancel: "Cancel",
   chatLanguage: "Select language",
   chatRestart: "Restart chat",
   heroEyebrowFallback: "Premium Digital Agency",
@@ -325,6 +331,9 @@ const de: UiStrings = {
   chatYourNamePlaceholder: "Ihr Name...",
   chatYourEmailPlaceholder: "sie@firma.com",
   chatEditName: "Namen bearbeiten",
+  chatTyping: "Stratifit AI schreibt…",
+  chatSave: "Speichern",
+  chatCancel: "Abbrechen",
   chatLanguage: "Sprache auswählen",
   chatRestart: "Chat neu starten",
   heroEyebrowFallback: "Premium-Digitalagentur",
@@ -445,6 +454,9 @@ const fr: UiStrings = {
   chatYourNamePlaceholder: "Votre prénom...",
   chatYourEmailPlaceholder: "vous@entreprise.com",
   chatEditName: "Modifier le nom",
+  chatTyping: "Stratifit AI écrit…",
+  chatSave: "Enregistrer",
+  chatCancel: "Annuler",
   chatLanguage: "Choisir la langue",
   chatRestart: "Redémarrer le chat",
   heroEyebrowFallback: "Agence digitale premium",
@@ -565,6 +577,9 @@ const es: UiStrings = {
   chatYourNamePlaceholder: "Tu nombre...",
   chatYourEmailPlaceholder: "usted@empresa.com",
   chatEditName: "Editar nombre",
+  chatTyping: "Stratifit AI está escribiendo…",
+  chatSave: "Guardar",
+  chatCancel: "Cancelar",
   chatLanguage: "Seleccionar idioma",
   chatRestart: "Reiniciar chat",
   heroEyebrowFallback: "Agencia digital premium",

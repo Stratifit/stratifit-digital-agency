@@ -158,6 +158,30 @@ function CloseIcon() {
   );
 }
 
+function CheckIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path
+        fillRule="evenodd"
+        d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
+function XIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path
+        fillRule="evenodd"
+        d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
 function SendIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="size-5">
@@ -250,6 +274,13 @@ export function ChatWidget() {
   const [langOpen, setLangOpen] = React.useState(false);
   const langRef = React.useRef<HTMLDivElement>(null);
   const bottomRef = React.useRef<HTMLDivElement>(null);
+  const panelRef = React.useRef<HTMLDivElement>(null);
+  const editInputRef = React.useRef<HTMLInputElement>(null);
+  const closingRef = React.useRef(false);
+  const [closing, setClosing] = React.useState(false);
+  const [editingName, setEditingName] = React.useState(false);
+  const [nameDraft, setNameDraft] = React.useState("");
+  const [editTargetId, setEditTargetId] = React.useState<string | null>(null);
 
   const mounted = React.useSyncExternalStore(
     () => () => {},
@@ -276,6 +307,37 @@ export function ChatWidget() {
     document.addEventListener("mousedown", onMouseDown);
     return () => document.removeEventListener("mousedown", onMouseDown);
   }, [langOpen]);
+
+  // Focus the inline name editor when it appears
+  React.useEffect(() => {
+    if (editingName) editInputRef.current?.focus();
+  }, [editingName]);
+
+  // While the chat is open: lock body scroll and close on Escape
+  React.useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      const target = event.target as HTMLElement | null;
+      // Never dismiss while the visitor is typing in a field.
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) {
+        return;
+      }
+      closeChat();
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
+  // Move focus into the dialog when it opens
+  React.useEffect(() => {
+    if (open) panelRef.current?.focus();
+  }, [open]);
 
   // Load persisted conversation state whenever the widget opens
   React.useEffect(() => {
@@ -437,16 +499,66 @@ export function ChatWidget() {
     setStage("chat");
   }
 
-  async function handleEditName() {
-    const current = visitor.name || "";
-    const next = window.prompt(t(lang, "chatEditName"), current);
-    if (!next || !next.trim() || next.trim() === current) return;
+  function closeChat() {
+    if (closingRef.current) return;
+    closingRef.current = true;
+    setClosing(true);
+    window.setTimeout(() => {
+      closingRef.current = false;
+      setOpen(false);
+      setClosing(false);
+    }, 220);
+  }
+
+  function handleStartEdit(messageId: string) {
+    if (loading) return;
+    setNameDraft(visitor.name);
+    setEditTargetId(messageId);
+    setEditingName(true);
+  }
+
+  function handleCancelEdit() {
+    setEditingName(false);
+    setEditTargetId(null);
+  }
+
+  async function handleSaveName() {
+    const name = nameDraft.trim();
+    if (!name || name === visitor.name || loading) {
+      setEditingName(false);
+      setEditTargetId(null);
+      return;
+    }
     const result = await updateVisitorName({
       visitor_token: getToken(),
-      name: next.trim(),
+      name,
     });
     if (result.success) {
-      setVisitor((v) => ({ ...v, name: next.trim() }));
+      setVisitor((v) => ({ ...v, name }));
+    }
+    setEditingName(false);
+    setEditTargetId(null);
+  }
+
+  function handlePanelKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
+    if (event.key !== "Tab") return;
+    const container = panelRef.current;
+    if (!container) return;
+    const focusables = Array.from(
+      container.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+      )
+    );
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    const active = document.activeElement as HTMLElement | null;
+    if (event.shiftKey && (active === first || !container.contains(active))) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && (active === last || !container.contains(active))) {
+      event.preventDefault();
+      first.focus();
     }
   }
 
@@ -495,26 +607,52 @@ export function ChatWidget() {
   return (
     <>
       {open ? (
-        <div className="fixed inset-x-0 bottom-0 z-[70] flex max-h-[92dvh] flex-col overflow-hidden rounded-t-2xl border-t border-border bg-background shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] lg:inset-x-auto lg:bottom-6 lg:right-6 lg:max-h-[80vh] lg:w-[400px] lg:rounded-2xl lg:border lg:border-border xl:w-[440px]">
+        <>
+          {/* Blurred backdrop — the page behind the chat recedes while open */}
+          <div
+            aria-hidden="true"
+            onClick={closeChat}
+            className={cn(
+              "fixed inset-0 z-[69] bg-black/40 backdrop-blur-sm",
+              closing ? "chat-backdrop-out" : "chat-backdrop"
+            )}
+          />
+          <div
+            ref={panelRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label={t(locale, "chatName")}
+            tabIndex={-1}
+            onKeyDown={handlePanelKeyDown}
+            className={cn(
+              "fixed inset-x-0 bottom-0 z-[70] flex max-h-[92dvh] flex-col overflow-hidden rounded-t-2xl border-t border-border bg-background shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] lg:inset-x-auto lg:bottom-6 lg:right-6 lg:max-h-[80vh] lg:w-[400px] lg:rounded-2xl lg:border lg:border-border xl:w-[440px]",
+              closing ? "chat-panel-out" : "chat-panel-in"
+            )}
+          >
           {/* Header */}
-          <div className="flex flex-none items-center justify-between rounded-t-2xl border-b border-border bg-background/95 px-4 py-3">
-            <div className="flex items-center gap-2.5">
-              <span className="flex size-9 items-center justify-center rounded-full bg-primary text-text-inverse">
+          <div className="relative flex flex-none items-center justify-between overflow-hidden rounded-t-2xl border-b border-border bg-background/95 px-4 py-3">
+            {/* Ambient amber glow */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-0 -top-14 h-32 bg-[radial-gradient(60%_100%_at_50%_0%,rgba(245,158,11,0.14),transparent_72%)]"
+            />
+            <div className="relative z-10 flex items-center gap-2.5">
+              <span className="flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-active text-text-inverse ring-1 ring-primary/40 shadow-[0_0_14px_rgba(245,158,11,0.25)]">
                 <ChatIcon className="size-5" />
               </span>
               <div>
                 <p className="font-display text-sm font-black text-text-primary">
                   {t(locale, "chatName")}
                 </p>
-                <div className="flex items-center gap-1">
+                <span className="mt-0.5 inline-flex items-center gap-1.5 rounded-full bg-success/10 px-2 py-0.5">
                   <span className="size-1.5 rounded-full bg-success" />
-                  <span className="text-[9px] font-medium text-text-muted">
+                  <span className="text-[10px] font-medium text-success">
                     {t(locale, "chatOnline")}
                   </span>
-                </div>
+                </span>
               </div>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="relative z-10 flex items-center gap-1">
               {/* Language dropdown */}
               <div ref={langRef} className="relative">
                 <button
@@ -563,7 +701,7 @@ export function ChatWidget() {
               <button
                 type="button"
                 aria-label={t(locale, "chatClose")}
-                onClick={() => setOpen(false)}
+                onClick={closeChat}
                 className="-mr-2 p-2 text-text-muted transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 <CloseIcon />
@@ -602,11 +740,15 @@ export function ChatWidget() {
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none sticky top-0 z-10 -mx-4 -mt-4 h-5 bg-gradient-to-b from-background to-transparent"
+            />
             <div className="space-y-4">
               {/* Welcome bubble */}
               {stage === "name" ? (
-                <div className="flex justify-start">
-                  <div className="max-w-[85%] rounded-2xl border border-card-border bg-card-dark px-4 py-3">
+                <div className="chat-msg-in flex justify-start">
+                  <div className="max-w-[85%] rounded-2xl rounded-bl-md border border-card-border bg-card-dark px-4 py-3">
                     <div className="mb-2 flex items-center gap-1.5 border-b border-border pb-2">
                       <span className="text-[11px] font-bold uppercase tracking-wide text-primary/80">
                         {t(locale, "chatName")}
@@ -619,14 +761,14 @@ export function ChatWidget() {
                       {welcomeParts[1] ? ` — ${welcomeParts[1]}` : ""}
                     </p>
                     <div className="mt-2.5 flex items-center justify-between border-t border-border pt-2">
-                      <span className="flex items-center gap-1 text-[9px] font-medium uppercase tracking-wide text-primary/75">
+                      <span className="flex items-center gap-1 text-[10px] font-medium uppercase tracking-wide text-text-muted">
                         <LockIcon className="size-2.5" />
                         {t(locale, "chatDataSafe")}
                       </span>
                       <button
                         type="button"
                         onClick={() => setShowPrivacyNote((v) => !v)}
-                        className="text-[9px] font-medium uppercase tracking-wide text-primary/75 underline underline-offset-2 transition-opacity hover:opacity-100"
+                        className="text-[10px] font-medium uppercase tracking-wide text-text-muted underline underline-offset-2 transition-colors hover:text-text-primary"
                       >
                         {t(locale, "chatReadMore")}
                       </button>
@@ -645,21 +787,60 @@ export function ChatWidget() {
                 if (m.sender === "visitor") {
                   // One stable number per user — this visitor is always 001.
                   const userLabel = isGreetingText(m.content) ? "001" : visitor.name;
+                  const isEditing = editingName && m.id === editTargetId;
                   return (
-                    <div key={m.id} className="flex justify-end">
-                      <div className="max-w-[85%] rounded-2xl bg-surface px-4 py-3">
+                    <div key={m.id} className="chat-msg-in flex justify-end">
+                      <div className="max-w-[80%] rounded-2xl rounded-br-md bg-surface px-4 py-3">
                         <div className="mb-1.5 flex items-center justify-end gap-1.5 border-b border-border pb-1.5">
-                          <span className="text-[10px] font-bold uppercase tracking-wide text-primary/70">
-                            {userLabel}
-                          </span>
-                          <button
-                            type="button"
-                            aria-label={t(locale, "chatEditName")}
-                            onClick={handleEditName}
-                            className="text-text-muted transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                          >
-                            <PencilIcon className="size-3" />
-                          </button>
+                          {isEditing ? (
+                            <>
+                              <input
+                                ref={editInputRef}
+                                value={nameDraft}
+                                onChange={(e) => setNameDraft(e.target.value)}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    handleSaveName();
+                                  } else if (e.key === "Escape") {
+                                    handleCancelEdit();
+                                  }
+                                }}
+                                aria-label={t(locale, "chatEditName")}
+                                className="w-full min-w-0 rounded-md border border-primary/40 bg-card-dark px-2 py-1 text-[11px] font-medium text-text-primary outline-none transition-colors focus:border-primary"
+                              />
+                              <button
+                                type="button"
+                                aria-label={t(locale, "chatSave")}
+                                onClick={handleSaveName}
+                                className="p-0.5 text-success transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                              >
+                                <CheckIcon className="size-3.5" />
+                              </button>
+                              <button
+                                type="button"
+                                aria-label={t(locale, "chatCancel")}
+                                onClick={handleCancelEdit}
+                                className="p-0.5 text-text-muted transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                              >
+                                <XIcon className="size-3.5" />
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <span className="text-[10px] font-bold uppercase tracking-wide text-primary/70">
+                                {userLabel}
+                              </span>
+                              <button
+                                type="button"
+                                aria-label={t(locale, "chatEditName")}
+                                onClick={() => handleStartEdit(m.id)}
+                                className="text-text-muted transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                              >
+                                <PencilIcon className="size-3" />
+                              </button>
+                            </>
+                          )}
                         </div>
                         <p className="text-sm leading-relaxed text-text-primary">
                           {m.content}
@@ -670,16 +851,19 @@ export function ChatWidget() {
                 }
                   if (m.sender === "system") {
                     return (
-                      <div key={m.id} className="flex justify-start">
-                        <div className="max-w-[85%] rounded-2xl bg-surface px-4 py-3 text-sm leading-relaxed text-text-muted">
+                      <div key={m.id} className="chat-msg-in flex justify-start">
+                        <div className="max-w-[80%] rounded-2xl rounded-bl-md bg-surface px-4 py-3 text-sm leading-relaxed text-text-muted">
                           {m.content}
                         </div>
                       </div>
                     );
                   }
                   return (
-                    <div key={m.id} className="flex justify-start">
-                      <div className="max-w-[85%] whitespace-pre-line rounded-2xl border border-card-border bg-card-dark px-4 py-3 text-sm leading-relaxed text-text-primary">
+                    <div key={m.id} className="chat-msg-in flex justify-start gap-2">
+                      <span className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
+                        <ChatIcon className="size-3.5" />
+                      </span>
+                      <div className="max-w-[80%] whitespace-pre-line rounded-2xl rounded-bl-md border border-card-border bg-card-dark px-4 py-3 text-sm leading-relaxed text-text-primary">
                         {m.content}
                       </div>
                     </div>
@@ -688,8 +872,8 @@ export function ChatWidget() {
 
               {/* Email question bubble — shown while asking and while typing the email */}
               {stage === "emailQuestion" || stage === "emailInput" ? (
-                <div className="flex justify-start">
-                  <div className="max-w-[85%] rounded-2xl border border-card-border bg-card-dark px-4 py-3">
+                <div className="chat-msg-in flex justify-start">
+                  <div className="max-w-[85%] rounded-2xl rounded-bl-md border border-card-border bg-card-dark px-4 py-3">
                     <div className="mb-2 flex items-center gap-1.5 border-b border-border pb-2">
                       <span className="text-[11px] font-bold uppercase tracking-wide text-primary/80">
                         {t(locale, "chatName")}
@@ -699,8 +883,8 @@ export function ChatWidget() {
                       {emailQuestion}
                     </p>
                     <div className="mt-2.5 flex items-center gap-1 border-t border-border pt-2">
-                      <LockIcon className="size-2.5 text-primary/75" />
-                      <span className="text-[9px] font-medium uppercase tracking-wide text-primary/75">
+                      <LockIcon className="size-2.5 text-text-muted" />
+                      <span className="text-[10px] font-medium uppercase tracking-wide text-text-muted">
                         {t(locale, "chatDataSafe")}
                       </span>
                     </div>
@@ -730,9 +914,15 @@ export function ChatWidget() {
             </div>
 
             {loading ? (
-              <div className="mt-4 flex justify-start">
-                <div className="rounded-2xl bg-surface px-4 py-3 text-sm text-text-muted">
-                  …
+              <div className="chat-msg-in mt-4 flex justify-start">
+                <div
+                  role="status"
+                  aria-label={t(locale, "chatTyping")}
+                  className="flex items-center gap-1.5 rounded-2xl rounded-bl-md bg-surface px-4 py-3.5"
+                >
+                  <span className="chat-typing-dot size-1.5 rounded-full bg-text-muted" />
+                  <span className="chat-typing-dot size-1.5 rounded-full bg-text-muted [animation-delay:150ms]" />
+                  <span className="chat-typing-dot size-1.5 rounded-full bg-text-muted [animation-delay:300ms]" />
                 </div>
               </div>
             ) : null}
@@ -771,13 +961,14 @@ export function ChatWidget() {
                 type="submit"
                 disabled={!input.trim() || loading || stage === "loading"}
                 aria-label={t(locale, "chatSend")}
-                className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary text-text-inverse transition-all hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-30"
+                className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary text-text-inverse transition-all hover:bg-primary-hover active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
               >
                 <SendIcon />
               </button>
             </form>
           )}
         </div>
+        </>
       ) : null}
 
       {/* Toggle button (hidden while open) */}

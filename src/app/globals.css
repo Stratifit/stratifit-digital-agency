@@ -772,3 +772,48 @@ select:focus-visible {
 .drawer-anim-left[data-state="closed"] {
   animation: stratifit-slide-out-left var(--motion-fast) var(--ease-standard);
 }
+
+/* =============================================================================
+   Chat Widget Motion
+   Entrance/exit for the chat panel and backdrop, typing indicator dots,
+   and message entrance. Reduced motion is handled globally above.
+   ============================================================================= */
+
+.chat-backdrop {
+  animation: stratifit-fade-in var(--motion-standard) var(--ease-standard) both;
+}
+
+.chat-backdrop-out {
+  animation: stratifit-fade-out var(--motion-fast) var(--ease-standard) both;
+}
+
+.chat-panel-in {
+  animation: stratifit-popup-panel var(--motion-standard) var(--ease-out) both;
+}
+
+@keyframes stratifit-popup-panel-out {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(16px) scale(0.98); }
+}
+
+.chat-panel-out {
+  animation: stratifit-popup-panel-out var(--motion-fast) var(--ease-in) both;
+}
+
+@keyframes stratifit-typing {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-3px); opacity: 1; }
+}
+
+.chat-typing-dot {
+  animation: stratifit-typing 1.2s ease-in-out infinite;
+}
+
+@keyframes stratifit-msg-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.chat-msg-in {
+  animation: stratifit-msg-in var(--motion-fast) var(--ease-out) both;
+}
