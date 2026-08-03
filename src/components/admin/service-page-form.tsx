@@ -44,6 +44,16 @@ const ICON_NAMES = [
   "box",
   "book",
   "rocket",
+  "chart",
+  "chat",
+  "mail",
+  "phone",
+  "database",
+  "link",
+  "grid",
+  "globe",
+  "key",
+  "calendar",
 ];
 
 function TranslationInputs({
