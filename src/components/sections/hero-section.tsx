@@ -1,7 +1,7 @@
 ﻿import { getPublicHero } from "@/features/hero/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
-import { LinkButton } from "@/components/ui/link-button";
+import { ContactAwareLink } from "@/components/contact/contact-aware-link";
 import { CountUp } from "@/components/ui/count-up";
 import { HeroEntrance } from "./hero-entrance";
 
@@ -168,7 +168,7 @@ export async function HeroSection() {
             className="mx-auto mt-[26px] flex w-full max-w-3xl flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4"
           >
             {primaryLabel && hero.primary_cta_url ? (
-              <LinkButton
+              <ContactAwareLink
                 href={hero.primary_cta_url}
                 size="medium"
                 className="group !h-12 w-full !font-semibold sm:w-[370px] sm:flex-none"
@@ -186,10 +186,10 @@ export async function HeroSection() {
                     clipRule="evenodd"
                   />
                 </svg>
-              </LinkButton>
+              </ContactAwareLink>
             ) : null}
             {secondaryLabel && hero.secondary_cta_url ? (
-              <LinkButton
+              <ContactAwareLink
                 href={hero.secondary_cta_url}
                 variant="tertiary"
                 size="medium"
@@ -208,7 +208,7 @@ export async function HeroSection() {
                   />
                 </svg>
                 {secondaryLabel}
-              </LinkButton>
+              </ContactAwareLink>
             ) : null}
           </div>
         ) : null}

@@ -674,6 +674,24 @@ select:focus-visible {
   to { transform: translateX(0); }
 }
 
+@keyframes stratifit-popup-backdrop {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes stratifit-popup-panel {
+  from { opacity: 0; transform: translateY(24px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.contact-popup-backdrop {
+  animation: stratifit-popup-backdrop var(--motion-standard) var(--ease-standard) both;
+}
+
+.contact-popup-panel {
+  animation: stratifit-popup-panel var(--motion-standard) var(--ease-out) both;
+}
+
 @keyframes stratifit-scroll-x {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }

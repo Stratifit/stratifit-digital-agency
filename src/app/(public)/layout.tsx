@@ -3,6 +3,8 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { ChatWidget } from "@/components/chat/chat-widget";
 import { ScrollTriggerSync } from "@/components/layout/scroll-trigger-sync";
+import { ContactPopup } from "@/components/contact/contact-popup";
+import { getPublicServices } from "@/features/services/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { t } from "@/lib/i18n/ui-strings";
 
@@ -11,7 +13,10 @@ export default async function PublicLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const locale = await getLocale();
+  const [locale, services] = await Promise.all([
+    getLocale(),
+    getPublicServices(),
+  ]);
 
   return (
     <>
@@ -29,6 +34,7 @@ export default async function PublicLayout({
       </main>
       <Footer />
       <ChatWidget />
+      <ContactPopup services={services} locale={locale} />
     </>
   );
 }

@@ -7,7 +7,7 @@ import { articleJsonLd, canonical, pageMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
-import { LinkButton } from "@/components/ui/link-button";
+import { ContactAwareLink } from "@/components/contact/contact-aware-link";
 import { Reveal } from "@/components/ui/reveal";
 import Image from "next/image";
 
@@ -150,9 +150,9 @@ export default async function WorkDetailPage({
                 Interested in a similar project?
               </p>
               <div className="mt-4">
-                <LinkButton href="/contact">
+                <ContactAwareLink href="/contact">
                   Start a Conversation
-                </LinkButton>
+                </ContactAwareLink>
               </div>
             </Card>
           </div>

@@ -64,7 +64,11 @@ export type UiStringKey =
   | "chatOffline"
   | "chatError"
   | "heroEyebrowFallback"
-  | "viewSite";
+  | "viewSite"
+  | "contactEyebrow"
+  | "letsTalk"
+  | "contactPopupDescription"
+  | "closePopup";
 
 type UiStrings = Record<UiStringKey, string>;
 type UiDictionary = Record<(typeof SUPPORTED_LOCALES)[number], UiStrings>;
@@ -136,6 +140,11 @@ const en: UiStrings = {
   chatError: "Something went wrong. Please try again.",
   heroEyebrowFallback: "Premium Digital Agency",
   viewSite: "View site",
+  contactEyebrow: "Contact",
+  letsTalk: "Let's Talk",
+  contactPopupDescription:
+    "Ready to start your project? Fill out the form and we'll get back to you within 24 hours.",
+  closePopup: "Close",
 };
 
 const de: UiStrings = {
@@ -207,6 +216,11 @@ const de: UiStrings = {
   chatError: "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
   heroEyebrowFallback: "Premium-Digitalagentur",
   viewSite: "Website ansehen",
+  contactEyebrow: "Kontakt",
+  letsTalk: "Sprechen wir",
+  contactPopupDescription:
+    "Bereit, Ihr Projekt zu starten? Füllen Sie das Formular aus, und wir melden uns innerhalb von 24 Stunden.",
+  closePopup: "Schließen",
 };
 
 const fr: UiStrings = {
@@ -278,6 +292,11 @@ const fr: UiStrings = {
   chatError: "Une erreur est survenue. Veuillez réessayer.",
   heroEyebrowFallback: "Agence digitale premium",
   viewSite: "Voir le site",
+  contactEyebrow: "Contact",
+  letsTalk: "Parlons-en",
+  contactPopupDescription:
+    "Prêt à démarrer votre projet ? Remplissez le formulaire et nous vous répondrons sous 24 heures.",
+  closePopup: "Fermer",
 };
 
 const es: UiStrings = {
@@ -349,6 +368,11 @@ const es: UiStrings = {
   chatError: "Algo salió mal. Inténtalo de nuevo.",
   heroEyebrowFallback: "Agencia digital premium",
   viewSite: "Ver sitio",
+  contactEyebrow: "Contacto",
+  letsTalk: "Hablemos",
+  contactPopupDescription:
+    "¿Listo para comenzar tu proyecto? Completa el formulario y te responderemos en 24 horas.",
+  closePopup: "Cerrar",
 };
 
 const dictionary: UiDictionary = { en, de, fr, es };

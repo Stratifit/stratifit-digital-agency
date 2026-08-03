@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { LinkButton } from "@/components/ui/link-button";
+import { ContactTrigger } from "@/components/contact/contact-trigger";
 
 export default function NotFound() {
   return (
@@ -16,12 +16,9 @@ export default function NotFound() {
         <LinkButton href="/" size="large">
           Back to Home
         </LinkButton>
-        <Link
-          href="/contact"
-          className="inline-flex h-[52px] items-center justify-center rounded-button border border-card-border bg-card-dark px-6 text-base font-medium text-text-primary transition-colors hover:border-primary/30"
-        >
+        <ContactTrigger className="inline-flex h-[52px] items-center justify-center rounded-button border border-card-border bg-card-dark px-6 text-base font-medium text-text-primary transition-colors hover:border-primary/30">
           Contact us
-        </Link>
+        </ContactTrigger>
       </div>
     </Container>
   );

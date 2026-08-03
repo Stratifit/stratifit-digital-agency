@@ -14,7 +14,7 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
-import { LinkButton } from "@/components/ui/link-button";
+import { ContactAwareLink } from "@/components/contact/contact-aware-link";
 import { ServiceIcon } from "@/components/ui/service-icon";
 import { Reveal } from "@/components/ui/reveal";
 
@@ -71,17 +71,17 @@ export default async function ServicesPage() {
                     </p>
                     {service.cta_label_translations &&
                     resolveTranslation(service.cta_label_translations, locale) ? (
-                      <LinkButton
+                      <ContactAwareLink
                         href={
                           pageSlugs.has(service.slug)
                             ? `/services/${service.slug}`
-                            : service.cta_url ?? "/contact"
+                            : service.cta_url
                         }
                         size="small"
                         className="mt-6"
                       >
                         {resolveTranslation(service.cta_label_translations, locale)}
-                      </LinkButton>
+                      </ContactAwareLink>
                     ) : null}
                   </div>
                 </div>

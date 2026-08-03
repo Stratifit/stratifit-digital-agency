@@ -10,6 +10,7 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
 import { LinkButton } from "@/components/ui/link-button";
+import { ContactAwareLink } from "@/components/contact/contact-aware-link";
 import { PortfolioGallery } from "@/components/sections/portfolio-gallery";
 import { ServicePageIcon } from "@/components/ui/service-page-icon";
 import { CountUp } from "@/components/ui/count-up";
@@ -153,9 +154,9 @@ export default async function ServicePage({
               ) : null}
               <Reveal>
                 <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 lg:justify-center">
-                  <LinkButton href="/contact" size="large" className="w-full sm:w-auto">
+                  <ContactAwareLink href="/contact" size="large" className="w-full sm:w-auto">
                     {ctaButton || "Start Your Project"}
-                  </LinkButton>
+                  </ContactAwareLink>
                   {process.length > 0 ? (
                     <LinkButton
                       href="#how-it-works"
@@ -489,9 +490,9 @@ export default async function ServicePage({
                   </p>
                 ) : null}
                 <div className="relative z-10 mt-6">
-                  <LinkButton href="/contact" size="large">
+                  <ContactAwareLink href="/contact" size="large">
                     {ctaButton || "Start Your Project"}
-                  </LinkButton>
+                  </ContactAwareLink>
                 </div>
               </div>
             </Reveal>

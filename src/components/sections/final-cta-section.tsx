@@ -4,7 +4,7 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
-import { LinkButton } from "@/components/ui/link-button";
+import { ContactAwareLink } from "@/components/contact/contact-aware-link";
 import { Reveal } from "@/components/ui/reveal";
 
 export async function FinalCtaSection() {
@@ -38,14 +38,14 @@ export async function FinalCtaSection() {
           {(primaryLabel || secondaryLabel) ? (
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               {primaryLabel && data.primary_cta_url ? (
-                <LinkButton href={data.primary_cta_url} size="large">
+                <ContactAwareLink href={data.primary_cta_url} size="large">
                   {primaryLabel}
-                </LinkButton>
+                </ContactAwareLink>
               ) : null}
               {secondaryLabel && data.secondary_cta_url ? (
-                <LinkButton href={data.secondary_cta_url} variant="secondary" size="large">
+                <ContactAwareLink href={data.secondary_cta_url} variant="secondary" size="large">
                   {secondaryLabel}
-                </LinkButton>
+                </ContactAwareLink>
               ) : null}
             </div>
           ) : null}

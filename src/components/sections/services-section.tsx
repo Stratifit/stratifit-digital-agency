@@ -4,6 +4,7 @@ import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { t } from "@/lib/i18n/ui-strings";
+import { ContactTrigger } from "@/components/contact/contact-trigger";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { ServiceIcon } from "@/components/ui/service-icon";
@@ -129,17 +130,25 @@ export async function ServicesSection() {
 
                   <div className="flex-1" />
 
-                  <Link
-                    href={
-                      pageSlugs.has(service.slug)
-                        ? `/services/${service.slug}`
-                        : service.cta_url ?? "/contact"
-                    }
-                    className="group/link mt-2 flex w-full items-center justify-center gap-2 rounded-button border border-transparent bg-primary py-4 text-sm font-bold text-text-inverse transition-[background-color,border-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-hover active:translate-y-0 active:border-primary/60 active:bg-primary-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
-                  >
-                    {ctaLabel}
-                    <ArrowIcon />
-                  </Link>
+                  {pageSlugs.has(service.slug) ||
+                  (service.cta_url && service.cta_url !== "/contact") ? (
+                    <Link
+                      href={
+                        pageSlugs.has(service.slug)
+                          ? `/services/${service.slug}`
+                          : service.cta_url ?? "/contact"
+                      }
+                      className="group/link mt-2 flex w-full items-center justify-center gap-2 rounded-button border border-transparent bg-primary py-4 text-sm font-bold text-text-inverse transition-[background-color,border-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-hover active:translate-y-0 active:border-primary/60 active:bg-primary-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
+                    >
+                      {ctaLabel}
+                      <ArrowIcon />
+                    </Link>
+                  ) : (
+                    <ContactTrigger className="group/link mt-2 flex w-full items-center justify-center gap-2 rounded-button border border-transparent bg-primary py-4 text-sm font-bold text-text-inverse transition-[background-color,border-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-hover active:translate-y-0 active:border-primary/60 active:bg-primary-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2">
+                      {ctaLabel}
+                      <ArrowIcon />
+                    </ContactTrigger>
+                  )}
                 </div>
               </div>
             );

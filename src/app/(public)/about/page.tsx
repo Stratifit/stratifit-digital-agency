@@ -16,7 +16,7 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
-import { LinkButton } from "@/components/ui/link-button";
+import { ContactAwareLink } from "@/components/contact/contact-aware-link";
 import { Reveal } from "@/components/ui/reveal";
 import { FinalCtaSection } from "@/components/sections/final-cta-section";
 
@@ -135,9 +135,9 @@ export default async function AboutPage() {
       ) : (
         <Section>
           <Container className="text-center">
-            <LinkButton href="/contact" size="large">
+            <ContactAwareLink href="/contact" size="large">
               Start Your Project
-            </LinkButton>
+            </ContactAwareLink>
           </Container>
         </Section>
       )}

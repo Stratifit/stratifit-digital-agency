@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import type { AcquisitionBusiness } from "@/features/acquisition/queries";
+import { ContactTrigger } from "@/components/contact/contact-trigger";
 import { cn } from "@/lib/cn";
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -225,15 +225,14 @@ function BusinessCard({ business }: { business: AcquisitionBusiness }) {
           <span className="font-display text-sm font-black tracking-tight text-primary sm:text-base">
             {business.price}
           </span>
-          <Link
-            href="/contact"
+          <ContactTrigger
             className="group/link flex items-center gap-1.5 text-[10px] font-bold text-text-muted transition-colors hover:text-primary sm:text-xs"
           >
             View Full Detail
             <span className="transition-transform group-hover/link:translate-x-0.5">
               <ArrowIcon />
             </span>
-          </Link>
+          </ContactTrigger>
         </div>
         <div className="flex items-center gap-2 px-4 pb-3 sm:px-5">
           <a
@@ -245,12 +244,11 @@ function BusinessCard({ business }: { business: AcquisitionBusiness }) {
             <GlobeIcon />
             Visit Site
           </a>
-          <Link
-            href="/contact"
+          <ContactTrigger
             className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-primary/30 py-2.5 text-xs font-bold text-primary transition-all hover:bg-primary/10 active:scale-95 sm:text-sm"
           >
             Buy Business
-          </Link>
+          </ContactTrigger>
         </div>
       </div>
     </article>
@@ -383,25 +381,23 @@ export function AcquisitionGallery({
             )}
           />
         ))}
-        <Link
-          href="/contact"
+        <ContactTrigger
           className="absolute right-0 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-primary transition-colors hover:brightness-110"
         >
           View All
           <ArrowIcon />
-        </Link>
+        </ContactTrigger>
       </div>
 
       <div className="mt-8 hidden justify-end md:flex">
-        <Link
-          href="/contact"
+        <ContactTrigger
           className="group inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-primary transition-colors hover:brightness-110"
         >
           View All Businesses
           <span className="transition-transform group-hover:translate-x-1">
             <ArrowIcon />
           </span>
-        </Link>
+        </ContactTrigger>
       </div>
     </div>
   );
