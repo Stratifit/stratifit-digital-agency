@@ -5,6 +5,7 @@ import { gsap, ScrollTrigger, useGSAP } from "@/lib/animation/gsap";
 import {
   MOBILE_BLOCK_FROM,
   MOBILE_CARD_FROM,
+  MOBILE_PRESETS,
   MOBILE_TRIGGER_START,
   PRESETS,
   SCROLL_TRIGGER_START,
@@ -106,7 +107,8 @@ export function Reveal({
         } else {
           gsap.from(el, {
             ...MOBILE_BLOCK_FROM,
-              scrollTrigger: immediate
+            ...(MOBILE_PRESETS[variant] ?? {}),
+            scrollTrigger: immediate
               ? undefined
               : { trigger: el, start: MOBILE_TRIGGER_START, once: true },
           });

@@ -9,7 +9,8 @@ export type RevealVariant =
   | "revealUp"
   | "card"
   | "image"
-  | "cta";
+  | "cta"
+  | "calm";
 
 /**
  * Standardized animation presets. Values are intentionally restrained and
@@ -29,6 +30,8 @@ export const PRESETS: Record<RevealVariant, gsap.TweenVars> = {
   },
   image: { opacity: 0, scale: 1.03, duration: 0.9, ease: ANIM_EASE },
   cta: { opacity: 0, y: 30, duration: 0.7, ease: CARD_EASE },
+  /** Calmest motion on the site — a slow, still fade (footer). */
+  calm: { opacity: 0, duration: 1.2, ease: "power1.out" },
 };
 
 /**
@@ -43,6 +46,7 @@ export const MOBILE_PRESETS: Partial<Record<RevealVariant, gsap.TweenVars>> = {
   card: { y: 45, scale: 0.97, duration: 0.9, ease: "power3.out" },
   image: { scale: 1.03, duration: 1.0, ease: "power2.out" },
   cta: { y: 40, duration: 0.9, ease: "power3.out" },
+  calm: { y: 0, scale: 1, duration: 1.0, ease: "power1.out" },
 };
 
 /** Per-card mobile reveal values (each card gets its own trigger). */

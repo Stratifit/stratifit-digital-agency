@@ -5,6 +5,7 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import type { PublicFooterGroup } from "@/features/footer/queries";
 import { BrandLogo } from "@/components/ui/brand-logo";
 import { SocialIcons } from "@/components/ui/social-icons";
+import { Reveal } from "@/components/ui/reveal";
 
 export function FooterContent({
   groups,
@@ -36,7 +37,7 @@ export function FooterContent({
   }
 
   return (
-    <div className={className}>
+    <Reveal variant="calm" className={className}>
       <div className="space-y-4">
         <div className="w-32">
           <BrandLogo alt={siteName} />
@@ -87,6 +88,6 @@ export function FooterContent({
           </button>
         </div>
       </div>
-    </div>
+    </Reveal>
   );
 }
