@@ -8,7 +8,7 @@ import { leadSchema, type LeadFormValues } from "@/features/leads/schemas";
 import { submitLead } from "@/features/leads/mutations";
 import type { PublicServiceDetail } from "@/features/services/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
-import { t, translateValidation } from "@/lib/i18n/ui-strings";
+import { t, tWithNumber, translateValidation } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
 
 const BUDGET_RANGES = ["€1k–€3k", "€3k–€5k", "€5k–€10k", "€10k+"];
@@ -129,6 +129,23 @@ function ChevronDownIcon() {
   );
 }
 
+function CheckIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      className="size-3"
+    >
+      <path
+        fillRule="evenodd"
+        d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l4.894 4.893 8.48-12.72a.75.75 0 0 1 1.04-.208Z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
 function SendIcon() {
   return (
     <svg
@@ -218,8 +235,28 @@ export function ContactForm({
 }) {
   const [submitted, setSubmitted] = React.useState(false);
   const [serverError, setServerError] = React.useState<string | null>(null);
-  const [selectedServiceId, setSelectedServiceId] = React.useState("");
+  const [servicesOpen, setServicesOpen] = React.useState(false);
+  const [budgetOpen, setBudgetOpen] = React.useState(false);
+  const [selectedServiceIds, setSelectedServiceIds] = React.useState<string[]>(
+    []
+  );
   const [budgetRange, setBudgetRange] = React.useState("");
+  const servicesRef = React.useRef<HTMLDivElement>(null);
+  const budgetRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      const target = event.target as Node;
+      if (servicesRef.current && !servicesRef.current.contains(target)) {
+        setServicesOpen(false);
+      }
+      if (budgetRef.current && !budgetRef.current.contains(target)) {
+        setBudgetOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const {
     register,
@@ -242,6 +279,18 @@ export function ContactForm({
     },
   });
 
+  const selectedServices = services.filter((s) =>
+    selectedServiceIds.includes(s.id)
+  );
+
+  function toggleService(serviceId: string) {
+    const next = selectedServiceIds.includes(serviceId)
+      ? selectedServiceIds.filter((id) => id !== serviceId)
+      : [...selectedServiceIds, serviceId];
+    setSelectedServiceIds(next);
+    setValue("requested_service_ids", next);
+  }
+
   async function onSubmit(values: z.input<typeof leadSchema>) {
     setServerError(null);
     const result = await submitLead({
@@ -251,7 +300,7 @@ export function ContactForm({
     } as LeadFormValues);
     if (result.success) {
       setSubmitted(true);
-      setSelectedServiceId("");
+      setSelectedServiceIds([]);
       setBudgetRange("");
       reset();
     } else {
@@ -332,74 +381,170 @@ export function ContactForm({
 
       {/* Service + Budget */}
       <div className="grid grid-cols-2 gap-3 sm:gap-4">
-        {/* Service select */}
-        <FieldShell
-          label={t(locale, "serviceNeeded")}
-          required
-          icon={<LayersIcon />}
-        >
-          <select
-            value={selectedServiceId}
-            onChange={(event) => {
-              const value = event.target.value;
-              setSelectedServiceId(value);
-              setValue("requested_service_ids", value ? [value] : []);
-            }}
-            className={cn(
-              fieldBase,
-              fieldWithLeftIcon,
-              fieldWithRightChevron,
-              "appearance-none",
-              !selectedServiceId && "text-field-placeholder"
-            )}
-          >
-            <option value="" disabled className="bg-field-bg">
-              {t(locale, "selectService")}
-            </option>
-            {services.map((service) => (
-              <option key={service.id} value={service.id} className="bg-field-bg">
-                {resolveTranslation(service.title_translations, locale)}
-              </option>
-            ))}
-          </select>
-          <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-primary">
-            <ChevronDownIcon />
-          </span>
-        </FieldShell>
+        {/* Service dropdown (multi-select) */}
+        <div ref={servicesRef} className="min-w-0">
+          <label className="mb-1.5 block text-xs font-medium text-text-secondary sm:text-sm">
+            {t(locale, "serviceNeeded")}
+            <span className="ml-1 text-field-placeholder">*</span>
+          </label>
+          <div className="relative">
+            <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-primary">
+              <LayersIcon />
+            </span>
+            <button
+              type="button"
+              aria-haspopup="listbox"
+              aria-expanded={servicesOpen}
+              onClick={() => setServicesOpen((v) => !v)}
+              className={cn(fieldBase, fieldWithLeftIcon, fieldWithRightChevron, "text-left")}
+            >
+              <span
+                className={cn(
+                  "min-w-0 flex-1 truncate",
+                  selectedServices.length > 0
+                    ? "text-field-text"
+                    : "text-field-placeholder"
+                )}
+              >
+                {selectedServices.length === 0
+                  ? t(locale, "selectServices")
+                  : selectedServices.length === 1
+                    ? resolveTranslation(selectedServices[0].title_translations, locale)
+                    : tWithNumber(locale, "servicesSelected", selectedServices.length)}
+              </span>
+            </button>
+            <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-primary">
+              <ChevronDownIcon />
+            </span>
+            {servicesOpen ? (
+              <div
+                role="listbox"
+                aria-multiselectable="true"
+                aria-label={t(locale, "serviceNeeded")}
+                className="absolute z-30 mt-2 w-full rounded-xl border border-card-border bg-card-dark py-2 shadow-2xl max-h-56 overflow-y-auto"
+              >
+                {services.map((service) => {
+                  const selected = selectedServiceIds.includes(service.id);
+                  return (
+                    <button
+                      key={service.id}
+                      type="button"
+                      role="option"
+                      aria-selected={selected}
+                      onClick={() => toggleService(service.id)}
+                      className="flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-white/[0.03]"
+                    >
+                      <span
+                        className={cn(
+                          "flex size-4 shrink-0 items-center justify-center rounded border transition-all duration-150",
+                          selected
+                            ? "border-primary bg-primary text-text-inverse"
+                            : "border-card-border"
+                        )}
+                      >
+                        {selected ? <CheckIcon /> : null}
+                      </span>
+                      <span
+                        className={cn(
+                          "truncate text-sm transition-colors",
+                          selected
+                            ? "font-medium text-text-primary"
+                            : "text-text-secondary"
+                        )}
+                      >
+                        {resolveTranslation(service.title_translations, locale)}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            ) : null}
+          </div>
+        </div>
 
-        {/* Budget select */}
-        <FieldShell
-          label={t(locale, "estimatedBudget")}
-          icon={<WalletIcon />}
-        >
-          <select
-            value={budgetRange}
-            onChange={(event) => {
-              const value = event.target.value;
-              setBudgetRange(value);
-              setValue("budget_range", value);
-            }}
-            className={cn(
-              fieldBase,
-              fieldWithLeftIcon,
-              fieldWithRightChevron,
-              "appearance-none",
-              !budgetRange && "text-field-placeholder"
-            )}
-          >
-            <option value="" className="bg-field-bg">
-              {t(locale, "notSureYet")}
-            </option>
-            {BUDGET_RANGES.map((range) => (
-              <option key={range} value={range} className="bg-field-bg">
-                {range}
-              </option>
-            ))}
-          </select>
-          <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-primary">
-            <ChevronDownIcon />
-          </span>
-        </FieldShell>
+        {/* Budget dropdown */}
+        <div ref={budgetRef} className="min-w-0">
+          <label className="mb-1.5 block text-xs font-medium text-text-secondary sm:text-sm">
+            {t(locale, "estimatedBudget")}
+          </label>
+          <div className="relative">
+            <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-primary">
+              <WalletIcon />
+            </span>
+            <button
+              type="button"
+              aria-haspopup="listbox"
+              aria-expanded={budgetOpen}
+              onClick={() => setBudgetOpen((v) => !v)}
+              className={cn(fieldBase, fieldWithLeftIcon, fieldWithRightChevron, "text-left")}
+            >
+              <span
+                className={cn(
+                  "min-w-0 flex-1 truncate",
+                  budgetRange ? "text-field-text" : "text-field-placeholder"
+                )}
+              >
+                {budgetRange || t(locale, "notSureYet")}
+              </span>
+            </button>
+            <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-primary">
+              <ChevronDownIcon />
+            </span>
+            {budgetOpen ? (
+              <div
+                role="listbox"
+                aria-label={t(locale, "estimatedBudget")}
+                className="absolute z-30 mt-2 w-full rounded-xl border border-card-border bg-card-dark py-2 shadow-2xl max-h-56 overflow-y-auto"
+              >
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected={budgetRange === ""}
+                  onClick={() => {
+                    setBudgetRange("");
+                    setValue("budget_range", "");
+                    setBudgetOpen(false);
+                  }}
+                  className={cn(
+                    "flex w-full items-center justify-between px-4 py-2.5 text-left text-sm transition-colors hover:bg-white/[0.03]",
+                    budgetRange === "" ? "font-medium text-primary" : "text-text-secondary"
+                  )}
+                >
+                  {t(locale, "notSureYet")}
+                </button>
+                {BUDGET_RANGES.map((range) => {
+                  const selected = budgetRange === range;
+                  return (
+                    <button
+                      key={range}
+                      type="button"
+                      role="option"
+                      aria-selected={selected}
+                      onClick={() => {
+                        setBudgetRange(range);
+                        setValue("budget_range", range);
+                        setBudgetOpen(false);
+                      }}
+                      className={cn(
+                        "flex w-full items-center justify-between px-4 py-2.5 text-left text-sm transition-colors hover:bg-white/[0.03]",
+                        selected
+                          ? "font-medium text-primary"
+                          : "text-text-secondary"
+                      )}
+                    >
+                      {range}
+                      {selected ? (
+                        <span className="text-primary">
+                          <CheckIcon />
+                        </span>
+                      ) : null}
+                    </button>
+                  );
+                })}
+              </div>
+            ) : null}
+          </div>
+        </div>
       </div>
 
       {/* Message */}
