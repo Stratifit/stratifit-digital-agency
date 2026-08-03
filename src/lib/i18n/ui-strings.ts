@@ -66,8 +66,9 @@ export type UiStringKey =
   | "heroEyebrowFallback"
   | "viewSite"
   | "contactEyebrow"
-  | "letsTalk"
-  | "contactPopupDescription"
+  | "getInTouch"
+  | "popupHeadingA"
+  | "popupHeadingB"
   | "closePopup";
 
 type UiStrings = Record<UiStringKey, string>;
@@ -141,9 +142,9 @@ const en: UiStrings = {
   heroEyebrowFallback: "Premium Digital Agency",
   viewSite: "View site",
   contactEyebrow: "Contact",
-  letsTalk: "Let's Talk",
-  contactPopupDescription:
-    "Ready to start your project? Fill out the form and we'll get back to you within 24 hours.",
+  getInTouch: "Get in Touch",
+  popupHeadingA: "Tell us about your",
+  popupHeadingB: "project",
   closePopup: "Close",
 };
 
@@ -217,9 +218,9 @@ const de: UiStrings = {
   heroEyebrowFallback: "Premium-Digitalagentur",
   viewSite: "Website ansehen",
   contactEyebrow: "Kontakt",
-  letsTalk: "Sprechen wir",
-  contactPopupDescription:
-    "Bereit, Ihr Projekt zu starten? Füllen Sie das Formular aus, und wir melden uns innerhalb von 24 Stunden.",
+  getInTouch: "Kontakt aufnehmen",
+  popupHeadingA: "Erzählen Sie uns von Ihrem",
+  popupHeadingB: "Projekt",
   closePopup: "Schließen",
 };
 
@@ -293,9 +294,9 @@ const fr: UiStrings = {
   heroEyebrowFallback: "Agence digitale premium",
   viewSite: "Voir le site",
   contactEyebrow: "Contact",
-  letsTalk: "Parlons-en",
-  contactPopupDescription:
-    "Prêt à démarrer votre projet ? Remplissez le formulaire et nous vous répondrons sous 24 heures.",
+  getInTouch: "Prenez contact",
+  popupHeadingA: "Parlez-nous de votre",
+  popupHeadingB: "projet",
   closePopup: "Fermer",
 };
 
@@ -369,9 +370,9 @@ const es: UiStrings = {
   heroEyebrowFallback: "Agencia digital premium",
   viewSite: "Ver sitio",
   contactEyebrow: "Contacto",
-  letsTalk: "Hablemos",
-  contactPopupDescription:
-    "¿Listo para comenzar tu proyecto? Completa el formulario y te responderemos en 24 horas.",
+  getInTouch: "Ponte en contacto",
+  popupHeadingA: "Cuéntanos sobre tu",
+  popupHeadingB: "proyecto",
   closePopup: "Cerrar",
 };
 

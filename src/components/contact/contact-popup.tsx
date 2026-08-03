@@ -70,7 +70,7 @@ export function ContactPopup({
         onClick={() => setOpen(false)}
         className="contact-popup-backdrop fixed inset-0 bg-black/70 backdrop-blur-sm"
       />
-      <div className="contact-popup-panel relative mx-auto my-8 w-full max-w-3xl rounded-card-lg border border-card-border bg-card-dark p-6 shadow-shadow-lg sm:p-10">
+      <div className="contact-popup-panel relative mx-auto my-8 w-full max-w-2xl rounded-card-lg border border-card-border bg-card-dark p-6 shadow-shadow-lg sm:p-8">
         <button
           ref={closeButtonRef}
           type="button"
@@ -91,21 +91,17 @@ export function ContactPopup({
           </svg>
         </button>
 
-        <div className="mb-8">
-          <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-            {t(locale, "contactEyebrow")}
+        <div className="mb-6">
+          <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.3em] text-primary">
+            {t(locale, "getInTouch")}
           </p>
-          <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl">
-            {t(locale, "letsTalk")}
+          <h2 className="font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
+            {t(locale, "popupHeadingA")}{" "}
+            <span className="text-primary">{t(locale, "popupHeadingB")}</span>
           </h2>
-          <p className="mt-3 max-w-2xl border-l-2 border-primary/50 pl-4 text-sm leading-relaxed text-text-muted sm:pl-6 sm:text-base md:text-lg">
-            {t(locale, "contactPopupDescription")}
-          </p>
         </div>
 
-        <div className="mx-auto max-w-2xl">
-          <ContactForm services={services} locale={locale} />
-        </div>
+        <ContactForm services={services} locale={locale} compact />
       </div>
     </div>
   );
