@@ -69,16 +69,18 @@ function TrustBadges({ locale }: { locale: string }) {
       {badges.map((badge, idx) => (
         <div
           key={idx}
-          className="flex items-center justify-center gap-1.5 px-2 text-center sm:gap-2"
+          className="flex items-start justify-center gap-1.5 px-2 text-center sm:gap-2"
         >
-          <span className="shrink-0 text-primary">{badge.icon}</span>
-          <div className="text-left leading-tight">
-            <span className="text-[9px] font-semibold text-text-primary sm:text-[11px]">
+          <span className="mt-[1px] shrink-0 text-primary sm:mt-0.5">
+            {badge.icon}
+          </span>
+          <div className="min-w-0 text-left leading-snug">
+            <p className="text-[9px] font-semibold text-text-primary sm:text-[11px]">
               {badge.title}
-            </span>
-            <span className="ml-0.5 text-[8px] text-text-muted sm:text-[10px]">
+            </p>
+            <p className="mt-0.5 text-[8px] leading-[1.4] text-text-muted sm:text-[10px]">
               {badge.desc}
-            </span>
+            </p>
           </div>
         </div>
       ))}
