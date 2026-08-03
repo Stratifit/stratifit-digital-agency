@@ -63,6 +63,17 @@ export type UiStringKey =
   | "chatEscalated"
   | "chatOffline"
   | "chatError"
+  | "chatName"
+  | "chatOnline"
+  | "chatGreeting"
+  | "chatChat"
+  | "chatFaq"
+  | "chatServices"
+  | "chatPricing"
+  | "chatSupport"
+  | "chatAbout"
+  | "chatHelp"
+  | "chatContact"
   | "heroEyebrowFallback"
   | "viewSite"
   | "contactEyebrow"
@@ -152,6 +163,18 @@ const en: UiStrings = {
   chatEscalated: "A team member has been notified and will help shortly.",
   chatOffline: "We're offline right now. Leave a message and we'll get back to you.",
   chatError: "Something went wrong. Please try again.",
+  chatName: "Stratifit AI",
+  chatOnline: "Online",
+  chatGreeting:
+    "👋 Hi! I'm Stratifit AI — here to help. What would you like to know?",
+  chatChat: "Chat",
+  chatFaq: "FAQ",
+  chatServices: "Services",
+  chatPricing: "Pricing",
+  chatSupport: "Support",
+  chatAbout: "About",
+  chatHelp: "Help",
+  chatContact: "Contact",
   heroEyebrowFallback: "Premium Digital Agency",
   viewSite: "View site",
   contactEyebrow: "Contact",
@@ -242,6 +265,18 @@ const de: UiStrings = {
   chatOffline:
     "Wir sind gerade offline. Hinterlassen Sie eine Nachricht, wir melden uns.",
   chatError: "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+  chatName: "Stratifit AI",
+  chatOnline: "Online",
+  chatGreeting:
+    "👋 Hallo! Ich bin Stratifit AI — wie kann ich Ihnen helfen?",
+  chatChat: "Chat",
+  chatFaq: "FAQ",
+  chatServices: "Leistungen",
+  chatPricing: "Preise",
+  chatSupport: "Support",
+  chatAbout: "Über uns",
+  chatHelp: "Hilfe",
+  chatContact: "Kontakt",
   heroEyebrowFallback: "Premium-Digitalagentur",
   viewSite: "Website ansehen",
   contactEyebrow: "Kontakt",
@@ -332,6 +367,18 @@ const fr: UiStrings = {
   chatOffline:
     "Nous sommes hors ligne. Laissez un message, nous vous répondrons.",
   chatError: "Une erreur est survenue. Veuillez réessayer.",
+  chatName: "Stratifit AI",
+  chatOnline: "En ligne",
+  chatGreeting:
+    "👋 Bonjour ! Je suis Stratifit AI — comment puis-je vous aider ?",
+  chatChat: "Chat",
+  chatFaq: "FAQ",
+  chatServices: "Services",
+  chatPricing: "Tarifs",
+  chatSupport: "Support",
+  chatAbout: "À propos",
+  chatHelp: "Aide",
+  chatContact: "Contact",
   heroEyebrowFallback: "Agence digitale premium",
   viewSite: "Voir le site",
   contactEyebrow: "Contact",
@@ -422,6 +469,18 @@ const es: UiStrings = {
   chatOffline:
     "Estamos fuera de línea. Deja un mensaje y te responderemos.",
   chatError: "Algo salió mal. Inténtalo de nuevo.",
+  chatName: "Stratifit AI",
+  chatOnline: "En línea",
+  chatGreeting:
+    "👋 ¡Hola! Soy Stratifit AI — ¿en qué puedo ayudarte?",
+  chatChat: "Chat",
+  chatFaq: "FAQ",
+  chatServices: "Servicios",
+  chatPricing: "Precios",
+  chatSupport: "Soporte",
+  chatAbout: "Nosotros",
+  chatHelp: "Ayuda",
+  chatContact: "Contacto",
   heroEyebrowFallback: "Agencia digital premium",
   viewSite: "Ver sitio",
   contactEyebrow: "Contacto",
