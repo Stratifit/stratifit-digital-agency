@@ -170,7 +170,7 @@ function ArrowRightIcon() {
 // ============================================================================
 
 const fieldBase =
-  "h-11 w-full rounded-xl border border-card-border bg-transparent text-sm text-text-primary outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/30 focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60 sm:h-12 sm:rounded-2xl";
+  "h-11 w-full rounded-xl border border-field-border bg-field-bg text-sm text-field-text placeholder:text-field-placeholder outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60 sm:h-12 sm:rounded-2xl";
 
 const fieldWithLeftIcon = "pl-11 pr-4";
 const fieldWithRightChevron = "pr-9";
@@ -350,14 +350,14 @@ export function ContactForm({
               fieldWithLeftIcon,
               fieldWithRightChevron,
               "appearance-none",
-              !selectedServiceId && "text-text-secondary"
+              !selectedServiceId && "text-field-placeholder"
             )}
           >
-            <option value="" disabled className="bg-card-dark">
+            <option value="" disabled className="bg-field-bg">
               {t(locale, "selectService")}
             </option>
             {services.map((service) => (
-              <option key={service.id} value={service.id} className="bg-card-dark">
+              <option key={service.id} value={service.id} className="bg-field-bg">
                 {resolveTranslation(service.title_translations, locale)}
               </option>
             ))}
@@ -384,14 +384,14 @@ export function ContactForm({
               fieldWithLeftIcon,
               fieldWithRightChevron,
               "appearance-none",
-              !budgetRange && "text-text-secondary"
+              !budgetRange && "text-field-placeholder"
             )}
           >
-            <option value="" className="bg-card-dark">
+            <option value="" className="bg-field-bg">
               {t(locale, "notSureYet")}
             </option>
             {BUDGET_RANGES.map((range) => (
-              <option key={range} value={range} className="bg-card-dark">
+              <option key={range} value={range} className="bg-field-bg">
                 {range}
               </option>
             ))}
@@ -416,7 +416,7 @@ export function ContactForm({
         <textarea
           rows={compact ? 3 : 4}
           className={cn(
-            "w-full resize-none rounded-xl border border-card-border bg-transparent py-3 pl-11 pr-4 text-sm leading-5 text-text-primary outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/30 focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60 sm:rounded-2xl",
+            "w-full resize-none rounded-xl border border-field-border bg-field-bg py-3 pl-11 pr-4 text-sm leading-5 text-field-text placeholder:text-field-placeholder outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60 sm:rounded-2xl",
             compact ? "h-[82px]" : "h-28"
           )}
           placeholder={t(locale, "tellUsProject")}
