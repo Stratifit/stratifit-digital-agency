@@ -940,11 +940,6 @@ export function ChatWidget() {
                   <div className="min-w-0 max-w-[82%]">
                     <AiSenderLabel locale={locale} />
                     <div className="relative overflow-hidden rounded-2xl rounded-bl-md border border-border bg-card-dark px-4 py-3.5">
-                      {/* Soft ambient glow behind the content */}
-                      <div
-                        aria-hidden="true"
-                        className="pointer-events-none absolute -right-10 -top-14 size-32 rounded-full bg-primary/10 blur-2xl"
-                      />
                       <div className="relative">
                         <p className="text-sm font-semibold leading-snug text-text-primary">
                           {welcomeParts[0]}
