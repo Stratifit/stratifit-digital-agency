@@ -925,7 +925,7 @@ export function ChatWidget() {
                 <p className="font-display text-sm font-black text-text-primary">
                   {t(locale, "chatName")}
                 </p>
-                <span className="inline-flex items-center gap-1">
+                <span className="-mt-0.5 inline-flex items-center gap-1">
                   <span
                     className={cn(
                       "size-1 rounded-full bg-success",
