@@ -2,6 +2,7 @@ import { AnnouncementBar } from "@/components/layout/announcement-bar";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { ChatWidget } from "@/components/chat/chat-widget";
+import { ScrollTriggerSync } from "@/components/layout/scroll-trigger-sync";
 
 export default function PublicLayout({
   children,
@@ -10,6 +11,7 @@ export default function PublicLayout({
 }>) {
   return (
     <>
+      <ScrollTriggerSync />
       <a
         href="#main"
         className="skip-link"
