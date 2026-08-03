@@ -1,7 +1,7 @@
 import { cn } from "@/lib/cn";
 import type { PublicSectionSettings } from "@/features/section-settings/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
-import { Reveal } from "@/components/ui/reveal";
+import { SectionHeadingReveal } from "@/components/ui/section-heading-reveal";
 
 export function SectionHeader({
   settings,
@@ -35,12 +35,12 @@ export function SectionHeader({
   const centered = align === "center";
 
   return (
-    <Reveal
-      variant="revealUp"
+    <SectionHeadingReveal
       className={cn("mb-10 md:mb-16", centered && "text-center", className)}
     >
       {eyebrow ? (
         <p
+          data-sh
           className={cn(
             "mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary",
             centered && "mx-auto"
@@ -55,12 +55,16 @@ export function SectionHeader({
           {eyebrow}
         </p>
       ) : null}
-      <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
+      <h2
+        data-sh
+        className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl lg:text-6xl md:leading-none"
+      >
         <span>{title}</span>
         {highlight ? <span className="text-primary"> {highlight}</span> : null}
       </h2>
       {description ? (
         <p
+          data-sh
           className={cn(
             "mt-3 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg",
             centered
@@ -71,6 +75,6 @@ export function SectionHeader({
           {description}
         </p>
       ) : null}
-    </Reveal>
+    </SectionHeadingReveal>
   );
 }
