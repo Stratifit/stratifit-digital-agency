@@ -1215,9 +1215,7 @@ export function ChatWidget() {
                                   <div className="mt-3 flex items-center justify-between gap-2 border-t border-border pt-2.5">
                                     <button
                                       type="button"
-                                      disabled={
-                                        loading || m.answered || m.choice === "yes"
-                                      }
+                                      disabled={loading}
                                       onClick={() => handleChoice("yes")}
                                       className={cn(
                                         "rounded-md border bg-transparent px-2.5 py-1.5 text-[9px] font-semibold transition-all active:scale-[0.98] disabled:cursor-not-allowed",
@@ -1230,7 +1228,7 @@ export function ChatWidget() {
                                     </button>
                                     <button
                                       type="button"
-                                      disabled={loading || m.answered}
+                                      disabled={loading}
                                       onClick={() => handleChoice("later")}
                                       className={cn(
                                         "rounded-md border bg-transparent px-2.5 py-1.5 text-[9px] font-semibold transition-all active:scale-[0.98] disabled:cursor-not-allowed",
