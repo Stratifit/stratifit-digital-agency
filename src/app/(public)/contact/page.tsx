@@ -14,6 +14,7 @@ export const metadata = pageMetadata({
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { ContactForm } from "@/components/forms/contact-form";
+import { Reveal } from "@/components/ui/reveal";
 
 export default async function ContactPage() {
   const locale = await getLocale();
@@ -40,6 +41,7 @@ export default async function ContactPage() {
 
       <Section>
         <Container>
+          <Reveal variant="fade">
           <div className="overflow-hidden rounded-card-lg border border-card-border bg-card-dark">
             <div className="grid lg:grid-cols-5">
               <div className="p-8 sm:p-10 lg:col-span-2 lg:border-r lg:border-card-border">
@@ -79,6 +81,7 @@ export default async function ContactPage() {
               </div>
             </div>
           </div>
+          </Reveal>
         </Container>
       </Section>
     </>

@@ -9,6 +9,7 @@ export const metadata = pageMetadata({
 
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
+import { Reveal } from "@/components/ui/reveal";
 
 export default async function ImprintPage() {
   const settings = await getPublicSiteSettings();
@@ -25,6 +26,7 @@ export default async function ImprintPage() {
       </section>
       <Section>
         <Container className="max-w-3xl">
+          <Reveal variant="fade">
           <div className="space-y-6 text-sm leading-7 text-text-secondary">
             <div>
               <h2 className="text-lg font-semibold text-text-primary">Company</h2>
@@ -64,6 +66,7 @@ export default async function ImprintPage() {
               company information before launch.
             </p>
           </div>
+          </Reveal>
         </Container>
       </Section>
     </>

@@ -8,6 +8,7 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
 import { LinkButton } from "@/components/ui/link-button";
+import { Reveal } from "@/components/ui/reveal";
 import Image from "next/image";
 
 export async function generateMetadata({
@@ -118,6 +119,7 @@ export default async function WorkDetailPage({
 
       <Section>
         <Container>
+          <Reveal variant="fade">
           <div className="space-y-8">
             {block("Challenge", resolveTranslation(project.challenge_translations, locale))}
             {block("Approach", resolveTranslation(project.approach_translations, locale))}
@@ -140,6 +142,7 @@ export default async function WorkDetailPage({
               </div>
             ) : null}
           </div>
+          </Reveal>
 
           <div className="mt-12">
             <Card className="p-6">

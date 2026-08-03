@@ -1,6 +1,7 @@
 import { cn } from "@/lib/cn";
 import type { PublicSectionSettings } from "@/features/section-settings/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { Reveal } from "@/components/ui/reveal";
 
 export function SectionHeader({
   settings,
@@ -34,7 +35,10 @@ export function SectionHeader({
   const centered = align === "center";
 
   return (
-    <div className={cn("mb-10 md:mb-16", centered && "text-center", className)}>
+    <Reveal
+      variant="revealUp"
+      className={cn("mb-10 md:mb-16", centered && "text-center", className)}
+    >
       {eyebrow ? (
         <p
           className={cn(
@@ -67,6 +71,6 @@ export function SectionHeader({
           {description}
         </p>
       ) : null}
-    </div>
+    </Reveal>
   );
 }

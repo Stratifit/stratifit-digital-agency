@@ -1,6 +1,7 @@
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { pageMetadata } from "@/lib/seo";
+import { Reveal } from "@/components/ui/reveal";
 
 export const metadata = pageMetadata({
   title: "Cookie Policy — Stratifit",
@@ -21,6 +22,7 @@ export default function CookiePolicyPage() {
       </section>
       <Section>
         <Container className="max-w-3xl">
+          <Reveal variant="fade">
           <div className="space-y-6 text-sm leading-7 text-text-secondary">
             <p>
               This cookie policy explains how Stratifit uses cookies and similar
@@ -51,6 +53,7 @@ export default function CookiePolicyPage() {
               legal counsel before launch.
             </p>
           </div>
+          </Reveal>
         </Container>
       </Section>
     </>

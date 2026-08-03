@@ -2,6 +2,7 @@
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { LinkButton } from "@/components/ui/link-button";
+import { HeroEntrance } from "./hero-entrance";
 
 interface HeroMetric {
   value: string;
@@ -128,14 +129,21 @@ export async function HeroSection() {
       </div>
 
       <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center px-4 text-center lg:px-8">
+        <HeroEntrance>
         {eyebrow ? (
-          <div className="mb-[31px] inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-3 py-1.5 text-xs font-medium tracking-wide text-primary">
+          <div
+            data-hero
+            className="mb-[31px] inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-3 py-1.5 text-xs font-medium tracking-wide text-primary"
+          >
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
             {eyebrow}
           </div>
         ) : null}
 
-        <h1 className="flex flex-col items-center justify-center font-display text-[1.75rem] font-black leading-[1.15] tracking-tight text-text-primary sm:text-5xl md:text-6xl lg:text-5xl">
+        <h1
+          data-hero
+          className="flex flex-col items-center justify-center font-display text-[1.75rem] font-black leading-[1.15] tracking-tight text-text-primary sm:text-5xl md:text-6xl lg:text-5xl"
+        >
           <span className="block">{title}</span>
           {highlight ? (
             <span className="mt-1 block text-[#ffb300] lg:mt-2">
@@ -145,13 +153,19 @@ export async function HeroSection() {
         </h1>
 
         {description ? (
-          <p className="mx-auto mt-[18px] max-w-2xl text-[0.8rem] font-medium leading-snug text-text-secondary [text-shadow:0_0_1px_currentColor] sm:text-base">
+          <p
+            data-hero
+            className="mx-auto mt-[18px] max-w-2xl text-[0.8rem] font-medium leading-snug text-text-secondary [text-shadow:0_0_1px_currentColor] sm:text-base"
+          >
             {description}
           </p>
         ) : null}
 
         {primaryLabel || secondaryLabel ? (
-          <div className="mx-auto mt-[26px] flex w-full max-w-3xl flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4">
+          <div
+            data-hero
+            className="mx-auto mt-[26px] flex w-full max-w-3xl flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4"
+          >
             {primaryLabel && hero.primary_cta_url ? (
               <LinkButton
                 href={hero.primary_cta_url}
@@ -199,7 +213,7 @@ export async function HeroSection() {
         ) : null}
 
         {stats.length > 0 ? (
-          <div className="mx-auto mt-[34px] w-full max-w-2xl">
+          <div data-hero className="mx-auto mt-[34px] w-full max-w-2xl">
             <div className="grid grid-cols-3 gap-4">
               {stats.map((stat, index) => (
                 <div
@@ -219,7 +233,7 @@ export async function HeroSection() {
         ) : null}
 
         {techStack.length > 0 ? (
-          <div className="mx-auto mt-[30px] w-full max-w-4xl">
+          <div data-hero className="mx-auto mt-[30px] w-full max-w-4xl">
             {techStackHeading ? (
               <h2 className="mb-1.5 text-center text-xl font-bold tracking-tight text-text-primary sm:text-2xl">
                 {techStackHeading}
@@ -250,6 +264,7 @@ export async function HeroSection() {
             </div>
           </div>
         ) : null}
+        </HeroEntrance>
       </div>
     </section>
   );

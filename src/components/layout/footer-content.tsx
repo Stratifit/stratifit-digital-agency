@@ -4,6 +4,7 @@ import * as React from "react";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import type { PublicFooterGroup } from "@/features/footer/queries";
 import { SocialIcons } from "@/components/ui/social-icons";
+import { Reveal } from "@/components/ui/reveal";
 
 export function FooterContent({
   groups,
@@ -54,19 +55,20 @@ export function FooterContent({
         ) : null}
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
-        {groups.map((group) => (
-          <div key={group.id} className="flex flex-col gap-2.5">
-            <h4 className="mb-0.5 text-sm font-bold uppercase tracking-wider text-white">
-              {resolveTranslation(group.title_translations, locale)}
-            </h4>
-            {group.links.map((link) => (
-              <a
-                key={link.id}
-                href={link.href}
-                target={link.is_external ? "_blank" : undefined}
-                rel={link.is_external ? "noopener noreferrer" : undefined}
-                onClick={onLinkClick}
+      <Reveal variant="fade">
+        <div className="grid grid-cols-3 gap-4">
+          {groups.map((group) => (
+            <div key={group.id} className="flex flex-col gap-2.5">
+              <h4 className="mb-0.5 text-sm font-bold uppercase tracking-wider text-white">
+                {resolveTranslation(group.title_translations, locale)}
+              </h4>
+              {group.links.map((link) => (
+                <a
+                  key={link.id}
+                  href={link.href}
+                  target={link.is_external ? "_blank" : undefined}
+                  rel={link.is_external ? "noopener noreferrer" : undefined}
+                  onClick={onLinkClick}
                 className="text-xs text-text-subtle transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 {resolveTranslation(link.label_translations, locale)}
@@ -74,7 +76,8 @@ export function FooterContent({
             ))}
           </div>
         ))}
-      </div>
+        </div>
+      </Reveal>
 
       <SocialIcons socialLinks={socialLinks} />
 

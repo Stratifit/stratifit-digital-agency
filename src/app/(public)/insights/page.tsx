@@ -39,7 +39,7 @@ export default async function InsightsPage() {
           {insights.length === 0 ? (
             <p className="text-text-secondary">Articles will appear here soon.</p>
           ) : (
-            <Reveal stagger className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <Reveal stagger variant="card" className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {insights.map((insight) => (
                 <Card key={insight.slug} className="flex flex-col">
                   <h2 className="font-display text-lg font-semibold text-text-primary">

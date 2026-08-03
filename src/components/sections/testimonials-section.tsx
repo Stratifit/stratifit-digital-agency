@@ -22,7 +22,7 @@ export async function TestimonialsSection() {
     <Section>
       <Container>
         <SectionHeader settings={settings} locale={locale} align="center" />
-        <Reveal className="mt-12">
+        <Reveal variant="card" className="mt-12">
           <TestimonialsCarousel
             testimonials={testimonials}
             locale={locale}

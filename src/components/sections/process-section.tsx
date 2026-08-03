@@ -25,7 +25,7 @@ export async function ProcessSection() {
       <Container>
         <SectionHeader settings={settings} locale={locale} />
 
-        <Reveal stagger className="mt-12 hidden gap-6 md:grid md:grid-cols-2 lg:grid-cols-4">
+        <Reveal stagger variant="card" className="mt-12 hidden gap-6 md:grid md:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, index) => (
             <div key={step.step_key} className="group relative">
               <div className="relative h-full overflow-hidden rounded-card border border-card-border bg-card-dark p-6 transition-[border-color,transform,background-color] duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/20 active:translate-y-0 active:border-primary/40 active:bg-card-active focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2 md:p-8">

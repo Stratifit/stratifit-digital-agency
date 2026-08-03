@@ -23,7 +23,7 @@ export async function InsightsSection() {
     <Section>
       <Container>
         <SectionHeader settings={settings} locale={locale} />
-        <Reveal className="mt-12">
+        <Reveal variant="card" className="mt-12">
           <InsightsCarousel
             insights={insights}
             categories={categories}

@@ -6,6 +6,7 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { articleJsonLd, canonical, pageMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
+import { Reveal } from "@/components/ui/reveal";
 import Image from "next/image";
 
 export async function generateMetadata({
@@ -98,6 +99,7 @@ export default async function InsightDetailPage({
 
       <Section>
         <Container className="max-w-3xl">
+          <Reveal variant="fade">
           <div className="space-y-5">
             {paragraphs.map((paragraph, index) => (
               <p key={index} className="text-base leading-7 text-text-secondary">
@@ -105,6 +107,7 @@ export default async function InsightDetailPage({
               </p>
             ))}
           </div>
+          </Reveal>
         </Container>
       </Section>
     </>

@@ -27,7 +27,7 @@ export async function FinalCtaSection() {
   return (
     <Section>
       <Container>
-        <Reveal>
+        <Reveal variant="cta">
           <Card variant="featured" className="text-center">
           <h2 className="mx-auto max-w-2xl font-display text-3xl font-bold tracking-tight text-text-primary md:text-4xl">
             {resolveTranslation(data.title_translations, locale)}

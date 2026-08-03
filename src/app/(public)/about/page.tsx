@@ -85,7 +85,7 @@ export default async function AboutPage() {
             <h2 className="font-display text-3xl font-bold tracking-tight text-text-primary md:text-4xl">
               How We Work
             </h2>
-            <Reveal stagger className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <Reveal stagger variant="card" className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
               {process.map((step) => (
                 <Card key={step.step_key}>
                   <span className="font-display text-3xl font-bold text-primary">
@@ -110,7 +110,7 @@ export default async function AboutPage() {
             <h2 className="font-display text-3xl font-bold tracking-tight text-text-primary md:text-4xl">
               What Our Clients Say
             </h2>
-            <Reveal stagger className="mt-10 grid gap-6 md:grid-cols-3">
+            <Reveal stagger variant="card" className="mt-10 grid gap-6 md:grid-cols-3">
               {testimonials.map((t, index) => (
                 <Card key={index} className="flex flex-col">
                   <p className="flex-1 text-base leading-7 text-text-primary">

@@ -59,7 +59,7 @@ export async function ServicesSection() {
       <Container>
         <SectionHeader settings={settings} locale={locale} />
 
-        <Reveal stagger className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <Reveal stagger variant="card" className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {services.map((service) => {
             const deliverables = (
               (service.deliverables_translations as Record<string, unknown> | null)?.[

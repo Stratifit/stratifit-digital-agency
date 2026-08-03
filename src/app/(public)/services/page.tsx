@@ -39,7 +39,7 @@ export default async function ServicesPage() {
 
       <Section>
         <Container>
-          <Reveal stagger className="space-y-6">
+          <Reveal stagger variant="card" className="space-y-6">
             {services.map((service, index) => (
               <Card
                 key={service.slug}

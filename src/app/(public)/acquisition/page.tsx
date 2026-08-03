@@ -14,6 +14,7 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
 import { LinkButton } from "@/components/ui/link-button";
+import { Reveal } from "@/components/ui/reveal";
 import { FinalCtaSection } from "@/components/sections/final-cta-section";
 import { AcquisitionEnquiryForm } from "@/components/forms/acquisition-enquiry-form";
 
@@ -44,6 +45,7 @@ export default async function AcquisitionPage() {
       {section ? (
         <Section>
           <Container>
+            <Reveal variant="fade">
             <Card variant="featured">
               <h2 className="font-display text-2xl font-bold tracking-tight text-text-primary">
                 What we offer
@@ -68,12 +70,14 @@ export default async function AcquisitionPage() {
                 </div>
               ) : null}
             </Card>
+            </Reveal>
           </Container>
         </Section>
       ) : null}
 
       <Section>
         <Container>
+          <Reveal variant="fade">
           <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
             <div>
               <p className="text-sm font-medium uppercase tracking-widest text-primary">
@@ -99,6 +103,7 @@ export default async function AcquisitionPage() {
               />
             </Card>
           </div>
+          </Reveal>
         </Container>
       </Section>
 
