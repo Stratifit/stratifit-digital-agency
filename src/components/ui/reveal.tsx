@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { gsap, useGSAP } from "@/lib/animation/gsap";
+import { gsap, ScrollTrigger, useGSAP } from "@/lib/animation/gsap";
 import {
   MOBILE_BLOCK_FROM,
   MOBILE_CARD_FROM,
@@ -95,6 +95,19 @@ export function Reveal({
     },
     { scope: containerRef }
   );
+
+  // Correct ScrollTrigger positions that were measured while a grid was still
+  // display:none (e.g. breakpoint-based grids). Refreshing after layout and on
+  // window load prevents reveals from firing at the wrong scroll position.
+  React.useEffect(() => {
+    const refresh = () => ScrollTrigger.refresh();
+    const raf = requestAnimationFrame(() => ScrollTrigger.refresh());
+    window.addEventListener("load", refresh);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("load", refresh);
+    };
+  }, []);
 
   return (
     <div ref={containerRef} className={className}>
