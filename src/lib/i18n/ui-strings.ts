@@ -74,6 +74,18 @@ export type UiStringKey =
   | "chatAbout"
   | "chatHelp"
   | "chatContact"
+  | "chatWelcomeTitle"
+  | "chatWelcome"
+  | "chatDataSafe"
+  | "chatReadMore"
+  | "chatPrivacyNote"
+  | "chatEmailQuestion"
+  | "chatYes"
+  | "chatMaybeLater"
+  | "chatThanks"
+  | "chatYourNamePlaceholder"
+  | "chatYourEmailPlaceholder"
+  | "chatEditName"
   | "heroEyebrowFallback"
   | "viewSite"
   | "contactEyebrow"
@@ -175,6 +187,22 @@ const en: UiStrings = {
   chatAbout: "About",
   chatHelp: "Help",
   chatContact: "Contact",
+  chatWelcomeTitle: "Welcome to Stratifit",
+  chatWelcome:
+    "Welcome to Stratifit — your digital agency for growth. What's your name? It helps me personalize your chat. Email is optional and only used for follow-ups.",
+  chatDataSafe: "Your data is safe",
+  chatReadMore: "Read more",
+  chatPrivacyNote:
+    "We only use your details to respond to your enquiry. We never share them with third parties.",
+  chatEmailQuestion:
+    "Great, {name}! Would you like to share your email for follow-ups? It's only used for business communication.",
+  chatYes: "Yes",
+  chatMaybeLater: "Maybe later",
+  chatThanks:
+    "Thanks for trusting Stratifit — your details are noted and we'll follow up if needed. What would you like to know?",
+  chatYourNamePlaceholder: "Your name...",
+  chatYourEmailPlaceholder: "you@company.com",
+  chatEditName: "Edit name",
   heroEyebrowFallback: "Premium Digital Agency",
   viewSite: "View site",
   contactEyebrow: "Contact",
@@ -277,6 +305,22 @@ const de: UiStrings = {
   chatAbout: "Über uns",
   chatHelp: "Hilfe",
   chatContact: "Kontakt",
+  chatWelcomeTitle: "Willkommen bei Stratifit",
+  chatWelcome:
+    "Willkommen bei Stratifit — Ihre Digitalagentur für Wachstum. Wie heißen Sie? So kann ich den Chat personalisieren. Die E-Mail ist optional und wird nur für Follow-ups verwendet.",
+  chatDataSafe: "Ihre Daten sind sicher",
+  chatReadMore: "Mehr erfahren",
+  chatPrivacyNote:
+    "Wir verwenden Ihre Daten nur zur Beantwortung Ihrer Anfrage. Wir geben sie niemals an Dritte weiter.",
+  chatEmailQuestion:
+    "Großartig, {name}! Möchten Sie Ihre E-Mail für Follow-ups hinterlassen? Sie wird nur für geschäftliche Kommunikation verwendet.",
+  chatYes: "Ja",
+  chatMaybeLater: "Vielleicht später",
+  chatThanks:
+    "Danke für Ihr Vertrauen in Stratifit — Ihre Angaben sind notiert und wir melden uns bei Bedarf. Womit kann ich helfen?",
+  chatYourNamePlaceholder: "Ihr Name...",
+  chatYourEmailPlaceholder: "sie@firma.com",
+  chatEditName: "Namen bearbeiten",
   heroEyebrowFallback: "Premium-Digitalagentur",
   viewSite: "Website ansehen",
   contactEyebrow: "Kontakt",
@@ -379,6 +423,22 @@ const fr: UiStrings = {
   chatAbout: "À propos",
   chatHelp: "Aide",
   chatContact: "Contact",
+  chatWelcomeTitle: "Bienvenue chez Stratifit",
+  chatWelcome:
+    "Bienvenue chez Stratifit — votre agence digitale pour la croissance. Quel est votre prénom ? Cela m'aide à personnaliser le chat. L'e-mail est facultatif et sert uniquement aux relances.",
+  chatDataSafe: "Vos données sont en sécurité",
+  chatReadMore: "En savoir plus",
+  chatPrivacyNote:
+    "Nous n'utilisons vos informations que pour répondre à votre demande. Nous ne les partageons jamais avec des tiers.",
+  chatEmailQuestion:
+    "Parfait, {name} ! Souhaitez-vous partager votre e-mail pour les relances ? Il n'est utilisé que pour la communication professionnelle.",
+  chatYes: "Oui",
+  chatMaybeLater: "Peut-être plus tard",
+  chatThanks:
+    "Merci de faire confiance à Stratifit — vos informations sont notées et nous vous suivrons si besoin. Que souhaitez-vous savoir ?",
+  chatYourNamePlaceholder: "Votre prénom...",
+  chatYourEmailPlaceholder: "vous@entreprise.com",
+  chatEditName: "Modifier le nom",
   heroEyebrowFallback: "Agence digitale premium",
   viewSite: "Voir le site",
   contactEyebrow: "Contact",
@@ -481,6 +541,22 @@ const es: UiStrings = {
   chatAbout: "Nosotros",
   chatHelp: "Ayuda",
   chatContact: "Contacto",
+  chatWelcomeTitle: "Bienvenido a Stratifit",
+  chatWelcome:
+    "Bienvenido a Stratifit — tu agencia digital para el crecimiento. ¿Cómo te llamas? Me ayuda a personalizar el chat. El correo es opcional y solo se usa para seguimiento.",
+  chatDataSafe: "Tus datos están seguros",
+  chatReadMore: "Leer más",
+  chatPrivacyNote:
+    "Solo usamos tus datos para responder a tu consulta. Nunca los compartimos con terceros.",
+  chatEmailQuestion:
+    "¡Genial, {name}! ¿Te gustaría compartir tu correo para seguimiento? Solo se usa para comunicación comercial.",
+  chatYes: "Sí",
+  chatMaybeLater: "Quizás más tarde",
+  chatThanks:
+    "Gracias por confiar en Stratifit — tus datos quedan registrados y te seguiremos si es necesario. ¿Qué te gustaría saber?",
+  chatYourNamePlaceholder: "Tu nombre...",
+  chatYourEmailPlaceholder: "usted@empresa.com",
+  chatEditName: "Editar nombre",
   heroEyebrowFallback: "Agencia digital premium",
   viewSite: "Ver sitio",
   contactEyebrow: "Contacto",

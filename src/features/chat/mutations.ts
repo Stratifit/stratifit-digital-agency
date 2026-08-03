@@ -4,6 +4,8 @@ import type { ActionResult } from "@/types/action-result";
 import { createHash } from "crypto";
 import { z } from "zod";
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/service-role";
+import { t } from "@/lib/i18n/ui-strings";
+import type { Json } from "@/types/database.types";
 import { getChatbotSettings, getApprovedKnowledge } from "./knowledge";
 import { getChatProvider } from "./ai";
 
@@ -209,5 +211,304 @@ export async function sendVisitorMessage(
       mode: conversation.mode,
     },
   };
+}
+
+// ============================================================================
+// Chat onboarding — visitor identity capture for dashboard follow-up
+// ============================================================================
+
+export interface ChatStoredMessage {
+  id: string;
+  sender_type: string;
+  content: string;
+  content_format: string;
+  created_at: string;
+}
+
+export interface ChatVisitorState {
+  name: string;
+  email: string;
+  email_choice: "yes" | "later" | null;
+  onboarding_complete: boolean;
+}
+
+const identitySchema = z.object({
+  visitor_token: z.string().min(16),
+  name: z.string().min(1).max(80),
+  locale: z.string().default("en"),
+  source_page: z.string().max(300).optional(),
+});
+
+const emailChoiceSchema = z.object({
+  visitor_token: z.string().min(16),
+  choice: z.enum(["yes", "later"]),
+  email: z.union([z.string().email(), z.literal("")]).optional(),
+  locale: z.string().default("en"),
+});
+
+interface ChatVisitorRow {
+  id: string;
+  metadata: Json;
+  preferred_locale: string;
+}
+
+interface ChatConversationRow {
+  id: string;
+  mode: string;
+  status: string;
+}
+
+async function resolveChatContext(
+  supabase: ReturnType<typeof createSupabaseServiceRoleClient>,
+  tokenHash: string,
+  locale: string,
+  sourcePage?: string
+): Promise<{ visitor: ChatVisitorRow; conversation: ChatConversationRow }> {
+  let { data: visitor } = await supabase
+    .from("chat_visitors")
+    .select("id, metadata, preferred_locale")
+    .eq("anonymous_token_hash", tokenHash)
+    .single();
+
+  if (!visitor) {
+    const { data: created } = await supabase
+      .from("chat_visitors")
+      .insert({
+        anonymous_token_hash: tokenHash,
+        preferred_locale: locale,
+      })
+      .select("id, metadata, preferred_locale")
+      .single();
+    visitor = created;
+  }
+
+  if (!visitor) {
+    throw new Error("Could not start a chat session.");
+  }
+
+  let { data: conversation } = await supabase
+    .from("chat_conversations")
+    .select("id, mode, status")
+    .eq("visitor_id", visitor.id)
+    .in("status", ["open", "waiting_for_admin", "waiting_for_visitor"])
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (!conversation) {
+    const { data: created } = await supabase
+      .from("chat_conversations")
+      .insert({
+        visitor_id: visitor.id,
+        status: "open",
+        mode: "ai",
+        source_page: sourcePage,
+      })
+      .select("id, mode, status")
+      .single();
+    conversation = created;
+    if (conversation) {
+      await supabase.from("conversation_events").insert({
+        conversation_id: conversation.id,
+        event_type: "created",
+        metadata: { source: "chat_widget" },
+      });
+    }
+  }
+
+  if (!visitor || !conversation) {
+    throw new Error("Could not start a chat session.");
+  }
+
+  return { visitor: visitor as ChatVisitorRow, conversation: conversation as ChatConversationRow };
+}
+
+async function loadStoredMessages(
+  supabase: ReturnType<typeof createSupabaseServiceRoleClient>,
+  conversationId: string
+): Promise<ChatStoredMessage[]> {
+  const { data } = await supabase
+    .from("chat_messages")
+    .select("id, sender_type, content, content_format, created_at")
+    .eq("conversation_id", conversationId)
+    .eq("is_internal", false)
+    .order("created_at", { ascending: true });
+  return (data ?? []) as ChatStoredMessage[];
+}
+
+function visitorStateFromMeta(metadata: Record<string, unknown>): ChatVisitorState {
+  return {
+    name: typeof metadata.name === "string" ? metadata.name : "",
+    email: typeof metadata.email === "string" ? metadata.email : "",
+    email_choice:
+      metadata.email_choice === "yes" || metadata.email_choice === "later"
+        ? (metadata.email_choice as "yes" | "later")
+        : null,
+    onboarding_complete: metadata.onboarding_complete === true,
+  };
+}
+
+export async function getVisitorChatState(input: {
+  visitor_token: string;
+  locale?: string;
+  source_page?: string;
+}): Promise<
+  ActionResult<{
+    conversation_id: string;
+    mode: string;
+    visitor: ChatVisitorState;
+    messages: ChatStoredMessage[];
+  }>
+> {
+  const supabase = createSupabaseServiceRoleClient();
+  const { visitor, conversation } = await resolveChatContext(
+    supabase,
+    hashToken(input.visitor_token),
+    input.locale ?? "en",
+    input.source_page
+  );
+  const messages = await loadStoredMessages(supabase, conversation.id);
+  return {
+    success: true,
+    data: {
+      conversation_id: conversation.id,
+      mode: conversation.mode,
+      visitor: visitorStateFromMeta(
+        (visitor.metadata as Record<string, unknown>) ?? {}
+      ),
+      messages,
+    },
+  };
+}
+
+export async function submitVisitorName(
+  input: z.infer<typeof identitySchema>
+): Promise<ActionResult<{ conversation_id: string; messages: ChatStoredMessage[] }>> {
+  const parsed = identitySchema.safeParse(input);
+  if (!parsed.success) return { success: false, error: "Invalid name." };
+
+  const supabase = createSupabaseServiceRoleClient();
+  const { visitor, conversation } = await resolveChatContext(
+    supabase,
+    hashToken(parsed.data.visitor_token),
+    parsed.data.locale,
+    parsed.data.source_page
+  );
+  const name = parsed.data.name.trim();
+  const meta: Record<string, unknown> = {
+    ...((visitor.metadata as Record<string, unknown>) ?? {}),
+    name,
+  };
+  await supabase
+    .from("chat_visitors")
+    .update({ metadata: meta as unknown as Json, preferred_locale: parsed.data.locale })
+    .eq("id", visitor.id);
+  await supabase.from("chat_messages").insert({
+    conversation_id: conversation.id,
+    sender_type: "visitor",
+    content: name,
+    content_format: "text",
+  });
+  const messages = await loadStoredMessages(supabase, conversation.id);
+  return { success: true, data: { conversation_id: conversation.id, messages } };
+}
+
+export async function updateVisitorName(input: {
+  visitor_token: string;
+  name: string;
+}): Promise<ActionResult> {
+  const parsed = z
+    .object({ visitor_token: z.string().min(16), name: z.string().min(1).max(80) })
+    .safeParse(input);
+  if (!parsed.success) return { success: false, error: "Invalid name." };
+
+  const supabase = createSupabaseServiceRoleClient();
+  const { visitor } = await resolveChatContext(
+    supabase,
+    hashToken(parsed.data.visitor_token),
+    "en"
+  );
+  const meta: Record<string, unknown> = {
+    ...((visitor.metadata as Record<string, unknown>) ?? {}),
+    name: parsed.data.name.trim(),
+  };
+  await supabase
+    .from("chat_visitors")
+    .update({ metadata: meta as unknown as Json })
+    .eq("id", visitor.id);
+  return { success: true };
+}
+
+export async function submitVisitorEmailChoice(
+  input: z.infer<typeof emailChoiceSchema>
+): Promise<ActionResult<{ conversation_id: string; messages: ChatStoredMessage[] }>> {
+  const parsed = emailChoiceSchema.safeParse(input);
+  if (!parsed.success) return { success: false, error: "Invalid input." };
+
+  const supabase = createSupabaseServiceRoleClient();
+  const { visitor, conversation } = await resolveChatContext(
+    supabase,
+    hashToken(parsed.data.visitor_token),
+    parsed.data.locale
+  );
+
+  const meta: Record<string, unknown> = {
+    ...((visitor.metadata as Record<string, unknown>) ?? {}),
+  };
+  const previousChoice = meta.email_choice;
+  if (previousChoice === "yes" || previousChoice === "later") {
+    // Already answered — never duplicate the bot reply or the lead.
+    const messages = await loadStoredMessages(supabase, conversation.id);
+    return { success: true, data: { conversation_id: conversation.id, messages } };
+  }
+
+  const email = parsed.data.choice === "yes" ? (parsed.data.email ?? "").trim() : "";
+  meta.email_choice = parsed.data.choice;
+  meta.onboarding_complete = true;
+  if (email) meta.email = email;
+  await supabase
+    .from("chat_visitors")
+    .update({ metadata: meta as unknown as Json })
+    .eq("id", visitor.id);
+
+  const visitorContent = parsed.data.choice === "yes" ? email || "Yes" : "Maybe later";
+  await supabase.from("chat_messages").insert({
+    conversation_id: conversation.id,
+    sender_type: "visitor",
+    content: visitorContent,
+    content_format: "text",
+  });
+  await supabase.from("chat_messages").insert({
+    conversation_id: conversation.id,
+    sender_type: "ai",
+    content: t(parsed.data.locale, "chatThanks"),
+    content_format: "text",
+  });
+
+  // Create a follow-up lead for the dashboard
+  const name = typeof meta.name === "string" ? meta.name : "";
+  const { data: lead } = await supabase
+    .from("leads")
+    .insert({
+      name: name || null,
+      email: email || null,
+      preferred_locale: parsed.data.locale,
+      source: "chat",
+      message: email
+        ? `Chat visitor ${name || "Anonymous"} provided contact details for follow-up.`
+        : `Chat visitor ${name || "Anonymous"} declined to share an email.`,
+      consent_data: { via: "chat", email_choice: parsed.data.choice },
+    })
+    .select("id")
+    .single();
+  if (lead) {
+    await supabase
+      .from("chat_conversations")
+      .update({ lead_id: lead.id })
+      .eq("id", conversation.id);
+  }
+
+  const messages = await loadStoredMessages(supabase, conversation.id);
+  return { success: true, data: { conversation_id: conversation.id, messages } };
 }
 

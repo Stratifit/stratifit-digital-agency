@@ -1,7 +1,15 @@
 "use client";
 
 import * as React from "react";
-import { sendVisitorMessage } from "@/features/chat/mutations";
+import {
+  sendVisitorMessage,
+  getVisitorChatState,
+  submitVisitorName,
+  updateVisitorName,
+  submitVisitorEmailChoice,
+  type ChatStoredMessage,
+  type ChatVisitorState,
+} from "@/features/chat/mutations";
 import { t, type UiStringKey } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
 
@@ -22,6 +30,14 @@ function getToken(): string {
   }
   return token;
 }
+
+function getLocale(): string {
+  return typeof document !== "undefined"
+    ? document.documentElement.lang || "en"
+    : "en";
+}
+
+type OnboardingStage = "loading" | "name" | "emailQuestion" | "emailInput" | "chat";
 
 // ============================================================================
 // Icons (Heroicons-style solid paths)
@@ -118,6 +134,24 @@ function SendIcon() {
   );
 }
 
+function LockIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={className}>
+      <rect width="18" height="11" x="3" y="11" rx="2" />
+      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+    </svg>
+  );
+}
+
+function PencilIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={className}>
+      <path d="M12 20h9" />
+      <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+    </svg>
+  );
+}
+
 // ============================================================================
 // Chat widget
 // ============================================================================
@@ -134,14 +168,18 @@ const TOPIC_CHIPS: {
   { key: "chatAbout", icon: BuildingIcon },
 ];
 
-const QUICK_REPLIES: UiStringKey[] = [
-  "chatFaq",
-  "chatServices",
-  "chatPricing",
-  "chatSupport",
-  "chatHelp",
-  "chatContact",
-];
+function toWidgetMessages(rows: ChatStoredMessage[]): WidgetMessage[] {
+  return rows.map((row) => ({
+    id: row.id,
+    sender:
+      row.sender_type === "visitor"
+        ? "visitor"
+        : row.sender_type === "system"
+          ? "system"
+          : "ai",
+    content: row.content,
+  }));
+}
 
 export function ChatWidget() {
   const [open, setOpen] = React.useState(false);
@@ -149,6 +187,14 @@ export function ChatWidget() {
   const [input, setInput] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [visitor, setVisitor] = React.useState<ChatVisitorState>({
+    name: "",
+    email: "",
+    email_choice: null,
+    onboarding_complete: false,
+  });
+  const [stage, setStage] = React.useState<OnboardingStage>("loading");
+  const [showPrivacyNote, setShowPrivacyNote] = React.useState(false);
   const bottomRef = React.useRef<HTMLDivElement>(null);
 
   const mounted = React.useSyncExternalStore(
@@ -165,9 +211,37 @@ export function ChatWidget() {
     return () => window.removeEventListener("stratifit:open-chat", handleOpen);
   }, []);
 
+  // Load persisted conversation state whenever the widget opens
+  React.useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    (async () => {
+      const result = await getVisitorChatState({
+        visitor_token: getToken(),
+        locale: getLocale(),
+        source_page:
+          typeof window !== "undefined" ? window.location.pathname : "/",
+      });
+      if (cancelled || !result.success || !result.data) return;
+      const data = result.data;
+      setVisitor(data.visitor);
+      setMessages(toWidgetMessages(data.messages));
+      setStage(
+        !data.visitor.name
+          ? "name"
+          : data.visitor.email_choice
+            ? "chat"
+            : "emailQuestion"
+      );
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [open]);
+
   React.useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, open, loading]);
+  }, [messages, open, loading, stage]);
 
   if (!mounted) return null;
 
@@ -175,13 +249,7 @@ export function ChatWidget() {
     return null;
   }
 
-  function getLocale(): string {
-    return typeof document !== "undefined"
-      ? document.documentElement.lang || "en"
-      : "en";
-  }
-
-  async function sendMessage(content: string) {
+  async function sendChatMessage(content: string) {
     const trimmed = content.trim();
     if (!trimmed || loading) return;
 
@@ -222,16 +290,110 @@ export function ChatWidget() {
     }
   }
 
-  function handleSend(e: React.FormEvent) {
-    e.preventDefault();
-    sendMessage(input);
+  async function handleNameSubmit() {
+    const name = input.trim();
+    if (!name || loading) return;
+    setError(null);
+    setLoading(true);
+    const result = await submitVisitorName({
+      visitor_token: getToken(),
+      name,
+      locale: getLocale(),
+    });
+    setLoading(false);
+    if (!result.success) {
+      setError(result.error ?? t(getLocale(), "chatError"));
+      return;
+    }
+    if (!result.data) {
+      setError(t(getLocale(), "chatError"));
+      return;
+    }
+    setVisitor((v) => ({ ...v, name }));
+    setMessages(toWidgetMessages(result.data.messages));
+    setInput("");
+    setStage("emailQuestion");
   }
 
-  function sendTopic(key: UiStringKey) {
-    sendMessage(t(getLocale(), key));
+  async function handleEmailSubmit() {
+    const email = input.trim();
+    if (!email || loading) return;
+    setError(null);
+    setLoading(true);
+    const result = await submitVisitorEmailChoice({
+      visitor_token: getToken(),
+      choice: "yes",
+      email,
+      locale: getLocale(),
+    });
+    setLoading(false);
+    if (!result.success) {
+      setError(result.error ?? t(getLocale(), "chatError"));
+      return;
+    }
+    if (!result.data) {
+      setError(t(getLocale(), "chatError"));
+      return;
+    }
+    setVisitor((v) => ({ ...v, email, email_choice: "yes", onboarding_complete: true }));
+    setMessages(toWidgetMessages(result.data.messages));
+    setInput("");
+    setStage("chat");
+  }
+
+  async function handleChoice(choice: "yes" | "later") {
+    if (loading) return;
+    setError(null);
+    setLoading(true);
+    const result = await submitVisitorEmailChoice({
+      visitor_token: getToken(),
+      choice,
+      locale: getLocale(),
+    });
+    setLoading(false);
+    if (!result.success) {
+      setError(result.error ?? t(getLocale(), "chatError"));
+      return;
+    }
+    if (!result.data) {
+      setError(t(getLocale(), "chatError"));
+      return;
+    }
+    setVisitor((v) => ({ ...v, email_choice: choice, onboarding_complete: true }));
+    setMessages(toWidgetMessages(result.data.messages));
+    setStage(choice === "yes" ? "emailInput" : "chat");
+  }
+
+  async function handleEditName() {
+    const current = visitor.name || "";
+    const next = window.prompt(t(getLocale(), "chatEditName"), current);
+    if (!next || !next.trim() || next.trim() === current) return;
+    const result = await updateVisitorName({
+      visitor_token: getToken(),
+      name: next.trim(),
+    });
+    if (result.success) {
+      setVisitor((v) => ({ ...v, name: next.trim() }));
+    }
+  }
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (stage === "name") {
+      handleNameSubmit();
+    } else if (stage === "emailInput") {
+      handleEmailSubmit();
+    } else if (stage === "chat") {
+      sendChatMessage(input);
+    }
   }
 
   const locale = getLocale();
+  const welcomeParts = t(locale, "chatWelcome").split(" — ");
+  const emailQuestion = t(locale, "chatEmailQuestion").replace(
+    "{name}",
+    visitor.name
+  );
 
   return (
     <>
@@ -265,80 +427,164 @@ export function ChatWidget() {
             </button>
           </div>
 
-          {/* Topic chips */}
-          <div className="flex flex-none border-b border-border-subtle bg-background px-4 py-3">
-            <div className="-mx-1 flex gap-2 overflow-x-auto px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {TOPIC_CHIPS.map((chip, index) => (
-                <button
-                  key={chip.key}
-                  type="button"
-                  onClick={() => sendTopic(chip.key)}
-                  className={cn(
-                    "flex shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-2 text-xs font-medium transition-all",
-                    index === 0
-                      ? "border-primary bg-primary text-text-inverse"
-                      : "border-border bg-white/5 text-text-primary hover:border-primary/30 hover:bg-white/10"
-                  )}
-                >
-                  <chip.icon
+          {/* Topic chips — only after onboarding */}
+          {stage === "chat" ? (
+            <div className="flex flex-none border-b border-border-subtle bg-background px-4 py-3">
+              <div className="-mx-1 flex gap-2 overflow-x-auto px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                {TOPIC_CHIPS.map((chip, index) => (
+                  <button
+                    key={chip.key}
+                    type="button"
+                    onClick={() => sendChatMessage(t(locale, chip.key))}
                     className={cn(
-                      "size-3.5",
-                      index === 0 ? "text-text-inverse" : "text-primary"
+                      "flex shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-2 text-xs font-medium transition-all",
+                      index === 0
+                        ? "border-primary bg-primary text-text-inverse"
+                        : "border-border bg-white/5 text-text-primary hover:border-primary/30 hover:bg-white/10"
                     )}
-                  />
-                  {t(locale, chip.key)}
-                </button>
-              ))}
+                  >
+                    <chip.icon
+                      className={cn(
+                        "size-3.5",
+                        index === 0 ? "text-text-inverse" : "text-primary"
+                      )}
+                    />
+                    {t(locale, chip.key)}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          ) : null}
 
           {/* Messages */}
-          <div className="menu-scroll flex-1 overflow-y-auto overscroll-contain px-4 py-4">
-            {messages.length === 0 ? (
-              <div className="flex justify-start">
-                <div className="max-w-[85%] rounded-2xl border border-card-border bg-card-dark px-4 py-3">
-                  <p className="whitespace-pre-line text-sm leading-relaxed text-text-secondary">
-                    {t(locale, "chatGreeting")}
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {QUICK_REPLIES.map((key) => (
+          <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4">
+            <div className="space-y-4">
+              {/* Welcome bubble */}
+              {stage === "name" ? (
+                <div className="flex justify-start">
+                  <div className="max-w-[85%] rounded-2xl border border-card-border bg-card-dark px-4 py-3">
+                    <div className="mb-2 flex items-center gap-1.5 border-b border-border pb-2">
+                      <span className="text-[11px] font-bold uppercase tracking-wide text-primary/80">
+                        {t(locale, "chatName")}
+                      </span>
+                    </div>
+                    <p className="whitespace-pre-line text-sm leading-relaxed text-text-secondary">
+                      <strong className="font-semibold text-text-primary">
+                        {welcomeParts[0]}
+                      </strong>
+                      {welcomeParts[1] ? ` — ${welcomeParts[1]}` : ""}
+                    </p>
+                    <div className="mt-2.5 flex items-center justify-between border-t border-border pt-2">
+                      <span className="flex items-center gap-1 text-[9px] font-medium uppercase tracking-wide text-primary/75">
+                        <LockIcon className="size-2.5" />
+                        {t(locale, "chatDataSafe")}
+                      </span>
                       <button
-                        key={key}
                         type="button"
-                        onClick={() => sendTopic(key)}
-                        className="rounded-full border border-border bg-white/10 px-3 py-1.5 text-[11px] font-medium text-text-primary transition-all hover:border-primary/30 hover:bg-primary/20"
+                        onClick={() => setShowPrivacyNote((v) => !v)}
+                        className="text-[9px] font-medium uppercase tracking-wide text-primary/75 underline underline-offset-2 transition-opacity hover:opacity-100"
                       >
-                        {t(locale, key)}
+                        {t(locale, "chatReadMore")}
                       </button>
-                    ))}
+                    </div>
+                    {showPrivacyNote ? (
+                      <p className="mt-2 text-[10px] leading-relaxed text-text-muted">
+                        {t(locale, "chatPrivacyNote")}
+                      </p>
+                    ) : null}
                   </div>
                 </div>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {messages.map((m) =>
-                  m.sender === "visitor" ? (
-                    <div key={m.id} className="flex justify-end">
-                      <div className="max-w-[85%] rounded-2xl bg-primary px-4 py-3 text-sm leading-relaxed text-text-inverse">
-                        {m.content}
+              ) : null}
+
+              {/* Stored messages */}
+              {(() => {
+                let userCount = 0;
+                return messages.map((m) => {
+                  if (m.sender === "visitor") {
+                    userCount += 1;
+                    return (
+                      <div key={m.id} className="flex justify-end">
+                        <div className="max-w-[85%] rounded-2xl bg-surface px-4 py-3">
+                          <div className="mb-1.5 flex items-center justify-end gap-1.5 border-b border-border pb-1.5">
+                            <span className="text-[10px] font-bold uppercase tracking-wide text-primary/70">
+                              {String(userCount).padStart(3, "0")} {visitor.name}
+                            </span>
+                            <button
+                              type="button"
+                              aria-label={t(locale, "chatEditName")}
+                              onClick={handleEditName}
+                              className="text-text-muted transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                            >
+                              <PencilIcon className="size-3" />
+                            </button>
+                          </div>
+                          <p className="text-sm leading-relaxed text-text-primary">
+                            {m.content}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  ) : m.sender === "system" ? (
-                    <div key={m.id} className="flex justify-start">
-                      <div className="max-w-[85%] rounded-2xl bg-surface px-4 py-3 text-sm leading-relaxed text-text-muted">
-                        {m.content}
+                    );
+                  }
+                  if (m.sender === "system") {
+                    return (
+                      <div key={m.id} className="flex justify-start">
+                        <div className="max-w-[85%] rounded-2xl bg-surface px-4 py-3 text-sm leading-relaxed text-text-muted">
+                          {m.content}
+                        </div>
                       </div>
-                    </div>
-                  ) : (
+                    );
+                  }
+                  return (
                     <div key={m.id} className="flex justify-start">
                       <div className="max-w-[85%] whitespace-pre-line rounded-2xl border border-card-border bg-card-dark px-4 py-3 text-sm leading-relaxed text-text-primary">
                         {m.content}
                       </div>
                     </div>
-                  )
-                )}
-              </div>
-            )}
+                  );
+                });
+              })()}
+
+              {/* Email question bubble */}
+              {stage === "emailQuestion" ? (
+                <div className="flex justify-start">
+                  <div className="max-w-[85%] rounded-2xl border border-card-border bg-card-dark px-4 py-3">
+                    <div className="mb-2 flex items-center gap-1.5 border-b border-border pb-2">
+                      <span className="text-[11px] font-bold uppercase tracking-wide text-primary/80">
+                        {t(locale, "chatName")}
+                      </span>
+                    </div>
+                    <p className="text-sm leading-relaxed text-text-secondary">
+                      {emailQuestion}
+                    </p>
+                    <div className="mt-2.5 flex items-center gap-1 border-t border-border pt-2">
+                      <LockIcon className="size-2.5 text-primary/75" />
+                      <span className="text-[9px] font-medium uppercase tracking-wide text-primary/75">
+                        {t(locale, "chatDataSafe")}
+                      </span>
+                    </div>
+                    <div className="mt-3 flex gap-2">
+                      <button
+                        type="button"
+                        disabled={loading}
+                        onClick={() => handleChoice("yes")}
+                        className="flex-1 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary transition-all hover:bg-primary/20 disabled:opacity-50"
+                      >
+                        {t(locale, "chatYes")}
+                      </button>
+                      <button
+                        type="button"
+                        disabled={loading}
+                        onClick={() => handleChoice("later")}
+                        className="flex-1 rounded-full border border-border bg-white/10 px-3 py-1.5 text-xs font-semibold text-text-primary transition-all hover:border-primary/30 hover:bg-primary/20 disabled:opacity-50"
+                      >
+                        {t(locale, "chatMaybeLater")}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+            </div>
+
             {loading ? (
               <div className="mt-4 flex justify-start">
                 <div className="rounded-2xl bg-surface px-4 py-3 text-sm text-text-muted">
@@ -350,27 +596,43 @@ export function ChatWidget() {
             <div ref={bottomRef} />
           </div>
 
-          {/* Input */}
-          <form
-            onSubmit={handleSend}
-            className="flex flex-none items-center gap-2 border-t border-border bg-background px-4 py-3"
-          >
-            <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder={t(locale, "chatPlaceholder")}
-              aria-label={t(locale, "chatPlaceholder")}
-              className="flex-1 rounded-xl border border-card-border bg-card-dark px-4 py-3 text-sm text-text-primary placeholder:text-text-muted outline-none transition-colors focus:border-primary/50 focus:outline-none"
-            />
-            <button
-              type="submit"
-              disabled={!input.trim() || loading}
-              aria-label={t(locale, "chatSend")}
-              className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary text-text-inverse transition-all hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-30"
+          {/* Input / actions */}
+          {stage === "emailQuestion" ? null : (
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-none items-center gap-2 border-t border-border bg-background px-4 py-3"
             >
-              <SendIcon />
-            </button>
-          </form>
+              <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                type={stage === "emailInput" ? "email" : "text"}
+                disabled={loading || stage === "loading"}
+                placeholder={
+                  stage === "name"
+                    ? t(locale, "chatYourNamePlaceholder")
+                    : stage === "emailInput"
+                      ? t(locale, "chatYourEmailPlaceholder")
+                      : t(locale, "chatPlaceholder")
+                }
+                aria-label={
+                  stage === "name"
+                    ? t(locale, "chatYourNamePlaceholder")
+                    : stage === "emailInput"
+                      ? t(locale, "chatYourEmailPlaceholder")
+                      : t(locale, "chatPlaceholder")
+                }
+                className="flex-1 rounded-xl border border-card-border bg-card-dark px-4 py-3 text-sm text-text-primary placeholder:text-text-muted outline-none transition-colors focus:border-primary/50 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+              />
+              <button
+                type="submit"
+                disabled={!input.trim() || loading || stage === "loading"}
+                aria-label={t(locale, "chatSend")}
+                className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary text-text-inverse transition-all hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-30"
+              >
+                <SendIcon />
+              </button>
+            </form>
+          )}
         </div>
       ) : null}
 
