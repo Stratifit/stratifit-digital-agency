@@ -4,6 +4,7 @@ import { getPublicNavigation } from "@/features/navigation/queries";
 import { getPublicSiteSettings } from "@/features/site-settings/queries";
 import { getPublicServices } from "@/features/services/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { t } from "@/lib/i18n/ui-strings";
 import { Container } from "@/components/ui/container";
 import { BrandLogo } from "@/components/ui/brand-logo";
 import { buttonClasses } from "@/components/ui/button";
@@ -88,7 +89,7 @@ export async function Header() {
               className: "px-5 py-2.5 text-sm font-bold",
             })}
           >
-            Start a Project
+            {t(locale, "startAProject")}
           </Link>
         </div>
 

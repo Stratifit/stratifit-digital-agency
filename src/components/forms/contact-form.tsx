@@ -8,6 +8,7 @@ import { leadSchema, type LeadFormValues } from "@/features/leads/schemas";
 import { submitLead } from "@/features/leads/mutations";
 import type { PublicServiceDetail } from "@/features/services/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { t, tWithNumber, translateValidation } from "@/lib/i18n/ui-strings";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -157,9 +158,9 @@ export function ContactForm({
   if (submitted) {
     return (
       <div className="rounded-md border border-success-border bg-success-soft p-8 text-center">
-        <p className="font-medium text-success">Thank you!</p>
+        <p className="font-medium text-success">{t(locale, "thankYou")}</p>
         <p className="mt-2 text-sm text-text-secondary">
-          Your message has been received. We will get back to you shortly.
+          {t(locale, "messageReceived")}
         </p>
         <Button
           variant="secondary"
@@ -167,7 +168,7 @@ export function ContactForm({
           className="mt-4"
           onClick={() => setSubmitted(false)}
         >
-          Send another message
+          {t(locale, "sendAnotherMessage")}
         </Button>
       </div>
     );
@@ -187,22 +188,22 @@ export function ContactForm({
         <div>
           <Input
             id="name"
-            placeholder="Your name *"
+            placeholder={t(locale, "yourName")}
             {...register("name")}
           />
           {errors.name ? (
-            <p className="mt-1 text-xs text-error">{errors.name.message}</p>
+            <p className="mt-1 text-xs text-error">{translateValidation(locale, errors.name.message)}</p>
           ) : null}
         </div>
         <div>
           <Input
             id="email"
             type="email"
-            placeholder="you@company.com *"
+            placeholder={t(locale, "yourEmail")}
             {...register("email")}
           />
           {errors.email ? (
-            <p className="mt-1 text-xs text-error">{errors.email.message}</p>
+            <p className="mt-1 text-xs text-error">{translateValidation(locale, errors.email.message)}</p>
           ) : null}
         </div>
       </div>
@@ -210,7 +211,7 @@ export function ContactForm({
       <div>
         <Input
           id="company"
-          placeholder="Company name"
+          placeholder={t(locale, "companyName")}
           {...register("company")}
         />
       </div>
@@ -233,10 +234,10 @@ export function ContactForm({
               )}
             >
               {selectedServices.length === 0
-                ? "Select services you're interested in"
+                ? t(locale, "selectServices")
                 : selectedServices.length === 1
                   ? resolveTranslation(selectedServices[0].title_translations, locale)
-                  : `${selectedServices.length} services selected`}
+                  : tWithNumber(locale, "servicesSelected", selectedServices.length)}
             </span>
             <ChevronIcon open={servicesOpen} />
           </button>
@@ -298,7 +299,7 @@ export function ContactForm({
           className={dropdownTriggerClass()}
         >
           <span className="shrink-0 text-xs font-bold uppercase tracking-wider text-field-label">
-            Project Budget
+            {t(locale, "projectBudget")}
           </span>
           <span
             className={cn(
@@ -306,14 +307,14 @@ export function ContactForm({
               budgetLabel ? "text-field-text" : "text-field-placeholder"
             )}
           >
-            {budgetLabel || "Select a range"}
+            {budgetLabel || t(locale, "selectRange")}
           </span>
           <ChevronIcon open={budgetOpen} />
         </button>
         {budgetOpen ? (
           <div
             role="listbox"
-            aria-label="Project budget"
+            aria-label={t(locale, "projectBudget")}
             className={dropdownPanelClass()}
           >
             {BUDGET_RANGES.map((range) => {
@@ -349,12 +350,12 @@ export function ContactForm({
                 htmlFor="budget-custom"
                 className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-field-label"
               >
-                Custom budget
+                {t(locale, "customBudget")}
               </label>
               <input
                 id="budget-custom"
                 type="text"
-                placeholder="e.g. $7,500"
+                placeholder={t(locale, "customBudget")}
                 value={customBudget}
                 onChange={(event) => {
                   setCustomBudget(event.target.value);
@@ -371,11 +372,11 @@ export function ContactForm({
         <Textarea
           id="message"
           rows={4}
-          placeholder="Tell us about your project *"
+          placeholder={t(locale, "tellUsProject")}
           {...register("message")}
         />
         {errors.message ? (
-          <p className="mt-1 text-xs text-error">{errors.message.message}</p>
+          <p className="mt-1 text-xs text-error">{translateValidation(locale, errors.message.message)}</p>
         ) : null}
       </div>
 
@@ -394,7 +395,7 @@ export function ContactForm({
         loading={isSubmitting}
         className="w-full"
       >
-        {isSubmitting ? "Sending…" : "Send Message"}
+        {isSubmitting ? t(locale, "sending") : t(locale, "sendMessage")}
       </Button>
     </form>
   );

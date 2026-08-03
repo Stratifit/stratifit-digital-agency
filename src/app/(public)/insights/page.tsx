@@ -8,7 +8,9 @@ export const metadata = pageMetadata({
 });
 
 import { getPublicInsights } from "@/features/insights/queries";
+import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { t } from "@/lib/i18n/ui-strings";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
@@ -16,6 +18,7 @@ import { LinkButton } from "@/components/ui/link-button";
 import { Reveal } from "@/components/ui/reveal";
 
 export default async function InsightsPage() {
+  const locale = await getLocale();
   const insights = await getPublicInsights(100);
 
   return (
@@ -43,10 +46,10 @@ export default async function InsightsPage() {
               {insights.map((insight) => (
                 <Card key={insight.slug} className="flex flex-col">
                   <h2 className="font-display text-lg font-semibold text-text-primary">
-                    {resolveTranslation(insight.title_translations, "en")}
+                    {resolveTranslation(insight.title_translations, locale)}
                   </h2>
                   <p className="mt-2 flex-1 text-sm leading-6 text-text-secondary">
-                    {resolveTranslation(insight.excerpt_translations, "en")}
+                    {resolveTranslation(insight.excerpt_translations, locale)}
                   </p>
                   <LinkButton
                     href={`/insights/${insight.slug}`}
@@ -54,7 +57,7 @@ export default async function InsightsPage() {
                     size="small"
                     className="mt-4 self-start"
                   >
-                    Read more
+                    {t(locale, "readMore")}
                   </LinkButton>
                 </Card>
               ))}

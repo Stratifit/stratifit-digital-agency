@@ -9,6 +9,7 @@ import {
   type AcquisitionEnquiryFormValues,
 } from "@/features/leads/schemas";
 import { submitAcquisitionEnquiry } from "@/features/leads/mutations";
+import { t, translateValidation } from "@/lib/i18n/ui-strings";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -69,10 +70,9 @@ export function AcquisitionEnquiryForm({
   if (submitted) {
     return (
       <div className="rounded-md border border-success-border bg-success-soft p-8 text-center">
-        <p className="font-medium text-success">Thank you!</p>
+        <p className="font-medium text-success">{t(locale, "thankYou")}</p>
         <p className="mt-2 text-sm text-text-secondary">
-          Your acquisition enquiry has been received. We will get back to you
-          shortly.
+          {t(locale, "enquiryReceived")}
         </p>
         <Button
           variant="secondary"
@@ -80,7 +80,7 @@ export function AcquisitionEnquiryForm({
           className="mt-4"
           onClick={() => setSubmitted(false)}
         >
-          Send another enquiry
+          {t(locale, "sendAnotherEnquiry")}
         </Button>
       </div>
     );
@@ -100,22 +100,22 @@ export function AcquisitionEnquiryForm({
         <div>
           <Input
             id="acq-name"
-            placeholder="Your name *"
+            placeholder={t(locale, "yourName")}
             {...register("name")}
           />
           {errors.name ? (
-            <p className="mt-1 text-xs text-error">{errors.name.message}</p>
+            <p className="mt-1 text-xs text-error">{translateValidation(locale, errors.name.message)}</p>
           ) : null}
         </div>
         <div>
           <Input
             id="acq-email"
             type="email"
-            placeholder="you@company.com *"
+            placeholder={t(locale, "yourEmail")}
             {...register("email")}
           />
           {errors.email ? (
-            <p className="mt-1 text-xs text-error">{errors.email.message}</p>
+            <p className="mt-1 text-xs text-error">{translateValidation(locale, errors.email.message)}</p>
           ) : null}
         </div>
       </div>
@@ -124,7 +124,7 @@ export function AcquisitionEnquiryForm({
         <div>
           <Input
             id="acq-company"
-            placeholder="Company name"
+            placeholder={t(locale, "companyName")}
             {...register("company")}
           />
         </div>
@@ -132,7 +132,7 @@ export function AcquisitionEnquiryForm({
           <Input
             id="acq-phone"
             type="tel"
-            placeholder="Phone (optional)"
+            placeholder={t(locale, "phoneOptional")}
             {...register("phone")}
           />
         </div>
@@ -142,15 +142,15 @@ export function AcquisitionEnquiryForm({
         <div>
           <Select id="acq-business" {...register("business_interest")}>
             <option value="" disabled>
-              Which business are you interested in?
+              {t(locale, "whichBusiness")}
             </option>
             {businesses.map((name) => (
               <option key={name} value={name}>
                 {name}
               </option>
             ))}
-            <option value="Other / not listed">
-              Other / not listed
+            <option value={t(locale, "otherNotListed")}>
+              {t(locale, "otherNotListed")}
             </option>
           </Select>
         </div>
@@ -160,7 +160,7 @@ export function AcquisitionEnquiryForm({
         <div>
           <Select id="acq-budget" {...register("budget_range")}>
             <option value="" disabled>
-              Budget range (optional)
+              {t(locale, "budgetRangeOptional")}
             </option>
             {BUDGET_RANGES.map((range) => (
               <option key={range} value={range}>
@@ -172,7 +172,7 @@ export function AcquisitionEnquiryForm({
         <div>
           <Input
             id="acq-budget-custom"
-            placeholder="Custom budget (optional)"
+            placeholder={t(locale, "customBudgetOptional")}
             {...register("custom_budget")}
           />
         </div>
@@ -182,11 +182,11 @@ export function AcquisitionEnquiryForm({
         <Textarea
           id="acq-message"
           rows={4}
-          placeholder="Tell us about the acquisition you have in mind *"
+          placeholder={t(locale, "tellUsAcquisition")}
           {...register("message")}
         />
         {errors.message ? (
-          <p className="mt-1 text-xs text-error">{errors.message.message}</p>
+          <p className="mt-1 text-xs text-error">{translateValidation(locale, errors.message.message)}</p>
         ) : null}
       </div>
 
@@ -205,7 +205,7 @@ export function AcquisitionEnquiryForm({
         loading={isSubmitting}
         className="w-full"
       >
-        {isSubmitting ? "Sending…" : "Send Enquiry"}
+        {isSubmitting ? t(locale, "sending") : t(locale, "sendEnquiry")}
       </Button>
     </form>
   );
