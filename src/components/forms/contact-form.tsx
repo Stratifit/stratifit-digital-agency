@@ -295,158 +295,85 @@ export function ContactForm({
         </div>
       ) : null}
 
-      {compact ? (
-        <div>
-          <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-field-label">
-            {t(locale, "projectBudget")}
-          </p>
-          <div className="grid grid-cols-2 gap-3">
-            <div ref={budgetRef} className="relative">
-              <button
-                type="button"
-                aria-haspopup="listbox"
-                aria-expanded={budgetOpen}
-                onClick={() => setBudgetOpen((v) => !v)}
-                className={cn(dropdownTriggerClass(), "!h-auto !py-3")}
-              >
-                <span
-                  className={cn(
-                    "min-w-0 flex-1 truncate text-sm",
-                    budgetLabel ? "text-field-text" : "text-field-placeholder"
-                  )}
-                >
-                  {budgetLabel || t(locale, "selectRange")}
-                </span>
-                <ChevronIcon open={budgetOpen} />
-              </button>
-              {budgetOpen ? (
-                <div
-                  role="listbox"
-                  aria-label={t(locale, "projectBudget")}
-                  className={dropdownPanelClass()}
-                >
-                  {BUDGET_RANGES.map((range) => {
-                    const selected = budgetRange === range;
-                    return (
-                      <button
-                        key={range}
-                        type="button"
-                        role="option"
-                        aria-selected={selected}
-                        onClick={() => {
-                          const next = selected ? "" : range;
-                          setBudgetRange(next);
-                          setCustomBudget("");
-                          setValue("budget_range", next);
-                          setValue("custom_budget", "");
-                          setBudgetOpen(false);
-                        }}
-                        className={cn(
-                          "block w-full rounded-xs border px-3 py-2 text-left text-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
-                          selected
-                            ? "border-card-border-active bg-card-active font-medium text-primary"
-                            : "border-transparent text-text-secondary hover:bg-primary/8 hover:text-primary"
-                        )}
-                      >
-                        {range}
-                      </button>
-                    );
-                  })}
-                </div>
-              ) : null}
-            </div>
-            <input
-              id="budget-custom"
-              type="text"
-              placeholder={t(locale, "customBudget")}
-              value={customBudget}
-              onChange={(event) => {
-                setCustomBudget(event.target.value);
-                setValue("custom_budget", event.target.value);
-              }}
-              className="h-11 w-full rounded-input border border-field-border bg-field-bg px-3 text-sm text-field-text placeholder:text-field-placeholder transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover focus-visible:border-primary focus-visible:outline-none focus-visible:outline-offset-2"
-            />
-          </div>
-        </div>
-      ) : (
-        <div ref={budgetRef} className="relative">
-          <button
-            type="button"
-            aria-haspopup="listbox"
-            aria-expanded={budgetOpen}
-            onClick={() => setBudgetOpen((v) => !v)}
-            className={dropdownTriggerClass()}
-          >
+      <div ref={budgetRef} className="relative">
+        <button
+          type="button"
+          aria-haspopup="listbox"
+          aria-expanded={budgetOpen}
+          onClick={() => setBudgetOpen((v) => !v)}
+          className={cn(dropdownTriggerClass(), compact && "!h-auto !py-3")}
+        >
+          {!compact ? (
             <span className="shrink-0 text-xs font-bold uppercase tracking-wider text-field-label">
               {t(locale, "projectBudget")}
             </span>
-            <span
-              className={cn(
-                "min-w-0 flex-1 truncate text-sm",
-                budgetLabel ? "text-field-text" : "text-field-placeholder"
-              )}
-            >
-              {budgetLabel || t(locale, "selectRange")}
-            </span>
-            <ChevronIcon open={budgetOpen} />
-          </button>
-          {budgetOpen ? (
-            <div
-              role="listbox"
-              aria-label={t(locale, "projectBudget")}
-              className={dropdownPanelClass()}
-            >
-              {BUDGET_RANGES.map((range) => {
-                const selected = budgetRange === range;
-                return (
-                  <button
-                    key={range}
-                    type="button"
-                    role="option"
-                    aria-selected={selected}
-                    onClick={() => {
-                      const next = selected ? "" : range;
-                      setBudgetRange(next);
-                      setCustomBudget("");
-                      setValue("budget_range", next);
-                      setValue("custom_budget", "");
-                      setBudgetOpen(false);
-                    }}
-                    className={cn(
-                      "block w-full rounded-xs border px-3 py-2 text-left text-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
-                      selected
-                        ? "border-card-border-active bg-card-active font-medium text-primary"
-                        : "border-transparent text-text-secondary hover:bg-primary/8 hover:text-primary"
-                    )}
-                  >
-                    {range}
-                  </button>
-                );
-              })}
-              <div className="my-1 border-t border-card-border" />
-              <div className="px-3 py-2">
-                <label
-                  htmlFor="budget-custom"
-                  className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-field-label"
-                >
-                  {t(locale, "customBudget")}
-                </label>
-                <input
-                  id="budget-custom"
-                  type="text"
-                  placeholder={t(locale, "customBudget")}
-                  value={customBudget}
-                  onChange={(event) => {
-                    setCustomBudget(event.target.value);
-                    setValue("custom_budget", event.target.value);
-                  }}
-                  className="h-9 w-full rounded-input border border-field-border bg-field-bg px-3 text-sm text-field-text placeholder:text-field-placeholder transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover focus-visible:border-primary focus-visible:outline-none focus-visible:outline-offset-2"
-                />
-              </div>
-            </div>
           ) : null}
-        </div>
-      )}
+          <span
+            className={cn(
+              "min-w-0 flex-1 truncate text-sm",
+              budgetLabel ? "text-field-text" : "text-field-placeholder"
+            )}
+          >
+            {budgetLabel || t(locale, "selectRange")}
+          </span>
+          <ChevronIcon open={budgetOpen} />
+        </button>
+        {budgetOpen ? (
+          <div
+            role="listbox"
+            aria-label={t(locale, "projectBudget")}
+            className={dropdownPanelClass()}
+          >
+            {BUDGET_RANGES.map((range) => {
+              const selected = budgetRange === range;
+              return (
+                <button
+                  key={range}
+                  type="button"
+                  role="option"
+                  aria-selected={selected}
+                  onClick={() => {
+                    const next = selected ? "" : range;
+                    setBudgetRange(next);
+                    setCustomBudget("");
+                    setValue("budget_range", next);
+                    setValue("custom_budget", "");
+                    setBudgetOpen(false);
+                  }}
+                  className={cn(
+                    "block w-full rounded-xs border px-3 py-2 text-left text-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
+                    selected
+                      ? "border-card-border-active bg-card-active font-medium text-primary"
+                      : "border-transparent text-text-secondary hover:bg-primary/8 hover:text-primary"
+                  )}
+                >
+                  {range}
+                </button>
+              );
+            })}
+            <div className="my-1 border-t border-card-border" />
+            <div className="px-3 py-2">
+              <label
+                htmlFor="budget-custom"
+                className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-field-label"
+              >
+                {t(locale, "customBudget")}
+              </label>
+              <input
+                id="budget-custom"
+                type="text"
+                placeholder={t(locale, "customBudget")}
+                value={customBudget}
+                onChange={(event) => {
+                  setCustomBudget(event.target.value);
+                  setValue("custom_budget", event.target.value);
+                }}
+                className="h-9 w-full rounded-input border border-field-border bg-field-bg px-3 text-sm text-field-text placeholder:text-field-placeholder transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover focus-visible:border-primary focus-visible:outline-none focus-visible:outline-offset-2"
+              />
+            </div>
+          </div>
+        ) : null}
+      </div>
 
       <div>
         <Textarea

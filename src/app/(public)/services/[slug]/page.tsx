@@ -30,6 +30,18 @@ const TOOLKIT_ICONS = [
   "audit",
 ];
 
+function highlightLastWord(text: string) {
+  const parts = text.trim().split(/\s+/);
+  if (parts.length <= 1) return <>{text}</>;
+  const last = parts.pop();
+  return (
+    <>
+      {parts.join(" ")}{" "}
+      <span className="text-primary">{last}</span>
+    </>
+  );
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -174,7 +186,7 @@ export default async function ServicePage({
 
             {stats.length > 0 ? (
               <Reveal variant="card">
-                <div className="grid grid-cols-3 gap-3 border-t border-border pt-3 pb-3 sm:gap-6 md:gap-6 md:pt-3 md:pb-0 lg:border-t-0 lg:pt-3">
+                <div className="grid grid-cols-3 gap-3 pt-3 pb-3 sm:gap-6 md:gap-6 md:pt-3 md:pb-0 lg:pt-3">
                   {stats.map((stat, index) => (
                     <div
                       key={index}
@@ -248,21 +260,21 @@ export default async function ServicePage({
         <Section>
           <Container>
             <Reveal>
-              <div>
-                <span className="text-xs font-bold uppercase tracking-[0.3em] text-text-primary">
+              <div className="mb-10 md:mb-16">
+                <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
                   {serviceName}
-                </span>
-                <h2 className="mt-3 font-display text-4xl font-black tracking-tight leading-[0.95] text-text-primary sm:text-5xl md:text-6xl">
-                  {capabilitiesTitle || "Capabilities"}
+                </p>
+                <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
+                  {highlightLastWord(capabilitiesTitle || "Capabilities")}
                 </h2>
                 {service?.short_description_translations ? (
-                  <p className="mt-4 max-w-2xl text-sm font-medium leading-relaxed text-text-muted sm:text-base">
+                  <p className="mt-3 ml-1.5 max-w-2xl border-l-2 border-primary/50 pl-4 text-sm leading-relaxed text-text-muted sm:ml-2 sm:pl-6 sm:text-base md:text-lg">
                     {resolveTranslation(service.short_description_translations, locale)}
                   </p>
                 ) : null}
               </div>
             </Reveal>
-            <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
               {capabilities.map((capability, index) => (
                 <Reveal key={index} variant="card" className="h-full">
                   <div className="group relative h-full overflow-hidden rounded-card border border-card-border bg-card-dark p-6 shadow-xl sm:p-8">
@@ -317,12 +329,14 @@ export default async function ServicePage({
         <Section>
           <Container>
             <Reveal>
-              <span className="text-xs font-bold uppercase tracking-[0.3em] text-text-primary">
-                Deliverables
-              </span>
-              <h2 className="mt-4 mb-8 font-display text-3xl font-black tracking-tight leading-[0.95] text-text-primary sm:text-4xl md:text-5xl">
-                {deliverablesTitle || "What's Included"}
-              </h2>
+              <div className="mb-10 md:mb-16">
+                <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+                  Deliverables
+                </p>
+                <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
+                  {highlightLastWord(deliverablesTitle || "What's Included")}
+                </h2>
+              </div>
             </Reveal>
             <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
               {deliverables.map((item, index) => (
@@ -355,12 +369,14 @@ export default async function ServicePage({
         <Section id="how-it-works">
           <Container>
             <Reveal>
-              <span className="text-xs font-bold uppercase tracking-[0.3em] text-text-primary">
-                Our Process
-              </span>
-              <h2 className="mt-4 mb-8 font-display text-3xl font-black tracking-tight leading-[0.95] text-text-primary sm:text-4xl md:text-5xl">
-                {processTitle || "How It Works"}
-              </h2>
+              <div className="mb-10 md:mb-16">
+                <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+                  Our Process
+                </p>
+                <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
+                  {highlightLastWord(processTitle || "How It Works")}
+                </h2>
+              </div>
             </Reveal>
             <div className="space-y-4 md:grid md:grid-cols-4 md:gap-4 md:space-y-0">
               {process.map((step, index) => (
@@ -408,12 +424,14 @@ export default async function ServicePage({
         <Section>
           <Container>
             <Reveal>
-              <span className="text-xs font-bold uppercase tracking-[0.3em] text-text-primary">
-                Toolkit
-              </span>
-              <h2 className="mt-4 mb-8 font-display text-3xl font-black tracking-tight leading-[0.95] text-text-primary sm:text-4xl md:text-5xl">
-                {toolkitTitle || "Tools & Technologies"}
-              </h2>
+              <div className="mb-10 md:mb-16">
+                <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+                  Toolkit
+                </p>
+                <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
+                  {highlightLastWord(toolkitTitle || "Tools & Technologies")}
+                </h2>
+              </div>
             </Reveal>
             <div>
               {[toolkit.slice(0, Math.ceil(toolkit.length / 2)), toolkit.slice(Math.ceil(toolkit.length / 2))].map(
