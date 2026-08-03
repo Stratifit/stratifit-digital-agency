@@ -1186,7 +1186,7 @@ export function ChatWidget() {
                 className="px-4 pb-2 pt-3"
               >
                 {/* Single merged box: input + upload + send all inside one container */}
-                <div className="flex items-center gap-1 rounded-xl border border-card-border bg-card-dark py-1 pl-1.5 pr-1.5 transition-all focus-within:border-primary/60 focus-within:ring-2 focus-within:ring-primary/25 focus-within:outline-none has-[:disabled]:opacity-60">
+                <div className="flex items-center gap-1 rounded-[10px] border border-card-border bg-card-dark py-1 pl-1.5 pr-1.5 transition-all focus-within:border-primary/60 focus-within:ring-2 focus-within:ring-primary/25 focus-within:outline-none has-[:disabled]:opacity-60">
                   <div className="relative min-w-0 flex-1">
                     {stage === "name" ? (
                       <UserIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-text-muted" />
@@ -1238,7 +1238,7 @@ export function ChatWidget() {
                     type="button"
                     aria-label={t(locale, "chatUploadFile")}
                     disabled
-                    className="flex size-9 shrink-0 items-center justify-center rounded-lg text-text-muted transition-colors hover:bg-white/5 hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-40"
+                    className="flex size-9 shrink-0 items-center justify-center rounded-[10px] text-text-muted transition-colors hover:bg-white/5 hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <PaperclipIcon className="size-4" />
                   </button>
@@ -1246,7 +1246,7 @@ export function ChatWidget() {
                     type="submit"
                     disabled={!input.trim() || loading || stage === "loading"}
                     aria-label={t(locale, "chatSend")}
-                    className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-text-inverse transition-all hover:bg-primary-hover active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
+                    className="flex size-9 shrink-0 items-center justify-center rounded-[10px] bg-primary text-text-inverse transition-all hover:bg-primary-hover active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
                   >
                     <SendIcon />
                   </button>
@@ -1260,7 +1260,7 @@ export function ChatWidget() {
                     type="button"
                     disabled={loading}
                     onClick={() => sendChatMessage(t(locale, "chatBookDemo"))}
-                    className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-lg border border-card-border bg-card-dark px-1.5 py-1.5 text-[9px] font-medium text-text-muted transition-all hover:border-primary/30 hover:bg-white/5 hover:text-text-secondary active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-[10px] border border-card-border bg-card-dark px-1.5 py-1.5 text-[9px] font-medium text-text-muted transition-all hover:border-primary/30 hover:bg-white/5 hover:text-text-secondary active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <CalendarIcon className="size-3 shrink-0 text-primary" />
                     <span className="truncate whitespace-nowrap">
@@ -1271,7 +1271,7 @@ export function ChatWidget() {
                     type="button"
                     disabled={loading}
                     onClick={() => sendChatMessage(t(locale, "chatGetQuote"))}
-                    className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-lg border border-card-border bg-card-dark px-1.5 py-1.5 text-[9px] font-medium text-text-muted transition-all hover:border-primary/30 hover:bg-white/5 hover:text-text-secondary active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-[10px] border border-card-border bg-card-dark px-1.5 py-1.5 text-[9px] font-medium text-text-muted transition-all hover:border-primary/30 hover:bg-white/5 hover:text-text-secondary active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <DollarIcon className="size-3 shrink-0 text-primary" />
                     <span className="truncate whitespace-nowrap">
@@ -1282,7 +1282,7 @@ export function ChatWidget() {
                     type="button"
                     disabled={loading}
                     onClick={() => sendChatMessage(t(locale, "chatContactUs"))}
-                    className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-lg border border-card-border bg-card-dark px-1.5 py-1.5 text-[9px] font-medium text-text-muted transition-all hover:border-primary/30 hover:bg-white/5 hover:text-text-secondary active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-[10px] border border-card-border bg-card-dark px-1.5 py-1.5 text-[9px] font-medium text-text-muted transition-all hover:border-primary/30 hover:bg-white/5 hover:text-text-secondary active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <PhoneIcon className="size-3 shrink-0 text-primary" />
                     <span className="truncate whitespace-nowrap">
