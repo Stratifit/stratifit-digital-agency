@@ -23,6 +23,8 @@ interface WidgetMessage {
   choice?: "yes" | "later" | null;
   /** Whether the onboarding question has already been answered. */
   answered?: boolean;
+  /** Optional expandable text for the Read-more toggle on AI replies. */
+  readMore?: string;
 }
 
 const TOKEN_KEY = "stratifit-chat-token";
@@ -373,6 +375,25 @@ function insertQuestion(
   return [messages[0], question, ...messages.slice(1)];
 }
 
+/**
+ * Marks the AI reply that follows an answered "yes" question so the widget can
+ * attach the Read-more expansion to it.
+ */
+function markYesReply(
+  messages: WidgetMessage[],
+  readMore: string
+): WidgetMessage[] {
+  const questionIndex = messages.findIndex(
+    (m) => m.sender === "question" && m.choice === "yes"
+  );
+  if (questionIndex === -1) return messages;
+  const replyIndex = messages.findIndex(
+    (m, i) => i > questionIndex && m.sender === "ai"
+  );
+  if (replyIndex === -1) return messages;
+  return messages.map((m, i) => (i === replyIndex ? { ...m, readMore } : m));
+}
+
 /** Locale-aware time label; shows the date too when not today. */
 function formatMessageTime(iso: string, locale: string): string {
   const date = new Date(iso);
@@ -457,6 +478,7 @@ export function ChatWidget() {
   const [closing, setClosing] = React.useState(false);
   const [editingName, setEditingName] = React.useState(false);
   const [nameDraft, setNameDraft] = React.useState("");
+  const [openReadMore, setOpenReadMore] = React.useState<string | null>(null);
 
   const mounted = React.useSyncExternalStore(
     () => () => {},
@@ -553,15 +575,23 @@ export function ChatWidget() {
       // Keep the email-question bubble inside the history once it was asked.
       setMessages(
         data.visitor.name
-          ? insertQuestion(
-              stored,
-              buildQuestionMessage(
-                lang,
-                data.visitor.name,
-                data.visitor.email_choice ?? null,
-                Boolean(data.visitor.email_choice)
+          ? data.visitor.email_choice === "yes"
+            ? markYesReply(
+                insertQuestion(
+                  stored,
+                  buildQuestionMessage(lang, data.visitor.name, "yes", true)
+                ),
+                t(lang, "chatYesReadMore")
               )
-            )
+            : insertQuestion(
+                stored,
+                buildQuestionMessage(
+                  lang,
+                  data.visitor.name,
+                  data.visitor.email_choice ?? null,
+                  Boolean(data.visitor.email_choice)
+                )
+              )
           : stored
       );
       setStage(
@@ -692,7 +722,12 @@ export function ChatWidget() {
     }
     const stored = toWidgetMessages(result.data.messages);
     setVisitor((v) => ({ ...v, email, email_choice: "yes", onboarding_complete: true }));
-    setMessages(insertQuestion(stored, buildQuestionMessage(lang, visitor.name, "yes", true)));
+    setMessages(
+      markYesReply(
+        insertQuestion(stored, buildQuestionMessage(lang, visitor.name, "yes", true)),
+        t(lang, "chatYesReadMore")
+      )
+    );
     setInput("");
     setStage("chat");
   }
@@ -1216,6 +1251,28 @@ export function ChatWidget() {
                               )}
                             >
                               {m.content}
+                              {m.readMore ? (
+                                <>
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      setOpenReadMore((v) =>
+                                        v === m.id ? null : m.id
+                                      )
+                                    }
+                                    className="mt-2 block text-[8px] font-medium uppercase tracking-wide text-primary/60 underline decoration-primary/25 underline-offset-2 transition-colors hover:text-primary/80"
+                                  >
+                                    {t(locale, "chatReadMore")}
+                                  </button>
+                                  {openReadMore === m.id ? (
+                                    <div className="mt-2 rounded-lg border border-border bg-surface-soft/60 px-3 py-2">
+                                      <p className="text-[11px] leading-relaxed text-text-muted">
+                                        {m.readMore}
+                                      </p>
+                                    </div>
+                                  ) : null}
+                                </>
+                              ) : null}
                             </div>
                             {isLast ? (
                               <MessageTime iso={m.created_at} locale={locale} />

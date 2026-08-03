@@ -82,7 +82,9 @@ export type UiStringKey =
   | "chatEmailQuestion"
   | "chatYes"
   | "chatMaybeLater"
-  | "chatThanks"
+  | "chatYesReply"
+  | "chatYesReadMore"
+  | "chatLaterReply"
   | "chatYourNamePlaceholder"
   | "chatYourEmailPlaceholder"
   | "chatEditName"
@@ -207,8 +209,12 @@ const en: UiStrings = {
     "Great, {name}! Would you like to share your email for follow-ups? It's only used for business communication.",
   chatYes: "Yes",
   chatMaybeLater: "Maybe later",
-  chatThanks:
-    "Thanks for trusting Stratifit — your details are noted and we'll follow up if needed. What would you like to know?",
+  chatYesReply:
+    "Welcome to Stratifit! Your email will only be used to contact you about important details. What would you like me to help you with today?",
+  chatYesReadMore:
+    "Your email is stored securely and used only for business follow-ups. We never share your details and never send marketing emails.",
+  chatLaterReply:
+    "Welcome to Stratifit — your digital agency for growth. What would you like to know?",
   chatYourNamePlaceholder: "Your name...",
   chatYourEmailPlaceholder: "you@company.com",
   chatEditName: "Edit name",
@@ -334,8 +340,12 @@ const de: UiStrings = {
     "Großartig, {name}! Möchten Sie Ihre E-Mail für Follow-ups hinterlassen? Sie wird nur für geschäftliche Kommunikation verwendet.",
   chatYes: "Ja",
   chatMaybeLater: "Vielleicht später",
-  chatThanks:
-    "Danke für Ihr Vertrauen in Stratifit — Ihre Angaben sind notiert und wir melden uns bei Bedarf. Womit kann ich helfen?",
+  chatYesReply:
+    "Willkommen bei Stratifit! Ihre E-Mail wird nur verwendet, um Sie bei wichtigen Details zu kontaktieren. Womit kann ich Ihnen heute helfen?",
+  chatYesReadMore:
+    "Ihre E-Mail wird sicher gespeichert und nur für geschäftliche Follow-ups verwendet. Wir geben Ihre Daten niemals weiter und senden keine Werbung.",
+  chatLaterReply:
+    "Willkommen bei Stratifit — Ihre Digitalagentur für Wachstum. Was möchten Sie wissen?",
   chatYourNamePlaceholder: "Ihr Name...",
   chatYourEmailPlaceholder: "sie@firma.com",
   chatEditName: "Namen bearbeiten",
@@ -461,8 +471,12 @@ const fr: UiStrings = {
     "Parfait, {name} ! Souhaitez-vous partager votre e-mail pour les relances ? Il n'est utilisé que pour la communication professionnelle.",
   chatYes: "Oui",
   chatMaybeLater: "Peut-être plus tard",
-  chatThanks:
-    "Merci de faire confiance à Stratifit — vos informations sont notées et nous vous suivrons si besoin. Que souhaitez-vous savoir ?",
+  chatYesReply:
+    "Bienvenue chez Stratifit ! Votre e-mail ne servira qu'à vous contacter pour des informations importantes. En quoi puis-je vous aider aujourd'hui ?",
+  chatYesReadMore:
+    "Votre e-mail est stocké en toute sécurité et utilisé uniquement pour les relances professionnelles. Nous ne partageons jamais vos données et n'envoyons jamais de publicité.",
+  chatLaterReply:
+    "Bienvenue chez Stratifit — votre agence digitale pour la croissance. Que souhaitez-vous savoir ?",
   chatYourNamePlaceholder: "Votre prénom...",
   chatYourEmailPlaceholder: "vous@entreprise.com",
   chatEditName: "Modifier le nom",
@@ -588,8 +602,12 @@ const es: UiStrings = {
     "¡Genial, {name}! ¿Te gustaría compartir tu correo para seguimiento? Solo se usa para comunicación comercial.",
   chatYes: "Sí",
   chatMaybeLater: "Quizás más tarde",
-  chatThanks:
-    "Gracias por confiar en Stratifit — tus datos quedan registrados y te seguiremos si es necesario. ¿Qué te gustaría saber?",
+  chatYesReply:
+    "¡Bienvenido a Stratifit! Tu correo solo se usará para contactarte por detalles importantes. ¿En qué puedo ayudarte hoy?",
+  chatYesReadMore:
+    "Tu correo se almacena de forma segura y solo se usa para seguimientos comerciales. Nunca compartimos tus datos ni enviamos publicidad.",
+  chatLaterReply:
+    "Bienvenido a Stratifit — tu agencia digital para el crecimiento. ¿Qué te gustaría saber?",
   chatYourNamePlaceholder: "Tu nombre...",
   chatYourEmailPlaceholder: "usted@empresa.com",
   chatEditName: "Editar nombre",

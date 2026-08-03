@@ -558,10 +558,15 @@ export async function submitVisitorEmailChoice(
     content: visitorContent,
     content_format: "text",
   });
+  // Different closing reply per choice: "yes" gets the email follow-up note
+  // (with a client-side Read more), "later" gets the welcome-style invitation.
   await supabase.from("chat_messages").insert({
     conversation_id: conversation.id,
     sender_type: "ai",
-    content: t(parsed.data.locale, "chatThanks"),
+    content: t(
+      parsed.data.locale,
+      parsed.data.choice === "yes" ? "chatYesReply" : "chatLaterReply"
+    ),
     content_format: "text",
   });
 
