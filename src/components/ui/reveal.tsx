@@ -69,6 +69,7 @@ export function Reveal({
         gsap.from(targets, {
           ...PRESETS[variant],
           stagger: stagger ? STAGGER_DESKTOP : 0,
+          immediateRender: false,
           scrollTrigger: immediate
             ? undefined
             : { trigger: el, start: SCROLL_TRIGGER_START, once: true },
@@ -78,25 +79,28 @@ export function Reveal({
       // Mobile: stronger, clearly visible rise. Staggered groups reveal each
       // card independently with its own ScrollTrigger when it approaches the
       // bottom of the viewport; single blocks rise as one panel; carousels
-      // (cardSelector) cascade their cards on the container trigger.
+      // (cardSelector) reveal each card with its own trigger + small delay.
+      // immediateRender:false means content is never hidden before the trigger
+      // fires — if a trigger is mismeasured, cards simply stay visible.
       mm.add("(prefers-reduced-motion: no-preference) and (max-width: 767px)", () => {
         if (cardSelector) {
-          const cards = gsap.utils.toArray<HTMLElement>(
-            el.querySelectorAll(cardSelector)
-          );
-          if (cards.length > 0) {
-            gsap.from(cards, {
-              ...MOBILE_CARD_FROM,
-              stagger: 0.08,
-              scrollTrigger: immediate
-                ? undefined
-                : { trigger: el, start: MOBILE_TRIGGER_START, once: true },
+          gsap.utils
+            .toArray<HTMLElement>(el.querySelectorAll(cardSelector))
+            .forEach((card, index) => {
+              gsap.from(card, {
+                ...MOBILE_CARD_FROM,
+                delay: index * 0.08,
+                immediateRender: false,
+                scrollTrigger: immediate
+                  ? undefined
+                  : { trigger: card, start: MOBILE_TRIGGER_START, once: true },
+              });
             });
-          }
         } else if (stagger) {
           gsap.utils.toArray<HTMLElement>(el.children).forEach((item) => {
             gsap.from(item, {
               ...MOBILE_CARD_FROM,
+              immediateRender: false,
               scrollTrigger: immediate
                 ? undefined
                 : { trigger: item, start: MOBILE_TRIGGER_START, once: true },
@@ -105,6 +109,7 @@ export function Reveal({
         } else {
           gsap.from(el, {
             ...MOBILE_BLOCK_FROM,
+            immediateRender: false,
             scrollTrigger: immediate
               ? undefined
               : { trigger: el, start: MOBILE_TRIGGER_START, once: true },

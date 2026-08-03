@@ -3,8 +3,8 @@
 import * as React from "react";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import type { PublicFooterGroup } from "@/features/footer/queries";
+import { BrandLogo } from "@/components/ui/brand-logo";
 import { SocialIcons } from "@/components/ui/social-icons";
-import { Reveal } from "@/components/ui/reveal";
 
 export function FooterContent({
   groups,
@@ -38,15 +38,8 @@ export function FooterContent({
   return (
     <div className={className}>
       <div className="space-y-4">
-        <div className="flex items-center gap-2">
-          <div className="flex size-6 shrink-0 items-center justify-center rounded bg-primary">
-            <span className="text-[10px] font-extrabold text-text-inverse">
-              {siteName.slice(0, 2).toUpperCase()}
-            </span>
-          </div>
-          <span className="font-display text-base font-extrabold uppercase tracking-tight text-white">
-            {siteName}
-          </span>
+        <div className="w-32">
+          <BrandLogo alt={siteName} />
         </div>
         {siteDescription ? (
           <p className="text-sm font-medium leading-snug text-text-subtle sm:max-w-[80%] sm:leading-relaxed">
@@ -55,20 +48,19 @@ export function FooterContent({
         ) : null}
       </div>
 
-      <Reveal variant="fade">
-        <div className="grid grid-cols-3 gap-4">
-          {groups.map((group) => (
-            <div key={group.id} className="flex flex-col gap-2.5">
-              <h4 className="mb-0.5 text-sm font-bold uppercase tracking-wider text-white">
-                {resolveTranslation(group.title_translations, locale)}
-              </h4>
-              {group.links.map((link) => (
-                <a
-                  key={link.id}
-                  href={link.href}
-                  target={link.is_external ? "_blank" : undefined}
-                  rel={link.is_external ? "noopener noreferrer" : undefined}
-                  onClick={onLinkClick}
+      <div className="grid grid-cols-3 gap-4">
+        {groups.map((group) => (
+          <div key={group.id} className="flex flex-col gap-2.5">
+            <h4 className="mb-0.5 text-sm font-bold uppercase tracking-wider text-white">
+              {resolveTranslation(group.title_translations, locale)}
+            </h4>
+            {group.links.map((link) => (
+              <a
+                key={link.id}
+                href={link.href}
+                target={link.is_external ? "_blank" : undefined}
+                rel={link.is_external ? "noopener noreferrer" : undefined}
+                onClick={onLinkClick}
                 className="text-xs text-text-subtle transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 {resolveTranslation(link.label_translations, locale)}
@@ -76,8 +68,7 @@ export function FooterContent({
             ))}
           </div>
         ))}
-        </div>
-      </Reveal>
+      </div>
 
       <SocialIcons socialLinks={socialLinks} />
 
