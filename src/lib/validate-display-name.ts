@@ -53,4 +53,4 @@ export function isValidDisplayName(value: string): boolean {
 }
 
 /** The approved fallback label shown when no usable name is provided. */
-export const ANONYMOUS_DISPLAY_NAME = "Visitor";
+export const ANONYMOUS_DISPLAY_NAME = "User";

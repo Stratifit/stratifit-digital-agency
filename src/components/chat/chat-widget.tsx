@@ -187,15 +187,6 @@ function PencilIcon({ className }: { className?: string }) {
   );
 }
 
-function UserAvatarIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={className}>
-      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-      <circle cx="12" cy="7" r="4" />
-    </svg>
-  );
-}
-
 function ChevronDownIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={className}>
@@ -812,9 +803,6 @@ export function ChatWidget() {
                             </>
                           ) : (
                             <>
-                              <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-surface-hover text-text-secondary">
-                                <UserAvatarIcon className="size-3" />
-                              </span>
                               <span className="text-[10px] font-bold uppercase tracking-wide text-text-secondary">
                                 {visitor.name || t(locale, "chatVisitor")}
                               </span>
