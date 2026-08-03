@@ -1033,7 +1033,10 @@ export function ChatWidget() {
                                           }
                                         }}
                                         aria-label={t(locale, "chatEditName")}
-                                        className="w-full min-w-0 rounded-md border border-primary/40 bg-card-dark px-2 py-1 text-[11px] font-medium text-text-primary outline-none transition-colors focus:border-primary"
+                                        placeholder={
+                                          visitor.name ? undefined : t(locale, "chatVisitor")
+                                        }
+                                        className="w-full min-w-0 rounded-md border border-primary/40 bg-card-dark px-1.5 py-0.5 text-[10px] font-medium text-text-primary placeholder:text-text-muted outline-none transition-colors focus:border-primary"
                                       />
                                       <button
                                         type="button"
@@ -1041,7 +1044,7 @@ export function ChatWidget() {
                                         onClick={handleSaveName}
                                         className="shrink-0 p-0.5 text-success transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                                       >
-                                        <CheckIcon className="size-3.5" />
+                                        <CheckIcon className="size-3" />
                                       </button>
                                       <button
                                         type="button"
@@ -1049,23 +1052,21 @@ export function ChatWidget() {
                                         onClick={handleCancelEdit}
                                         className="shrink-0 p-0.5 text-text-muted transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                                       >
-                                        <XIcon className="size-3.5" />
+                                        <XIcon className="size-3" />
                                       </button>
                                     </>
                                   ) : (
-                                    <>
-                                      <span className="text-[11px] font-semibold uppercase tracking-wide text-primary/70">
+                                    <button
+                                      type="button"
+                                      onClick={handleStartEdit}
+                                      aria-label={t(locale, "chatEditName")}
+                                      className="group flex items-center gap-1 rounded-md px-1.5 py-1 transition-colors hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                                    >
+                                      <span className="text-[9px] font-medium uppercase tracking-wide text-primary/70 transition-colors group-hover:text-primary">
                                         {visitor.name || t(locale, "chatVisitor")}
                                       </span>
-                                      <button
-                                        type="button"
-                                        aria-label={t(locale, "chatEditName")}
-                                        onClick={handleStartEdit}
-                                        className="text-text-muted transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                                      >
-                                        <PencilIcon className="size-3" />
-                                      </button>
-                                    </>
+                                      <PencilIcon className="size-2.5 text-text-subtle transition-colors group-hover:text-primary" />
+                                    </button>
                                   )}
                                 </div>
                               ) : null}
