@@ -57,7 +57,10 @@ export function LanguageSwitcher({ currentLocale = "en" }: { currentLocale?: str
         <span>{meta.flag}</span>
         <span>{meta.code}</span>
         <svg
-          className="size-3"
+          className={cn(
+            "size-3 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
+            open && "rotate-180"
+          )}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -70,30 +73,35 @@ export function LanguageSwitcher({ currentLocale = "en" }: { currentLocale?: str
         </svg>
       </button>
 
-      {open ? (
-        <div
-          role="menu"
-          className="absolute right-0 top-full z-50 mt-2 w-36 rounded-input border border-card-border bg-card-dark p-1 shadow-shadow-md"
-        >
-          {SUPPORTED_LOCALES.map((locale) => (
-            <button
-              key={locale}
-              type="button"
-              role="menuitem"
-              onClick={() => handleSelect(locale)}
-              className={cn(
-                "flex items-center gap-2 rounded-xs border px-3 py-2 text-left text-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2",
-                locale === currentLocale
-                  ? "mx-1 w-auto rounded-[8px] border-card-border-active bg-card-active font-medium text-primary"
-                  : "w-full border-transparent text-text-secondary hover:bg-primary/8 hover:text-primary"
-              )}
-            >
-              <span>{LOCALE_META[locale].flag}</span>
-              {LOCALE_META[locale].name}
-            </button>
-          ))}
-        </div>
-      ) : null}
+      <div
+        role="menu"
+        aria-hidden={!open}
+        className={cn(
+          "absolute right-0 top-full z-50 mt-2 w-36 origin-top-right rounded-input border border-card-border bg-card-dark p-1 shadow-shadow-md transition-[opacity,transform,visibility] duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
+          open
+            ? "visible pointer-events-auto translate-y-0 scale-100 opacity-100"
+            : "invisible pointer-events-none -translate-y-1 scale-95 opacity-0"
+        )}
+      >
+        {SUPPORTED_LOCALES.map((locale) => (
+          <button
+            key={locale}
+            type="button"
+            role="menuitem"
+            tabIndex={open ? 0 : -1}
+            onClick={() => handleSelect(locale)}
+            className={cn(
+              "flex items-center gap-2 rounded-xs border px-3 py-2 text-left text-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2",
+              locale === currentLocale
+                ? "mx-1 w-auto rounded-[8px] border-card-border-active bg-card-active font-medium text-primary"
+                : "w-full border-transparent text-text-secondary hover:bg-primary/8 hover:text-primary"
+            )}
+          >
+            <span>{LOCALE_META[locale].flag}</span>
+            {LOCALE_META[locale].name}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
