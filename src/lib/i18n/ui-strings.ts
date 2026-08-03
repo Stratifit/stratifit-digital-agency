@@ -70,6 +70,7 @@ export type UiStringKey =
   | "popupHeadingA"
   | "popupHeadingB"
   | "noSpamNote"
+  | "readyWhenYouAre"
   | "closePopup"
   | "popupSubheading"
   | "sendProjectRequest"
@@ -159,6 +160,7 @@ const en: UiStrings = {
   popupHeadingA: "Tell us about your",
   popupHeadingB: "project",
   noSpamNote: "No spam. Your data stays private.",
+  readyWhenYouAre: "Ready When You Are",
   closePopup: "Close",
   popupSubheading:
     "Share what you're building and where you need help. We'll review it and recommend the right approach.",
@@ -249,6 +251,7 @@ const de: UiStrings = {
   popupHeadingA: "Erzählen Sie uns von Ihrem",
   popupHeadingB: "Projekt",
   noSpamNote: "Kein Spam. Ihre Daten bleiben privat.",
+  readyWhenYouAre: "Bereit, wenn du es bist",
   closePopup: "Schließen",
   popupSubheading:
     "Teilen Sie uns mit, was Sie bauen und wo Sie Hilfe benötigen. Wir prüfen es und empfehlen den richtigen Ansatz.",
@@ -339,6 +342,7 @@ const fr: UiStrings = {
   popupHeadingA: "Parlez-nous de votre",
   popupHeadingB: "projet",
   noSpamNote: "Pas de spam. Vos données restent privées.",
+  readyWhenYouAre: "Prêt quand vous l’êtes",
   closePopup: "Fermer",
   popupSubheading:
     "Partagez ce que vous construisez et où vous avez besoin d'aide. Nous l'examinerons et recommanderons la bonne approche.",
@@ -429,6 +433,7 @@ const es: UiStrings = {
   popupHeadingA: "Cuéntanos sobre tu",
   popupHeadingB: "proyecto",
   noSpamNote: "Sin spam. Tus datos permanecen privados.",
+  readyWhenYouAre: "Listo cuando lo estés",
   closePopup: "Cerrar",
   popupSubheading:
     "Comparte lo que estás construyendo y dónde necesitas ayuda. Lo revisaremos y recomendaremos el enfoque adecuado.",
