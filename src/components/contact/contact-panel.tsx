@@ -3,6 +3,27 @@ import type { PublicServiceDetail } from "@/features/services/queries";
 import { t } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
 
+function SparklesIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="size-4"
+    >
+      <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z" />
+      <path d="M20 3v4" />
+      <path d="M22 5h-4" />
+      <path d="M4 17v2" />
+      <path d="M5 18H3" />
+    </svg>
+  );
+}
+
 function ShieldCheckIcon() {
   return (
     <svg
@@ -113,11 +134,16 @@ export function ContactPanel({
   return (
     <>
       <header className={cn("relative", headerClassName)}>
-        <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.3em] text-primary">
-          {t(locale, "getInTouch")}
-        </p>
+        <div className="mb-3 mt-2 flex items-center gap-2 sm:mb-4 sm:mt-0">
+          <span className="flex size-7 items-center justify-center rounded-lg border border-primary/30 bg-surface-soft text-primary sm:size-9">
+            <SparklesIcon />
+          </span>
+          <span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-primary sm:text-xs">
+            {t(locale, "getInTouch")}
+          </span>
+        </div>
 
-        <h2 className="font-display text-xl font-black text-text-primary sm:text-2xl">
+        <h2 className="font-display text-[25px] font-bold leading-[1.06] tracking-[-0.03em] text-text-primary sm:text-4xl lg:text-5xl">
           {t(locale, "popupHeadingA")}{" "}
           <span className="text-primary">{t(locale, "popupHeadingB")}</span>
         </h2>
@@ -127,7 +153,7 @@ export function ContactPanel({
         </p>
       </header>
 
-      <div className="relative mt-6">
+      <div className="relative mt-6 sm:mt-10">
         <ContactForm services={services} locale={locale} compact />
       </div>
 
