@@ -963,14 +963,14 @@ export function ChatWidget() {
                         ) : null}
                       </div>
                       <div className="relative mt-3 flex items-center justify-between gap-2 border-t border-border pt-2.5">
-                        <span className="flex items-center gap-1 text-[9px] font-medium uppercase tracking-wide text-text-muted">
-                          <LockIcon className="size-2 text-text-subtle" />
+                        <span className="flex items-center gap-1 text-[8px] font-normal uppercase tracking-wide text-text-subtle">
+                          <LockIcon className="size-2 text-text-subtle/60" />
                           {t(locale, "chatDataSafe")}
                         </span>
                         <button
                           type="button"
                           onClick={() => setShowPrivacyNote((v) => !v)}
-                          className="text-[9px] font-semibold uppercase tracking-wide text-primary underline decoration-primary/40 underline-offset-2 transition-colors hover:text-primary-hover"
+                          className="text-[8px] font-medium uppercase tracking-wide text-primary/60 underline decoration-primary/25 underline-offset-2 transition-colors hover:text-primary/80"
                         >
                           {t(locale, "chatReadMore")}
                         </button>
