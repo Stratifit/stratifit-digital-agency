@@ -641,38 +641,33 @@ export function ChatWidget() {
               ) : null}
 
               {/* Stored messages */}
-              {(() => {
-                let userCount = 0;
-                return messages.map((m) => {
-                  if (m.sender === "visitor") {
-                    userCount += 1;
-                    const isGreeting = isGreetingText(m.content);
-                    const userLabel = isGreeting
-                      ? String(userCount).padStart(3, "0")
-                      : visitor.name;
-                    return (
-                      <div key={m.id} className="flex justify-end">
-                        <div className="max-w-[85%] rounded-2xl bg-surface px-4 py-3">
-                          <div className="mb-1.5 flex items-center justify-end gap-1.5 border-b border-border pb-1.5">
-                            <span className="text-[10px] font-bold uppercase tracking-wide text-primary/70">
-                              {userLabel}
-                            </span>
-                            <button
-                              type="button"
-                              aria-label={t(locale, "chatEditName")}
-                              onClick={handleEditName}
-                              className="text-text-muted transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                            >
-                              <PencilIcon className="size-3" />
-                            </button>
-                          </div>
-                          <p className="text-sm leading-relaxed text-text-primary">
-                            {m.content}
-                          </p>
+              {messages.map((m) => {
+                if (m.sender === "visitor") {
+                  // One stable number per user — this visitor is always 001.
+                  const userLabel = isGreetingText(m.content) ? "001" : visitor.name;
+                  return (
+                    <div key={m.id} className="flex justify-end">
+                      <div className="max-w-[85%] rounded-2xl bg-surface px-4 py-3">
+                        <div className="mb-1.5 flex items-center justify-end gap-1.5 border-b border-border pb-1.5">
+                          <span className="text-[10px] font-bold uppercase tracking-wide text-primary/70">
+                            {userLabel}
+                          </span>
+                          <button
+                            type="button"
+                            aria-label={t(locale, "chatEditName")}
+                            onClick={handleEditName}
+                            className="text-text-muted transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                          >
+                            <PencilIcon className="size-3" />
+                          </button>
                         </div>
+                        <p className="text-sm leading-relaxed text-text-primary">
+                          {m.content}
+                        </p>
                       </div>
-                    );
-                  }
+                    </div>
+                  );
+                }
                   if (m.sender === "system") {
                     return (
                       <div key={m.id} className="flex justify-start">
@@ -689,8 +684,7 @@ export function ChatWidget() {
                       </div>
                     </div>
                   );
-                });
-              })()}
+                })}
 
               {/* Email question bubble — shown while asking and while typing the email */}
               {stage === "emailQuestion" || stage === "emailInput" ? (
