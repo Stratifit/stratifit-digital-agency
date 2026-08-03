@@ -925,10 +925,17 @@ export function ChatWidget() {
                 <p className="font-display text-sm font-black text-text-primary">
                   {t(locale, "chatName")}
                 </p>
-                <span className="mt-0.5 inline-flex items-center gap-1.5 rounded-full bg-success/10 px-2 py-0.5">
-                  <span className="size-1.5 rounded-full bg-success" />
-                  <span className="text-[11px] font-medium text-success">
-                    {t(locale, "chatOnline")}
+                <span className="inline-flex items-center gap-1">
+                  <span
+                    className={cn(
+                      "size-1 rounded-full bg-success",
+                      loading && "animate-pulse"
+                    )}
+                  />
+                  <span className="text-[9px] font-medium text-success">
+                    {loading
+                      ? t(locale, "chatTypingStatus")
+                      : t(locale, "chatOnline")}
                   </span>
                 </span>
               </div>

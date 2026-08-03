@@ -89,6 +89,7 @@ export type UiStringKey =
   | "chatYourEmailPlaceholder"
   | "chatEditName"
   | "chatTyping"
+  | "chatTypingStatus"
   | "chatSave"
   | "chatCancel"
   | "chatLanguage"
@@ -219,6 +220,7 @@ const en: UiStrings = {
   chatYourEmailPlaceholder: "you@company.com",
   chatEditName: "Edit name",
   chatTyping: "Stratifit AI is typing…",
+  chatTypingStatus: "Typing…",
   chatSave: "Save",
   chatCancel: "Cancel",
   chatLanguage: "Select language",
@@ -350,6 +352,7 @@ const de: UiStrings = {
   chatYourEmailPlaceholder: "sie@firma.com",
   chatEditName: "Namen bearbeiten",
   chatTyping: "Stratifit AI schreibt…",
+  chatTypingStatus: "Schreibt…",
   chatSave: "Speichern",
   chatCancel: "Abbrechen",
   chatLanguage: "Sprache auswählen",
@@ -481,6 +484,7 @@ const fr: UiStrings = {
   chatYourEmailPlaceholder: "vous@entreprise.com",
   chatEditName: "Modifier le nom",
   chatTyping: "Stratifit AI écrit…",
+  chatTypingStatus: "Écrit…",
   chatSave: "Enregistrer",
   chatCancel: "Annuler",
   chatLanguage: "Choisir la langue",
@@ -612,6 +616,7 @@ const es: UiStrings = {
   chatYourEmailPlaceholder: "usted@empresa.com",
   chatEditName: "Editar nombre",
   chatTyping: "Stratifit AI está escribiendo…",
+  chatTypingStatus: "Escribiendo…",
   chatSave: "Guardar",
   chatCancel: "Cancelar",
   chatLanguage: "Seleccionar idioma",
