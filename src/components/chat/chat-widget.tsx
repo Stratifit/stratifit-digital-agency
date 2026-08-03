@@ -247,30 +247,6 @@ function PaperclipIcon({ className }: { className?: string }) {
   );
 }
 
-function CalendarIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
-      <path
-        fillRule="evenodd"
-        d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3a.75.75 0 0 1 1.5 0v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
-
-function PhoneIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
-      <path
-        fillRule="evenodd"
-        d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
-
 function HeartIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
@@ -1290,42 +1266,12 @@ export function ChatWidget() {
                 </div>
               </form>
 
-              {/* Quick actions — only after onboarding */}
+              {/* Status line — replaces the quick actions */}
               {stage === "chat" ? (
-                <div className="flex gap-1.5 border-t border-border px-4 pb-2 pt-2">
-                  <button
-                    type="button"
-                    disabled={loading}
-                    onClick={() => sendChatMessage(t(locale, "chatBookDemo"))}
-                    className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-[10px] border border-card-border bg-card-dark px-1.5 py-1.5 text-[9px] font-medium text-text-muted transition-all hover:border-primary/30 hover:bg-white/5 hover:text-text-secondary active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    <CalendarIcon className="size-3 shrink-0 text-primary" />
-                    <span className="truncate whitespace-nowrap">
-                      {t(locale, "chatBookDemo")}
-                    </span>
-                  </button>
-                  <button
-                    type="button"
-                    disabled={loading}
-                    onClick={() => sendChatMessage(t(locale, "chatGetQuote"))}
-                    className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-[10px] border border-card-border bg-card-dark px-1.5 py-1.5 text-[9px] font-medium text-text-muted transition-all hover:border-primary/30 hover:bg-white/5 hover:text-text-secondary active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    <DollarIcon className="size-3 shrink-0 text-primary" />
-                    <span className="truncate whitespace-nowrap">
-                      {t(locale, "chatGetQuote")}
-                    </span>
-                  </button>
-                  <button
-                    type="button"
-                    disabled={loading}
-                    onClick={() => sendChatMessage(t(locale, "chatContactUs"))}
-                    className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-[10px] border border-card-border bg-card-dark px-1.5 py-1.5 text-[9px] font-medium text-text-muted transition-all hover:border-primary/30 hover:bg-white/5 hover:text-text-secondary active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    <PhoneIcon className="size-3 shrink-0 text-primary" />
-                    <span className="truncate whitespace-nowrap">
-                      {t(locale, "chatContactUs")}
-                    </span>
-                  </button>
+                <div className="flex items-center justify-center border-t border-border px-4 pb-2 pt-2">
+                  <p className="text-[9px] font-normal tracking-wide text-text-subtle">
+                    {t(locale, "chatStatusLine")}
+                  </p>
                 </div>
               ) : null}
 

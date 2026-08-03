@@ -93,9 +93,7 @@ export type UiStringKey =
   | "chatRestart"
   | "chatVisitor"
   | "chatUploadFile"
-  | "chatBookDemo"
-  | "chatGetQuote"
-  | "chatContactUs"
+  | "chatStatusLine"
   | "chatBuiltBy"
   | "heroEyebrowFallback"
   | "viewSite"
@@ -221,9 +219,7 @@ const en: UiStrings = {
   chatRestart: "Restart chat",
   chatVisitor: "User",
   chatUploadFile: "Upload file",
-  chatBookDemo: "Book a Demo",
-  chatGetQuote: "Get a Quote",
-  chatContactUs: "Contact Us",
+  chatStatusLine: "AI assistant · Human support available",
   chatBuiltBy: "Built by STRATIFIT team",
   heroEyebrowFallback: "Premium Digital Agency",
   viewSite: "View site",
@@ -350,9 +346,7 @@ const de: UiStrings = {
   chatRestart: "Chat neu starten",
   chatVisitor: "Benutzer",
   chatUploadFile: "Datei hochladen",
-  chatBookDemo: "Demo buchen",
-  chatGetQuote: "Angebot anfordern",
-  chatContactUs: "Kontakt aufnehmen",
+  chatStatusLine: "KI-Assistent · Menschlicher Support verfügbar",
   chatBuiltBy: "Erstellt vom STRATIFIT-Team",
   heroEyebrowFallback: "Premium-Digitalagentur",
   viewSite: "Website ansehen",
@@ -479,9 +473,7 @@ const fr: UiStrings = {
   chatRestart: "Redémarrer le chat",
   chatVisitor: "Utilisateur",
   chatUploadFile: "Téléverser un fichier",
-  chatBookDemo: "Réserver une démo",
-  chatGetQuote: "Obtenir un devis",
-  chatContactUs: "Nous contacter",
+  chatStatusLine: "Assistant IA · Support humain disponible",
   chatBuiltBy: "Créé par l'équipe STRATIFIT",
   heroEyebrowFallback: "Agence digitale premium",
   viewSite: "Voir le site",
@@ -608,9 +600,7 @@ const es: UiStrings = {
   chatRestart: "Reiniciar chat",
   chatVisitor: "Usuario",
   chatUploadFile: "Subir archivo",
-  chatBookDemo: "Reservar una demo",
-  chatGetQuote: "Obtener presupuesto",
-  chatContactUs: "Contáctanos",
+  chatStatusLine: "Asistente de IA · Soporte humano disponible",
   chatBuiltBy: "Creado por el equipo de STRATIFIT",
   heroEyebrowFallback: "Agencia digital premium",
   viewSite: "Ver sitio",
