@@ -870,7 +870,7 @@ export function ChatWidget() {
                   <AiAvatar />
                   <div className="min-w-0 max-w-[82%]">
                     <AiSenderLabel locale={locale} />
-                    <div className="relative overflow-hidden rounded-2xl rounded-bl-md border border-card-border bg-gradient-to-b from-card-dark to-surface px-4 py-3.5">
+                    <div className="relative overflow-hidden rounded-2xl rounded-bl-md border border-border bg-surface-elevated px-4 py-3.5">
                       {/* Soft ambient glow behind the content */}
                       <div
                         aria-hidden="true"
