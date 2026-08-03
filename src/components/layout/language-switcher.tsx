@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
 import { setLocale } from "@/actions/locale";
 import { SUPPORTED_LOCALES } from "@/lib/i18n/resolve-translation";
 import { cn } from "@/lib/cn";
@@ -14,7 +13,6 @@ const LOCALE_META: Record<string, { flag: string; code: string; name: string }> 
 };
 
 export function LanguageSwitcher({ currentLocale = "en" }: { currentLocale?: string }) {
-  const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [activeLocale, setActiveLocale] = React.useState(currentLocale);
   const ref = React.useRef<HTMLDivElement>(null);
@@ -39,7 +37,9 @@ export function LanguageSwitcher({ currentLocale = "en" }: { currentLocale?: str
     if (locale === currentLocale) return;
     await setLocale(locale);
     setActiveLocale(locale);
-    router.refresh();
+    // Full reload so the new language renders with fresh entrance animations
+    // (router.refresh() keeps client components mounted and skips them).
+    window.location.reload();
   }
 
   return (
