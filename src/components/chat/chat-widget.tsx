@@ -1141,32 +1141,26 @@ export function ChatWidget() {
                         <p className="text-sm leading-relaxed text-text-secondary">
                           {emailQuestion}
                         </p>
-                        <div className="mt-3 flex items-center justify-between gap-2 border-t border-border pt-2.5">
-                          <span className="flex items-center gap-1 text-[8px] font-normal uppercase tracking-wide text-text-subtle">
-                            <LockIcon className="size-2 text-text-subtle/60" />
-                            {t(locale, "chatDataSafe")}
-                          </span>
-                          {stage === "emailQuestion" ? (
-                            <div className="flex shrink-0 items-center gap-1.5">
-                              <button
-                                type="button"
-                                disabled={loading}
-                                onClick={() => handleChoice("yes")}
-                                className="rounded-md border border-primary/25 bg-transparent px-2.5 py-1.5 text-[9px] font-semibold text-primary transition-all hover:border-primary/40 hover:bg-primary/10 active:scale-[0.98] disabled:opacity-50"
-                              >
-                                {t(locale, "chatYes")}
-                              </button>
-                              <button
-                                type="button"
-                                disabled={loading}
-                                onClick={() => handleChoice("later")}
-                                className="rounded-md border border-primary/25 bg-transparent px-2.5 py-1.5 text-[9px] font-semibold text-primary transition-all hover:border-primary/40 hover:bg-primary/10 active:scale-[0.98] disabled:opacity-50"
-                              >
-                                {t(locale, "chatMaybeLater")}
-                              </button>
-                            </div>
-                          ) : null}
-                        </div>
+                        {stage === "emailQuestion" ? (
+                          <div className="mt-3 flex items-center justify-between gap-2 border-t border-border pt-2.5">
+                            <button
+                              type="button"
+                              disabled={loading}
+                              onClick={() => handleChoice("yes")}
+                              className="rounded-md border border-border bg-transparent px-2.5 py-1.5 text-[9px] font-semibold text-text-secondary transition-all hover:border-primary/40 hover:bg-primary/10 hover:text-primary active:scale-[0.98] disabled:opacity-50"
+                            >
+                              {t(locale, "chatYes")}
+                            </button>
+                            <button
+                              type="button"
+                              disabled={loading}
+                              onClick={() => handleChoice("later")}
+                              className="rounded-md border border-border bg-transparent px-2.5 py-1.5 text-[9px] font-semibold text-text-secondary transition-all hover:border-primary/40 hover:bg-primary/10 hover:text-primary active:scale-[0.98] disabled:opacity-50"
+                            >
+                              {t(locale, "chatMaybeLater")}
+                            </button>
+                          </div>
+                        ) : null}
                       </div>
                     </div>
                   </div>
