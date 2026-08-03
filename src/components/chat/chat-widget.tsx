@@ -471,7 +471,7 @@ export function ChatWidget() {
   const [lang, setLang] = React.useState<string>(() => getDefaultLang());
   const [langOpen, setLangOpen] = React.useState(false);
   const langRef = React.useRef<HTMLDivElement>(null);
-  const bottomRef = React.useRef<HTMLDivElement>(null);
+  const messagesScrollRef = React.useRef<HTMLDivElement>(null);
   const panelRef = React.useRef<HTMLDivElement>(null);
   const editInputRef = React.useRef<HTMLInputElement>(null);
   const closingRef = React.useRef(false);
@@ -608,9 +608,20 @@ export function ChatWidget() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
+  // When the chat opens, jump straight to the newest messages so only the
+  // latest send/reply are visible — older messages scroll up inside the box.
   React.useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, open, loading, stage]);
+    if (!open) return;
+    const el = messagesScrollRef.current;
+    if (el) el.scrollTo({ top: el.scrollHeight, behavior: "auto" });
+  }, [open]);
+
+  // Smoothly follow new messages while chatting.
+  React.useEffect(() => {
+    if (!open) return;
+    const el = messagesScrollRef.current;
+    if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+  }, [messages, loading, stage, open]);
 
   if (!mounted) return null;
 
@@ -898,8 +909,9 @@ export function ChatWidget() {
               closing ? "chat-panel-out" : "chat-panel-in"
             )}
           >
-          {/* Header — z-30 keeps the language dropdown above the messages area */}
-          <div className="relative z-30 flex flex-none items-center justify-between rounded-t-2xl border-b border-border bg-background/95 px-4 py-3">
+          {/* Header — sticky above the scrolling messages; z-30 keeps the
+              language dropdown in front of the messages area */}
+          <div className="sticky top-0 z-30 flex flex-none items-center justify-between rounded-t-2xl border-b border-border bg-background/95 px-4 py-3">
             {/* Ambient amber glow */}
             <div
               aria-hidden="true"
@@ -1008,7 +1020,10 @@ export function ChatWidget() {
           ) : null}
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4">
+          <div
+            ref={messagesScrollRef}
+            className="flex-1 overflow-y-auto overscroll-contain px-4 py-4"
+          >
             <div
               aria-hidden="true"
               className="pointer-events-none sticky top-0 z-10 -mx-4 -mt-4 h-5 bg-gradient-to-b from-background to-transparent"
@@ -1303,7 +1318,6 @@ export function ChatWidget() {
               </div>
             ) : null}
             {error ? <p className="mt-3 text-sm text-error">{error}</p> : null}
-            <div ref={bottomRef} />
           </div>
 
           {/* Footer — input, quick actions, brand */}
