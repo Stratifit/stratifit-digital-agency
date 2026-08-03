@@ -1007,7 +1007,7 @@ export function ChatWidget() {
                     type="button"
                     onClick={() => sendChatMessage(t(locale, chip.key))}
                     className={cn(
-                      "flex shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-2 text-xs font-medium transition-all",
+                      "flex shrink-0 items-center gap-1.5 rounded-[10px] border px-3.5 py-2 text-xs font-medium transition-all",
                       index === 0
                         ? "border-primary bg-primary text-text-inverse"
                         : "border-border bg-white/5 text-text-primary hover:border-primary/30 hover:bg-white/10"
