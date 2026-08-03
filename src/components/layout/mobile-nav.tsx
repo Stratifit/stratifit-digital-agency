@@ -16,6 +16,7 @@ interface MobileNavProps {
   siteName: string;
   socialLinks: Record<string, string> | null;
   services: PublicServiceDetail[];
+  servicePageSlugs: Set<string>;
   currentYear: number;
 }
 
@@ -58,6 +59,7 @@ export function MobileNav({
   siteName,
   socialLinks,
   services,
+  servicePageSlugs,
   currentYear,
 }: MobileNavProps) {
   const [open, setOpen] = React.useState(false);
@@ -158,44 +160,67 @@ export function MobileNav({
                         onScroll={handleServicesScroll}
                         className="-mx-1 flex snap-x gap-3 overflow-x-auto px-1 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                       >
-                        {services.map((service) => (
-                          <a
-                            key={service.slug}
-                            data-service-card
-                            href={service.cta_url ?? "/contact"}
-                            onClick={(e) => {
-                              setOpen(false);
-                              if (!service.cta_url || service.cta_url === "/contact") {
-                                e.preventDefault();
-                                window.dispatchEvent(
-                                  new CustomEvent("stratifit:open-contact")
-                                );
-                              }
-                            }}
-                            className="group flex flex-[0_0_70%] snap-start flex-col rounded-card border border-card-border bg-card-dark p-3.5 transition-[border-color,background-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-card-border-hover active:translate-y-0 active:bg-card-active active:border-card-border-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2"
-                          >
-                            <div className="mb-2.5 flex items-center justify-between">
-                              <div className="flex min-w-0 items-center gap-2.5">
-                                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-text-inverse">
-                                  <ServiceIcon
-                                    name={service.icon_name}
-                                    className="!size-4 !text-text-inverse !drop-shadow-none"
-                                  />
-                                </span>
-                                <span className="min-w-0 truncate text-[15px] font-semibold text-text-primary">
-                                  {resolveTranslation(service.title_translations, locale)}
-                                </span>
+                        {services.map((service) => {
+                          const hasPage = servicePageSlugs.has(service.slug);
+                          const cardClassName =
+                            "group flex flex-[0_0_70%] snap-start flex-col rounded-card border border-card-border bg-card-dark p-3.5 transition-[border-color,background-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-card-border-hover active:translate-y-0 active:bg-card-active active:border-card-border-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2";
+                          return hasPage ? (
+                            <a
+                              key={service.slug}
+                              data-service-card
+                              href={`/services/${service.slug}`}
+                              onClick={() => setOpen(false)}
+                              className={cardClassName}
+                            >
+                              <div className="mb-2.5 flex items-center justify-between">
+                                <div className="flex min-w-0 items-center gap-2.5">
+                                  <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-text-inverse">
+                                    <ServiceIcon
+                                      name={service.icon_name}
+                                      className="!size-4 !text-text-inverse !drop-shadow-none"
+                                    />
+                                  </span>
+                                  <span className="min-w-0 truncate text-[15px] font-semibold text-text-primary">
+                                    {resolveTranslation(service.title_translations, locale)}
+                                  </span>
+                                </div>
+                                <ArrowIcon />
                               </div>
-                              <ArrowIcon />
+                              <p className="line-clamp-2 min-h-[31.2px] overflow-hidden text-xs leading-[1.3] text-text-muted">
+                                {resolveTranslation(
+                                  service.short_description_translations,
+                                  locale
+                                )}
+                              </p>
+                            </a>
+                          ) : (
+                            <div
+                              key={service.slug}
+                              data-service-card
+                              className={cardClassName}
+                            >
+                              <div className="mb-2.5 flex items-center justify-between">
+                                <div className="flex min-w-0 items-center gap-2.5">
+                                  <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-text-inverse">
+                                    <ServiceIcon
+                                      name={service.icon_name}
+                                      className="!size-4 !text-text-inverse !drop-shadow-none"
+                                    />
+                                  </span>
+                                  <span className="min-w-0 truncate text-[15px] font-semibold text-text-primary">
+                                    {resolveTranslation(service.title_translations, locale)}
+                                  </span>
+                                </div>
+                              </div>
+                              <p className="line-clamp-2 min-h-[31.2px] overflow-hidden text-xs leading-[1.3] text-text-muted">
+                                {resolveTranslation(
+                                  service.short_description_translations,
+                                  locale
+                                )}
+                              </p>
                             </div>
-                            <p className="line-clamp-2 min-h-[31.2px] overflow-hidden text-xs leading-[1.3] text-text-muted">
-                              {resolveTranslation(
-                                service.short_description_translations,
-                                locale
-                              )}
-                            </p>
-                          </a>
-                        ))}
+                          );
+                        })}
                       </div>
                       {services.length > 1 ? (
                         <div className="mt-1 flex justify-center gap-1.5" aria-hidden="true">

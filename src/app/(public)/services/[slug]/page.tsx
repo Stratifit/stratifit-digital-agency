@@ -254,6 +254,11 @@ export default async function ServicePage({
                 <h2 className="mt-3 font-display text-4xl font-black tracking-tight leading-[0.95] text-text-primary sm:text-5xl md:text-6xl">
                   {capabilitiesTitle || "Capabilities"}
                 </h2>
+                {service?.short_description_translations ? (
+                  <p className="mt-4 max-w-2xl text-sm font-medium leading-relaxed text-text-muted sm:text-base">
+                    {resolveTranslation(service.short_description_translations, locale)}
+                  </p>
+                ) : null}
               </div>
             </Reveal>
             <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
@@ -409,7 +414,7 @@ export default async function ServicePage({
                 {toolkitTitle || "Tools & Technologies"}
               </h2>
             </Reveal>
-            <div className="divide-y divide-border/60">
+            <div>
               {[toolkit.slice(0, Math.ceil(toolkit.length / 2)), toolkit.slice(Math.ceil(toolkit.length / 2))].map(
                 (row, rowIndex) => (
                   <div key={rowIndex} className="overflow-hidden py-4 md:py-6">

@@ -3,6 +3,7 @@ import { getLocale } from "@/lib/i18n/get-locale";
 import { getPublicNavigation } from "@/features/navigation/queries";
 import { getPublicSiteSettings } from "@/features/site-settings/queries";
 import { getPublicServices } from "@/features/services/queries";
+import { getPublicServicePages } from "@/features/service-pages/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { t } from "@/lib/i18n/ui-strings";
 import { ContactTrigger } from "@/components/contact/contact-trigger";
@@ -27,14 +28,16 @@ function Brand({ siteName }: { siteName: string }) {
 
 export async function Header() {
   const locale = await getLocale();
-  const [items, settings, services] = await Promise.all([
+  const [items, settings, services, servicePages] = await Promise.all([
     getPublicNavigation("header"),
     getPublicSiteSettings(),
     getPublicServices(),
+    getPublicServicePages(),
   ]);
 
   const siteName = settings?.site_name ?? "Stratifit";
   const socialLinks = settings?.social_links ?? null;
+  const servicePageSlugs = new Set(servicePages.map((page) => page.slug));
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/5 bg-background/90 backdrop-blur-md">
@@ -47,6 +50,7 @@ export async function Header() {
             siteName={siteName}
             socialLinks={socialLinks}
             services={services}
+            servicePageSlugs={servicePageSlugs}
             currentYear={new Date().getFullYear()}
           />
         </div>
