@@ -108,6 +108,7 @@ const NAV_SECTIONS: {
     items: [
       { href: "/admin/content/sections", label: "Sections", icon: "sections" },
       { href: "/admin/content/services", label: "Services", icon: "services" },
+      { href: "/admin/content/service-pages", label: "Service Pages", icon: "sections" },
       { href: "/admin/content/process", label: "Process", icon: "process" },
       { href: "/admin/content/why-choose-us", label: "Why Choose Us", icon: "why" },
       { href: "/admin/content/portfolio", label: "Portfolio", icon: "portfolio" },

@@ -1,4 +1,5 @@
 import { getPublicServices } from "@/features/services/queries";
+import { getPublicServicePages } from "@/features/service-pages/queries";
 import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
@@ -45,14 +46,17 @@ function ArrowIcon() {
 
 export async function ServicesSection() {
   const locale = await getLocale();
-  const [services, settings] = await Promise.all([
+  const [services, settings, servicePages] = await Promise.all([
     getPublicServices(),
     getPublicSectionSetting("services"),
+    getPublicServicePages(),
   ]);
 
   if (services.length === 0) {
     return null;
   }
+
+  const pageSlugs = new Set(servicePages.map((p) => p.slug));
 
   return (
     <Section>
@@ -124,7 +128,11 @@ export async function ServicesSection() {
                   <div className="flex-1" />
 
                   <Link
-                    href={service.cta_url ?? "/contact"}
+                    href={
+                      pageSlugs.has(service.slug)
+                        ? `/services/${service.slug}`
+                        : service.cta_url ?? "/contact"
+                    }
                     className="group/link mt-2 flex w-full items-center justify-center gap-2 rounded-button border border-transparent bg-primary py-4 text-sm font-bold text-text-inverse transition-[background-color,border-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-bright active:translate-y-0 active:border-primary/60 active:bg-primary-deep focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/60 focus-visible:outline-offset-2"
                   >
                     {ctaLabel}
