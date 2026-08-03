@@ -75,6 +75,8 @@ export type UiStringKey =
   | "sendProjectRequest"
   | "serviceNeeded"
   | "estimatedBudget"
+  | "selectService"
+  | "notSureYet"
   | "trustNoSpam"
   | "trustNoSpamDesc"
   | "trustPrivate"
@@ -163,6 +165,8 @@ const en: UiStrings = {
   sendProjectRequest: "Send Project Request",
   serviceNeeded: "Service needed",
   estimatedBudget: "Estimated budget",
+  selectService: "Select service",
+  notSureYet: "Not sure yet",
   trustNoSpam: "No spam",
   trustNoSpamDesc: "We respect your inbox.",
   trustPrivate: "100% private",
@@ -251,6 +255,8 @@ const de: UiStrings = {
   sendProjectRequest: "Projektanfrage senden",
   serviceNeeded: "Service",
   estimatedBudget: "Geschätztes Budget",
+  selectService: "Service auswählen",
+  notSureYet: "Noch unsicher",
   trustNoSpam: "Kein Spam",
   trustNoSpamDesc: "Wir respektieren Ihren Posteingang.",
   trustPrivate: "100% privat",
@@ -339,6 +345,8 @@ const fr: UiStrings = {
   sendProjectRequest: "Envoyer la demande",
   serviceNeeded: "Service requis",
   estimatedBudget: "Budget estimé",
+  selectService: "Sélectionner un service",
+  notSureYet: "Pas encore sûr",
   trustNoSpam: "Pas de spam",
   trustNoSpamDesc: "Nous respectons votre boîte de réception.",
   trustPrivate: "100% privé",
@@ -427,6 +435,8 @@ const es: UiStrings = {
   sendProjectRequest: "Enviar solicitud",
   serviceNeeded: "Servicio necesario",
   estimatedBudget: "Presupuesto estimado",
+  selectService: "Seleccionar servicio",
+  notSureYet: "Aún no lo sé",
   trustNoSpam: "Sin spam",
   trustNoSpamDesc: "Respetamos tu bandeja de entrada.",
   trustPrivate: "100% privado",

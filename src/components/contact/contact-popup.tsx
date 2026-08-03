@@ -71,7 +71,7 @@ function TrustBadges({ locale }: { locale: string }) {
           key={idx}
           className="flex items-center justify-center gap-1.5 px-2 text-center sm:gap-2"
         >
-          <span className="shrink-0 text-text-secondary">{badge.icon}</span>
+          <span className="shrink-0 text-primary">{badge.icon}</span>
           <div className="text-left leading-tight">
             <span className="text-[9px] font-semibold text-text-primary sm:text-[11px]">
               {badge.title}
@@ -197,14 +197,14 @@ export function ContactPopup({
       role="dialog"
       aria-modal="true"
       aria-label={t(locale, "contactEyebrow")}
-      className="fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto p-4 sm:p-6"
+      className="fixed inset-0 z-[70] sm:flex sm:items-center sm:justify-center sm:p-6"
     >
       <div
         aria-hidden="true"
         onClick={() => setOpen(false)}
         className="contact-popup-backdrop fixed inset-0 bg-black/70 backdrop-blur-sm"
       />
-      <div className="contact-popup-panel relative mx-auto my-4 w-full max-w-2xl overflow-hidden rounded-card-lg border border-card-border bg-card-dark shadow-shadow-lg sm:my-8">
+      <div className="contact-popup-panel relative mx-auto flex min-h-[100dvh] w-full max-w-3xl flex-col overflow-y-auto bg-card-dark px-4 py-4 sm:min-h-0 sm:rounded-[24px] sm:border sm:border-card-border sm:px-8 sm:py-8 lg:p-10">
         {/* Ambient amber glow (top-right) */}
         <div
           aria-hidden="true"
@@ -217,15 +217,15 @@ export function ContactPopup({
           type="button"
           aria-label={t(locale, "closePopup")}
           onClick={() => setOpen(false)}
-          className="absolute right-4 top-4 z-10 flex size-9 items-center justify-center rounded-full border border-card-border text-text-muted transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/40 hover:text-text-primary focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 sm:right-6 sm:top-6 sm:size-10"
+          className="absolute right-4 top-4 z-10 flex size-9 items-center justify-center rounded-full border border-card-border text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/30 hover:text-text-primary focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 sm:right-8 sm:top-8 sm:size-11"
         >
           <CloseIcon />
         </button>
 
         {/* Header */}
-        <header className="relative px-6 pb-2 pt-8 sm:px-8 sm:pt-10 sm:pr-16">
+        <header className="relative pr-12 sm:pr-16">
           <div className="mb-3 flex items-center gap-2 sm:mb-4">
-            <span className="flex size-7 items-center justify-center rounded-lg border border-[rgba(245,158,11,0.30)] bg-surface-soft text-text-secondary sm:size-9">
+            <span className="flex size-7 items-center justify-center rounded-lg border border-primary/30 bg-surface-soft text-primary sm:size-9">
               <SparklesIcon />
             </span>
             <span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-primary sm:text-xs">
@@ -233,23 +233,23 @@ export function ContactPopup({
             </span>
           </div>
 
-          <h2 className="font-display text-2xl font-bold leading-[1.06] tracking-[-0.03em] text-text-primary sm:text-3xl lg:text-4xl">
+          <h2 className="font-display text-[25px] font-bold leading-[1.06] tracking-[-0.03em] text-text-primary sm:text-4xl lg:text-5xl">
             {t(locale, "popupHeadingA")}{" "}
             <span className="text-primary">{t(locale, "popupHeadingB")}</span>
           </h2>
 
-          <p className="mt-2.5 max-w-xl text-xs leading-5 text-text-secondary sm:mt-3 sm:text-sm sm:leading-6">
+          <p className="mt-2.5 max-w-xl text-[11px] leading-4 text-text-secondary sm:mt-3 sm:text-sm sm:leading-6">
             {t(locale, "popupSubheading")}
           </p>
         </header>
 
         {/* Form */}
-        <div className="relative px-6 pb-6 sm:px-8 sm:pb-8">
+        <div className="relative mt-6 sm:mt-10">
           <ContactForm services={services} locale={locale} compact />
         </div>
 
         {/* Trust badges */}
-        <div className="relative px-6 pb-6 sm:px-8 sm:pb-8">
+        <div className="relative mt-6 sm:mt-8">
           <TrustBadges locale={locale} />
         </div>
       </div>
