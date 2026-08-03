@@ -4,6 +4,7 @@ import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
+import { Reveal } from "@/components/ui/reveal";
 import { InsightsCarousel } from "./insights-carousel";
 
 export async function InsightsSection() {
@@ -22,13 +23,13 @@ export async function InsightsSection() {
     <Section>
       <Container>
         <SectionHeader settings={settings} locale={locale} />
-        <div className="mt-12">
+        <Reveal className="mt-12">
           <InsightsCarousel
             insights={insights}
             categories={categories}
             locale={locale}
           />
-        </div>
+        </Reveal>
       </Container>
     </Section>
   );

@@ -5,6 +5,7 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
+import { Reveal } from "@/components/ui/reveal";
 import { FaqAccordion, type FaqItem } from "./faq-accordion";
 
 export async function FaqSection() {
@@ -28,9 +29,9 @@ export async function FaqSection() {
     <Section>
       <Container>
         <SectionHeader settings={settings} locale={locale} />
-        <div className="mx-auto mt-12 max-w-6xl">
+        <Reveal className="mx-auto mt-12 max-w-6xl">
           <FaqAccordion items={items} />
-        </div>
+        </Reveal>
       </Container>
     </Section>
   );

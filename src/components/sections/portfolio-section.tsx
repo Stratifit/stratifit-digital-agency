@@ -5,6 +5,7 @@ import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
+import { Reveal } from "@/components/ui/reveal";
 import { PortfolioGallery } from "./portfolio-gallery";
 
 export async function PortfolioSection() {
@@ -23,13 +24,13 @@ export async function PortfolioSection() {
     <Section>
       <Container>
         <SectionHeader settings={settings} locale={locale} />
-        <div className="mt-12">
+        <Reveal className="mt-12">
           <PortfolioGallery
             projects={projects}
             services={services}
             locale={locale}
           />
-        </div>
+        </Reveal>
       </Container>
     </Section>
   );

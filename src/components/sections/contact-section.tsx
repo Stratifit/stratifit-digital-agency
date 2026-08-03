@@ -4,6 +4,7 @@ import { getLocale } from "@/lib/i18n/get-locale";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
+import { Reveal } from "@/components/ui/reveal";
 import { ContactForm } from "@/components/forms/contact-form";
 
 export async function ContactSection() {
@@ -17,9 +18,9 @@ export async function ContactSection() {
     <Section>
       <Container>
         <SectionHeader settings={settings} locale={locale} />
-        <div className="mx-auto mt-12 max-w-2xl">
+        <Reveal className="mx-auto mt-12 max-w-2xl">
           <ContactForm services={services} locale={locale} />
-        </div>
+        </Reveal>
       </Container>
     </Section>
   );

@@ -4,6 +4,7 @@ import { getLocale } from "@/lib/i18n/get-locale";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
+import { Reveal } from "@/components/ui/reveal";
 import { PricingPlans } from "./pricing-plans";
 
 export async function PricingSection() {
@@ -21,7 +22,9 @@ export async function PricingSection() {
     <Section>
       <Container>
         <SectionHeader settings={settings} locale={locale} align="left" />
-        <PricingPlans plans={plans} locale={locale} />
+        <Reveal className="mt-12">
+          <PricingPlans plans={plans} locale={locale} />
+        </Reveal>
       </Container>
     </Section>
   );

@@ -14,6 +14,7 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
 import { LinkButton } from "@/components/ui/link-button";
+import { Reveal } from "@/components/ui/reveal";
 
 export default async function WorkPage() {
   const locale = await getLocale();
@@ -40,7 +41,7 @@ export default async function WorkPage() {
           {projects.length === 0 ? (
             <p className="text-text-secondary">Projects will appear here soon.</p>
           ) : (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <Reveal stagger className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {projects.map((project) => (
                 <Card key={project.slug} className="flex flex-col">
                   <p className="text-sm font-medium text-primary">
@@ -62,7 +63,7 @@ export default async function WorkPage() {
                   </LinkButton>
                 </Card>
               ))}
-            </div>
+            </Reveal>
           )}
         </Container>
       </Section>

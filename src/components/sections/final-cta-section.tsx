@@ -5,6 +5,7 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
 import { LinkButton } from "@/components/ui/link-button";
+import { Reveal } from "@/components/ui/reveal";
 
 export async function FinalCtaSection() {
   const locale = await getLocale();
@@ -26,7 +27,8 @@ export async function FinalCtaSection() {
   return (
     <Section>
       <Container>
-        <Card variant="featured" className="text-center">
+        <Reveal>
+          <Card variant="featured" className="text-center">
           <h2 className="mx-auto max-w-2xl font-display text-3xl font-bold tracking-tight text-text-primary md:text-4xl">
             {resolveTranslation(data.title_translations, locale)}
           </h2>
@@ -48,6 +50,7 @@ export async function FinalCtaSection() {
             </div>
           ) : null}
         </Card>
+        </Reveal>
       </Container>
     </Section>
   );

@@ -45,7 +45,7 @@ export const HOMEPAGE_SECTION_KEYS: SectionKey[] = [
   "testimonials",
   "pricing",
   "faq",
-  "finalCta",
+  "contact",
 ];
 
 export const sectionRegistry: Record<SectionKey, RegisteredSection> = {

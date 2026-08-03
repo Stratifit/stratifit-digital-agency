@@ -6,6 +6,7 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { WhyChooseUsIcon } from "@/components/ui/why-choose-us-icon";
+import { Reveal } from "@/components/ui/reveal";
 import { WhyChooseUsCarousel } from "./why-choose-us-carousel";
 
 export async function WhyChooseUsSection() {
@@ -30,7 +31,7 @@ export async function WhyChooseUsSection() {
       <Container>
         <SectionHeader settings={settings} locale={locale} dot />
 
-        <div className="mt-12 hidden gap-6 lg:grid lg:grid-cols-4">
+        <Reveal stagger className="mt-12 hidden gap-6 lg:grid lg:grid-cols-4">
           {items.map((item, index) => (
             <div
               key={index}
@@ -63,7 +64,7 @@ export async function WhyChooseUsSection() {
               </div>
             </div>
           ))}
-        </div>
+        </Reveal>
 
         <div className="mt-12 lg:hidden">
           <WhyChooseUsCarousel items={items} locale={locale} />

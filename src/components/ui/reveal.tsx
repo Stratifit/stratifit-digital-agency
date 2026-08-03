@@ -20,11 +20,11 @@ interface RevealProps {
 }
 
 /**
- * Fade-and-rise reveal powered by GSAP. Initial hidden state is set via the
- * `.gsap-reveal` CSS class (see globals.css) so there is no flash of
- * unstyled content before hydration. `prefers-reduced-motion` skips the
- * animation entirely (CSS restores full opacity). A <noscript> rule in the
- * root layout keeps content visible when JavaScript is unavailable.
+ * Fade-and-rise reveal powered by GSAP.
+ *
+ * Uses `gsap.from` so content is visible by default: if JavaScript is disabled,
+ * GSAP fails, or the user prefers reduced motion, everything simply stays
+ * visible without animation. Nothing is ever hidden via CSS.
  */
 export function Reveal({
   children,
@@ -47,23 +47,22 @@ export function Reveal({
         ? gsap.utils.toArray<HTMLElement>(el.children)
         : el;
 
-      gsap.set(targets, { y: 24 });
-      gsap.to(targets, {
-        y: 0,
-        opacity: 1,
+      gsap.from(targets, {
+        y: 24,
+        opacity: 0,
         duration: 0.7,
         ease: "power2.out",
         stagger: stagger ? 0.08 : 0,
         scrollTrigger: immediate
           ? undefined
-          : { trigger: el, start: "top 85%", once: true },
+          : { trigger: el, start: "top 88%", once: true },
       });
     },
     { scope: containerRef }
   );
 
   return (
-    <div ref={containerRef} className={`gsap-reveal ${className ?? ""}`}>
+    <div ref={containerRef} className={className}>
       {children}
     </div>
   );

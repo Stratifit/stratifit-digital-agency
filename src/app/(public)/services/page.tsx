@@ -15,6 +15,7 @@ import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
 import { LinkButton } from "@/components/ui/link-button";
 import { ServiceIcon } from "@/components/ui/service-icon";
+import { Reveal } from "@/components/ui/reveal";
 
 export default async function ServicesPage() {
   const locale = await getLocale();
@@ -38,7 +39,7 @@ export default async function ServicesPage() {
 
       <Section>
         <Container>
-          <div className="space-y-6">
+          <Reveal stagger className="space-y-6">
             {services.map((service, index) => (
               <Card
                 key={service.slug}
@@ -77,7 +78,7 @@ export default async function ServicesPage() {
                 </div>
               </Card>
             ))}
-          </div>
+          </Reveal>
         </Container>
       </Section>
     </>

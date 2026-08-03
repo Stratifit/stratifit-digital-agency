@@ -4,6 +4,7 @@ import { getLocale } from "@/lib/i18n/get-locale";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
+import { Reveal } from "@/components/ui/reveal";
 import { TestimonialsCarousel } from "./testimonials-carousel";
 
 export async function TestimonialsSection() {
@@ -21,12 +22,12 @@ export async function TestimonialsSection() {
     <Section>
       <Container>
         <SectionHeader settings={settings} locale={locale} align="center" />
-        <div className="mt-12">
+        <Reveal className="mt-12">
           <TestimonialsCarousel
             testimonials={testimonials}
             locale={locale}
           />
-        </div>
+        </Reveal>
       </Container>
     </Section>
   );
