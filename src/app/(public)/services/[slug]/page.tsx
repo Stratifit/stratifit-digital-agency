@@ -1,12 +1,11 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { Fragment } from "react";
 import { getPublicServicePage } from "@/features/service-pages/queries";
 import { getPublicServices } from "@/features/services/queries";
 import { getPublicPortfolioProjects } from "@/features/portfolio/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
-import { t, type UiStringKey } from "@/lib/i18n/ui-strings";
+import { t } from "@/lib/i18n/ui-strings";
 import { pageMetadata, canonical } from "@/lib/seo";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
@@ -31,59 +30,17 @@ const TOOLKIT_ICONS = [
   "audit",
 ];
 
-const TRUST_ITEMS: ReadonlyArray<{
-  icon: string;
-  title: UiStringKey;
-  description: UiStringKey;
-}> = [
-  { icon: "final", title: "trustNoSpam", description: "trustNoSpamDesc" },
-  { icon: "lock", title: "trustPrivate", description: "trustPrivateDesc" },
-  {
-    icon: "bolt",
-    title: "trustQuickResponse",
-    description: "trustQuickResponseDesc",
-  },
-];
-
 function highlightLastWord(text: string) {
   const parts = text.trim().split(/\s+/);
   if (parts.length <= 1) return <>{text}</>;
   const last = parts.pop();
   return (
     <>
-      {parts.join(" ")} {" "}
+      {parts.join(" ")}{" "}
       <span className="text-primary">{last}</span>
     </>
   );
 }
-
-function highlightCtaTitle(text: string) {
-  const words = text.trim().split(/\s+/);
-
-  return words.map((word, index) => {
-    const cleanWord = word.toLowerCase().replace(/[.,!?]/g, "");
-    const highlightedWords = new Set([
-      "next",
-      "product",
-      "project",
-      "brand",
-      "story",
-      "workflows",
-      "automation",
-      "impact",
-      "launch",
-    ]);
-    const highlighted = highlightedWords.has(cleanWord);
-
-    return (
-      <Fragment key={`${word}-${index}`}>
-        {index > 0 ? " " : null}
-        {highlighted ? <span className="text-primary">{word}</span> : word}
-      </Fragment>
-    );
-  });
-}
-
 
 export async function generateMetadata({
   params,
@@ -537,82 +494,56 @@ export default async function ServicePage({
         <Section>
           <Container>
             <Reveal variant="cta">
-              <div className="relative flex min-h-[760px] flex-col overflow-hidden rounded-[32px] border border-card-border bg-background p-6 text-center shadow-shadow-lg sm:min-h-[880px] sm:p-10 lg:min-h-[980px] lg:p-14">
+              <div className="relative overflow-hidden rounded-card-lg border border-card-border bg-background p-8 text-center sm:p-10 lg:p-14">
                 <div className="shimmer-line absolute inset-x-0 top-0 h-px" />
                 <div className="pointer-events-none absolute inset-0 overflow-hidden">
-                  <div className="absolute -top-24 left-1/2 h-[300px] w-[560px] -translate-x-1/2 rounded-full bg-primary/10 blur-[130px]" />
-                  <div className="absolute -bottom-24 left-1/4 h-[220px] w-[420px] rounded-full bg-primary/5 blur-[110px]" />
-                  <div className="absolute right-1/4 top-1/2 h-[240px] w-[240px] rounded-full bg-primary/4 blur-[110px]" />
+                  <div className="absolute -top-24 left-1/2 h-[260px] w-[500px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
+                  <div className="absolute -bottom-20 left-1/3 h-[160px] w-[320px] rounded-full bg-primary/5 blur-[100px]" />
+                  <div className="absolute right-1/4 top-1/2 h-[200px] w-[200px] rounded-full bg-primary/4 blur-[100px]" />
                 </div>
 
-                {/* Subtle technical linework keeps the lower panel visually active. */}
-                <div aria-hidden="true" className="pointer-events-none absolute bottom-0 right-[-5rem] h-72 w-[34rem] opacity-60">
-                  <span className="absolute bottom-8 right-0 h-px w-full rotate-[-42deg] bg-primary/20" />
-                  <span className="absolute bottom-20 right-[-2rem] h-px w-full rotate-[-42deg] bg-primary/15" />
-                  <span className="absolute bottom-32 right-[-4rem] h-px w-full rotate-[-42deg] bg-primary/10" />
-                  <span className="absolute bottom-44 right-[-6rem] h-px w-full rotate-[-42deg] bg-primary/10" />
-                </div>
-
-                <div className="relative z-10 flex flex-1 flex-col items-center">
-                  <div className="mb-8 flex items-center justify-center gap-3 rounded-full border border-primary/20 bg-background/70 px-6 py-3 shadow-[0_0_30px_rgba(245,158,11,0.08)] sm:mb-12 sm:px-9 sm:py-4">
-                    <ServicePageIcon name="spark" className="size-5 text-primary" />
-                    <p className="text-[10px] font-bold uppercase tracking-[0.32em] text-primary sm:text-xs">
-                      {t(locale, "readyWhenYouAre")}
-                    </p>
-                  </div>
-
-                  <h2 className="mx-auto max-w-5xl font-display text-4xl font-black leading-[0.95] tracking-[-0.04em] text-text-primary sm:text-6xl lg:text-8xl">
-                    {highlightCtaTitle(ctaTitle)}
-                  </h2>
-
-                  {ctaSubtitle ? (
-                    <p className="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-text-secondary sm:mt-10 sm:text-xl sm:leading-relaxed">
-                      {ctaSubtitle}
-                    </p>
-                  ) : null}
-
-                  <div className="mt-10 w-full max-w-4xl sm:mt-14">
-                    <ContactAwareLink
-                      href="/contact"
-                      size="large"
-                      className="group !h-20 !w-full !max-w-none !gap-0 !overflow-hidden !rounded-[18px] !border-primary/70 !bg-primary !p-0 !shadow-[0_0_34px_rgba(245,158,11,0.36)] sm:!h-24"
-                    >
-                      <span className="relative flex h-full w-20 shrink-0 items-center justify-center border-r border-primary/60 bg-background text-primary sm:w-28">
-                        <span aria-hidden="true" className="absolute -right-3 top-0 h-full w-6 skew-x-[-14deg] border-r border-primary/60 bg-background" />
-                        <ServicePageIcon name="rocket" className="relative z-10 size-8 sm:size-10" />
-                      </span>
-                      <span className="flex flex-1 items-center justify-center px-4 text-sm font-black uppercase tracking-[0.16em] text-text-inverse sm:text-xl sm:tracking-[0.2em]">
-                        {ctaButton || "Start Your Project"}
-                      </span>
-                      <span className="flex w-16 shrink-0 items-center justify-center text-text-inverse sm:w-24">
-                        <ServicePageIcon
-                          name="arrow"
-                          className="size-7 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1 sm:size-9"
-                        />
-                      </span>
-                    </ContactAwareLink>
-                  </div>
-
-                  <p className="mt-6 text-xs text-text-subtle sm:mt-8 sm:text-sm">
-                    {t(locale, "noSpamNote")}
+                <div className="relative z-10 mb-5 flex items-center justify-center gap-2">
+                  <ServicePageIcon name="spark" className="size-4 text-primary" />
+                  <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary">
+                    Ready When You Are
                   </p>
                 </div>
 
-                <div className="relative z-10 mt-10 grid w-full grid-cols-1 gap-6 border-t border-card-border/80 pt-8 text-left sm:mt-14 sm:grid-cols-3 sm:gap-0 sm:divide-x sm:divide-card-border/80 sm:pt-10">
-                  {TRUST_ITEMS.map((item) => (
-                    <div key={item.title} className="flex items-center gap-4 sm:justify-center sm:px-6">
-                      <ServicePageIcon name={item.icon} className="size-9 shrink-0 text-primary" />
-                      <div>
-                        <p className="text-sm font-bold uppercase tracking-[0.16em] text-text-primary">
-                          {t(locale, item.title)}
-                        </p>
-                        <p className="mt-1 text-xs leading-relaxed text-text-muted sm:text-sm">
-                          {t(locale, item.description)}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                <h2 className="relative z-10 mx-auto mb-4 max-w-2xl font-display text-2xl font-black leading-[0.95] tracking-tight text-text-primary sm:text-3xl md:text-4xl">
+                  {ctaTitle}
+                </h2>
+
+                {ctaSubtitle ? (
+                  <p className="relative z-10 mx-auto mt-3 max-w-xl text-sm leading-relaxed text-text-secondary sm:text-base">
+                    {ctaSubtitle}
+                  </p>
+                ) : null}
+
+                <div className="relative z-10 mt-8 flex justify-center">
+                  <ContactAwareLink
+                    href="/contact"
+                    size="large"
+                    className="group"
+                  >
+                    {ctaButton || "Start Your Project"}
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      className="size-4 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M12.97 3.97a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06l6.22-6.22H3a.75.75 0 0 1 0-1.5h16.19l-6.22-6.22a.75.75 0 0 1 0-1.06Z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </ContactAwareLink>
                 </div>
+
+                <p className="relative z-10 mt-5 text-xs text-text-subtle">
+                  {t(locale, "noSpamNote")}
+                </p>
               </div>
             </Reveal>
           </Container>
