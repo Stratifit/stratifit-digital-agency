@@ -13,7 +13,13 @@ const LOCALE_META: Record<string, { flag: string; code: string; name: string }> 
   es: { flag: "🇪🇸", code: "ES", name: "Español" },
 };
 
-export function LanguageSwitcher({ currentLocale = "en" }: { currentLocale?: string }) {
+export function LanguageSwitcher({
+  currentLocale = "en",
+  onLocaleSelect,
+}: {
+  currentLocale?: string;
+  onLocaleSelect?: () => void;
+}) {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [activeLocale, setActiveLocale] = React.useState(currentLocale);
@@ -39,6 +45,7 @@ export function LanguageSwitcher({ currentLocale = "en" }: { currentLocale?: str
     if (locale === currentLocale) return;
     await setLocale(locale);
     setActiveLocale(locale);
+    onLocaleSelect?.();
     router.refresh();
   }
 

@@ -130,7 +130,7 @@ export function MobileNav({
               </div>
             </div>
 
-            <LanguageSwitcher currentLocale={locale} />
+            <LanguageSwitcher currentLocale={locale} onLocaleSelect={() => setOpen(false)} />
           </header>
 
           <div className="flex-1 overflow-y-auto bg-background">
