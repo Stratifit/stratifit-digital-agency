@@ -70,7 +70,17 @@ export type UiStringKey =
   | "popupHeadingA"
   | "popupHeadingB"
   | "noSpamNote"
-  | "closePopup";
+  | "closePopup"
+  | "popupSubheading"
+  | "sendProjectRequest"
+  | "serviceNeeded"
+  | "estimatedBudget"
+  | "trustNoSpam"
+  | "trustNoSpamDesc"
+  | "trustPrivate"
+  | "trustPrivateDesc"
+  | "trustQuickResponse"
+  | "trustQuickResponseDesc";
 
 type UiStrings = Record<UiStringKey, string>;
 type UiDictionary = Record<(typeof SUPPORTED_LOCALES)[number], UiStrings>;
@@ -148,6 +158,17 @@ const en: UiStrings = {
   popupHeadingB: "project",
   noSpamNote: "No spam. Your data stays private.",
   closePopup: "Close",
+  popupSubheading:
+    "Share what you're building and where you need help. We'll review it and recommend the right approach.",
+  sendProjectRequest: "Send Project Request",
+  serviceNeeded: "Service needed",
+  estimatedBudget: "Estimated budget",
+  trustNoSpam: "No spam",
+  trustNoSpamDesc: "We respect your inbox.",
+  trustPrivate: "100% private",
+  trustPrivateDesc: "Your data stays secure.",
+  trustQuickResponse: "Quick response",
+  trustQuickResponseDesc: "We reply within 24h.",
 };
 
 const de: UiStrings = {
@@ -225,6 +246,17 @@ const de: UiStrings = {
   popupHeadingB: "Projekt",
   noSpamNote: "Kein Spam. Ihre Daten bleiben privat.",
   closePopup: "Schließen",
+  popupSubheading:
+    "Teilen Sie uns mit, was Sie bauen und wo Sie Hilfe benötigen. Wir prüfen es und empfehlen den richtigen Ansatz.",
+  sendProjectRequest: "Projektanfrage senden",
+  serviceNeeded: "Service",
+  estimatedBudget: "Geschätztes Budget",
+  trustNoSpam: "Kein Spam",
+  trustNoSpamDesc: "Wir respektieren Ihren Posteingang.",
+  trustPrivate: "100% privat",
+  trustPrivateDesc: "Ihre Daten bleiben sicher.",
+  trustQuickResponse: "Schnelle Antwort",
+  trustQuickResponseDesc: "Wir antworten innerhalb von 24 Std.",
 };
 
 const fr: UiStrings = {
@@ -302,6 +334,17 @@ const fr: UiStrings = {
   popupHeadingB: "projet",
   noSpamNote: "Pas de spam. Vos données restent privées.",
   closePopup: "Fermer",
+  popupSubheading:
+    "Partagez ce que vous construisez et où vous avez besoin d'aide. Nous l'examinerons et recommanderons la bonne approche.",
+  sendProjectRequest: "Envoyer la demande",
+  serviceNeeded: "Service requis",
+  estimatedBudget: "Budget estimé",
+  trustNoSpam: "Pas de spam",
+  trustNoSpamDesc: "Nous respectons votre boîte de réception.",
+  trustPrivate: "100% privé",
+  trustPrivateDesc: "Vos données restent sécurisées.",
+  trustQuickResponse: "Réponse rapide",
+  trustQuickResponseDesc: "Nous répondons sous 24h.",
 };
 
 const es: UiStrings = {
@@ -379,6 +422,17 @@ const es: UiStrings = {
   popupHeadingB: "proyecto",
   noSpamNote: "Sin spam. Tus datos permanecen privados.",
   closePopup: "Cerrar",
+  popupSubheading:
+    "Comparte lo que estás construyendo y dónde necesitas ayuda. Lo revisaremos y recomendaremos el enfoque adecuado.",
+  sendProjectRequest: "Enviar solicitud",
+  serviceNeeded: "Servicio necesario",
+  estimatedBudget: "Presupuesto estimado",
+  trustNoSpam: "Sin spam",
+  trustNoSpamDesc: "Respetamos tu bandeja de entrada.",
+  trustPrivate: "100% privado",
+  trustPrivateDesc: "Tus datos están seguros.",
+  trustQuickResponse: "Respuesta rápida",
+  trustQuickResponseDesc: "Respondemos en 24h.",
 };
 
 const dictionary: UiDictionary = { en, de, fr, es };
