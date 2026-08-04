@@ -236,7 +236,7 @@ export async function HeroSection() {
         {techStack.length > 0 ? (
           <div data-hero className="mx-auto mt-[30px] w-full max-w-4xl">
             {techStackHeading ? (
-              <h2 className="mb-1.5 text-center text-xl font-bold tracking-tight text-text-primary sm:text-2xl">
+              <h2 className="mb-1.5 text-center text-xl font-bold tracking-tight text-primary sm:text-2xl">
                 {techStackHeading}
               </h2>
             ) : null}
