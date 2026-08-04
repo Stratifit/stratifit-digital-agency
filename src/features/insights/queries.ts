@@ -133,6 +133,7 @@ export interface PublicInsightDetail {
   content_translations: Record<string, string> | null;
   featured_media_id: string | null;
   featured_media_url: string | null;
+  category_slugs: string[];
   reading_time_minutes: number | null;
   published_at: string | null;
 }
@@ -145,7 +146,7 @@ export async function getPublicInsightDetail(
   const { data, error } = await supabase
     .from("insights")
     .select(
-      "slug, title_translations, excerpt_translations, content_translations, featured_media_id, reading_time_minutes, published_at"
+      "id, slug, title_translations, excerpt_translations, content_translations, featured_media_id, reading_time_minutes, published_at"
     )
     .eq("slug", slug)
     .eq("status", "published")
@@ -167,5 +168,25 @@ export async function getPublicInsightDetail(
     }
   }
 
-  return { ...(data as Omit<PublicInsightDetail, "featured_media_url">), featured_media_url };
+  const insightId = data.id as string;
+  const { data: linkRows } = await supabase
+    .from("insight_category_links")
+    .select("category_id")
+    .eq("insight_id", insightId);
+
+  const categoryIds = (linkRows ?? []).map((l) => l.category_id) as string[];
+  let category_slugs: string[] = [];
+  if (categoryIds.length > 0) {
+    const { data: categories } = await supabase
+      .from("insight_categories")
+      .select("slug")
+      .in("id", categoryIds);
+    category_slugs = (categories ?? []).map((c) => c.slug as string);
+  }
+
+  return {
+    ...(data as Omit<PublicInsightDetail, "featured_media_url" | "category_slugs">),
+    featured_media_url,
+    category_slugs,
+  };
 }

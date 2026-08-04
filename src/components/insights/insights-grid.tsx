@@ -7,6 +7,11 @@ import type {
   PublicInsight,
   PublicInsightCategory,
 } from "@/features/insights/queries";
+import {
+  formatInsightDate,
+  getCategoryLabel,
+  getInsightImage,
+} from "@/features/insights/display";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { t, tWithNumber } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
@@ -23,17 +28,6 @@ function ArrowIcon() {
   );
 }
 
-function formatDate(iso: string | null, locale: string): string | null {
-  if (!iso) return null;
-  const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return null;
-  return new Intl.DateTimeFormat(locale, {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(date);
-}
-
 function InsightArticleCard({
   insight,
   categories,
@@ -45,14 +39,12 @@ function InsightArticleCard({
 }) {
   const title = resolveTranslation(insight.title_translations, locale) || "Insight";
   const excerpt = resolveTranslation(insight.excerpt_translations, locale);
-  const date = formatDate(insight.published_at, locale);
-
-  const categoryLabel = (slug: string) => {
-    const category = categories.find((c) => c.slug === slug);
-    return category
-      ? resolveTranslation(category.name_translations, locale) || slug
-      : slug;
-  };
+  const date = formatInsightDate(insight.published_at, locale);
+  const imageSrc = getInsightImage(
+    insight.featured_media_url,
+    insight.slug,
+    insight.category_slugs
+  );
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-card-lg border border-white/5 bg-card-dark transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:border-primary/20">
@@ -61,9 +53,9 @@ function InsightArticleCard({
         className="relative block aspect-[16/10] overflow-hidden"
         aria-label={title}
       >
-        {insight.featured_media_url ? (
+        {imageSrc ? (
           <Image
-            src={insight.featured_media_url}
+            src={imageSrc}
             alt={title}
             fill
             sizes="(max-width: 768px) 100vw, 380px"
@@ -79,7 +71,7 @@ function InsightArticleCard({
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
         {insight.category_slugs[0] ? (
           <span className="absolute left-4 top-4 rounded border border-white/10 bg-black/80 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary backdrop-blur-sm">
-            {categoryLabel(insight.category_slugs[0])}
+            {getCategoryLabel(insight.category_slugs[0], categories, locale)}
           </span>
         ) : null}
       </Link>
@@ -155,7 +147,7 @@ export function InsightsGrid({
             className={cn(
               "shrink-0 rounded-full px-5 py-2.5 text-sm font-bold transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
               active === pill.slug
-                ? "bg-primary text-text-inverse shadow-amber"
+                ? "bg-primary text-text-inverse shadow-[0_0_20px_rgba(245,158,11,0.3)]"
                 : "border border-white/10 bg-white/5 text-text-primary hover:border-primary/30"
             )}
           >

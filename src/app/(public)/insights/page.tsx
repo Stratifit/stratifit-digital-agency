@@ -38,10 +38,10 @@ export default async function InsightsPage() {
 
   return (
     <>
-      <section className="relative overflow-hidden border-b border-border bg-background-deep pt-32 pb-16 md:pt-40 md:pb-20">
+      <section className="relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-20">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-primary/20 blur-[120px]"
+          className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-primary/30 blur-[120px]"
         />
         <Container className="relative z-10">
           {eyebrow ? (
@@ -49,7 +49,7 @@ export default async function InsightsPage() {
               {eyebrow}
             </p>
           ) : null}
-          <h1 className="font-display text-4xl font-black leading-tight tracking-tight text-text-primary sm:text-5xl md:text-6xl md:leading-none lg:text-7xl">
+          <h1 className="mb-4 font-display text-4xl font-black leading-tight tracking-tight text-text-primary sm:text-5xl md:text-6xl md:leading-none lg:text-7xl">
             <span>{title}</span>
             {highlight ? <span className="text-primary"> {highlight}</span> : null}
           </h1>
@@ -61,7 +61,7 @@ export default async function InsightsPage() {
         </Container>
       </section>
 
-      <section className="pt-12 pb-24 md:pb-32">
+      <section className="pb-24 md:pb-32">
         <Container>
           {insights.length === 0 ? (
             <p className="py-20 text-center text-sm text-text-muted">
