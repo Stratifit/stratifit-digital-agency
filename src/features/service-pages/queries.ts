@@ -29,6 +29,18 @@ export async function getPublicServicePages(): Promise<PublicServicePage[]> {
   return data as PublicServicePage[];
 }
 
+/** Lightweight variant for callers that only need to know which service
+    slugs have a dedicated page — avoids pulling the heavy JSONB columns. */
+export async function getPublicServicePageSlugs(): Promise<string[]> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("service_pages")
+    .select("slug")
+    .eq("is_visible", true);
+  if (error || !data) return [];
+  return data.map((row) => row.slug);
+}
+
 export async function getAdminServicePage(
   slug: string
 ): Promise<PublicServicePage | null> {

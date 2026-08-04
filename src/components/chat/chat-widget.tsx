@@ -13,6 +13,11 @@ import {
 } from "@/features/chat/mutations";
 import { t, type UiStringKey } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
+import Link from "next/link";
+import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { ServiceIcon } from "@/components/ui/service-icon";
+import type { PublicServiceDetail } from "@/features/services/queries";
+import type { PublicPricingPlan } from "@/features/pricing/queries";
 
 interface WidgetMessage {
   id: string;
@@ -302,14 +307,6 @@ const TOPIC_CHIPS: {
   { key: "chatSupport", view: "support", icon: CogIcon },
 ];
 
-/** Service overview cards shown in the Services panel. */
-const SERVICE_CARDS: { titleKey: UiStringKey; descKey: UiStringKey }[] = [
-  { titleKey: "chatServiceBrandTitle", descKey: "chatServiceBrandDesc" },
-  { titleKey: "chatServiceWebTitle", descKey: "chatServiceWebDesc" },
-  { titleKey: "chatServiceAiTitle", descKey: "chatServiceAiDesc" },
-  { titleKey: "chatServiceGrowthTitle", descKey: "chatServiceGrowthDesc" },
-];
-
 /** FAQ accordion items shown in the FAQ panel. */
 const FAQ_ITEMS: { q: UiStringKey; a: UiStringKey }[] = [
   { q: "chatFaqQ1", a: "chatFaqA1" },
@@ -376,33 +373,20 @@ function PanelPrimaryButton({
   );
 }
 
-/** Full-width quiet secondary action used inside topic panels. */
-function PanelSecondaryButton({
-  children,
-  onClick,
-}: {
-  children: React.ReactNode;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="flex w-full items-center justify-center gap-1.5 rounded-[10px] border border-border bg-white/5 px-3 py-2.5 text-xs font-medium text-text-secondary transition-all hover:border-primary/40 hover:bg-primary/10 hover:text-primary active:scale-[0.98]"
-    >
-      {children}
-    </button>
-  );
-}
-
-/** Services overview panel — one card per offering with quick ask actions. */
+/** Services panel — full service cards (icon, key deliverables, two CTAs)
+    that hand off to the AI ("Ask about this") or the service page
+    ("Learn more"). */
 function ServicesPanel({
   locale,
+  services,
+  servicePageSlugs,
   onAsk,
   onBack,
 }: {
   locale: string;
-  onAsk: (serviceKey: UiStringKey, mode: "interested" | "more") => void;
+  services: PublicServiceDetail[];
+  servicePageSlugs: string[];
+  onAsk: (serviceTitle: string, mode: "interested" | "more") => void;
   onBack: () => void;
 }) {
   return (
@@ -411,73 +395,275 @@ function ServicesPanel({
         title={t(locale, "chatServices")}
         icon={<BriefcaseIcon className="size-3.5" />}
       />
-      <div className="space-y-2.5">
-        {SERVICE_CARDS.map((card) => (
-          <div
-            key={card.titleKey}
-            className="rounded-[14px] border border-border bg-card-dark p-3.5 transition-colors hover:border-primary/30"
-          >
-            <p className="text-[13px] font-semibold text-text-primary">
-              {t(locale, card.titleKey)}
-            </p>
-            <p className="mt-1 text-[11px] leading-relaxed text-text-muted">
-              {t(locale, card.descKey)}
-            </p>
-            <div className="mt-2.5 flex gap-2">
-              <button
-                type="button"
-                onClick={() => onAsk(card.titleKey, "interested")}
-                className="flex-1 rounded-[10px] border border-primary/25 bg-primary/10 px-2.5 py-1.5 text-[10px] font-semibold text-primary transition-colors hover:bg-primary/15"
-              >
-                {t(locale, "chatAskAbout")}
-              </button>
-              <button
-                type="button"
-                onClick={() => onAsk(card.titleKey, "more")}
-                className="flex-1 rounded-[10px] border border-border px-2.5 py-1.5 text-[10px] font-medium text-text-secondary transition-colors hover:border-primary/30 hover:text-primary"
-              >
-                {t(locale, "chatLearnMore")}
-              </button>
+      <div className="space-y-3">
+        {services.map((service) => {
+          const deliverables = (
+            (service.deliverables_translations as Record<string, unknown> | null)?.[
+              locale
+            ] ??
+            (service.deliverables_translations as Record<string, unknown> | null)?.[
+              "en"
+            ] ??
+            []
+          ) as string[];
+          const title =
+            resolveTranslation(service.title_translations, locale) ?? service.slug;
+          const description = resolveTranslation(
+            service.short_description_translations,
+            locale
+          );
+          const learnMoreHref = servicePageSlugs.includes(service.slug)
+            ? `/services/${service.slug}`
+            : service.cta_url ?? "/contact";
+
+          return (
+            <div
+              key={service.slug}
+              className="group relative overflow-hidden rounded-[14px] border border-border bg-card-dark p-4 transition-colors hover:border-primary/30"
+            >
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-12 -top-12 h-24 w-24 rounded-full bg-primary/5 blur-2xl transition-colors group-hover:bg-primary/10"
+              />
+              <div className="relative z-10">
+                <div className="mb-3 flex items-center gap-3">
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-primary/30 bg-gradient-to-br from-primary/20 to-primary/5">
+                    <ServiceIcon name={service.icon_name} className="size-5" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="truncate font-display text-sm font-bold tracking-tight text-text-primary">
+                      {title}
+                    </p>
+                    {description ? (
+                      <p className="mt-0.5 line-clamp-2 text-[11px] leading-relaxed text-text-muted">
+                        {description}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+
+                {deliverables.length > 0 ? (
+                  <>
+                    <div className="h-px w-full bg-gradient-to-r from-white/10 to-transparent" />
+                    <div className="mt-3">
+                      <p className="mb-2.5 text-[10px] font-bold uppercase tracking-widest text-primary opacity-90">
+                        {t(locale, "keyDeliverables")}
+                      </p>
+                      <ul className="space-y-1.5">
+                        {deliverables.slice(0, 4).map((item, index) => (
+                          <li key={index} className="flex items-start gap-2">
+                            <CheckIcon className="mt-0.5 size-3.5 shrink-0 text-primary" />
+                            <span className="text-[11px] font-medium leading-snug text-text-tertiary">
+                              {item}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </>
+                ) : null}
+
+                <div className="mt-3.5 flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => onAsk(title, "interested")}
+                    className="flex flex-1 items-center justify-center gap-1.5 rounded-[10px] bg-primary px-2.5 py-2 text-[11px] font-semibold text-text-inverse transition-all hover:bg-primary-hover active:scale-[0.98]"
+                  >
+                    {t(locale, "chatAskAbout")}
+                  </button>
+                  <Link
+                    href={learnMoreHref}
+                    className="flex flex-1 items-center justify-center gap-1.5 rounded-[10px] border border-primary/25 bg-primary/10 px-2.5 py-2 text-[11px] font-semibold text-primary transition-all hover:bg-primary/15 active:scale-[0.98]"
+                  >
+                    {t(locale, "chatLearnMore")}
+                  </Link>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       <PanelBackButton locale={locale} onClick={onBack} />
     </div>
   );
 }
 
-/** Pricing overview panel — invites a tailored quote through chat or contact. */
+/** Pricing panel — horizontally scrollable plan cards (snap + dots) mirroring
+    the homepage pricing section, with chat and contact handoffs. */
 function PricingPanel({
   locale,
+  plans,
   onAskPricing,
-  onStartProject,
+  onContact,
   onBack,
 }: {
   locale: string;
+  plans: PublicPricingPlan[];
   onAskPricing: () => void;
-  onStartProject: () => void;
+  onContact: () => void;
   onBack: () => void;
 }) {
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+  const [activePlan, setActivePlan] = React.useState(0);
+
+  function handlePlanScroll() {
+    const el = scrollRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const center = rect.left + rect.width / 2;
+    const cards = Array.from(
+      el.querySelectorAll<HTMLElement>("[data-chat-plan]")
+    );
+    let best = 0;
+    let bestDistance = Infinity;
+    cards.forEach((card, index) => {
+      const cardRect = card.getBoundingClientRect();
+      const mid = cardRect.left + cardRect.width / 2;
+      const distance = Math.abs(mid - center);
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        best = index;
+      }
+    });
+    setActivePlan(best);
+  }
+
   return (
     <div>
       <PanelHeading
         title={t(locale, "chatPricingTitle")}
         icon={<DollarIcon className="size-3.5" />}
       />
-      <div className="rounded-[14px] border border-border bg-card-dark p-4">
-        <p className="text-[11px] leading-relaxed text-text-muted">
-          {t(locale, "chatPricingBody")}
-        </p>
-        <div className="mt-3.5 space-y-2">
-          <PanelPrimaryButton onClick={onAskPricing}>
-            <DollarIcon className="size-3.5" />
-            {t(locale, "chatAskAboutPricing")}
-          </PanelPrimaryButton>
-          <PanelSecondaryButton onClick={onStartProject}>
-            {t(locale, "chatStartProject")}
-          </PanelSecondaryButton>
+      <p className="mb-3 text-[11px] leading-relaxed text-text-muted">
+        {t(locale, "chatPricingBody")}
+      </p>
+
+      <div
+        ref={scrollRef}
+        onScroll={handlePlanScroll}
+        className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {plans.map((plan) => {
+          const features = (
+            (plan.features_translations as Record<string, unknown> | null)?.[
+              locale
+            ] ??
+            (plan.features_translations as Record<string, unknown> | null)?.["en"] ??
+            []
+          ) as string[];
+          const name =
+            resolveTranslation(plan.name_translations, locale) ?? plan.slug;
+          const price = resolveTranslation(plan.price_label_translations, locale);
+          const billing = resolveTranslation(
+            plan.billing_label_translations,
+            locale
+          );
+          const description = resolveTranslation(
+            plan.description_translations,
+            locale
+          );
+          const ctaLabel =
+            resolveTranslation(plan.cta_label_translations, locale) ||
+            t(locale, "startAProject");
+          const ctaHref =
+            plan.cta_url && plan.cta_url !== "/contact" ? plan.cta_url : null;
+
+          return (
+            <div
+              key={plan.slug}
+              data-chat-plan
+              className={cn(
+                "relative flex w-[72%] min-w-[240px] max-w-[300px] shrink-0 snap-center flex-col rounded-[14px] border bg-card-dark p-4",
+                plan.is_featured
+                  ? "border-primary shadow-[0_0_24px_rgba(245,158,11,0.12)]"
+                  : "border-border hover:border-primary/30"
+              )}
+            >
+              {plan.is_featured ? (
+                <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-primary px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-black">
+                  {t(locale, "mostPopular")}
+                </div>
+              ) : null}
+              <h3 className="mb-1 font-display text-base font-bold text-text-primary">
+                {name}
+              </h3>
+              <div className="mb-1 flex items-baseline gap-1">
+                <span className="font-display text-xl font-black text-primary">
+                  {price}
+                </span>
+                {billing ? (
+                  <span className="text-[10px] font-bold uppercase text-text-subtle">
+                    {billing}
+                  </span>
+                ) : null}
+              </div>
+              {description ? (
+                <p className="mb-3 text-[11px] leading-relaxed text-text-muted">
+                  {description}
+                </p>
+              ) : null}
+              <div className="mb-3 h-px w-full bg-white/5" />
+              <ul className="mb-3 flex-1 space-y-2">
+                {features.map((feature, index) => (
+                  <li
+                    key={index}
+                    className="flex items-start gap-2 text-[11px] leading-snug text-text-tertiary"
+                  >
+                    <CheckIcon className="mt-0.5 size-3.5 shrink-0 text-primary" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              {ctaHref ? (
+                <Link
+                  href={ctaHref}
+                  className={cn(
+                    "block w-full rounded-[10px] py-2.5 text-center text-[11px] font-bold uppercase tracking-wide transition-all",
+                    plan.is_featured
+                      ? "bg-primary text-text-inverse shadow-lg shadow-primary/20 hover:bg-primary-hover"
+                      : "border border-primary text-primary hover:bg-primary/10"
+                  )}
+                >
+                  {ctaLabel}
+                </Link>
+              ) : (
+                <button
+                  type="button"
+                  onClick={onContact}
+                  className={cn(
+                    "block w-full rounded-[10px] py-2.5 text-center text-[11px] font-bold uppercase tracking-wide transition-all",
+                    plan.is_featured
+                      ? "bg-primary text-text-inverse shadow-lg shadow-primary/20 hover:bg-primary-hover active:bg-primary-active"
+                      : "border border-primary text-primary hover:bg-primary/10"
+                  )}
+                >
+                  {ctaLabel}
+                </button>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {plans.length > 1 ? (
+        <div className="mt-2.5 flex items-center justify-center gap-1.5">
+          {plans.map((plan, index) => (
+            <span
+              key={plan.slug}
+              className={cn(
+                "size-1.5 rounded-full transition-colors duration-200 ease-out",
+                index === activePlan ? "bg-primary" : "bg-white/20"
+              )}
+            />
+          ))}
         </div>
+      ) : null}
+
+      <div className="mt-3">
+        <PanelPrimaryButton onClick={onAskPricing}>
+          <DollarIcon className="size-3.5" />
+          {t(locale, "chatAskAboutPricing")}
+        </PanelPrimaryButton>
       </div>
       <PanelBackButton locale={locale} onClick={onBack} />
     </div>
@@ -700,7 +886,15 @@ function MessageTime({
   );
 }
 
-export function ChatWidget() {
+export function ChatWidget({
+  services,
+  plans,
+  servicePageSlugs,
+}: {
+  services: PublicServiceDetail[];
+  plans: PublicPricingPlan[];
+  servicePageSlugs: string[];
+}) {
   const [open, setOpen] = React.useState(() => {
     if (typeof window === "undefined") return false;
     try {
@@ -1188,13 +1382,12 @@ export function ChatWidget() {
   }
 
   /** Asks the AI about a service — returns to the chat and sends the prompt. */
-  function askAboutService(serviceKey: UiStringKey, mode: "interested" | "more") {
+  function askAboutService(serviceTitle: string, mode: "interested" | "more") {
     if (loading) return;
-    const title = t(locale, serviceKey);
-    const text = t(locale, mode === "interested" ? "chatInterestedIn" : "chatTellMeMore").replace(
-      "{service}",
-      title
-    );
+    const text = t(
+      locale,
+      mode === "interested" ? "chatInterestedIn" : "chatTellMeMore"
+    ).replace("{service}", serviceTitle);
     setView("chat");
     sendChatMessage(text);
   }
@@ -1711,14 +1904,17 @@ export function ChatWidget() {
                 {view === "services" ? (
                   <ServicesPanel
                     locale={locale}
+                    services={services}
+                    servicePageSlugs={servicePageSlugs}
                     onAsk={askAboutService}
                     onBack={() => switchView("chat")}
                   />
                 ) : view === "pricing" ? (
                   <PricingPanel
                     locale={locale}
+                    plans={plans}
                     onAskPricing={askAboutPricing}
-                    onStartProject={openContactPopup}
+                    onContact={openContactPopup}
                     onBack={() => switchView("chat")}
                   />
                 ) : view === "faq" ? (

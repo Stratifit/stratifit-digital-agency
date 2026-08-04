@@ -92,21 +92,12 @@ export type UiStringKey =
   | "chatShowEarlier"
   | "chatAskAbout"
   | "chatLearnMore"
-  | "chatServiceBrandTitle"
-  | "chatServiceBrandDesc"
-  | "chatServiceWebTitle"
-  | "chatServiceWebDesc"
-  | "chatServiceAiTitle"
-  | "chatServiceAiDesc"
-  | "chatServiceGrowthTitle"
-  | "chatServiceGrowthDesc"
   | "chatInterestedIn"
   | "chatTellMeMore"
   | "chatPricingTitle"
   | "chatPricingBody"
   | "chatAskAboutPricing"
   | "chatPricingQuestion"
-  | "chatStartProject"
   | "chatFaqTitle"
   | "chatFaqQ1"
   | "chatFaqA1"
@@ -251,14 +242,6 @@ const en: UiStrings = {
   chatShowEarlier: "Earlier messages",
   chatAskAbout: "Ask about this",
   chatLearnMore: "Learn more",
-  chatServiceBrandTitle: "Brand Identity & Strategy",
-  chatServiceBrandDesc: "Logo systems, brand direction, visual identity.",
-  chatServiceWebTitle: "Website Development",
-  chatServiceWebDesc: "High-performance websites, landing pages, CMS.",
-  chatServiceAiTitle: "AI & Automation",
-  chatServiceAiDesc: "Chatbots, workflows, internal automation.",
-  chatServiceGrowthTitle: "Growth & Performance",
-  chatServiceGrowthDesc: "SEO, analytics, optimization, maintenance.",
   chatInterestedIn: "I'm interested in {service}.",
   chatTellMeMore: "Tell me more about {service}.",
   chatPricingTitle: "Pricing & Packages",
@@ -266,7 +249,6 @@ const en: UiStrings = {
     "Packages for every stage — from landing pages to full platforms. Tell us about your project for a tailored quote.",
   chatAskAboutPricing: "Ask about pricing",
   chatPricingQuestion: "I'd like to know more about pricing.",
-  chatStartProject: "Start a project",
   chatFaqTitle: "Common Questions",
   chatFaqQ1: "How do you price projects?",
   chatFaqA1: "Every project is scoped individually. Share your requirements and we'll send a tailored quote.",
@@ -412,14 +394,6 @@ const de: UiStrings = {
   chatShowEarlier: "Frühere Nachrichten",
   chatAskAbout: "Danach fragen",
   chatLearnMore: "Mehr erfahren",
-  chatServiceBrandTitle: "Markenidentität & Strategie",
-  chatServiceBrandDesc: "Logosysteme, Markenausrichtung, visuelle Identität.",
-  chatServiceWebTitle: "Webentwicklung",
-  chatServiceWebDesc: "Leistungsstarke Websites, Landingpages, CMS.",
-  chatServiceAiTitle: "KI & Automatisierung",
-  chatServiceAiDesc: "Chatbots, Workflows, interne Automatisierung.",
-  chatServiceGrowthTitle: "Wachstum & Performance",
-  chatServiceGrowthDesc: "SEO, Analytics, Optimierung, Wartung.",
   chatInterestedIn: "Ich interessiere mich für {service}.",
   chatTellMeMore: "Erzähl mir mehr über {service}.",
   chatPricingTitle: "Preise & Pakete",
@@ -427,7 +401,6 @@ const de: UiStrings = {
     "Pakete für jede Phase – von Landingpages bis zu vollständigen Plattformen. Teilen Sie uns Ihr Projekt für ein individuelles Angebot mit.",
   chatAskAboutPricing: "Nach Preisen fragen",
   chatPricingQuestion: "Ich möchte mehr über die Preise wissen.",
-  chatStartProject: "Projekt starten",
   chatFaqTitle: "Häufige Fragen",
   chatFaqQ1: "Wie werden Projekte bepreist?",
   chatFaqA1: "Jedes Projekt wird individuell kalkuliert. Teilen Sie uns Ihre Anforderungen mit und Sie erhalten ein maßgeschneidertes Angebot.",
@@ -573,14 +546,6 @@ const fr: UiStrings = {
   chatShowEarlier: "Messages précédents",
   chatAskAbout: "Demander",
   chatLearnMore: "En savoir plus",
-  chatServiceBrandTitle: "Identité de marque & stratégie",
-  chatServiceBrandDesc: "Systèmes de logo, direction de marque, identité visuelle.",
-  chatServiceWebTitle: "Développement web",
-  chatServiceWebDesc: "Sites performants, landing pages, CMS.",
-  chatServiceAiTitle: "IA & automatisation",
-  chatServiceAiDesc: "Chatbots, workflows, automatisation interne.",
-  chatServiceGrowthTitle: "Croissance & performance",
-  chatServiceGrowthDesc: "SEO, analytics, optimisation, maintenance.",
   chatInterestedIn: "Je suis intéressé par {service}.",
   chatTellMeMore: "Parlez-moi davantage de {service}.",
   chatPricingTitle: "Tarifs & formules",
@@ -588,7 +553,6 @@ const fr: UiStrings = {
     "Des formules pour chaque étape – des landing pages aux plateformes complètes. Parlez-nous de votre projet pour un devis personnalisé.",
   chatAskAboutPricing: "Demander les tarifs",
   chatPricingQuestion: "J'aimerais en savoir plus sur les tarifs.",
-  chatStartProject: "Démarrer un projet",
   chatFaqTitle: "Questions fréquentes",
   chatFaqQ1: "Comment sont tarifés les projets ?",
   chatFaqA1: "Chaque projet est chiffré individuellement. Partagez vos besoins et nous vous enverrons un devis personnalisé.",
@@ -734,14 +698,6 @@ const es: UiStrings = {
   chatShowEarlier: "Mensajes anteriores",
   chatAskAbout: "Preguntar",
   chatLearnMore: "Saber más",
-  chatServiceBrandTitle: "Identidad de marca y estrategia",
-  chatServiceBrandDesc: "Sistemas de logotipos, dirección de marca, identidad visual.",
-  chatServiceWebTitle: "Desarrollo web",
-  chatServiceWebDesc: "Sitios web de alto rendimiento, landing pages, CMS.",
-  chatServiceAiTitle: "IA y automatización",
-  chatServiceAiDesc: "Chatbots, flujos de trabajo, automatización interna.",
-  chatServiceGrowthTitle: "Crecimiento y rendimiento",
-  chatServiceGrowthDesc: "SEO, analítica, optimización, mantenimiento.",
   chatInterestedIn: "Me interesa {service}.",
   chatTellMeMore: "Cuéntame más sobre {service}.",
   chatPricingTitle: "Precios y paquetes",
@@ -749,7 +705,6 @@ const es: UiStrings = {
     "Paquetes para cada etapa: desde landing pages hasta plataformas completas. Cuéntanos tu proyecto para un presupuesto personalizado.",
   chatAskAboutPricing: "Preguntar por precios",
   chatPricingQuestion: "Me gustaría saber más sobre los precios.",
-  chatStartProject: "Iniciar un proyecto",
   chatFaqTitle: "Preguntas frecuentes",
   chatFaqQ1: "¿Cómo se valoran los proyectos?",
   chatFaqA1: "Cada proyecto se presupuesta individualmente. Comparte tus requisitos y te enviaremos una cotización personalizada.",
