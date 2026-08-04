@@ -730,7 +730,12 @@ export function ChatWidget({
   );
 
   React.useEffect(() => {
-    function handleOpen() {
+    function handleOpen(event: Event) {
+      // Optional detail allows deep-linking into a topic panel (e.g. the FAQ
+      // view from the homepage "Still have questions?" card). Defaults to the
+      // conversation when opened from the header.
+      const detail = (event as CustomEvent<{ view?: ChatView }>).detail;
+      setView(detail?.view ?? "chat");
       setOpen(true);
     }
     window.addEventListener("stratifit:open-chat", handleOpen);

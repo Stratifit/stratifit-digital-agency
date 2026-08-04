@@ -7,6 +7,7 @@ import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Reveal } from "@/components/ui/reveal";
 import { FaqAccordion, type FaqItem } from "./faq-accordion";
+import { FaqHelpCard } from "./faq-help-card";
 
 export async function FaqSection() {
   const locale = await getLocale();
@@ -31,6 +32,9 @@ export async function FaqSection() {
         <SectionHeader settings={settings} locale={locale} />
         <Reveal className="mx-auto mt-12 max-w-6xl">
           <FaqAccordion items={items} />
+        </Reveal>
+        <Reveal className="mx-auto mt-6 max-w-6xl">
+          <FaqHelpCard />
         </Reveal>
       </Container>
     </Section>
