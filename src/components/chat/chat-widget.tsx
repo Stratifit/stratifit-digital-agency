@@ -1041,15 +1041,19 @@ export function ChatWidget() {
                     <button
                       key={chip.key}
                       type="button"
-                      onClick={() => sendChatMessage(t(locale, chip.key))}
-                      className={cn(
-                        "flex shrink-0 items-center gap-1.5 rounded-[10px] border px-3.5 py-2 text-xs font-medium transition-all active:scale-[0.98]",
-                        isActive
-                          ? "border-primary/50 bg-primary/10 text-primary"
-                          : "border-border bg-white/5 text-text-secondary hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
-                      )}
-                    >
-                      <chip.icon className="size-3.5 text-primary" />
+                      onClick={() => sendChatMessage(t(locale, chip.key))}                        className={cn(
+                          "flex shrink-0 items-center gap-1.5 rounded-[10px] border px-3.5 py-2 text-xs font-medium transition-all active:scale-[0.98]",
+                          isActive
+                            ? "border-primary bg-primary text-text-inverse"
+                            : "border-border bg-white/5 text-text-secondary hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
+                        )}
+                      >
+                        <chip.icon
+                          className={cn(
+                            "size-3.5",
+                            isActive ? "text-text-inverse" : "text-primary"
+                          )}
+                        />
                       {t(locale, chip.key)}
                     </button>
                   );
