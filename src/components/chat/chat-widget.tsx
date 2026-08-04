@@ -1441,8 +1441,14 @@ export function ChatWidget() {
             onScroll={handleMessagesScroll}
             className="flex flex-1 flex-col overflow-y-auto overscroll-contain px-4 py-4"
           >
-            {view === "chat" ? (
-            <>
+            {/* Conversation — kept mounted and only hidden while a topic panel
+                is open, so the message entrance animations never replay when
+                switching between the chat and the section panels */}
+            <div
+              className={cn(
+                view !== "chat" ? "flex min-h-full flex-col" : "hidden"
+              )}
+            >
             <div
               aria-hidden="true"
               className="pointer-events-none sticky top-0 z-10 -mx-4 -mt-4 h-5 bg-gradient-to-b from-background to-transparent"
@@ -1749,9 +1755,15 @@ export function ChatWidget() {
               </div>
             ) : null}
             {error ? <p className="mt-3 text-sm text-error">{error}</p> : null}
-            </>
-            ) : (
-              <div className="m-auto w-full">
+            </div>
+            {/* Topic panels — kept mounted and hidden while the conversation
+                is active, so their content never reloads on switch */}
+            <div
+              className={cn(
+                "m-auto w-full",
+                view === "chat" && "hidden"
+              )}
+            >
                 {view === "services" ? (
                   <ServicesPanel
                     locale={locale}
@@ -1789,7 +1801,6 @@ export function ChatWidget() {
                   />
                 )}
               </div>
-            )}
           </div>
 
           {/* Footer — input, quick actions, brand */}
