@@ -479,6 +479,9 @@ export function ChatWidget() {
   const [editingName, setEditingName] = React.useState(false);
   const [nameDraft, setNameDraft] = React.useState("");
   const [openReadMore, setOpenReadMore] = React.useState<string | null>(null);
+  /** Number of trailing message groups rendered — the chat opens showing only
+      the last two exchanges and earlier ones are revealed by scrolling up. */
+  const [visibleGroupCount, setVisibleGroupCount] = React.useState(2);
 
   const mounted = React.useSyncExternalStore(
     () => () => {},
@@ -594,6 +597,8 @@ export function ChatWidget() {
               )
           : stored
       );
+      // Tail window: pin to the newest exchanges after the load lands.
+      setVisibleGroupCount(2);
       setStage(
         !data.visitor.name
           ? "name"
@@ -623,6 +628,17 @@ export function ChatWidget() {
     if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
   }, [messages, loading, stage, open]);
 
+  function handleMessagesScroll() {
+    const el = messagesScrollRef.current;
+    if (!el) return;
+    // Reaching the top of the visible window reveals earlier messages.
+    if (el.scrollTop <= 32) {
+      setVisibleGroupCount((c) =>
+        c < messageGroups.length + 1 ? c + 2 : c
+      );
+    }
+  }
+
   if (!mounted) return null;
 
   if (typeof window !== "undefined" && window.location.pathname.startsWith("/admin")) {
@@ -642,6 +658,8 @@ export function ChatWidget() {
         created_at: new Date().toISOString(),
       },
     ]);
+    // Collapse the window back to the newest exchanges.
+    setVisibleGroupCount(2);
     setInput("");
     setError(null);
     setLoading(true);
@@ -707,6 +725,7 @@ export function ChatWidget() {
     const stored = toWidgetMessages(data.messages);
     setVisitor((v) => ({ ...v, name: data.name }));
     setMessages(insertQuestion(stored, buildQuestionMessage(lang, data.name, null, false)));
+    setVisibleGroupCount(2);
     setInput("");
     setStage("emailQuestion");
   }
@@ -739,6 +758,7 @@ export function ChatWidget() {
         t(lang, "chatYesReadMore")
       )
     );
+    setVisibleGroupCount(2);
     setInput("");
     setStage("chat");
   }
@@ -777,6 +797,7 @@ export function ChatWidget() {
     const stored = toWidgetMessages(result.data.messages);
     setVisitor((v) => ({ ...v, email_choice: "later", onboarding_complete: true }));
     setMessages(insertQuestion(stored, buildQuestionMessage(lang, visitor.name, "later", true)));
+    setVisibleGroupCount(2);
     setInput("");
     setStage("chat");
   }
@@ -852,6 +873,7 @@ export function ChatWidget() {
     if (result.success && result.data) {
       setVisitor(result.data.visitor);
       setMessages(toWidgetMessages(result.data.messages));
+      setVisibleGroupCount(2);
       setStage("name");
       setInput("");
       setShowPrivacyNote(false);
@@ -877,6 +899,18 @@ export function ChatWidget() {
 
   const locale = lang;
   const messageGroups = groupMessages(messages);
+  // Tail window: only the newest groups are rendered so the chat opens showing
+  // the last send + last reply. The email-question group is always included —
+  // it stays interactive so visitors can change their mind. The pill remains
+  // until the welcome bubble is also revealed.
+  const questionGroup = messageGroups.find((g) => g[0].sender === "question");
+  const tailGroups = messageGroups.slice(-visibleGroupCount);
+  const shownGroups =
+    questionGroup && !tailGroups.includes(questionGroup)
+      ? [questionGroup, ...tailGroups]
+      : tailGroups;
+  const fullyRevealed = visibleGroupCount >= messageGroups.length + 1;
+  const hasHiddenMessages = !fullyRevealed;
   const firstVisitorGroupId =
     messageGroups.find((group) => group[0].sender === "visitor")?.[0].id ?? null;
   const welcomeParts = t(locale, "chatWelcome").split(" — ");
@@ -1024,16 +1058,28 @@ export function ChatWidget() {
             </div>
           ) : null}
 
-          {/* Messages */}
+          {/* Messages — opens showing only the latest exchanges; earlier
+              messages are revealed by scrolling up or via the pill */}
           <div
             ref={messagesScrollRef}
-            className="flex-1 overflow-y-auto overscroll-contain px-4 py-4"
+            onScroll={handleMessagesScroll}
+            className="flex flex-1 flex-col overflow-y-auto overscroll-contain px-4 py-4"
           >
             <div
               aria-hidden="true"
               className="pointer-events-none sticky top-0 z-10 -mx-4 -mt-4 h-5 bg-gradient-to-b from-background to-transparent"
             />
-            <div className="space-y-4">
+            {hasHiddenMessages ? (
+              <button
+                type="button"
+                onClick={() => setVisibleGroupCount((c) => c + 2)}
+                className="mx-auto mb-3 flex items-center gap-1 rounded-[10px] border border-border bg-card-dark px-2.5 py-1 text-[9px] font-medium uppercase tracking-wide text-text-muted transition-colors hover:border-primary/30 hover:text-text-secondary"
+              >
+                <ChevronDownIcon className="size-2.5 rotate-180" />
+                {t(locale, "chatShowEarlier")}
+              </button>
+            ) : null}
+            <div className="m-auto w-full space-y-4">
               {/* Loading skeleton */}
               {stage === "loading" ? (
                 <div aria-hidden="true" className="flex justify-start gap-2">
@@ -1048,9 +1094,10 @@ export function ChatWidget() {
                   </div>
                 </div>
               ) : null}
-              {/* Welcome bubble — stays in the scroll history after onboarding so
-                  users can scroll up and read the privacy note */}
-              {stage !== "loading" ? (
+              {/* Welcome bubble — part of the scroll history after onboarding so
+                  users can scroll up and read the privacy note; hidden while the
+                  tail window is active and revealed when scrolling up */}
+              {stage !== "loading" && fullyRevealed ? (
                 <div className="chat-msg-in flex justify-start gap-2">
                   <AiAvatar />
                   <div className="min-w-0 max-w-[82%]">
@@ -1092,7 +1139,7 @@ export function ChatWidget() {
               ) : null}
 
               {/* Stored messages — grouped by consecutive sender */}
-              {messageGroups.map((group) => {
+              {shownGroups.map((group) => {
                 return (
                   <div key={group[0].id} className="chat-msg-in space-y-1.5">
                     {group.map((m, mi) => {

@@ -90,6 +90,7 @@ export type UiStringKey =
   | "chatEditName"
   | "chatTyping"
   | "chatTypingStatus"
+  | "chatShowEarlier"
   | "chatSave"
   | "chatCancel"
   | "chatLanguage"
@@ -221,6 +222,7 @@ const en: UiStrings = {
   chatEditName: "Edit name",
   chatTyping: "Stratifit AI is typing…",
   chatTypingStatus: "Typing…",
+  chatShowEarlier: "Earlier messages",
   chatSave: "Save",
   chatCancel: "Cancel",
   chatLanguage: "Select language",
@@ -353,6 +355,7 @@ const de: UiStrings = {
   chatEditName: "Namen bearbeiten",
   chatTyping: "Stratifit AI schreibt…",
   chatTypingStatus: "Schreibt…",
+  chatShowEarlier: "Frühere Nachrichten",
   chatSave: "Speichern",
   chatCancel: "Abbrechen",
   chatLanguage: "Sprache auswählen",
@@ -485,6 +488,7 @@ const fr: UiStrings = {
   chatEditName: "Modifier le nom",
   chatTyping: "Stratifit AI écrit…",
   chatTypingStatus: "Écrit…",
+  chatShowEarlier: "Messages précédents",
   chatSave: "Enregistrer",
   chatCancel: "Annuler",
   chatLanguage: "Choisir la langue",
@@ -617,6 +621,7 @@ const es: UiStrings = {
   chatEditName: "Editar nombre",
   chatTyping: "Stratifit AI está escribiendo…",
   chatTypingStatus: "Escribiendo…",
+  chatShowEarlier: "Mensajes anteriores",
   chatSave: "Guardar",
   chatCancel: "Cancelar",
   chatLanguage: "Seleccionar idioma",
