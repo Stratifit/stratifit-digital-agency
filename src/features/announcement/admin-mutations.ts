@@ -2,10 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { z } from "zod";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { recordAuditLog } from "@/lib/audit";
 import type { ActionResult } from "@/types/action-result";
+import { announcementSchema, type AnnouncementFormValues } from "./schemas";
 
 async function requireAdmin() {
   const supabase = await createSupabaseServerClient();
@@ -26,26 +26,6 @@ async function requireAdmin() {
   return supabase;
 }
 
-const translations = () =>
-  z.object({
-    en: z.string(),
-    de: z.string(),
-    fr: z.string(),
-    es: z.string(),
-  });
-
-export const announcementSchema = z.object({
-  message_translations: translations(),
-  link_label_translations: translations(),
-  link_url: z.string(),
-  is_enabled: z.boolean(),
-  starts_at: z.string(),
-  ends_at: z.string(),
-  variant: z.enum(["primary", "neutral", "ai"]),
-});
-
-export type AnnouncementFormValues = z.infer<typeof announcementSchema>;
-
 export async function updateAnnouncement(
   input: AnnouncementFormValues
 ): Promise<ActionResult> {
@@ -62,7 +42,8 @@ export async function updateAnnouncement(
   const { error } = await supabase.from("announcement_bar").upsert(
     {
       singleton_key: true,
-      message_translations: parsed.data.message_translations,
+      slides: parsed.data.slides,
+      message_translations: parsed.data.slides[0],
       link_label_translations: parsed.data.link_label_translations,
       link_url: parsed.data.link_url || null,
       is_enabled: parsed.data.is_enabled,

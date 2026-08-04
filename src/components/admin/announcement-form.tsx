@@ -1,13 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { updateAnnouncement } from "@/features/announcement/admin-mutations";
 import {
   announcementSchema,
-  updateAnnouncement,
   type AnnouncementFormValues,
-} from "@/features/announcement/admin-mutations";
+} from "@/features/announcement/schemas";
 import type { AdminAnnouncement } from "@/features/announcement/admin-queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,19 +33,26 @@ function tr(v: Record<string, string> | null | undefined) {
   return { en: v?.en ?? "", de: v?.de ?? "", fr: v?.fr ?? "", es: v?.es ?? "" };
 }
 
-function toFormValues(a: AdminAnnouncement): AnnouncementFormValues {
+const emptyTr = () => ({ en: "", de: "", fr: "", es: "" });
+
+function toFormValues(a: AdminAnnouncement | null | undefined): AnnouncementFormValues {
   return {
-    message_translations: tr(a.message_translations),
-    link_label_translations: tr(a.link_label_translations),
-    link_url: a.link_url ?? "",
-    is_enabled: a.is_enabled,
-    starts_at: a.starts_at ? a.starts_at.slice(0, 16) : "",
-    ends_at: a.ends_at ? a.ends_at.slice(0, 16) : "",
-    variant: (a.variant as AnnouncementFormValues["variant"]) ?? "primary",
+    slides:
+      a?.slides && a.slides.length > 0 ? a.slides.map((s) => tr(s)) : [emptyTr()],
+    link_label_translations: tr(a?.link_label_translations),
+    link_url: a?.link_url ?? "",
+    is_enabled: a?.is_enabled ?? false,
+    starts_at: a?.starts_at ? a.starts_at.slice(0, 16) : "",
+    ends_at: a?.ends_at ? a.ends_at.slice(0, 16) : "",
+    variant: (a?.variant as AnnouncementFormValues["variant"]) ?? "primary",
   };
 }
 
-export function AnnouncementForm({ announcement }: { announcement: AdminAnnouncement }) {
+export function AnnouncementForm({
+  announcement,
+}: {
+  announcement?: AdminAnnouncement | null;
+}) {
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [saved, setSaved] = React.useState(false);
 
@@ -54,13 +61,14 @@ export function AnnouncementForm({ announcement }: { announcement: AdminAnnounce
     handleSubmit,
     control,
     setValue,
-    formState: { isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm<AnnouncementFormValues>({
     resolver: zodResolver(announcementSchema),
     defaultValues: toFormValues(announcement),
   });
 
   const isEnabled = useWatch({ control, name: "is_enabled" });
+  const slideFields = useFieldArray({ control, name: "slides" });
 
   async function onSubmit(values: AnnouncementFormValues) {
     setServerError(null);
@@ -89,6 +97,70 @@ export function AnnouncementForm({ announcement }: { announcement: AdminAnnounce
         />
       </div>
 
+      {/* Carousel messages */}
+      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="text-sm font-medium text-text-primary">Carousel messages</p>
+            <p className="mt-0.5 text-xs text-text-muted">
+              Messages rotate automatically on the site. Each message is shown in the
+              visitor&apos;s language.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => slideFields.append(emptyTr())}
+            className="rounded-button border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            + Add message
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          {slideFields.fields.map((field, index) => (
+            <div
+              key={field.id}
+              className="rounded-card border border-border bg-background p-4"
+            >
+              <div className="mb-3 flex items-center justify-between">
+                <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-primary">
+                  Message {index + 1}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => slideFields.remove(index)}
+                  disabled={slideFields.fields.length <= 1}
+                  className="text-xs text-text-muted transition-colors hover:text-error disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  Remove
+                </button>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {LOCALES.map((locale) => (
+                  <div key={locale} className="space-y-1.5">
+                    <Label htmlFor={`slide-${index}-${locale}`}>
+                      Message ({LOCALE_NAMES[locale]})
+                    </Label>
+                    <Input
+                      id={`slide-${index}-${locale}`}
+                      placeholder="Now offering AI automation services — book a call"
+                      {...register(`slides.${index}.${locale}`)}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {errors.slides?.message ? (
+          <p role="alert" className="mt-3 text-xs text-error">
+            {errors.slides.message}
+          </p>
+        ) : null}
+      </div>
+
+      {/* Link labels */}
       <div className="space-y-6">
         {LOCALES.map((locale) => (
           <fieldset
@@ -99,14 +171,6 @@ export function AnnouncementForm({ announcement }: { announcement: AdminAnnounce
               {LOCALE_NAMES[locale]}
             </legend>
             <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor={`message-${locale}`}>Message</Label>
-                <Input
-                  id={`message-${locale}`}
-                  placeholder="Now offering AI automation services — book a call"
-                  {...register(`message_translations.${locale}`)}
-                />
-              </div>
               <div className="space-y-2">
                 <Label htmlFor={`link-label-${locale}`}>Link label</Label>
                 <Input
