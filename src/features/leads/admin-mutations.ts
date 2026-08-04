@@ -56,3 +56,17 @@ export async function deleteLead(id: string): Promise<void> {
   await recordAuditLog({ action: "delete", target_table: "leads", target_id: id });
   revalidatePath("/admin/leads");
 }
+
+export async function deleteLeads(ids: string[]): Promise<{ success: boolean; error?: string }> {
+  if (ids.length === 0) return { success: false, error: "Nothing selected." };
+  const supabase = await requireAdmin();
+  const { error } = await supabase.from("leads").delete().in("id", ids);
+  if (error) return { success: false, error: "Failed to delete leads." };
+  await recordAuditLog({
+    action: "bulk.delete",
+    target_table: "leads",
+    metadata: { count: ids.length },
+  });
+  revalidatePath("/admin/leads");
+  return { success: true };
+}

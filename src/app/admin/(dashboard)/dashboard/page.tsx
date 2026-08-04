@@ -51,6 +51,27 @@ export default async function AdminDashboardPage() {
 
       <div>
         <h2 className="font-display text-lg font-semibold text-text-primary">
+          Website
+        </h2>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { label: "Sections", href: "/admin/content/sections", hint: "Pause, preview & edit every section" },
+            { label: "Hero", href: "/admin/content/hero", hint: "Headline, CTAs, stats" },
+            { label: "Navigation", href: "/admin/content/navigation", hint: "Header & footer links" },
+            { label: "Footer", href: "/admin/content/footer", hint: "Footer link groups" },
+          ].map((item) => (
+            <Link key={item.label} href={item.href} className="group">
+              <Card className="p-5 transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:border-border-interactive">
+                <p className="text-sm font-medium text-text-primary">{item.label}</p>
+                <p className="mt-1 text-xs text-text-muted">{item.hint}</p>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h2 className="font-display text-lg font-semibold text-text-primary">
           Content
         </h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">

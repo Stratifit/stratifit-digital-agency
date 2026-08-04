@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { recordAuditLog } from "@/lib/audit";
 
 async function requireAdminUserId(): Promise<{ supabase: ReturnType<typeof createSupabaseServerClient> extends Promise<infer T> ? T : never; userId: string }> {
   const supabase = await createSupabaseServerClient();
@@ -105,6 +106,40 @@ export async function resolveConversation(conversationId: string): Promise<{ suc
     .eq("id", conversationId);
   if (error) return { success: false, error: "Failed to resolve." };
   await logEvent(supabase, conversationId, "resolved", userId);
+  revalidatePath("/admin/conversations");
+  return { success: true };
+}
+
+export async function deleteConversations(ids: string[]): Promise<{ success: boolean; error?: string }> {
+  if (ids.length === 0) return { success: false, error: "Nothing selected." };
+  const { supabase } = await requireAdminUserId();
+  const { error } = await supabase
+    .from("chat_conversations")
+    .delete()
+    .in("id", ids);
+  if (error) return { success: false, error: "Failed to delete conversations." };
+  await recordAuditLog({
+    action: "bulk.delete",
+    target_table: "chat_conversations",
+    metadata: { count: ids.length },
+  });
+  revalidatePath("/admin/conversations");
+  return { success: true };
+}
+
+export async function archiveConversations(ids: string[]): Promise<{ success: boolean; error?: string }> {
+  if (ids.length === 0) return { success: false, error: "Nothing selected." };
+  const { supabase } = await requireAdminUserId();
+  const { error } = await supabase
+    .from("chat_conversations")
+    .update({ status: "archived", archived_at: new Date().toISOString() })
+    .in("id", ids);
+  if (error) return { success: false, error: "Failed to archive conversations." };
+  await recordAuditLog({
+    action: "bulk.archive",
+    target_table: "chat_conversations",
+    metadata: { count: ids.length },
+  });
   revalidatePath("/admin/conversations");
   return { success: true };
 }

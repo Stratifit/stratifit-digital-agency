@@ -117,6 +117,8 @@ const NAV_SECTIONS: {
     label: "Content",
     items: [
       { href: "/admin/content/sections", label: "Sections", icon: "sections" },
+      { href: "/admin/content/hero", label: "Hero", icon: "final-cta" },
+      { href: "/admin/content/announcement", label: "Announcement", icon: "faq" },
       { href: "/admin/content/services", label: "Services", icon: "services" },
       { href: "/admin/content/service-pages", label: "Service Pages", icon: "sections" },
       { href: "/admin/content/process", label: "Process", icon: "process" },
@@ -126,6 +128,9 @@ const NAV_SECTIONS: {
       { href: "/admin/content/testimonials", label: "Testimonials", icon: "testimonials" },
       { href: "/admin/content/pricing", label: "Pricing", icon: "pricing" },
       { href: "/admin/content/faq", label: "FAQs", icon: "faq" },
+      { href: "/admin/content/trusted-logos", label: "Trusted Logos", icon: "media" },
+      { href: "/admin/content/navigation", label: "Navigation", icon: "faq" },
+      { href: "/admin/content/footer", label: "Footer", icon: "sections" },
       { href: "/admin/content/final-cta", label: "Final CTA", icon: "final-cta" },
     ],
   },

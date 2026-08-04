@@ -4,7 +4,20 @@ import type { ActionResult } from "@/types/action-result";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { recordAuditLog } from "@/lib/audit";
 import { sectionSettingsSchema, type SectionSettingsFormValues } from "./schemas";
+
+const SECTION_SETTINGS_KEYS = [
+  "services",
+  "process",
+  "why-choose-us",
+  "insights",
+  "portfolio",
+  "testimonials",
+  "pricing",
+  "faq",
+  "contact",
+] as const;
 
 
 async function requireAdmin() {
@@ -54,6 +67,61 @@ export async function updateSectionSettings(
 
   if (error) {
     return { success: false, error: "Failed to save section settings." };
+  }
+
+  revalidatePath("/");
+  revalidatePath("/admin/content/sections");
+  return { success: true };
+}
+
+/**
+ * Pause or resume a frontend section from the admin manager.
+ * Routes to the right table: section_settings, hero, or final_cta.
+ */
+export async function toggleSectionVisibility(
+  sectionKey: string,
+  visible: boolean
+): Promise<ActionResult> {
+  const supabase = await requireAdmin();
+
+  if (sectionKey === "hero") {
+    const { error } = await supabase
+      .from("hero")
+      .update({ is_visible: visible })
+      .eq("singleton_key", true);
+    if (error) return { success: false, error: "Failed to update hero." };
+    await recordAuditLog({
+      action: visible ? "section.resume" : "section.pause",
+      target_table: "hero",
+      metadata: { sectionKey },
+    });
+  } else if (sectionKey === "finalCta") {
+    const { error } = await supabase
+      .from("final_cta")
+      .update({ is_visible: visible })
+      .eq("singleton_key", true);
+    if (error) return { success: false, error: "Failed to update final CTA." };
+    await recordAuditLog({
+      action: visible ? "section.resume" : "section.pause",
+      target_table: "final_cta",
+      metadata: { sectionKey },
+    });
+  } else if (
+    SECTION_SETTINGS_KEYS.includes(sectionKey as (typeof SECTION_SETTINGS_KEYS)[number])
+  ) {
+    const { error } = await supabase
+      .from("section_settings")
+      .update({ is_visible: visible })
+      .eq("section_key", sectionKey);
+    if (error) return { success: false, error: "Failed to update section." };
+    await recordAuditLog({
+      action: visible ? "section.resume" : "section.pause",
+      target_table: "section_settings",
+      target_id: sectionKey,
+      metadata: { sectionKey },
+    });
+  } else {
+    return { success: false, error: "Unknown section." };
   }
 
   revalidatePath("/");
