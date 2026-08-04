@@ -86,7 +86,7 @@ export function ContactPopup({
         onClick={() => setOpen(false)}
         className="contact-popup-backdrop fixed inset-0 bg-black/70 backdrop-blur-sm"
       />
-      <div className="contact-popup-panel relative mx-auto flex min-h-[100dvh] w-full max-w-xl flex-col overflow-y-auto bg-card-dark px-4 pt-4 shadow-[0_30px_90px_-20px_rgba(0,0,0,0.85)] sm:min-h-0 sm:rounded-lg sm:border sm:border-card-border sm:px-8 sm:pt-8 lg:px-10 lg:pt-10">
+      <div className="contact-popup-panel relative mx-auto flex h-[100dvh] w-full max-w-xl flex-col overflow-y-auto bg-card-dark px-4 pt-4 shadow-[0_30px_90px_-20px_rgba(0,0,0,0.85)] sm:h-auto sm:min-h-0 sm:rounded-lg sm:border sm:border-card-border sm:px-8 sm:pt-8 lg:px-10 lg:pt-10">
         {/* Soft amber light washing down from the top edge, like the header */}
         <div
           aria-hidden="true"
@@ -109,11 +109,15 @@ export function ContactPopup({
           <CloseIcon />
         </button>
 
-        <ContactPanel
-          services={services}
-          locale={locale}
-          headerClassName="pr-12 sm:pr-16"
-        />
+        {/* my-auto centers the block vertically on mobile (h-[100dvh]) and
+            collapses to 0 on overflow so the panel can scroll safely. */}
+        <div className="my-auto w-full">
+          <ContactPanel
+            services={services}
+            locale={locale}
+            headerClassName="pr-12 sm:pr-16"
+          />
+        </div>
       </div>
     </div>
   );

@@ -354,7 +354,7 @@ export function ContactForm({
       <div className="grid grid-cols-2 gap-3 sm:gap-4">
         <div ref={servicesRef} className="min-w-0">
           <label className="mb-1.5 block text-xs font-medium text-text-secondary sm:text-sm">
-            {t(locale, "selectService")}
+            {t(locale, "selectServices")}
             <span className="ml-1 text-primary">*</span>
           </label>
           <div className="relative">
@@ -377,7 +377,7 @@ export function ContactForm({
                 )}
               >
                 {selectedServices.length === 0
-                  ? t(locale, "selectServices")
+                  ? t(locale, "selectService")
                   : selectedServices.length === 1
                     ? resolveTranslation(selectedServices[0].title_translations, locale)
                     : tWithNumber(locale, "servicesSelected", selectedServices.length)}
@@ -391,7 +391,7 @@ export function ContactForm({
                 role="listbox"
                 aria-multiselectable="true"
                 aria-label={t(locale, "serviceNeeded")}
-                className="absolute z-30 mt-2 w-full rounded-card border border-card-border bg-card-dark py-2 shadow-2xl max-h-56 overflow-y-auto"
+                className="absolute z-30 mt-2 w-[calc(200%+12px)] rounded-card border border-white/10 bg-card-dark py-2 shadow-2xl max-h-56 overflow-y-auto sm:w-[calc(200%+16px)]"
               >
                 {services.map((service) => {
                   const selected = selectedServiceIds.includes(service.id);
@@ -409,7 +409,7 @@ export function ContactForm({
                           "flex size-4 shrink-0 items-center justify-center rounded border transition-all duration-150",
                           selected
                             ? "border-primary bg-primary text-text-inverse"
-                            : "border-card-border"
+                            : "border-white/20"
                         )}
                       >
                         {selected ? <CheckIcon /> : null}
@@ -463,7 +463,7 @@ export function ContactForm({
               <div
                 role="listbox"
                 aria-label={t(locale, "estimatedBudget")}
-                className="absolute z-30 mt-2 w-full rounded-card border border-card-border bg-card-dark py-2 shadow-2xl max-h-56 overflow-y-auto"
+                className="absolute z-30 mt-2 w-full rounded-card border border-white/10 bg-card-dark py-2 shadow-2xl max-h-56 overflow-y-auto"
               >
                 <button
                   type="button"
