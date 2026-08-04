@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "@/actions/auth";
 import { signInSchema, type SignInValues } from "@/features/auth/schemas";
-import { BrandLogo } from "@/components/ui/brand-logo";
 import { cn } from "@/lib/cn";
 
 const REMEMBER_EMAIL_KEY = "stratifit-remember-email";
@@ -133,19 +132,49 @@ export default function AdminLoginPage() {
       </div>
 
       <div className="relative z-10 w-full max-w-sm">
-        {/* Header — Stratifit logo + intro */}
-        <div className="mb-8 text-center">
-          <div className="mx-auto mb-5 w-48 sm:w-52">
-            <BrandLogo alt="Stratifit" priority />
+        {/* Header — brand lockup + intro */}
+        <div className="mb-9 flex flex-col items-center text-center">
+          <Link
+            href="/"
+            aria-label="Back to the Stratifit website"
+            className="group inline-flex items-center gap-3 rounded-card transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:scale-[1.02] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-4"
+          >
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-card bg-primary font-display text-base font-black text-text-inverse shadow-shadow-amber transition-shadow duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:shadow-[0_0_30px_rgba(245,158,11,0.3)]">
+              ST
+            </span>
+            <span className="flex flex-col items-start leading-none">
+              <span className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
+                Stratifit
+              </span>
+              <span className="mt-1.5 text-[9px] font-bold uppercase tracking-[0.28em] text-primary">
+                Digital Excellence
+              </span>
+            </span>
+          </Link>
+
+          {/* Hairline divider framing the access badge */}
+          <div className="mt-8 flex w-full items-center gap-4">
+            <span
+              aria-hidden="true"
+              className="h-px flex-1 bg-gradient-to-r from-transparent to-primary/25"
+            />
+            <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/[0.06] px-4 py-1.5">
+              <ShieldIcon />
+              <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-primary">
+                Admin Login
+              </span>
+            </span>
+            <span
+              aria-hidden="true"
+              className="h-px flex-1 bg-gradient-to-l from-transparent to-primary/25"
+            />
           </div>
-          <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.28em] text-primary sm:text-xs">
-            Admin Login
-          </p>
-          <h1 className="font-display text-3xl font-black tracking-tight text-text-primary">
+
+          <h1 className="mt-7 font-display text-3xl font-black tracking-tight text-text-primary sm:text-4xl">
             Welcome back
           </h1>
-          <p className="mt-2 text-sm text-text-muted">
-            Sign in to manage the Stratifit dashboard.
+          <p className="mt-2.5 max-w-[280px] text-sm leading-relaxed text-text-muted">
+            Sign in to continue to the Stratifit dashboard.
           </p>
         </div>
 
