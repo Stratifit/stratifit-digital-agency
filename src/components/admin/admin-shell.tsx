@@ -5,6 +5,7 @@ import { cn } from "@/lib/cn";
 import type { CurrentAdmin } from "@/actions/auth";
 import { Sidebar } from "./sidebar";
 import { Topbar } from "./topbar";
+import { BottomNav } from "./bottom-nav";
 
 export function AdminShell({
   admin,
@@ -15,6 +16,12 @@ export function AdminShell({
 }) {
   const [collapsed, setCollapsed] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [query, setQuery] = React.useState("");
+
+  function handleNavigate() {
+    setMobileOpen(false);
+    setQuery("");
+  }
 
   return (
     <div className="relative flex min-h-screen bg-background">
@@ -33,22 +40,25 @@ export function AdminShell({
         className={cn(
           "fixed inset-y-0 left-0 z-50 flex h-full w-64 flex-col border-r border-border bg-background-deep shadow-xl shadow-black/40 transition-[width,transform] duration-300 ease-[var(--ease-standard)] md:static md:z-auto md:shadow-none",
           mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0",
-          collapsed && "md:w-[76px]"
+          collapsed && !query.trim() && "md:w-[76px]"
         )}
       >
         <Sidebar
           collapsed={collapsed}
-          onNavigate={() => setMobileOpen(false)}
+          query={query}
+          onNavigate={handleNavigate}
         />
       </aside>
 
       <div className="relative flex min-w-0 flex-1 flex-col">
         <Topbar
           admin={admin}
+          query={query}
+          onQueryChange={setQuery}
           onOpenMobile={() => setMobileOpen(true)}
           onToggleCollapse={() => setCollapsed((v) => !v)}
         />
-        <main className="relative flex-1 overflow-x-hidden p-4 sm:p-6 lg:p-8">
+        <main className="relative flex-1 overflow-x-hidden p-4 pb-28 sm:p-6 sm:pb-28 lg:p-8 lg:pb-8">
           {/* Ambient amber wash — restrained, matching the reference treatment */}
           <div
             aria-hidden="true"
@@ -59,6 +69,9 @@ export function AdminShell({
           <div className="relative">{children}</div>
         </main>
       </div>
+
+      {/* Mobile primary navigation */}
+      <BottomNav onOpenMenu={() => setMobileOpen(true)} />
     </div>
   );
 }
