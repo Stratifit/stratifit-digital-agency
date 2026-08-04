@@ -313,9 +313,11 @@ const TOPIC_CHIPS: {
 /** Shared panel footer button — returns to the conversation. */
 function PanelBackButton({
   locale,
+  label,
   onClick,
 }: {
   locale: string;
+  label?: string;
   onClick: () => void;
 }) {
   return (
@@ -325,7 +327,7 @@ function PanelBackButton({
       className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-[10px] border border-border bg-white/5 px-3 py-2 text-xs font-medium text-text-secondary transition-all hover:border-primary/40 hover:bg-primary/10 hover:text-primary active:scale-[0.98]"
     >
       <ChatIcon className="size-3.5 text-primary" />
-      {t(locale, "chatBackToChat")}
+      {label ?? t(locale, "chatBackToChat")}
     </button>
   );
 }
@@ -373,14 +375,14 @@ function ServicesPanel({
   servicePageSlugs,
   onAsk,
   onLearnMore,
-  onBack,
+  onAskServices,
 }: {
   locale: string;
   services: PublicServiceDetail[];
   servicePageSlugs: string[];
   onAsk: (serviceTitle: string, mode: "interested" | "more") => void;
   onLearnMore: () => void;
-  onBack: () => void;
+  onAskServices: () => void;
 }) {
   return (
     <div>
@@ -423,7 +425,12 @@ function ServicesPanel({
           );
         })}
       </div>
-      <PanelBackButton locale={locale} onClick={onBack} />
+      <div className="mt-3">
+        <PanelPrimaryButton onClick={onAskServices}>
+          <BriefcaseIcon className="size-3.5" />
+          {t(locale, "chatAskAboutServices")}
+        </PanelPrimaryButton>
+      </div>
     </div>
   );
 }
@@ -436,12 +443,10 @@ function PricingPanel({
   locale,
   plans,
   onAskPricing,
-  onBack,
 }: {
   locale: string;
   plans: PublicPricingPlan[];
   onAskPricing: () => void;
-  onBack: () => void;
 }) {
   return (
     <div>
@@ -465,7 +470,6 @@ function PricingPanel({
           {t(locale, "chatAskAboutPricing")}
         </PanelPrimaryButton>
       </div>
-      <PanelBackButton locale={locale} onClick={onBack} />
     </div>
   );
 }
@@ -505,7 +509,11 @@ function FaqPanel({
       {items.length > 0 ? (
         <FaqAccordion items={items} gridClassName="grid grid-cols-1 gap-3" />
       ) : null}
-      <PanelBackButton locale={locale} onClick={onBack} />
+      <PanelBackButton
+        locale={locale}
+        label={t(locale, "chatFaqMoreQuestions")}
+        onClick={onBack}
+      />
     </div>
   );
 }
@@ -514,11 +522,9 @@ function FaqPanel({
 function SupportPanel({
   locale,
   onContact,
-  onBack,
 }: {
   locale: string;
   onContact: () => void;
-  onBack: () => void;
 }) {
   return (
     <div>
@@ -537,7 +543,6 @@ function SupportPanel({
           </PanelPrimaryButton>
         </div>
       </div>
-      <PanelBackButton locale={locale} onClick={onBack} />
     </div>
   );
 }
@@ -1181,6 +1186,14 @@ export function ChatWidget({
     sendChatMessage(t(locale, "chatPricingQuestion"));
   }
 
+  /** Asks the AI about services in general — returns to the chat and sends
+      the prompt. */
+  function askAboutServices() {
+    if (loading) return;
+    setView("chat");
+    sendChatMessage(t(locale, "chatServicesQuestion"));
+  }
+
   /** Opens the global contact popup (used by the Support panel and the
       Pricing "Start a project" action). */
   function openContactPopup() {
@@ -1698,14 +1711,13 @@ export function ChatWidget({
                     servicePageSlugs={servicePageSlugs}
                     onAsk={askAboutService}
                     onLearnMore={handleLearnMore}
-                    onBack={() => switchView("chat")}
+                    onAskServices={askAboutServices}
                   />
                 ) : view === "pricing" ? (
                   <PricingPanel
                     locale={locale}
                     plans={plans}
                     onAskPricing={askAboutPricing}
-                    onBack={() => switchView("chat")}
                   />
                 ) : view === "faq" ? (
                   <FaqPanel
@@ -1718,7 +1730,6 @@ export function ChatWidget({
                   <SupportPanel
                     locale={locale}
                     onContact={openContactPopup}
-                    onBack={() => switchView("chat")}
                   />
                 )}
               </div>

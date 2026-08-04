@@ -98,7 +98,10 @@ export type UiStringKey =
   | "chatPricingBody"
   | "chatAskAboutPricing"
   | "chatPricingQuestion"
+  | "chatServicesQuestion"
+  | "chatAskAboutServices"
   | "chatFaqTitle"
+  | "chatFaqMoreQuestions"
   | "chatSupportTitle"
   | "chatSupportBody"
   | "chatContactUs"
@@ -243,7 +246,10 @@ const en: UiStrings = {
     "Packages for every stage — from landing pages to full platforms. Tell us about your project for a tailored quote.",
   chatAskAboutPricing: "Ask about pricing",
   chatPricingQuestion: "I'd like to know more about pricing.",
+  chatServicesQuestion: "I'd like to know more about your services.",
+  chatAskAboutServices: "Ask about services",
   chatFaqTitle: "Common Questions",
+  chatFaqMoreQuestions: "Have more questions?",
   chatSupportTitle: "Human Support",
   chatSupportBody: "Our team is ready to help with your project.",
   chatContactUs: "Contact us",
@@ -389,7 +395,10 @@ const de: UiStrings = {
     "Pakete für jede Phase – von Landingpages bis zu vollständigen Plattformen. Teilen Sie uns Ihr Projekt für ein individuelles Angebot mit.",
   chatAskAboutPricing: "Nach Preisen fragen",
   chatPricingQuestion: "Ich möchte mehr über die Preise wissen.",
+  chatServicesQuestion: "Ich möchte mehr über Ihre Leistungen erfahren.",
+  chatAskAboutServices: "Nach Leistungen fragen",
   chatFaqTitle: "Häufige Fragen",
+  chatFaqMoreQuestions: "Haben Sie weitere Fragen?",
   chatSupportTitle: "Menschlicher Support",
   chatSupportBody: "Unser Team hilft Ihnen gerne bei Ihrem Projekt.",
   chatContactUs: "Kontakt aufnehmen",
@@ -535,7 +544,10 @@ const fr: UiStrings = {
     "Des formules pour chaque étape – des landing pages aux plateformes complètes. Parlez-nous de votre projet pour un devis personnalisé.",
   chatAskAboutPricing: "Demander les tarifs",
   chatPricingQuestion: "J'aimerais en savoir plus sur les tarifs.",
+  chatServicesQuestion: "J'aimerais en savoir plus sur vos services.",
+  chatAskAboutServices: "Demander des services",
   chatFaqTitle: "Questions fréquentes",
+  chatFaqMoreQuestions: "D'autres questions ?",
   chatSupportTitle: "Support humain",
   chatSupportBody: "Notre équipe est prête à vous aider sur votre projet.",
   chatContactUs: "Nous contacter",
@@ -681,7 +693,10 @@ const es: UiStrings = {
     "Paquetes para cada etapa: desde landing pages hasta plataformas completas. Cuéntanos tu proyecto para un presupuesto personalizado.",
   chatAskAboutPricing: "Preguntar por precios",
   chatPricingQuestion: "Me gustaría saber más sobre los precios.",
+  chatServicesQuestion: "Me gustaría saber más sobre sus servicios.",
+  chatAskAboutServices: "Preguntar por servicios",
   chatFaqTitle: "Preguntas frecuentes",
+  chatFaqMoreQuestions: "¿Tiene más preguntas?",
   chatSupportTitle: "Soporte humano",
   chatSupportBody: "Nuestro equipo está listo para ayudarte con tu proyecto.",
   chatContactUs: "Contáctanos",
