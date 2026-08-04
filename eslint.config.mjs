@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Generated database types
     "src/types/database.types.ts",
+    // Standalone Node.js utility scripts (CommonJS, not part of the app bundle)
+    "scripts/**",
   ]),
 ]);
 
