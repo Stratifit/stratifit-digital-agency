@@ -1,4 +1,4 @@
-﻿import { pageMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "Insights — Stratifit",
@@ -7,65 +7,75 @@ export const metadata = pageMetadata({
   path: "/insights",
 });
 
-import { getPublicInsights } from "@/features/insights/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
+import { getPublicInsights, getPublicInsightCategories } from "@/features/insights/queries";
+import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { t } from "@/lib/i18n/ui-strings";
 import { Container } from "@/components/ui/container";
-import { Section } from "@/components/ui/section";
-import { Card } from "@/components/ui/card";
-import { LinkButton } from "@/components/ui/link-button";
-import { Reveal } from "@/components/ui/reveal";
+import { InsightsGrid } from "@/components/insights/insights-grid";
 
 export default async function InsightsPage() {
   const locale = await getLocale();
-  const insights = await getPublicInsights(100);
+  const [insights, categories, settings] = await Promise.all([
+    getPublicInsights(100),
+    getPublicInsightCategories(),
+    getPublicSectionSetting("insights"),
+  ]);
+
+  const eyebrow = settings
+    ? resolveTranslation(settings.eyebrow_translations, locale)
+    : "Knowledge";
+  const title = settings
+    ? resolveTranslation(settings.title_translations, locale)
+    : "Insights &";
+  const highlight = settings
+    ? resolveTranslation(settings.highlight_translations, locale)
+    : "Expertise";
+  const description =
+    (settings && resolveTranslation(settings.description_translations, locale)) ||
+    "Thought leadership, industry perspectives, and actionable strategies from our team of strategists, designers, and engineers.";
 
   return (
     <>
-      <section className="border-b border-border bg-background-deep">
-        <Container className="py-20 md:py-24">
-          <p className="text-sm font-medium uppercase tracking-widest text-primary">
-            Insights
-          </p>
-          <h1 className="mt-4 font-display text-4xl font-bold tracking-tight text-text-primary md:text-5xl">
-            Ideas and expertise
+      <section className="relative overflow-hidden border-b border-border bg-background-deep pt-32 pb-16 md:pt-40 md:pb-20">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-primary/20 blur-[120px]"
+        />
+        <Container className="relative z-10">
+          {eyebrow ? (
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+              {eyebrow}
+            </p>
+          ) : null}
+          <h1 className="font-display text-4xl font-black leading-tight tracking-tight text-text-primary sm:text-5xl md:text-6xl md:leading-none lg:text-7xl">
+            <span>{title}</span>
+            {highlight ? <span className="text-primary"> {highlight}</span> : null}
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-text-secondary">
-            Practical thinking on web, AI, and digital growth.
-          </p>
+          {description ? (
+            <p className="mt-3 max-w-2xl border-l-2 border-primary/50 pl-4 text-base leading-relaxed text-text-muted sm:pl-6 sm:text-lg md:text-xl">
+              {description}
+            </p>
+          ) : null}
         </Container>
       </section>
 
-      <Section>
+      <section className="pt-12 pb-24 md:pb-32">
         <Container>
           {insights.length === 0 ? (
-            <p className="text-text-secondary">Articles will appear here soon.</p>
+            <p className="py-20 text-center text-sm text-text-muted">
+              {t(locale, "noInsightsYet")}
+            </p>
           ) : (
-            <Reveal stagger variant="card" className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {insights.map((insight) => (
-                <Card key={insight.slug} className="flex flex-col">
-                  <h2 className="font-display text-lg font-semibold text-text-primary">
-                    {resolveTranslation(insight.title_translations, locale)}
-                  </h2>
-                  <p className="mt-2 flex-1 text-sm leading-6 text-text-secondary">
-                    {resolveTranslation(insight.excerpt_translations, locale)}
-                  </p>
-                  <LinkButton
-                    href={`/insights/${insight.slug}`}
-                    variant="tertiary"
-                    size="small"
-                    className="mt-4 self-start"
-                  >
-                    {t(locale, "readMore")}
-                  </LinkButton>
-                </Card>
-              ))}
-            </Reveal>
+            <InsightsGrid
+              insights={insights}
+              categories={categories}
+              locale={locale}
+            />
           )}
         </Container>
-      </Section>
+      </section>
     </>
   );
 }
-

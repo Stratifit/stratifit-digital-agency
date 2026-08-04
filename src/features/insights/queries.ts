@@ -8,6 +8,8 @@ export interface PublicInsight {
   featured_media_id: string | null;
   featured_media_url: string | null;
   category_slugs: string[];
+  reading_time_minutes: number | null;
+  published_at: string | null;
 }
 
 export async function getPublicInsights(limit = 4): Promise<PublicInsight[]> {
@@ -15,7 +17,9 @@ export async function getPublicInsights(limit = 4): Promise<PublicInsight[]> {
 
   const { data, error } = await supabase
     .from("insights")
-    .select("id, slug, title_translations, excerpt_translations, featured_media_id")
+    .select(
+      "id, slug, title_translations, excerpt_translations, featured_media_id, reading_time_minutes, published_at"
+    )
     .eq("status", "published")
     .order("published_at", { ascending: false })
     .limit(limit);
@@ -25,10 +29,12 @@ export async function getPublicInsights(limit = 4): Promise<PublicInsight[]> {
   }
 
   const insights = data as (typeof data)[number][];
+  const insightIds = insights.map((i) => i.id as string);
 
   const { data: linkRows } = await supabase
     .from("insight_category_links")
-    .select("insight_id, category_id");
+    .select("insight_id, category_id")
+    .in("insight_id", insightIds);
 
   const categoryIds = [
     ...new Set((linkRows ?? []).map((l) => l.category_id)),
@@ -93,6 +99,8 @@ export async function getPublicInsights(limit = 4): Promise<PublicInsight[]> {
       category_slugs: linkedCategoryIds
         .map((id) => categorySlugById.get(id))
         .filter(Boolean) as string[],
+      reading_time_minutes: insight.reading_time_minutes as number | null,
+      published_at: insight.published_at as string | null,
     };
   });
 }

@@ -3,6 +3,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { ChatWidget } from "@/components/chat/chat-widget";
 import { ScrollTriggerSync } from "@/components/layout/scroll-trigger-sync";
+import { PublicBackButton } from "@/components/layout/public-back-button";
 import { ContactPopup } from "@/components/contact/contact-popup";
 import { getPublicServices } from "@/features/services/queries";
 import { getPublicPricingPlans } from "@/features/pricing/queries";
@@ -48,6 +49,7 @@ export default async function PublicLayout({
       </a>
       <AnnouncementBar />
       <Header />
+      <PublicBackButton locale={locale} />
       <main id="main" className="flex-1">
         {children}
       </main>

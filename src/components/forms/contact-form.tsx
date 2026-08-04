@@ -87,7 +87,7 @@ function FieldShell({ label, required, children, error }: FieldShellProps) {
     <div className="min-w-0">
       <label className="mb-1.5 block text-xs font-medium text-text-secondary sm:text-sm">
         {label}
-        {required ? <span className="ml-1 text-field-placeholder">*</span> : null}
+        {required ? <span className="ml-1 text-primary">*</span> : null}
       </label>
       {children}
       {error ? <p className="mt-1 text-xs text-error">{error}</p> : null}
@@ -270,7 +270,7 @@ export function ContactForm({
       <div ref={servicesRef} className="min-w-0">
         <label className="mb-1.5 block text-xs font-medium text-text-secondary sm:text-sm">
           {t(locale, "selectService")}
-          <span className="ml-1 text-field-placeholder">*</span>
+          <span className="ml-1 text-primary">*</span>
         </label>
         <div className="relative">
           <button

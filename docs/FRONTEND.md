@@ -179,6 +179,8 @@ The insights page must:
 - Support pagination
 - Link to article detail pages
 
+V1 implementation: the page renders an amber-glow hero driven by the `insights` section settings, a horizontally scrollable category filter pill row (All + published categories, client-side filtering), and a responsive article card grid (featured image, category badge, date, read time, title, excerpt, Read Article link). Pagination is deferred while the published set stays within the query cap (100).
+
 ### 5.6 Insight detail
 
 An insight page should support:
@@ -263,7 +265,7 @@ The complete homepage rendering order for version 1 is:
 14. Final CTA
 15. Footer
 
-The Announcement Bar, Header / Navigation, and Footer are global layout components.
+The Announcement Bar, Header / Navigation, Footer, and the floating back arrow (`PublicBackButton`) are global layout components. The back arrow renders on every public page except the homepage and returns visitors to the page/section they clicked from (`router.back()` with a homepage fallback).
 
 The primary homepage content sections are:
 

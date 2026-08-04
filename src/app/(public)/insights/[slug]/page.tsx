@@ -3,6 +3,7 @@ import { getLocale } from "@/lib/i18n/get-locale";
 import type { Metadata } from "next";
 import { getPublicInsightDetail } from "@/features/insights/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { t, tWithNumber } from "@/lib/i18n/ui-strings";
 import { articleJsonLd, canonical, pageMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
@@ -70,8 +71,8 @@ export default async function InsightDetailPage({
         <Container className="py-20 md:py-24">
           <p className="text-sm text-text-muted">
             {insight.reading_time_minutes
-              ? `${insight.reading_time_minutes} min read`
-              : "Insight"}
+              ? tWithNumber(locale, "minRead", insight.reading_time_minutes)
+              : t(locale, "insightFallback")}
           </p>
           <h1 className="mt-4 max-w-3xl font-display text-4xl font-bold tracking-tight text-text-primary md:text-5xl">
             {insightTitle}

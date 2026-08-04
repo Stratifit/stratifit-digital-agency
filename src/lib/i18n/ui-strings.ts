@@ -34,6 +34,13 @@ export type UiStringKey =
   | "messageMinLength"
   | "readMore"
   | "readInsight"
+  | "readArticle"
+  | "minRead"
+  | "filterAll"
+  | "goBack"
+  | "noInsightsInCategory"
+  | "noInsightsYet"
+  | "insightFallback"
   | "viewAll"
   | "viewAllInsights"
   | "viewAllProjects"
@@ -172,6 +179,13 @@ const en: UiStrings = {
   messageMinLength: "Message must be at least 10 characters",
   readMore: "Read more",
   readInsight: "Read Insight",
+  readArticle: "Read Article",
+  minRead: "{n} min read",
+  filterAll: "All",
+  goBack: "Go back",
+  noInsightsInCategory: "No articles in this category yet.",
+  noInsightsYet: "Articles will appear here soon.",
+  insightFallback: "Insight",
   viewAll: "View All",
   viewAllInsights: "View All Insights",
   viewAllProjects: "View All Projects",
@@ -318,6 +332,13 @@ const de: UiStrings = {
   messageMinLength: "Die Nachricht muss mindestens 10 Zeichen enthalten",
   readMore: "Weiterlesen",
   readInsight: "Einblick lesen",
+  readArticle: "Artikel lesen",
+  minRead: "{n} Min. Lesezeit",
+  filterAll: "Alle",
+  goBack: "Zurück",
+  noInsightsInCategory: "Noch keine Artikel in dieser Kategorie.",
+  noInsightsYet: "Artikel erscheinen hier bald.",
+  insightFallback: "Einblick",
   viewAll: "Alle ansehen",
   viewAllInsights: "Alle Einblicke ansehen",
   viewAllProjects: "Alle Projekte ansehen",
@@ -465,6 +486,13 @@ const fr: UiStrings = {
   messageMinLength: "Le message doit contenir au moins 10 caractères",
   readMore: "Lire la suite",
   readInsight: "Lire l'article",
+  readArticle: "Lire l'article",
+  minRead: "{n} min de lecture",
+  filterAll: "Tous",
+  goBack: "Retour",
+  noInsightsInCategory: "Aucun article dans cette catégorie pour le moment.",
+  noInsightsYet: "Les articles apparaîtront bientôt ici.",
+  insightFallback: "Article",
   viewAll: "Voir tout",
   viewAllInsights: "Voir tous les articles",
   viewAllProjects: "Voir tous les projets",
@@ -612,6 +640,13 @@ const es: UiStrings = {
   messageMinLength: "El mensaje debe tener al menos 10 caracteres",
   readMore: "Leer más",
   readInsight: "Leer artículo",
+  readArticle: "Leer artículo",
+  minRead: "{n} min de lectura",
+  filterAll: "Todos",
+  goBack: "Atrás",
+  noInsightsInCategory: "Aún no hay artículos en esta categoría.",
+  noInsightsYet: "Los artículos aparecerán pronto aquí.",
+  insightFallback: "Artículo",
   viewAll: "Ver todo",
   viewAllInsights: "Ver todos los artículos",
   viewAllProjects: "Ver todos los proyectos",
