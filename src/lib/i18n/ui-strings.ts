@@ -102,7 +102,6 @@ export type UiStringKey =
   | "chatAskAboutServices"
   | "chatFaqTitle"
   | "chatFaqMoreQuestions"
-  | "chatBackToChat"
   | "chatSave"
   | "chatCancel"
   | "chatLanguage"
@@ -247,7 +246,6 @@ const en: UiStrings = {
   chatAskAboutServices: "Ask about services",
   chatFaqTitle: "Common Questions",
   chatFaqMoreQuestions: "Have more questions?",
-  chatBackToChat: "Continue in chat",
   chatSave: "Save",
   chatCancel: "Cancel",
   chatLanguage: "Select language",
@@ -393,7 +391,6 @@ const de: UiStrings = {
   chatAskAboutServices: "Nach Leistungen fragen",
   chatFaqTitle: "Häufige Fragen",
   chatFaqMoreQuestions: "Haben Sie weitere Fragen?",
-  chatBackToChat: "Im Chat fortfahren",
   chatSave: "Speichern",
   chatCancel: "Abbrechen",
   chatLanguage: "Sprache auswählen",
@@ -539,7 +536,6 @@ const fr: UiStrings = {
   chatAskAboutServices: "Demander des services",
   chatFaqTitle: "Questions fréquentes",
   chatFaqMoreQuestions: "D'autres questions ?",
-  chatBackToChat: "Continuer dans le chat",
   chatSave: "Enregistrer",
   chatCancel: "Annuler",
   chatLanguage: "Choisir la langue",
@@ -685,7 +681,6 @@ const es: UiStrings = {
   chatAskAboutServices: "Preguntar por servicios",
   chatFaqTitle: "Preguntas frecuentes",
   chatFaqMoreQuestions: "¿Tiene más preguntas?",
-  chatBackToChat: "Continuar en el chat",
   chatSave: "Guardar",
   chatCancel: "Cancelar",
   chatLanguage: "Seleccionar idioma",

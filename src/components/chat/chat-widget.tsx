@@ -311,28 +311,6 @@ const TOPIC_CHIPS: {
 // widget and hand off to the AI or the contact form with one tap.
 // ============================================================================
 
-/** Shared panel footer button — returns to the conversation. */
-function PanelBackButton({
-  locale,
-  label,
-  onClick,
-}: {
-  locale: string;
-  label?: string;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-[10px] border border-border bg-white/5 px-3 py-2 text-xs font-medium text-text-secondary transition-all hover:border-primary/40 hover:bg-primary/10 hover:text-primary active:scale-[0.98]"
-    >
-      <ChatIcon className="size-3.5 text-primary" />
-      {label ?? t(locale, "chatBackToChat")}
-    </button>
-  );
-}
-
 /** Shared panel heading — small amber icon chip + Satoshi title. */
 function PanelHeading({ title, icon }: { title: string; icon: React.ReactNode }) {
   return (
@@ -524,11 +502,12 @@ function FaqPanel({
       {items.length > 0 ? (
         <FaqAccordion items={items} gridClassName="grid grid-cols-1 gap-3" />
       ) : null}
-      <PanelBackButton
-        locale={locale}
-        label={t(locale, "chatFaqMoreQuestions")}
-        onClick={onBack}
-      />
+      <div className="mt-3">
+        <PanelPrimaryButton onClick={onBack}>
+          <InfoIcon className="size-3.5" />
+          {t(locale, "chatFaqMoreQuestions")}
+        </PanelPrimaryButton>
+      </div>
     </div>
   );
 }
