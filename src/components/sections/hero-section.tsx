@@ -40,6 +40,26 @@ const FALLBACK_STATS: HeroMetric[] = [
   },
 ];
 
+/** Renders a heading keeping the word "Tech" in amber while the rest keeps the
+ *  normal text color. Works with any locale string that contains "Tech"
+ *  (e.g. "Our Tech Stack", "Unser Tech-Stack"). */
+function TechHighlight({ text }: { text: string }) {
+  const parts = text.split(/\b(Tech)\b/i);
+  return (
+    <>
+      {parts.map((part, index) =>
+        /^Tech$/i.test(part) ? (
+          <span key={index} className="text-primary">
+            {part}
+          </span>
+        ) : (
+          <span key={index}>{part}</span>
+        )
+      )}
+    </>
+  );
+}
+
 function TechIcon({ name }: { name: string }) {
   const svgProps = {
     viewBox: "0 0 24 24",
@@ -236,8 +256,8 @@ export async function HeroSection() {
         {techStack.length > 0 ? (
           <div data-hero className="mx-auto mt-[30px] w-full max-w-4xl">
             {techStackHeading ? (
-              <h2 className="mb-1.5 text-center text-xl font-bold tracking-tight text-primary sm:text-2xl">
-                {techStackHeading}
+              <h2 className="mb-1.5 text-center text-xl font-bold tracking-tight text-text-primary sm:text-2xl">
+                <TechHighlight text={techStackHeading} />
               </h2>
             ) : null}
             {techStackDescription ? (
