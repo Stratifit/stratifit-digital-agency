@@ -350,8 +350,8 @@ export function ContactForm({
         </FieldShell>
       </div>
 
-      {/* Services + Budget — side by side on sm+ */}
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
+      {/* Services + Budget — always side by side (2 cols), matching the reference */}
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
         <div ref={servicesRef} className="min-w-0">
           <label className="mb-1.5 block text-xs font-medium text-text-secondary sm:text-sm">
             {t(locale, "selectService")}
