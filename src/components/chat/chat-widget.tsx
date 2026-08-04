@@ -1073,33 +1073,30 @@ export function ChatWidget({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
-  // When the chat opens, jump straight to the newest messages so only the
-  // latest send/reply are visible — older messages scroll up inside the box.
-  React.useEffect(() => {
-    if (!open) return;
-    const el = messagesScrollRef.current;
-    if (el) el.scrollTo({ top: el.scrollHeight, behavior: "auto" });
-  }, [open]);
-
-  // Smoothly follow new messages while chatting.
-  React.useEffect(() => {
-    if (!open) return;
-    const el = messagesScrollRef.current;
-    if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
-  }, [messages, loading, stage, open]);
-
-  // Topic panels open at the top of their content; switching back to the chat
-  // re-pins the window to the newest messages.
-  React.useEffect(() => {
+  // Keep the newest send/reply pinned to the bottom of the messages area so
+  // the current reply is always visible without scrolling down. Pins before
+  // paint (useLayoutEffect) and re-pins after paint (rAF), so late layout
+  // changes — panel entrance, async message render, fonts — can never leave
+  // the tail mid-panel or below the fold. New messages follow smoothly, but
+  // only when the tail is already in view, so reading earlier messages (by
+  // scrolling up) is never interrupted.
+  React.useLayoutEffect(() => {
     if (!open) return;
     const el = messagesScrollRef.current;
     if (!el) return;
-    if (view === "chat") {
-      el.scrollTo({ top: el.scrollHeight, behavior: "auto" });
-    } else {
-      el.scrollTo({ top: 0, behavior: "auto" });
-    }
-  }, [view, open]);
+    const pin = (smooth: boolean) => {
+      const isChat = view === "chat";
+      const tailVisible =
+        !isChat || el.scrollHeight - el.scrollTop - el.clientHeight < 80;
+      el.scrollTo({
+        top: isChat ? el.scrollHeight : 0,
+        behavior: smooth && isChat && tailVisible ? "smooth" : "auto",
+      });
+    };
+    pin(true);
+    const id = requestAnimationFrame(() => pin(false));
+    return () => cancelAnimationFrame(id);
+  }, [open, view, messages, loading, stage]);
 
   function handleMessagesScroll() {
     const el = messagesScrollRef.current;
