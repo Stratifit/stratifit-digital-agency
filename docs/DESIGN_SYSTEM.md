@@ -393,8 +393,8 @@ Inputs, textareas, and select triggers share one field system.
 | Success | `#161616` | `rgba(16,185,129,0.40)` | none |
 
 - Placeholder text: `rgba(255,255,255,0.35)`
-- Field radius: `6px`; error text: `#EF4444`, `12px`, `4px` top margin
-- Dropdown menu: `#161616` bg, `#1C1C1C` border, `6px` radius; option hover `rgba(245,158,11,0.08)` + amber text; selected `rgba(245,158,11,0.10)` + amber text
+- Field radius: `10px`; error text: `#EF4444`, `12px`, `4px` top margin
+- Dropdown menu: `#161616` bg, `#1C1C1C` border, `10px` radius; option hover `rgba(245,158,11,0.08)` + amber text; selected `rgba(245,158,11,0.10)` + amber text
 - Checkbox: `20px`, `#161616` bg, `#1C1C1C` border, `4px` radius; checked amber fill + dark check; hover `#F7A623`
 - Toggle: `42×24px` track, `18px` white thumb; amber track + dark thumb when on; hover `#F7A623`
 - Slider: `6px` track `#161616` + `#1C1C1C`; amber fill; `18px` white thumb with `2px` amber border; thumb hover `scale(1.05)` + amber/40, press `scale(0.95)` + amber/60, focus amber outline; disabled `#1A1A1A` track / `#2A2A2A` thumb
@@ -715,15 +715,22 @@ Use centered layouts only when they strengthen the message.
 |---|---:|---|
 | `radius-none` | `0px` | Full-bleed layouts |
 | `radius-xs` | `4px` | Small labels |
-| `radius-sm` | `8px` | Inputs, small buttons |
-| `radius-md` | `12px` | Standard cards |
-| `radius-lg` | `16px` | Prominent cards |
-| `radius-xl` | `24px` | Hero media, major panels |
+| `radius-sm` | `8px` | Badges, micro elements |
+| `radius-md` | `10px` | Buttons, inputs, dropdowns |
+| `radius-card` | `14px` | Standard cards |
+| `radius-2xl` | `14px` | Standard cards (alias) |
+| `radius-lg` | `16px` | Large panels, modals |
+| `radius-xl` | `16px` | Large panels (alias of lg) |
+| `radius-card-lg` | `16px` | Large panels |
+| `radius-button` | `10px` | Buttons |
+| `radius-input` | `10px` | Inputs, dropdowns |
 | `radius-full` | `9999px` | Pills, avatars |
 
-Public site cards may use 12–24px radii.
+Approved radius standard across the site:
 
-CMS controls should usually use 8–12px radii.
+- Buttons / inputs / dropdowns: `10px`
+- Standard cards: `14px`
+- Large panels / modals: `16px`
 
 Avoid mixing many radius values in one area.
 
@@ -926,7 +933,7 @@ Style:
 
 - Surface background
 - Subtle border
-- 12–16px radius
+- 14px radius
 - Controlled shadow
 - Clear internal hierarchy
 

@@ -187,7 +187,7 @@ function ArrowRightIcon() {
 // ============================================================================
 
 const fieldBase =
-  "h-11 w-full rounded-xl border border-field-border bg-field-bg text-sm text-field-text placeholder:text-field-placeholder outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60 sm:h-12 sm:rounded-2xl";
+  "h-11 w-full rounded-[10px] border border-field-border bg-field-bg text-sm text-field-text placeholder:text-field-placeholder outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60 sm:h-12";
 
 const fieldWithLeftIcon = "pl-11 pr-4";
 const fieldWithRightChevron = "pr-9";
@@ -310,7 +310,7 @@ export function ContactForm({
 
   if (submitted) {
     return (
-      <div className="rounded-xl border border-success-border bg-success-soft p-8 text-center">
+      <div className="rounded-card border border-success-border bg-success-soft p-8 text-center">
         <p className="font-medium text-success">{t(locale, "thankYou")}</p>
         <p className="mt-2 text-sm text-text-secondary">
           {t(locale, "messageReceived")}
@@ -318,7 +318,7 @@ export function ContactForm({
         <button
           type="button"
           onClick={() => setSubmitted(false)}
-          className="mt-4 inline-flex items-center justify-center rounded-xl border border-card-border bg-transparent px-5 py-2.5 text-sm font-medium text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/30 hover:text-text-primary focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
+          className="mt-4 inline-flex items-center justify-center rounded-[10px] border border-card-border bg-transparent px-5 py-2.5 text-sm font-medium text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/30 hover:text-text-primary focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
         >
           {t(locale, "sendAnotherMessage")}
         </button>
@@ -421,7 +421,7 @@ export function ContactForm({
                 role="listbox"
                 aria-multiselectable="true"
                 aria-label={t(locale, "serviceNeeded")}
-                className="absolute z-30 mt-2 w-full rounded-xl border border-card-border bg-card-dark py-2 shadow-2xl max-h-56 overflow-y-auto"
+                className="absolute z-30 mt-2 w-full rounded-[10px] border border-card-border bg-card-dark py-2 shadow-2xl max-h-56 overflow-y-auto"
               >
                 {services.map((service) => {
                   const selected = selectedServiceIds.includes(service.id);
@@ -494,7 +494,7 @@ export function ContactForm({
               <div
                 role="listbox"
                 aria-label={t(locale, "estimatedBudget")}
-                className="absolute z-30 mt-2 w-full rounded-xl border border-card-border bg-card-dark py-2 shadow-2xl max-h-56 overflow-y-auto"
+                className="absolute z-30 mt-2 w-full rounded-[10px] border border-card-border bg-card-dark py-2 shadow-2xl max-h-56 overflow-y-auto"
               >
                 <button
                   type="button"
@@ -561,7 +561,7 @@ export function ContactForm({
         <textarea
           rows={compact ? 3 : 4}
           className={cn(
-            "w-full resize-none rounded-xl border border-field-border bg-field-bg py-3 pl-11 pr-4 text-sm leading-5 text-field-text placeholder:text-field-placeholder outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60 sm:rounded-2xl",
+            "w-full resize-none rounded-[10px] border border-field-border bg-field-bg py-3 pl-11 pr-4 text-sm leading-5 text-field-text placeholder:text-field-placeholder outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60",
             compact ? "h-[82px]" : "h-28"
           )}
           placeholder={t(locale, "tellUsProject").replace(" *", "")}
@@ -573,7 +573,7 @@ export function ContactForm({
       {serverError ? (
         <p
           role="alert"
-          className="rounded-xl bg-error-soft px-3 py-2 text-sm text-error"
+          className="rounded-[10px] bg-error-soft px-3 py-2 text-sm text-error"
         >
           {serverError}
         </p>
@@ -583,7 +583,7 @@ export function ContactForm({
       <button
         type="submit"
         disabled={isSubmitting}
-        className="flex h-12 w-full items-center justify-between rounded-xl bg-primary px-4 font-semibold text-text-inverse transition-[background-color,border-color,color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-[0_10px_32px_rgba(245,158,11,0.10)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 active:translate-y-0 active:bg-primary-active disabled:cursor-not-allowed disabled:opacity-60 sm:h-14 sm:rounded-2xl sm:px-5"
+        className="flex h-12 w-full items-center justify-between rounded-[10px] bg-primary px-4 font-semibold text-text-inverse transition-[background-color,border-color,color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-[0_10px_32px_rgba(245,158,11,0.10)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 active:translate-y-0 active:bg-primary-active disabled:cursor-not-allowed disabled:opacity-60 sm:h-14 sm:px-5"
       >
         <span className="flex size-8 items-center justify-center rounded-lg bg-background text-primary sm:size-9">
           <SendIcon />

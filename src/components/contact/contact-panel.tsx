@@ -97,7 +97,7 @@ function TrustBadges({ locale }: { locale: string }) {
   ];
 
   return (
-    <div className="grid grid-cols-3 divide-x divide-border rounded-xl border border-border px-2 py-3 sm:py-4">
+    <div className="grid grid-cols-3 divide-x divide-border rounded-card border border-border px-2 py-3 sm:py-4">
       {badges.map((badge, idx) => (
         <div
           key={idx}

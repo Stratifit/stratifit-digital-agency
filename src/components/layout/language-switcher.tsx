@@ -57,7 +57,7 @@ export function LanguageSwitcher({
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
         className={cn(
-          "flex cursor-pointer items-center gap-1.5 rounded-2xl border px-3 py-1.5 text-[13px] font-semibold text-text-primary transition-[background-color,border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-surface-hover hover:border-card-border-hover active:bg-card-active active:border-card-border-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2",
+          "flex cursor-pointer items-center gap-1.5 rounded-[10px] border px-3 py-1.5 text-[13px] font-semibold text-text-primary transition-[background-color,border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-surface-hover hover:border-card-border-hover active:bg-card-active active:border-card-border-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2",
           open ? "border-card-border-active bg-card-active" : "border-card-border"
         )}
       >

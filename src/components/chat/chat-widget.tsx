@@ -905,13 +905,13 @@ export function ChatWidget() {
             tabIndex={-1}
             onKeyDown={handlePanelKeyDown}
             className={cn(
-              "fixed inset-x-0 bottom-0 z-[70] flex max-h-[92dvh] flex-col overflow-hidden rounded-t-2xl border-t border-border bg-background shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] lg:inset-x-auto lg:bottom-6 lg:right-6 lg:max-h-[80vh] lg:w-[400px] lg:rounded-2xl lg:border lg:border-border xl:w-[440px]",
+              "fixed inset-x-0 bottom-0 z-[70] flex max-h-[92dvh] flex-col overflow-hidden rounded-t-lg border-t border-border bg-background shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] lg:inset-x-auto lg:bottom-6 lg:right-6 lg:max-h-[80vh] lg:w-[400px] lg:rounded-lg lg:border lg:border-border xl:w-[440px]",
               closing ? "chat-panel-out" : "chat-panel-in"
             )}
           >
           {/* Header — sticky above the scrolling messages; z-30 keeps the
               language dropdown in front of the messages area */}
-          <div className="sticky top-0 z-30 flex flex-none items-center justify-between rounded-t-2xl border-b border-border bg-background/95 px-4 py-3">
+          <div className="sticky top-0 z-30 flex flex-none items-center justify-between rounded-t-lg border-b border-border bg-background/95 px-4 py-3">
             {/* Ambient amber glow */}
             <div
               aria-hidden="true"
@@ -954,7 +954,7 @@ export function ChatWidget() {
                   <ChevronDownIcon className="size-3" />
                 </button>
                 {langOpen ? (
-                  <div className="absolute right-0 top-[calc(100%+6px)] z-20 min-w-[120px] overflow-hidden rounded-xl border border-border bg-field-bg shadow-2xl">
+                  <div className="absolute right-0 top-[calc(100%+6px)] z-20 min-w-[120px] overflow-hidden rounded-[10px] border border-border bg-field-bg shadow-2xl">
                     {SUPPORTED_LANGS.map((code) => (
                       <button
                         key={code}
@@ -1080,7 +1080,7 @@ export function ChatWidget() {
                         </button>
                       </div>
                       {showPrivacyNote ? (
-                        <div className="chat-msg-in relative mt-2.5 rounded-lg border border-border bg-surface-soft/60 px-3 py-2">
+                        <div className="chat-msg-in relative mt-2.5 rounded-[10px] border border-border bg-surface-soft/60 px-3 py-2">
                           <p className="text-[11px] leading-relaxed text-text-muted">
                             {t(locale, "chatPrivacyNote")}
                           </p>
