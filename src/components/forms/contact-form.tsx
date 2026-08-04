@@ -14,103 +14,8 @@ import { cn } from "@/lib/cn";
 const BUDGET_RANGES = ["€1k–€3k", "€3k–€5k", "€5k–€10k", "€10k+"];
 
 // ============================================================================
-// Icon set — colored amber via the parent (text-primary)
+// Icon set
 // ============================================================================
-
-function UserIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.7"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="size-4"
-    >
-      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-      <circle cx="12" cy="7" r="4" />
-    </svg>
-  );
-}
-
-function MailIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.7"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="size-4"
-    >
-      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-      <rect width="20" height="16" x="2" y="5" rx="2" />
-    </svg>
-  );
-}
-
-function LayersIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.7"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="size-4"
-    >
-      <path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
-      <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
-      <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" />
-    </svg>
-  );
-}
-
-function WalletIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.7"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="size-4"
-    >
-      <path d="M19 7V5a2 2 0 0 0-2-2H6a2 2 0 0 0 0 4h14a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2V5" />
-      <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
-      <path d="M18 12a2 2 0 0 0 0 4h4v-4z" />
-    </svg>
-  );
-}
-
-function MessageIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.7"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="size-4"
-    >
-      <path d="M7.9 20A1.35 1.35 0 0 1 6 18.69a3.87 3.87 0 0 0-.21-1.78A2 2 0 0 0 4.6 15.9 7.42 7.42 0 0 1 2.1 9.53 7.6 7.6 0 0 1 15.19 4.4 7.74 7.74 0 0 1 21.5 9c.13.5.13 1 0 1.5" />
-      <path d="M3.1 11a25 25 0 0 1 13 0" />
-      <path d="M11.86 19.4 14 21l-1.5-2.5" />
-      <rect width="4" height="4" x="18" y="17" rx="1" />
-      <path d="M18 17v-2a2 2 0 0 1 4 0v2" />
-    </svg>
-  );
-}
 
 function ChevronDownIcon() {
   return (
@@ -170,33 +75,22 @@ function ArrowRightIcon({ className }: { className?: string }) {
 const fieldBase =
   "h-11 w-full rounded-card border border-field-border bg-field-bg text-sm text-field-text placeholder:text-field-placeholder outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60 sm:h-12";
 
-const fieldWithLeftIcon = "pl-11 pr-4";
-const fieldWithRightChevron = "pr-9";
-
 interface FieldShellProps {
   label: string;
   required?: boolean;
-  icon: React.ReactNode;
   children: React.ReactNode;
   error?: string;
 }
 
-function FieldShell({ label, required, icon, children, error }: FieldShellProps) {
+function FieldShell({ label, required, children, error }: FieldShellProps) {
   return (
     <div className="min-w-0">
       <label className="mb-1.5 block text-xs font-medium text-text-secondary sm:text-sm">
         {label}
         {required ? <span className="ml-1 text-field-placeholder">*</span> : null}
       </label>
-      <div className="relative">
-        <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-text-muted">
-          {icon}
-        </span>
-        {children}
-      </div>
-      {error ? (
-        <p className="mt-1 text-xs text-error">{error}</p>
-      ) : null}
+      {children}
+      {error ? <p className="mt-1 text-xs text-error">{error}</p> : null}
     </div>
   );
 }
@@ -310,7 +204,7 @@ export function ContactForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className={compact ? "space-y-5" : "space-y-6"}
+      className={compact ? "space-y-4" : "space-y-5"}
     >
       {/* Honeypot */}
       <input
@@ -322,142 +216,152 @@ export function ContactForm({
         {...register("honeypot")}
       />
 
-      {/* Name */}
-      <FieldShell
-        label={t(locale, "yourName").replace(" *", "")}
-        required
-        icon={<UserIcon />}
-        error={
-          errors.name
-            ? translateValidation(locale, errors.name.message)
-            : undefined
-        }
+      {/* Name + Email — side by side on sm+ (single column in compact/chat) */}
+      <div
+        className={cn(
+          "grid grid-cols-1 gap-3",
+          !compact && "sm:grid-cols-2 sm:gap-4"
+        )}
       >
-        <input
-          type="text"
-          className={cn(fieldBase, fieldWithLeftIcon)}
-          placeholder={t(locale, "yourName").replace(" *", "")}
-          {...register("name")}
-        />
-      </FieldShell>
+        <FieldShell
+          label={t(locale, "yourName").replace(" *", "")}
+          required
+          error={
+            errors.name
+              ? translateValidation(locale, errors.name.message)
+              : undefined
+          }
+        >
+          <input
+            type="text"
+            className={cn(fieldBase, "px-4")}
+            placeholder={t(locale, "yourName").replace(" *", "")}
+            {...register("name")}
+          />
+        </FieldShell>
 
-      {/* Email */}
-      <FieldShell
-        label={t(locale, "yourEmail").replace(" *", "")}
-        required
-        icon={<MailIcon />}
-        error={
-          errors.email
-            ? translateValidation(locale, errors.email.message)
-            : undefined
-        }
-      >
-        <input
-          type="email"
-          className={cn(fieldBase, fieldWithLeftIcon)}
-          placeholder={t(locale, "yourEmail").replace(" *", "")}
-          {...register("email")}
-        />
-      </FieldShell>
+        <FieldShell
+          label={t(locale, "emailLabel").replace(" *", "")}
+          required
+          error={
+            errors.email
+              ? translateValidation(locale, errors.email.message)
+              : undefined
+          }
+        >
+          <input
+            type="email"
+            className={cn(fieldBase, "px-4")}
+            placeholder={t(locale, "yourEmail").replace(" *", "")}
+            {...register("email")}
+          />
+        </FieldShell>
+      </div>
 
-      {/* Service + Budget */}
-      <div className="grid grid-cols-2 gap-3 sm:gap-4">
-        {/* Service dropdown (multi-select) */}
-        <div ref={servicesRef} className="min-w-0">
-          <label className="mb-1.5 block text-xs font-medium text-text-secondary sm:text-sm">
-            {t(locale, "selectService")}
-            <span className="ml-1 text-field-placeholder">*</span>
-          </label>
-          <div className="relative">
-            <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-text-muted">
-              <LayersIcon />
-            </span>
-            <button
-              type="button"
-              aria-haspopup="listbox"
-              aria-expanded={servicesOpen}
-              onClick={() => setServicesOpen((v) => !v)}
-              className={cn(fieldBase, fieldWithLeftIcon, fieldWithRightChevron, "text-left")}
+      {/* Company (optional) */}
+      <input
+        type="text"
+        className={cn(fieldBase, "px-4")}
+        placeholder={t(locale, "companyName")}
+        {...register("company")}
+      />
+
+      {/* Services (multi-select) */}
+      <div ref={servicesRef} className="min-w-0">
+        <label className="mb-1.5 block text-xs font-medium text-text-secondary sm:text-sm">
+          {t(locale, "selectService")}
+          <span className="ml-1 text-field-placeholder">*</span>
+        </label>
+        <div className="relative">
+          <button
+            type="button"
+            aria-haspopup="listbox"
+            aria-expanded={servicesOpen}
+            onClick={() => setServicesOpen((v) => !v)}
+            className={cn(fieldBase, "pl-4 pr-9", "text-left")}
+          >
+            <span
+              className={cn(
+                "min-w-0 flex-1 truncate",
+                selectedServices.length > 0
+                  ? "text-field-text"
+                  : "text-field-placeholder"
+              )}
             >
-              <span
-                className={cn(
-                  "min-w-0 flex-1 truncate",
-                  selectedServices.length > 0
-                    ? "text-field-text"
-                    : "text-field-placeholder"
-                )}
-              >
-                {selectedServices.length === 0
-                  ? t(locale, "selectServices")
-                  : selectedServices.length === 1
-                    ? resolveTranslation(selectedServices[0].title_translations, locale)
-                    : tWithNumber(locale, "servicesSelected", selectedServices.length)}
-              </span>
-            </button>
-            <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-text-muted">
-              <ChevronDownIcon />
+              {selectedServices.length === 0
+                ? t(locale, "selectServices")
+                : selectedServices.length === 1
+                  ? resolveTranslation(selectedServices[0].title_translations, locale)
+                  : tWithNumber(locale, "servicesSelected", selectedServices.length)}
             </span>
-            {servicesOpen ? (
-              <div
-                role="listbox"
-                aria-multiselectable="true"
-                aria-label={t(locale, "serviceNeeded")}
-                className="absolute z-30 mt-2 w-full rounded-card border border-card-border bg-card-dark py-2 shadow-2xl max-h-56 overflow-y-auto"
-              >
-                {services.map((service) => {
-                  const selected = selectedServiceIds.includes(service.id);
-                  return (
-                    <button
-                      key={service.id}
-                      type="button"
-                      role="option"
-                      aria-selected={selected}
-                      onClick={() => toggleService(service.id)}
-                      className="flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-white/[0.03]"
+          </button>
+          <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-text-muted">
+            <ChevronDownIcon />
+          </span>
+          {servicesOpen ? (
+            <div
+              role="listbox"
+              aria-multiselectable="true"
+              aria-label={t(locale, "serviceNeeded")}
+              className="absolute z-30 mt-2 w-full rounded-card border border-card-border bg-card-dark py-2 shadow-2xl max-h-56 overflow-y-auto"
+            >
+              {services.map((service) => {
+                const selected = selectedServiceIds.includes(service.id);
+                return (
+                  <button
+                    key={service.id}
+                    type="button"
+                    role="option"
+                    aria-selected={selected}
+                    onClick={() => toggleService(service.id)}
+                    className="flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-white/[0.03]"
+                  >
+                    <span
+                      className={cn(
+                        "flex size-4 shrink-0 items-center justify-center rounded border transition-all duration-150",
+                        selected
+                          ? "border-primary bg-primary text-text-inverse"
+                          : "border-card-border"
+                      )}
                     >
-                      <span
-                        className={cn(
-                          "flex size-4 shrink-0 items-center justify-center rounded border transition-all duration-150",
-                          selected
-                            ? "border-primary bg-primary text-text-inverse"
-                            : "border-card-border"
-                        )}
-                      >
-                        {selected ? <CheckIcon /> : null}
-                      </span>
-                      <span
-                        className={cn(
-                          "truncate text-sm transition-colors",
-                          selected
-                            ? "font-medium text-text-primary"
-                            : "text-text-secondary"
-                        )}
-                      >
-                        {resolveTranslation(service.title_translations, locale)}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            ) : null}
-          </div>
+                      {selected ? <CheckIcon /> : null}
+                    </span>
+                    <span
+                      className={cn(
+                        "truncate text-sm transition-colors",
+                        selected
+                          ? "font-medium text-text-primary"
+                          : "text-text-secondary"
+                      )}
+                    >
+                      {resolveTranslation(service.title_translations, locale)}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          ) : null}
         </div>
+      </div>
 
-        {/* Budget dropdown */}
+      {/* Budget dropdown + custom budget */}
+      <div
+        className={cn(
+          "grid grid-cols-1 gap-3",
+          !compact && "sm:grid-cols-2 sm:gap-4"
+        )}
+      >
         <div ref={budgetRef} className="min-w-0">
           <label className="mb-1.5 block text-xs font-medium text-text-secondary sm:text-sm">
             {t(locale, "estimatedBudget")}
           </label>
           <div className="relative">
-            <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-text-muted">
-              <WalletIcon />
-            </span>
             <button
               type="button"
               aria-haspopup="listbox"
               aria-expanded={budgetOpen}
               onClick={() => setBudgetOpen((v) => !v)}
-              className={cn(fieldBase, fieldWithLeftIcon, fieldWithRightChevron, "text-left")}
+              className={cn(fieldBase, "pl-4 pr-9", "text-left")}
             >
               <span
                 className={cn(
@@ -526,13 +430,22 @@ export function ContactForm({
             ) : null}
           </div>
         </div>
+
+        <div className="min-w-0">
+          <input
+            type="text"
+            className={cn(fieldBase, "px-4")}
+            aria-label={t(locale, "customBudget")}
+            placeholder={t(locale, "customBudget")}
+            {...register("custom_budget")}
+          />
+        </div>
       </div>
 
       {/* Message */}
       <FieldShell
         label={t(locale, "tellUsProject").replace(" *", "")}
         required
-        icon={<MessageIcon />}
         error={
           errors.message
             ? translateValidation(locale, errors.message.message)
@@ -542,10 +455,10 @@ export function ContactForm({
         <textarea
           rows={compact ? 3 : 4}
           className={cn(
-            "w-full resize-none rounded-card border border-field-border bg-field-bg py-3 pl-11 pr-4 text-sm leading-5 text-field-text placeholder:text-field-placeholder outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60",
+            "w-full resize-none rounded-card border border-field-border bg-field-bg px-4 py-3 text-sm leading-5 text-field-text placeholder:text-field-placeholder outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60",
             compact ? "h-[82px]" : "h-28"
           )}
-          placeholder={t(locale, "tellUsProject").replace(" *", "")}
+          placeholder={t(locale, "messagePlaceholder")}
           {...register("message")}
         />
       </FieldShell>
@@ -564,7 +477,7 @@ export function ContactForm({
       <button
         type="submit"
         disabled={isSubmitting}
-        className="group flex h-12 w-full items-center justify-center gap-2.5 rounded-card bg-primary px-5 text-sm font-bold text-text-inverse transition-[background-color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-[0_12px_32px_rgba(245,158,11,0.18)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 active:translate-y-0 active:bg-primary-active disabled:cursor-not-allowed disabled:opacity-60 sm:h-14 sm:text-base"
+        className="group flex h-12 w-full items-center justify-center gap-2.5 rounded-button bg-primary px-5 text-sm font-bold text-text-inverse transition-[background-color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-[0_12px_32px_rgba(245,158,11,0.18)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 active:translate-y-0 active:bg-primary-active disabled:cursor-not-allowed disabled:opacity-60 sm:h-14 sm:text-base"
       >
         {isSubmitting ? t(locale, "sending") : t(locale, "sendProjectRequest")}
         <ArrowRightIcon className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1" />

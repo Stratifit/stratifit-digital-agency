@@ -6,6 +6,7 @@ export type UiStringKey =
   | "startYourProject"
   | "yourName"
   | "yourEmail"
+  | "emailLabel"
   | "companyName"
   | "phoneOptional"
   | "selectServices"
@@ -18,6 +19,7 @@ export type UiStringKey =
   | "whichBusiness"
   | "otherNotListed"
   | "tellUsProject"
+  | "messagePlaceholder"
   | "tellUsAcquisition"
   | "sendMessage"
   | "sendEnquiry"
@@ -140,9 +142,10 @@ const en: UiStrings = {
   startYourProject: "Start Your Project",
   yourName: "Your name *",
   yourEmail: "you@company.com *",
+  emailLabel: "Email *",
   companyName: "Company name",
   phoneOptional: "Phone (optional)",
-  selectServices: "Select services you're interested in",
+  selectServices: "Select services",
   servicesSelected: "{n} services selected",
   projectBudget: "Project Budget",
   selectRange: "Select a range",
@@ -152,6 +155,7 @@ const en: UiStrings = {
   whichBusiness: "Which business are you interested in?",
   otherNotListed: "Other / not listed",
   tellUsProject: "Tell us about your project *",
+  messagePlaceholder: "How can we help?",
   tellUsAcquisition: "Tell us about the acquisition you have in mind *",
   sendMessage: "Send Message",
   sendEnquiry: "Send Enquiry",
@@ -283,9 +287,10 @@ const de: UiStrings = {
   startYourProject: "Projekt starten",
   yourName: "Ihr Name *",
   yourEmail: "sie@firma.com *",
+  emailLabel: "E-Mail *",
   companyName: "Firmenname",
   phoneOptional: "Telefon (optional)",
-  selectServices: "Wählen Sie die gewünschten Leistungen",
+  selectServices: "Leistungen auswählen",
   servicesSelected: "{n} Leistungen ausgewählt",
   projectBudget: "Projektbudget",
   selectRange: "Bereich auswählen",
@@ -295,6 +300,7 @@ const de: UiStrings = {
   whichBusiness: "An welchem Unternehmen sind Sie interessiert?",
   otherNotListed: "Andere / nicht gelistet",
   tellUsProject: "Erzählen Sie uns von Ihrem Projekt *",
+  messagePlaceholder: "Wie können wir helfen?",
   tellUsAcquisition:
     "Erzählen Sie uns von der Akquisition, die Sie im Sinn haben *",
   sendMessage: "Nachricht senden",
@@ -428,9 +434,10 @@ const fr: UiStrings = {
   startYourProject: "Démarrer votre projet",
   yourName: "Votre nom *",
   yourEmail: "vous@entreprise.com *",
+  emailLabel: "E-mail *",
   companyName: "Nom de l'entreprise",
   phoneOptional: "Téléphone (facultatif)",
-  selectServices: "Sélectionnez les services qui vous intéressent",
+  selectServices: "Sélectionnez les services",
   servicesSelected: "{n} services sélectionnés",
   projectBudget: "Budget du projet",
   selectRange: "Sélectionner une fourchette",
@@ -440,6 +447,7 @@ const fr: UiStrings = {
   whichBusiness: "Quelle entreprise vous intéresse ?",
   otherNotListed: "Autre / non répertorié",
   tellUsProject: "Parlez-nous de votre projet *",
+  messagePlaceholder: "Comment pouvons-nous aider ?",
   tellUsAcquisition:
     "Parlez-nous de l'acquisition que vous envisagez *",
   sendMessage: "Envoyer le message",
@@ -573,9 +581,10 @@ const es: UiStrings = {
   startYourProject: "Inicia tu proyecto",
   yourName: "Su nombre *",
   yourEmail: "usted@empresa.com *",
+  emailLabel: "Correo electrónico *",
   companyName: "Nombre de la empresa",
   phoneOptional: "Teléfono (opcional)",
-  selectServices: "Selecciona los servicios que te interesan",
+  selectServices: "Selecciona los servicios",
   servicesSelected: "{n} servicios seleccionados",
   projectBudget: "Presupuesto del proyecto",
   selectRange: "Seleccionar un rango",
@@ -585,6 +594,7 @@ const es: UiStrings = {
   whichBusiness: "¿Qué empresa le interesa?",
   otherNotListed: "Otro / no listado",
   tellUsProject: "Cuéntanos sobre tu proyecto *",
+  messagePlaceholder: "¿Cómo podemos ayudarte?",
   tellUsAcquisition:
     "Cuéntanos sobre la adquisición que tienes en mente *",
   sendMessage: "Enviar mensaje",
