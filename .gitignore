@@ -22,6 +22,7 @@
 
 # misc
 .DS_Store
+Thumbs.db
 *.pem
 
 # debug
@@ -41,7 +42,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# supabase
 supabase/.temp/
 
-# Affinity Designer lock files
+# editor / office lock files
 *.af~lock~
+*.~lock.*
