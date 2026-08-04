@@ -84,7 +84,7 @@ function TrustBadges({ locale }: { locale: string }) {
         >
           <span className="shrink-0 text-primary/60">{badge.icon}</span>
           <div className="min-w-0 text-left leading-tight">
-            <span className="block text-[10px] font-semibold text-text-primary sm:text-[11px]">
+            <span className="block text-[9px] font-medium text-text-secondary sm:text-[10px]">
               {badge.title}
             </span>
             <span className="mt-0.5 block text-[8px] leading-tight text-text-muted sm:text-[10px]">
