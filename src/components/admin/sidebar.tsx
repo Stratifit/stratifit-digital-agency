@@ -57,6 +57,16 @@ const icons: Record<string, React.ComponentType<IconProps>> = {
       <circle cx="12" cy="12" r="9" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.6-3 4" /><path d="M12 17h.01" />
     </svg>
   ),
+  knowledge: (p: IconProps) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={p.className}>
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" />
+    </svg>
+  ),
+  chat: (p: IconProps) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={p.className}>
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z" />
+    </svg>
+  ),
   "final-cta": (p: IconProps) => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={p.className}>
       <path d="m3 11 18-5v12L3 14v-3z" /><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
@@ -125,6 +135,14 @@ const NAV_SECTIONS: {
       { href: "/admin/leads", label: "Leads", icon: "leads" },
       { href: "/admin/conversations", label: "Conversations", icon: "conversations" },
       { href: "/admin/email", label: "Email Activity", icon: "email" },
+    ],
+  },
+  {
+    label: "Chatbot",
+    items: [
+      { href: "/admin/content/chatbot/knowledge", label: "Knowledge Base", icon: "knowledge" },
+      { href: "/admin/content/chatbot/ai-faq", label: "AI FAQ", icon: "faq" },
+      { href: "/admin/content/chatbot/settings", label: "Chatbot Settings", icon: "chat" },
     ],
   },
   {
