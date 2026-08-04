@@ -149,7 +149,7 @@ function WalletIcon() {
 /** Leading icon slot rendered inside a field. */
 function FieldIcon({ children }: { children: React.ReactNode }) {
   return (
-    <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-primary/70">
+    <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-text-subtle">
       {children}
     </span>
   );
@@ -237,10 +237,8 @@ export function ContactForm({
       name: "",
       email: "",
       phone: "",
-      company: "",
       requested_service_ids: [],
       budget_range: "",
-      custom_budget: "",
       message: "",
       honeypot: "",
     },
@@ -352,102 +350,88 @@ export function ContactForm({
         </FieldShell>
       </div>
 
-      {/* Company (optional) */}
-      <input
-        type="text"
-        className={cn(fieldBase, "px-4")}
-        placeholder={t(locale, "companyName")}
-        {...register("company")}
-      />
-
-      {/* Services (multi-select) */}
-      <div ref={servicesRef} className="min-w-0">
-        <label className="mb-1.5 block text-xs font-medium text-text-secondary sm:text-sm">
-          {t(locale, "selectService")}
-          <span className="ml-1 text-primary">*</span>
-        </label>
-        <div className="relative">
-          <FieldIcon>
-            <LayersIcon />
-          </FieldIcon>
-          <button
-            type="button"
-            aria-haspopup="listbox"
-            aria-expanded={servicesOpen}
-            onClick={() => setServicesOpen((v) => !v)}
-            className={cn(fieldBase, "pl-11 pr-9", "text-left")}
-          >
-            <span
-              className={cn(
-                "min-w-0 flex-1 truncate",
-                selectedServices.length > 0
-                  ? "text-field-text"
-                  : "text-field-placeholder"
-              )}
+      {/* Services + Budget — side by side on sm+ */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
+        <div ref={servicesRef} className="min-w-0">
+          <label className="mb-1.5 block text-xs font-medium text-text-secondary sm:text-sm">
+            {t(locale, "selectService")}
+            <span className="ml-1 text-primary">*</span>
+          </label>
+          <div className="relative">
+            <FieldIcon>
+              <LayersIcon />
+            </FieldIcon>
+            <button
+              type="button"
+              aria-haspopup="listbox"
+              aria-expanded={servicesOpen}
+              onClick={() => setServicesOpen((v) => !v)}
+              className={cn(fieldBase, "pl-11 pr-9", "text-left")}
             >
-              {selectedServices.length === 0
-                ? t(locale, "selectServices")
-                : selectedServices.length === 1
-                  ? resolveTranslation(selectedServices[0].title_translations, locale)
-                  : tWithNumber(locale, "servicesSelected", selectedServices.length)}
+              <span
+                className={cn(
+                  "min-w-0 flex-1 truncate",
+                  selectedServices.length > 0
+                    ? "text-field-text"
+                    : "text-field-placeholder"
+                )}
+              >
+                {selectedServices.length === 0
+                  ? t(locale, "selectServices")
+                  : selectedServices.length === 1
+                    ? resolveTranslation(selectedServices[0].title_translations, locale)
+                    : tWithNumber(locale, "servicesSelected", selectedServices.length)}
+              </span>
+            </button>
+            <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-text-muted">
+              <ChevronDownIcon />
             </span>
-          </button>
-          <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-text-muted">
-            <ChevronDownIcon />
-          </span>
-          {servicesOpen ? (
-            <div
-              role="listbox"
-              aria-multiselectable="true"
-              aria-label={t(locale, "serviceNeeded")}
-              className="absolute z-30 mt-2 w-full rounded-card border border-card-border bg-card-dark py-2 shadow-2xl max-h-56 overflow-y-auto"
-            >
-              {services.map((service) => {
-                const selected = selectedServiceIds.includes(service.id);
-                return (
-                  <button
-                    key={service.id}
-                    type="button"
-                    role="option"
-                    aria-selected={selected}
-                    onClick={() => toggleService(service.id)}
-                    className="flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-white/[0.03]"
-                  >
-                    <span
-                      className={cn(
-                        "flex size-4 shrink-0 items-center justify-center rounded border transition-all duration-150",
-                        selected
-                          ? "border-primary bg-primary text-text-inverse"
-                          : "border-card-border"
-                      )}
+            {servicesOpen ? (
+              <div
+                role="listbox"
+                aria-multiselectable="true"
+                aria-label={t(locale, "serviceNeeded")}
+                className="absolute z-30 mt-2 w-full rounded-card border border-card-border bg-card-dark py-2 shadow-2xl max-h-56 overflow-y-auto"
+              >
+                {services.map((service) => {
+                  const selected = selectedServiceIds.includes(service.id);
+                  return (
+                    <button
+                      key={service.id}
+                      type="button"
+                      role="option"
+                      aria-selected={selected}
+                      onClick={() => toggleService(service.id)}
+                      className="flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-white/[0.03]"
                     >
-                      {selected ? <CheckIcon /> : null}
-                    </span>
-                    <span
-                      className={cn(
-                        "truncate text-sm transition-colors",
-                        selected
-                          ? "font-medium text-text-primary"
-                          : "text-text-secondary"
-                      )}
-                    >
-                      {resolveTranslation(service.title_translations, locale)}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          ) : null}
+                      <span
+                        className={cn(
+                          "flex size-4 shrink-0 items-center justify-center rounded border transition-all duration-150",
+                          selected
+                            ? "border-primary bg-primary text-text-inverse"
+                            : "border-card-border"
+                        )}
+                      >
+                        {selected ? <CheckIcon /> : null}
+                      </span>
+                      <span
+                        className={cn(
+                          "truncate text-sm transition-colors",
+                          selected
+                            ? "font-medium text-text-primary"
+                            : "text-text-secondary"
+                        )}
+                      >
+                        {resolveTranslation(service.title_translations, locale)}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            ) : null}
+          </div>
         </div>
-      </div>
 
-      {/* Budget dropdown + custom budget */}
-      <div
-        className={cn(
-          "grid grid-cols-1 gap-3",
-          !compact && "sm:grid-cols-2 sm:gap-4"
-        )}
-      >
         <div ref={budgetRef} className="min-w-0">
           <label className="mb-1.5 block text-xs font-medium text-text-secondary sm:text-sm">
             {t(locale, "estimatedBudget")}
@@ -529,16 +513,6 @@ export function ContactForm({
               </div>
             ) : null}
           </div>
-        </div>
-
-        <div className="min-w-0">
-          <input
-            type="text"
-            className={cn(fieldBase, "px-4")}
-            aria-label={t(locale, "customBudget")}
-            placeholder={t(locale, "customBudget")}
-            {...register("custom_budget")}
-          />
         </div>
       </div>
 
