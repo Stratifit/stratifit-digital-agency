@@ -132,7 +132,7 @@ export default function AdminLoginPage() {
         <div className="absolute bottom-0 right-0 h-[400px] w-[500px] rounded-full bg-primary/[0.03] blur-[120px]" />
       </div>
 
-      <div className="relative z-10 w-full max-w-md">
+      <div className="relative z-10 w-full max-w-sm">
         {/* Header — Stratifit logo + intro */}
         <div className="mb-8 text-center">
           <div className="mx-auto mb-5 w-48 sm:w-52">
