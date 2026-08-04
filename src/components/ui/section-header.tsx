@@ -8,12 +8,16 @@ export function SectionHeader({
   locale,
   align = "left",
   dot = false,
+  compact = false,
   className,
 }: {
   settings: PublicSectionSettings | null;
   locale: string;
   align?: "left" | "center";
   dot?: boolean;
+  /** Compact sizing for narrow surfaces such as the chat panel — no reveal
+      animation, smaller heading type and margins. */
+  compact?: boolean;
   className?: string;
 }) {
   if (!settings) {
@@ -34,10 +38,8 @@ export function SectionHeader({
 
   const centered = align === "center";
 
-  return (
-    <SectionHeadingReveal
-      className={cn("mb-10 md:mb-16", centered && "text-center", className)}
-    >
+  const heading = (
+    <>
       {eyebrow ? (
         <p
           data-sh
@@ -57,7 +59,12 @@ export function SectionHeader({
       ) : null}
       <h2
         data-sh
-        className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl lg:text-6xl md:leading-none"
+        className={cn(
+          "font-display font-black leading-tight tracking-tight text-text-primary",
+          compact
+            ? "text-2xl sm:text-3xl"
+            : "text-3xl sm:text-4xl md:text-5xl lg:text-6xl md:leading-none"
+        )}
       >
         <span>{title}</span>
         {highlight ? <span className="text-primary"> {highlight}</span> : null}
@@ -66,15 +73,32 @@ export function SectionHeader({
         <p
           data-sh
           className={cn(
-            "mt-3 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg",
-            centered
-              ? "mx-auto"
-              : "ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6"
+            "mt-3 max-w-2xl text-sm leading-relaxed text-text-muted",
+            compact
+              ? "ml-1.5 border-l-2 border-primary/50 pl-4"
+              : "sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6",
+            centered && "mx-auto"
           )}
         >
           {description}
         </p>
       ) : null}
+    </>
+  );
+
+  if (compact) {
+    return (
+      <div className={cn("mb-6", centered && "text-center", className)}>
+        {heading}
+      </div>
+    );
+  }
+
+  return (
+    <SectionHeadingReveal
+      className={cn("mb-10 md:mb-16", centered && "text-center", className)}
+    >
+      {heading}
     </SectionHeadingReveal>
   );
 }

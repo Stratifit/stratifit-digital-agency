@@ -18,9 +18,11 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { ServiceCard } from "@/components/sections/service-card";
 import { PlanCard } from "@/components/sections/pricing-plans";
 import { FaqAccordion, type FaqItem } from "@/components/sections/faq-accordion";
+import { SectionHeader } from "@/components/ui/section-header";
 import type { PublicServiceDetail } from "@/features/services/queries";
 import type { PublicPricingPlan } from "@/features/pricing/queries";
 import type { PublicFaq } from "@/features/faq/queries";
+import type { PublicSectionSettings } from "@/features/section-settings/queries";
 
 interface WidgetMessage {
   id: string;
@@ -470,15 +472,18 @@ function PricingPanel({
 
 /** FAQ panel — renders the real homepage FaqAccordion component with the
     published FAQ items, so the chat shows exactly the same questions and
-    answers as the homepage FAQ section, localized to the visitor's chat
-    language. */
+    answers as the homepage FAQ section. The heading uses the homepage
+    SectionHeader (compact mode) driven by the same editable "faq" section
+    settings, localized to the visitor's chat language. */
 function FaqPanel({
   locale,
   faqs,
+  faqSettings,
   onBack,
 }: {
   locale: string;
   faqs: PublicFaq[];
+  faqSettings: PublicSectionSettings | null;
   onBack: () => void;
 }) {
   const items: FaqItem[] = faqs.map((faq) => ({
@@ -489,10 +494,14 @@ function FaqPanel({
 
   return (
     <div>
-      <PanelHeading
-        title={t(locale, "chatFaqTitle")}
-        icon={<InfoIcon className="size-3.5" />}
-      />
+      {faqSettings ? (
+        <SectionHeader settings={faqSettings} locale={locale} compact />
+      ) : (
+        <PanelHeading
+          title={t(locale, "chatFaqTitle")}
+          icon={<InfoIcon className="size-3.5" />}
+        />
+      )}
       {items.length > 0 ? (
         <FaqAccordion items={items} gridClassName="grid grid-cols-1 gap-3" />
       ) : null}
@@ -666,11 +675,13 @@ export function ChatWidget({
   plans,
   servicePageSlugs,
   faqs,
+  faqSettings,
 }: {
   services: PublicServiceDetail[];
   plans: PublicPricingPlan[];
   servicePageSlugs: string[];
   faqs: PublicFaq[];
+  faqSettings: PublicSectionSettings | null;
 }) {
   const [open, setOpen] = React.useState(() => {
     if (typeof window === "undefined") return false;
@@ -1700,6 +1711,7 @@ export function ChatWidget({
                   <FaqPanel
                     locale={locale}
                     faqs={faqs}
+                    faqSettings={faqSettings}
                     onBack={() => switchView("chat")}
                   />
                 ) : (
