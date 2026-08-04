@@ -122,6 +122,18 @@ function CogIcon({ className }: { className?: string }) {
   );
 }
 
+function BuildingIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path
+        fillRule="evenodd"
+        d="M3 2.25a.75.75 0 0 0 0 1.5v16.5h-.75a.75.75 0 0 0 0 1.5H15v-18a.75.75 0 0 0 0-1.5H3ZM6.75 19.5v-2.25a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-.75.75h-3a.75.75 0 0 1-.75-.75ZM6 6.75A.75.75 0 0 1 6.75 6h.75a.75.75 0 0 1 0 1.5h-.75A.75.75 0 0 1 6 6.75ZM6.75 9a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5h-.75ZM6 12.75a.75.75 0 0 1 .75-.75h.75a.75.75 0 0 1 0 1.5h-.75a.75.75 0 0 1-.75-.75ZM10.5 6a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5h-.75Zm-.75 3.75A.75.75 0 0 1 10.5 9h.75a.75.75 0 0 1 0 1.5h-.75a.75.75 0 0 1-.75-.75ZM10.5 12a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5h-.75ZM16.5 6.75v15h5.25a.75.75 0 0 0 0-1.5H21v-12a.75.75 0 0 0 0-1.5h-4.5Zm1.5 4.5a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75h-.008a.75.75 0 0 1-.75-.75v-.008Zm.75 2.25a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75v-.008a.75.75 0 0 0-.75-.75h-.008ZM18 17.25a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75h-.008a.75.75 0 0 1-.75-.75v-.008Z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
 function CloseIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="size-[22px]">
@@ -288,16 +300,328 @@ function VisitorAvatar() {
 // Chat widget
 // ============================================================================
 
+type ChatView = "chat" | "services" | "pricing" | "faq" | "support" | "about";
+
 const TOPIC_CHIPS: {
   key: UiStringKey;
+  view: ChatView;
   icon: (props: { className?: string }) => React.ReactNode;
 }[] = [
-  { key: "chatChat", icon: ChatIcon },
-  { key: "chatServices", icon: BriefcaseIcon },
-  { key: "chatPricing", icon: DollarIcon },
-  { key: "chatFaq", icon: InfoIcon },
-  { key: "chatSupport", icon: CogIcon },
+  { key: "chatChat", view: "chat", icon: ChatIcon },
+  { key: "chatServices", view: "services", icon: BriefcaseIcon },
+  { key: "chatPricing", view: "pricing", icon: DollarIcon },
+  { key: "chatFaq", view: "faq", icon: InfoIcon },
+  { key: "chatSupport", view: "support", icon: CogIcon },
+  { key: "chatAbout", view: "about", icon: BuildingIcon },
 ];
+
+/** Service overview cards shown in the Services panel. */
+const SERVICE_CARDS: { titleKey: UiStringKey; descKey: UiStringKey }[] = [
+  { titleKey: "chatServiceBrandTitle", descKey: "chatServiceBrandDesc" },
+  { titleKey: "chatServiceWebTitle", descKey: "chatServiceWebDesc" },
+  { titleKey: "chatServiceAiTitle", descKey: "chatServiceAiDesc" },
+  { titleKey: "chatServiceGrowthTitle", descKey: "chatServiceGrowthDesc" },
+];
+
+/** FAQ accordion items shown in the FAQ panel. */
+const FAQ_ITEMS: { q: UiStringKey; a: UiStringKey }[] = [
+  { q: "chatFaqQ1", a: "chatFaqA1" },
+  { q: "chatFaqQ2", a: "chatFaqA2" },
+  { q: "chatFaqQ3", a: "chatFaqA3" },
+];
+
+// ============================================================================
+// Topic panels — compact overviews shown inside the chat instead of the
+// conversation when a topic chip is active. They keep the visitor inside the
+// widget and hand off to the AI or the contact form with one tap.
+// ============================================================================
+
+/** Shared panel footer button — returns to the conversation. */
+function PanelBackButton({
+  locale,
+  onClick,
+}: {
+  locale: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-[10px] border border-border bg-white/5 px-3 py-2 text-xs font-medium text-text-secondary transition-all hover:border-primary/40 hover:bg-primary/10 hover:text-primary active:scale-[0.98]"
+    >
+      <ChatIcon className="size-3.5 text-primary" />
+      {t(locale, "chatBackToChat")}
+    </button>
+  );
+}
+
+/** Shared panel heading — small amber icon chip + Satoshi title. */
+function PanelHeading({ title, icon }: { title: string; icon: React.ReactNode }) {
+  return (
+    <div className="mb-3 flex items-center gap-2">
+      <span className="flex size-7 shrink-0 items-center justify-center rounded-[10px] border border-primary/20 bg-primary/10 text-primary">
+        {icon}
+      </span>
+      <p className="font-display text-sm font-black tracking-tight text-text-primary">
+        {title}
+      </p>
+    </div>
+  );
+}
+
+/** Full-width primary action used inside topic panels. */
+function PanelPrimaryButton({
+  children,
+  onClick,
+}: {
+  children: React.ReactNode;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex w-full items-center justify-center gap-1.5 rounded-[10px] bg-primary px-3 py-2.5 text-xs font-semibold text-text-inverse transition-all hover:bg-primary-hover active:scale-[0.98]"
+    >
+      {children}
+    </button>
+  );
+}
+
+/** Full-width quiet secondary action used inside topic panels. */
+function PanelSecondaryButton({
+  children,
+  onClick,
+}: {
+  children: React.ReactNode;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex w-full items-center justify-center gap-1.5 rounded-[10px] border border-border bg-white/5 px-3 py-2.5 text-xs font-medium text-text-secondary transition-all hover:border-primary/40 hover:bg-primary/10 hover:text-primary active:scale-[0.98]"
+    >
+      {children}
+    </button>
+  );
+}
+
+/** Services overview panel — one card per offering with quick ask actions. */
+function ServicesPanel({
+  locale,
+  onAsk,
+  onBack,
+}: {
+  locale: string;
+  onAsk: (serviceKey: UiStringKey, mode: "interested" | "more") => void;
+  onBack: () => void;
+}) {
+  return (
+    <div>
+      <PanelHeading
+        title={t(locale, "chatServices")}
+        icon={<BriefcaseIcon className="size-3.5" />}
+      />
+      <div className="space-y-2.5">
+        {SERVICE_CARDS.map((card) => (
+          <div
+            key={card.titleKey}
+            className="rounded-[14px] border border-border bg-card-dark p-3.5 transition-colors hover:border-primary/30"
+          >
+            <p className="text-[13px] font-semibold text-text-primary">
+              {t(locale, card.titleKey)}
+            </p>
+            <p className="mt-1 text-[11px] leading-relaxed text-text-muted">
+              {t(locale, card.descKey)}
+            </p>
+            <div className="mt-2.5 flex gap-2">
+              <button
+                type="button"
+                onClick={() => onAsk(card.titleKey, "interested")}
+                className="flex-1 rounded-[10px] border border-primary/25 bg-primary/10 px-2.5 py-1.5 text-[10px] font-semibold text-primary transition-colors hover:bg-primary/15"
+              >
+                {t(locale, "chatAskAbout")}
+              </button>
+              <button
+                type="button"
+                onClick={() => onAsk(card.titleKey, "more")}
+                className="flex-1 rounded-[10px] border border-border px-2.5 py-1.5 text-[10px] font-medium text-text-secondary transition-colors hover:border-primary/30 hover:text-primary"
+              >
+                {t(locale, "chatLearnMore")}
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+      <PanelBackButton locale={locale} onClick={onBack} />
+    </div>
+  );
+}
+
+/** Pricing overview panel — invites a tailored quote through chat or contact. */
+function PricingPanel({
+  locale,
+  onAskPricing,
+  onStartProject,
+  onBack,
+}: {
+  locale: string;
+  onAskPricing: () => void;
+  onStartProject: () => void;
+  onBack: () => void;
+}) {
+  return (
+    <div>
+      <PanelHeading
+        title={t(locale, "chatPricingTitle")}
+        icon={<DollarIcon className="size-3.5" />}
+      />
+      <div className="rounded-[14px] border border-border bg-card-dark p-4">
+        <p className="text-[11px] leading-relaxed text-text-muted">
+          {t(locale, "chatPricingBody")}
+        </p>
+        <div className="mt-3.5 space-y-2">
+          <PanelPrimaryButton onClick={onAskPricing}>
+            <DollarIcon className="size-3.5" />
+            {t(locale, "chatAskAboutPricing")}
+          </PanelPrimaryButton>
+          <PanelSecondaryButton onClick={onStartProject}>
+            {t(locale, "chatStartProject")}
+          </PanelSecondaryButton>
+        </div>
+      </div>
+      <PanelBackButton locale={locale} onClick={onBack} />
+    </div>
+  );
+}
+
+/** FAQ accordion panel — one open item at a time. */
+function FaqPanel({
+  locale,
+  openFaq,
+  onToggleFaq,
+  onBack,
+}: {
+  locale: string;
+  openFaq: number | null;
+  onToggleFaq: (index: number) => void;
+  onBack: () => void;
+}) {
+  return (
+    <div>
+      <PanelHeading
+        title={t(locale, "chatFaqTitle")}
+        icon={<InfoIcon className="size-3.5" />}
+      />
+      <div className="space-y-2">
+        {FAQ_ITEMS.map((item, index) => {
+          const open = openFaq === index;
+          return (
+            <div
+              key={item.q}
+              className="overflow-hidden rounded-[14px] border border-border bg-card-dark transition-colors hover:border-primary/30"
+            >
+              <button
+                type="button"
+                aria-expanded={open}
+                onClick={() => onToggleFaq(index)}
+                className="flex w-full items-center justify-between gap-2 px-3.5 py-3 text-left text-xs font-semibold text-text-primary transition-colors hover:bg-white/5"
+              >
+                {t(locale, item.q)}
+                <ChevronDownIcon
+                  className={cn(
+                    "size-3.5 shrink-0 text-primary/70 transition-transform duration-200",
+                    open && "rotate-180"
+                  )}
+                />
+              </button>
+              {open ? (
+                <div className="border-t border-border px-3.5 py-3">
+                  <p className="text-[11px] leading-relaxed text-text-muted">
+                    {t(locale, item.a)}
+                  </p>
+                </div>
+              ) : null}
+            </div>
+          );
+        })}
+      </div>
+      <PanelBackButton locale={locale} onClick={onBack} />
+    </div>
+  );
+}
+
+/** Human-support panel — hands off to the contact form. */
+function SupportPanel({
+  locale,
+  onContact,
+  onBack,
+}: {
+  locale: string;
+  onContact: () => void;
+  onBack: () => void;
+}) {
+  return (
+    <div>
+      <PanelHeading
+        title={t(locale, "chatSupportTitle")}
+        icon={<CogIcon className="size-3.5" />}
+      />
+      <div className="rounded-[14px] border border-border bg-card-dark p-4">
+        <p className="text-[11px] leading-relaxed text-text-muted">
+          {t(locale, "chatSupportBody")}
+        </p>
+        <div className="mt-3.5">
+          <PanelPrimaryButton onClick={onContact}>
+            <MailIcon className="size-3.5" />
+            {t(locale, "chatContactUs")}
+          </PanelPrimaryButton>
+        </div>
+      </div>
+      <PanelBackButton locale={locale} onClick={onBack} />
+    </div>
+  );
+}
+
+/** About panel — a short intro plus ways to keep the conversation going. */
+function AboutPanel({
+  locale,
+  onAskStratifit,
+  onContact,
+  onBack,
+}: {
+  locale: string;
+  onAskStratifit: () => void;
+  onContact: () => void;
+  onBack: () => void;
+}) {
+  return (
+    <div>
+      <PanelHeading
+        title={t(locale, "chatAboutTitle")}
+        icon={<BuildingIcon className="size-3.5" />}
+      />
+      <div className="rounded-[14px] border border-border bg-card-dark p-4">
+        <p className="text-[11px] leading-relaxed text-text-muted">
+          {t(locale, "chatAboutBody")}
+        </p>
+        <div className="mt-3.5 space-y-2">
+          <PanelPrimaryButton onClick={onAskStratifit}>
+            <ChatIcon className="size-3.5" />
+            {t(locale, "chatAskAboutStratifit")}
+          </PanelPrimaryButton>
+          <PanelSecondaryButton onClick={onContact}>
+            <MailIcon className="size-3.5" />
+            {t(locale, "chatContactUs")}
+          </PanelSecondaryButton>
+        </div>
+      </div>
+      <PanelBackButton locale={locale} onClick={onBack} />
+    </div>
+  );
+}
 
 function toWidgetMessages(rows: ChatStoredMessage[]): WidgetMessage[] {
   return rows.map((row) => ({
@@ -469,6 +793,10 @@ export function ChatWidget() {
   /** Number of trailing message groups rendered — the chat opens showing only
       the last two exchanges and earlier ones are revealed by scrolling up. */
   const [visibleGroupCount, setVisibleGroupCount] = React.useState(2);
+  /** Active topic view — the chips switch between the conversation and the
+      compact service/pricing/faq/support/about panels. */
+  const [view, setView] = React.useState<ChatView>("chat");
+  const [openFaq, setOpenFaq] = React.useState<number | null>(0);
 
   const mounted = React.useSyncExternalStore(
     () => () => {},
@@ -586,6 +914,8 @@ export function ChatWidget() {
       );
       // Tail window: pin to the newest exchanges after the load lands.
       setVisibleGroupCount(2);
+      // Reopen the widget in the conversation, not in a leftover topic panel.
+      setView("chat");
       setStage(
         !data.visitor.name
           ? "name"
@@ -615,9 +945,25 @@ export function ChatWidget() {
     if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
   }, [messages, loading, stage, open]);
 
+  // Topic panels open at the top of their content; switching back to the chat
+  // re-pins the window to the newest messages.
+  React.useEffect(() => {
+    if (!open) return;
+    const el = messagesScrollRef.current;
+    if (!el) return;
+    if (view === "chat") {
+      el.scrollTo({ top: el.scrollHeight, behavior: "auto" });
+    } else {
+      el.scrollTo({ top: 0, behavior: "auto" });
+    }
+  }, [view, open]);
+
   function handleMessagesScroll() {
     const el = messagesScrollRef.current;
     if (!el) return;
+    // Panel views scroll their own content — only the chat window reveals
+    // earlier messages by scrolling to the top.
+    if (view !== "chat") return;
     // Reaching the top of the visible window reveals earlier messages.
     if (el.scrollTop <= 32) {
       setVisibleGroupCount((c) =>
@@ -861,6 +1207,7 @@ export function ChatWidget() {
       setVisitor(result.data.visitor);
       setMessages(toWidgetMessages(result.data.messages));
       setVisibleGroupCount(2);
+      setView("chat");
       setStage("name");
       setInput("");
       setShowPrivacyNote(false);
@@ -875,6 +1222,8 @@ export function ChatWidget() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    // Typing from a panel returns the visitor to the conversation.
+    if (view !== "chat") setView("chat");
     if (stage === "name") {
       handleNameSubmit();
     } else if (stage === "emailInput") {
@@ -882,6 +1231,40 @@ export function ChatWidget() {
     } else if (stage === "chat") {
       sendChatMessage(input);
     }
+  }
+
+  function switchView(next: ChatView) {
+    setView(next);
+    setOpenFaq(0);
+  }
+
+  /** Asks the AI about a service — returns to the chat and sends the prompt. */
+  function askAboutService(serviceKey: UiStringKey, mode: "interested" | "more") {
+    if (loading) return;
+    const title = t(locale, serviceKey);
+    const text = t(locale, mode === "interested" ? "chatInterestedIn" : "chatTellMeMore").replace(
+      "{service}",
+      title
+    );
+    setView("chat");
+    sendChatMessage(text);
+  }
+
+  function askAboutPricing() {
+    if (loading) return;
+    setView("chat");
+    sendChatMessage(t(locale, "chatPricingQuestion"));
+  }
+
+  function askAboutStratifit() {
+    if (loading) return;
+    setView("chat");
+    sendChatMessage(t(locale, "chatAboutQuestion"));
+  }
+
+  /** Opens the global contact popup (used by the Support and About panels). */
+  function openContactPopup() {
+    window.dispatchEvent(new CustomEvent("stratifit:open-contact"));
   }
 
   const locale = lang;
@@ -1022,25 +1405,27 @@ export function ChatWidget() {
           {stage === "chat" ? (
             <div className="flex flex-none border-b border-border-subtle bg-background px-4 py-3">
               <div className="-mx-1 flex gap-2 overflow-x-auto px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                {TOPIC_CHIPS.map((chip, index) => {
-                  const isActive = index === 0;
+                {TOPIC_CHIPS.map((chip) => {
+                  const isActive = view === chip.view;
                   return (
                     <button
                       key={chip.key}
                       type="button"
-                      onClick={() => sendChatMessage(t(locale, chip.key))}                        className={cn(
-                          "flex shrink-0 items-center gap-1.5 rounded-[10px] border px-3.5 py-2 text-xs font-medium transition-all active:scale-[0.98]",
-                          isActive
-                            ? "border-primary bg-primary text-text-inverse"
-                            : "border-border bg-white/5 text-text-secondary hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
+                      aria-pressed={isActive}
+                      onClick={() => switchView(chip.view)}
+                      className={cn(
+                        "flex shrink-0 items-center gap-1.5 rounded-[10px] border px-3.5 py-2 text-xs font-medium transition-all active:scale-[0.98]",
+                        isActive
+                          ? "border-primary bg-primary text-text-inverse"
+                          : "border-border bg-white/5 text-text-secondary hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
+                      )}
+                    >
+                      <chip.icon
+                        className={cn(
+                          "size-3.5",
+                          isActive ? "text-text-inverse" : "text-primary"
                         )}
-                      >
-                        <chip.icon
-                          className={cn(
-                            "size-3.5",
-                            isActive ? "text-text-inverse" : "text-primary"
-                          )}
-                        />
+                      />
                       {t(locale, chip.key)}
                     </button>
                   );
@@ -1049,13 +1434,15 @@ export function ChatWidget() {
             </div>
           ) : null}
 
-          {/* Messages — opens showing only the latest exchanges; earlier
-              messages are revealed by scrolling up or via the pill */}
+          {/* Messages — the conversation, or the compact topic panel that
+              replaces it while a chip other than Chat is active */}
           <div
             ref={messagesScrollRef}
             onScroll={handleMessagesScroll}
             className="flex flex-1 flex-col overflow-y-auto overscroll-contain px-4 py-4"
           >
+            {view === "chat" ? (
+            <>
             <div
               aria-hidden="true"
               className="pointer-events-none sticky top-0 z-10 -mx-4 -mt-4 h-5 bg-gradient-to-b from-background to-transparent"
@@ -1359,6 +1746,47 @@ export function ChatWidget() {
               </div>
             ) : null}
             {error ? <p className="mt-3 text-sm text-error">{error}</p> : null}
+            </>
+            ) : (
+              <div className="m-auto w-full">
+                {view === "services" ? (
+                  <ServicesPanel
+                    locale={locale}
+                    onAsk={askAboutService}
+                    onBack={() => switchView("chat")}
+                  />
+                ) : view === "pricing" ? (
+                  <PricingPanel
+                    locale={locale}
+                    onAskPricing={askAboutPricing}
+                    onStartProject={openContactPopup}
+                    onBack={() => switchView("chat")}
+                  />
+                ) : view === "faq" ? (
+                  <FaqPanel
+                    locale={locale}
+                    openFaq={openFaq}
+                    onToggleFaq={(index) =>
+                      setOpenFaq((v) => (v === index ? null : index))
+                    }
+                    onBack={() => switchView("chat")}
+                  />
+                ) : view === "support" ? (
+                  <SupportPanel
+                    locale={locale}
+                    onContact={openContactPopup}
+                    onBack={() => switchView("chat")}
+                  />
+                ) : (
+                  <AboutPanel
+                    locale={locale}
+                    onAskStratifit={askAboutStratifit}
+                    onContact={openContactPopup}
+                    onBack={() => switchView("chat")}
+                  />
+                )}
+              </div>
+            )}
           </div>
 
           {/* Footer — input, quick actions, brand */}

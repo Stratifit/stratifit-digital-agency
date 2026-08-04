@@ -91,6 +91,38 @@ export type UiStringKey =
   | "chatTyping"
   | "chatTypingStatus"
   | "chatShowEarlier"
+  | "chatAskAbout"
+  | "chatLearnMore"
+  | "chatServiceBrandTitle"
+  | "chatServiceBrandDesc"
+  | "chatServiceWebTitle"
+  | "chatServiceWebDesc"
+  | "chatServiceAiTitle"
+  | "chatServiceAiDesc"
+  | "chatServiceGrowthTitle"
+  | "chatServiceGrowthDesc"
+  | "chatInterestedIn"
+  | "chatTellMeMore"
+  | "chatPricingTitle"
+  | "chatPricingBody"
+  | "chatAskAboutPricing"
+  | "chatPricingQuestion"
+  | "chatStartProject"
+  | "chatFaqTitle"
+  | "chatFaqQ1"
+  | "chatFaqA1"
+  | "chatFaqQ2"
+  | "chatFaqA2"
+  | "chatFaqQ3"
+  | "chatFaqA3"
+  | "chatSupportTitle"
+  | "chatSupportBody"
+  | "chatContactUs"
+  | "chatBackToChat"
+  | "chatAboutTitle"
+  | "chatAboutBody"
+  | "chatAskAboutStratifit"
+  | "chatAboutQuestion"
   | "chatSave"
   | "chatCancel"
   | "chatLanguage"
@@ -223,6 +255,40 @@ const en: UiStrings = {
   chatTyping: "Stratifit AI is typing…",
   chatTypingStatus: "Typing…",
   chatShowEarlier: "Earlier messages",
+  chatAskAbout: "Ask about this",
+  chatLearnMore: "Learn more",
+  chatServiceBrandTitle: "Brand Identity & Strategy",
+  chatServiceBrandDesc: "Logo systems, brand direction, visual identity.",
+  chatServiceWebTitle: "Website Development",
+  chatServiceWebDesc: "High-performance websites, landing pages, CMS.",
+  chatServiceAiTitle: "AI & Automation",
+  chatServiceAiDesc: "Chatbots, workflows, internal automation.",
+  chatServiceGrowthTitle: "Growth & Performance",
+  chatServiceGrowthDesc: "SEO, analytics, optimization, maintenance.",
+  chatInterestedIn: "I'm interested in {service}.",
+  chatTellMeMore: "Tell me more about {service}.",
+  chatPricingTitle: "Pricing & Packages",
+  chatPricingBody:
+    "Packages for every stage — from landing pages to full platforms. Tell us about your project for a tailored quote.",
+  chatAskAboutPricing: "Ask about pricing",
+  chatPricingQuestion: "I'd like to know more about pricing.",
+  chatStartProject: "Start a project",
+  chatFaqTitle: "Common Questions",
+  chatFaqQ1: "How do you price projects?",
+  chatFaqA1: "Every project is scoped individually. Share your requirements and we'll send a tailored quote.",
+  chatFaqQ2: "What services do you offer?",
+  chatFaqA2: "Website development, brand identity, AI & automation, and growth & performance marketing.",
+  chatFaqQ3: "Do you support ongoing work?",
+  chatFaqA3: "Yes — we offer maintenance, optimization, and growth plans.",
+  chatSupportTitle: "Human Support",
+  chatSupportBody: "Our team is ready to help with your project.",
+  chatContactUs: "Contact us",
+  chatBackToChat: "Continue in chat",
+  chatAboutTitle: "About Stratifit",
+  chatAboutBody:
+    "Stratifit is a digital agency building high-performance websites, AI automation, and growth systems for ambitious businesses.",
+  chatAskAboutStratifit: "Ask about Stratifit",
+  chatAboutQuestion: "Tell me about Stratifit.",
   chatSave: "Save",
   chatCancel: "Cancel",
   chatLanguage: "Select language",
@@ -356,6 +422,40 @@ const de: UiStrings = {
   chatTyping: "Stratifit AI schreibt…",
   chatTypingStatus: "Schreibt…",
   chatShowEarlier: "Frühere Nachrichten",
+  chatAskAbout: "Danach fragen",
+  chatLearnMore: "Mehr erfahren",
+  chatServiceBrandTitle: "Markenidentität & Strategie",
+  chatServiceBrandDesc: "Logosysteme, Markenausrichtung, visuelle Identität.",
+  chatServiceWebTitle: "Webentwicklung",
+  chatServiceWebDesc: "Leistungsstarke Websites, Landingpages, CMS.",
+  chatServiceAiTitle: "KI & Automatisierung",
+  chatServiceAiDesc: "Chatbots, Workflows, interne Automatisierung.",
+  chatServiceGrowthTitle: "Wachstum & Performance",
+  chatServiceGrowthDesc: "SEO, Analytics, Optimierung, Wartung.",
+  chatInterestedIn: "Ich interessiere mich für {service}.",
+  chatTellMeMore: "Erzähl mir mehr über {service}.",
+  chatPricingTitle: "Preise & Pakete",
+  chatPricingBody:
+    "Pakete für jede Phase – von Landingpages bis zu vollständigen Plattformen. Teilen Sie uns Ihr Projekt für ein individuelles Angebot mit.",
+  chatAskAboutPricing: "Nach Preisen fragen",
+  chatPricingQuestion: "Ich möchte mehr über die Preise wissen.",
+  chatStartProject: "Projekt starten",
+  chatFaqTitle: "Häufige Fragen",
+  chatFaqQ1: "Wie werden Projekte bepreist?",
+  chatFaqA1: "Jedes Projekt wird individuell kalkuliert. Teilen Sie uns Ihre Anforderungen mit und Sie erhalten ein maßgeschneidertes Angebot.",
+  chatFaqQ2: "Welche Dienstleistungen bieten Sie an?",
+  chatFaqA2: "Webentwicklung, Markenidentität, KI & Automatisierung sowie Wachstums- und Performance-Marketing.",
+  chatFaqQ3: "Bieten Sie laufende Betreuung an?",
+  chatFaqA3: "Ja – wir bieten Wartungs-, Optimierungs- und Wachstumspläne an.",
+  chatSupportTitle: "Menschlicher Support",
+  chatSupportBody: "Unser Team hilft Ihnen gerne bei Ihrem Projekt.",
+  chatContactUs: "Kontakt aufnehmen",
+  chatBackToChat: "Im Chat fortfahren",
+  chatAboutTitle: "Über Stratifit",
+  chatAboutBody:
+    "Stratifit ist eine Digitalagentur, die leistungsstarke Websites, KI-Automatisierung und Wachstumssysteme für ambitionierte Unternehmen entwickelt.",
+  chatAskAboutStratifit: "Über Stratifit fragen",
+  chatAboutQuestion: "Erzähl mir etwas über Stratifit.",
   chatSave: "Speichern",
   chatCancel: "Abbrechen",
   chatLanguage: "Sprache auswählen",
@@ -489,6 +589,40 @@ const fr: UiStrings = {
   chatTyping: "Stratifit AI écrit…",
   chatTypingStatus: "Écrit…",
   chatShowEarlier: "Messages précédents",
+  chatAskAbout: "Demander",
+  chatLearnMore: "En savoir plus",
+  chatServiceBrandTitle: "Identité de marque & stratégie",
+  chatServiceBrandDesc: "Systèmes de logo, direction de marque, identité visuelle.",
+  chatServiceWebTitle: "Développement web",
+  chatServiceWebDesc: "Sites performants, landing pages, CMS.",
+  chatServiceAiTitle: "IA & automatisation",
+  chatServiceAiDesc: "Chatbots, workflows, automatisation interne.",
+  chatServiceGrowthTitle: "Croissance & performance",
+  chatServiceGrowthDesc: "SEO, analytics, optimisation, maintenance.",
+  chatInterestedIn: "Je suis intéressé par {service}.",
+  chatTellMeMore: "Parlez-moi davantage de {service}.",
+  chatPricingTitle: "Tarifs & formules",
+  chatPricingBody:
+    "Des formules pour chaque étape – des landing pages aux plateformes complètes. Parlez-nous de votre projet pour un devis personnalisé.",
+  chatAskAboutPricing: "Demander les tarifs",
+  chatPricingQuestion: "J'aimerais en savoir plus sur les tarifs.",
+  chatStartProject: "Démarrer un projet",
+  chatFaqTitle: "Questions fréquentes",
+  chatFaqQ1: "Comment sont tarifés les projets ?",
+  chatFaqA1: "Chaque projet est chiffré individuellement. Partagez vos besoins et nous vous enverrons un devis personnalisé.",
+  chatFaqQ2: "Quels services proposez-vous ?",
+  chatFaqA2: "Développement web, identité de marque, IA & automatisation, et croissance & performance.",
+  chatFaqQ3: "Assurez-vous un suivi continu ?",
+  chatFaqA3: "Oui – nous proposons des forfaits de maintenance, d'optimisation et de croissance.",
+  chatSupportTitle: "Support humain",
+  chatSupportBody: "Notre équipe est prête à vous aider sur votre projet.",
+  chatContactUs: "Nous contacter",
+  chatBackToChat: "Continuer dans le chat",
+  chatAboutTitle: "À propos de Stratifit",
+  chatAboutBody:
+    "Stratifit est une agence digitale qui crée des sites performants, de l'automatisation IA et des systèmes de croissance pour les entreprises ambitieuses.",
+  chatAskAboutStratifit: "Demander à propos de Stratifit",
+  chatAboutQuestion: "Parlez-moi de Stratifit.",
   chatSave: "Enregistrer",
   chatCancel: "Annuler",
   chatLanguage: "Choisir la langue",
@@ -622,6 +756,40 @@ const es: UiStrings = {
   chatTyping: "Stratifit AI está escribiendo…",
   chatTypingStatus: "Escribiendo…",
   chatShowEarlier: "Mensajes anteriores",
+  chatAskAbout: "Preguntar",
+  chatLearnMore: "Saber más",
+  chatServiceBrandTitle: "Identidad de marca y estrategia",
+  chatServiceBrandDesc: "Sistemas de logotipos, dirección de marca, identidad visual.",
+  chatServiceWebTitle: "Desarrollo web",
+  chatServiceWebDesc: "Sitios web de alto rendimiento, landing pages, CMS.",
+  chatServiceAiTitle: "IA y automatización",
+  chatServiceAiDesc: "Chatbots, flujos de trabajo, automatización interna.",
+  chatServiceGrowthTitle: "Crecimiento y rendimiento",
+  chatServiceGrowthDesc: "SEO, analítica, optimización, mantenimiento.",
+  chatInterestedIn: "Me interesa {service}.",
+  chatTellMeMore: "Cuéntame más sobre {service}.",
+  chatPricingTitle: "Precios y paquetes",
+  chatPricingBody:
+    "Paquetes para cada etapa: desde landing pages hasta plataformas completas. Cuéntanos tu proyecto para un presupuesto personalizado.",
+  chatAskAboutPricing: "Preguntar por precios",
+  chatPricingQuestion: "Me gustaría saber más sobre los precios.",
+  chatStartProject: "Iniciar un proyecto",
+  chatFaqTitle: "Preguntas frecuentes",
+  chatFaqQ1: "¿Cómo se valoran los proyectos?",
+  chatFaqA1: "Cada proyecto se presupuesta individualmente. Comparte tus requisitos y te enviaremos una cotización personalizada.",
+  chatFaqQ2: "¿Qué servicios ofrecen?",
+  chatFaqA2: "Desarrollo web, identidad de marca, IA y automatización, y crecimiento y rendimiento.",
+  chatFaqQ3: "¿Dan soporte continuo?",
+  chatFaqA3: "Sí: ofrecemos planes de mantenimiento, optimización y crecimiento.",
+  chatSupportTitle: "Soporte humano",
+  chatSupportBody: "Nuestro equipo está listo para ayudarte con tu proyecto.",
+  chatContactUs: "Contáctanos",
+  chatBackToChat: "Continuar en el chat",
+  chatAboutTitle: "Acerca de Stratifit",
+  chatAboutBody:
+    "Stratifit es una agencia digital que crea sitios web de alto rendimiento, automatización con IA y sistemas de crecimiento para empresas ambiciosas.",
+  chatAskAboutStratifit: "Preguntar sobre Stratifit",
+  chatAboutQuestion: "Háblame de Stratifit.",
   chatSave: "Guardar",
   chatCancel: "Cancelar",
   chatLanguage: "Seleccionar idioma",
