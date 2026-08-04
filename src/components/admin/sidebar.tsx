@@ -129,6 +129,7 @@ const NAV_SECTIONS: {
       { href: "/admin/content/pricing", label: "Pricing", icon: "pricing" },
       { href: "/admin/content/faq", label: "FAQs", icon: "faq" },
       { href: "/admin/content/trusted-logos", label: "Trusted Logos", icon: "media" },
+      { href: "/admin/content/acquisition", label: "Buy a Business", icon: "portfolio" },
       { href: "/admin/content/navigation", label: "Navigation", icon: "faq" },
       { href: "/admin/content/footer", label: "Footer", icon: "sections" },
       { href: "/admin/content/final-cta", label: "Final CTA", icon: "final-cta" },

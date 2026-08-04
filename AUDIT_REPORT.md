@@ -85,10 +85,18 @@
 
 1. Set production environment variables (`RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_WEBHOOK_SIGNING_SECRET`, `AI_API_KEY`, `AI_MODEL`, `NEXT_PUBLIC_SITE_URL`)
 2. Enable Supabase Auth leaked-password protection (dashboard)
-3. Build admin UI for chatbot knowledge / chatbot settings / AI FAQ
-4. Add automated tests (validation, RLS)
+3. ~~Build admin UI for chatbot knowledge / chatbot settings / AI FAQ~~ *(Done — `/admin/content/chatbot/*`)*
+4. ~~Add automated tests~~ *(Done — Vitest, 29 tests across schemas + utilities; run `npm test`)*
 5. Deploy to Vercel + verify domain, production migrations, and smoke tests
 6. Decide footer description copy length
+
+## 8. Post-Audit Additions
+
+- **Website Sections manager** (`/admin/content/sections`): card grid of every frontend section with 4-language preview tabs, Pause/Resume toggle, and edit links
+- **Bulk actions**: select-all + bulk delete for Leads; select-all + bulk archive/delete for Conversations
+- **New editors**: Hero, Trusted Logos, Announcement Bar, Navigation, Footer, Buy a Business (`/admin/content/acquisition`)
+- **Chatbot admin**: knowledge base CRUD, chatbot settings, AI FAQ settings (`/admin/content/chatbot/*`)
+- Legacy `/acquisition` now permanently redirects to `/buy-business`; dead code removed (approx −812 lines)
 
 ---
 

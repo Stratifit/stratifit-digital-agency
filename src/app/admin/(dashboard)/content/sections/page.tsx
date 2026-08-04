@@ -101,20 +101,20 @@ export default async function AdminSectionsPage() {
     });
   }
 
-  // Acquisition — content-driven
+  // Acquisition — content-driven but has a dedicated editor
   rows.push({
     key: "acquisition",
     label: "Acquisition",
     description: "Buy-a-business marketplace",
     status: "auto",
     isVisible: true,
-    editHref: null,
-    countLabel: "Managed under Buy-a-Business",
+    editHref: "/admin/content/acquisition",
+    countLabel: "Listings managed in Buy a Business",
     preview: {
-      en: { eyebrow: "", title: "Buy a Business", highlight: "", description: "Marketplace preview — managed under Buy-a-Business." },
-      de: { eyebrow: "", title: "Buy a Business", highlight: "", description: "Marketplace preview — managed under Buy-a-Business." },
-      fr: { eyebrow: "", title: "Buy a Business", highlight: "", description: "Marketplace preview — managed under Buy-a-Business." },
-      es: { eyebrow: "", title: "Buy a Business", highlight: "", description: "Marketplace preview — managed under Buy-a-Business." },
+      en: { eyebrow: "", title: "Buy a Business", highlight: "", description: "Marketplace preview — managed in the Buy a Business editor." },
+      de: { eyebrow: "", title: "Buy a Business", highlight: "", description: "Marketplace preview — managed in the Buy a Business editor." },
+      fr: { eyebrow: "", title: "Buy a Business", highlight: "", description: "Marketplace preview — managed in the Buy a Business editor." },
+      es: { eyebrow: "", title: "Buy a Business", highlight: "", description: "Marketplace preview — managed in the Buy a Business editor." },
     },
   });
 
