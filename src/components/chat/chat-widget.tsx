@@ -1457,7 +1457,10 @@ export function ChatWidget() {
                 {t(locale, "chatShowEarlier")}
               </button>
             ) : null}
-            <div className="m-auto w-full space-y-4">
+            {/* Bottom-anchored: the newest send/reply always sits at the
+                bottom edge of the panel — past messages are revealed by
+                scrolling up instead of the tail floating mid-panel */}
+            <div className="mt-auto w-full space-y-4">
               {/* Loading skeleton */}
               {stage === "loading" ? (
                 <div aria-hidden="true" className="flex justify-start gap-2">
