@@ -68,9 +68,92 @@ function ArrowRightIcon({ className }: { className?: string }) {
   );
 }
 
+function UserIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="size-[17px]"
+    >
+      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
+  );
+}
+
+function MailIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="size-[17px]"
+    >
+      <rect width="20" height="16" x="2" y="4" rx="2" />
+      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+    </svg>
+  );
+}
+
+function LayersIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="size-[17px]"
+    >
+      <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z" />
+      <path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65" />
+      <path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65" />
+    </svg>
+  );
+}
+
+function WalletIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="size-[17px]"
+    >
+      <rect width="18" height="18" x="3" y="3" rx="2" />
+      <path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
+      <path d="M3 11h3c.8 0 1.6.3 2.1.9.7.9 2 .9 2.9 0 .5-.6 1.3-.9 2.1-.9h3" />
+    </svg>
+  );
+}
+
 // ============================================================================
 // Shared field styles
 // ============================================================================
+
+/** Leading icon slot rendered inside a field. */
+function FieldIcon({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-primary/70">
+      {children}
+    </span>
+  );
+}
 
 const fieldBase =
   "h-11 w-full rounded-card border border-field-border bg-field-bg text-sm text-field-text placeholder:text-field-placeholder outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60 sm:h-12";
@@ -80,16 +163,25 @@ interface FieldShellProps {
   required?: boolean;
   children: React.ReactNode;
   error?: string;
+  /** Optional leading icon rendered inside the field. */
+  icon?: React.ReactNode;
 }
 
-function FieldShell({ label, required, children, error }: FieldShellProps) {
+function FieldShell({ label, required, children, error, icon }: FieldShellProps) {
   return (
     <div className="min-w-0">
       <label className="mb-1.5 block text-xs font-medium text-text-secondary sm:text-sm">
         {label}
         {required ? <span className="ml-1 text-primary">*</span> : null}
       </label>
-      {children}
+      {icon ? (
+        <div className="relative">
+          <FieldIcon>{icon}</FieldIcon>
+          {children}
+        </div>
+      ) : (
+        children
+      )}
       {error ? <p className="mt-1 text-xs text-error">{error}</p> : null}
     </div>
   );
@@ -226,6 +318,7 @@ export function ContactForm({
         <FieldShell
           label={t(locale, "yourName").replace(" *", "")}
           required
+          icon={<UserIcon />}
           error={
             errors.name
               ? translateValidation(locale, errors.name.message)
@@ -234,7 +327,7 @@ export function ContactForm({
         >
           <input
             type="text"
-            className={cn(fieldBase, "px-4")}
+            className={cn(fieldBase, "pl-11 pr-4")}
             placeholder={t(locale, "yourName").replace(" *", "")}
             {...register("name")}
           />
@@ -243,6 +336,7 @@ export function ContactForm({
         <FieldShell
           label={t(locale, "emailLabel").replace(" *", "")}
           required
+          icon={<MailIcon />}
           error={
             errors.email
               ? translateValidation(locale, errors.email.message)
@@ -251,7 +345,7 @@ export function ContactForm({
         >
           <input
             type="email"
-            className={cn(fieldBase, "px-4")}
+            className={cn(fieldBase, "pl-11 pr-4")}
             placeholder={t(locale, "yourEmail").replace(" *", "")}
             {...register("email")}
           />
@@ -273,12 +367,15 @@ export function ContactForm({
           <span className="ml-1 text-primary">*</span>
         </label>
         <div className="relative">
+          <FieldIcon>
+            <LayersIcon />
+          </FieldIcon>
           <button
             type="button"
             aria-haspopup="listbox"
             aria-expanded={servicesOpen}
             onClick={() => setServicesOpen((v) => !v)}
-            className={cn(fieldBase, "pl-4 pr-9", "text-left")}
+            className={cn(fieldBase, "pl-11 pr-9", "text-left")}
           >
             <span
               className={cn(
@@ -356,12 +453,15 @@ export function ContactForm({
             {t(locale, "estimatedBudget")}
           </label>
           <div className="relative">
+            <FieldIcon>
+              <WalletIcon />
+            </FieldIcon>
             <button
               type="button"
               aria-haspopup="listbox"
               aria-expanded={budgetOpen}
               onClick={() => setBudgetOpen((v) => !v)}
-              className={cn(fieldBase, "pl-4 pr-9", "text-left")}
+              className={cn(fieldBase, "pl-11 pr-9", "text-left")}
             >
               <span
                 className={cn(
