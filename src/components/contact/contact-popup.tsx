@@ -86,11 +86,16 @@ export function ContactPopup({
         onClick={() => setOpen(false)}
         className="contact-popup-backdrop fixed inset-0 bg-black/70 backdrop-blur-sm"
       />
-      <div className="contact-popup-panel relative mx-auto flex min-h-[100dvh] w-full max-w-3xl flex-col overflow-y-auto bg-card-dark px-4 pt-4 sm:min-h-0 sm:rounded-lg sm:border sm:border-card-border sm:px-8 sm:pt-8 lg:px-10 lg:pt-10">
-        {/* Ambient amber glow (top-right) */}
+      <div className="contact-popup-panel relative mx-auto flex min-h-[100dvh] w-full max-w-3xl flex-col overflow-y-auto bg-card-dark px-4 pt-4 shadow-[0_30px_90px_-20px_rgba(0,0,0,0.85)] sm:min-h-0 sm:rounded-lg sm:border sm:border-card-border sm:px-8 sm:pt-8 lg:px-10 lg:pt-10">
+        {/* Soft amber light washing down from the top edge, like the header */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute right-0 top-0 h-40 w-40 rounded-full bg-[rgba(245,158,11,0.05)] blur-3xl"
+          className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(70%_60%_at_50%_0%,rgba(245,158,11,0.09),transparent_70%)]"
+        />
+        {/* Amber hairline across the top edge */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 hidden h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent sm:block"
         />
 
         {/* Close button */}

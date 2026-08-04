@@ -146,26 +146,7 @@ function CheckIcon() {
   );
 }
 
-function SendIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="size-4"
-    >
-      <path d="M14.536 9.464a5 5 0 0 1 0 7.072L12 19l-2.536-2.464a5 5 0 0 1 7.072-7.072z" />
-      <path d="M12 12h.01" />
-      <path d="M11 14.535 5.464 9A5 5 0 0 1 12 14.535" />
-    </svg>
-  );
-}
-
-function ArrowRightIcon() {
+function ArrowRightIcon({ className }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -175,7 +156,7 @@ function ArrowRightIcon() {
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
-      className="size-4"
+      className={cn("size-4", className)}
     >
       <path d="M5 12h14M12 5l7 7-7 7" />
     </svg>
@@ -187,7 +168,7 @@ function ArrowRightIcon() {
 // ============================================================================
 
 const fieldBase =
-  "h-11 w-full rounded-[10px] border border-field-border bg-field-bg text-sm text-field-text placeholder:text-field-placeholder outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60 sm:h-12";
+  "h-11 w-full rounded-card border border-field-border bg-field-bg text-sm text-field-text placeholder:text-field-placeholder outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60 sm:h-12";
 
 const fieldWithLeftIcon = "pl-11 pr-4";
 const fieldWithRightChevron = "pr-9";
@@ -318,7 +299,7 @@ export function ContactForm({
         <button
           type="button"
           onClick={() => setSubmitted(false)}
-          className="mt-4 inline-flex items-center justify-center rounded-[10px] border border-card-border bg-transparent px-5 py-2.5 text-sm font-medium text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/30 hover:text-text-primary focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
+          className="mt-4 inline-flex items-center justify-center rounded-button border border-card-border bg-transparent px-5 py-2.5 text-sm font-medium text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/30 hover:text-text-primary focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
         >
           {t(locale, "sendAnotherMessage")}
         </button>
@@ -421,7 +402,7 @@ export function ContactForm({
                 role="listbox"
                 aria-multiselectable="true"
                 aria-label={t(locale, "serviceNeeded")}
-                className="absolute z-30 mt-2 w-full rounded-[10px] border border-card-border bg-card-dark py-2 shadow-2xl max-h-56 overflow-y-auto"
+                className="absolute z-30 mt-2 w-full rounded-card border border-card-border bg-card-dark py-2 shadow-2xl max-h-56 overflow-y-auto"
               >
                 {services.map((service) => {
                   const selected = selectedServiceIds.includes(service.id);
@@ -494,7 +475,7 @@ export function ContactForm({
               <div
                 role="listbox"
                 aria-label={t(locale, "estimatedBudget")}
-                className="absolute z-30 mt-2 w-full rounded-[10px] border border-card-border bg-card-dark py-2 shadow-2xl max-h-56 overflow-y-auto"
+                className="absolute z-30 mt-2 w-full rounded-card border border-card-border bg-card-dark py-2 shadow-2xl max-h-56 overflow-y-auto"
               >
                 <button
                   type="button"
@@ -561,7 +542,7 @@ export function ContactForm({
         <textarea
           rows={compact ? 3 : 4}
           className={cn(
-            "w-full resize-none rounded-[10px] border border-field-border bg-field-bg py-3 pl-11 pr-4 text-sm leading-5 text-field-text placeholder:text-field-placeholder outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60",
+            "w-full resize-none rounded-card border border-field-border bg-field-bg py-3 pl-11 pr-4 text-sm leading-5 text-field-text placeholder:text-field-placeholder outline-none transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(245,158,11,0.10)] aria-[invalid=true]:border-error/60",
             compact ? "h-[82px]" : "h-28"
           )}
           placeholder={t(locale, "tellUsProject").replace(" *", "")}
@@ -583,15 +564,10 @@ export function ContactForm({
       <button
         type="submit"
         disabled={isSubmitting}
-        className="flex h-12 w-full items-center justify-between rounded-[10px] bg-primary px-4 font-semibold text-text-inverse transition-[background-color,border-color,color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-[0_10px_32px_rgba(245,158,11,0.10)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 active:translate-y-0 active:bg-primary-active disabled:cursor-not-allowed disabled:opacity-60 sm:h-14 sm:px-5"
+        className="group flex h-12 w-full items-center justify-center gap-2.5 rounded-card bg-primary px-5 text-sm font-bold text-text-inverse transition-[background-color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-[0_12px_32px_rgba(245,158,11,0.18)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 active:translate-y-0 active:bg-primary-active disabled:cursor-not-allowed disabled:opacity-60 sm:h-14 sm:text-base"
       >
-        <span className="flex size-8 items-center justify-center rounded-lg bg-background text-text-muted sm:size-9">
-          <SendIcon />
-        </span>
-        <span className="text-sm sm:text-base">
-          {isSubmitting ? t(locale, "sending") : t(locale, "sendProjectRequest")}
-        </span>
-        <ArrowRightIcon />
+        {isSubmitting ? t(locale, "sending") : t(locale, "sendProjectRequest")}
+        <ArrowRightIcon className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1" />
       </button>
     </form>
   );

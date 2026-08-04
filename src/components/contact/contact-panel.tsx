@@ -3,27 +3,6 @@ import type { PublicServiceDetail } from "@/features/services/queries";
 import { t } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
 
-function SparklesIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="size-4"
-    >
-      <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z" />
-      <path d="M20 3v4" />
-      <path d="M22 5h-4" />
-      <path d="M4 17v2" />
-      <path d="M5 18H3" />
-    </svg>
-  );
-}
-
 function ShieldCheckIcon() {
   return (
     <svg
@@ -34,7 +13,7 @@ function ShieldCheckIcon() {
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
-      className="size-3.5"
+      className="size-4"
     >
       <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
       <path d="m9 12 2 2 4-4" />
@@ -52,7 +31,7 @@ function LockIcon() {
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
-      className="size-3.5"
+      className="size-4"
     >
       <rect width="18" height="11" x="3" y="11" rx="2" />
       <path d="M7 11V7a5 5 0 0 1 10 0v4" />
@@ -70,7 +49,7 @@ function ZapIcon() {
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
-      className="size-3.5"
+      className="size-4"
     >
       <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" />
     </svg>
@@ -97,20 +76,18 @@ function TrustBadges({ locale }: { locale: string }) {
   ];
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 rounded-card border border-border bg-surface-soft/50 px-4 py-4 sm:px-6">
+    <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 rounded-card border border-border bg-background/40 px-5 py-4 sm:px-8">
       {badges.map((badge, idx) => (
         <div
           key={idx}
-          className="flex items-center gap-2.5"
+          className="flex items-center gap-3"
         >
-          <span className="flex size-8 items-center justify-center rounded-lg border border-border bg-card-dark text-text-muted">
-            {badge.icon}
-          </span>
+          <span className="shrink-0 text-primary/70">{badge.icon}</span>
           <div className="leading-snug">
-            <p className="text-[11px] font-semibold text-text-primary sm:text-xs">
+            <p className="text-xs font-semibold text-text-primary">
               {badge.title}
             </p>
-            <p className="mt-px text-[9px] leading-[1.4] text-text-muted sm:text-[11px]">
+            <p className="mt-0.5 text-[11px] text-text-muted">
               {badge.desc}
             </p>
           </div>
@@ -139,16 +116,15 @@ export function ContactPanel({
   return (
     <>
       <header className={cn("relative", headerClassName)}>
-        <div className="mb-3 mt-2 flex items-center gap-2 sm:mb-4 sm:mt-0">
+        <div className="mb-3 mt-2 flex items-center gap-3 sm:mb-4 sm:mt-0">
           <span
+            aria-hidden="true"
             className={cn(
-              "flex items-center justify-center rounded-lg border border-border bg-surface-soft text-text-muted",
-              compact ? "size-6" : "size-7 sm:size-9"
+              "h-px shrink-0 bg-gradient-to-r from-primary to-transparent",
+              compact ? "w-7" : "w-10 sm:w-14"
             )}
-          >
-            <SparklesIcon />
-          </span>
-          <span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-text-muted sm:text-xs">
+          />
+          <span className="text-[10px] font-bold uppercase tracking-[0.28em] text-primary sm:text-xs">
             {t(locale, "getInTouch")}
           </span>
         </div>
