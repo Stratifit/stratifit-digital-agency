@@ -1583,7 +1583,7 @@ export function ChatWidget({
                 switching between the chat and the section panels */}
             <div
               className={cn(
-                view !== "chat" ? "flex min-h-full flex-col" : "hidden"
+                view === "chat" ? "flex min-h-full flex-col" : "hidden"
               )}
             >
             <div
