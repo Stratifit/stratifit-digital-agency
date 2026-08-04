@@ -1712,8 +1712,10 @@ export function ChatWidget({
               </div>
           </div>
 
-          {/* Footer — input, quick actions, brand */}
-          {stage === "emailQuestion" ? null : (
+          {/* Footer — input, quick actions, brand. Only shown in the
+              conversation view: topic panels hide it so the cards are fully
+              visible, and each panel carries its own CTA back to the chat. */}
+          {stage === "emailQuestion" || view !== "chat" ? null : (
             <footer className="flex flex-none flex-col border-t border-border bg-background">
               <form
                 onSubmit={handleSubmit}
