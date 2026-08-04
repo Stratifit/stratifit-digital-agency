@@ -48,9 +48,9 @@ export function AnnouncementBarView({ slides, linkUrl, linkLabel }: Announcement
 
   return (
     <div className="border-b border-border bg-primary">
-      {/* Slimmer horizontal padding than the shared Container (px-5 instead
+      {/* Slimmer horizontal padding than the shared Container (px-4 instead
           of px-6) so the announcement strip feels less bulky. */}
-      <div className="mx-auto flex h-10 w-full max-w-[var(--container-lg)] items-center gap-3 px-5 lg:px-8">
+      <div className="mx-auto flex h-10 w-full max-w-[var(--container-lg)] items-center gap-3 px-4 lg:px-8">
         <div
           className="flex min-w-0 flex-1 touch-pan-y items-center gap-2"
           onTouchStart={handleTouchStart}
