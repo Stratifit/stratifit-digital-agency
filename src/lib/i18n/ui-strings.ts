@@ -102,9 +102,6 @@ export type UiStringKey =
   | "chatAskAboutServices"
   | "chatFaqTitle"
   | "chatFaqMoreQuestions"
-  | "chatSupportTitle"
-  | "chatSupportBody"
-  | "chatContactUs"
   | "chatBackToChat"
   | "chatSave"
   | "chatCancel"
@@ -250,9 +247,6 @@ const en: UiStrings = {
   chatAskAboutServices: "Ask about services",
   chatFaqTitle: "Common Questions",
   chatFaqMoreQuestions: "Have more questions?",
-  chatSupportTitle: "Human Support",
-  chatSupportBody: "Our team is ready to help with your project.",
-  chatContactUs: "Contact us",
   chatBackToChat: "Continue in chat",
   chatSave: "Save",
   chatCancel: "Cancel",
@@ -399,9 +393,6 @@ const de: UiStrings = {
   chatAskAboutServices: "Nach Leistungen fragen",
   chatFaqTitle: "Häufige Fragen",
   chatFaqMoreQuestions: "Haben Sie weitere Fragen?",
-  chatSupportTitle: "Menschlicher Support",
-  chatSupportBody: "Unser Team hilft Ihnen gerne bei Ihrem Projekt.",
-  chatContactUs: "Kontakt aufnehmen",
   chatBackToChat: "Im Chat fortfahren",
   chatSave: "Speichern",
   chatCancel: "Abbrechen",
@@ -548,9 +539,6 @@ const fr: UiStrings = {
   chatAskAboutServices: "Demander des services",
   chatFaqTitle: "Questions fréquentes",
   chatFaqMoreQuestions: "D'autres questions ?",
-  chatSupportTitle: "Support humain",
-  chatSupportBody: "Notre équipe est prête à vous aider sur votre projet.",
-  chatContactUs: "Nous contacter",
   chatBackToChat: "Continuer dans le chat",
   chatSave: "Enregistrer",
   chatCancel: "Annuler",
@@ -697,9 +685,6 @@ const es: UiStrings = {
   chatAskAboutServices: "Preguntar por servicios",
   chatFaqTitle: "Preguntas frecuentes",
   chatFaqMoreQuestions: "¿Tiene más preguntas?",
-  chatSupportTitle: "Soporte humano",
-  chatSupportBody: "Nuestro equipo está listo para ayudarte con tu proyecto.",
-  chatContactUs: "Contáctanos",
   chatBackToChat: "Continuar en el chat",
   chatSave: "Guardar",
   chatCancel: "Cancelar",

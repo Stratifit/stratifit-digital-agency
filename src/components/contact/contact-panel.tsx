@@ -128,16 +128,24 @@ export function ContactPanel({
   services,
   locale,
   headerClassName,
+  compact = false,
 }: {
   services: PublicServiceDetail[];
   locale: string;
   headerClassName?: string;
+  /** Compact sizing for narrow surfaces such as the chat panel. */
+  compact?: boolean;
 }) {
   return (
     <>
       <header className={cn("relative", headerClassName)}>
         <div className="mb-3 mt-2 flex items-center gap-2 sm:mb-4 sm:mt-0">
-          <span className="flex size-7 items-center justify-center rounded-lg border border-border bg-surface-soft text-text-muted sm:size-9">
+          <span
+            className={cn(
+              "flex items-center justify-center rounded-lg border border-border bg-surface-soft text-text-muted",
+              compact ? "size-6" : "size-7 sm:size-9"
+            )}
+          >
             <SparklesIcon />
           </span>
           <span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-text-muted sm:text-xs">
@@ -145,21 +153,35 @@ export function ContactPanel({
           </span>
         </div>
 
-        <h2 className="font-display text-[25px] font-bold leading-[1.06] tracking-[-0.03em] text-text-primary sm:text-4xl lg:text-5xl">
+        <h2
+          className={cn(
+            "font-display font-bold leading-[1.06] tracking-[-0.03em] text-text-primary",
+            compact
+              ? "text-2xl sm:text-3xl"
+              : "text-[25px] sm:text-4xl lg:text-5xl"
+          )}
+        >
           {t(locale, "popupHeadingA")}{" "}
           <span className="text-primary">{t(locale, "popupHeadingB")}</span>
         </h2>
 
-        <p className="mt-2.5 max-w-xl text-[11px] leading-4 text-text-secondary sm:mt-3 sm:text-sm sm:leading-6">
+        <p
+          className={cn(
+            "mt-2.5 max-w-xl text-text-secondary",
+            compact
+              ? "text-sm leading-relaxed"
+              : "text-[11px] leading-4 sm:mt-3 sm:text-sm sm:leading-6"
+          )}
+        >
           {t(locale, "popupSubheading")}
         </p>
       </header>
 
-      <div className="relative mt-6 sm:mt-10">
+      <div className={cn("relative", compact ? "mt-4" : "mt-6 sm:mt-10")}>
         <ContactForm services={services} locale={locale} compact />
       </div>
 
-      <div className="relative pt-4 sm:pt-8 lg:pt-10">
+      <div className={cn("relative", compact ? "pt-4" : "pt-4 sm:pt-8 lg:pt-10")}>
         <TrustBadges locale={locale} />
       </div>
     </>

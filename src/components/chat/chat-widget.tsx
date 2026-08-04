@@ -19,6 +19,7 @@ import { ServiceCard } from "@/components/sections/service-card";
 import { PlanCard } from "@/components/sections/pricing-plans";
 import { FaqAccordion, type FaqItem } from "@/components/sections/faq-accordion";
 import { SectionHeader } from "@/components/ui/section-header";
+import { ContactPanel } from "@/components/contact/contact-panel";
 import type { PublicServiceDetail } from "@/features/services/queries";
 import type { PublicPricingPlan } from "@/features/pricing/queries";
 import type { PublicFaq } from "@/features/faq/queries";
@@ -532,31 +533,20 @@ function FaqPanel({
   );
 }
 
-/** Human-support panel — hands off to the contact form. */
+/** Human-support panel — the full contact section embedded inline, so
+    visitors can reach the team without leaving the chat. Reuses the same
+    ContactPanel (header + form + trust badges) as the contact popup and the
+    /contact page. */
 function SupportPanel({
   locale,
-  onContact,
+  services,
 }: {
   locale: string;
-  onContact: () => void;
+  services: PublicServiceDetail[];
 }) {
   return (
     <div>
-      <PanelHeading
-        title={t(locale, "chatSupportTitle")}
-        icon={<CogIcon className="size-3.5" />}
-      />
-      <div className="rounded-[14px] border border-border bg-card-dark p-4">
-        <p className="text-[11px] leading-relaxed text-text-muted">
-          {t(locale, "chatSupportBody")}
-        </p>
-        <div className="mt-3.5">
-          <PanelPrimaryButton onClick={onContact}>
-            <MailIcon className="size-3.5" />
-            {t(locale, "chatContactUs")}
-          </PanelPrimaryButton>
-        </div>
-      </div>
+      <ContactPanel services={services} locale={locale} compact />
     </div>
   );
 }
@@ -1212,12 +1202,6 @@ export function ChatWidget({
     sendChatMessage(t(locale, "chatServicesQuestion"));
   }
 
-  /** Opens the global contact popup (used by the Support panel and the
-      Pricing "Start a project" action). */
-  function openContactPopup() {
-    window.dispatchEvent(new CustomEvent("stratifit:open-contact"));
-  }
-
   /** Closes the chat before the "Learn more" link navigates to the service
       page, so the widget stays closed on the destination instead of reopening
       from the persisted "was open" flag. */
@@ -1749,7 +1733,7 @@ export function ChatWidget({
                 ) : (
                   <SupportPanel
                     locale={locale}
-                    onContact={openContactPopup}
+                    services={services}
                   />
                 )}
               </div>
