@@ -254,8 +254,6 @@ export function ContactForm({
       : [...selectedServiceIds, serviceId];
     setSelectedServiceIds(next);
     setValue("requested_service_ids", next);
-    // Auto-close the dropdown after a selection.
-    setServicesOpen(false);
   }
 
   async function onSubmit(values: z.input<typeof leadSchema>) {

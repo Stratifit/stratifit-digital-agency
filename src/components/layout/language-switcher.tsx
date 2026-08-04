@@ -46,6 +46,11 @@ export function LanguageSwitcher({
     await setLocale(locale);
     setActiveLocale(locale);
     onLocaleSelect?.();
+    // Keep client-only surfaces (e.g. the chat widget) in sync with the
+    // website locale chosen from the header/mobile navigation.
+    window.dispatchEvent(
+      new CustomEvent("stratifit:locale-change", { detail: { locale } })
+    );
     router.refresh();
   }
 

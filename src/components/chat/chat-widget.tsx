@@ -13,6 +13,8 @@ import {
 } from "@/features/chat/mutations";
 import { t, type UiStringKey } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
+import { useRouter } from "next/navigation";
+import { setLocale } from "@/actions/locale";
 import Link from "next/link";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { ServiceCard } from "@/components/sections/service-card";
@@ -675,6 +677,7 @@ export function ChatWidget({
   servicesSettings: PublicSectionSettings | null;
   pricingSettings: PublicSectionSettings | null;
 }) {
+  const router = useRouter();
   const [open, setOpen] = React.useState(() => {
     if (typeof window === "undefined") return false;
     try {
@@ -732,6 +735,26 @@ export function ChatWidget({
     }
     window.addEventListener("stratifit:open-chat", handleOpen);
     return () => window.removeEventListener("stratifit:open-chat", handleOpen);
+  }, []);
+
+  // Keep the chat language in sync when the locale is changed from the
+  // website header/mobile navigation (dispatched as stratifit:locale-change).
+  React.useEffect(() => {
+    function onLocaleChange(event: Event) {
+      const next = (event as CustomEvent<{ locale: string }>).detail?.locale;
+      if (next && SUPPORTED_LANGS.includes(next)) {
+        setLang(next);
+        setLangOpen(false);
+        try {
+          window.localStorage.setItem(LANG_KEY, next);
+        } catch {
+          // Storage unavailable — ignore.
+        }
+      }
+    }
+    window.addEventListener("stratifit:locale-change", onLocaleChange);
+    return () =>
+      window.removeEventListener("stratifit:locale-change", onLocaleChange);
   }, []);
 
   // Keep the open/closed state in sync with storage.
@@ -1133,10 +1156,14 @@ export function ChatWidget({
     }
   }
 
-  function selectLang(code: string) {
+  async function selectLang(code: string) {
     setLang(code);
     setLangOpen(false);
     window.localStorage.setItem(LANG_KEY, code);
+    // Keep the website in sync when the language is changed from the chat.
+    document.documentElement.lang = code;
+    await setLocale(code);
+    router.refresh();
   }
 
   function handleSubmit(e: React.FormEvent) {
