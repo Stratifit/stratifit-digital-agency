@@ -2,14 +2,8 @@
 import type { ActionResult } from "@/types/action-result";
 
 import { redirect } from "next/navigation";
-import { z } from "zod";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-
-
-const signInSchema = z.object({
-  email: z.string().email("Enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
+import { signInSchema } from "@/features/auth/schemas";
 
 export interface CurrentAdmin {
   user_id: string;
