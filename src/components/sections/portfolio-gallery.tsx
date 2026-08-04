@@ -112,7 +112,7 @@ export function PortfolioGallery({
             type="button"
             onClick={() => selectFilter("all")}
             className={cn(
-              "shrink-0 rounded-full px-5 py-2.5 text-sm font-bold transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
+              "shrink-0 rounded-[10px] px-5 py-2.5 text-sm font-bold transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
               activeFilter === "all"
                 ? "bg-primary text-text-inverse shadow-[0_0_20px_rgba(245,158,11,0.3)]"
                 : "border border-white/10 bg-white/5 text-white hover:border-primary/30"
@@ -126,7 +126,7 @@ export function PortfolioGallery({
               type="button"
               onClick={() => selectFilter(service.slug)}
               className={cn(
-                "shrink-0 rounded-full px-5 py-2.5 text-sm font-bold transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
+                "shrink-0 rounded-[10px] px-5 py-2.5 text-sm font-bold transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
                 activeFilter === service.slug
                   ? "bg-primary text-text-inverse shadow-[0_0_20px_rgba(245,158,11,0.3)]"
                   : "border border-white/10 bg-white/5 text-white hover:border-primary/30"
