@@ -388,7 +388,7 @@ function ServicesPanel({
         title={t(locale, "chatServices")}
         icon={<BriefcaseIcon className="size-3.5" />}
       />
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3">
         {services.map((service) => {
           const deliverables = (
             (service.deliverables_translations as Record<string, unknown> | null)?.[
@@ -503,7 +503,7 @@ function PricingPanel({
         {t(locale, "chatPricingBody")}
       </p>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3">
         {plans.map((plan) => {
           const features = (
             (plan.features_translations as Record<string, unknown> | null)?.[
@@ -616,7 +616,26 @@ function PricingPanel({
   );
 }
 
-/** FAQ accordion panel — one open item at a time. */
+/** FAQ accordion panel — matches the main homepage FaqAccordion
+    design exactly: 2-col grid on md+, Satoshi headings, CSS grid row
+    reveal animation, primary/30 highlight border on the open item. */
+function FaqAccordionChevronIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      className="size-5 shrink-0"
+    >
+      <path
+        fillRule="evenodd"
+        d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
 function FaqPanel({
   locale,
   openFaq,
@@ -634,35 +653,58 @@ function FaqPanel({
         title={t(locale, "chatFaqTitle")}
         icon={<InfoIcon className="size-3.5" />}
       />
-      <div className="space-y-2">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
         {FAQ_ITEMS.map((item, index) => {
           const open = openFaq === index;
           return (
             <div
               key={item.q}
-              className="overflow-hidden rounded-[14px] border border-border bg-card-dark transition-colors hover:border-primary/30"
+              className={cn(
+                "h-full rounded-card border transition-all duration-300 ease-[var(--ease-standard)]",
+                open
+                  ? "border-primary/30 shadow-[0_0_20px_rgba(245,158,11,0.05)]"
+                  : "border-card-border hover:border-white/10"
+              )}
             >
               <button
                 type="button"
                 aria-expanded={open}
                 onClick={() => onToggleFaq(index)}
-                className="flex w-full items-center justify-between gap-2 px-3.5 py-3 text-left text-xs font-semibold text-text-primary transition-colors hover:bg-white/5"
+                className="group flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
               >
-                {t(locale, item.q)}
-                <ChevronDownIcon
+                <span
                   className={cn(
-                    "size-3.5 shrink-0 text-primary/70 transition-transform duration-200",
-                    open && "rotate-180"
+                    "font-display text-sm font-bold transition-colors duration-300 sm:text-base",
+                    open
+                      ? "text-primary"
+                      : "text-text-primary group-hover:text-primary/80"
                   )}
-                />
+                >
+                  {t(locale, item.q)}
+                </span>
+                <span
+                  className={cn(
+                    "shrink-0 transition-all duration-300",
+                    open
+                      ? "rotate-180 text-primary"
+                      : "text-text-subtle group-hover:text-primary/70"
+                  )}
+                >
+                  <FaqAccordionChevronIcon />
+                </span>
               </button>
-              {open ? (
-                <div className="border-t border-border px-3.5 py-3">
-                  <p className="text-[11px] leading-relaxed text-text-muted">
+              <div
+                className={cn(
+                  "grid transition-[grid-template-rows] duration-300 ease-[var(--ease-standard)]",
+                  open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                )}
+              >
+                <div className="overflow-hidden">
+                  <p className="px-6 pb-5 text-sm leading-relaxed text-text-muted">
                     {t(locale, item.a)}
                   </p>
                 </div>
-              ) : null}
+              </div>
             </div>
           );
         })}

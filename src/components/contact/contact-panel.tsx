@@ -97,18 +97,20 @@ function TrustBadges({ locale }: { locale: string }) {
   ];
 
   return (
-    <div className="grid grid-cols-3 divide-x divide-border rounded-card border border-border px-2 py-3 sm:py-4">
+    <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 rounded-card border border-border bg-surface-soft/50 px-4 py-4 sm:px-6">
       {badges.map((badge, idx) => (
         <div
           key={idx}
-          className="flex items-start justify-center gap-2 px-2 text-center sm:gap-2.5"
+          className="flex items-center gap-2.5"
         >
-          <span className="mt-0.5 shrink-0 text-primary">{badge.icon}</span>
-          <div className="min-w-0 text-left leading-snug">
-            <p className="whitespace-nowrap text-[9px] font-semibold text-text-primary sm:text-[11px]">
+          <span className="flex size-8 items-center justify-center rounded-lg border border-border bg-card-dark text-text-muted">
+            {badge.icon}
+          </span>
+          <div className="leading-snug">
+            <p className="text-[11px] font-semibold text-text-primary sm:text-xs">
               {badge.title}
             </p>
-            <p className="mt-0.5 text-[8px] leading-[1.4] text-text-muted sm:text-[10px]">
+            <p className="mt-px text-[9px] leading-[1.4] text-text-muted sm:text-[11px]">
               {badge.desc}
             </p>
           </div>
@@ -135,10 +137,10 @@ export function ContactPanel({
     <>
       <header className={cn("relative", headerClassName)}>
         <div className="mb-3 mt-2 flex items-center gap-2 sm:mb-4 sm:mt-0">
-          <span className="flex size-7 items-center justify-center rounded-lg border border-primary/30 bg-surface-soft text-primary sm:size-9">
+          <span className="flex size-7 items-center justify-center rounded-lg border border-border bg-surface-soft text-text-muted sm:size-9">
             <SparklesIcon />
           </span>
-          <span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-primary sm:text-xs">
+          <span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-text-muted sm:text-xs">
             {t(locale, "getInTouch")}
           </span>
         </div>

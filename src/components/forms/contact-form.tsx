@@ -208,7 +208,7 @@ function FieldShell({ label, required, icon, children, error }: FieldShellProps)
         {required ? <span className="ml-1 text-field-placeholder">*</span> : null}
       </label>
       <div className="relative">
-        <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-primary">
+        <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-text-muted">
           {icon}
         </span>
         {children}
@@ -384,11 +384,11 @@ export function ContactForm({
         {/* Service dropdown (multi-select) */}
         <div ref={servicesRef} className="min-w-0">
           <label className="mb-1.5 block text-xs font-medium text-text-secondary sm:text-sm">
-            {t(locale, "serviceNeeded")}
+            {t(locale, "selectService")}
             <span className="ml-1 text-field-placeholder">*</span>
           </label>
           <div className="relative">
-            <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-primary">
+            <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-text-muted">
               <LayersIcon />
             </span>
             <button
@@ -413,7 +413,7 @@ export function ContactForm({
                     : tWithNumber(locale, "servicesSelected", selectedServices.length)}
               </span>
             </button>
-            <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-primary">
+            <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-text-muted">
               <ChevronDownIcon />
             </span>
             {servicesOpen ? (
@@ -468,7 +468,7 @@ export function ContactForm({
             {t(locale, "estimatedBudget")}
           </label>
           <div className="relative">
-            <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-primary">
+            <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-text-muted">
               <WalletIcon />
             </span>
             <button
@@ -487,7 +487,7 @@ export function ContactForm({
                 {budgetRange || t(locale, "notSureYet")}
               </span>
             </button>
-            <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-primary">
+            <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-text-muted">
               <ChevronDownIcon />
             </span>
             {budgetOpen ? (
@@ -585,7 +585,7 @@ export function ContactForm({
         disabled={isSubmitting}
         className="flex h-12 w-full items-center justify-between rounded-[10px] bg-primary px-4 font-semibold text-text-inverse transition-[background-color,border-color,color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-[0_10px_32px_rgba(245,158,11,0.10)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 active:translate-y-0 active:bg-primary-active disabled:cursor-not-allowed disabled:opacity-60 sm:h-14 sm:px-5"
       >
-        <span className="flex size-8 items-center justify-center rounded-lg bg-background text-primary sm:size-9">
+        <span className="flex size-8 items-center justify-center rounded-lg bg-background text-text-muted sm:size-9">
           <SendIcon />
         </span>
         <span className="text-sm sm:text-base">
