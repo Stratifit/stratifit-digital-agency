@@ -373,6 +373,7 @@ function ServicesPanel({
   locale,
   services,
   servicePageSlugs,
+  settings,
   onAsk,
   onLearnMore,
   onAskServices,
@@ -380,16 +381,21 @@ function ServicesPanel({
   locale: string;
   services: PublicServiceDetail[];
   servicePageSlugs: string[];
+  settings: PublicSectionSettings | null;
   onAsk: (serviceTitle: string, mode: "interested" | "more") => void;
   onLearnMore: () => void;
   onAskServices: () => void;
 }) {
   return (
     <div>
-      <PanelHeading
-        title={t(locale, "chatServices")}
-        icon={<BriefcaseIcon className="size-3.5" />}
-      />
+      {settings ? (
+        <SectionHeader settings={settings} locale={locale} compact />
+      ) : (
+        <PanelHeading
+          title={t(locale, "chatServices")}
+          icon={<BriefcaseIcon className="size-3.5" />}
+        />
+      )}
       <div className="grid grid-cols-1 gap-6">
         {services.map((service) => {
           const title =
@@ -442,21 +448,29 @@ function ServicesPanel({
 function PricingPanel({
   locale,
   plans,
+  settings,
   onAskPricing,
 }: {
   locale: string;
   plans: PublicPricingPlan[];
+  settings: PublicSectionSettings | null;
   onAskPricing: () => void;
 }) {
   return (
     <div>
-      <PanelHeading
-        title={t(locale, "chatPricingTitle")}
-        icon={<DollarIcon className="size-3.5" />}
-      />
-      <p className="mb-3 text-sm leading-relaxed text-text-muted">
-        {t(locale, "chatPricingBody")}
-      </p>
+      {settings ? (
+        <SectionHeader settings={settings} locale={locale} compact />
+      ) : (
+        <>
+          <PanelHeading
+            title={t(locale, "chatPricingTitle")}
+            icon={<DollarIcon className="size-3.5" />}
+          />
+          <p className="mb-3 text-sm leading-relaxed text-text-muted">
+            {t(locale, "chatPricingBody")}
+          </p>
+        </>
+      )}
 
       <div className="grid grid-cols-1 gap-6">
         {plans.map((plan) => (
@@ -681,12 +695,16 @@ export function ChatWidget({
   servicePageSlugs,
   faqs,
   faqSettings,
+  servicesSettings,
+  pricingSettings,
 }: {
   services: PublicServiceDetail[];
   plans: PublicPricingPlan[];
   servicePageSlugs: string[];
   faqs: PublicFaq[];
   faqSettings: PublicSectionSettings | null;
+  servicesSettings: PublicSectionSettings | null;
+  pricingSettings: PublicSectionSettings | null;
 }) {
   const [open, setOpen] = React.useState(() => {
     if (typeof window === "undefined") return false;
@@ -1709,6 +1727,7 @@ export function ChatWidget({
                     locale={locale}
                     services={services}
                     servicePageSlugs={servicePageSlugs}
+                    settings={servicesSettings}
                     onAsk={askAboutService}
                     onLearnMore={handleLearnMore}
                     onAskServices={askAboutServices}
@@ -1717,6 +1736,7 @@ export function ChatWidget({
                   <PricingPanel
                     locale={locale}
                     plans={plans}
+                    settings={pricingSettings}
                     onAskPricing={askAboutPricing}
                   />
                 ) : view === "faq" ? (

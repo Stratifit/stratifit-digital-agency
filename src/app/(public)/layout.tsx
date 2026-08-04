@@ -17,15 +17,25 @@ export default async function PublicLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [locale, services, plans, servicePageSlugs, faqs, faqSettings] =
-    await Promise.all([
-      getLocale(),
-      getPublicServices(),
-      getPublicPricingPlans(),
-      getPublicServicePageSlugs(),
-      getPublicFaqs(),
-      getPublicSectionSetting("faq"),
-    ]);
+  const [
+    locale,
+    services,
+    plans,
+    servicePageSlugs,
+    faqs,
+    faqSettings,
+    servicesSettings,
+    pricingSettings,
+  ] = await Promise.all([
+    getLocale(),
+    getPublicServices(),
+    getPublicPricingPlans(),
+    getPublicServicePageSlugs(),
+    getPublicFaqs(),
+    getPublicSectionSetting("faq"),
+    getPublicSectionSetting("services"),
+    getPublicSectionSetting("pricing"),
+  ]);
 
   return (
     <>
@@ -48,6 +58,8 @@ export default async function PublicLayout({
         servicePageSlugs={servicePageSlugs}
         faqs={faqs}
         faqSettings={faqSettings}
+        servicesSettings={servicesSettings}
+        pricingSettings={pricingSettings}
       />
       <ContactPopup services={services} locale={locale} />
     </>
