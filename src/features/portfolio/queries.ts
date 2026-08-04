@@ -1,11 +1,18 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getMediaPublicUrl } from "@/lib/media";
 
+export interface PublicPortfolioMetric {
+  value: string;
+  label_translations: Record<string, string> | null;
+}
+
 export interface PublicPortfolioProject {
   slug: string;
   client_name: string;
   title_translations: Record<string, string> | null;
   summary_translations: Record<string, string> | null;
+  deliverables_translations: Record<string, string[]> | null;
+  metrics: PublicPortfolioMetric[];
   featured_media_id: string | null;
   featured_media_url: string | null;
   service_slugs: string[];
@@ -18,7 +25,9 @@ export async function getPublicPortfolioProjects(
 
   const { data, error } = await supabase
     .from("portfolio_projects")
-    .select("id, slug, client_name, title_translations, summary_translations, featured_media_id")
+    .select(
+      "id, slug, client_name, title_translations, summary_translations, deliverables_translations, metrics, featured_media_id"
+    )
     .eq("status", "published")
     .order("published_at", { ascending: false })
     .limit(limit);
@@ -84,6 +93,26 @@ export async function getPublicPortfolioProjects(
       .filter((l) => l.portfolio_id === projectId)
       .map((l) => l.service_id);
     const mediaId = project.featured_media_id as string | null;
+    const metricsRaw = (project.metrics ?? []) as unknown[];
+    const metrics = metricsRaw
+      .filter(
+        (m): m is { value: string; label_translations: Record<string, string> | null } =>
+          Boolean(
+            m &&
+              typeof m === "object" &&
+              "value" in m &&
+              typeof (m as { value: unknown }).value === "string" &&
+              (!("label_translations" in m) ||
+                (m as { label_translations: unknown }).label_translations ===
+                  null ||
+                typeof (m as { label_translations: unknown })
+                  .label_translations === "object")
+          )
+      )
+      .map((m) => ({
+        value: m.value,
+        label_translations: m.label_translations ?? null,
+      }));
 
     return {
       slug: project.slug as string,
@@ -92,6 +121,9 @@ export async function getPublicPortfolioProjects(
         project.title_translations as Record<string, string> | null,
       summary_translations:
         project.summary_translations as Record<string, string> | null,
+      deliverables_translations:
+        project.deliverables_translations as Record<string, string[]> | null,
+      metrics,
       featured_media_id: mediaId,
       featured_media_url: mediaId ? (mediaById.get(mediaId) ?? null) : null,
       service_slugs: linkedServiceIds

@@ -1,4 +1,4 @@
-﻿import { getLocale } from "@/lib/i18n/get-locale";
+import { getLocale } from "@/lib/i18n/get-locale";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
@@ -9,66 +9,73 @@ export const metadata = pageMetadata({
 });
 
 import { getPublicPortfolioProjects } from "@/features/portfolio/queries";
+import { getPublicServices } from "@/features/services/queries";
+import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
-import { Section } from "@/components/ui/section";
-import { Card } from "@/components/ui/card";
-import { LinkButton } from "@/components/ui/link-button";
-import { Reveal } from "@/components/ui/reveal";
+import { WorkGrid } from "@/components/work/work-grid";
 
 export default async function WorkPage() {
   const locale = await getLocale();
-  const projects = await getPublicPortfolioProjects(100);
+  const [projects, services, settings] = await Promise.all([
+    getPublicPortfolioProjects(100),
+    getPublicServices(),
+    getPublicSectionSetting("portfolio"),
+  ]);
+
+  const eyebrow = settings
+    ? resolveTranslation(settings.eyebrow_translations, locale)
+    : "Portfolio";
+  const title = settings
+    ? resolveTranslation(settings.title_translations, locale)
+    : "Our";
+  const highlight = settings
+    ? resolveTranslation(settings.highlight_translations, locale)
+    : "Work";
+  const description =
+    (settings && resolveTranslation(settings.description_translations, locale)) ||
+    "We craft digital experiences that define industries and elevate brands through precision and creativity.";
 
   return (
     <>
-      <section className="border-b border-border bg-background-deep">
-        <Container className="py-20 md:py-24">
-          <p className="text-sm font-medium uppercase tracking-widest text-primary">
-            Our Work
-          </p>
-          <h1 className="mt-4 font-display text-4xl font-bold tracking-tight text-text-primary md:text-5xl">
-            Selected projects
+      <section className="relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-20">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-primary/30 blur-[120px]"
+        />
+        <Container className="relative z-10">
+          {eyebrow ? (
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+              {eyebrow}
+            </p>
+          ) : null}
+          <h1 className="mb-4 font-display text-4xl font-black leading-tight tracking-tight text-text-primary sm:text-5xl md:text-6xl md:leading-none lg:text-7xl">
+            <span>{title}</span>
+            {highlight ? <span className="text-primary"> {highlight}</span> : null}
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-text-secondary">
-            A look at how we turn strategy into working digital products.
-          </p>
+          {description ? (
+            <p className="mt-3 max-w-2xl border-l-2 border-primary/50 pl-4 text-base leading-relaxed text-text-muted sm:pl-6 sm:text-lg md:text-xl">
+              {description}
+            </p>
+          ) : null}
         </Container>
       </section>
 
-      <Section>
+      <section className="pb-24 md:pb-32">
         <Container>
           {projects.length === 0 ? (
-            <p className="text-text-secondary">Projects will appear here soon.</p>
+            <p className="py-20 text-center text-sm text-text-muted">
+              Projects will appear here soon.
+            </p>
           ) : (
-            <Reveal stagger variant="card" className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {projects.map((project) => (
-                <Card key={project.slug} className="flex flex-col">
-                  <p className="text-sm font-medium text-primary">
-                    {project.client_name}
-                  </p>
-                  <h2 className="mt-3 font-display text-xl font-semibold text-text-primary">
-                    {resolveTranslation(project.title_translations, locale)}
-                  </h2>
-                  <p className="mt-2 flex-1 text-sm leading-6 text-text-secondary">
-                    {resolveTranslation(project.summary_translations, locale)}
-                  </p>
-                  <LinkButton
-                    href={`/work/${project.slug}`}
-                    variant="tertiary"
-                    size="small"
-                    className="mt-4 self-start"
-                  >
-                    View case study
-                  </LinkButton>
-                </Card>
-              ))}
-            </Reveal>
+            <WorkGrid
+              projects={projects}
+              services={services}
+              locale={locale}
+            />
           )}
         </Container>
-      </Section>
+      </section>
     </>
   );
 }
-
-
