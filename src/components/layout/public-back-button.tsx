@@ -30,7 +30,7 @@ export function PublicBackButton({ locale }: { locale?: string }) {
       type="button"
       aria-label={t(locale ?? "en", "goBack")}
       onClick={goBack}
-      className="fixed left-1 top-16 z-50 rounded-full bg-white/5 p-2 backdrop-blur-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary lg:top-20"
+      className="fixed left-1 top-20 z-50 rounded-full bg-white/5 p-2 backdrop-blur-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:top-24"
     >
       <svg
         viewBox="0 0 24 24"

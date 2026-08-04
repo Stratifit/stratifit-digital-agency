@@ -254,6 +254,8 @@ export function ContactForm({
       : [...selectedServiceIds, serviceId];
     setSelectedServiceIds(next);
     setValue("requested_service_ids", next);
+    // Auto-close the dropdown after a selection.
+    setServicesOpen(false);
   }
 
   async function onSubmit(values: z.input<typeof leadSchema>) {
@@ -366,11 +368,11 @@ export function ContactForm({
               aria-haspopup="listbox"
               aria-expanded={servicesOpen}
               onClick={() => setServicesOpen((v) => !v)}
-              className={cn(fieldBase, "pl-11 pr-9", "text-left")}
+              className={cn(fieldBase, "flex items-center pl-11 pr-9", "text-left")}
             >
               <span
                 className={cn(
-                  "min-w-0 flex-1 truncate",
+                  "min-w-0 flex-1 overflow-x-auto whitespace-nowrap text-left [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
                   selectedServices.length > 0
                     ? "text-field-text"
                     : "text-field-placeholder"
@@ -391,6 +393,13 @@ export function ContactForm({
                 role="listbox"
                 aria-multiselectable="true"
                 aria-label={t(locale, "serviceNeeded")}
+                onClick={(event) => {
+                  // Clicking empty space inside the dropdown closes it;
+                  // option clicks are handled by the option buttons themselves.
+                  if (!(event.target as HTMLElement).closest('[role="option"]')) {
+                    setServicesOpen(false);
+                  }
+                }}
                 className="absolute z-30 mt-2 w-[calc(200%+12px)] rounded-card border border-white/10 bg-card-dark py-2 shadow-2xl max-h-56 overflow-y-auto sm:w-[calc(200%+16px)]"
               >
                 {services.map((service) => {
@@ -445,7 +454,7 @@ export function ContactForm({
               aria-haspopup="listbox"
               aria-expanded={budgetOpen}
               onClick={() => setBudgetOpen((v) => !v)}
-              className={cn(fieldBase, "pl-11 pr-9", "text-left")}
+              className={cn(fieldBase, "flex items-center pl-11 pr-9", "text-left")}
             >
               <span
                 className={cn(
