@@ -244,7 +244,7 @@ export default function AdminLoginPage() {
             <ArrowRightIcon className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1" />
           </button>
 
-          <div className="mt-5 flex items-center gap-2 font-mono text-[10px] text-text-subtle">
+          <div className="mt-5 flex items-center justify-center gap-2 font-mono text-[10px] text-text-subtle sm:justify-start">
             <ShieldIcon />
             Built by Stratifit
           </div>
