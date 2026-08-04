@@ -29,6 +29,17 @@ function ExternalIcon() {
   );
 }
 
+function getInitials(admin: CurrentAdmin): string {
+  if (admin.display_name) {
+    const words = admin.display_name.split(/\s+/).filter(Boolean);
+    const chars = words.slice(0, 2).map((w) => w[0] ?? "");
+    if (chars.length > 0) {
+      return chars.join("").toUpperCase();
+    }
+  }
+  return admin.email.slice(0, 1).toUpperCase() || "ST";
+}
+
 export function Topbar({
   admin,
   onOpenMobile,
@@ -39,13 +50,19 @@ export function Topbar({
   onToggleCollapse: () => void;
 }) {
   return (
-    <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between gap-3 border-b border-border bg-surface/95 px-4 backdrop-blur-sm sm:px-6">
+    <header className="relative sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between gap-3 bg-surface/95 px-4 backdrop-blur-md sm:px-6">
+      {/* Amber hairline as the sole divider under the topbar */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 -bottom-px h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"
+      />
+
       <div className="flex min-w-0 items-center gap-2">
         <button
           type="button"
           onClick={onOpenMobile}
           aria-label="Open navigation"
-          className="flex size-10 shrink-0 items-center justify-center rounded-md text-text-secondary transition-colors hover:bg-surface-hover hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:hidden"
+          className="flex size-10 shrink-0 items-center justify-center rounded-card text-text-secondary transition-colors hover:bg-surface-hover hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:hidden"
         >
           <HamburgerIcon />
         </button>
@@ -53,15 +70,24 @@ export function Topbar({
           type="button"
           onClick={onToggleCollapse}
           aria-label="Toggle sidebar"
-          className="hidden size-10 shrink-0 items-center justify-center rounded-md text-text-secondary transition-colors hover:bg-surface-hover hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:flex"
+          className="hidden size-10 shrink-0 items-center justify-center rounded-card text-text-secondary transition-colors hover:bg-surface-hover hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:flex"
         >
           <CollapseIcon />
         </button>
-        <div className="min-w-0">
-          <p className="truncate text-sm font-medium text-text-primary">
-            {admin.display_name ?? admin.email}
-          </p>
-          <p className="text-xs capitalize text-text-muted">{admin.role}</p>
+
+        <div className="ml-1 flex min-w-0 items-center gap-3">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-card border border-primary/25 bg-primary/10 font-display text-xs font-bold text-primary">
+            {getInitials(admin)}
+          </span>
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium text-text-primary">
+              {admin.display_name ?? admin.email}
+            </p>
+            <p className="flex items-center gap-1.5 text-xs capitalize text-text-muted">
+              <span className="size-1.5 rounded-full bg-success" />
+              {admin.role}
+            </p>
+          </div>
         </div>
       </div>
 
@@ -70,7 +96,7 @@ export function Topbar({
           href="/"
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium text-text-secondary transition-colors hover:bg-surface-hover hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:inline-flex"
+          className="hidden items-center gap-1.5 rounded-button border border-border bg-card-dark px-3 py-2 text-sm font-medium text-text-secondary transition-colors hover:border-primary/30 hover:bg-surface-hover hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:inline-flex"
         >
           View site
           <ExternalIcon />

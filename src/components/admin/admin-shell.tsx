@@ -17,13 +17,13 @@ export function AdminShell({
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="relative flex min-h-screen bg-background">
       {/* Mobile backdrop */}
       <div
         aria-hidden="true"
         onClick={() => setMobileOpen(false)}
         className={cn(
-          "fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-200 md:hidden",
+          "fixed inset-0 z-40 bg-overlay backdrop-blur-sm transition-opacity duration-200 md:hidden",
           mobileOpen ? "opacity-100" : "pointer-events-none opacity-0"
         )}
       />
@@ -42,14 +42,21 @@ export function AdminShell({
         />
       </aside>
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="relative flex min-w-0 flex-1 flex-col">
         <Topbar
           admin={admin}
           onOpenMobile={() => setMobileOpen(true)}
           onToggleCollapse={() => setCollapsed((v) => !v)}
         />
-        <main className="flex-1 overflow-x-hidden p-4 sm:p-6 lg:p-8">
-          {children}
+        <main className="relative flex-1 overflow-x-hidden p-4 sm:p-6 lg:p-8">
+          {/* Ambient amber wash — restrained, matching the reference treatment */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 h-[280px] overflow-hidden"
+          >
+            <div className="absolute left-1/2 top-0 h-[280px] w-[720px] -translate-x-1/2 rounded-full bg-primary/[0.035] blur-[130px]" />
+          </div>
+          <div className="relative">{children}</div>
         </main>
       </div>
     </div>
