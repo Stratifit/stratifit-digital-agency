@@ -71,7 +71,6 @@ export type UiStringKey =
   | "chatServices"
   | "chatPricing"
   | "chatSupport"
-  | "chatAbout"
   | "chatHelp"
   | "chatContact"
   | "chatWelcomeTitle"
@@ -119,10 +118,6 @@ export type UiStringKey =
   | "chatSupportBody"
   | "chatContactUs"
   | "chatBackToChat"
-  | "chatAboutTitle"
-  | "chatAboutBody"
-  | "chatAskAboutStratifit"
-  | "chatAboutQuestion"
   | "chatSave"
   | "chatCancel"
   | "chatLanguage"
@@ -229,7 +224,6 @@ const en: UiStrings = {
   chatServices: "Services",
   chatPricing: "Pricing",
   chatSupport: "Support",
-  chatAbout: "About",
   chatHelp: "Help",
   chatContact: "Contact",
   chatWelcomeTitle: "Welcome to Stratifit",
@@ -284,11 +278,6 @@ const en: UiStrings = {
   chatSupportBody: "Our team is ready to help with your project.",
   chatContactUs: "Contact us",
   chatBackToChat: "Continue in chat",
-  chatAboutTitle: "About Stratifit",
-  chatAboutBody:
-    "Stratifit is a digital agency building high-performance websites, AI automation, and growth systems for ambitious businesses.",
-  chatAskAboutStratifit: "Ask about Stratifit",
-  chatAboutQuestion: "Tell me about Stratifit.",
   chatSave: "Save",
   chatCancel: "Cancel",
   chatLanguage: "Select language",
@@ -396,7 +385,6 @@ const de: UiStrings = {
   chatServices: "Leistungen",
   chatPricing: "Preise",
   chatSupport: "Support",
-  chatAbout: "Über uns",
   chatHelp: "Hilfe",
   chatContact: "Kontakt",
   chatWelcomeTitle: "Willkommen bei Stratifit",
@@ -451,11 +439,6 @@ const de: UiStrings = {
   chatSupportBody: "Unser Team hilft Ihnen gerne bei Ihrem Projekt.",
   chatContactUs: "Kontakt aufnehmen",
   chatBackToChat: "Im Chat fortfahren",
-  chatAboutTitle: "Über Stratifit",
-  chatAboutBody:
-    "Stratifit ist eine Digitalagentur, die leistungsstarke Websites, KI-Automatisierung und Wachstumssysteme für ambitionierte Unternehmen entwickelt.",
-  chatAskAboutStratifit: "Über Stratifit fragen",
-  chatAboutQuestion: "Erzähl mir etwas über Stratifit.",
   chatSave: "Speichern",
   chatCancel: "Abbrechen",
   chatLanguage: "Sprache auswählen",
@@ -563,7 +546,6 @@ const fr: UiStrings = {
   chatServices: "Services",
   chatPricing: "Tarifs",
   chatSupport: "Support",
-  chatAbout: "À propos",
   chatHelp: "Aide",
   chatContact: "Contact",
   chatWelcomeTitle: "Bienvenue chez Stratifit",
@@ -618,11 +600,6 @@ const fr: UiStrings = {
   chatSupportBody: "Notre équipe est prête à vous aider sur votre projet.",
   chatContactUs: "Nous contacter",
   chatBackToChat: "Continuer dans le chat",
-  chatAboutTitle: "À propos de Stratifit",
-  chatAboutBody:
-    "Stratifit est une agence digitale qui crée des sites performants, de l'automatisation IA et des systèmes de croissance pour les entreprises ambitieuses.",
-  chatAskAboutStratifit: "Demander à propos de Stratifit",
-  chatAboutQuestion: "Parlez-moi de Stratifit.",
   chatSave: "Enregistrer",
   chatCancel: "Annuler",
   chatLanguage: "Choisir la langue",
@@ -730,7 +707,6 @@ const es: UiStrings = {
   chatServices: "Servicios",
   chatPricing: "Precios",
   chatSupport: "Soporte",
-  chatAbout: "Nosotros",
   chatHelp: "Ayuda",
   chatContact: "Contacto",
   chatWelcomeTitle: "Bienvenido a Stratifit",
@@ -785,11 +761,6 @@ const es: UiStrings = {
   chatSupportBody: "Nuestro equipo está listo para ayudarte con tu proyecto.",
   chatContactUs: "Contáctanos",
   chatBackToChat: "Continuar en el chat",
-  chatAboutTitle: "Acerca de Stratifit",
-  chatAboutBody:
-    "Stratifit es una agencia digital que crea sitios web de alto rendimiento, automatización con IA y sistemas de crecimiento para empresas ambiciosas.",
-  chatAskAboutStratifit: "Preguntar sobre Stratifit",
-  chatAboutQuestion: "Háblame de Stratifit.",
   chatSave: "Guardar",
   chatCancel: "Cancelar",
   chatLanguage: "Seleccionar idioma",
