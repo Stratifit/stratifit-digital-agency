@@ -115,7 +115,6 @@ export default async function ServicePage({
   const processTitle = resolveTranslation(page.process_title_translations, locale);
   const toolkitTitle = resolveTranslation(page.toolkit_title_translations, locale);
   const ctaTitle = resolveTranslation(page.cta_title_translations, locale);
-  const ctaSubtitle = resolveTranslation(page.cta_subtitle_translations, locale);
   const ctaButton = resolveTranslation(
     page.cta_button_label_translations,
     locale
@@ -494,11 +493,12 @@ export default async function ServicePage({
         <Section>
           <Container>
             <Reveal variant="cta">
-              <div className="relative overflow-hidden rounded-card-lg border border-card-border bg-background p-8 text-center sm:p-10 lg:p-14">
+              <div className="relative overflow-hidden rounded-card-lg border border-white/5 bg-background p-6 text-center sm:p-8 lg:p-10">
                 <div className="shimmer-line absolute inset-x-0 top-0 h-px" />
-                {/* Single restrained amber wash from the top edge — subtle, not cloudy */}
                 <div className="pointer-events-none absolute inset-0 overflow-hidden">
-                  <div className="absolute inset-x-0 top-0 h-44 bg-[radial-gradient(55%_100%_at_50%_0%,rgba(245,158,11,0.07),transparent_75%)]" />
+                  <div className="absolute -top-24 left-1/2 h-[260px] w-[500px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
+                  <div className="absolute -bottom-20 left-1/3 h-[160px] w-[320px] rounded-full bg-primary/5 blur-[100px]" />
+                  <div className="absolute right-1/4 top-1/2 h-[200px] w-[200px] rounded-full bg-primary/4 blur-[100px]" />
                 </div>
 
                 <div className="relative z-10 mb-5 flex items-center justify-center gap-2">
@@ -508,15 +508,9 @@ export default async function ServicePage({
                   </p>
                 </div>
 
-                <h2 className="relative z-10 mx-auto mb-4 max-w-2xl font-display text-2xl font-black leading-[0.95] tracking-tight text-text-primary sm:text-3xl md:text-4xl">
-                  {ctaTitle}
-                </h2>
-
-                {ctaSubtitle ? (
-                  <p className="relative z-10 mx-auto mt-3 max-w-xl text-sm leading-relaxed text-text-secondary sm:text-base">
-                    {ctaSubtitle}
-                  </p>
-                ) : null}
+                <h3 className="relative z-10 mx-auto max-w-xl font-display text-xl font-black leading-[0.95] tracking-tight text-text-primary sm:text-2xl md:text-3xl">
+                  {highlightLastWord(ctaTitle)}
+                </h3>
 
                 <div className="relative z-10 mt-8 flex justify-center">
                   <ContactAwareLink
@@ -540,8 +534,8 @@ export default async function ServicePage({
                   </ContactAwareLink>
                 </div>
 
-                <p className="relative z-10 mt-5 text-xs text-text-subtle">
-                  {t(locale, "noSpamNote")}
+                <p className="relative z-10 mt-4 text-xs text-text-subtle">
+                  🔒 {t(locale, "noSpamNote")}
                 </p>
               </div>
             </Reveal>
