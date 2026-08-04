@@ -98,7 +98,7 @@ export function MediaUploadForm() {
         {state && !state.success ? (
           <p
             role="alert"
-            className="rounded-sm bg-error-soft px-3 py-2 text-sm text-error"
+            className="rounded-card bg-error-soft px-3 py-2 text-sm text-error"
           >
             {state.error}
           </p>
@@ -106,7 +106,7 @@ export function MediaUploadForm() {
         {state?.success ? (
           <p
             role="status"
-            className="rounded-sm bg-success-soft px-3 py-2 text-sm text-success"
+            className="rounded-card bg-success-soft px-3 py-2 text-sm text-success"
           >
             Asset uploaded successfully.
           </p>

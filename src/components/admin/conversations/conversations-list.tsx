@@ -61,12 +61,12 @@ export function ConversationsList({
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by number, name or email…"
           aria-label="Search conversations"
-          className="w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-muted outline-none transition-colors focus:border-primary sm:w-72"
+          className="w-full rounded-card border border-field-border bg-field-bg px-3 py-2 text-sm text-field-text placeholder:text-field-placeholder outline-none transition-colors focus:border-primary sm:w-72"
         />
       </div>
 
       {filtered.length === 0 ? (
-        <div className="rounded-md border border-border bg-surface p-10 text-center">
+        <div className="rounded-card border border-card-border bg-card-dark p-10 text-center shadow-shadow-sm">
           <p className="text-sm text-text-secondary">No conversations yet.</p>
           <p className="mt-1 text-sm text-text-muted">
             {query.trim()
@@ -80,7 +80,7 @@ export function ConversationsList({
             <Link
               key={c.id}
               href={`/admin/conversations/${c.id}`}
-              className="group block rounded-md border border-border bg-surface p-4 transition-colors hover:border-primary/30 hover:bg-surface-hover"
+              className="group block rounded-card border border-card-border bg-card-dark p-4 shadow-shadow-sm transition-[border-color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-border-interactive hover:shadow-shadow-md"
             >
               <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
                 <span className="rounded bg-primary/10 px-1.5 py-0.5 font-mono text-xs font-bold text-primary">

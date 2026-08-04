@@ -2,33 +2,29 @@ import Link from "next/link";
 import { getAdminSectionSettings } from "@/features/section-settings/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Badge } from "@/components/ui/badge";
+import { AdminPageHeader } from "@/components/admin/page-header";
 
 export default async function AdminSectionsPage() {
   const rows = await getAdminSectionSettings();
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-2xl font-bold tracking-tight text-text-primary">
-          Section Settings
-        </h1>
-        <p className="mt-1 text-sm text-text-secondary">
-          Edit the headings (eyebrow, title, highlight, description) shown above
-          each homepage section.
-        </p>
-      </div>
+      <AdminPageHeader
+        title="Section Settings"
+        description="Edit the headings (eyebrow, title, highlight, description) shown above each homepage section."
+      />
 
-      <div className="overflow-hidden rounded-md border border-border bg-surface">
+      <div className="overflow-hidden rounded-card border border-card-border bg-card-dark shadow-shadow-sm">
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-border bg-surface-soft">
+          <thead className="border-b border-border bg-surface-soft/60">
             <tr>
-              <th className="px-5 py-3 font-medium text-text-muted">Section</th>
-              <th className="hidden px-5 py-3 font-medium text-text-muted md:table-cell">
+              <th className="px-5 py-3 text-[10px] font-bold uppercase tracking-[0.18em] text-text-muted">Section</th>
+              <th className="hidden px-5 py-3 text-[10px] font-bold uppercase tracking-[0.18em] text-text-muted md:table-cell">
                 Eyebrow
               </th>
-              <th className="px-5 py-3 font-medium text-text-muted">Title</th>
-              <th className="px-5 py-3 font-medium text-text-muted">Visible</th>
-              <th className="px-5 py-3 text-right font-medium text-text-muted">
+              <th className="px-5 py-3 text-[10px] font-bold uppercase tracking-[0.18em] text-text-muted">Title</th>
+              <th className="px-5 py-3 text-[10px] font-bold uppercase tracking-[0.18em] text-text-muted">Visible</th>
+              <th className="px-5 py-3 text-right text-[10px] font-bold uppercase tracking-[0.18em] text-text-muted">
                 Actions
               </th>
             </tr>

@@ -192,12 +192,12 @@ export function ServicePageForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
       {serverError ? (
-        <p role="alert" className="rounded-sm bg-error-soft px-3 py-2 text-sm text-error">
+        <p role="alert" className="rounded-card bg-error-soft px-3 py-2 text-sm text-error">
           {serverError}
         </p>
       ) : null}
       {saved ? (
-        <p role="status" className="rounded-sm bg-success-soft px-3 py-2 text-sm text-success">
+        <p role="status" className="rounded-card bg-success-soft px-3 py-2 text-sm text-success">
           Saved successfully.
         </p>
       ) : null}

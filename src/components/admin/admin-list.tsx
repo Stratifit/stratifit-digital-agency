@@ -1,4 +1,5 @@
 import { LinkButton } from "@/components/ui/link-button";
+import { AdminPageHeader } from "./page-header";
 
 interface AdminListColumn<T> {
   header: string;
@@ -28,31 +29,27 @@ export function AdminList<T>({
 }: AdminListProps<T>) {
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="font-display text-2xl font-bold tracking-tight text-text-primary">
-            {title}
-          </h1>
-          {description ? (
-            <p className="mt-1 text-sm text-text-secondary">{description}</p>
-          ) : null}
-        </div>
-        {createHref && createLabel ? (
-          <LinkButton href={createHref} size="small">
-            {createLabel}
-          </LinkButton>
-        ) : null}
-      </div>
+      <AdminPageHeader
+        title={title}
+        description={description}
+        actions={
+          createHref && createLabel ? (
+            <LinkButton href={createHref} size="small">
+              {createLabel}
+            </LinkButton>
+          ) : null
+        }
+      />
 
       {rows.length === 0 ? (
-        <div className="rounded-card border border-border bg-surface p-10 text-center">
+        <div className="rounded-card border border-card-border bg-card-dark p-10 text-center shadow-shadow-sm">
           <p className="text-sm text-text-secondary">No items yet.</p>
           <p className="mt-1 text-sm text-text-muted">
             Create your first item to get started.
           </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-card border border-border bg-surface shadow-shadow-sm">
+        <div className="overflow-hidden rounded-card border border-card-border bg-card-dark shadow-shadow-sm">
           <table className="w-full text-left text-sm">
             <thead>
               <tr className="border-b border-border bg-surface-soft/60 text-text-muted">

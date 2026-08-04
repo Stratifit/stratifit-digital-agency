@@ -1,6 +1,7 @@
 import { getDashboardStats } from "@/features/dashboard/queries";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
+import { AdminPageHeader } from "@/components/admin/page-header";
 
 export default async function AdminDashboardPage() {
   const stats = await getDashboardStats();
@@ -30,14 +31,10 @@ export default async function AdminDashboardPage() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="font-display text-2xl font-bold tracking-tight text-text-primary">
-          Dashboard
-        </h1>
-        <p className="mt-1 text-sm text-text-secondary">
-          Operational overview of the Stratifit platform.
-        </p>
-      </div>
+      <AdminPageHeader
+        title="Dashboard"
+        description="Operational overview of the Stratifit platform."
+      />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {primary.map((widget) => (

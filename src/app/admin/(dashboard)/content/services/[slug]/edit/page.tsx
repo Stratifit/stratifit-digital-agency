@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { ServiceForm } from "@/components/admin/services/service-form";
 import type { ServiceFormValues } from "@/features/services/schemas";
+import { AdminPageHeader } from "@/components/admin/page-header";
+import { FormCard } from "@/components/admin/form-card";
 
 function toFormValues(data: Record<string, unknown>): ServiceFormValues {
   return {
@@ -40,15 +42,10 @@ export default async function EditServicePage({
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <div>
-        <h1 className="font-display text-2xl font-bold tracking-tight text-text-primary">
-          Edit Service
-        </h1>
-        <p className="mt-1 text-sm text-text-secondary">{slug}</p>
-      </div>
-      <div className="rounded-md border border-border bg-surface p-6">
+      <AdminPageHeader title="Edit Service" description={slug} />
+      <FormCard>
         <ServiceForm slug={slug} initial={toFormValues(data)} />
-      </div>
+      </FormCard>
     </div>
   );
 }

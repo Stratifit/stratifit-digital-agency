@@ -64,7 +64,7 @@ export function ConversationDetail({ conversation }: { conversation: DetailData 
   return (
     <div className="space-y-6">
       {/* Visitor header */}
-      <div className="rounded-md border border-border bg-surface p-4">
+      <div className="rounded-card border border-card-border bg-card-dark p-4 shadow-shadow-sm">
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
           <span className="rounded bg-primary/10 px-1.5 py-0.5 font-mono text-sm font-bold text-primary">
             {number}
@@ -154,7 +154,7 @@ export function ConversationDetail({ conversation }: { conversation: DetailData 
         </div>
       </div>
 
-      <div className="space-y-3 rounded-md border border-border bg-surface p-4">
+      <div className="space-y-3 rounded-card border border-card-border bg-card-dark p-4 shadow-shadow-sm">
         {conversation.messages.length === 0 ? (
           <p className="text-sm text-text-muted">No messages yet.</p>
         ) : (

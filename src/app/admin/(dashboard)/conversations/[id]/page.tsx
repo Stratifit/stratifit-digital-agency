@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { getAdminConversation } from "@/features/chat/admin-queries";
 import { ConversationDetail } from "@/components/admin/conversations/conversation-detail";
+import { AdminPageHeader } from "@/components/admin/page-header";
 
 export default async function ConversationDetailPage({
   params,
@@ -24,9 +25,7 @@ export default async function ConversationDetailPage({
         >
           ← Back to conversations
         </Link>
-        <h1 className="mt-2 font-display text-2xl font-bold tracking-tight text-text-primary">
-          Conversation
-        </h1>
+        <AdminPageHeader title="Conversation" className="mt-3" />
       </div>
       <ConversationDetail conversation={conversation} />
     </div>

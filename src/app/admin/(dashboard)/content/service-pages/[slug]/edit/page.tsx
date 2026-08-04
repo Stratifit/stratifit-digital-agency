@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getAdminServicePage } from "@/features/service-pages/queries";
 import { ServicePageForm } from "@/components/admin/service-page-form";
+import { AdminPageHeader } from "@/components/admin/page-header";
 
 export const metadata = { title: "Edit Service Page — Stratifit CMS" };
 
@@ -42,30 +43,28 @@ export default async function EditServicePage({
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className="font-display text-2xl font-bold tracking-tight text-text-primary">
-            Edit Service Page
-          </h1>
-          <p className="mt-1 text-sm text-text-secondary">/{slug}</p>
-        </div>
-        <div className="flex gap-2">
-          <Link
-            href="/admin/content/service-pages"
-            className="rounded-sm px-3 py-2 text-sm text-text-secondary hover:text-hover"
-          >
-            Back
-          </Link>
-          <a
-            href={`/services/${slug}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-sm px-3 py-2 text-sm text-text-secondary hover:text-hover"
-          >
-            View page ↗
-          </a>
-        </div>
-      </div>
+      <AdminPageHeader
+        title="Edit Service Page"
+        description={`/${slug}`}
+        actions={
+          <>
+            <Link
+              href="/admin/content/service-pages"
+              className="rounded-button border border-border bg-card-dark px-3.5 py-2 text-sm text-text-secondary transition-colors hover:border-primary/30 hover:text-text-primary"
+            >
+              Back
+            </Link>
+            <a
+              href={`/services/${slug}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-button border border-border bg-card-dark px-3.5 py-2 text-sm text-text-secondary transition-colors hover:border-primary/30 hover:text-text-primary"
+            >
+              View page ↗
+            </a>
+          </>
+        }
+      />
 
       <ServicePageForm slug={slug} initial={initial} />
     </div>

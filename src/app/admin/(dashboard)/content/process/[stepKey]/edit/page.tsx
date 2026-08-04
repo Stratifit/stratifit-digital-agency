@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import { getAdminProcessStep } from "@/features/process/admin-queries";
 import { ProcessStepForm } from "@/components/admin/process-step-form";
+import { AdminPageHeader } from "@/components/admin/page-header";
+import { FormCard } from "@/components/admin/form-card";
 
 export default async function EditProcessStepPage({
   params,
@@ -13,17 +15,13 @@ export default async function EditProcessStepPage({
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
-      <div>
-        <h1 className="font-display text-2xl font-bold tracking-tight text-text-primary">
-          Edit Process Step
-        </h1>
-        <p className="mt-1 text-sm text-text-secondary">
-          {step.step_key} · step {step.number}
-        </p>
-      </div>
-      <div className="rounded-md border border-border bg-surface p-6">
+      <AdminPageHeader
+        title="Edit Process Step"
+        description={`${step.step_key} · step ${step.number}`}
+      />
+      <FormCard>
         <ProcessStepForm step={step} isNew={false} />
-      </div>
+      </FormCard>
     </div>
   );
 }

@@ -120,12 +120,13 @@ export function SectionSettingsForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-      <div className="flex items-center justify-between rounded-md border border-border bg-background px-4 py-3">
+      {/* Visibility toggle */}
+      <div className="flex items-center justify-between rounded-card border border-card-border bg-card-dark px-4 py-3.5 shadow-shadow-sm">
         <div>
           <p className="text-sm font-medium text-text-primary">
             Show this section on the website
           </p>
-          <p className="text-xs text-text-muted">
+          <p className="mt-0.5 text-xs text-text-muted">
             Hide it without deleting your content.
           </p>
         </div>
@@ -136,13 +137,14 @@ export function SectionSettingsForm({
         />
       </div>
 
-      <div className="rounded-md border border-border bg-background p-4">
+      {/* Live preview */}
+      <div className="rounded-card border border-card-border bg-card-dark p-4 shadow-shadow-sm">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm font-medium text-text-primary">
             Live preview
           </p>
           <div className="flex items-center gap-2">
-            <div className="flex overflow-hidden rounded-xs border border-border">
+            <div className="flex overflow-hidden rounded-button border border-border">
               {(
                 [
                   ["mobile", "Mobile"],
@@ -165,7 +167,7 @@ export function SectionSettingsForm({
                 </button>
               ))}
             </div>
-            <div className="flex overflow-hidden rounded-xs border border-border">
+            <div className="flex overflow-hidden rounded-button border border-border">
               {(
                 [
                   ["left", "Left"],
@@ -192,7 +194,7 @@ export function SectionSettingsForm({
 
         <div
           className={cn(
-            "mx-auto overflow-hidden rounded-sm border border-border-subtle bg-background px-4 py-6 sm:px-6",
+            "mx-auto overflow-hidden rounded-card border border-border-subtle bg-background px-4 py-6 sm:px-6",
             frame === "mobile" && "max-w-[375px]",
             frame === "tablet" && "max-w-[768px]",
             frame === "desktop" && "w-full"
@@ -206,13 +208,14 @@ export function SectionSettingsForm({
         </div>
       </div>
 
+      {/* Locale fieldsets */}
       <div className="space-y-6">
         {SUPPORTED_LOCALES.map((locale) => (
           <fieldset
             key={locale}
-            className="rounded-md border border-border bg-background p-5"
+            className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm"
           >
-            <legend className="px-2 text-sm font-semibold text-text-primary">
+            <legend className="px-2 text-[10px] font-bold uppercase tracking-[0.28em] text-primary">
               {LOCALE_NAMES[locale]}
             </legend>
 
@@ -270,13 +273,13 @@ export function SectionSettingsForm({
       </div>
 
       {serverError ? (
-        <p role="alert" className="rounded-sm bg-error-soft px-3 py-2 text-sm text-error">
+        <p role="alert" className="rounded-card bg-error-soft px-3 py-2 text-sm text-error">
           {serverError}
         </p>
       ) : null}
 
       {saved ? (
-        <p role="status" className="rounded-sm bg-success-soft px-3 py-2 text-sm text-success">
+        <p role="status" className="rounded-card bg-success-soft px-3 py-2 text-sm text-success">
           Saved successfully.
         </p>
       ) : null}

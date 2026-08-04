@@ -7,6 +7,7 @@ import { updateLeadStatus, deleteLead } from "@/features/leads/admin-mutations";
 import { ConfirmDelete } from "@/components/admin/confirm-delete";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { AdminPageHeader } from "@/components/admin/page-header";
 
 export default async function LeadDetailPage({
   params,
@@ -27,29 +28,25 @@ export default async function LeadDetailPage({
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className="font-display text-2xl font-bold tracking-tight text-text-primary">
-            {lead.name ?? "Anonymous Lead"}
-          </h1>
-          <p className="mt-1 text-sm text-text-secondary">
-            {lead.email ?? "No email"} · {lead.source}
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <Link
-            href="/admin/leads"
-            className="rounded-sm px-3 py-2 text-sm text-text-secondary hover:text-hover"
-          >
-            Back
-          </Link>
-          <ConfirmDelete
-            action={deleteLead.bind(null, lead.id)}
-            title="Delete lead"
-            description="This will permanently delete this lead."
-          />
-        </div>
-      </div>
+      <AdminPageHeader
+        title={lead.name ?? "Anonymous Lead"}
+        description={`${lead.email ?? "No email"} · ${lead.source}`}
+        actions={
+          <>
+            <Link
+              href="/admin/leads"
+              className="rounded-button border border-border bg-card-dark px-3.5 py-2 text-sm text-text-secondary transition-colors hover:border-primary/30 hover:text-text-primary"
+            >
+              Back
+            </Link>
+            <ConfirmDelete
+              action={deleteLead.bind(null, lead.id)}
+              title="Delete lead"
+              description="This will permanently delete this lead."
+            />
+          </>
+        }
+      />
 
       <Card className="p-6">
         <h2 className="text-sm font-semibold uppercase tracking-wider text-text-muted">

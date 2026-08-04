@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getAdminServicePages } from "@/features/service-pages/queries";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { AdminPageHeader } from "@/components/admin/page-header";
 
 export const metadata = { title: "Service Pages — Stratifit CMS" };
 
@@ -10,14 +11,10 @@ export default async function ServicePagesAdminPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-2xl font-bold tracking-tight text-text-primary">
-          Service Pages
-        </h1>
-        <p className="mt-1 text-sm text-text-secondary">
-          Dedicated landing pages for each service. Edit content and publish.
-        </p>
-      </div>
+      <AdminPageHeader
+        title="Service Pages"
+        description="Dedicated landing pages for each service. Edit content and publish."
+      />
 
       {pages.length === 0 ? (
         <Card className="p-10 text-center">
