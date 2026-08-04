@@ -4,12 +4,7 @@ import { headers } from "next/headers";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { ActionResult } from "@/types/action-result";
 import { sendLeadEmails } from "@/features/email/lead-notifications";
-import {
-  acquisitionEnquirySchema,
-  leadSchema,
-  type AcquisitionEnquiryFormValues,
-  type LeadFormValues,
-} from "./schemas";
+import { leadSchema, type LeadFormValues } from "./schemas";
 
 const RATE_WINDOW_MS = 10 * 60 * 1000;
 const MAX_SUBMISSIONS_PER_EMAIL = 5;
@@ -43,7 +38,6 @@ interface LeadRecord {
   company?: string;
   requested_service_ids?: string[];
   budget_range?: string;
-  business_interest?: string;
   message: string;
   preferred_locale: string;
   source: string;
@@ -79,7 +73,6 @@ async function recordLead(values: LeadRecord): Promise<ActionResult> {
       ? values.requested_service_ids
       : null,
     budget_range: values.budget_range || null,
-    business_interest: values.business_interest || null,
     message: values.message,
     preferred_locale: values.preferred_locale,
     source: values.source,
@@ -91,16 +84,13 @@ async function recordLead(values: LeadRecord): Promise<ActionResult> {
     return { success: false, error: "Something went wrong. Please try again." };
   }
 
-  const source = values.source === "acquisition" ? "acquisition" : "contact_form";
   await sendLeadEmails({
     leadId,
-    source,
     name: values.name,
     email: values.email,
     company: values.company,
     requestedServiceIds: values.requested_service_ids,
     budgetRange: values.budget_range,
-    businessInterest: values.business_interest,
     message: values.message,
     locale: values.preferred_locale,
   });
@@ -130,36 +120,6 @@ export async function submitLead(input: LeadFormValues): Promise<ActionResult> {
     company: parsed.data.company,
     requested_service_ids: parsed.data.requested_service_ids,
     budget_range: parsed.data.custom_budget || parsed.data.budget_range,
-    message: parsed.data.message,
-    preferred_locale: parsed.data.preferred_locale,
-    source: parsed.data.source,
-  });
-}
-
-export async function submitAcquisitionEnquiry(
-  input: AcquisitionEnquiryFormValues
-): Promise<ActionResult> {
-  const parsed = acquisitionEnquirySchema.safeParse(input);
-
-  if (!parsed.success) {
-    return {
-      success: false,
-      error: "Please check the form for errors.",
-      fieldErrors: parsed.error.flatten().fieldErrors,
-    };
-  }
-
-  if (parsed.data.honeypot) {
-    return { success: true };
-  }
-
-  return recordLead({
-    name: parsed.data.name,
-    email: parsed.data.email,
-    phone: parsed.data.phone,
-    company: parsed.data.company,
-    budget_range: parsed.data.custom_budget || parsed.data.budget_range,
-    business_interest: parsed.data.business_interest,
     message: parsed.data.message,
     preferred_locale: parsed.data.preferred_locale,
     source: parsed.data.source,

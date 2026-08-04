@@ -6,13 +6,11 @@ import { sendEmail } from "./send";
 
 export interface LeadNotificationInput {
   leadId: string;
-  source: "contact_form" | "acquisition";
   name?: string | null;
   email?: string | null;
   company?: string | null;
   requestedServiceIds?: string[];
   budgetRange?: string | null;
-  businessInterest?: string | null;
   message?: string | null;
   locale: string;
 }
@@ -58,26 +56,7 @@ export async function sendLeadEmails(input: LeadNotificationInput) {
     );
   }
 
-  if (adminEmail && input.source === "acquisition") {
-    tasks.push(
-      sendEmail({
-        templateKey: "acquisition_notification",
-        to: adminEmail,
-        data: {
-          lead_id: input.leadId,
-          name: input.name,
-          email: input.email,
-          company: input.company,
-          budget_range: input.budgetRange,
-          business_interest: input.businessInterest,
-          message: input.message,
-          locale: input.locale,
-        },
-        relatedType: "lead",
-        relatedId: input.leadId,
-      })
-    );
-  } else if (adminEmail) {
+  if (adminEmail) {
     tasks.push(
       sendEmail({
         templateKey: "lead_notification",

@@ -175,22 +175,6 @@ function renderBody<TKey extends EmailTemplateKey>(
         ],
       };
     }
-    case "acquisition_notification": {
-      const d = data as EmailTemplateDataMap["acquisition_notification"];
-      return {
-        title: "New acquisition enquiry received",
-        bodyLines: [
-          `A new acquisition enquiry was submitted via the website (${d.locale ?? "en"}).`,
-          `Name: ${d.name ?? "—"}`,
-          `Email: ${d.email ?? "—"}`,
-          `Company: ${d.company ?? "—"}`,
-          `Business of interest: ${d.business_interest ?? "—"}`,
-          `Budget: ${d.budget_range ?? "—"}`,
-          `Message: ${d.message ?? "—"}`,
-          "Open the lead in the CMS to update its status.",
-        ],
-      };
-    }
     case "chat_escalation": {
       const d = data as EmailTemplateDataMap["chat_escalation"];
       return {

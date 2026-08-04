@@ -30,7 +30,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${BASE_URL}/buy-business/niches/${slug}`,
       lastModified: new Date(),
     })),
-    { url: `${BASE_URL}/acquisition`, lastModified: new Date() },
     { url: `${BASE_URL}/contact`, lastModified: new Date() },
     { url: `${BASE_URL}/privacy`, lastModified: new Date() },
     { url: `${BASE_URL}/imprint`, lastModified: new Date() },

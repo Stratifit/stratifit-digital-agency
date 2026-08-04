@@ -1,7 +1,6 @@
 export const EMAIL_TEMPLATE_KEYS = [
   "contact_acknowledgement",
   "lead_notification",
-  "acquisition_notification",
   "chat_escalation",
   "admin_invitation",
 ] as const;
