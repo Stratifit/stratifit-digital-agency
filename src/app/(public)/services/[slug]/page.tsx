@@ -496,10 +496,9 @@ export default async function ServicePage({
             <Reveal variant="cta">
               <div className="relative overflow-hidden rounded-card-lg border border-card-border bg-background p-8 text-center sm:p-10 lg:p-14">
                 <div className="shimmer-line absolute inset-x-0 top-0 h-px" />
+                {/* Single restrained amber wash from the top edge — subtle, not cloudy */}
                 <div className="pointer-events-none absolute inset-0 overflow-hidden">
-                  <div className="absolute -top-24 left-1/2 h-[260px] w-[500px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
-                  <div className="absolute -bottom-20 left-1/3 h-[160px] w-[320px] rounded-full bg-primary/5 blur-[100px]" />
-                  <div className="absolute right-1/4 top-1/2 h-[200px] w-[200px] rounded-full bg-primary/4 blur-[100px]" />
+                  <div className="absolute inset-x-0 top-0 h-44 bg-[radial-gradient(55%_100%_at_50%_0%,rgba(245,158,11,0.07),transparent_75%)]" />
                 </div>
 
                 <div className="relative z-10 mb-5 flex items-center justify-center gap-2">
