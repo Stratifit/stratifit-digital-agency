@@ -15,7 +15,8 @@ import { t, type UiStringKey } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
 import Link from "next/link";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
-import { ServiceIcon } from "@/components/ui/service-icon";
+import { ServiceCard } from "@/components/sections/service-card";
+import { PlanCard } from "@/components/sections/pricing-plans";
 import type { PublicServiceDetail } from "@/features/services/queries";
 import type { PublicPricingPlan } from "@/features/pricing/queries";
 
@@ -358,28 +359,30 @@ function PanelPrimaryButton({
     <button
       type="button"
       onClick={onClick}
-      className="flex w-full items-center justify-center gap-1.5 rounded-[10px] bg-primary px-3 py-2.5 text-xs font-semibold text-text-inverse transition-all hover:bg-primary-hover active:scale-[0.98]"
+      className="flex w-full items-center justify-center gap-2 rounded-button bg-primary px-4 py-3.5 text-sm font-bold text-text-inverse transition-[background-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:bg-primary-hover active:translate-y-0 active:bg-primary-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
     >
       {children}
     </button>
   );
 }
 
-/** Services panel — the homepage service cards in a compact 2×2 grid so every
-    offering is visible at once: icon badge, key deliverables, and two CTAs
-    that hand off to the AI ("Ask about this") or the service page
-    ("Learn more"). */
+/** Services panel — the homepage service cards at full width so the panel
+    matches the homepage Services section exactly. Each card keeps the two
+    chat CTAs: "Ask about this" hands off to the AI and "Learn more" opens
+    the service page. */
 function ServicesPanel({
   locale,
   services,
   servicePageSlugs,
   onAsk,
+  onLearnMore,
   onBack,
 }: {
   locale: string;
   services: PublicServiceDetail[];
   servicePageSlugs: string[];
   onAsk: (serviceTitle: string, mode: "interested" | "more") => void;
+  onLearnMore: () => void;
   onBack: () => void;
 }) {
   return (
@@ -388,86 +391,38 @@ function ServicesPanel({
         title={t(locale, "chatServices")}
         icon={<BriefcaseIcon className="size-3.5" />}
       />
-      <div className="grid grid-cols-1 gap-3">
+      <div className="grid grid-cols-1 gap-6">
         {services.map((service) => {
-          const deliverables = (
-            (service.deliverables_translations as Record<string, unknown> | null)?.[
-              locale
-            ] ??
-            (service.deliverables_translations as Record<string, unknown> | null)?.[
-              "en"
-            ] ??
-            []
-          ) as string[];
           const title =
             resolveTranslation(service.title_translations, locale) ?? service.slug;
-          const description = resolveTranslation(
-            service.short_description_translations,
-            locale
-          );
           const learnMoreHref = servicePageSlugs.includes(service.slug)
             ? `/services/${service.slug}`
             : service.cta_url ?? "/contact";
 
           return (
-            <div
+            <ServiceCard
               key={service.slug}
-              className="group relative flex flex-col overflow-hidden rounded-card border border-card-border bg-card-dark p-3.5 shadow-shadow-lg transition-[border-color,transform,background-color] duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-card-border-hover"
-            >
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -right-10 -top-10 h-20 w-20 rounded-full bg-primary/5 blur-2xl transition-colors duration-[var(--motion-medium)] ease-[var(--ease-standard)] group-hover:bg-primary/10"
-              />
-              <div className="relative z-10 flex flex-1 flex-col gap-2.5">
-                <div className="flex size-10 items-center justify-center rounded-full border border-primary/30 bg-gradient-to-br from-primary/20 to-primary/5 shadow-[0_0_15px_rgba(245,158,11,0.1)]">
-                  <ServiceIcon name={service.icon_name} className="size-5" />
-                </div>
-                <div>
-                  <h3 className="mb-1 font-display text-[13px] font-bold leading-tight tracking-tight text-text-primary">
-                    {title}
-                  </h3>
-                  {description ? (
-                    <p className="line-clamp-2 text-[10px] font-medium leading-relaxed text-text-muted">
-                      {description}
-                    </p>
-                  ) : null}
-                </div>
-                <div className="h-px w-full bg-gradient-to-r from-white/10 to-transparent" />
-                {deliverables.length > 0 ? (
-                  <div>
-                    <p className="mb-2 text-[9px] font-bold uppercase tracking-widest text-primary opacity-90">
-                      {t(locale, "keyDeliverables")}
-                    </p>
-                    <ul className="space-y-1">
-                      {deliverables.slice(0, 4).map((item, index) => (
-                        <li key={index} className="flex items-start gap-1.5">
-                          <CheckIcon className="mt-px size-3 shrink-0 text-primary" />
-                          <span className="text-[10px] font-medium leading-snug text-text-tertiary">
-                            {item}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
-                <div className="flex-1" />
-                <div className="flex gap-1.5">
+              service={service}
+              locale={locale}
+              cta={
+                <div className="grid grid-cols-2 gap-3">
                   <button
                     type="button"
                     onClick={() => onAsk(title, "interested")}
-                    className="flex flex-1 items-center justify-center rounded-[10px] bg-primary px-1.5 py-1.5 text-[10px] font-semibold text-text-inverse transition-all hover:bg-primary-hover active:scale-[0.98]"
+                    className="flex w-full items-center justify-center gap-2 rounded-button border border-transparent bg-primary py-4 text-sm font-bold text-text-inverse transition-[background-color,border-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-hover active:translate-y-0 active:border-primary/60 active:bg-primary-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
                   >
                     {t(locale, "chatAskAbout")}
                   </button>
                   <Link
                     href={learnMoreHref}
-                    className="flex flex-1 items-center justify-center rounded-[10px] border border-primary/25 bg-primary/10 px-1.5 py-1.5 text-[10px] font-semibold text-primary transition-all hover:bg-primary/15 active:scale-[0.98]"
+                    onClick={onLearnMore}
+                    className="flex w-full items-center justify-center gap-2 rounded-button border border-primary py-4 text-sm font-bold text-primary transition-[background-color,border-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:bg-primary/10 active:translate-y-0 active:border-primary/60 active:bg-primary/15 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
                   >
                     {t(locale, "chatLearnMore")}
                   </Link>
                 </div>
-              </div>
-            </div>
+              }
+            />
           );
         })}
       </div>
@@ -476,21 +431,19 @@ function ServicesPanel({
   );
 }
 
-/** Pricing panel — the homepage plan cards in a compact 2×2 grid so every
-    package is visible at once (no horizontal scroll), with the plan CTA
-    opening the contact popup or linking when a cta_url is set, plus an
-    "Ask about pricing" chat handoff. */
+/** Pricing panel — the homepage plan cards at full width so the panel
+    matches the homepage Pricing section exactly. The plan CTA opens the
+    contact popup or links when a cta_url is set, plus an "Ask about
+    pricing" chat handoff. */
 function PricingPanel({
   locale,
   plans,
   onAskPricing,
-  onContact,
   onBack,
 }: {
   locale: string;
   plans: PublicPricingPlan[];
   onAskPricing: () => void;
-  onContact: () => void;
   onBack: () => void;
 }) {
   return (
@@ -499,110 +452,14 @@ function PricingPanel({
         title={t(locale, "chatPricingTitle")}
         icon={<DollarIcon className="size-3.5" />}
       />
-      <p className="mb-3 text-[11px] leading-relaxed text-text-muted">
+      <p className="mb-3 text-sm leading-relaxed text-text-muted">
         {t(locale, "chatPricingBody")}
       </p>
 
-      <div className="grid grid-cols-1 gap-3">
-        {plans.map((plan) => {
-          const features = (
-            (plan.features_translations as Record<string, unknown> | null)?.[
-              locale
-            ] ??
-            (plan.features_translations as Record<string, unknown> | null)?.["en"] ??
-            []
-          ) as string[];
-          const name =
-            resolveTranslation(plan.name_translations, locale) ?? plan.slug;
-          const price = resolveTranslation(plan.price_label_translations, locale);
-          const billing = resolveTranslation(
-            plan.billing_label_translations,
-            locale
-          );
-          const description = resolveTranslation(
-            plan.description_translations,
-            locale
-          );
-          const ctaLabel =
-            resolveTranslation(plan.cta_label_translations, locale) ||
-            t(locale, "startAProject");
-          const ctaHref =
-            plan.cta_url && plan.cta_url !== "/contact" ? plan.cta_url : null;
-
-          return (
-            <div
-              key={plan.slug}
-              className={cn(
-                "relative flex flex-col rounded-card border bg-card-dark p-3.5 shadow-shadow-lg transition-[border-color,transform,background-color] duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:-translate-y-0.5",
-                plan.is_featured
-                  ? "border-primary shadow-[0_0_24px_rgba(245,158,11,0.12)]"
-                  : "border-card-border hover:border-primary/30"
-              )}
-            >
-              {plan.is_featured ? (
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-primary px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider text-black">
-                  {t(locale, "mostPopular")}
-                </div>
-              ) : null}
-              <h3 className="mb-1 font-display text-[13px] font-bold text-text-primary">
-                {name}
-              </h3>
-              <div className="mb-1 flex items-baseline gap-1">
-                <span className="font-display text-lg font-black text-primary">
-                  {price}
-                </span>
-                {billing ? (
-                  <span className="text-[9px] font-bold uppercase text-text-subtle">
-                    {billing}
-                  </span>
-                ) : null}
-              </div>
-              {description ? (
-                <p className="mb-2 line-clamp-2 text-[10px] leading-relaxed text-text-muted">
-                  {description}
-                </p>
-              ) : null}
-              <div className="mb-2 h-px w-full bg-white/5" />
-              <ul className="mb-2 flex-1 space-y-1">
-                {features.slice(0, 4).map((feature, index) => (
-                  <li
-                    key={index}
-                    className="flex items-start gap-1.5 text-[10px] leading-snug text-text-tertiary"
-                  >
-                    <CheckIcon className="mt-px size-3 shrink-0 text-primary" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              {ctaHref ? (
-                <Link
-                  href={ctaHref}
-                  className={cn(
-                    "block w-full rounded-[10px] py-2 text-center text-[10px] font-bold uppercase tracking-wide transition-all",
-                    plan.is_featured
-                      ? "bg-primary text-text-inverse shadow-lg shadow-primary/20 hover:bg-primary-hover"
-                      : "border border-primary text-primary hover:bg-primary/10"
-                  )}
-                >
-                  {ctaLabel}
-                </Link>
-              ) : (
-                <button
-                  type="button"
-                  onClick={onContact}
-                  className={cn(
-                    "block w-full rounded-[10px] py-2 text-center text-[10px] font-bold uppercase tracking-wide transition-all",
-                    plan.is_featured
-                      ? "bg-primary text-text-inverse shadow-lg shadow-primary/20 hover:bg-primary-hover active:bg-primary-active"
-                      : "border border-primary text-primary hover:bg-primary/10"
-                  )}
-                >
-                  {ctaLabel}
-                </button>
-              )}
-            </div>
-          );
-        })}
+      <div className="grid grid-cols-1 gap-6">
+        {plans.map((plan) => (
+          <PlanCard key={plan.slug} plan={plan} locale={locale} />
+        ))}
       </div>
 
       <div className="mt-3">
@@ -1389,6 +1246,18 @@ export function ChatWidget({
     window.dispatchEvent(new CustomEvent("stratifit:open-contact"));
   }
 
+  /** Closes the chat before the "Learn more" link navigates to the service
+      page, so the widget stays closed on the destination instead of reopening
+      from the persisted "was open" flag. */
+  function handleLearnMore() {
+    try {
+      window.localStorage.setItem(OPEN_KEY, "0");
+    } catch {
+      // Storage unavailable — ignore.
+    }
+    setOpen(false);
+  }
+
   const locale = lang;
   const messageGroups = groupMessages(messages);
   // Tail window: only the newest groups are rendered so the chat opens showing
@@ -1887,6 +1756,7 @@ export function ChatWidget({
                     services={services}
                     servicePageSlugs={servicePageSlugs}
                     onAsk={askAboutService}
+                    onLearnMore={handleLearnMore}
                     onBack={() => switchView("chat")}
                   />
                 ) : view === "pricing" ? (
@@ -1894,7 +1764,6 @@ export function ChatWidget({
                     locale={locale}
                     plans={plans}
                     onAskPricing={askAboutPricing}
-                    onContact={openContactPopup}
                     onBack={() => switchView("chat")}
                   />
                 ) : view === "faq" ? (

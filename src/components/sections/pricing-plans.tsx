@@ -24,7 +24,7 @@ function CheckIcon() {
   );
 }
 
-function PlanCard({
+export function PlanCard({
   plan,
   locale,
   mobile,
