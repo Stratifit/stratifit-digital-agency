@@ -1,0 +1,75 @@
+import type { PublicTestimonial } from "@/features/testimonials/queries";
+import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { cn } from "@/lib/cn";
+
+function StarIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      className="size-4 text-primary"
+    >
+      <path
+        fillRule="evenodd"
+        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
+function initials(name: string): string {
+  return name
+    .split(" ")
+    .map((word) => word.charAt(0))
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+}
+
+export function TestimonialCard({
+  testimonial,
+  locale,
+  className,
+}: {
+  testimonial: PublicTestimonial;
+  locale: string;
+  className?: string;
+}) {
+  return (
+    <article
+      className={cn(
+        "rounded-card border border-white/5 bg-card-dark p-6 transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/20 md:p-8",
+        className
+      )}
+    >
+      <div className="mb-6 flex items-center gap-3">
+        <div className="flex size-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br from-surface-hover to-surface-active text-sm font-bold text-white">
+          {initials(testimonial.person_name)}
+        </div>
+        <div className="min-w-0">
+          <div className="truncate font-display font-bold text-text-primary">
+            {testimonial.person_name}
+          </div>
+          <div className="mt-0.5 truncate text-xs uppercase tracking-wide text-text-subtle">
+            {resolveTranslation(testimonial.person_role_translations, locale) ||
+              testimonial.company_name}
+          </div>
+        </div>
+      </div>
+
+      <div className="mb-4 flex gap-1" role="img" aria-label="5 out of 5 stars">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <StarIcon key={i} />
+        ))}
+      </div>
+
+      <p className="text-sm leading-relaxed text-text-secondary">
+        &ldquo;
+        {resolveTranslation(testimonial.quote_translations, locale)}
+        &rdquo;
+      </p>
+    </article>
+  );
+}
