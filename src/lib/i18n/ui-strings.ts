@@ -99,12 +99,6 @@ export type UiStringKey =
   | "chatAskAboutPricing"
   | "chatPricingQuestion"
   | "chatFaqTitle"
-  | "chatFaqQ1"
-  | "chatFaqA1"
-  | "chatFaqQ2"
-  | "chatFaqA2"
-  | "chatFaqQ3"
-  | "chatFaqA3"
   | "chatSupportTitle"
   | "chatSupportBody"
   | "chatContactUs"
@@ -250,12 +244,6 @@ const en: UiStrings = {
   chatAskAboutPricing: "Ask about pricing",
   chatPricingQuestion: "I'd like to know more about pricing.",
   chatFaqTitle: "Common Questions",
-  chatFaqQ1: "How do you price projects?",
-  chatFaqA1: "Every project is scoped individually. Share your requirements and we'll send a tailored quote.",
-  chatFaqQ2: "What services do you offer?",
-  chatFaqA2: "Website development, brand identity, AI & automation, and growth & performance marketing.",
-  chatFaqQ3: "Do you support ongoing work?",
-  chatFaqA3: "Yes — we offer maintenance, optimization, and growth plans.",
   chatSupportTitle: "Human Support",
   chatSupportBody: "Our team is ready to help with your project.",
   chatContactUs: "Contact us",
@@ -402,12 +390,6 @@ const de: UiStrings = {
   chatAskAboutPricing: "Nach Preisen fragen",
   chatPricingQuestion: "Ich möchte mehr über die Preise wissen.",
   chatFaqTitle: "Häufige Fragen",
-  chatFaqQ1: "Wie werden Projekte bepreist?",
-  chatFaqA1: "Jedes Projekt wird individuell kalkuliert. Teilen Sie uns Ihre Anforderungen mit und Sie erhalten ein maßgeschneidertes Angebot.",
-  chatFaqQ2: "Welche Dienstleistungen bieten Sie an?",
-  chatFaqA2: "Webentwicklung, Markenidentität, KI & Automatisierung sowie Wachstums- und Performance-Marketing.",
-  chatFaqQ3: "Bieten Sie laufende Betreuung an?",
-  chatFaqA3: "Ja – wir bieten Wartungs-, Optimierungs- und Wachstumspläne an.",
   chatSupportTitle: "Menschlicher Support",
   chatSupportBody: "Unser Team hilft Ihnen gerne bei Ihrem Projekt.",
   chatContactUs: "Kontakt aufnehmen",
@@ -554,12 +536,6 @@ const fr: UiStrings = {
   chatAskAboutPricing: "Demander les tarifs",
   chatPricingQuestion: "J'aimerais en savoir plus sur les tarifs.",
   chatFaqTitle: "Questions fréquentes",
-  chatFaqQ1: "Comment sont tarifés les projets ?",
-  chatFaqA1: "Chaque projet est chiffré individuellement. Partagez vos besoins et nous vous enverrons un devis personnalisé.",
-  chatFaqQ2: "Quels services proposez-vous ?",
-  chatFaqA2: "Développement web, identité de marque, IA & automatisation, et croissance & performance.",
-  chatFaqQ3: "Assurez-vous un suivi continu ?",
-  chatFaqA3: "Oui – nous proposons des forfaits de maintenance, d'optimisation et de croissance.",
   chatSupportTitle: "Support humain",
   chatSupportBody: "Notre équipe est prête à vous aider sur votre projet.",
   chatContactUs: "Nous contacter",
@@ -706,12 +682,6 @@ const es: UiStrings = {
   chatAskAboutPricing: "Preguntar por precios",
   chatPricingQuestion: "Me gustaría saber más sobre los precios.",
   chatFaqTitle: "Preguntas frecuentes",
-  chatFaqQ1: "¿Cómo se valoran los proyectos?",
-  chatFaqA1: "Cada proyecto se presupuesta individualmente. Comparte tus requisitos y te enviaremos una cotización personalizada.",
-  chatFaqQ2: "¿Qué servicios ofrecen?",
-  chatFaqA2: "Desarrollo web, identidad de marca, IA y automatización, y crecimiento y rendimiento.",
-  chatFaqQ3: "¿Dan soporte continuo?",
-  chatFaqA3: "Sí: ofrecemos planes de mantenimiento, optimización y crecimiento.",
   chatSupportTitle: "Soporte humano",
   chatSupportBody: "Nuestro equipo está listo para ayudarte con tu proyecto.",
   chatContactUs: "Contáctanos",

@@ -26,7 +26,14 @@ function ChevronIcon() {
   );
 }
 
-export function FaqAccordion({ items }: { items: FaqItem[] }) {
+export function FaqAccordion({
+  items,
+  gridClassName,
+}: {
+  items: FaqItem[];
+  /** Override the responsive grid (e.g. force single column in the chat). */
+  gridClassName?: string;
+}) {
   const [openId, setOpenId] = React.useState<string | null>(
     items.length > 0 ? items[0].id : null
   );
@@ -36,7 +43,11 @@ export function FaqAccordion({ items }: { items: FaqItem[] }) {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
+    <div
+      className={
+        gridClassName ?? "grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4"
+      }
+    >
       {items.map((item) => {
         const open = openId === item.id;
         return (

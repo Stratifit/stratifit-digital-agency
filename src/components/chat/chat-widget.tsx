@@ -17,8 +17,10 @@ import Link from "next/link";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { ServiceCard } from "@/components/sections/service-card";
 import { PlanCard } from "@/components/sections/pricing-plans";
+import { FaqAccordion, type FaqItem } from "@/components/sections/faq-accordion";
 import type { PublicServiceDetail } from "@/features/services/queries";
 import type { PublicPricingPlan } from "@/features/pricing/queries";
+import type { PublicFaq } from "@/features/faq/queries";
 
 interface WidgetMessage {
   id: string;
@@ -300,13 +302,6 @@ const TOPIC_CHIPS: {
   { key: "chatSupport", view: "support", icon: CogIcon },
 ];
 
-/** FAQ accordion items shown in the FAQ panel. */
-const FAQ_ITEMS: { q: UiStringKey; a: UiStringKey }[] = [
-  { q: "chatFaqQ1", a: "chatFaqA1" },
-  { q: "chatFaqQ2", a: "chatFaqA2" },
-  { q: "chatFaqQ3", a: "chatFaqA3" },
-];
-
 // ============================================================================
 // Topic panels — compact overviews shown inside the chat instead of the
 // conversation when a topic chip is active. They keep the visitor inside the
@@ -473,99 +468,34 @@ function PricingPanel({
   );
 }
 
-/** FAQ accordion panel — matches the main homepage FaqAccordion
-    design exactly: 2-col grid on md+, Satoshi headings, CSS grid row
-    reveal animation, primary/30 highlight border on the open item. */
-function FaqAccordionChevronIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-      className="size-5 shrink-0"
-    >
-      <path
-        fillRule="evenodd"
-        d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
-
+/** FAQ panel — renders the real homepage FaqAccordion component with the
+    published FAQ items, so the chat shows exactly the same questions and
+    answers as the homepage FAQ section, localized to the visitor's chat
+    language. */
 function FaqPanel({
   locale,
-  openFaq,
-  onToggleFaq,
+  faqs,
   onBack,
 }: {
   locale: string;
-  openFaq: number | null;
-  onToggleFaq: (index: number) => void;
+  faqs: PublicFaq[];
   onBack: () => void;
 }) {
+  const items: FaqItem[] = faqs.map((faq) => ({
+    id: faq.id,
+    question: resolveTranslation(faq.question_translations, locale),
+    answer: resolveTranslation(faq.answer_translations, locale),
+  }));
+
   return (
     <div>
       <PanelHeading
         title={t(locale, "chatFaqTitle")}
         icon={<InfoIcon className="size-3.5" />}
       />
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
-        {FAQ_ITEMS.map((item, index) => {
-          const open = openFaq === index;
-          return (
-            <div
-              key={item.q}
-              className={cn(
-                "h-full rounded-card border transition-all duration-300 ease-[var(--ease-standard)]",
-                open
-                  ? "border-primary/30 shadow-[0_0_20px_rgba(245,158,11,0.05)]"
-                  : "border-card-border hover:border-white/10"
-              )}
-            >
-              <button
-                type="button"
-                aria-expanded={open}
-                onClick={() => onToggleFaq(index)}
-                className="group flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
-              >
-                <span
-                  className={cn(
-                    "font-display text-sm font-bold transition-colors duration-300 sm:text-base",
-                    open
-                      ? "text-primary"
-                      : "text-text-primary group-hover:text-primary/80"
-                  )}
-                >
-                  {t(locale, item.q)}
-                </span>
-                <span
-                  className={cn(
-                    "shrink-0 transition-all duration-300",
-                    open
-                      ? "rotate-180 text-primary"
-                      : "text-text-subtle group-hover:text-primary/70"
-                  )}
-                >
-                  <FaqAccordionChevronIcon />
-                </span>
-              </button>
-              <div
-                className={cn(
-                  "grid transition-[grid-template-rows] duration-300 ease-[var(--ease-standard)]",
-                  open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-                )}
-              >
-                <div className="overflow-hidden">
-                  <p className="px-6 pb-5 text-sm leading-relaxed text-text-muted">
-                    {t(locale, item.a)}
-                  </p>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      {items.length > 0 ? (
+        <FaqAccordion items={items} gridClassName="grid grid-cols-1 gap-3" />
+      ) : null}
       <PanelBackButton locale={locale} onClick={onBack} />
     </div>
   );
@@ -735,10 +665,12 @@ export function ChatWidget({
   services,
   plans,
   servicePageSlugs,
+  faqs,
 }: {
   services: PublicServiceDetail[];
   plans: PublicPricingPlan[];
   servicePageSlugs: string[];
+  faqs: PublicFaq[];
 }) {
   const [open, setOpen] = React.useState(() => {
     if (typeof window === "undefined") return false;
@@ -784,7 +716,6 @@ export function ChatWidget({
   /** Active topic view — the chips switch between the conversation and the
       compact service/pricing/faq/support/about panels. */
   const [view, setView] = React.useState<ChatView>("chat");
-  const [openFaq, setOpenFaq] = React.useState<number | null>(0);
 
   const mounted = React.useSyncExternalStore(
     () => () => {},
@@ -1220,7 +1151,6 @@ export function ChatWidget({
 
   function switchView(next: ChatView) {
     setView(next);
-    setOpenFaq(0);
   }
 
   /** Asks the AI about a service — returns to the chat and sends the prompt. */
@@ -1769,10 +1699,7 @@ export function ChatWidget({
                 ) : view === "faq" ? (
                   <FaqPanel
                     locale={locale}
-                    openFaq={openFaq}
-                    onToggleFaq={(index) =>
-                      setOpenFaq((v) => (v === index ? null : index))
-                    }
+                    faqs={faqs}
                     onBack={() => switchView("chat")}
                   />
                 ) : (
