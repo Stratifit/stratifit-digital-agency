@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { Container } from "@/components/ui/container";
 import { cn } from "@/lib/cn";
 
 const SLIDE_MS = 4000;
@@ -49,7 +48,9 @@ export function AnnouncementBarView({ slides, linkUrl, linkLabel }: Announcement
 
   return (
     <div className="border-b border-border bg-primary">
-      <Container className="flex h-10 items-center gap-3">
+      {/* Slimmer horizontal padding than the shared Container (px-5 instead
+          of px-6) so the announcement strip feels less bulky. */}
+      <div className="mx-auto flex h-10 w-full max-w-[var(--container-lg)] items-center gap-3 px-5 lg:px-8">
         <div
           className="flex min-w-0 flex-1 touch-pan-y items-center gap-2"
           onTouchStart={handleTouchStart}
@@ -112,7 +113,7 @@ export function AnnouncementBarView({ slides, linkUrl, linkLabel }: Announcement
             />
           </svg>
         </button>
-      </Container>
+      </div>
     </div>
   );
 }

@@ -281,14 +281,6 @@ function AiSenderLabel({ locale }: { locale: string }) {
   );
 }
 
-function VisitorAvatar() {
-  return (
-    <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary/25 to-primary/10 text-primary ring-1 ring-primary/20">
-      <UserIcon className="size-3.5" />
-    </span>
-  );
-}
-
 // ============================================================================
 // Chat widget
 // ============================================================================
@@ -373,7 +365,8 @@ function PanelPrimaryButton({
   );
 }
 
-/** Services panel — full service cards (icon, key deliverables, two CTAs)
+/** Services panel — the homepage service cards in a compact 2×2 grid so every
+    offering is visible at once: icon badge, key deliverables, and two CTAs
     that hand off to the AI ("Ask about this") or the service page
     ("Learn more"). */
 function ServicesPanel({
@@ -395,7 +388,7 @@ function ServicesPanel({
         title={t(locale, "chatServices")}
         icon={<BriefcaseIcon className="size-3.5" />}
       />
-      <div className="space-y-3">
+      <div className="grid grid-cols-2 gap-3">
         {services.map((service) => {
           const deliverables = (
             (service.deliverables_translations as Record<string, unknown> | null)?.[
@@ -419,61 +412,56 @@ function ServicesPanel({
           return (
             <div
               key={service.slug}
-              className="group relative overflow-hidden rounded-[14px] border border-border bg-card-dark p-4 transition-colors hover:border-primary/30"
+              className="group relative flex flex-col overflow-hidden rounded-card border border-card-border bg-card-dark p-3.5 shadow-shadow-lg transition-[border-color,transform,background-color] duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-card-border-hover"
             >
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute -right-12 -top-12 h-24 w-24 rounded-full bg-primary/5 blur-2xl transition-colors group-hover:bg-primary/10"
+                className="pointer-events-none absolute -right-10 -top-10 h-20 w-20 rounded-full bg-primary/5 blur-2xl transition-colors duration-[var(--motion-medium)] ease-[var(--ease-standard)] group-hover:bg-primary/10"
               />
-              <div className="relative z-10">
-                <div className="mb-3 flex items-center gap-3">
-                  <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-primary/30 bg-gradient-to-br from-primary/20 to-primary/5">
-                    <ServiceIcon name={service.icon_name} className="size-5" />
-                  </span>
-                  <div className="min-w-0">
-                    <p className="truncate font-display text-sm font-bold tracking-tight text-text-primary">
-                      {title}
-                    </p>
-                    {description ? (
-                      <p className="mt-0.5 line-clamp-2 text-[11px] leading-relaxed text-text-muted">
-                        {description}
-                      </p>
-                    ) : null}
-                  </div>
+              <div className="relative z-10 flex flex-1 flex-col gap-2.5">
+                <div className="flex size-10 items-center justify-center rounded-full border border-primary/30 bg-gradient-to-br from-primary/20 to-primary/5 shadow-[0_0_15px_rgba(245,158,11,0.1)]">
+                  <ServiceIcon name={service.icon_name} className="size-5" />
                 </div>
-
+                <div>
+                  <h3 className="mb-1 font-display text-[13px] font-bold leading-tight tracking-tight text-text-primary">
+                    {title}
+                  </h3>
+                  {description ? (
+                    <p className="line-clamp-2 text-[10px] font-medium leading-relaxed text-text-muted">
+                      {description}
+                    </p>
+                  ) : null}
+                </div>
+                <div className="h-px w-full bg-gradient-to-r from-white/10 to-transparent" />
                 {deliverables.length > 0 ? (
-                  <>
-                    <div className="h-px w-full bg-gradient-to-r from-white/10 to-transparent" />
-                    <div className="mt-3">
-                      <p className="mb-2.5 text-[10px] font-bold uppercase tracking-widest text-primary opacity-90">
-                        {t(locale, "keyDeliverables")}
-                      </p>
-                      <ul className="space-y-1.5">
-                        {deliverables.slice(0, 4).map((item, index) => (
-                          <li key={index} className="flex items-start gap-2">
-                            <CheckIcon className="mt-0.5 size-3.5 shrink-0 text-primary" />
-                            <span className="text-[11px] font-medium leading-snug text-text-tertiary">
-                              {item}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </>
+                  <div>
+                    <p className="mb-2 text-[9px] font-bold uppercase tracking-widest text-primary opacity-90">
+                      {t(locale, "keyDeliverables")}
+                    </p>
+                    <ul className="space-y-1">
+                      {deliverables.slice(0, 4).map((item, index) => (
+                        <li key={index} className="flex items-start gap-1.5">
+                          <CheckIcon className="mt-px size-3 shrink-0 text-primary" />
+                          <span className="text-[10px] font-medium leading-snug text-text-tertiary">
+                            {item}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 ) : null}
-
-                <div className="mt-3.5 flex gap-2">
+                <div className="flex-1" />
+                <div className="flex gap-1.5">
                   <button
                     type="button"
                     onClick={() => onAsk(title, "interested")}
-                    className="flex flex-1 items-center justify-center gap-1.5 rounded-[10px] bg-primary px-2.5 py-2 text-[11px] font-semibold text-text-inverse transition-all hover:bg-primary-hover active:scale-[0.98]"
+                    className="flex flex-1 items-center justify-center rounded-[10px] bg-primary px-1.5 py-1.5 text-[10px] font-semibold text-text-inverse transition-all hover:bg-primary-hover active:scale-[0.98]"
                   >
                     {t(locale, "chatAskAbout")}
                   </button>
                   <Link
                     href={learnMoreHref}
-                    className="flex flex-1 items-center justify-center gap-1.5 rounded-[10px] border border-primary/25 bg-primary/10 px-2.5 py-2 text-[11px] font-semibold text-primary transition-all hover:bg-primary/15 active:scale-[0.98]"
+                    className="flex flex-1 items-center justify-center rounded-[10px] border border-primary/25 bg-primary/10 px-1.5 py-1.5 text-[10px] font-semibold text-primary transition-all hover:bg-primary/15 active:scale-[0.98]"
                   >
                     {t(locale, "chatLearnMore")}
                   </Link>
@@ -488,8 +476,10 @@ function ServicesPanel({
   );
 }
 
-/** Pricing panel — horizontally scrollable plan cards (snap + dots) mirroring
-    the homepage pricing section, with chat and contact handoffs. */
+/** Pricing panel — the homepage plan cards in a compact 2×2 grid so every
+    package is visible at once (no horizontal scroll), with the plan CTA
+    opening the contact popup or linking when a cta_url is set, plus an
+    "Ask about pricing" chat handoff. */
 function PricingPanel({
   locale,
   plans,
@@ -503,31 +493,6 @@ function PricingPanel({
   onContact: () => void;
   onBack: () => void;
 }) {
-  const scrollRef = React.useRef<HTMLDivElement>(null);
-  const [activePlan, setActivePlan] = React.useState(0);
-
-  function handlePlanScroll() {
-    const el = scrollRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const center = rect.left + rect.width / 2;
-    const cards = Array.from(
-      el.querySelectorAll<HTMLElement>("[data-chat-plan]")
-    );
-    let best = 0;
-    let bestDistance = Infinity;
-    cards.forEach((card, index) => {
-      const cardRect = card.getBoundingClientRect();
-      const mid = cardRect.left + cardRect.width / 2;
-      const distance = Math.abs(mid - center);
-      if (distance < bestDistance) {
-        bestDistance = distance;
-        best = index;
-      }
-    });
-    setActivePlan(best);
-  }
-
   return (
     <div>
       <PanelHeading
@@ -538,11 +503,7 @@ function PricingPanel({
         {t(locale, "chatPricingBody")}
       </p>
 
-      <div
-        ref={scrollRef}
-        onScroll={handlePlanScroll}
-        className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
+      <div className="grid grid-cols-2 gap-3">
         {plans.map((plan) => {
           const features = (
             (plan.features_translations as Record<string, unknown> | null)?.[
@@ -571,45 +532,44 @@ function PricingPanel({
           return (
             <div
               key={plan.slug}
-              data-chat-plan
               className={cn(
-                "relative flex w-[72%] min-w-[240px] max-w-[300px] shrink-0 snap-center flex-col rounded-[14px] border bg-card-dark p-4",
+                "relative flex flex-col rounded-card border bg-card-dark p-3.5 shadow-shadow-lg transition-[border-color,transform,background-color] duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:-translate-y-0.5",
                 plan.is_featured
                   ? "border-primary shadow-[0_0_24px_rgba(245,158,11,0.12)]"
-                  : "border-border hover:border-primary/30"
+                  : "border-card-border hover:border-primary/30"
               )}
             >
               {plan.is_featured ? (
-                <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-primary px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-black">
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-primary px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider text-black">
                   {t(locale, "mostPopular")}
                 </div>
               ) : null}
-              <h3 className="mb-1 font-display text-base font-bold text-text-primary">
+              <h3 className="mb-1 font-display text-[13px] font-bold text-text-primary">
                 {name}
               </h3>
               <div className="mb-1 flex items-baseline gap-1">
-                <span className="font-display text-xl font-black text-primary">
+                <span className="font-display text-lg font-black text-primary">
                   {price}
                 </span>
                 {billing ? (
-                  <span className="text-[10px] font-bold uppercase text-text-subtle">
+                  <span className="text-[9px] font-bold uppercase text-text-subtle">
                     {billing}
                   </span>
                 ) : null}
               </div>
               {description ? (
-                <p className="mb-3 text-[11px] leading-relaxed text-text-muted">
+                <p className="mb-2 line-clamp-2 text-[10px] leading-relaxed text-text-muted">
                   {description}
                 </p>
               ) : null}
-              <div className="mb-3 h-px w-full bg-white/5" />
-              <ul className="mb-3 flex-1 space-y-2">
-                {features.map((feature, index) => (
+              <div className="mb-2 h-px w-full bg-white/5" />
+              <ul className="mb-2 flex-1 space-y-1">
+                {features.slice(0, 4).map((feature, index) => (
                   <li
                     key={index}
-                    className="flex items-start gap-2 text-[11px] leading-snug text-text-tertiary"
+                    className="flex items-start gap-1.5 text-[10px] leading-snug text-text-tertiary"
                   >
-                    <CheckIcon className="mt-0.5 size-3.5 shrink-0 text-primary" />
+                    <CheckIcon className="mt-px size-3 shrink-0 text-primary" />
                     {feature}
                   </li>
                 ))}
@@ -618,7 +578,7 @@ function PricingPanel({
                 <Link
                   href={ctaHref}
                   className={cn(
-                    "block w-full rounded-[10px] py-2.5 text-center text-[11px] font-bold uppercase tracking-wide transition-all",
+                    "block w-full rounded-[10px] py-2 text-center text-[10px] font-bold uppercase tracking-wide transition-all",
                     plan.is_featured
                       ? "bg-primary text-text-inverse shadow-lg shadow-primary/20 hover:bg-primary-hover"
                       : "border border-primary text-primary hover:bg-primary/10"
@@ -631,7 +591,7 @@ function PricingPanel({
                   type="button"
                   onClick={onContact}
                   className={cn(
-                    "block w-full rounded-[10px] py-2.5 text-center text-[11px] font-bold uppercase tracking-wide transition-all",
+                    "block w-full rounded-[10px] py-2 text-center text-[10px] font-bold uppercase tracking-wide transition-all",
                     plan.is_featured
                       ? "bg-primary text-text-inverse shadow-lg shadow-primary/20 hover:bg-primary-hover active:bg-primary-active"
                       : "border border-primary text-primary hover:bg-primary/10"
@@ -644,20 +604,6 @@ function PricingPanel({
           );
         })}
       </div>
-
-      {plans.length > 1 ? (
-        <div className="mt-2.5 flex items-center justify-center gap-1.5">
-          {plans.map((plan, index) => (
-            <span
-              key={plan.slug}
-              className={cn(
-                "size-1.5 rounded-full transition-colors duration-200 ease-out",
-                index === activePlan ? "bg-primary" : "bg-white/20"
-              )}
-            />
-          ))}
-        </div>
-      ) : null}
 
       <div className="mt-3">
         <PanelPrimaryButton onClick={onAskPricing}>
@@ -1691,23 +1637,23 @@ export function ChatWidget({
                                         placeholder={
                                           visitor.name ? undefined : t(locale, "chatVisitor")
                                         }
-                                        className="w-full min-w-0 rounded-md border border-primary/40 bg-card-dark px-1.5 py-0.5 text-[10px] font-medium text-text-primary placeholder:text-text-muted outline-none transition-colors focus:border-primary"
+                                        className="w-full min-w-0 rounded-[10px] border border-primary/40 bg-card-dark px-2.5 py-2 text-sm font-medium text-text-primary placeholder:text-text-muted outline-none transition-colors focus:border-primary"
                                       />
                                       <button
                                         type="button"
                                         aria-label={t(locale, "chatSave")}
                                         onClick={handleSaveName}
-                                        className="shrink-0 p-0.5 text-success transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                                        className="shrink-0 p-1 text-success transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                                       >
-                                        <CheckIcon className="size-3" />
+                                        <CheckIcon className="size-4" />
                                       </button>
                                       <button
                                         type="button"
                                         aria-label={t(locale, "chatCancel")}
                                         onClick={handleCancelEdit}
-                                        className="shrink-0 p-0.5 text-text-muted transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                                        className="shrink-0 p-1 text-text-muted transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                                       >
-                                        <XIcon className="size-3" />
+                                        <XIcon className="size-4" />
                                       </button>
                                     </>
                                   ) : (
@@ -1717,10 +1663,10 @@ export function ChatWidget({
                                       aria-label={t(locale, "chatEditName")}
                                       className="group flex items-center gap-1 rounded-md px-1.5 py-1 transition-colors hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                                     >
-                                      <span className="text-[9px] font-medium uppercase tracking-wide text-primary/70 transition-colors group-hover:text-primary">
+                                      <span className="text-[11px] font-semibold uppercase tracking-wide text-primary/70 transition-colors group-hover:text-primary">
                                         {visitor.name || t(locale, "chatVisitor")}
                                       </span>
-                                      <PencilIcon className="size-2.5 text-text-subtle transition-colors group-hover:text-primary" />
+                                      <PencilIcon className="size-3 text-text-subtle transition-colors group-hover:text-primary" />
                                     </button>
                                   )}
                                 </div>
@@ -1743,11 +1689,6 @@ export function ChatWidget({
                                 />
                               ) : null}
                             </div>
-                            {isFirst ? (
-                              <VisitorAvatar />
-                            ) : (
-                              <span aria-hidden="true" className="size-7 shrink-0" />
-                            )}
                           </div>
                         );
                       }
