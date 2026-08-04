@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { NICHE_ROUTES } from "@/features/acquisition/niches";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -23,6 +24,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/work`, lastModified: new Date() },
     { url: `${BASE_URL}/insights`, lastModified: new Date() },
     { url: `${BASE_URL}/about`, lastModified: new Date() },
+    { url: `${BASE_URL}/buy-business`, lastModified: new Date() },
+    ...NICHE_ROUTES.map((slug) => ({
+      url: `${BASE_URL}/buy-business/niches/${slug}`,
+      lastModified: new Date(),
+    })),
     { url: `${BASE_URL}/acquisition`, lastModified: new Date() },
     { url: `${BASE_URL}/contact`, lastModified: new Date() },
     { url: `${BASE_URL}/privacy`, lastModified: new Date() },
