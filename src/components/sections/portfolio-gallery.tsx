@@ -224,7 +224,7 @@ export function PortfolioGallery({
         ))}
         <Link
           href="/work"
-          className="absolute right-0 hidden items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110 md:inline-flex"
+          className="absolute right-0 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110 md:hidden"
         >
           View All
           <span className="text-[10px]">
