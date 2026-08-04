@@ -1325,11 +1325,11 @@ export function ChatWidget() {
               <span className="flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-active text-text-inverse ring-1 ring-primary/40 shadow-[0_0_14px_rgba(245,158,11,0.25)]">
                 <ChatIcon className="size-5" />
               </span>
-              <div className="text-center lg:text-left">
+              <div className="text-left">
                 <p className="font-display text-sm font-black text-text-primary">
                   {t(locale, "chatName")}
                 </p>
-                <span className="flex items-center justify-center gap-1 lg:inline-flex">
+                <span className="flex items-center gap-1">
                   <span
                     className={cn(
                       "size-1 rounded-full bg-success",
