@@ -1061,6 +1061,8 @@ fix/<name>
 
 Do not mix unrelated work.
 
+After meaningful work is committed, push it to `origin/main`. Do not leave local `main` ahead of the remote — commit → push is the default workflow.
+
 Do not commit:
 
 - Secrets
