@@ -929,7 +929,7 @@ export function ChatWidget() {
                   <span
                     className={cn(
                       "size-1 rounded-full bg-success",
-                      loading && "animate-pulse"
+                      loading && "chat-status-breathe"
                     )}
                   />
                   <span className="text-[9px] font-medium text-success">
