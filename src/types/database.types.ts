@@ -1289,6 +1289,7 @@ export type Database = {
           deliverables_translations: Json
           featured_media_id: string | null
           id: string
+          image_url: string | null
           is_featured: boolean
           metrics: Json
           published_at: string | null
@@ -1311,6 +1312,7 @@ export type Database = {
           deliverables_translations?: Json
           featured_media_id?: string | null
           id?: string
+          image_url?: string | null
           is_featured?: boolean
           metrics?: Json
           published_at?: string | null
@@ -1333,6 +1335,7 @@ export type Database = {
           deliverables_translations?: Json
           featured_media_id?: string | null
           id?: string
+          image_url?: string | null
           is_featured?: boolean
           metrics?: Json
           published_at?: string | null
@@ -1821,7 +1824,8 @@ export type Database = {
           id: string
           is_verified: boolean
           is_visible: boolean
-          media_id: string
+          image_url: string | null
+          media_id: string | null
           name: string
           updated_at: string
         }
@@ -1830,9 +1834,10 @@ export type Database = {
           display_order?: number
           href?: string | null
           id?: string
+          image_url?: string | null
           is_verified?: boolean
           is_visible?: boolean
-          media_id: string
+          media_id?: string | null
           name: string
           updated_at?: string
         }
@@ -1841,9 +1846,10 @@ export type Database = {
           display_order?: number
           href?: string | null
           id?: string
+          image_url?: string | null
           is_verified?: boolean
           is_visible?: boolean
-          media_id?: string
+          media_id?: string | null
           name?: string
           updated_at?: string
         }

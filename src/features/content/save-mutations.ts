@@ -84,6 +84,7 @@ export async function savePortfolio(
     client_name: parsed.data.client_name,
     title_translations: titleTranslations,
     summary_translations: summaryTranslations,
+    image_url: parsed.data.image_url.trim() || null,
     status: parsed.data.status,
   };
   const { error } = slug

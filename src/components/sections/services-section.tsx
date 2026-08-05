@@ -84,6 +84,24 @@ export async function ServicesSection() {
             );
           })}
         </Reveal>
+
+        <Reveal className="mt-10 flex flex-col items-center justify-between gap-4 rounded-card-lg border border-white/5 bg-surface-soft/40 px-6 py-6 md:flex-row md:px-8">
+          <div className="text-center md:text-left">
+            <p className="font-display text-base font-bold text-text-primary md:text-lg">
+              Not sure where to start?
+            </p>
+            <p className="mt-1 text-sm text-text-muted">
+              See how we applied these services for real clients — with measurable outcomes.
+            </p>
+          </div>
+          <Link
+            href="/work"
+            className="group/link inline-flex shrink-0 items-center gap-2 rounded-button border border-primary/30 bg-primary/10 px-6 py-3 text-sm font-bold text-primary transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/50 hover:bg-primary/20 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
+          >
+            Explore our case studies
+            <ArrowIcon />
+          </Link>
+        </Reveal>
       </Container>
     </Section>
   );

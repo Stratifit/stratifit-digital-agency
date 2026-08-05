@@ -28,7 +28,8 @@ async function requireAdmin() {
 
 const logoSchema = z.object({
   name: z.string().min(1, "Name is required").max(120),
-  media_id: z.string().uuid("Select an image"),
+  media_id: z.string().uuid("Select an image").optional().or(z.literal("")),
+  image_url: z.string(),
   href: z.string(),
   display_order: z.number().int().min(0).max(1000),
   is_visible: z.boolean(),
@@ -54,7 +55,8 @@ export async function createTrustedLogo(
     .from("trusted_logos")
     .insert({
       name: parsed.data.name,
-      media_id: parsed.data.media_id,
+      media_id: parsed.data.media_id || null,
+      image_url: parsed.data.image_url.trim() || null,
       href: parsed.data.href || null,
       display_order: parsed.data.display_order,
       is_visible: parsed.data.is_visible,

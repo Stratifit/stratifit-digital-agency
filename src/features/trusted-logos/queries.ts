@@ -3,7 +3,8 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 export interface PublicTrustedLogo {
   id: string;
   name: string;
-  media_id: string;
+  media_id: string | null;
+  image_url: string | null;
   href: string | null;
 }
 
@@ -12,7 +13,7 @@ export async function getPublicTrustedLogos(): Promise<PublicTrustedLogo[]> {
 
   const { data, error } = await supabase
     .from("trusted_logos")
-    .select("id, name, media_id, href")
+    .select("id, name, media_id, image_url, href")
     .eq("is_visible", true)
     .eq("is_verified", true)
     .order("display_order", { ascending: true });

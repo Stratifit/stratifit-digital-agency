@@ -10,6 +10,7 @@ export const portfolioSchema = z.object({
   client_name: z.string().min(1, "Client name is required"),
   title: enTranslation("English title is required"),
   summary: enTranslation("English summary is required"),
+  image_url: z.string(),
   status: z.enum(["draft", "published", "archived"]),
 });
 

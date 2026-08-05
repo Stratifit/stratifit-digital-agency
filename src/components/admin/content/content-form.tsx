@@ -72,6 +72,7 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
       d.client_name = initial.client_name ?? "";
       d.title = (initial.title_translations as Record<string, string>)?.en ?? "";
       d.summary = (initial.summary_translations as Record<string, string>)?.en ?? "";
+      d.image_url = initial.image_url ?? "";
     }
     if (type === "insights") {
       d.title = (initial.title_translations as Record<string, string>)?.en ?? "";
@@ -162,6 +163,17 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
             <Label htmlFor="client_name">Client Name</Label>
             <Input id="client_name" placeholder="Client" {...register("client_name")} />
             {err("client_name") ? <p className="text-sm text-error">{err("client_name")}</p> : null}
+          </div>
+        ) : null}
+
+        {type === "portfolio" ? (
+          <div className="space-y-2">
+            <Label htmlFor="image_url">Cover Image URL (optional)</Label>
+            <Input
+              id="image_url"
+              placeholder="https://images.unsplash.com/…"
+              {...register("image_url")}
+            />
           </div>
         ) : null}
 

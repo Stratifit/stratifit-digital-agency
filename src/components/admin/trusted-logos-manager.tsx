@@ -23,9 +23,12 @@ export function TrustedLogosManager({
   const router = useRouter();
   const [name, setName] = React.useState("");
   const [mediaId, setMediaId] = React.useState("");
+  const [imageUrl, setImageUrl] = React.useState("");
   const [href, setHref] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
   const [busy, setBusy] = React.useState(false);
+
+  const canSubmit = Boolean(name.trim()) && (Boolean(mediaId) || Boolean(imageUrl.trim()));
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
@@ -34,6 +37,7 @@ export function TrustedLogosManager({
     const result = await createTrustedLogo({
       name,
       media_id: mediaId,
+      image_url: imageUrl,
       href,
       display_order: logos.length,
       is_visible: true,
@@ -46,6 +50,7 @@ export function TrustedLogosManager({
     }
     setName("");
     setMediaId("");
+    setImageUrl("");
     setHref("");
     router.refresh();
   }
@@ -82,28 +87,44 @@ export function TrustedLogosManager({
           </div>
           <div className="space-y-2">
             <label htmlFor="logo-media" className="block text-sm font-medium text-text-primary">
-              Logo image
+              Logo image — URL or media library
             </label>
-            <select
-              id="logo-media"
-              value={mediaId}
-              onChange={(e) => setMediaId(e.target.value)}
-              required
-              className="h-11 w-full cursor-pointer appearance-none rounded-input border border-field-border bg-field-bg px-4 text-sm text-field-text outline-none transition-colors focus:border-primary"
-            >
-              <option value="" disabled>
-                Select an image…
-              </option>
-              {media.map((m) => (
-                <option key={m.id} value={m.id}>
-                  {m.original_filename}
-                </option>
-              ))}
-            </select>
-            {media.length === 0 ? (
-              <p className="text-xs text-text-muted">
-                No images in the media library yet — upload one first.
-              </p>
+            <input
+              id="logo-image-url"
+              value={imageUrl}
+              onChange={(e) => {
+                setImageUrl(e.target.value);
+                if (e.target.value) setMediaId("");
+              }}
+              placeholder="https://… (paste an image URL)"
+              className="h-11 w-full rounded-input border border-field-border bg-field-bg px-4 text-sm text-field-text placeholder:text-field-placeholder outline-none transition-colors focus:border-primary"
+            />
+            {media.length > 0 ? (
+              <>
+                <div className="my-2 flex items-center gap-3">
+                  <div className="h-px flex-1 bg-border" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-text-subtle">
+                    or choose from library
+                  </span>
+                  <div className="h-px flex-1 bg-border" />
+                </div>
+                <select
+                  id="logo-media"
+                  value={mediaId}
+                  onChange={(e) => {
+                    setMediaId(e.target.value);
+                    if (e.target.value) setImageUrl("");
+                  }}
+                  className="h-11 w-full cursor-pointer appearance-none rounded-input border border-field-border bg-field-bg px-4 text-sm text-field-text outline-none transition-colors focus:border-primary"
+                >
+                  <option value="">Select from library…</option>
+                  {media.map((m) => (
+                    <option key={m.id} value={m.id}>
+                      {m.original_filename}
+                    </option>
+                  ))}
+                </select>
+              </>
             ) : null}
           </div>
           <div className="space-y-2 sm:col-span-2">
@@ -126,7 +147,7 @@ export function TrustedLogosManager({
         ) : null}
         <button
           type="submit"
-          disabled={busy || media.length === 0}
+          disabled={busy || !canSubmit}
           className="mt-4 inline-flex items-center gap-2 rounded-button bg-primary px-5 py-2.5 text-sm font-semibold text-text-inverse transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-60"
         >
           {busy ? "Adding…" : "Add logo"}

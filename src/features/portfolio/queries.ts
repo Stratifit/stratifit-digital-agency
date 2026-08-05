@@ -38,6 +38,7 @@ export interface PublicPortfolioProject {
   metrics: PublicPortfolioMetric[];
   featured_media_id: string | null;
   featured_media_url: string | null;
+  image_url: string | null;
   service_slugs: string[];
 }
 
@@ -49,7 +50,7 @@ export async function getPublicPortfolioProjects(
   const { data, error } = await supabase
     .from("portfolio_projects")
     .select(
-      "id, slug, client_name, title_translations, summary_translations, deliverables_translations, metrics, featured_media_id"
+      "id, slug, client_name, title_translations, summary_translations, deliverables_translations, metrics, featured_media_id, image_url"
     )
     .eq("status", "published")
     .order("published_at", { ascending: false })
@@ -118,6 +119,8 @@ export async function getPublicPortfolioProjects(
     const mediaId = project.featured_media_id as string | null;
     const metrics = normalizeMetrics(project.metrics ?? []);
 
+    const directImageUrl = project.image_url as string | null;
+
     return {
       slug: project.slug as string,
       client_name: project.client_name as string,
@@ -129,7 +132,12 @@ export async function getPublicPortfolioProjects(
         project.deliverables_translations as Record<string, string[]> | null,
       metrics,
       featured_media_id: mediaId,
-      featured_media_url: mediaId ? (mediaById.get(mediaId) ?? null) : null,
+      featured_media_url: directImageUrl
+        ? directImageUrl
+        : mediaId
+          ? (mediaById.get(mediaId) ?? null)
+          : null,
+      image_url: directImageUrl,
       service_slugs: linkedServiceIds
         .map((id) => serviceSlugById.get(id))
         .filter(Boolean) as string[],
@@ -157,6 +165,7 @@ export interface PublicPortfolioDetail {
   metrics: PublicPortfolioMetric[];
   featured_media_id: string | null;
   featured_media_url: string | null;
+  image_url: string | null;
   gallery_urls: string[];
   published_at: string | null;
   service_slugs: string[];
@@ -172,7 +181,7 @@ export async function getPublicPortfolioDetail(
   const { data, error } = await supabase
     .from("portfolio_projects")
     .select(
-      "id, slug, client_name, title_translations, summary_translations, challenge_translations, approach_translations, solution_translations, deliverables_translations, results_translations, metrics, featured_media_id, testimonial_id, published_at"
+      "id, slug, client_name, title_translations, summary_translations, challenge_translations, approach_translations, solution_translations, deliverables_translations, results_translations, metrics, featured_media_id, image_url, testimonial_id, published_at"
     )
     .eq("slug", slug)
     .eq("status", "published")
@@ -206,9 +215,9 @@ export async function getPublicPortfolioDetail(
       (serviceRows?.[0]?.title_translations as Record<string, string> | null) ?? null;
   }
 
-  // Featured + gallery media.
-  let featured_media_url: string | null = null;
-  if (data.featured_media_id) {
+  // Featured + gallery media. Direct image_url wins over media library.
+  let featured_media_url: string | null = (data.image_url as string | null) ?? null;
+  if (!featured_media_url && data.featured_media_id) {
     const { data: media } = await supabase
       .from("media_assets")
       .select("bucket_name, storage_path")
@@ -281,6 +290,7 @@ export async function getPublicPortfolioDetail(
     metrics: normalizeMetrics(data.metrics ?? []),
     featured_media_id: data.featured_media_id as string | null,
     featured_media_url,
+    image_url: (data.image_url as string | null) ?? null,
     gallery_urls,
     published_at: data.published_at as string | null,
     service_slugs,

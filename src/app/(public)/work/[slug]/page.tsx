@@ -3,7 +3,11 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { getLocale } from "@/lib/i18n/get-locale";
-import { getPublicPortfolioDetail } from "@/features/portfolio/queries";
+import {
+  getPublicPortfolioDetail,
+  getPublicPortfolioProjects,
+} from "@/features/portfolio/queries";
+import { getPublicServices } from "@/features/services/queries";
 import { getPublicProcessSteps } from "@/features/process/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { cn } from "@/lib/cn";
@@ -11,6 +15,8 @@ import { articleJsonLd, canonical, pageMetadata } from "@/lib/seo";
 import { ContactAwareLink } from "@/components/contact/contact-aware-link";
 import { Reveal } from "@/components/ui/reveal";
 import { ProcessIcon } from "@/components/ui/process-icon";
+import { TrustedBySection } from "@/components/sections/trusted-by-section";
+import { RelatedProjects } from "@/components/work/related-projects";
 
 export async function generateMetadata({
   params,
@@ -227,14 +233,26 @@ export default async function WorkDetailPage({
 }) {
   const { slug } = await params;
   const locale = await getLocale();
-  const [project, steps] = await Promise.all([
+  const [project, steps, relatedProjects, relatedServices] = await Promise.all([
     getPublicPortfolioDetail(slug),
     getPublicProcessSteps(),
+    getPublicPortfolioProjects(6),
+    getPublicServices(),
   ]);
 
   if (!project) {
     notFound();
   }
+
+  const related = relatedProjects
+    .filter((p) => p.slug !== slug)
+    .filter(
+      (p) =>
+        !project.service_slugs.length ||
+        p.service_slugs.some((s) => project.service_slugs.includes(s))
+    )
+    .slice(0, 3);
+  const relatedVisible = related.length > 0 ? related : relatedProjects.filter((p) => p.slug !== slug).slice(0, 3);
 
   const deliverablesRaw =
     (project.deliverables_translations as Record<string, unknown> | null)?.[
@@ -541,6 +559,23 @@ export default async function WorkDetailPage({
         </section>
       ) : null}
 
+      {/* More work */}
+      {relatedVisible.length > 0 ? (
+        <section className="border-t border-border pt-16 md:pt-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
+            <SectionLabel>More Work</SectionLabel>
+            <h2 className="mb-10 font-display text-2xl font-black tracking-tight leading-tight text-text-primary sm:text-3xl md:text-4xl">
+              Similar <span className="text-primary">Case Studies</span>
+            </h2>
+            <RelatedProjects
+              projects={relatedVisible}
+              services={relatedServices}
+              locale={locale}
+            />
+          </div>
+        </section>
+      ) : null}
+
       {/* Final CTA */}
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
@@ -567,6 +602,8 @@ export default async function WorkDetailPage({
           </Reveal>
         </div>
       </section>
+
+      <TrustedBySection />
     </>
   );
 }

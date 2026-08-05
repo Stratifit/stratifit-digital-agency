@@ -13,7 +13,37 @@ import { getPublicServices } from "@/features/services/queries";
 import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
+import { Reveal } from "@/components/ui/reveal";
+import { TrustedBySection } from "@/components/sections/trusted-by-section";
 import { WorkGrid } from "@/components/work/work-grid";
+
+function WorkStatsBand() {
+  const stats = [
+    { value: "50+", label: "Projects delivered" },
+    { value: "340%", label: "Average client ROAS" },
+    { value: "4.9/5", label: "Average client rating" },
+    { value: "92%", label: "Clients who renew" },
+  ];
+
+  return (
+    <section className="border-y border-border bg-surface-soft/40">
+      <Container className="py-10 md:py-12">
+        <Reveal className="grid grid-cols-2 gap-8 md:grid-cols-4">
+          {stats.map((stat) => (
+            <div key={stat.label} className="text-center">
+              <div className="font-display text-3xl font-black tracking-tight text-primary md:text-5xl">
+                {stat.value}
+              </div>
+              <div className="mt-2 text-[10px] font-bold uppercase tracking-[0.22em] text-text-subtle md:text-xs">
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </Reveal>
+      </Container>
+    </section>
+  );
+}
 
 export default async function WorkPage() {
   const locale = await getLocale();
@@ -61,7 +91,11 @@ export default async function WorkPage() {
         </Container>
       </section>
 
-      <section className="pb-24 md:pb-32">
+      <WorkStatsBand />
+
+      <TrustedBySection />
+
+      <section className="pt-20 pb-24 md:pt-24 md:pb-32">
         <Container>
           {projects.length === 0 ? (
             <p className="py-20 text-center text-sm text-text-muted">
