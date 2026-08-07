@@ -478,7 +478,7 @@ The complete public layout is:
 10. Testimonials
 11. Pricing
 12. FAQ
-13. Final CTA
+13. Contact
 14. Footer
 ```
 
@@ -490,7 +490,7 @@ Global layout components:
 
 Homepage content sections:
 
-- Hero through Final CTA
+- Hero through Contact
 
 Do not add drag-and-drop section ordering in version 1.
 

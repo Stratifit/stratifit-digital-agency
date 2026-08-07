@@ -444,7 +444,7 @@ Build the homepage in approved order.
 8. Testimonials
 9. Pricing
 10. FAQ
-11. Final CTA
+11. Contact
 
 ### Tasks
 

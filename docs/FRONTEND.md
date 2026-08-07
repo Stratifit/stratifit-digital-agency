@@ -261,7 +261,7 @@ The complete homepage rendering order for version 1 is:
 10. Testimonials
 11. Pricing
 12. FAQ
-13. Final CTA
+13. Contact
 14. Footer
 
 The Announcement Bar, Header / Navigation, Footer, and the floating back arrow (`PublicBackButton`) are global layout components. The back arrow renders on every public page except the homepage and returns visitors to the page/section they clicked from (`router.back()` with a homepage fallback).
@@ -278,7 +278,7 @@ The primary homepage content sections are:
 8. Testimonials
 9. Pricing
 10. FAQ
-11. Final CTA
+11. Contact
 
 The order is fixed for version 1.
 
@@ -427,14 +427,15 @@ The FAQ section should:
 - Link to the AI FAQ assistant where appropriate
 - Avoid excessive animation
 
-### 7.11 Final CTA
+### 7.11 Contact
 
-The final CTA should:
+The Contact section closes the homepage with a clear conversion path:
 
-- Restate the value
-- Provide one clear primary action
-- Optionally provide a secondary contact path
-- Avoid introducing new complex information
+- Short, inviting heading and description
+- A form capturing essential project details
+- Service selection where relevant
+- Clear submit action with loading, success, and error states
+- Validation and spam protection
 
 ### 7.12 Footer
 

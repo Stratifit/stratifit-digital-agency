@@ -328,7 +328,7 @@ The approved homepage section order is:
 8. Testimonials
 9. Pricing
 10. FAQ
-11. Final CTA
+11. Contact
 12. Footer
 
 This order is fixed for the initial version.
@@ -409,7 +409,7 @@ Website
 │   ├── Testimonials
 │   ├── Pricing
 │   ├── FAQ
-│   └── Final CTA
+│   └── Contact
 ├── About
 ├── Services
 ├── Work

@@ -206,7 +206,7 @@ Website
 │   ├── Testimonials
 │   ├── Pricing
 │   ├── FAQ
-│   └── Final CTA
+│   └── Contact
 ├── About
 ├── Services Page
 ├── Work Page
@@ -331,7 +331,7 @@ The homepage order is fixed in version 1:
 8. Testimonials
 9. Pricing
 10. FAQ
-11. Final CTA
+11. Contact
 
 The CMS may allow each section to be:
 
