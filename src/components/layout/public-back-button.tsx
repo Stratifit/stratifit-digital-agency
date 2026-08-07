@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { t } from "@/lib/i18n/ui-strings";
 
 /**
  * Floating back arrow shown on every public page except the homepage.
- * Returns the visitor to the section/page they clicked from (router.back()),
- * falling back to the homepage when there is no browser history.
+ * Returns the visitor to the previous in-app page (the route they clicked
+ * from), falling back to the homepage for direct visits.
  *
  * The button clears the sticky header plus the announcement bar. While the
  * announcement bar is visible it stays put; when the bar scrolls out of view
@@ -22,6 +22,19 @@ export function PublicBackButton({ locale }: { locale?: string }) {
   // The homepage is the root — there is no page "behind" it to go back to,
   // so the button (and its listeners) are not needed there.
   const isHome = pathname === "/";
+
+  // Track the previous in-app route so the back arrow returns visitors to
+  // the exact page they came from. More reliable than window.history.length,
+  // which is misleading on mobile (it counts every tab in the session).
+  const [prevPath, setPrevPath] = useState<string | null>(null);
+  const pathRef = useRef(pathname);
+
+  useEffect(() => {
+    if (pathRef.current !== pathname) {
+      setPrevPath(pathRef.current);
+      pathRef.current = pathname;
+    }
+  }, [pathname]);
 
   useEffect(() => {
     if (isHome) return;
@@ -84,7 +97,9 @@ export function PublicBackButton({ locale }: { locale?: string }) {
   }
 
   function goBack() {
-    if (typeof window !== "undefined" && window.history.length > 1) {
+    // Restore the previous page with native scroll position when the visitor
+    // navigated within the app; fall back to the homepage for direct visits.
+    if (prevPath) {
       router.back();
     } else {
       router.push("/");

@@ -5,7 +5,9 @@ import Link from "next/link";
 import Image from "next/image";
 import type { PublicInsight } from "@/features/insights/queries";
 import type { PublicInsightCategory } from "@/features/insights/queries";
+import { getInsightImage } from "@/features/insights/display";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { t } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
 
 function ArrowIcon() {
@@ -43,12 +45,18 @@ export function InsightCard({
       : slug;
   };
 
+  const imageSrc = getInsightImage(
+    insight.featured_media_url,
+    insight.slug,
+    insight.category_slugs
+  );
+
   return (
     <article className="group flex flex-col overflow-hidden rounded-card border border-card-border bg-card-dark transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:border-primary/20">
       <div className="relative aspect-[16/10] overflow-hidden bg-surface-soft">
-        {insight.featured_media_url ? (
+        {imageSrc ? (
           <Image
-            src={insight.featured_media_url}
+            src={imageSrc}
             alt={resolveTranslation(insight.title_translations, locale) || "Insight"}
             fill
             sizes="(max-width: 768px) 100vw, 380px"
@@ -85,7 +93,7 @@ export function InsightCard({
           href={`/insights/${insight.slug}`}
           className="group/link mt-auto inline-flex items-center gap-2 pt-2 text-xs font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110"
         >
-          Read Insight
+          {t(locale, "readInsight")}
           <span className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover/link:translate-x-1">
             <ArrowIcon />
           </span>
@@ -106,6 +114,30 @@ export function InsightsCarousel({
 }) {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const [active, setActive] = React.useState(0);
+  const [activeFilter, setActiveFilter] = React.useState("all");
+
+  const pills = [
+    { slug: "all", label: t(locale, "filterAll") },
+    ...categories.map((category) => ({
+      slug: category.slug,
+      label:
+        resolveTranslation(category.name_translations, locale) ||
+        category.slug,
+    })),
+  ];
+
+  const filtered =
+    activeFilter === "all"
+      ? insights
+      : insights.filter((insight) =>
+          insight.category_slugs.includes(activeFilter)
+        );
+
+  function selectFilter(slug: string) {
+    setActiveFilter(slug);
+    setActive(0);
+    scrollRef.current?.scrollTo({ left: 0 });
+  }
 
   function handleScroll() {
     const el = scrollRef.current;
@@ -129,67 +161,97 @@ export function InsightsCarousel({
 
   return (
     <div>
-      <div className="hidden gap-6 md:grid md:grid-cols-2 lg:grid-cols-4">
-        {insights.map((insight) => (
-          <InsightCard
-            key={insight.slug}
-            insight={insight}
-            categories={categories}
-            locale={locale}
-          />
-        ))}
-      </div>
-
-      <div className="md:hidden">
-        <div
-          ref={scrollRef}
-          onScroll={handleScroll}
-          className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:-mx-8 lg:px-8"
-        >
-          {insights.map((insight) => (
-            <div
-              key={insight.slug}
-              data-insight-card
-              className="w-[80vw] min-w-[280px] max-w-[340px] shrink-0 snap-center"
+      {pills.length > 1 ? (
+        <div className="mb-6 flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {pills.map((pill) => (
+            <button
+              key={pill.slug}
+              type="button"
+              aria-pressed={activeFilter === pill.slug}
+              onClick={() => selectFilter(pill.slug)}
+              className={cn(
+                "shrink-0 rounded-[10px] px-5 py-2.5 text-sm font-bold transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
+                activeFilter === pill.slug
+                  ? "bg-primary text-text-inverse shadow-[0_0_20px_rgba(245,158,11,0.3)]"
+                  : "border border-white/10 bg-white/5 text-white hover:border-primary/30"
+              )}
             >
+              {pill.label}
+            </button>
+          ))}
+        </div>
+      ) : null}
+
+      {filtered.length === 0 ? (
+        <p className="py-16 text-center text-sm text-text-muted">
+          {t(locale, "noInsightsInCategory")}
+        </p>
+      ) : (
+        <>
+          <div className="hidden gap-6 md:grid md:grid-cols-2 lg:grid-cols-4">
+            {filtered.map((insight) => (
               <InsightCard
+                key={insight.slug}
                 insight={insight}
                 categories={categories}
                 locale={locale}
-                compact
               />
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <div className="relative mt-3 flex items-center justify-center gap-1.5">
-          {insights.map((insight, index) => (
-            <span
-              key={insight.slug}
-              className={cn(
-                "size-1.5 rounded-full transition-colors duration-200 ease-out",
-                index === active ? "bg-primary" : "bg-white/20"
-              )}
-            />
-          ))}
-          <Link
-            href="/insights"
-            className="absolute right-0 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110"
-          >
-            Insights
-            <span className="text-[10px]">
-              <ArrowIcon />
-            </span>
-          </Link>
-        </div>
-      </div>
+          <div className="md:hidden">
+            <div
+              ref={scrollRef}
+              onScroll={handleScroll}
+              className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:-mx-8 lg:px-8"
+            >
+              {filtered.map((insight) => (
+                <div
+                  key={insight.slug}
+                  data-insight-card
+                  className="w-[80vw] min-w-[280px] max-w-[340px] shrink-0 snap-center"
+                >
+                  <InsightCard
+                    insight={insight}
+                    categories={categories}
+                    locale={locale}
+                    compact
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div className="relative mt-3 flex items-center justify-center gap-1.5">
+              {filtered.map((insight, index) => (
+                <span
+                  key={insight.slug}
+                  className={cn(
+                    "size-1.5 rounded-full transition-colors duration-200 ease-out",
+                    index === active ? "bg-primary" : "bg-white/20"
+                  )}
+                />
+              ))}
+              <Link
+                href="/insights"
+                className="absolute right-0 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110"
+              >
+                Insights
+                <span className="text-[10px]">
+                  <ArrowIcon />
+                </span>
+              </Link>
+            </div>
+          </div>
+
+        </>
+      )}
 
       <div className="mt-8 hidden justify-end md:flex">
         <Link
           href="/insights"
           className="group inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110"
         >
-          View All Insights
+          {t(locale, "viewAllInsights")}
           <span className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1">
             <ArrowIcon />
           </span>
