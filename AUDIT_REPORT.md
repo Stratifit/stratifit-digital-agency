@@ -42,7 +42,7 @@
 
 1. **Email cannot send** — `RESEND_API_KEY` / `RESEND_FROM_EMAIL` not configured; sends skip with a warning. Contact acknowledgement and lead notifications are not delivered. *(Owner action — verify `.env.local` / Vercel env vars.)*
 2. **AI chat inert without `AI_API_KEY`** — falls back to the rule-based English keyword matcher; admin UIs exist for knowledge base, chatbot settings, and AI FAQ. *(Owner action — set `AI_API_KEY`, `AI_BASE_URL`, `AI_MODEL`.)*
-3. **`/services/[slug]` pages missing from `sitemap.xml`** — dedicated service pages exist and are indexed-eligible, but the sitemap only lists the static `/services`. `getPublicServicePageSlugs()` already exists and is used by the public layout; add it to `src/app/sitemap.ts`.
+3. **`/services/[slug]` pages missing from `sitemap.xml`** — dedicated service pages exist and are indexed-eligible, but the sitemap only listed the static `/services`. *(Resolved 2026-08-07 — added to `src/app/sitemap.ts` via `getPublicServicePageSlugs()`.)*
 
 ## 3. Medium-Priority Findings (P2)
 
@@ -92,8 +92,7 @@
 
 1. Set production environment variables (`RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_WEBHOOK_SIGNING_SECRET`, `AI_API_KEY`, `AI_MODEL`, `NEXT_PUBLIC_SITE_URL`)
 2. Enable Supabase Auth leaked-password protection (dashboard)
-3. Add `/services/[slug]` to `sitemap.xml`
-4. Deploy to Vercel + verify domain, production migrations, and smoke tests
+3. Deploy to Vercel + verify domain, production migrations, and smoke tests
 
 ## 8. Known Follow-ups (engineering)
 
