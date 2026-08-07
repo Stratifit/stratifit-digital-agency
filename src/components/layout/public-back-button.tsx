@@ -78,6 +78,10 @@ export function PublicBackButton({ locale }: { locale?: string }) {
     };
   }, [isHome]);
 
+  // The homepage is the root — there is no page "behind" it to go back to.
+  if (isHome) {
+    return null;
+  }
 
   function goBack() {
     if (typeof window !== "undefined" && window.history.length > 1) {
