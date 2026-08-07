@@ -46,7 +46,7 @@ export function FaqHelpCard() {
   }
 
   return (
-    <div className="group flex flex-col gap-3 rounded-card border border-card-border bg-card-dark p-4 transition-all duration-300 ease-[var(--ease-standard)] hover:border-primary/30 hover:shadow-[0_0_30px_-5px_rgba(245,158,11,0.25)] sm:gap-4 sm:p-5">
+    <div className="group flex flex-col gap-3 rounded-card border border-white/10 bg-card-dark p-4 transition-all duration-300 ease-[var(--ease-standard)] hover:border-primary/30 hover:shadow-[0_0_30px_-5px_rgba(245,158,11,0.25)] sm:gap-4 sm:p-5">
       <button
         type="button"
         onClick={openFaqChat}
@@ -54,7 +54,7 @@ export function FaqHelpCard() {
         className="flex w-full items-start gap-3 rounded-button text-left focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
       >
         <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-primary/30 bg-primary/15 transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:bg-primary/25 sm:size-10">
-          <ChatIcon className="size-4 text-primary sm:size-5" />
+          <ChatIcon className="text-base text-primary sm:text-lg" />
         </span>
         <span className="min-w-0 flex-1">
           <span className="block font-display text-sm font-black tracking-tight text-text-primary sm:text-lg md:text-xl">
@@ -67,7 +67,7 @@ export function FaqHelpCard() {
         </span>
       </button>
 
-      <ContactTrigger className="inline-flex w-full items-center justify-center gap-2 rounded-button bg-primary px-4 py-2.5 text-xs font-bold text-text-inverse shadow-[0_0_18px_rgba(245,158,11,0.25)] transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary-hover active:scale-95 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 group-hover:gap-3 sm:px-5 sm:py-3 sm:text-sm">
+      <ContactTrigger className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-xs font-bold text-text-inverse shadow-[0_0_18px_rgba(245,158,11,0.25)] transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary-hover active:scale-95 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 group-hover:gap-3 sm:px-5 sm:py-3 sm:text-sm">
         Contact our team
         <ArrowRightIcon className="text-xs transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-0.5 sm:text-sm" />
       </ContactTrigger>
