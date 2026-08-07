@@ -5,6 +5,7 @@ import { gsap, ScrollTrigger, useGSAP } from "@/lib/animation/gsap";
 import {
   MOBILE_BLOCK_FROM,
   MOBILE_CARD_FROM,
+  MOBILE_CAROUSEL_CARD_FROM,
   MOBILE_PRESETS,
   MOBILE_TRIGGER_START,
   PRESETS,
@@ -88,8 +89,8 @@ export function Reveal({
             .toArray<HTMLElement>(el.querySelectorAll(cardSelector))
             .forEach((card, index) => {
               gsap.from(card, {
-                ...MOBILE_CARD_FROM,
-                delay: index * 0.08,
+                ...MOBILE_CAROUSEL_CARD_FROM,
+                delay: index * 0.06,
                       scrollTrigger: immediate
                   ? undefined
                   : { trigger: card, start: MOBILE_TRIGGER_START, once: true },

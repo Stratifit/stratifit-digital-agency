@@ -58,6 +58,18 @@ export const MOBILE_CARD_FROM = {
   ease: "power3.out",
 } as const;
 
+/**
+ * Mobile reveal for cards inside horizontal carousels. A gentle fade with a
+ * small rise: big y-offsets make cards visibly push up inside the container
+ * while the user is scrolling vertically past the carousel.
+ */
+export const MOBILE_CAROUSEL_CARD_FROM = {
+  opacity: 0,
+  y: 12,
+  duration: 0.55,
+  ease: "power2.out",
+} as const;
+
 /** Single-block mobile reveal values (panels, forms, non-stagger content). */
 export const MOBILE_BLOCK_FROM = {
   opacity: 0,

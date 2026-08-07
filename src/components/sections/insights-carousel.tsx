@@ -190,7 +190,7 @@ export function InsightsCarousel({
             <div
               ref={scrollRef}
               onScroll={handleScroll}
-              className="-mx-6 flex touch-pan-x touch-pan-y overscroll-x-contain snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:-mx-8 lg:px-8"
+              className="-mx-6 flex touch-pan-x touch-pan-y overscroll-x-contain snap-x snap-proximity gap-4 overflow-x-auto px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:-mx-8 lg:px-8"
             >
               {filtered.map((insight) => (
                 <div
