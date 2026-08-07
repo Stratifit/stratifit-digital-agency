@@ -9,6 +9,7 @@ import { getInsightImage } from "@/features/insights/display";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { t } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
+import { FilterPills } from "@/components/ui/filter-pills";
 
 function ArrowIcon() {
   return (
@@ -161,26 +162,12 @@ export function InsightsCarousel({
 
   return (
     <div>
-      {pills.length > 1 ? (
-        <div className="mb-6 flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {pills.map((pill) => (
-            <button
-              key={pill.slug}
-              type="button"
-              aria-pressed={activeFilter === pill.slug}
-              onClick={() => selectFilter(pill.slug)}
-              className={cn(
-                "shrink-0 rounded-[10px] px-5 py-2.5 text-sm font-bold transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
-                activeFilter === pill.slug
-                  ? "bg-primary text-text-inverse shadow-[0_0_20px_rgba(245,158,11,0.3)]"
-                  : "border border-white/10 bg-white/5 text-white hover:border-primary/30"
-              )}
-            >
-              {pill.label}
-            </button>
-          ))}
-        </div>
-      ) : null}
+      <FilterPills
+        className="mb-6 pb-2"
+        pills={pills}
+        active={activeFilter}
+        onSelect={selectFilter}
+      />
 
       {filtered.length === 0 ? (
         <p className="py-16 text-center text-sm text-text-muted">

@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import type { AcquisitionBusiness } from "@/features/acquisition/queries";
 import { BusinessCard, CATEGORY_LABELS } from "./business-card";
+import { FilterPills } from "@/components/ui/filter-pills";
 import { cn } from "@/lib/cn";
 
 function ArrowIcon() {
@@ -95,35 +96,18 @@ export function AcquisitionGallery({
 
   return (
     <div>
-      <div className="mb-6 flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <button
-          type="button"
-          onClick={() => selectFilter("all")}
-          className={cn(
-            "shrink-0 rounded-[10px] px-5 py-2.5 text-sm font-bold transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
-            activeFilter === "all"
-              ? "bg-primary text-text-inverse shadow-[0_0_20px_rgba(245,158,11,0.3)]"
-              : "border border-white/10 bg-white/5 text-white hover:border-primary/30"
-          )}
-        >
-          All
-        </button>
-        {categories.map((category) => (
-          <button
-            key={category}
-            type="button"
-            onClick={() => selectFilter(category)}
-            className={cn(
-              "shrink-0 rounded-[10px] px-5 py-2.5 text-sm font-bold transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
-              activeFilter === category
-                ? "bg-primary text-text-inverse shadow-[0_0_20px_rgba(245,158,11,0.3)]"
-                : "border border-white/10 bg-white/5 text-white hover:border-primary/30"
-            )}
-          >
-            {CATEGORY_LABELS[category] ?? category}
-          </button>
-        ))}
-      </div>
+      <FilterPills
+        className="mb-6 pb-2"
+        pills={[
+          { slug: "all", label: "All" },
+          ...categories.map((category) => ({
+            slug: category,
+            label: CATEGORY_LABELS[category] ?? category,
+          })),
+        ]}
+        active={activeFilter}
+        onSelect={selectFilter}
+      />
 
       <div className="relative">
         <div

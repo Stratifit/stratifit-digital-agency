@@ -9,7 +9,8 @@ import type {
 } from "@/features/portfolio/queries";
 import type { PublicServiceDetail } from "@/features/services/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
-import { cn } from "@/lib/cn";
+import { t } from "@/lib/i18n/ui-strings";
+import { FilterPills } from "@/components/ui/filter-pills";
 
 function ArrowIcon() {
   return (
@@ -160,7 +161,7 @@ export function WorkGrid({
   );
 
   const pills = [
-    { slug: "all", label: "All" },
+    { slug: "all", label: t(locale, "filterAll") },
     ...categories.map((service) => ({
       slug: service.slug,
       label: resolveTranslation(service.title_translations, locale) || service.slug,
@@ -174,24 +175,12 @@ export function WorkGrid({
 
   return (
     <div>
-      <div className="-mx-6 flex gap-3 overflow-x-auto px-6 pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:-mx-8 lg:px-8">
-        {pills.map((pill) => (
-          <button
-            key={pill.slug}
-            type="button"
-            aria-pressed={active === pill.slug}
-            onClick={() => setActive(pill.slug)}
-            className={cn(
-              "shrink-0 rounded-full px-5 py-2.5 text-sm font-bold transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
-              active === pill.slug
-                ? "bg-primary text-text-inverse shadow-[0_0_20px_rgba(245,158,11,0.3)]"
-                : "border border-white/10 bg-white/5 text-text-primary hover:border-primary/30"
-            )}
-          >
-            {pill.label}
-          </button>
-        ))}
-      </div>
+      <FilterPills
+        className="-mx-6 px-6 pb-6 lg:-mx-8 lg:px-8"
+        pills={pills}
+        active={active}
+        onSelect={setActive}
+      />
 
       {visible.length === 0 ? (
         <p className="py-20 text-center text-sm text-text-muted">
