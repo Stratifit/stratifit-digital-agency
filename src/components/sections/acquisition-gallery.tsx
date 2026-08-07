@@ -118,7 +118,7 @@ export function AcquisitionGallery({
           className="mx-auto flex w-full max-w-2xl snap-x snap-mandatory gap-6 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {filtered.map((business) => (
-            <div key={business.slug} data-business-card>
+            <div key={business.slug} data-business-card className="w-full shrink-0">
               <BusinessCard business={business} />
             </div>
           ))}
