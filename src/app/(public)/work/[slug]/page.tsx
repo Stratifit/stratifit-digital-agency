@@ -551,7 +551,7 @@ export default async function WorkDetailPage({
 
       {/* More work */}
       {relatedVisible.length > 0 ? (
-        <section className="border-t border-border pt-16 md:pt-20">
+        <section className="pt-16 md:pt-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <SectionLabel>{t(locale, "workMoreWork")}</SectionLabel>
             <h2 className="mb-10 font-display text-2xl font-black tracking-tight leading-tight text-text-primary sm:text-3xl md:text-4xl">
