@@ -14,7 +14,7 @@ export default async function PagesAdminPage() {
     <div className="space-y-6">
       <AdminPageHeader
         title="Pages"
-        description="Detail pages such as Privacy Policy, Terms, Cookie Policy, Imprint, and Careers. Edit content in any language."
+        description="Detail pages such as Privacy Policy, Terms, Cookie Policy, Imprint, Careers, and Hiring. Edit content in any language."
       />
 
       {pages.length === 0 ? (

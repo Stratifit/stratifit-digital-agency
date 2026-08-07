@@ -579,7 +579,7 @@ Icons are restricted to the approved set (`bolt`, `users`, `globe`, `chart`, `sp
 
 ## 9.6 `detail_pages`
 
-CMS-editable detail pages such as Privacy Policy, Terms of Service, Cookie Policy, Imprint, and Careers.
+CMS-editable detail pages such as Privacy Policy, Terms of Service, Cookie Policy, Imprint, Careers, and Hiring.
 
 Suggested columns:
 
@@ -613,7 +613,7 @@ cards until the next heading.
 
 Block rendering is shared between the public `DetailPageView` and the CMS live preview via `src/components/detail-pages/detail-block.tsx` (see `docs/FRONTEND.md` §5.10 and `docs/CMS.md` §39.5).
 
-Seeded slugs: `privacy`, `terms-conditions`, `cookie-policy`, `imprint`, `careers`.
+Seeded slugs: `privacy`, `terms-conditions`, `cookie-policy`, `imprint`, `careers`, `hiring`.
 
 The footer links to these pages via `footer_links`.
 

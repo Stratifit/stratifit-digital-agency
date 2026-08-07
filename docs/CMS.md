@@ -213,7 +213,7 @@ Website
 ├── Insights Page
 ├── Acquisition Page
 ├── Contact Page
-├── Pages (Privacy, Terms, Cookie Policy, Imprint, Careers)
+├── Pages (Privacy, Terms, Cookie Policy, Imprint, Careers, Hiring)
 └── Footer
 
 Content
@@ -503,7 +503,7 @@ Examples:
 - Testimonials
 - Pricing plans
 - FAQs
-- Detail pages (Privacy, Terms, Cookie Policy, Imprint, Careers)
+- Detail pages (Privacy, Terms, Cookie Policy, Imprint, Careers, Hiring)
 - Navigation items
 - Chatbot knowledge
 - Acquisition niches (Buy-a-Business catalog — `/admin/content/acquisition/niches`, 4-language editor with stats)
@@ -1241,7 +1241,7 @@ Footer management should support:
 
 ## 39. Page Content Management
 
-Detail pages — Privacy Policy, Terms of Service, Cookie Policy, Imprint, and Careers — are managed as structured, CMS-editable records rather than hardcoded static JSX.
+Detail pages — Privacy Policy, Terms of Service, Cookie Policy, Imprint, Careers, and Hiring — are managed as structured, CMS-editable records rather than hardcoded static JSX.
 
 ### 39.1 Managed pages
 
@@ -1252,6 +1252,7 @@ Seeded pages (slug in parentheses):
 - Cookie Policy (`cookie-policy`)
 - Imprint (`imprint`)
 - Careers (`careers`)
+- Hiring (`hiring`)
 
 Each page is a record in the `detail_pages` table (see `DATABASE.md` §9.6).
 
@@ -1316,7 +1317,7 @@ Preview is not the source of truth — Supabase remains the source of truth afte
 
 ### 39.6 Public behavior
 
-- A visible page renders its stored blocks on its public route (`/privacy`, `/terms-conditions`, `/cookie-policy`, `/imprint`, `/careers`)
+- A visible page renders its stored blocks on its public route (`/privacy`, `/terms-conditions`, `/cookie-policy`, `/imprint`, `/careers`, `/hiring`)
 - A hidden page is not reachable on the public site (404)
 - A page with no stored row falls back to the previous static copy so the site never breaks
 - Sitemap entries are generated only for visible pages
@@ -1325,7 +1326,7 @@ Preview is not the source of truth — Supabase remains the source of truth afte
 
 Saving a page must revalidate:
 
-- The public route (`/privacy`, …)
+- The public route (`/privacy`, `/hiring`, …)
 - The admin Pages list
 - The admin edit route
 

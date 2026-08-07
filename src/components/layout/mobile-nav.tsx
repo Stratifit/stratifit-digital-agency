@@ -265,6 +265,14 @@ export function MobileNav({
                 >
                   Cookie Policy
                 </a>
+                <span className="mx-1">.</span>
+                <a
+                  href="/imprint"
+                  onClick={() => setOpen(false)}
+                  className="transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  Imprint
+                </a>
               </p>
 
               <SocialIcons socialLinks={socialLinks} />

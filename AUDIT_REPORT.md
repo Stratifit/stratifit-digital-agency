@@ -112,6 +112,7 @@
 - **Hardcoded frontend strings localized** — `/services` page hero, `/services/[slug]` labels (Deliverables, Our Process, etc.), `/about` headings/fallbacks, `/work` hero fallbacks, `/testimonials` and `/insights` hero fallbacks all moved to `ui-strings.ts` (en/de/fr/es).
 - **Section header fallbacks** — all section titles/descriptions restored when DB translations are empty via `SectionHeader` fallback registry (`src/lib/i18n/section-fallbacks.ts`) + migrations `00044`/`00045`; 3 new tests.
 - **Final CTA section removed** — the "Ready to Transform Your Digital Presence?" card was removed from the homepage, registry, component, admin editor/nav, and its `final_cta` table dropped (migration `00046`).
+- **Legal & careers pages restyled** — Terms of Service and Cookie Policy now render the same icon-card design as Privacy Policy; all legal/careers/hiring pages gained rich 4-language fallback content (`src/lib/i18n/detail-page-fallbacks.ts`) so they render correctly even before migrations apply; new `/hiring` page ("We're Hiring") added as a CMS detail page; **Imprint** link added to the footer Legal group and mobile nav, **Hiring** link added to the footer Company group (migration `00047` + seed).
 
 ## 7. Remaining Work (for the owner)
 
