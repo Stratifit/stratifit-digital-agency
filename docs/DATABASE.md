@@ -258,6 +258,7 @@ Global website
 
 Homepage and marketing content
 ├── hero
+├── about_page
 ├── services
 ├── process_steps
 ├── why_choose_us
@@ -527,6 +528,37 @@ Suggested columns:
 - `variant`
 - `is_visible`
 - timestamps
+
+## 9.5 `about_page`
+
+Singleton table for the public About page.
+
+Suggested columns:
+
+| Column | Type |
+|---|---|
+| `eyebrow_translations` | `jsonb` |
+| `title_translations` | `jsonb` |
+| `highlight_translations` | `jsonb` |
+| `intro_translations` | `jsonb` |
+| `stats` | `jsonb` |
+| `mission_translations` | `jsonb` |
+| `story_translations` | `jsonb` |
+| `values` | `jsonb` |
+| `team_translations` | `jsonb` |
+| `cta_title_translations` | `jsonb` |
+| `cta_highlight_translations` | `jsonb` |
+| `cta_description_translations` | `jsonb` |
+| `cta_label_translations` | `jsonb` |
+| `cta_url` | `text` |
+| `is_visible` | `boolean` |
+| timestamps | standard |
+
+`stats` items: `{ icon, value, label_translations }`.
+
+`values` items: `{ icon, title_translations, description_translations }`.
+
+Icons are restricted to the approved set (`bolt`, `users`, `globe`, `chart`, `sparkles`).
 
 ---
 

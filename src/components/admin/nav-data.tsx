@@ -123,6 +123,7 @@ export const NAV_SECTIONS: NavSection[] = [
     items: [
       { href: "/admin/content/sections", label: "Sections", icon: "sections" },
       { href: "/admin/content/hero", label: "Hero", icon: "final-cta" },
+      { href: "/admin/content/about", label: "About Page", icon: "why" },
       { href: "/admin/content/announcement", label: "Announcement", icon: "faq" },
       { href: "/admin/content/services", label: "Services", icon: "services" },
       { href: "/admin/content/service-pages", label: "Service Pages", icon: "sections" },

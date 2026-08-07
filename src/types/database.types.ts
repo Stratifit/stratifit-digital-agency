@@ -39,6 +39,69 @@ export type Database = {
   }
   public: {
     Tables: {
+      about_page: {
+        Row: {
+          created_at: string
+          cta_description_translations: Json
+          cta_highlight_translations: Json
+          cta_label_translations: Json
+          cta_title_translations: Json
+          cta_url: string | null
+          eyebrow_translations: Json
+          highlight_translations: Json
+          intro_translations: Json
+          is_visible: boolean
+          mission_translations: Json
+          singleton_key: boolean
+          stats: Json
+          story_translations: Json
+          team_translations: Json
+          title_translations: Json
+          updated_at: string
+          values: Json
+        }
+        Insert: {
+          created_at?: string
+          cta_description_translations?: Json
+          cta_highlight_translations?: Json
+          cta_label_translations?: Json
+          cta_title_translations?: Json
+          cta_url?: string | null
+          eyebrow_translations?: Json
+          highlight_translations?: Json
+          intro_translations?: Json
+          is_visible?: boolean
+          mission_translations?: Json
+          singleton_key?: boolean
+          stats?: Json
+          story_translations?: Json
+          team_translations?: Json
+          title_translations?: Json
+          updated_at?: string
+          values?: Json
+        }
+        Update: {
+          created_at?: string
+          cta_description_translations?: Json
+          cta_highlight_translations?: Json
+          cta_label_translations?: Json
+          cta_title_translations?: Json
+          cta_url?: string | null
+          eyebrow_translations?: Json
+          highlight_translations?: Json
+          intro_translations?: Json
+          is_visible?: boolean
+          mission_translations?: Json
+          singleton_key?: boolean
+          stats?: Json
+          story_translations?: Json
+          team_translations?: Json
+          title_translations?: Json
+          updated_at?: string
+          values?: Json
+        }
+        Relationships: []
+      }
       acquisition_section: {
         Row: {
           benefits: Json

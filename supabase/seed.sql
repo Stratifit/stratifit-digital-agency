@@ -165,6 +165,56 @@ ON CONFLICT (singleton_key) DO UPDATE SET
   metrics = EXCLUDED.metrics;
 
 -- =============================================================================
+-- About Page (Singleton)
+-- =============================================================================
+
+INSERT INTO public.about_page (singleton_key, eyebrow_translations, title_translations, highlight_translations, intro_translations, stats, mission_translations, story_translations, values, team_translations, cta_title_translations, cta_highlight_translations, cta_description_translations, cta_label_translations, cta_url, is_visible)
+VALUES (
+  true,
+  '{"en": "About", "de": "Über uns", "fr": "À propos", "es": "Nosotros"}'::jsonb,
+  '{"en": "About ", "de": "Über ", "fr": "À propos ", "es": "Sobre "}'::jsonb,
+  '{"en": "Stratifit", "de": "Stratifit", "fr": "Stratifit", "es": "Stratifit"}'::jsonb,
+  '{"en": "We are a premium digital agency that builds brands, scales businesses, and engineers growth through strategy, design, and technology.", "de": "Wir sind eine Premium-Digitalagentur, die Marken aufbaut, Unternehmen skaliert und Wachstum durch Strategie, Design und Technologie vorantreibt.", "fr": "Nous sommes une agence digitale premium qui construit des marques, fait croître les entreprises et génère de la croissance grâce à la stratégie, au design et à la technologie.", "es": "Somos una agencia digital premium que construye marcas, escala negocios e impulsa el crecimiento a través de la estrategia, el diseño y la tecnología."}'::jsonb,
+  '[
+    {"icon": "bolt", "value": "120+", "label_translations": {"en": "Projects Delivered", "de": "Gelieferte Projekte", "fr": "Projets livrés", "es": "Proyectos entregados"}},
+    {"icon": "users", "value": "45+", "label_translations": {"en": "Team Members", "de": "Teammitglieder", "fr": "Membres de l''équipe", "es": "Miembros del equipo"}},
+    {"icon": "globe", "value": "18", "label_translations": {"en": "Countries Served", "de": "Bediente Länder", "fr": "Pays desservis", "es": "Países atendidos"}},
+    {"icon": "chart", "value": "98%", "label_translations": {"en": "Client Retention", "de": "Kundenbindung", "fr": "Fidélisation client", "es": "Retención de clientes"}}
+  ]'::jsonb,
+  '{"en": "To empower ambitious brands with the strategy, design, and technology they need to dominate their markets.", "de": "Wir befähigen ambitionierte Marken mit der Strategie, dem Design und der Technologie, die sie brauchen, um ihre Märkte zu dominieren.", "fr": "Donner aux marques ambitieuses la stratégie, le design et la technologie dont elles ont besoin pour dominer leurs marchés.", "es": "Capacitar a las marcas ambiciosas con la estrategia, el diseño y la tecnología que necesitan para dominar sus mercados."}'::jsonb,
+  '{"en": "Founded with a vision to bridge the gap between premium branding and technical execution, Stratifit has grown from a boutique design studio into a full-scale digital agency. Today, we partner with startups and enterprises alike — delivering brand identities, web platforms, AI automation systems, and growth engines that transform how businesses operate and scale.", "de": "Gegründet mit der Vision, die Lücke zwischen Premium-Branding und technischer Umsetzung zu schließen, ist Stratifit von einem Boutique-Designstudio zu einer umfassenden Digitalagentur gewachsen. Heute arbeiten wir mit Startups und Unternehmen jeder Größe zusammen – und liefern Markenidentitäten, Web-Plattformen, KI-Automatisierungssysteme und Wachstumsmaschinen, die verändern, wie Unternehmen arbeiten und skalieren.", "fr": "Fondée avec la vision de combler l''écart entre le branding premium et l''exécution technique, Stratifit est passée d''un studio de design boutique à une agence digitale complète. Aujourd''hui, nous travaillons aussi bien avec les startups qu''avec les grandes entreprises – en livrant des identités de marque, des plateformes web, des systèmes d''automatisation IA et des moteurs de croissance qui transforment la façon dont les entreprises opèrent et se développent.", "es": "Fundada con la visión de cerrar la brecha entre el branding premium y la ejecución técnica, Stratifit ha pasado de ser un estudio de diseño boutique a una agencia digital de servicio completo. Hoy trabajamos con startups y empresas por igual, ofreciendo identidades de marca, plataformas web, sistemas de automatización con IA y motores de crecimiento que transforman la forma en que las empresas operan y escalan."}'::jsonb,
+  '[
+    {"icon": "sparkles", "title_translations": {"en": "Precision", "de": "Präzision", "fr": "Précision", "es": "Precisión"}, "description_translations": {"en": "Every pixel, every line of code, every strategy — executed with meticulous attention to detail.", "de": "Jedes Pixel, jede Codezeile, jede Strategie – umgesetzt mit akribischer Liebe zum Detail.", "fr": "Chaque pixel, chaque ligne de code, chaque stratégie – exécutés avec une attention méticuleuse aux détails.", "es": "Cada píxel, cada línea de código, cada estrategia: ejecutados con una atención meticulosa al detalle."}},
+    {"icon": "bolt", "title_translations": {"en": "Innovation", "de": "Innovation", "fr": "Innovation", "es": "Innovación"}, "description_translations": {"en": "We push boundaries with emerging technologies and creative approaches that set you apart.", "de": "Wir erweitern Grenzen mit neuen Technologien und kreativen Ansätzen, die Sie auszeichnen.", "fr": "Nous repoussons les limites grâce aux technologies émergentes et à des approches créatives qui vous distinguent.", "es": "Ampliamos los límites con tecnologías emergentes y enfoques creativos que te hacen destacar."}},
+    {"icon": "users", "title_translations": {"en": "Partnership", "de": "Partnerschaft", "fr": "Partenariat", "es": "Asociación"}, "description_translations": {"en": "We integrate as an extension of your team, aligned with your vision and committed to your success.", "de": "Wir integrieren uns als Teil Ihres Teams – ausgerichtet an Ihrer Vision und verpflichtet Ihrem Erfolg.", "fr": "Nous nous intégrons comme une extension de votre équipe, alignés sur votre vision et engagés pour votre réussite.", "es": "Nos integramos como una extensión de tu equipo, alineados con tu visión y comprometidos con tu éxito."}},
+    {"icon": "chart", "title_translations": {"en": "Results", "de": "Ergebnisse", "fr": "Résultats", "es": "Resultados"}, "description_translations": {"en": "We measure everything. Every engagement is tied to real KPIs and tangible business outcomes.", "de": "Wir messen alles. Jedes Projekt ist an echte KPIs und greifbare Geschäftsergebnisse gekoppelt.", "fr": "Nous mesurons tout. Chaque mission est liée à de vrais KPI et à des résultats commerciaux tangibles.", "es": "Lo medimos todo. Cada proyecto está vinculado a KPIs reales y resultados comerciales tangibles."}}
+  ]'::jsonb,
+  '{"en": "We are strategists, designers, engineers, and marketers who share a common obsession: building exceptional digital experiences. Our team brings together decades of combined expertise from top agencies, startups, and Fortune 500 companies — united by a passion for craftsmanship and a commitment to client success.", "de": "Wir sind Strategen, Designer, Ingenieure und Marketer, die eine gemeinsame Leidenschaft teilen: außergewöhnliche digitale Erlebnisse zu schaffen. Unser Team vereint jahrzehntelange kombinierte Expertise aus Top-Agenturen, Startups und Fortune-500-Unternehmen – vereint durch die Leidenschaft für Handwerkskunst und das Engagement für den Erfolg unserer Kunden.", "fr": "Nous sommes des stratèges, designers, ingénieurs et marketers partageant une obsession commune : créer des expériences numériques exceptionnelles. Notre équipe réunit des décennies d''expertise combinée issue des meilleures agences, de startups et d''entreprises du Fortune 500 – unie par une passion pour le travail bien fait et un engagement envers la réussite de nos clients.", "es": "Somos estrategas, diseñadores, ingenieros y especialistas en marketing que comparten una obsesión común: crear experiencias digitales excepcionales. Nuestro equipo reúne décadas de experiencia combinada de las mejores agencias, startups y empresas Fortune 500, unidos por la pasión por la artesanía y el compromiso con el éxito de nuestros clientes."}'::jsonb,
+  '{"en": "Ready to Work ", "de": "Bereit, gemeinsam ", "fr": "Prêt à travailler ", "es": "¿Listo para trabajar "}'::jsonb,
+  '{"en": "Together?", "de": "loszulegen?", "fr": "ensemble ?", "es": "juntos?"}'::jsonb,
+  '{"en": "Let''s build something exceptional.", "de": "Lass uns etwas Außergewöhnliches bauen.", "fr": "Construisons ensemble quelque chose d''exceptionnel.", "es": "Construyamos algo excepcional."}'::jsonb,
+  '{"en": "Start Your Project", "de": "Projekt starten", "fr": "Démarrer votre projet", "es": "Iniciar tu proyecto"}'::jsonb,
+  '/contact',
+  true
+)
+ON CONFLICT (singleton_key) DO UPDATE SET
+  eyebrow_translations = EXCLUDED.eyebrow_translations,
+  title_translations = EXCLUDED.title_translations,
+  highlight_translations = EXCLUDED.highlight_translations,
+  intro_translations = EXCLUDED.intro_translations,
+  stats = EXCLUDED.stats,
+  mission_translations = EXCLUDED.mission_translations,
+  story_translations = EXCLUDED.story_translations,
+  values = EXCLUDED.values,
+  team_translations = EXCLUDED.team_translations,
+  cta_title_translations = EXCLUDED.cta_title_translations,
+  cta_highlight_translations = EXCLUDED.cta_highlight_translations,
+  cta_description_translations = EXCLUDED.cta_description_translations,
+  cta_label_translations = EXCLUDED.cta_label_translations,
+  cta_url = EXCLUDED.cta_url,
+  is_visible = EXCLUDED.is_visible;
+
+-- =============================================================================
 -- Services (4 Core Services)
 -- =============================================================================
 
