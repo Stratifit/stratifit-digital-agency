@@ -25,8 +25,8 @@ function WorkStatsBand() {
   ];
 
   return (
-    <section className="border-y border-border bg-surface-soft/40">
-      <Container className="py-12 md:py-14">
+    <section>
+      <Container className="py-6 md:py-8">
         <Reveal className="grid grid-cols-3 gap-4">
           {stats.map((stat, index) => (
             <div
@@ -72,7 +72,7 @@ export default async function WorkPage() {
 
   return (
     <>
-      <section className="relative overflow-hidden py-16">
+      <section className="relative overflow-hidden pt-16 pb-8 md:pb-10">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-primary/5 blur-[120px]"
@@ -100,7 +100,7 @@ export default async function WorkPage() {
       <WorkStatsBand />
 
 
-      <section className="pt-16 pb-16 md:pb-24">
+      <section className="pt-8 pb-16 md:pt-12 md:pb-24">
         <Container>
           {projects.length === 0 ? (
             <p className="py-20 text-center text-sm text-text-muted">
