@@ -24,17 +24,17 @@ export default async function InsightsPage() {
     getPublicSectionSetting("insights"),
   ]);
 
-  const eyebrow = settings
-    ? resolveTranslation(settings.eyebrow_translations, locale)
-    : t(locale, "workEyebrowFallback");
-  const title = settings
-    ? resolveTranslation(settings.title_translations, locale)
-    : t(locale, "insightsEyebrowFallback");
-  const highlight = settings
-    ? resolveTranslation(settings.highlight_translations, locale)
-    : t(locale, "insightsHighlightFallback");
+  const eyebrow =
+    resolveTranslation(settings?.eyebrow_translations ?? null, locale) ||
+    t(locale, "insightsEyebrow");
+  const title =
+    resolveTranslation(settings?.title_translations ?? null, locale) ||
+    t(locale, "insightsTitleFallback");
+  const highlight =
+    resolveTranslation(settings?.highlight_translations ?? null, locale) ||
+    t(locale, "insightsHighlightFallback");
   const description =
-    (settings && resolveTranslation(settings.description_translations, locale)) ||
+    resolveTranslation(settings?.description_translations ?? null, locale) ||
     t(locale, "insightsDescriptionFallback");
 
   return (

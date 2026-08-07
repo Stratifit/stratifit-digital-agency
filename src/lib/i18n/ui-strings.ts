@@ -203,6 +203,7 @@ export type UiStringKey =
   | "servicesHowWeDoIt"
   | "servicesDeliverables"
   | "servicesWhatsIncluded"
+  | "servicesWhyTitle"
   | "servicesHowItWorks"
   | "servicesToolkit"
   | "servicesToolsTech"
@@ -223,7 +224,8 @@ export type UiStringKey =
   | "testimonialsEyebrow"
   | "testimonialsTitle"
   | "testimonialsDescription"
-  | "insightsEyebrowFallback"
+  | "insightsEyebrow"
+  | "insightsTitleFallback"
   | "insightsHighlightFallback"
   | "insightsDescriptionFallback";
 
@@ -453,6 +455,7 @@ const en: UiStrings = {
   servicesHowWeDoIt: "How We Do It",
   servicesDeliverables: "Deliverables",
   servicesWhatsIncluded: "What's Included",
+  servicesWhyTitle: "Why It Matters",
   servicesHowItWorks: "How It Works",
   servicesToolkit: "Toolkit",
   servicesToolsTech: "Tools & Technologies",
@@ -475,7 +478,8 @@ const en: UiStrings = {
   testimonialsTitle: "What Our Clients",
   testimonialsDescription:
     "Don't take our word for it — hear from the brands we've helped scale.",
-  insightsEyebrowFallback: "Insights &",
+  insightsEyebrow: "Knowledge",
+  insightsTitleFallback: "Insights &",
   insightsHighlightFallback: "Expertise",
   insightsDescriptionFallback:
     "Thought leadership, industry perspectives, and actionable strategies from our team of strategists, designers, and engineers.",
@@ -707,6 +711,7 @@ const de: UiStrings = {
   servicesHowWeDoIt: "So setzen wir es um",
   servicesDeliverables: "Leistungen",
   servicesWhatsIncluded: "Was enthalten ist",
+  servicesWhyTitle: "Warum es zählt",
   servicesHowItWorks: "So funktioniert es",
   servicesToolkit: "Toolkit",
   servicesToolsTech: "Tools & Technologien",
@@ -729,7 +734,8 @@ const de: UiStrings = {
   testimonialsTitle: "Was unsere Kunden",
   testimonialsDescription:
     "Verlassen Sie sich nicht nur auf unser Wort — hören Sie von den Marken, die wir beim Wachstum begleitet haben.",
-  insightsEyebrowFallback: "Einblicke &",
+  insightsEyebrow: "Wissen",
+  insightsTitleFallback: "Einblicke &",
   insightsHighlightFallback: "Expertise",
   insightsDescriptionFallback:
     "Thought Leadership, Branchenperspektiven und umsetzbare Strategien von unserem Team aus Strategen, Designern und Ingenieuren.",
@@ -961,6 +967,7 @@ const fr: UiStrings = {
   servicesHowWeDoIt: "Comment nous procédons",
   servicesDeliverables: "Livrables",
   servicesWhatsIncluded: "Ce qui est inclus",
+  servicesWhyTitle: "Pourquoi c'est important",
   servicesHowItWorks: "Comment ça marche",
   servicesToolkit: "Boîte à outils",
   servicesToolsTech: "Outils & technologies",
@@ -983,7 +990,8 @@ const fr: UiStrings = {
   testimonialsTitle: "Ce que disent nos",
   testimonialsDescription:
     "Ne nous croyez pas sur parole — écoutez les marques que nous avons aidées à grandir.",
-  insightsEyebrowFallback: "Connaissances &",
+  insightsEyebrow: "Savoir",
+  insightsTitleFallback: "Connaissances &",
   insightsHighlightFallback: "Expertise",
   insightsDescriptionFallback:
     "Leadership éclairé, perspectives sectorielles et stratégies concrètes de notre équipe de stratèges, designers et ingénieurs.",
@@ -1215,6 +1223,7 @@ const es: UiStrings = {
   servicesHowWeDoIt: "Cómo lo hacemos",
   servicesDeliverables: "Entregables",
   servicesWhatsIncluded: "Qué incluye",
+  servicesWhyTitle: "Por qué importa",
   servicesHowItWorks: "Cómo funciona",
   servicesToolkit: "Kit de herramientas",
   servicesToolsTech: "Herramientas y tecnologías",
@@ -1237,7 +1246,8 @@ const es: UiStrings = {
   testimonialsTitle: "Lo que dicen nuestros",
   testimonialsDescription:
     "No confíes solo en nuestra palabra: escucha a las marcas que hemos ayudado a crecer.",
-  insightsEyebrowFallback: "Conocimiento &",
+  insightsEyebrow: "Conocimiento",
+  insightsTitleFallback: "Conocimiento &",
   insightsHighlightFallback: "Experiencia",
   insightsDescriptionFallback:
     "Liderazgo de pensamiento, perspectivas del sector y estrategias accionables de nuestro equipo de estrategas, diseñadores e ingenieros.",

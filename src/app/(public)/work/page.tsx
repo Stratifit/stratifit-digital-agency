@@ -61,17 +61,17 @@ export default async function WorkPage() {
     getPublicSectionSetting("portfolio"),
   ]);
 
-  const eyebrow = settings
-    ? resolveTranslation(settings.eyebrow_translations, locale)
-    : t(locale, "workEyebrowFallback");
-  const title = settings
-    ? resolveTranslation(settings.title_translations, locale)
-    : t(locale, "workTitleFallback");
-  const highlight = settings
-    ? resolveTranslation(settings.highlight_translations, locale)
-    : t(locale, "workHighlightFallback");
+  const eyebrow =
+    resolveTranslation(settings?.eyebrow_translations ?? null, locale) ||
+    t(locale, "workEyebrowFallback");
+  const title =
+    resolveTranslation(settings?.title_translations ?? null, locale) ||
+    t(locale, "workTitleFallback");
+  const highlight =
+    resolveTranslation(settings?.highlight_translations ?? null, locale) ||
+    t(locale, "workHighlightFallback");
   const description =
-    (settings && resolveTranslation(settings.description_translations, locale)) ||
+    resolveTranslation(settings?.description_translations ?? null, locale) ||
     t(locale, "workDescriptionFallback");
 
   // Editable stats band from section settings (portfolio section).

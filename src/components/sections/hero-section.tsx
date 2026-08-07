@@ -40,6 +40,50 @@ const FALLBACK_STATS: HeroMetric[] = [
   },
 ];
 
+/**
+ * Canonical hero copy in all four languages, mirroring the seed. Used only
+ * when the `hero` row's translations are empty so the homepage never renders
+ * a blank headline/description (the database remains the source of truth).
+ */
+const FALLBACK_HERO = {
+  eyebrow: {
+    en: "Premium Digital Agency",
+    de: "Premium-Digitalagentur",
+    fr: "Agence Digitale Premium",
+    es: "Agencia Digital Premium",
+  },
+  title: {
+    en: "We Build Websites, Brands & Systems",
+    de: "Wir bauen Websites, Marken & Systeme",
+    fr: "Nous créons des sites web, des marques & des systèmes",
+    es: "Creamos sitios web, marcas y sistemas",
+  },
+  highlight: {
+    en: "That Grow Businesses.",
+    de: "Die Unternehmen wachsen lassen.",
+    fr: "Qui font grandir les entreprises.",
+    es: "Que hacen crecer los negocios.",
+  },
+  description: {
+    en: "We help startups and growing businesses build websites, brands, and AI-powered systems that turn visitors into customers.",
+    de: "Wir helfen Startups und wachsenden Unternehmen, Websites, Marken und KI-gestützte Systeme aufzubauen, die Besucher in Kunden verwandeln.",
+    fr: "Nous aidons les startups et les entreprises en croissance à créer des sites web, des marques et des systèmes alimentés par l'IA qui transforment les visiteurs en clients.",
+    es: "Ayudamos a startups y empresas en crecimiento a construir sitios web, marcas y sistemas impulsados por IA que convierten visitantes en clientes.",
+  },
+  primaryCta: {
+    en: "Start Your Project",
+    de: "Projekt starten",
+    fr: "Démarrer votre projet",
+    es: "Iniciar tu proyecto",
+  },
+  secondaryCta: {
+    en: "View Our Work",
+    de: "Unsere Arbeiten ansehen",
+    fr: "Voir nos réalisations",
+    es: "Ver nuestro trabajo",
+  },
+} as const;
+
 /** Renders a heading keeping the word "Tech" in amber while the rest keeps the
  *  normal text color. Works with any locale string that contains "Tech"
  *  (e.g. "Our Tech Stack", "Unser Tech-Stack"). */
@@ -114,18 +158,24 @@ export async function HeroSection() {
     return null;
   }
 
-  const eyebrow = resolveTranslation(hero.eyebrow_translations, locale);
-  const title = resolveTranslation(hero.title_translations, locale);
-  const highlight = resolveTranslation(hero.highlight_translations, locale);
-  const description = resolveTranslation(hero.description_translations, locale);
-  const primaryLabel = resolveTranslation(
-    hero.primary_cta_label_translations,
-    locale
-  );
-  const secondaryLabel = resolveTranslation(
-    hero.secondary_cta_label_translations,
-    locale
-  );
+  const eyebrow =
+    resolveTranslation(hero.eyebrow_translations, locale) ||
+    resolveTranslation(FALLBACK_HERO.eyebrow, locale);
+  const title =
+    resolveTranslation(hero.title_translations, locale) ||
+    resolveTranslation(FALLBACK_HERO.title, locale);
+  const highlight =
+    resolveTranslation(hero.highlight_translations, locale) ||
+    resolveTranslation(FALLBACK_HERO.highlight, locale);
+  const description =
+    resolveTranslation(hero.description_translations, locale) ||
+    resolveTranslation(FALLBACK_HERO.description, locale);
+  const primaryLabel =
+    resolveTranslation(hero.primary_cta_label_translations, locale) ||
+    resolveTranslation(FALLBACK_HERO.primaryCta, locale);
+  const secondaryLabel =
+    resolveTranslation(hero.secondary_cta_label_translations, locale) ||
+    resolveTranslation(FALLBACK_HERO.secondaryCta, locale);
 
   const dbMetrics = (hero.metrics as HeroMetric[] | null) ?? [];
   const stats = dbMetrics.length > 0 ? dbMetrics : FALLBACK_STATS;

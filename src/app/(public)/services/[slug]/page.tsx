@@ -90,10 +90,13 @@ export default async function ServicePage({
   }
 
   const service = services.find((s) => s.slug === slug);
-  const serviceName = service
-    ? resolveTranslation(service.title_translations, locale)
-    : resolveTranslation(page.hero_title_translations, locale);
-  const pageTitle = resolveTranslation(page.hero_title_translations, locale);
+  const serviceName =
+    (service
+      ? resolveTranslation(service.title_translations, locale)
+      : resolveTranslation(page.hero_title_translations, locale)) ||
+    t(locale, "servicesTitle");
+  const pageTitle =
+    resolveTranslation(page.hero_title_translations, locale) || serviceName;
   const highlight = resolveTranslation(page.hero_highlight_translations, locale);
   const heroDescription = resolveTranslation(
     page.hero_description_translations,
@@ -218,7 +221,7 @@ export default async function ServicePage({
                     <ServicePageIcon name="spark" className="size-6" />
                   </span>
                   <h2 className="text-xl font-bold uppercase tracking-wider text-primary">
-                    {whyTitle}
+                    {whyTitle || t(locale, "servicesWhyTitle")}
                   </h2>
                 </div>
                 {whyDescription ? (

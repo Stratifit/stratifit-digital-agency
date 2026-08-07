@@ -27,15 +27,16 @@ export default async function TestimonialsPage() {
   }
 
   const eyebrow =
-    resolveTranslation(settings?.eyebrow_translations ?? null, locale) ??
+    resolveTranslation(settings?.eyebrow_translations ?? null, locale) ||
     t(locale, "testimonialsEyebrow");
   const title =
-    resolveTranslation(settings?.title_translations ?? null, locale) ??
+    resolveTranslation(settings?.title_translations ?? null, locale) ||
     t(locale, "testimonialsTitle");
   const highlight =
-    resolveTranslation(settings?.highlight_translations ?? null, locale) ?? null;
+    resolveTranslation(settings?.highlight_translations ?? null, locale) ||
+    null;
   const description =
-    resolveTranslation(settings?.description_translations ?? null, locale) ??
+    resolveTranslation(settings?.description_translations ?? null, locale) ||
     t(locale, "testimonialsDescription");
 
   return (
