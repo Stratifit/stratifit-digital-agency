@@ -749,7 +749,7 @@ The homepage order is fixed in version 1:
 8. Testimonials
 9. Pricing
 10. FAQ
-11. Final CTA
+11. Contact
 12. Footer
 
 The homepage renderer should:

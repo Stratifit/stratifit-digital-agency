@@ -1807,7 +1807,7 @@ Recommended seed order:
 9. Acquisition
 10. Pricing
 11. FAQs
-12. Final CTA
+12. Contact
 13. Chatbot settings
 14. AI FAQ settings
 15. Chatbot knowledge
