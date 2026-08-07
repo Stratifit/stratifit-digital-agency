@@ -13,6 +13,7 @@ import { getPublicServices } from "@/features/services/queries";
 import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
+import { CountUp } from "@/components/ui/count-up";
 import { Reveal } from "@/components/ui/reveal";
 import { WorkGrid } from "@/components/work/work-grid";
 
@@ -26,14 +27,17 @@ function WorkStatsBand() {
 
   return (
     <section className="border-y border-border bg-surface-soft/40">
-      <Container className="py-10 md:py-12">
-        <Reveal className="grid grid-cols-2 gap-8 md:grid-cols-4">
+      <Container className="py-12 md:py-14">
+        <Reveal className="grid grid-cols-2 gap-x-8 gap-y-10 md:grid-cols-4 md:divide-x md:divide-white/5">
           {stats.map((stat) => (
-            <div key={stat.label} className="text-center">
-              <div className="font-display text-3xl font-black tracking-tight text-primary md:text-5xl">
-                {stat.value}
+            <div key={stat.label} className="text-center md:px-4">
+              <div className="font-display text-3xl font-black leading-none tracking-tight text-primary md:text-5xl">
+                <CountUp
+                  value={stat.value}
+                  className="tabular-nums"
+                />
               </div>
-              <div className="mt-2 text-[10px] font-bold uppercase tracking-[0.22em] text-text-subtle md:text-xs">
+              <div className="mt-3 text-[10px] font-bold uppercase leading-tight tracking-[0.2em] text-text-subtle md:mt-4 md:text-xs">
                 {stat.label}
               </div>
             </div>
