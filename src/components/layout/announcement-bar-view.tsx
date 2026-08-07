@@ -47,7 +47,7 @@ export function AnnouncementBarView({ slides, linkUrl, linkLabel }: Announcement
   }
 
   return (
-    <div className="border-b border-border bg-primary">
+    <div data-announcement-bar className="border-b border-border bg-primary">
       {/* Slimmer horizontal padding than the shared Container (px-4 instead
           of px-6) so the announcement strip feels less bulky. */}
       <div className="mx-auto flex h-10 w-full max-w-[var(--container-lg)] items-center gap-3 px-4 lg:px-8">

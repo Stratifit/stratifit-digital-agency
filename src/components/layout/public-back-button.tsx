@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { t } from "@/lib/i18n/ui-strings";
 
@@ -7,15 +8,76 @@ import { t } from "@/lib/i18n/ui-strings";
  * Floating back arrow shown on every public page except the homepage.
  * Returns the visitor to the section/page they clicked from (router.back()),
  * falling back to the homepage when there is no browser history.
+ *
+ * The button clears the sticky header plus the announcement bar. While the
+ * announcement bar is visible it stays put; when the bar scrolls out of view
+ * (or is dismissed) the button glides up by exactly the bar's height, so it
+ * always hugs the sticky header with the same gap.
  */
 export function PublicBackButton({ locale }: { locale?: string }) {
   const router = useRouter();
   const pathname = usePathname();
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
-  // The homepage is the root — there is no page "behind" it to go back to.
-  if (pathname === "/") {
-    return null;
-  }
+  // The homepage is the root — there is no page "behind" it to go back to,
+  // so the button (and its listeners) are not needed there.
+  const isHome = pathname === "/";
+
+  useEffect(() => {
+    if (isHome) return;
+
+    let raf = 0;
+    let lastBarHeight: number | null = null;
+    let lastTransform = "";
+
+    const update = () => {
+      const button = buttonRef.current;
+      if (!button) return;
+
+      const bar = document.querySelector<HTMLElement>("[data-announcement-bar]");
+
+      // Height of the announcement bar: h-10 (40px) + 1px border-b.
+      let height = lastBarHeight ?? 41;
+      let visible = 0;
+
+      if (bar) {
+        const rect = bar.getBoundingClientRect();
+        height = rect.height;
+        lastBarHeight = height;
+        // How much of the bar is still in the viewport (0 once scrolled away).
+        visible = Math.min(height, Math.max(0, rect.bottom));
+      }
+
+      // The class-based top already accounts for the fully visible bar;
+      // lift the button by the portion of the bar that has scrolled away.
+      const transform = `translateY(${visible - height}px)`;
+      if (transform !== lastTransform) {
+        lastTransform = transform;
+        button.style.transform = transform;
+      }
+    };
+
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+
+    // Re-position when the bar is dismissed (unmounted) or later appears.
+    const observer = new MutationObserver(onScroll);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      cancelAnimationFrame(raf);
+      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [isHome]);
+
 
   function goBack() {
     if (typeof window !== "undefined" && window.history.length > 1) {
@@ -27,6 +89,7 @@ export function PublicBackButton({ locale }: { locale?: string }) {
 
   return (
     <button
+      ref={buttonRef}
       type="button"
       aria-label={t(locale ?? "en", "goBack")}
       onClick={goBack}
