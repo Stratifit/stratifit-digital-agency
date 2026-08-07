@@ -41,7 +41,11 @@ export default async function ServicesPage() {
 
   return (
     <>
-      <section className="bg-background-deep">
+      <section className="relative bg-background-deep">
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 h-px bg-primary/30"
+        />
         <Container className="py-20 md:py-24">
           <p className="text-sm font-medium uppercase tracking-widest text-primary">
             {eyebrow}

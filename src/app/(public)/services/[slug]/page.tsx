@@ -143,6 +143,10 @@ export default async function ServicePage({
           <div className="absolute bottom-0 left-0 h-[300px] w-[300px] rounded-full bg-primary/3 blur-[100px] md:h-[400px] md:w-[400px]" />
           <div className="absolute top-1/2 left-1/4 h-[200px] w-[200px] rounded-full bg-primary/4 blur-[80px]" />
         </div>
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 h-px bg-primary/30"
+        />
         <Container className="relative z-10">
           <div className="grid items-center gap-8 md:gap-16">
             <div className="space-y-4 md:space-y-8 lg:mx-auto lg:max-w-4xl lg:text-center">
