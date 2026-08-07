@@ -151,6 +151,8 @@ The work page must:
 - Link to project detail pages
 - Show measurable outcomes where available
 
+V1 implementation: a horizontally scrollable filter pill row (All + linked services) using the shared `FilterPills` component filters the project grid client-side; card badges show the primary service category.
+
 ### 5.4 Work detail
 
 A work detail page should support:
@@ -179,7 +181,7 @@ The insights page must:
 - Support pagination
 - Link to article detail pages
 
-V1 implementation: the page renders an amber-glow hero driven by the `insights` section settings, a horizontally scrollable category filter pill row (All + published categories, client-side filtering), and a responsive article card grid (featured image, category badge, date, read time, title, excerpt, Read Article link). Pagination is deferred while the published set stays within the query cap (100).
+V1 implementation: the page renders an amber-glow hero driven by the `insights` section settings, a horizontally scrollable category filter pill row (All + published categories, client-side filtering), and a responsive article card grid (featured image, category badge, date, read time, title, excerpt, Read Article link). Pagination is deferred while the published set stays within the query cap (100). The pill row uses the shared `FilterPills` component (`src/components/ui/filter-pills.tsx`) — the same component powers the work, portfolio, and acquisition galleries. Categories resolve from public queries gated by the public read policies added in migrations `00033`/`00034`.
 
 ### 5.6 Insight detail
 
@@ -369,6 +371,8 @@ This section should:
 - Link to the Insights page
 - Avoid looking like a generic blog feed
 
+V1 implementation: the homepage section shows the latest articles with curated imagery via `getInsightImage()` and a `FilterPills` category row (All · Strategy · Design · Tech · Growth) that filters both the desktop grid and the mobile scroller.
+
 ### 7.6 Portfolio
 
 The Portfolio section should:
@@ -380,6 +384,8 @@ The Portfolio section should:
 - Link to project details
 - Avoid overcrowding the homepage
 
+V1 implementation: includes a service filter pill row (shared `FilterPills` component) filtering the featured project grid.
+
 ### 7.7 Acquisition
 
 The Acquisition section should:
@@ -389,6 +395,8 @@ The Acquisition section should:
 - Avoid confusing it with standard web services
 - Include a dedicated CTA
 - Link to the Acquisition page
+
+V1 implementation: the section lists available businesses grouped by niche with a horizontally scrollable niche filter pill row (shared `FilterPills` component).
 
 ### 7.8 Testimonials
 
@@ -538,6 +546,8 @@ Public queries must return only:
 
 Private CMS fields must not be returned.
 
+Relationship tables read by public queries (`portfolio_service_links`, `insight_category_links`, `insight_categories`, `portfolio_media`) must expose public `FOR SELECT` policies gated to published content (migrations `00033`/`00034`); without them, badges and filters silently resolve empty.
+
 ### 9.4 Ordering
 
 Collections should have stable ordering.
@@ -629,6 +639,7 @@ Examples:
 - Tooltip
 - Toast
 - Skeleton
+- FilterPills
 
 ### 11.3 Layout components
 
@@ -695,6 +706,10 @@ Explicit variants (for example `Card` `standard` vs `featured`, or `Button`
 `primary` vs `secondary`) are preferred only where behavior genuinely differs.
 Do not create duplicate public and CMS component libraries. Shared components
 live once in `src/components/ui/` and are reused by both contexts.
+
+### 11.7 Gallery filter pills
+
+All four galleries — Acquisition, Portfolio, Work, and Insights (homepage carousel and index page) — share one client component: `FilterPills` (`src/components/ui/filter-pills.tsx`). It renders the amber-active pill row (All + provided options), sets `aria-pressed` per pill, hides the row when only the All option exists, and each caller passes its own wrapper spacing via `className`. Options resolve server-side from published content through the public read policies added in migrations `00033`/`00034`.
 
 ---
 

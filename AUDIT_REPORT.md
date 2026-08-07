@@ -36,6 +36,8 @@
 - SEO: canonical + OG + Twitter + JSON-LD on public pages; `sitemap.xml` / `robots.txt`
 - Locale-aware `<html lang>`; cookie-based language switching with en/de/fr/es dictionaries
 - Single global floating back arrow (`PublicBackButton` — localized, `router.back()` with homepage fallback) — no page duplicates
+- Shared `FilterPills` component (`src/components/ui/filter-pills.tsx`) — one pill row reused by the acquisition, portfolio, work, and insights galleries instead of five near-identical copies
+- Public read RLS policies for the relationship/category tables (`00033`/`00034`) so anon can resolve service/category slugs for published content
 - CI gate on Linux reproduces the Vercel build (lint + tests + build + import case checks)
 
 ## 2. High-Priority Findings (P1)
@@ -43,6 +45,7 @@
 1. **Email cannot send** — `RESEND_API_KEY` / `RESEND_FROM_EMAIL` not configured; sends skip with a warning. Contact acknowledgement and lead notifications are not delivered. *(Owner action — verify `.env.local` / Vercel env vars.)*
 2. **AI chat inert without `AI_API_KEY`** — falls back to the rule-based English keyword matcher; admin UIs exist for knowledge base, chatbot settings, and AI FAQ. *(Owner action — set `AI_API_KEY`, `AI_BASE_URL`, `AI_MODEL`.)*
 3. **`/services/[slug]` pages missing from `sitemap.xml`** — dedicated service pages exist and are indexed-eligible, but the sitemap only listed the static `/services`. *(Resolved 2026-08-07 — added to `src/app/sitemap.ts` via `getPublicServicePageSlugs()`.)*
+4. **Gallery filter pills and category badges rendered empty** — admin-only RLS policies on `portfolio_service_links` / `insight_category_links` / `insight_categories` silently blocked public reads, so `service_slugs` / `category_slugs` resolved empty. *(Resolved 2026-08-07 — migrations `00033` + `00034`; `00034` also fixes a column-shadowing bug in the `insight_categories` policy.)*
 
 ## 3. Medium-Priority Findings (P2)
 
@@ -65,10 +68,11 @@
 
 ## 5. Supabase / Security Notes
 
-- 37 tables, RLS everywhere, migration history in sync (00001–00030)
+- 37 tables, RLS everywhere, migration history in sync (00001–00034)
 - Storage: 4 public buckets (listing WARN accepted for public image buckets)
 - Security advisors: `public_bucket_allows_listing` (WARN, accepted), `anon_security_definer_function_executable` (WARN, by design), `auth_leaked_password_protection` disabled (enable in dashboard)
 - Performance advisors: unindexed FKs / unused indexes (INFO, expected at current data volume)
+- Public read policies added for the link/category/media relationship tables (`00033`/`00034`) — `FOR SELECT` to anon/authenticated, EXISTS-gated to published parent content
 
 ## 6. Implementation Work Completed (2026-08-02 → 2026-08-07)
 
@@ -81,12 +85,17 @@
 - Chatbot knowledge base, AI FAQ, and chatbot settings admin UIs
 - Sections manager, bulk actions for leads/conversations, editors for hero/announcement/navigation/footer
 
-**This session (2026-08-07, commits 3f30cd2 → 0d918f5):**
+**This session (2026-08-07, commits 3f30cd2 → 2be773b):**
 - **Removed the Trusted By section** (deleted `trusted-by-section.tsx`, registry entry, `/work` + `/work/[slug]` usages, admin sections card) and the **"Not sure where to start?" CTA banner** from the Services section. Homepage order is now: Announcement Bar → Header → Hero → Services → Process → Why Choose Us → Insights & Expertise → Portfolio → Acquisition → Testimonials → Pricing → FAQ → Contact → Footer. Docs updated (AGENTS.md, ARCHITECTURE, PROJECT, FRONTEND, CMS, ROADMAP).
 - **Single back arrow** — removed 4 page-specific hardcoded back buttons (`/work/[slug]`, `/testimonials`, `/buy-business`, `/buy-business/niches/[slug]`); the global localized `PublicBackButton` is now the only one.
 - **Back arrow clearance** — repositioned to `top-28` / `sm:top-32` so it clears the sticky header when the announcement bar is visible.
 - **Removed the Trusted Logos admin editor and feature module** (route, manager component, feature queries/mutations, nav link; DB table retained pending owner decision).
 - **Localized the work detail page** — every hardcoded UI string on `/work/[slug]` moved to `ui-strings.ts` (23 new keys × 4 languages): fact labels, section labels, headings, alt text, and the final CTA.
+- **Localized the Buy-a-Business pages** — all hardcoded UI strings on `/buy-business` and `/buy-business/niches/[slug]` moved to `ui-strings.ts` (27 keys × 4 languages) with a new `tWithValue` helper; `BusinessCard` now accepts a `locale` prop.
+- **Reliable back arrow** — replaced the unreliable `history.length` heuristic with in-app previous-route tracking (`router.back()` with homepage fallback), so mobile users return to the page they came from with scroll position restored.
+- **Real images + filter pills on the homepage insights section** — the carousel now uses `getInsightImage()` (curated per-article photos) instead of letter placeholders, and gained the All/Strategy/Design/Tech/Growth pill row.
+- **Shared `FilterPills` component** — extracted the duplicated pill rows into `src/components/ui/filter-pills.tsx`, reused by the acquisition, portfolio, work, and insights galleries.
+- **RLS fix for public link reads** — migrations `00033`/`00034` add public read policies for `portfolio_service_links`, `insight_category_links`, `insight_categories`, and `portfolio_media`, restoring category badges, gallery images, and filter pills.
 
 ## 7. Remaining Work (for the owner)
 
@@ -99,7 +108,8 @@
 - Multi-language editing tabs in the generic content CMS (portfolio/insights/testimonials/pricing/faq)
 - Replace `as never` / `as unknown as` casts with proper discriminated typing
 - Rename `vitest.config.ts` → `.mts`; bump `@types/node` to `^22`
-- Sweep remaining stale doc prose (FRONTEND §7.2, COMPONENTS radius note)
+- Sweep remaining stale doc prose (COMPONENTS radius note — FRONTEND §7.2 resolved)
+- Seed `portfolio_media` gallery links for work detail pages — the table has zero rows on the remote DB, so galleries render empty until data exists
 
 ---
 
