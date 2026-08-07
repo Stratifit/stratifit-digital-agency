@@ -18,23 +18,6 @@ export const metadata = pageMetadata({
   path: "/buy-business",
 });
 
-function ArrowLeftIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-      className="size-5"
-    >
-      <path
-        fillRule="evenodd"
-        d="M11.03 3.97a.75.75 0 0 1 0 1.06l-6.22 6.22H21a.75.75 0 0 1 0 1.5H4.81l6.22 6.22a.75.75 0 1 1-1.06 1.06l-7.5-7.5a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 0 1 1.06 0Z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
-
 function ArrowRightIcon() {
   return (
     <svg
@@ -97,17 +80,6 @@ export default async function BuyBusinessPage() {
 
   return (
     <>
-      {/* Back button */}
-      <Link
-        href="/"
-        aria-label="Go back"
-        className="fixed left-1 top-16 z-50 rounded-full bg-white/5 p-2 text-text-primary backdrop-blur-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-white/10 lg:top-20"
-      >
-        <span className="transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-primary">
-          <ArrowLeftIcon />
-        </span>
-      </Link>
-
       {/* Hero */}
       <section className="relative overflow-hidden pb-16 pt-32 md:pb-20 md:pt-40">
         <div
