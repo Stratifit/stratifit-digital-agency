@@ -82,7 +82,7 @@ export default async function ServicePage({
   const [page, services, portfolio] = await Promise.all([
     getPublicServicePage(slug),
     getPublicServices(),
-    getPublicPortfolioProjects(8),
+    getPublicPortfolioProjects(8, slug),
   ]);
 
   if (!page) {
@@ -493,7 +493,12 @@ export default async function ServicePage({
               </div>
             </Reveal>
             <Reveal variant="card" cardSelector="[data-project-card]">
-              <PortfolioGallery projects={portfolio} services={services} locale={locale} />
+              <PortfolioGallery
+                projects={portfolio}
+                services={services}
+                locale={locale}
+                hideFilters
+              />
             </Reveal>
           </Container>
         </Section>

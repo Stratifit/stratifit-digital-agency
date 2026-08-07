@@ -43,18 +43,44 @@ export interface PublicPortfolioProject {
 }
 
 export async function getPublicPortfolioProjects(
-  limit = 8
+  limit = 8,
+  serviceSlug?: string
 ): Promise<PublicPortfolioProject[]> {
   const supabase = await createSupabaseServerClient();
 
-  const { data, error } = await supabase
+  // When a service is given, restrict to projects linked to that service so
+  // each service page only shows its own work.
+  let projectIds: string[] | undefined;
+  if (serviceSlug) {
+    const { data: service } = await supabase
+      .from("services")
+      .select("id")
+      .eq("slug", serviceSlug)
+      .maybeSingle();
+    if (!service) return [];
+    const { data: linkRows } = await supabase
+      .from("portfolio_service_links")
+      .select("portfolio_id")
+      .eq("service_id", service.id);
+    projectIds = [
+      ...new Set((linkRows ?? []).map((l) => l.portfolio_id as string)),
+    ];
+    if (projectIds.length === 0) return [];
+  }
+
+  let query = supabase
     .from("portfolio_projects")
     .select(
       "id, slug, client_name, title_translations, summary_translations, deliverables_translations, metrics, featured_media_id, image_url"
     )
     .eq("status", "published")
-    .order("published_at", { ascending: false })
-    .limit(limit);
+    .order("published_at", { ascending: false });
+
+  if (projectIds) {
+    query = query.in("id", projectIds);
+  }
+
+  const { data, error } = await query.limit(limit);
 
   if (error || !data) {
     return [];

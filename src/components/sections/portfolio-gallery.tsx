@@ -48,21 +48,25 @@ export function PortfolioGallery({
   projects,
   services,
   locale,
+  hideFilters = false,
 }: {
   projects: PublicPortfolioProject[];
   services: PublicServiceDetail[];
   locale: string;
+  hideFilters?: boolean;
 }) {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const [activeFilter, setActiveFilter] = React.useState("all");
   const [activeCard, setActiveCard] = React.useState(0);
 
-  const categories = services.filter((service) =>
-    projects.some((project) => project.service_slugs.includes(service.slug))
-  );
+  const categories = hideFilters
+    ? []
+    : services.filter((service) =>
+        projects.some((project) => project.service_slugs.includes(service.slug))
+      );
 
   const filtered =
-    activeFilter === "all"
+    hideFilters || activeFilter === "all"
       ? projects
       : projects.filter((project) =>
           project.service_slugs.includes(activeFilter)
@@ -108,20 +112,22 @@ export function PortfolioGallery({
 
   return (
     <div>
-      <FilterPills
-        className="mb-6 pb-2"
-        pills={[
-          { slug: "all", label: t(locale, "filterAll") },
-          ...categories.map((service) => ({
-            slug: service.slug,
-            label:
-              resolveTranslation(service.title_translations, locale) ||
-              service.slug,
-          })),
-        ]}
-        active={activeFilter}
-        onSelect={selectFilter}
-      />
+      {!hideFilters ? (
+        <FilterPills
+          className="mb-6 pb-2"
+          pills={[
+            { slug: "all", label: t(locale, "filterAll") },
+            ...categories.map((service) => ({
+              slug: service.slug,
+              label:
+                resolveTranslation(service.title_translations, locale) ||
+                service.slug,
+            })),
+          ]}
+          active={activeFilter}
+          onSelect={selectFilter}
+        />
+      ) : null}
 
       <div className="relative">
         <div
