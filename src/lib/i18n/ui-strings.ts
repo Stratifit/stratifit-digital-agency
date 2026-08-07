@@ -148,6 +148,8 @@ export type UiStringKey =
   | "heroEyebrowFallback"
   | "viewSite"
   | "contactEyebrow"
+  | "contactTitleFallback"
+  | "contactDescriptionFallback"
   | "getInTouch"
   | "popupHeadingA"
   | "popupHeadingB"
@@ -391,6 +393,9 @@ const en: UiStrings = {
   heroEyebrowFallback: "Premium Digital Agency",
   viewSite: "View site",
   contactEyebrow: "Contact",
+  contactTitleFallback: "Let's Talk",
+  contactDescriptionFallback:
+    "Ready to start your project? Fill out the form and we'll get back to you within 24 hours.",
   getInTouch: "Get in Touch",
   popupHeadingA: "Tell us about your",
   popupHeadingB: "project",
@@ -642,6 +647,9 @@ const de: UiStrings = {
   heroEyebrowFallback: "Premium-Digitalagentur",
   viewSite: "Website ansehen",
   contactEyebrow: "Kontakt",
+  contactTitleFallback: "Sprechen wir",
+  contactDescriptionFallback:
+    "Bereit, Ihr Projekt zu starten? Füllen Sie das Formular aus – wir melden uns innerhalb von 24 Stunden.",
   getInTouch: "Kontakt aufnehmen",
   popupHeadingA: "Erzählen Sie uns von Ihrem",
   popupHeadingB: "Projekt",
@@ -893,6 +901,9 @@ const fr: UiStrings = {
   heroEyebrowFallback: "Agence digitale premium",
   viewSite: "Voir le site",
   contactEyebrow: "Contact",
+  contactTitleFallback: "Parlons-en",
+  contactDescriptionFallback:
+    "Prêt à lancer votre projet ? Remplissez le formulaire et nous vous répondrons sous 24 heures.",
   getInTouch: "Prenez contact",
   popupHeadingA: "Parlez-nous de votre",
   popupHeadingB: "projet",
@@ -1144,6 +1155,9 @@ const es: UiStrings = {
   heroEyebrowFallback: "Agencia digital premium",
   viewSite: "Ver sitio",
   contactEyebrow: "Contacto",
+  contactTitleFallback: "Hablemos",
+  contactDescriptionFallback:
+    "¿Listo para empezar su proyecto? Complete el formulario y le responderemos en 24 horas.",
   getInTouch: "Ponte en contacto",
   popupHeadingA: "Cuéntanos sobre tu",
   popupHeadingB: "proyecto",
