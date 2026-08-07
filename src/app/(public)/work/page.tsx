@@ -67,7 +67,7 @@ export default async function WorkPage() {
 
   return (
     <>
-      <section className="relative overflow-hidden pb-16 pt-16 md:pb-20">
+      <section className="relative overflow-hidden py-16">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-primary/5 blur-[120px]"
