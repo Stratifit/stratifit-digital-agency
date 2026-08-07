@@ -49,6 +49,32 @@ export type UiStringKey =
   | "viewFullDetail"
   | "visitSite"
   | "buyBusiness"
+  | "buyABusiness"
+  | "buyBusinessFallback"
+  | "acquisition"
+  | "exploreBy"
+  | "niche"
+  | "exploreByNicheDescription"
+  | "businessesCount"
+  | "avgShort"
+  | "viewListings"
+  | "viewNicheBusinesses"
+  | "readyToOwnBusiness"
+  | "readyToOwnBusinessA"
+  | "readyToOwnBusinessQ"
+  | "acquisitionGuideDescription"
+  | "scheduleConsultation"
+  | "businesses"
+  | "avgAskingPrice"
+  | "available"
+  | "vettedListingsDescription"
+  | "notFindingWhatYouNeed"
+  | "newListingsComingSoon"
+  | "activelyVettingDescription"
+  | "getNotified"
+  | "exploreOther"
+  | "niches"
+  | "browseMoreOpportunities"
   | "mostPopular"
   | "keyDeliverables"
   | "learnMore"
@@ -218,6 +244,37 @@ const en: UiStrings = {
   viewFullDetail: "View Full Detail",
   visitSite: "Visit Site",
   buyBusiness: "Buy Business",
+  buyABusiness: "Buy a Business",
+  buyBusinessFallback:
+    "Skip the startup grind. Browse our curated marketplace of profitable, turnkey businesses across high-demand niches.",
+  acquisition: "Acquisition",
+  exploreBy: "Explore by",
+  niche: "Niche",
+  exploreByNicheDescription:
+    "Select a niche to see available businesses for acquisition.",
+  businessesCount: "{n} businesses",
+  avgShort: "avg.",
+  viewListings: "View Listings",
+  viewNicheBusinesses: "View {value} Businesses",
+  readyToOwnBusiness: "Ready to Own a Business?",
+  readyToOwnBusinessA: "Ready to Own a",
+  readyToOwnBusinessQ: "Business?",
+  acquisitionGuideDescription:
+    "Our team will guide you through every step of the acquisition process — from due diligence to transition.",
+  scheduleConsultation: "Schedule a Consultation",
+  businesses: "Businesses",
+  avgAskingPrice: "{value} avg. asking price",
+  available: "Available",
+  vettedListingsDescription: "Vetted, turnkey listings ready for a new owner.",
+  notFindingWhatYouNeed: "Not finding what you need?",
+  newListingsComingSoon: "New {value} listings coming soon",
+  activelyVettingDescription:
+    "We're actively vetting businesses in this niche. Tell us what you're looking for and we'll alert you the moment a match lands.",
+  getNotified: "Get Notified",
+  exploreOther: "Explore Other",
+  niches: "Niches",
+  browseMoreOpportunities:
+    "Browse more acquisition opportunities across the marketplace.",
   mostPopular: "Most Popular",
   keyDeliverables: "Key Deliverables",
   learnMore: "Learn More",
@@ -395,6 +452,38 @@ const de: UiStrings = {
   viewFullDetail: "Alle Details ansehen",
   visitSite: "Website besuchen",
   buyBusiness: "Unternehmen kaufen",
+  buyABusiness: "Ein Unternehmen kaufen",
+  buyBusinessFallback:
+    "Überspringen Sie den Start-up-Dschungel. Stöbern Sie in unserem kuratierten Marktplatz für profitable, schlüsselfertige Unternehmen aus stark nachgefragten Nischen.",
+  acquisition: "Akquisition",
+  exploreBy: "Stöbern nach",
+  niche: "Nische",
+  exploreByNicheDescription:
+    "Wählen Sie eine Nische, um verfügbare Unternehmen zur Übernahme zu sehen.",
+  businessesCount: "{n} Unternehmen",
+  avgShort: "Ø",
+  viewListings: "Listings ansehen",
+  viewNicheBusinesses: "{value}-Unternehmen ansehen",
+  readyToOwnBusiness: "Bereit, ein Unternehmen zu kaufen?",
+  readyToOwnBusinessA: "Bereit, ein Unternehmen zu",
+  readyToOwnBusinessQ: "kaufen?",
+  acquisitionGuideDescription:
+    "Unser Team begleitet Sie durch jeden Schritt des Übernahmeprozesses — von der Due Diligence bis zum Übergang.",
+  scheduleConsultation: "Beratung vereinbaren",
+  businesses: "Unternehmen",
+  avgAskingPrice: "Ø-Kaufpreis {value}",
+  available: "Verfügbare",
+  vettedListingsDescription:
+    "Geprüfte, schlüsselfertige Listings – bereit für neue Eigentümer.",
+  notFindingWhatYouNeed: "Finden Sie nicht, was Sie suchen?",
+  newListingsComingSoon: "Neue {value}-Listings in Kürze",
+  activelyVettingDescription:
+    "Wir prüfen derzeit aktiv Unternehmen in dieser Nische. Erzählen Sie uns, wonach Sie suchen, und wir benachrichtigen Sie, sobald ein Treffer vorliegt.",
+  getNotified: "Benachrichtigen lassen",
+  exploreOther: "Weitere",
+  niches: "Nischen",
+  browseMoreOpportunities:
+    "Entdecken Sie weitere Übernahmemöglichkeiten auf dem Marktplatz.",
   mostPopular: "Am beliebtesten",
   keyDeliverables: "Wichtigste Leistungen",
   learnMore: "Mehr erfahren",
@@ -573,6 +662,38 @@ const fr: UiStrings = {
   viewFullDetail: "Voir le détail complet",
   visitSite: "Visiter le site",
   buyBusiness: "Acheter l'entreprise",
+  buyABusiness: "Acheter une entreprise",
+  buyBusinessFallback:
+    "Évitez la galère du démarrage. Parcourez notre marketplace de sociétés rentables et clés en main dans sept niches très demandées.",
+  acquisition: "Acquisition",
+  exploreBy: "Explorer par",
+  niche: "Niche",
+  exploreByNicheDescription:
+    "Sélectionnez une niche pour voir les sociétés disponibles à l'acquisition.",
+  businessesCount: "{n} sociétés",
+  avgShort: "moy.",
+  viewListings: "Voir les annonces",
+  viewNicheBusinesses: "Voir les sociétés {value}",
+  readyToOwnBusiness: "Prêt à posséder une entreprise ?",
+  readyToOwnBusinessA: "Prêt à posséder une",
+  readyToOwnBusinessQ: "entreprise ?",
+  acquisitionGuideDescription:
+    "Notre équipe vous accompagne à chaque étape du processus d'acquisition — de la due diligence à la transition.",
+  scheduleConsultation: "Planifier une consultation",
+  businesses: "Entreprises",
+  avgAskingPrice: "{value} prix moyen demandé",
+  available: "Disponibles",
+  vettedListingsDescription:
+    "Des annonces vérifiées et clés en main, prêtes pour un nouveau propriétaire.",
+  notFindingWhatYouNeed: "Vous ne trouvez pas ce qu'il vous faut ?",
+  newListingsComingSoon: "De nouvelles annonces {value} arrivent bientôt",
+  activelyVettingDescription:
+    "Nous évaluons activement des entreprises dans cette niche. Dites-nous ce que vous cherchez et nous vous alerterons dès qu'une opportunité correspond.",
+  getNotified: "Être prévenu",
+  exploreOther: "Explorer d'autres",
+  niches: "Niches",
+  browseMoreOpportunities:
+    "Parcourez d'autres opportunités d'acquisition sur le marché.",
   mostPopular: "Le plus populaire",
   keyDeliverables: "Livrables clés",
   learnMore: "En savoir plus",
@@ -751,6 +872,38 @@ const es: UiStrings = {
   viewFullDetail: "Ver detalle completo",
   visitSite: "Visitar sitio",
   buyBusiness: "Comprar negocio",
+  buyABusiness: "Comprar un negocio",
+  buyBusinessFallback:
+    "Olvídate de empezar de cero. Explora nuestro mercado seleccionado de negocios rentables y listos para operar en nichos de alta demanda.",
+  acquisition: "Adquisición",
+  exploreBy: "Explorar por",
+  niche: "Nicho",
+  exploreByNicheDescription:
+    "Selecciona un nicho para ver los negocios disponibles para adquisición.",
+  businessesCount: "{n} negocios",
+  avgShort: "prom.",
+  viewListings: "Ver anuncios",
+  viewNicheBusinesses: "Ver negocios {value}",
+  readyToOwnBusiness: "¿Listo para ser dueño de un negocio?",
+  readyToOwnBusinessA: "¿Listo para ser dueño de un",
+  readyToOwnBusinessQ: "negocio?",
+  acquisitionGuideDescription:
+    "Nuestro equipo te guiará en cada paso del proceso de adquisición: desde la debida diligencia hasta la transición.",
+  scheduleConsultation: "Programar una consulta",
+  businesses: "Negocios",
+  avgAskingPrice: "precio de venta prom. {value}",
+  available: "Disponibles",
+  vettedListingsDescription:
+    "Anuncios verificados y listos para operar, preparados para un nuevo propietario.",
+  notFindingWhatYouNeed: "¿No encuentras lo que necesitas?",
+  newListingsComingSoon: "Próximamente nuevos anuncios de {value}",
+  activelyVettingDescription:
+    "Estamos evaluando activamente negocios en este nicho. Cuéntanos qué buscas y te avisaremos en cuanto surja una oportunidad.",
+  getNotified: "Recibir aviso",
+  exploreOther: "Explorar otros",
+  niches: "Nichos",
+  browseMoreOpportunities:
+    "Explora más oportunidades de adquisición en el mercado.",
   mostPopular: "Más popular",
   keyDeliverables: "Entregables clave",
   learnMore: "Saber más",
@@ -891,6 +1044,14 @@ export function tWithNumber(
   n: number
 ): string {
   return t(locale, key).replace("{n}", String(n));
+}
+
+export function tWithValue(
+  locale: string,
+  key: UiStringKey,
+  value: string
+): string {
+  return t(locale, key).replace("{value}", value);
 }
 
 const VALIDATION_MAP: Record<string, UiStringKey> = {

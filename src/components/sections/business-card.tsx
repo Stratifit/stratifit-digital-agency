@@ -4,6 +4,7 @@ import type { AcquisitionBusiness } from "@/features/acquisition/queries";
 import { ContactTrigger } from "@/components/contact/contact-trigger";
 import { cn } from "@/lib/cn";
 import { hexToRgba } from "@/lib/color";
+import { t, type UiStringKey } from "@/lib/i18n/ui-strings";
 
 export const CATEGORY_LABELS: Record<string, string> = {
   ecommerce: "Ecommerce",
@@ -13,6 +14,16 @@ export const CATEGORY_LABELS: Record<string, string> = {
   "personal-brand": "Personal Brand",
   "local-business": "Local Business",
   "digital-products": "Digital Products",
+};
+
+const CATEGORY_KEYS: Record<string, UiStringKey> = {
+  ecommerce: "categoryEcommerce",
+  saas: "categorySaaS",
+  agency: "categoryAgency",
+  "ai-tools": "categoryAiTools",
+  "personal-brand": "categoryPersonalBrand",
+  "local-business": "categoryLocalBusiness",
+  "digital-products": "categoryDigitalProducts",
 };
 
 function GlobeIcon({ className }: { className?: string }) {
@@ -65,9 +76,11 @@ function ShieldIcon() {
 export function BusinessCard({
   business,
   className,
+  locale = "en",
 }: {
   business: AcquisitionBusiness;
   className?: string;
+  locale?: string;
 }) {
   return (
     <article
@@ -95,7 +108,9 @@ export function BusinessCard({
             borderColor: business.accent,
           }}
         >
-          {CATEGORY_LABELS[business.category] ?? business.category}
+          {CATEGORY_KEYS[business.category]
+            ? t(locale, CATEGORY_KEYS[business.category])
+            : business.category}
         </span>
       </div>
 
@@ -212,7 +227,7 @@ export function BusinessCard({
             {business.price}
           </span>
           <ContactTrigger className="group/link flex items-center gap-1.5 text-[10px] font-bold text-text-muted transition-colors hover:text-primary sm:text-xs">
-            View Full Detail
+            {t(locale, "viewFullDetail")}
             <span className="transition-transform group-hover/link:translate-x-0.5">
               <ArrowIcon />
             </span>
@@ -226,10 +241,10 @@ export function BusinessCard({
             className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary py-2.5 text-xs font-bold text-text-inverse shadow-[0_0_12px_rgba(245,158,11,0.12)] transition-all hover:bg-primary-hover active:bg-primary-active active:scale-95 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 sm:text-sm"
           >
             <GlobeIcon className="text-text-inverse" />
-            Visit Site
+            {t(locale, "visitSite")}
           </a>
           <ContactTrigger className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-primary/30 py-2.5 text-xs font-bold text-primary transition-all hover:bg-primary/10 active:scale-95 sm:text-sm">
-            Buy Business
+            {t(locale, "buyBusiness")}
           </ContactTrigger>
         </div>
       </div>

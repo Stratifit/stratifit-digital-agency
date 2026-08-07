@@ -8,6 +8,8 @@ import {
   getNicheSummary,
 } from "@/features/acquisition/niches";
 import { pageMetadata } from "@/lib/seo";
+import { getLocale } from "@/lib/i18n/get-locale";
+import { t, tWithNumber, tWithValue } from "@/lib/i18n/ui-strings";
 import { hexToRgba } from "@/lib/color";
 import { ContactAwareLink } from "@/components/contact/contact-aware-link";
 import { Reveal } from "@/components/ui/reveal";
@@ -36,9 +38,10 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const locale = await getLocale();
   const meta = getNicheMeta(slug);
   return pageMetadata({
-    title: `${meta ? `${meta.label} Businesses` : "Businesses"} — Stratifit`,
+    title: `${meta ? `${meta.label} ${t(locale, "businesses")}` : t(locale, "businesses")} — Stratifit`,
     description:
       meta?.description ??
       "Browse curated, turnkey businesses for acquisition across high-demand niches.",
@@ -52,6 +55,7 @@ export default async function NicheDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const locale = await getLocale();
   const niche = getNicheMeta(slug);
 
   if (!niche) {
@@ -76,11 +80,11 @@ export default async function NicheDetailPage({
           <Reveal immediate variant="revealUp">
             <p className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-primary">
               <span aria-hidden="true" className="h-px w-6 bg-primary/40" />
-              Acquisition — {niche.label}
+              {t(locale, "acquisition")} — {niche.label}
             </p>
             <h1 className="mb-4 font-display text-4xl font-black leading-tight tracking-tight text-text-primary sm:text-5xl md:text-6xl md:leading-none lg:text-7xl">
               {niche.label}{" "}
-              <span className="text-primary">Businesses</span>
+              <span className="text-primary">{t(locale, "businesses")}</span>
             </h1>
             <p className="mt-3 max-w-2xl border-l-2 border-primary/50 pl-4 text-base leading-relaxed text-text-muted sm:pl-6 sm:text-lg md:text-xl">
               {niche.description}
@@ -88,12 +92,12 @@ export default async function NicheDetailPage({
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-bold text-text-secondary">
                 <span className="size-1.5 rounded-full bg-primary" />
-                {summary.count} businesses
+                {tWithNumber(locale, "businessesCount", summary.count)}
               </span>
               {summary.avg ? (
                 <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-bold text-text-secondary">
                   <span className="size-1.5 rounded-full bg-primary" />
-                  {summary.avg} avg. asking price
+                  {tWithValue(locale, "avgAskingPrice", summary.avg)}
                 </span>
               ) : null}
             </div>
@@ -141,18 +145,18 @@ export default async function NicheDetailPage({
           <Reveal className="mb-8 flex flex-wrap items-end justify-between gap-4">
             <div>
               <h2 className="mb-2 font-display text-xl font-bold text-text-primary sm:text-2xl">
-                Available {niche.label}{" "}
-                <span className="text-primary">Businesses</span>
+                {t(locale, "available")} {niche.label}{" "}
+                <span className="text-primary">{t(locale, "businesses")}</span>
               </h2>
               <p className="text-sm text-text-muted">
-                Vetted, turnkey listings ready for a new owner.
+                {t(locale, "vettedListingsDescription")}
               </p>
             </div>
             <ContactAwareLink
               href="/contact"
               className="group inline-flex items-center gap-2 rounded-button border border-primary/25 bg-primary/10 px-5 py-2.5 text-xs font-bold text-primary transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary/20"
             >
-              Not finding what you need?
+              {t(locale, "notFindingWhatYouNeed")}
               <span className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1">
                 <ArrowRightIcon />
               </span>
@@ -162,7 +166,11 @@ export default async function NicheDetailPage({
           {businesses.length > 0 ? (
             <Reveal className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {businesses.map((business) => (
-                <BusinessCard key={business.slug} business={business} />
+                <BusinessCard
+                  key={business.slug}
+                  business={business}
+                  locale={locale}
+                />
               ))}
             </Reveal>
           ) : (
@@ -171,18 +179,16 @@ export default async function NicheDetailPage({
                 <span className="text-3xl">{niche.emoji}</span>
               </div>
               <h3 className="mb-3 font-display text-xl font-bold text-text-primary sm:text-2xl">
-                New {niche.label} listings coming soon
+                {tWithValue(locale, "newListingsComingSoon", niche.label)}
               </h3>
               <p className="mx-auto mb-8 max-w-md text-sm leading-relaxed text-text-muted">
-                We&apos;re actively vetting businesses in this niche. Tell us
-                what you&apos;re looking for and we&apos;ll alert you the moment
-                a match lands.
+                {t(locale, "activelyVettingDescription")}
               </p>
               <ContactAwareLink
                 href="/contact"
                 className="group inline-flex items-center justify-center gap-2 rounded-button bg-primary px-7 py-3.5 text-sm font-bold text-text-inverse shadow-[0_0_25px_rgba(245,158,11,0.2)] transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary-hover active:scale-95"
               >
-                Get Notified
+                {t(locale, "getNotified")}
                 <span className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1">
                   <ArrowRightIcon />
                 </span>
@@ -198,10 +204,10 @@ export default async function NicheDetailPage({
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <Reveal className="mb-8">
               <h2 className="mb-2 font-display text-xl font-bold text-text-primary sm:text-2xl">
-                Explore Other <span className="text-primary">Niches</span>
+                {t(locale, "exploreOther")} <span className="text-primary">{t(locale, "niches")}</span>
               </h2>
               <p className="text-sm text-text-muted">
-                Browse more acquisition opportunities across the marketplace.
+                {t(locale, "browseMoreOpportunities")}
               </p>
             </Reveal>
             <Reveal className="flex flex-wrap gap-3">
@@ -234,17 +240,16 @@ export default async function NicheDetailPage({
             />
             <div className="relative z-10">
               <h2 className="mb-4 font-display text-2xl font-black tracking-tight text-text-primary sm:text-3xl">
-                Ready to Own a <span className="text-primary">Business?</span>
+                {t(locale, "readyToOwnBusinessA")} <span className="text-primary">{t(locale, "readyToOwnBusinessQ")}</span>
               </h2>
               <p className="mx-auto mb-8 max-w-xl text-sm leading-relaxed text-text-muted sm:text-base">
-                Our team will guide you through every step of the acquisition
-                process — from due diligence to transition.
+                {t(locale, "acquisitionGuideDescription")}
               </p>
               <ContactAwareLink
                 href="/contact"
                 className="group inline-flex items-center justify-center gap-2 rounded-button bg-primary px-8 py-4 text-sm font-bold text-text-inverse shadow-[0_0_30px_rgba(245,158,11,0.2)] transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary-hover hover:shadow-[0_0_45px_rgba(245,158,11,0.3)] active:scale-95"
               >
-                Schedule a Consultation
+                {t(locale, "scheduleConsultation")}
                 <span className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1">
                   <ArrowRightIcon />
                 </span>

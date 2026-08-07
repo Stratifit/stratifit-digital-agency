@@ -7,6 +7,7 @@ import {
   getNicheSummary,
 } from "@/features/acquisition/niches";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { t, tWithNumber, tWithValue } from "@/lib/i18n/ui-strings";
 import { pageMetadata } from "@/lib/seo";
 import { ContactAwareLink } from "@/components/contact/contact-aware-link";
 import { Reveal } from "@/components/ui/reveal";
@@ -71,12 +72,12 @@ export default async function BuyBusinessPage() {
   const hasSplit = Boolean(settingsTitle && settingsHighlight);
   const title = hasSplit
     ? settingsTitle
-    : (sectionTitle ?? "Buy a Business");
+    : (sectionTitle ?? t(locale, "buyABusiness"));
   const highlight = hasSplit ? settingsHighlight : null;
   const description =
     resolveTranslation(settings?.description_translations ?? null, locale) ||
     resolveTranslation(section?.description_translations ?? null, locale) ||
-    "Skip the startup grind. Browse our curated marketplace of profitable, turnkey businesses across high-demand niches.";
+    t(locale, "buyBusinessFallback");
 
   return (
     <>
@@ -90,7 +91,7 @@ export default async function BuyBusinessPage() {
           <Reveal immediate variant="revealUp">
             <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
               {resolveTranslation(settings?.eyebrow_translations ?? null, locale) ??
-                "Acquisition"}
+                t(locale, "acquisition")}
             </p>
             <h1 className="mb-4 font-display text-4xl font-black leading-tight tracking-tight text-text-primary sm:text-5xl md:text-6xl md:leading-none lg:text-7xl">
               {title}
@@ -110,10 +111,10 @@ export default async function BuyBusinessPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <Reveal className="mb-10">
             <h2 className="mb-2 font-display text-xl font-bold text-text-primary sm:text-2xl">
-              Explore by <span className="text-primary">Niche</span>
+              {t(locale, "exploreBy")} <span className="text-primary">{t(locale, "niche")}</span>
             </h2>
             <p className="text-sm text-text-muted">
-              Select a niche to see available businesses for acquisition.
+              {t(locale, "exploreByNicheDescription")}
             </p>
           </Reveal>
 
@@ -163,18 +164,18 @@ export default async function BuyBusinessPage() {
                     <div className="mb-5 flex items-center gap-4 text-xs font-medium text-text-subtle">
                       <span className="flex items-center gap-1.5">
                         <span className="size-1.5 rounded-full bg-primary/50" />
-                        {summary.count} businesses
+                        {tWithNumber(locale, "businessesCount", summary.count)}
                       </span>
                       <span className="size-1 rounded-full bg-text-subtle/40" />
                       {summary.avg ? (
                         <span className="flex items-center gap-1.5">
                           <span className="size-1.5 rounded-full bg-primary/50" />
-                          {summary.avg} avg.
+                          {summary.avg} {t(locale, "avgShort")}
                         </span>
                       ) : null}
                     </div>
                     <span className="rounded-lg border border-primary/20 bg-primary/10 px-5 py-2 text-xs font-bold text-primary transition-colors group-hover:bg-primary/20">
-                      View Listings →
+                      {t(locale, "viewListings")} →
                     </span>
                     <div
                       aria-hidden="true"
@@ -184,7 +185,7 @@ export default async function BuyBusinessPage() {
 
                   <div className="border-t border-white/5 p-4">
                     <span className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-primary/20 bg-primary/10 py-3 text-xs font-bold text-primary transition-all group-hover:bg-primary/20">
-                      View {niche.label} Businesses
+                      {tWithValue(locale, "viewNicheBusinesses", niche.label)}
                       <ArrowRightIcon />
                     </span>
                   </div>
@@ -196,17 +197,16 @@ export default async function BuyBusinessPage() {
           {/* Final CTA */}
           <Reveal className="mt-16 rounded-card border border-white/5 bg-card-dark py-12 text-center">
             <h2 className="mb-4 font-display text-2xl font-bold text-text-primary sm:text-3xl">
-              Ready to Own a Business?
+              {t(locale, "readyToOwnBusiness")}
             </h2>
             <p className="mx-auto mb-8 max-w-xl text-sm text-text-muted sm:text-base">
-              Our team will guide you through every step of the acquisition
-              process — from due diligence to transition.
+              {t(locale, "acquisitionGuideDescription")}
             </p>
             <ContactAwareLink
               href="/contact"
               className="group inline-flex items-center justify-center gap-2 rounded-button bg-primary px-8 py-4 text-sm font-bold text-text-inverse shadow-[0_0_30px_rgba(245,158,11,0.2)] transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary-hover active:scale-95"
             >
-              Schedule a Consultation
+              {t(locale, "scheduleConsultation")}
               <span className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1">
                 <ArrowRightIcon />
               </span>
