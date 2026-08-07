@@ -21,6 +21,7 @@ export async function PortfolioSection() {
   }
 
   return (
+    <>
     <Section>
       <Container>
         <SectionHeader settings={settings} locale={locale} />
@@ -32,7 +33,8 @@ export async function PortfolioSection() {
           />
         </Reveal>
       </Container>
-      <div aria-hidden="true" className="h-px w-full bg-white/5" />
     </Section>
+    <div aria-hidden="true" className="h-px w-full bg-white/5" />
+    </>
   );
 }

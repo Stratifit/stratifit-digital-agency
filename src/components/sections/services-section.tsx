@@ -52,6 +52,7 @@ export async function ServicesSection() {
   const pageSlugs = new Set(servicePages.map((p) => p.slug));
 
   return (
+    <>
     <Section>
       <Container>
         <SectionHeader settings={settings} locale={locale} />
@@ -98,9 +99,9 @@ export async function ServicesSection() {
         </Reveal>
 
       </Container>
-      {/* 1px white separator at the end of the section */}
-      <div aria-hidden="true" className="h-px w-full bg-white/5" />
     </Section>
+    <div aria-hidden="true" className="h-px w-full bg-white/5" />
+    </>
   );
 }
 

@@ -191,8 +191,9 @@ export async function HeroSection() {
   );
 
   return (
+    <>
     <section
-      className="relative flex min-h-[calc(100svh-4rem)] items-start justify-center overflow-hidden pb-12 pt-16 sm:min-h-[calc(100svh-5rem)]"
+      className="relative flex min-h-[calc(100svh-4rem)] items-start justify-center overflow-hidden pb-16 pt-16 sm:min-h-[calc(100svh-5rem)] md:pb-24 lg:pb-32"
       style={{ background: "linear-gradient(to right, #0B0F17, #0A0A0A)" }}
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
@@ -337,7 +338,8 @@ export async function HeroSection() {
         ) : null}
         </HeroEntrance>
       </div>
-      <div aria-hidden="true" className="h-px w-full bg-white/5" />
     </section>
+    <div aria-hidden="true" className="h-px w-full bg-white/5" />
+    </>
   );
 }

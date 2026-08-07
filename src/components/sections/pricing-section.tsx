@@ -19,6 +19,7 @@ export async function PricingSection() {
   }
 
   return (
+    <>
     <Section>
       <Container>
         <SectionHeader settings={settings} locale={locale} align="left" />
@@ -26,7 +27,8 @@ export async function PricingSection() {
           <PricingPlans plans={plans} locale={locale} />
         </Reveal>
       </Container>
-      <div aria-hidden="true" className="h-px w-full bg-white/5" />
     </Section>
+    <div aria-hidden="true" className="h-px w-full bg-white/5" />
+    </>
   );
 }
