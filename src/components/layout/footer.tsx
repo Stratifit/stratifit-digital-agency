@@ -1,4 +1,5 @@
 import { getPublicFooterGroups } from "@/features/footer/queries";
+import { mergeFooterGroups } from "@/features/footer/fallbacks";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { getPublicSiteSettings } from "@/features/site-settings/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
@@ -11,6 +12,10 @@ export async function Footer() {
     getPublicSiteSettings(),
   ]);
 
+  // Merge canonical links (Hiring under Company, Imprint under Legal) into
+  // whatever the DB returns, so the footer always shows the full structure.
+  const mergedGroups = mergeFooterGroups(groups);
+
   const siteName = settings?.site_name ?? "Stratifit";
   const siteDescription =
     resolveTranslation(settings?.site_description_translations, locale) ?? null;
@@ -20,7 +25,7 @@ export async function Footer() {
     <footer className="border-t border-white/5 bg-background">
       <div className="mx-auto max-w-7xl px-6 pb-8 pt-16">
         <FooterContent
-          groups={groups}
+          groups={mergedGroups}
           locale={locale}
           siteName={siteName}
           siteDescription={siteDescription}
