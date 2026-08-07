@@ -13,7 +13,7 @@ function StepCard({
   locale: string;
 }) {
   return (
-    <div className="relative flex w-[80vw] min-w-[280px] max-w-[320px] shrink-0 snap-center flex-col overflow-hidden rounded-card border border-card-border bg-card-dark p-6">
+    <div className="relative flex h-full w-[80vw] min-w-[280px] max-w-[320px] shrink-0 snap-center flex-col overflow-hidden rounded-card border border-card-border bg-card-dark p-6">
       <div className="absolute right-0 top-0 rounded-bl-xl bg-primary px-3 py-1">
         <span className="text-[10px] font-black uppercase tracking-widest text-text-inverse">
           STEP {step.number.toString().padStart(2, "0")}
@@ -70,7 +70,7 @@ export function ProcessCarousel({
         className="-mx-6 flex touch-pan-x touch-pan-y overscroll-x-contain snap-x snap-proximity gap-4 overflow-x-auto px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:-mx-8 lg:px-8"
       >
         {steps.map((step) => (
-          <div key={step.step_key} data-step-card>
+          <div key={step.step_key} data-step-card className="flex">
             <StepCard step={step} locale={locale} />
           </div>
         ))}
