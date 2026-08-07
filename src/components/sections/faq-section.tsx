@@ -34,7 +34,7 @@ export async function FaqSection() {
           <FaqAccordion items={items} />
         </Reveal>
         <Reveal className="mx-auto mt-6 max-w-6xl">
-          <FaqHelpCard />
+          <FaqHelpCard locale={locale} />
         </Reveal>
       </Container>
     </Section>

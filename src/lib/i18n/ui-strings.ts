@@ -137,6 +137,10 @@ export type UiStringKey =
   | "chatAskAboutServices"
   | "chatFaqTitle"
   | "chatFaqMoreQuestions"
+  | "faqHelpCardTitle"
+  | "faqHelpCardSubtitle"
+  | "faqAskMoreQuestions"
+  | "faqContactTeam"
   | "chatSave"
   | "chatCancel"
   | "chatLanguage"
@@ -384,6 +388,10 @@ const en: UiStrings = {
   chatAskAboutServices: "Ask about services",
   chatFaqTitle: "Common Questions",
   chatFaqMoreQuestions: "Have more questions?",
+  faqHelpCardTitle: "Still have more questions?",
+  faqHelpCardSubtitle: "Chat with our FAQ AI bot — instant answers, 24/7.",
+  faqAskMoreQuestions: "Ask More Questions",
+  faqContactTeam: "Contact our team",
   chatSave: "Save",
   chatCancel: "Cancel",
   chatLanguage: "Select language",
@@ -640,6 +648,10 @@ const de: UiStrings = {
   chatAskAboutServices: "Nach Leistungen fragen",
   chatFaqTitle: "Häufige Fragen",
   chatFaqMoreQuestions: "Haben Sie weitere Fragen?",
+  faqHelpCardTitle: "Haben Sie noch mehr Fragen?",
+  faqHelpCardSubtitle: "Chatten Sie mit unserem FAQ-KI-Bot – sofortige Antworten, rund um die Uhr.",
+  faqAskMoreQuestions: "Weitere Fragen stellen",
+  faqContactTeam: "Kontaktieren Sie unser Team",
   chatSave: "Speichern",
   chatCancel: "Abbrechen",
   chatLanguage: "Sprache auswählen",
@@ -896,6 +908,10 @@ const fr: UiStrings = {
   chatAskAboutServices: "Demander des services",
   chatFaqTitle: "Questions fréquentes",
   chatFaqMoreQuestions: "D'autres questions ?",
+  faqHelpCardTitle: "Encore des questions ?",
+  faqHelpCardSubtitle: "Discutez avec notre bot IA FAQ – réponses instantanées, 24h/24.",
+  faqAskMoreQuestions: "Poser d'autres questions",
+  faqContactTeam: "Contacter notre équipe",
   chatSave: "Enregistrer",
   chatCancel: "Annuler",
   chatLanguage: "Choisir la langue",
@@ -1152,6 +1168,10 @@ const es: UiStrings = {
   chatAskAboutServices: "Preguntar por servicios",
   chatFaqTitle: "Preguntas frecuentes",
   chatFaqMoreQuestions: "¿Tiene más preguntas?",
+  faqHelpCardTitle: "¿Aún tiene más preguntas?",
+  faqHelpCardSubtitle: "Chatea con nuestro bot de IA de preguntas frecuentes: respuestas instantáneas, 24/7.",
+  faqAskMoreQuestions: "Hacer más preguntas",
+  faqContactTeam: "Contacta con nuestro equipo",
   chatSave: "Guardar",
   chatCancel: "Cancelar",
   chatLanguage: "Seleccionar idioma",

@@ -1,6 +1,8 @@
 "use client";
 
 import { ContactTrigger } from "@/components/contact/contact-trigger";
+import { buttonClasses } from "@/components/ui/button";
+import { t } from "@/lib/i18n/ui-strings";
 
 function ChatIcon({ className }: { className?: string }) {
   return (
@@ -35,41 +37,44 @@ function ArrowRightIcon({ className }: { className?: string }) {
 
 /**
  * "Still have more questions?" card shown beneath the FAQ section.
- * The top row deep-links into the chat widget's FAQ panel; the amber CTA
- * opens the global contact popup.
+ * The primary CTA opens the FAQ chat; the outline CTA opens the contact popup.
  */
-export function FaqHelpCard() {
+export function FaqHelpCard({ locale }: { locale: string }) {
   function openFaqChat() {
     window.dispatchEvent(
       new CustomEvent("stratifit:open-chat", { detail: { view: "faq" } })
     );
   }
 
+  const title = t(locale, "faqHelpCardTitle");
+  const questionMarkIndex = title.lastIndexOf("?");
+  const titleBefore = questionMarkIndex >= 0 ? title.slice(0, questionMarkIndex) : title;
+
   return (
     <div className="group flex flex-col gap-3 rounded-card border border-white/10 bg-card-dark p-4 transition-all duration-300 ease-[var(--ease-standard)] hover:border-primary/30 hover:shadow-[0_0_30px_-5px_rgba(245,158,11,0.25)] sm:gap-4 sm:p-5">
+      <span className="text-center font-display text-sm font-black tracking-tight text-text-primary sm:text-lg md:text-xl">
+        {titleBefore}
+        {questionMarkIndex >= 0 ? <span className="text-primary">?</span> : null}
+      </span>
+      <span className="text-center text-[10px] text-text-muted sm:text-xs">
+        {t(locale, "faqHelpCardSubtitle")}
+      </span>
+
       <button
         type="button"
         onClick={openFaqChat}
-        aria-label="Open FAQ AI chat"
-        className="flex w-full items-start gap-3 rounded-button text-left focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
+        className={buttonClasses({ variant: "primary", size: "medium", className: "w-full" })}
       >
-        <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-primary/30 bg-primary/15 transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:bg-primary/25 sm:size-10">
-          <ChatIcon className="size-4 text-primary sm:size-[18px]" />
-        </span>
-        <span className="min-w-0 flex-1">
-          <span className="block font-display text-sm font-black tracking-tight text-text-primary sm:text-lg md:text-xl">
-            Still have more{" "}
-            <span className="text-primary">questions?</span>
-          </span>
-          <span className="mt-0.5 block truncate text-[10px] text-text-muted sm:text-xs">
-            Chat with our FAQ AI bot — instant answers, 24/7.
-          </span>
-        </span>
+        <ChatIcon className="size-4 shrink-0" />
+        {t(locale, "faqAskMoreQuestions")}
+        <ArrowRightIcon className="size-4 shrink-0 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-0.5" />
       </button>
 
-      <ContactTrigger className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary h-11 px-[18px] text-sm font-bold text-black shadow-[0_0_18px_rgba(245,158,11,0.25)] transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary-light active:scale-95 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 group-hover:gap-3">
-        Contact our team
-        <ArrowRightIcon className="size-4 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-0.5" />
+      <ContactTrigger
+        className={buttonClasses({ variant: "tertiary", size: "medium", className: "w-full" })}
+      >
+        {t(locale, "faqContactTeam")}
+        <ArrowRightIcon className="size-4 shrink-0 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-0.5" />
       </ContactTrigger>
     </div>
   );
