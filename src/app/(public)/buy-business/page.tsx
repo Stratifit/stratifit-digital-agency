@@ -107,7 +107,7 @@ export default async function BuyBusinessPage() {
       </section>
 
       {/* Explore by Niche */}
-      <section className="pb-24 md:pb-32">
+      <section className="pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <Reveal className="mb-10">
             <h2 className="mb-2 font-display text-xl font-bold text-text-primary sm:text-2xl">

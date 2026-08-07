@@ -230,7 +230,7 @@ export default async function NicheDetailPage({
       ) : null}
 
       {/* Final CTA */}
-      <section className="pb-24 md:pb-32">
+      <section className="pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <Reveal className="relative overflow-hidden rounded-card border border-white/5 bg-card-dark px-6 py-12 text-center sm:px-12 sm:py-16">
             <div

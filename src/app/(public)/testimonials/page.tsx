@@ -64,7 +64,7 @@ export default async function TestimonialsPage() {
       </section>
 
       {/* Testimonials grid */}
-      <section className="pb-24 md:pb-32">
+      <section className="pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <Reveal className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {testimonials.map((testimonial, index) => (

@@ -67,7 +67,7 @@ export default async function InsightsPage() {
         </div>
       </section>
 
-      <section className="pb-24 md:pb-32">
+      <section className="pb-16 md:pb-24">
         <Container>
           {insights.length === 0 ? (
             <p className="py-20 text-center text-sm text-text-muted">

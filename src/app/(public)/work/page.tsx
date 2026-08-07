@@ -95,7 +95,7 @@ export default async function WorkPage() {
       <WorkStatsBand />
 
 
-      <section className="pt-20 pb-24 md:pt-24 md:pb-32">
+      <section className="pt-16 pb-16 md:pb-24">
         <Container>
           {projects.length === 0 ? (
             <p className="py-20 text-center text-sm text-text-muted">
