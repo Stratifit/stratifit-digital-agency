@@ -13,7 +13,7 @@ ALTER TABLE public.section_settings
   ADD COLUMN IF NOT EXISTS cta_url text;
 
 ALTER TABLE public.section_settings DROP CONSTRAINT IF EXISTS section_settings_section_key_check;
-ALTER TABLE public.section_settings ADD CONSTRAINT section_settings_section_key_check CHECK (section_key IN ('services','process','why-choose-us','insights','portfolio','testimonials','pricing','faq','final-cta','trusted-by','acquisition','acquisition-niches','acquisition-cta'));
+ALTER TABLE public.section_settings ADD CONSTRAINT section_settings_section_key_check CHECK (section_key IN ('services','process','why-choose-us','insights','portfolio','testimonials','pricing','faq','final-cta','trusted-by','acquisition','contact','acquisition-niches','acquisition-cta'));
 
 -- =============================================================================
 -- Seed: Explore by Niche heading
@@ -72,6 +72,6 @@ ON CONFLICT (section_key) DO UPDATE SET
 -- =============================================================================
 -- DELETE FROM public.section_settings WHERE section_key IN ('acquisition-niches', 'acquisition-cta');
 -- ALTER TABLE public.section_settings DROP CONSTRAINT IF EXISTS section_settings_section_key_check;
--- ALTER TABLE public.section_settings ADD CONSTRAINT section_settings_section_key_check CHECK (section_key IN ('services','process','why-choose-us','insights','portfolio','testimonials','pricing','faq','final-cta','trusted-by','acquisition'));
+-- ALTER TABLE public.section_settings ADD CONSTRAINT section_settings_section_key_check CHECK (section_key IN ('services','process','why-choose-us','insights','portfolio','testimonials','pricing','faq','final-cta','trusted-by','acquisition','contact'));
 -- ALTER TABLE public.section_settings DROP COLUMN IF EXISTS cta_label_translations;
 -- ALTER TABLE public.section_settings DROP COLUMN IF EXISTS cta_url;
