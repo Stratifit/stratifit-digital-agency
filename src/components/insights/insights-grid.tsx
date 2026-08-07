@@ -137,7 +137,7 @@ export function InsightsGrid({
 
   return (
     <div>
-      <div className="-mx-6 flex gap-3 overflow-x-auto px-6 pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:-mx-8 lg:px-8">
+      <div className="-mx-6 mb-10 flex gap-3 overflow-x-auto px-6 pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:-mx-8 lg:px-8">
         {pills.map((pill) => (
           <button
             key={pill.slug}
