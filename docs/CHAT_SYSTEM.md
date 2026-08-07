@@ -152,7 +152,6 @@ The chat system may be opened from:
 - Contact page
 - FAQ section
 - Service pages
-- Final CTA
 - AI FAQ prompt
 
 The chat widget must not cover:

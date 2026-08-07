@@ -94,7 +94,7 @@ export async function updateSectionSettings(
 
 /**
  * Pause or resume a frontend section from the admin manager.
- * Routes to the right table: section_settings, hero, or final_cta.
+ * Routes to the right table: section_settings or hero.
  */
 export async function toggleSectionVisibility(
   sectionKey: string,
@@ -111,17 +111,6 @@ export async function toggleSectionVisibility(
     await recordAuditLog({
       action: visible ? "section.resume" : "section.pause",
       target_table: "hero",
-      metadata: { sectionKey },
-    });
-  } else if (sectionKey === "finalCta") {
-    const { error } = await supabase
-      .from("final_cta")
-      .update({ is_visible: visible })
-      .eq("singleton_key", true);
-    if (error) return { success: false, error: "Failed to update final CTA." };
-    await recordAuditLog({
-      action: visible ? "section.resume" : "section.pause",
-      target_table: "final_cta",
       metadata: { sectionKey },
     });
   } else if (

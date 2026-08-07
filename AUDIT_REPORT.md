@@ -110,6 +110,8 @@
 - **Acquisition niche catalog moved to the DB** — migration `00043` creates `acquisition_niches` (7 niches seeded in 4 languages with stats, RLS: public read visible only, admin manage) with admin CRUD (`/admin/content/acquisition/niches` + new/edit pages, `NicheForm` with locale tabs), replacing the hardcoded English catalog in `niches.ts`; public pages `/buy-business` + `/buy-business/niches/[slug]` and `sitemap.xml` now fetch from the DB.
 - **Services admin form gained EN/DE/FR/ES tabs** — `features/services/schemas.ts` now validates full 4-locale JSONB translation objects (English required); `service-form.tsx` has locale tabs; `updateService` merges translations so saving one language never wipes others.
 - **Hardcoded frontend strings localized** — `/services` page hero, `/services/[slug]` labels (Deliverables, Our Process, etc.), `/about` headings/fallbacks, `/work` hero fallbacks, `/testimonials` and `/insights` hero fallbacks all moved to `ui-strings.ts` (en/de/fr/es).
+- **Section header fallbacks** — all section titles/descriptions restored when DB translations are empty via `SectionHeader` fallback registry (`src/lib/i18n/section-fallbacks.ts`) + migrations `00044`/`00045`; 3 new tests.
+- **Final CTA section removed** — the "Ready to Transform Your Digital Presence?" card was removed from the homepage, registry, component, admin editor/nav, and its `final_cta` table dropped (migration `00046`).
 
 ## 7. Remaining Work (for the owner)
 

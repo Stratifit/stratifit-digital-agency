@@ -488,7 +488,6 @@ Examples:
 - Hero
 - Why Choose Us
 - Acquisition section
-- Final CTA
 - Site settings
 - SEO defaults
 - Chatbot settings

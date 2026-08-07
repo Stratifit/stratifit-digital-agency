@@ -267,7 +267,6 @@ Homepage and marketing content
 ├── testimonials
 ├── pricing_plans
 ├── faqs
-├── final_cta
 
 Editorial content
 ├── portfolio_projects
@@ -547,23 +546,7 @@ Collection table (migration `00043`) replacing the hardcoded niche catalog in `s
 
 RLS: public `SELECT` scoped to `is_visible = true`; admins manage rows via `is_admin()`.
 
-## 9.5 `final_cta`
-
-Singleton table.
-
-Suggested columns:
-
-- `title_translations`
-- `description_translations`
-- `primary_cta_label_translations`
-- `primary_cta_url`
-- `secondary_cta_label_translations`
-- `secondary_cta_url`
-- `variant`
-- `is_visible`
-- timestamps
-
-## 9.6 `about_page`
+## 9.5 `about_page`
 
 Singleton table for the public About page.
 

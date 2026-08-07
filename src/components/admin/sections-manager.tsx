@@ -25,7 +25,7 @@ export interface SectionPreview {
 }
 
 export interface SectionManagerRow {
-  /** Key used for the visibility toggle (hero / finalCta / section_settings key). */
+  /** Key used for the visibility toggle (hero / section_settings key). */
   key: string;
   label: string;
   description: string;

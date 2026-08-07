@@ -139,7 +139,6 @@ export const NAV_SECTIONS: NavSection[] = [
       { href: "/admin/content/pages", label: "Pages", icon: "knowledge" },
       { href: "/admin/content/navigation", label: "Navigation", icon: "faq" },
       { href: "/admin/content/footer", label: "Footer", icon: "sections" },
-      { href: "/admin/content/final-cta", label: "Final CTA", icon: "final-cta" },
     ],
   },
   {

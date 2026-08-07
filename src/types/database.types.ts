@@ -888,48 +888,6 @@ export type Database = {
         }
         Relationships: []
       }
-      final_cta: {
-        Row: {
-          created_at: string
-          description_translations: Json
-          is_visible: boolean
-          primary_cta_label_translations: Json
-          primary_cta_url: string | null
-          secondary_cta_label_translations: Json
-          secondary_cta_url: string | null
-          singleton_key: boolean
-          title_translations: Json
-          updated_at: string
-          variant: string
-        }
-        Insert: {
-          created_at?: string
-          description_translations?: Json
-          is_visible?: boolean
-          primary_cta_label_translations?: Json
-          primary_cta_url?: string | null
-          secondary_cta_label_translations?: Json
-          secondary_cta_url?: string | null
-          singleton_key?: boolean
-          title_translations?: Json
-          updated_at?: string
-          variant?: string
-        }
-        Update: {
-          created_at?: string
-          description_translations?: Json
-          is_visible?: boolean
-          primary_cta_label_translations?: Json
-          primary_cta_url?: string | null
-          secondary_cta_label_translations?: Json
-          secondary_cta_url?: string | null
-          singleton_key?: boolean
-          title_translations?: Json
-          updated_at?: string
-          variant?: string
-        }
-        Relationships: []
-      }
       footer_groups: {
         Row: {
           created_at: string

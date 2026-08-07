@@ -1,6 +1,5 @@
 import { getAdminSectionSettings } from "@/features/section-settings/queries";
 import { getAdminHero } from "@/features/hero/admin-queries";
-import { getAdminFinalCta } from "@/features/final-cta/queries";
 import {
   SectionsManager,
   type SectionManagerRow,
@@ -14,7 +13,6 @@ function tr(v: Record<string, string> | null | undefined): Record<string, string
 export default async function AdminSectionsPage() {
   const settingsRows = await getAdminSectionSettings();
   const hero = await getAdminHero();
-  const finalCta = await getAdminFinalCta();
 
   const settingsByKey = new Map(
     settingsRows.map((r) => [r.section_key, r])
@@ -102,26 +100,6 @@ export default async function AdminSectionsPage() {
       es: { eyebrow: "", title: "Buy a Business", highlight: "", description: "Marketplace preview — managed in the Buy a Business editor." },
     },
   });
-
-  // Final CTA — own table
-  if (finalCta) {
-    const title = tr(finalCta.title_translations);
-    const description = tr(finalCta.description_translations);
-    rows.push({
-      key: "finalCta",
-      label: "Final CTA",
-      description: "Closing call-to-action",
-      status: "live",
-      isVisible: finalCta.is_visible,
-      editHref: "/admin/content/final-cta",
-      preview: {
-        en: { eyebrow: "", title: title.en ?? "", highlight: "", description: description.en ?? "" },
-        de: { eyebrow: "", title: title.de ?? "", highlight: "", description: description.de ?? "" },
-        fr: { eyebrow: "", title: title.fr ?? "", highlight: "", description: description.fr ?? "" },
-        es: { eyebrow: "", title: title.es ?? "", highlight: "", description: description.es ?? "" },
-      },
-    });
-  }
 
   return (
     <div className="space-y-6">
