@@ -30,7 +30,7 @@ export function DetailPageView({
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-20">
+      <section className="relative overflow-hidden pt-14 pb-16 md:pt-16 md:pb-20">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-primary/5 opacity-30 blur-[120px]"
@@ -58,7 +58,10 @@ export function DetailPageView({
           </Reveal>
         </Container>
 
-        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+        <div
+          aria-hidden="true"
+          className="mt-10 h-px w-full bg-white/5 md:mt-12"
+        />
       </section>
 
       {/* Content */}
