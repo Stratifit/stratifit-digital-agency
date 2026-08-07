@@ -26,16 +26,16 @@ export default async function InsightsPage() {
 
   const eyebrow = settings
     ? resolveTranslation(settings.eyebrow_translations, locale)
-    : "Knowledge";
+    : t(locale, "workEyebrowFallback");
   const title = settings
     ? resolveTranslation(settings.title_translations, locale)
-    : "Insights &";
+    : t(locale, "insightsEyebrowFallback");
   const highlight = settings
     ? resolveTranslation(settings.highlight_translations, locale)
-    : "Expertise";
+    : t(locale, "insightsHighlightFallback");
   const description =
     (settings && resolveTranslation(settings.description_translations, locale)) ||
-    "Thought leadership, industry perspectives, and actionable strategies from our team of strategists, designers, and engineers.";
+    t(locale, "insightsDescriptionFallback");
 
   return (
     <>

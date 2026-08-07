@@ -61,13 +61,15 @@ async function enrichConversations(
   if (rows.length === 0) return [];
 
   const visitorIds = [...new Set(rows.map((c) => c.visitor_id))];
-  const { data: visitors } = visitorIds.length
-    ? await supabase
-        .from("chat_visitors")
-        .select("id, visitor_number, metadata, preferred_locale, first_seen_at, last_seen_at")
-        .in("id", visitorIds)
-    : { data: [] as never[] };
-  const visitorMap = new Map((visitors ?? []).map((v) => [v.id as string, v as VisitorRow]));
+  let visitors: VisitorRow[] = [];
+  if (visitorIds.length > 0) {
+    const { data } = await supabase
+      .from("chat_visitors")
+      .select("id, visitor_number, metadata, preferred_locale, first_seen_at, last_seen_at")
+      .in("id", visitorIds);
+    visitors = (data ?? []) as VisitorRow[];
+  }
+  const visitorMap = new Map(visitors.map((v) => [v.id, v]));
 
   // Latest message preview per conversation (single query, deduped in memory).
   const conversationIds = rows.map((c) => c.id);

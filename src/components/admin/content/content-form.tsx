@@ -11,6 +11,11 @@ import {
   testimonialSchema,
   pricingSchema,
   faqSchema,
+  type PortfolioFormValues,
+  type InsightFormValues,
+  type TestimonialFormValues,
+  type PricingFormValues,
+  type FaqFormValues,
 } from "@/features/content/schemas";
 import {
   savePortfolio,
@@ -24,6 +29,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
+import { cn } from "@/lib/cn";
 
 export type ContentType = "portfolio" | "insights" | "testimonials" | "pricing" | "faq";
 
@@ -32,6 +38,16 @@ interface ContentFormProps {
   id?: string;
   initial?: Record<string, unknown>;
 }
+
+const LOCALES = ["en", "de", "fr", "es"] as const;
+type Locale = (typeof LOCALES)[number];
+
+const LOCALE_NAMES: Record<Locale, string> = {
+  en: "English",
+  de: "German",
+  fr: "French",
+  es: "Spanish",
+};
 
 const SCHEMAS: Record<ContentType, z.ZodTypeAny> = {
   portfolio: portfolioSchema,
@@ -47,12 +63,43 @@ const TITLES: Record<ContentType, string> = {
   testimonials: "Testimonial",
   pricing: "Pricing Plan",
   faq: "FAQ",
-};
+};function tr(v: Record<string, string> | null | undefined) {
+  return { en: v?.en ?? "", de: v?.de ?? "", fr: v?.fr ?? "", es: v?.es ?? "" };
+}
+
+function LocaleTabs({
+  value,
+  onChange,
+}: {
+  value: Locale;
+  onChange: (l: Locale) => void;
+}) {
+  return (
+    <div className="flex flex-wrap gap-1">
+      {LOCALES.map((l) => (
+        <button
+          key={l}
+          type="button"
+          onClick={() => onChange(l)}
+          className={cn(
+            "rounded-button px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+            value === l
+              ? "bg-primary/15 text-primary"
+              : "text-text-muted hover:text-text-secondary"
+          )}
+        >
+          {l}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 export function ContentForm({ type, id, initial }: ContentFormProps) {
   const router = useRouter();
   const schema = SCHEMAS[type];
   const [serverError, setServerError] = React.useState<string | null>(null);
+  const [locale, setLocale] = React.useState<Locale>("en");
   const isEdit = Boolean(id);
 
   const defaultValues = React.useMemo(() => {
@@ -70,29 +117,29 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
     }
     if (type === "portfolio") {
       d.client_name = initial.client_name ?? "";
-      d.title = (initial.title_translations as Record<string, string>)?.en ?? "";
-      d.summary = (initial.summary_translations as Record<string, string>)?.en ?? "";
+      d.title_translations = tr(initial.title_translations as Record<string, string> | null);
+      d.summary_translations = tr(initial.summary_translations as Record<string, string> | null);
       d.image_url = initial.image_url ?? "";
     }
     if (type === "insights") {
-      d.title = (initial.title_translations as Record<string, string>)?.en ?? "";
-      d.excerpt = (initial.excerpt_translations as Record<string, string>)?.en ?? "";
+      d.title_translations = tr(initial.title_translations as Record<string, string> | null);
+      d.excerpt_translations = tr(initial.excerpt_translations as Record<string, string> | null);
       d.reading_time_minutes = initial.reading_time_minutes ?? 5;
     }
     if (type === "testimonials") {
       d.person_name = initial.person_name ?? "";
-      d.quote = (initial.quote_translations as Record<string, string>)?.en ?? "";
+      d.quote_translations = tr(initial.quote_translations as Record<string, string> | null);
       d.company_name = initial.company_name ?? "";
       d.is_visible = initial.is_visible ?? true;
       d.is_verified = initial.is_verified ?? false;
     }
     if (type === "pricing") {
-      d.name = (initial.name_translations as Record<string, string>)?.en ?? "";
-      d.price_label = (initial.price_label_translations as Record<string, string>)?.en ?? "";
+      d.name_translations = tr(initial.name_translations as Record<string, string> | null);
+      d.price_label_translations = tr(initial.price_label_translations as Record<string, string> | null);
     }
     if (type === "faq") {
-      d.question = (initial.question_translations as Record<string, string>)?.en ?? "";
-      d.answer = (initial.answer_translations as Record<string, string>)?.en ?? "";
+      d.question_translations = tr(initial.question_translations as Record<string, string> | null);
+      d.answer_translations = tr(initial.answer_translations as Record<string, string> | null);
       d.category = initial.category ?? "general";
       d.display_order = initial.display_order ?? 0;
       d.is_visible = initial.is_visible ?? true;
@@ -117,19 +164,19 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
     let result;
     switch (type) {
       case "portfolio":
-        result = await savePortfolio(values as never, id as string | undefined);
+        result = await savePortfolio(values as PortfolioFormValues, id);
         break;
       case "insights":
-        result = await saveInsight(values as never, id as string | undefined);
+        result = await saveInsight(values as InsightFormValues, id);
         break;
       case "testimonials":
-        result = await saveTestimonial(values as never, id as string | undefined);
+        result = await saveTestimonial(values as TestimonialFormValues, id);
         break;
       case "pricing":
-        result = await savePricing(values as never, id as string | undefined);
+        result = await savePricing(values as PricingFormValues, id);
         break;
       case "faq":
-        result = await saveFaq(values as never, id as string | undefined);
+        result = await saveFaq(values as FaqFormValues, id);
         break;
     }
     if (result.success) {
@@ -144,192 +191,255 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
   const err = (name: string) =>
     (errors as Record<string, { message?: string }>)[name]?.message;
 
+  const trErr = (field: string, l: Locale) => {
+    const e = (errors as Record<string, { message?: string; [k: string]: unknown }>)[field];
+    if (!e) return undefined;
+    if (l === "en") {
+      if (typeof e.message === "string" && e.message) return e.message;
+      const en = e.en as { message?: string } | undefined;
+      return en?.message;
+    }
+    const loc = e[l] as { message?: string } | undefined;
+    return loc?.message;
+  };
+
   const showSlug = type === "portfolio" || type === "insights" || type === "pricing";
   const showStatus = type !== "testimonials";
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div className="grid gap-5 md:grid-cols-2">
-        {showSlug ? (
-          <div className="space-y-2">
-            <Label htmlFor="slug">Slug</Label>
-            <Input id="slug" placeholder="my-item" disabled={isEdit} {...register("slug")} />
-            {err("slug") ? <p className="text-sm text-error">{err("slug")}</p> : null}
-          </div>
-        ) : null}
-
-        {type === "portfolio" ? (
-          <div className="space-y-2">
-            <Label htmlFor="client_name">Client Name</Label>
-            <Input id="client_name" placeholder="Client" {...register("client_name")} />
-            {err("client_name") ? <p className="text-sm text-error">{err("client_name")}</p> : null}
-          </div>
-        ) : null}
-
-        {type === "portfolio" ? (
-          <div className="space-y-2">
-            <Label htmlFor="image_url">Cover Image URL (optional)</Label>
-            <Input
-              id="image_url"
-              placeholder="https://images.unsplash.com/…"
-              {...register("image_url")}
-            />
-          </div>
-        ) : null}
-
-        {type === "portfolio" || type === "insights" ? (
-          <div className="space-y-2">
-            <Label htmlFor="title">Title (English)</Label>
-            <Input id="title" placeholder="Title" {...register("title")} />
-            {err("title") ? <p className="text-sm text-error">{err("title")}</p> : null}
-          </div>
-        ) : null}
-
-        {type === "testimonials" ? (
-          <>
+      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm font-medium text-text-primary">
+            {TITLES[type]} — language
+          </p>
+          <LocaleTabs value={locale} onChange={setLocale} />
+        </div>
+        <div className="grid gap-5 md:grid-cols-2">
+          {showSlug ? (
             <div className="space-y-2">
-              <Label htmlFor="person_name">Person Name</Label>
-              <Input id="person_name" placeholder="Person" {...register("person_name")} />
-              {err("person_name") ? <p className="text-sm text-error">{err("person_name")}</p> : null}
+              <Label htmlFor="slug">Slug</Label>
+              <Input id="slug" placeholder="my-item" disabled={isEdit} {...register("slug")} />
+              {err("slug") ? <p className="text-sm text-error">{err("slug")}</p> : null}
             </div>
+          ) : null}
+
+          {type === "portfolio" ? (
             <div className="space-y-2">
-              <Label htmlFor="company_name">Company (optional)</Label>
-              <Input id="company_name" placeholder="Company" {...register("company_name")} />
+              <Label htmlFor="client_name">Client Name</Label>
+              <Input id="client_name" placeholder="Client" {...register("client_name")} />
+              {err("client_name") ? <p className="text-sm text-error">{err("client_name")}</p> : null}
             </div>
-          </>
-        ) : null}
+          ) : null}
 
-        {type === "pricing" ? (
-          <>
+          {type === "portfolio" ? (
             <div className="space-y-2">
-              <Label htmlFor="name">Name (English)</Label>
-              <Input id="name" placeholder="Plan name" {...register("name")} />
-              {err("name") ? <p className="text-sm text-error">{err("name")}</p> : null}
+              <Label htmlFor="image_url">Cover Image URL (optional)</Label>
+              <Input
+                id="image_url"
+                placeholder="https://images.unsplash.com/…"
+                {...register("image_url")}
+              />
             </div>
+          ) : null}
+
+          {type === "portfolio" || type === "insights" ? (
             <div className="space-y-2">
-              <Label htmlFor="price_label">Price Label (English)</Label>
-              <Input id="price_label" placeholder="From $2,990" {...register("price_label")} />
-              {err("price_label") ? <p className="text-sm text-error">{err("price_label")}</p> : null}
+              <Label htmlFor={`title-${locale}`}>Title ({LOCALE_NAMES[locale]})</Label>
+              <Input
+                id={`title-${locale}`}
+                placeholder="Title"
+                {...register(`title_translations.${locale}`)}
+              />
+              {trErr("title_translations", locale) ? (
+                <p className="text-sm text-error">{trErr("title_translations", locale)}</p>
+              ) : null}
             </div>
-          </>
-        ) : null}
+          ) : null}
 
-        {type === "faq" ? (
-          <div className="space-y-2">
-            <Label htmlFor="category">Category</Label>
-            <Input id="category" placeholder="general" {...register("category")} />
-            {err("category") ? <p className="text-sm text-error">{err("category")}</p> : null}
-          </div>
-        ) : null}
+          {type === "testimonials" ? (
+            <>
+              <div className="space-y-2">
+                <Label htmlFor="person_name">Person Name</Label>
+                <Input id="person_name" placeholder="Person" {...register("person_name")} />
+                {err("person_name") ? <p className="text-sm text-error">{err("person_name")}</p> : null}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="company_name">Company (optional)</Label>
+                <Input id="company_name" placeholder="Company" {...register("company_name")} />
+              </div>
+            </>
+          ) : null}
 
-        {type === "insights" ? (
-          <div className="space-y-2">
-            <Label htmlFor="reading_time_minutes">Reading Time (minutes)</Label>
-            <Input
-              id="reading_time_minutes"
-              type="number"
-              min={1}
-              {...register("reading_time_minutes", { valueAsNumber: true })}
-            />
-          </div>
-        ) : null}
+          {type === "pricing" ? (
+            <>
+              <div className="space-y-2">
+                <Label htmlFor={`name-${locale}`}>Name ({LOCALE_NAMES[locale]})</Label>
+                <Input
+                  id={`name-${locale}`}
+                  placeholder="Plan name"
+                  {...register(`name_translations.${locale}`)}
+                />
+                {trErr("name_translations", locale) ? (
+                  <p className="text-sm text-error">{trErr("name_translations", locale)}</p>
+                ) : null}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor={`price-label-${locale}`}>Price Label ({LOCALE_NAMES[locale]})</Label>
+                <Input
+                  id={`price-label-${locale}`}
+                  placeholder="From $2,990"
+                  {...register(`price_label_translations.${locale}`)}
+                />
+                {trErr("price_label_translations", locale) ? (
+                  <p className="text-sm text-error">{trErr("price_label_translations", locale)}</p>
+                ) : null}
+              </div>
+            </>
+          ) : null}
 
-        {type === "pricing" || type === "faq" ? (
-          <div className="space-y-2">
-            <Label htmlFor="display_order">Display Order</Label>
-            <Input
-              id="display_order"
-              type="number"
-              min={0}
-              {...register("display_order", { valueAsNumber: true })}
-            />
-          </div>
-        ) : null}
+          {type === "faq" ? (
+            <div className="space-y-2">
+              <Label htmlFor="category">Category</Label>
+              <Input id="category" placeholder="general" {...register("category")} />
+              {err("category") ? <p className="text-sm text-error">{err("category")}</p> : null}
+            </div>
+          ) : null}
 
-        {showStatus ? (
-          <div className="space-y-2">
-            <Label htmlFor="status">Status</Label>
-            <Select id="status" {...register("status")}>
-              <option value="draft">Draft</option>
-              <option value="published">Published</option>
-              <option value="archived">Archived</option>
-            </Select>
-          </div>
-        ) : null}
-      </div>
+          {type === "insights" ? (
+            <div className="space-y-2">
+              <Label htmlFor="reading_time_minutes">Reading Time (minutes)</Label>
+              <Input
+                id="reading_time_minutes"
+                type="number"
+                min={1}
+                {...register("reading_time_minutes", { valueAsNumber: true })}
+              />
+            </div>
+          ) : null}
 
-      {type === "portfolio" || type === "insights" ? (
-        <div className="space-y-2">
-          <Label htmlFor="summary">Summary / Excerpt (English)</Label>
-          <Textarea
-            id="summary"
-            placeholder={type === "portfolio" ? "Short summary" : "Short excerpt"}
-            {...register(type === "portfolio" ? "summary" : "excerpt")}
-          />
-          {err(type === "portfolio" ? "summary" : "excerpt") ? (
-            <p className="text-sm text-error">
-              {err(type === "portfolio" ? "summary" : "excerpt")}
-            </p>
+          {type === "pricing" || type === "faq" ? (
+            <div className="space-y-2">
+              <Label htmlFor="display_order">Display Order</Label>
+              <Input
+                id="display_order"
+                type="number"
+                min={0}
+                {...register("display_order", { valueAsNumber: true })}
+              />
+            </div>
+          ) : null}
+
+          {showStatus ? (
+            <div className="space-y-2">
+              <Label htmlFor="status">Status</Label>
+              <Select id="status" {...register("status")}>
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+                <option value="archived">Archived</option>
+              </Select>
+            </div>
           ) : null}
         </div>
-      ) : null}
 
-      {type === "testimonials" ? (
-        <div className="space-y-2">
-          <Label htmlFor="quote">Quote (English)</Label>
-          <Textarea id="quote" placeholder="Client quote" {...register("quote")} />
-          {err("quote") ? <p className="text-sm text-error">{err("quote")}</p> : null}
-        </div>
-      ) : null}
+        {type === "portfolio" || type === "insights" ? (
+          <div className="mt-5 space-y-2">
+            <Label htmlFor={`summary-${locale}`}>
+              {type === "portfolio" ? "Summary" : "Excerpt"} ({LOCALE_NAMES[locale]})
+            </Label>
+            <Textarea
+              id={`summary-${locale}`}
+              rows={3}
+              placeholder={type === "portfolio" ? "Short summary" : "Short excerpt"}
+              {...register(`${type === "portfolio" ? "summary_translations" : "excerpt_translations"}.${locale}`)}
+            />
+            {trErr(type === "portfolio" ? "summary_translations" : "excerpt_translations", locale) ? (
+              <p className="text-sm text-error">
+                {trErr(type === "portfolio" ? "summary_translations" : "excerpt_translations", locale)}
+              </p>
+            ) : null}
+          </div>
+        ) : null}
 
-      {type === "faq" ? (
-        <div className="space-y-2">
-          <Label htmlFor="question">Question (English)</Label>
-          <Input id="question" placeholder="Question" {...register("question")} />
-          {err("question") ? <p className="text-sm text-error">{err("question")}</p> : null}
-          <Label htmlFor="answer" className="mt-4 block">Answer (English)</Label>
-          <Textarea id="answer" placeholder="Answer" {...register("answer")} />
-          {err("answer") ? <p className="text-sm text-error">{err("answer")}</p> : null}
-        </div>
-      ) : null}
-
-      <div className="flex flex-wrap gap-6">
         {type === "testimonials" ? (
-          <>
-            <label className="flex items-center gap-2 text-sm text-text-secondary">
-              <input type="checkbox" {...register("is_visible")} className="size-4" />
-              Visible
-            </label>
-            <label className="flex items-center gap-2 text-sm text-text-secondary">
-              <input type="checkbox" {...register("is_verified")} className="size-4" />
-              Verified
-            </label>
-          </>
+          <div className="mt-5 space-y-2">
+            <Label htmlFor={`quote-${locale}`}>Quote ({LOCALE_NAMES[locale]})</Label>
+            <Textarea
+              id={`quote-${locale}`}
+              rows={3}
+              placeholder="Client quote"
+              {...register(`quote_translations.${locale}`)}
+            />
+            {trErr("quote_translations", locale) ? (
+              <p className="text-sm text-error">{trErr("quote_translations", locale)}</p>
+            ) : null}
+          </div>
         ) : null}
-        {type === "pricing" ? (
-          <>
-            <label className="flex items-center gap-2 text-sm text-text-secondary">
-              <input type="checkbox" {...register("is_visible")} className="size-4" />
-              Visible
-            </label>
-            <label className="flex items-center gap-2 text-sm text-text-secondary">
-              <input type="checkbox" {...register("is_featured")} className="size-4" />
-              Featured
-            </label>
-          </>
-        ) : null}
+
         {type === "faq" ? (
-          <>
-            <label className="flex items-center gap-2 text-sm text-text-secondary">
-              <input type="checkbox" {...register("is_visible")} className="size-4" />
-              Visible
-            </label>
-            <label className="flex items-center gap-2 text-sm text-text-secondary">
-              <input type="checkbox" {...register("is_ai_eligible")} className="size-4" />
-              AI Eligible
-            </label>
-          </>
+          <div className="mt-5 space-y-2">
+            <Label htmlFor={`question-${locale}`}>Question ({LOCALE_NAMES[locale]})</Label>
+            <Input
+              id={`question-${locale}`}
+              placeholder="Question"
+              {...register(`question_translations.${locale}`)}
+            />
+            {trErr("question_translations", locale) ? (
+              <p className="text-sm text-error">{trErr("question_translations", locale)}</p>
+            ) : null}
+            <Label htmlFor={`answer-${locale}`} className="mt-4 block">
+              Answer ({LOCALE_NAMES[locale]})
+            </Label>
+            <Textarea
+              id={`answer-${locale}`}
+              rows={3}
+              placeholder="Answer"
+              {...register(`answer_translations.${locale}`)}
+            />
+            {trErr("answer_translations", locale) ? (
+              <p className="text-sm text-error">{trErr("answer_translations", locale)}</p>
+            ) : null}
+          </div>
         ) : null}
+
+        <div className="mt-5 flex flex-wrap gap-6">
+          {type === "testimonials" ? (
+            <>
+              <label className="flex items-center gap-2 text-sm text-text-secondary">
+                <input type="checkbox" {...register("is_visible")} className="size-4" />
+                Visible
+              </label>
+              <label className="flex items-center gap-2 text-sm text-text-secondary">
+                <input type="checkbox" {...register("is_verified")} className="size-4" />
+                Verified
+              </label>
+            </>
+          ) : null}
+          {type === "pricing" ? (
+            <>
+              <label className="flex items-center gap-2 text-sm text-text-secondary">
+                <input type="checkbox" {...register("is_visible")} className="size-4" />
+                Visible
+              </label>
+              <label className="flex items-center gap-2 text-sm text-text-secondary">
+                <input type="checkbox" {...register("is_featured")} className="size-4" />
+                Featured
+              </label>
+            </>
+          ) : null}
+          {type === "faq" ? (
+            <>
+              <label className="flex items-center gap-2 text-sm text-text-secondary">
+                <input type="checkbox" {...register("is_visible")} className="size-4" />
+                Visible
+              </label>
+              <label className="flex items-center gap-2 text-sm text-text-secondary">
+                <input type="checkbox" {...register("is_ai_eligible")} className="size-4" />
+                AI Eligible
+              </label>
+            </>
+          ) : null}
+        </div>
       </div>
 
       {serverError ? (

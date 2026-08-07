@@ -43,6 +43,7 @@ export const HOMEPAGE_SECTION_KEYS: SectionKey[] = [
   "pricing",
   "faq",
   "contact",
+  "finalCta",
 ];
 
 export const sectionRegistry: Record<SectionKey, RegisteredSection> = {

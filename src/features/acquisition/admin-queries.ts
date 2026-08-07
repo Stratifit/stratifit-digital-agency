@@ -1,4 +1,5 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { parseJsonArray } from "@/lib/json";
 
 export interface AdminBusinessListing {
   slug: string;
@@ -43,6 +44,6 @@ export async function getAdminAcquisitionSection(): Promise<AdminAcquisitionSect
 
   return {
     ...(data as Omit<AdminAcquisitionSection, "businesses">),
-    businesses: (data.businesses as unknown as AdminBusinessListing[] | null) ?? [],
+    businesses: parseJsonArray<AdminBusinessListing>(data.businesses) ?? [],
   };
 }

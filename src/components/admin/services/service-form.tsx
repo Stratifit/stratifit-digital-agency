@@ -11,6 +11,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
+import { cn } from "@/lib/cn";
+
+const SUPPORTED_LOCALES = ["en", "de", "fr", "es"] as const;
+const LOCALE_NAMES: Record<string, string> = {
+  en: "English",
+  de: "German",
+  fr: "French",
+  es: "Spanish",
+};
 
 interface ServiceFormProps {
   slug?: string;
@@ -20,6 +29,9 @@ interface ServiceFormProps {
 export function ServiceForm({ slug, initial }: ServiceFormProps) {
   const router = useRouter();
   const [serverError, setServerError] = React.useState<string | null>(null);
+  const [locale, setLocale] = React.useState<(typeof SUPPORTED_LOCALES)[number]>(
+    "en"
+  );
   const isEdit = Boolean(slug);
 
   const {
@@ -47,6 +59,25 @@ export function ServiceForm({ slug, initial }: ServiceFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      {/* Language tabs */}
+      <div className="flex overflow-hidden rounded-button border border-border">
+        {SUPPORTED_LOCALES.map((key) => (
+          <button
+            key={key}
+            type="button"
+            onClick={() => setLocale(key)}
+            className={cn(
+              "flex-1 px-4 py-2 text-xs font-semibold uppercase tracking-wide transition-colors",
+              locale === key
+                ? "bg-primary text-text-inverse"
+                : "bg-card-dark text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+            )}
+          >
+            {LOCALE_NAMES[key]}
+          </button>
+        ))}
+      </div>
+
       <div className="grid gap-5 md:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="slug">Slug</Label>
@@ -58,12 +89,17 @@ export function ServiceForm({ slug, initial }: ServiceFormProps) {
           <Input id="icon" placeholder="Rocket" {...register("icon_name")} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="title-en">Title (English)</Label>
-          <Input id="title-en" placeholder="Service title" {...register("title_translations.en")} />
-          {errors.title_translations ? (
+          <Label htmlFor={`title-${locale}`}>
+            Title ({LOCALE_NAMES[locale]})
+          </Label>
+          <Input
+            id={`title-${locale}`}
+            placeholder="Service title"
+            {...register(`title_translations.${locale}`)}
+          />
+          {errors.title_translations?.en?.message ? (
             <p className="text-sm text-error">
-              {(errors.title_translations as { message?: string } | undefined)
-                ?.message}
+              {errors.title_translations.en.message}
             </p>
           ) : null}
         </div>
@@ -72,12 +108,29 @@ export function ServiceForm({ slug, initial }: ServiceFormProps) {
           <Input id="cta-url" placeholder="/contact" {...register("cta_url")} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="short-en">Short Description (English)</Label>
-          <Input id="short-en" placeholder="Short description" {...register("short_description_translations.en")} />
+          <Label htmlFor={`short-${locale}`}>
+            Short Description ({LOCALE_NAMES[locale]})
+          </Label>
+          <Input
+            id={`short-${locale}`}
+            placeholder="Short description"
+            {...register(`short_description_translations.${locale}`)}
+          />
+          {errors.short_description_translations?.en?.message ? (
+            <p className="text-sm text-error">
+              {errors.short_description_translations.en.message}
+            </p>
+          ) : null}
         </div>
         <div className="space-y-2">
-          <Label htmlFor="cta-label-en">CTA Label (English)</Label>
-          <Input id="cta-label-en" placeholder="Learn More" {...register("cta_label_translations.en")} />
+          <Label htmlFor={`cta-label-${locale}`}>
+            CTA Label ({LOCALE_NAMES[locale]})
+          </Label>
+          <Input
+            id={`cta-label-${locale}`}
+            placeholder="Learn More"
+            {...register(`cta_label_translations.${locale}`)}
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="cta-style">CTA Style</Label>

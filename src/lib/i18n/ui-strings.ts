@@ -188,7 +188,42 @@ export type UiStringKey =
   | "workWantOutcome"
   | "workWhatWeDid"
   | "workYear"
-  | "workYear";
+  | "workWord"
+  | "workEyebrowFallback"
+  | "workTitleFallback"
+  | "workHighlightFallback"
+  | "workEmptyProjects"
+  | "workDescriptionFallback"
+  | "servicesEyebrow"
+  | "servicesTitle"
+  | "servicesDescription"
+  | "servicesCapabilities"
+  | "servicesHowWeDoIt"
+  | "servicesDeliverables"
+  | "servicesWhatsIncluded"
+  | "servicesHowItWorks"
+  | "servicesToolkit"
+  | "servicesToolsTech"
+  | "servicesCaseStudies"
+  | "servicesSelectedWorkDesc"
+  | "servicesReadyWhenYouAre"
+  | "servicesStartProject"
+  | "aboutEyebrowFallback"
+  | "aboutTitleFallback"
+  | "aboutHighlightFallback"
+  | "aboutMission"
+  | "aboutStory"
+  | "aboutValues"
+  | "aboutTeam"
+  | "aboutCtaTitle"
+  | "aboutCtaHighlight"
+  | "aboutCtaDescription"
+  | "testimonialsEyebrow"
+  | "testimonialsTitle"
+  | "testimonialsDescription"
+  | "insightsEyebrowFallback"
+  | "insightsHighlightFallback"
+  | "insightsDescriptionFallback";
 
 type UiStrings = Record<UiStringKey, string>;
 type UiDictionary = Record<(typeof SUPPORTED_LOCALES)[number], UiStrings>;
@@ -398,6 +433,47 @@ const en: UiStrings = {
   workWantOutcome: "Want an outcome like this?",
   workWhatWeDid: "What We Did",
   workYear: "Year",
+  workWord: "Work",
+  workEyebrowFallback: "Portfolio",
+  workTitleFallback: "Our",
+  workHighlightFallback: "Work",
+  workEmptyProjects: "Projects will appear here soon.",
+  workDescriptionFallback:
+    "We craft digital experiences that define industries and elevate brands through precision and creativity.",
+  servicesEyebrow: "Services",
+  servicesTitle: "What we do",
+  servicesDescription:
+    "Four core disciplines, one integrated approach to digital growth.",
+  servicesCapabilities: "Capabilities",
+  servicesHowWeDoIt: "How We Do It",
+  servicesDeliverables: "Deliverables",
+  servicesWhatsIncluded: "What's Included",
+  servicesHowItWorks: "How It Works",
+  servicesToolkit: "Toolkit",
+  servicesToolsTech: "Tools & Technologies",
+  servicesCaseStudies: "Case Studies",
+  servicesSelectedWorkDesc:
+    "Real outcomes from real projects — measured by the metrics that matter to your business.",
+  servicesReadyWhenYouAre: "Ready When You Are",
+  servicesStartProject: "Start Your Project",
+  aboutEyebrowFallback: "About",
+  aboutTitleFallback: "About ",
+  aboutHighlightFallback: "Stratifit",
+  aboutMission: "Our Mission",
+  aboutStory: "Our Story",
+  aboutValues: "What We Stand For",
+  aboutTeam: "Our Team",
+  aboutCtaTitle: "Ready to Work ",
+  aboutCtaHighlight: "Together?",
+  aboutCtaDescription: "Let's build something exceptional.",
+  testimonialsEyebrow: "Testimonials",
+  testimonialsTitle: "What Our Clients",
+  testimonialsDescription:
+    "Don't take our word for it — hear from the brands we've helped scale.",
+  insightsEyebrowFallback: "Insights &",
+  insightsHighlightFallback: "Expertise",
+  insightsDescriptionFallback:
+    "Thought leadership, industry perspectives, and actionable strategies from our team of strategists, designers, and engineers.",
 };
 
 const de: UiStrings = {
@@ -608,6 +684,47 @@ const de: UiStrings = {
   workWantOutcome: "Möchten Sie ein solches Ergebnis?",
   workWhatWeDid: "Was wir getan haben",
   workYear: "Jahr",
+  workWord: "Arbeiten",
+  workEyebrowFallback: "Portfolio",
+  workTitleFallback: "Unsere",
+  workHighlightFallback: "Arbeiten",
+  workEmptyProjects: "Projekte erscheinen hier bald.",
+  workDescriptionFallback:
+    "Wir gestalten digitale Erlebnisse, die Branchen definieren und Marken mit Präzision und Kreativität aufwerten.",
+  servicesEyebrow: "Leistungen",
+  servicesTitle: "Was wir tun",
+  servicesDescription:
+    "Vier Kerndisziplinen, ein integrierter Ansatz für digitales Wachstum.",
+  servicesCapabilities: "Fähigkeiten",
+  servicesHowWeDoIt: "So setzen wir es um",
+  servicesDeliverables: "Leistungen",
+  servicesWhatsIncluded: "Was enthalten ist",
+  servicesHowItWorks: "So funktioniert es",
+  servicesToolkit: "Toolkit",
+  servicesToolsTech: "Tools & Technologien",
+  servicesCaseStudies: "Fallstudien",
+  servicesSelectedWorkDesc:
+    "Echte Ergebnisse aus echten Projekten — gemessen an den Kennzahlen, die für Ihr Unternehmen zählen.",
+  servicesReadyWhenYouAre: "Bereit, wenn Sie es sind",
+  servicesStartProject: "Projekt starten",
+  aboutEyebrowFallback: "Über uns",
+  aboutTitleFallback: "Über ",
+  aboutHighlightFallback: "Stratifit",
+  aboutMission: "Unsere Mission",
+  aboutStory: "Unsere Geschichte",
+  aboutValues: "Wofür wir stehen",
+  aboutTeam: "Unser Team",
+  aboutCtaTitle: "Bereit, gemeinsam zu",
+  aboutCtaHighlight: "arbeiten?",
+  aboutCtaDescription: "Lassen Sie uns etwas Außergewöhnliches schaffen.",
+  testimonialsEyebrow: "Referenzen",
+  testimonialsTitle: "Was unsere Kunden",
+  testimonialsDescription:
+    "Verlassen Sie sich nicht nur auf unser Wort — hören Sie von den Marken, die wir beim Wachstum begleitet haben.",
+  insightsEyebrowFallback: "Einblicke &",
+  insightsHighlightFallback: "Expertise",
+  insightsDescriptionFallback:
+    "Thought Leadership, Branchenperspektiven und umsetzbare Strategien von unserem Team aus Strategen, Designern und Ingenieuren.",
 };
 
 const fr: UiStrings = {
@@ -818,6 +935,47 @@ const fr: UiStrings = {
   workWantOutcome: "Vous voulez un résultat similaire ?",
   workWhatWeDid: "Ce que nous avons fait",
   workYear: "Année",
+  workWord: "Projets",
+  workEyebrowFallback: "Portfolio",
+  workTitleFallback: "Nos",
+  workHighlightFallback: "Projets",
+  workEmptyProjects: "Les projets apparaîtront bientôt ici.",
+  workDescriptionFallback:
+    "Nous créons des expériences numériques qui définissent les industries et élèvent les marques avec précision et créativité.",
+  servicesEyebrow: "Services",
+  servicesTitle: "Ce que nous faisons",
+  servicesDescription:
+    "Quatre disciplines clés, une approche intégrée de la croissance digitale.",
+  servicesCapabilities: "Capacités",
+  servicesHowWeDoIt: "Comment nous procédons",
+  servicesDeliverables: "Livrables",
+  servicesWhatsIncluded: "Ce qui est inclus",
+  servicesHowItWorks: "Comment ça marche",
+  servicesToolkit: "Boîte à outils",
+  servicesToolsTech: "Outils & technologies",
+  servicesCaseStudies: "Études de cas",
+  servicesSelectedWorkDesc:
+    "De vrais résultats issus de vrais projets — mesurés par les indicateurs qui comptent pour votre entreprise.",
+  servicesReadyWhenYouAre: "Prêt quand vous l'êtes",
+  servicesStartProject: "Démarrer votre projet",
+  aboutEyebrowFallback: "À propos",
+  aboutTitleFallback: "À propos de ",
+  aboutHighlightFallback: "Stratifit",
+  aboutMission: "Notre mission",
+  aboutStory: "Notre histoire",
+  aboutValues: "Ce que nous défendons",
+  aboutTeam: "Notre équipe",
+  aboutCtaTitle: "Prêt à travailler ",
+  aboutCtaHighlight: "ensemble ?",
+  aboutCtaDescription: "Construisons quelque chose d'exceptionnel.",
+  testimonialsEyebrow: "Témoignages",
+  testimonialsTitle: "Ce que disent nos",
+  testimonialsDescription:
+    "Ne nous croyez pas sur parole — écoutez les marques que nous avons aidées à grandir.",
+  insightsEyebrowFallback: "Connaissances &",
+  insightsHighlightFallback: "Expertise",
+  insightsDescriptionFallback:
+    "Leadership éclairé, perspectives sectorielles et stratégies concrètes de notre équipe de stratèges, designers et ingénieurs.",
 };
 
 const es: UiStrings = {
@@ -1028,6 +1186,47 @@ const es: UiStrings = {
   workWantOutcome: "¿Quieres un resultado así?",
   workWhatWeDid: "Lo que hicimos",
   workYear: "Año",
+  workWord: "Trabajo",
+  workEyebrowFallback: "Portafolio",
+  workTitleFallback: "Nuestro",
+  workHighlightFallback: "Trabajo",
+  workEmptyProjects: "Los proyectos aparecerán pronto aquí.",
+  workDescriptionFallback:
+    "Creamos experiencias digitales que definen industrias y elevan marcas con precisión y creatividad.",
+  servicesEyebrow: "Servicios",
+  servicesTitle: "Lo que hacemos",
+  servicesDescription:
+    "Cuatro disciplinas clave, un enfoque integrado para el crecimiento digital.",
+  servicesCapabilities: "Capacidades",
+  servicesHowWeDoIt: "Cómo lo hacemos",
+  servicesDeliverables: "Entregables",
+  servicesWhatsIncluded: "Qué incluye",
+  servicesHowItWorks: "Cómo funciona",
+  servicesToolkit: "Kit de herramientas",
+  servicesToolsTech: "Herramientas y tecnologías",
+  servicesCaseStudies: "Estudios de caso",
+  servicesSelectedWorkDesc:
+    "Resultados reales de proyectos reales, medidos por las métricas que importan para tu negocio.",
+  servicesReadyWhenYouAre: "Listos cuando tú lo estés",
+  servicesStartProject: "Inicia tu proyecto",
+  aboutEyebrowFallback: "Nosotros",
+  aboutTitleFallback: "Sobre ",
+  aboutHighlightFallback: "Stratifit",
+  aboutMission: "Nuestra misión",
+  aboutStory: "Nuestra historia",
+  aboutValues: "En lo que creemos",
+  aboutTeam: "Nuestro equipo",
+  aboutCtaTitle: "¿Listo para trabajar ",
+  aboutCtaHighlight: "juntos?",
+  aboutCtaDescription: "Construyamos algo excepcional.",
+  testimonialsEyebrow: "Testimonios",
+  testimonialsTitle: "Lo que dicen nuestros",
+  testimonialsDescription:
+    "No confíes solo en nuestra palabra: escucha a las marcas que hemos ayudado a crecer.",
+  insightsEyebrowFallback: "Conocimiento &",
+  insightsHighlightFallback: "Experiencia",
+  insightsDescriptionFallback:
+    "Liderazgo de pensamiento, perspectivas del sector y estrategias accionables de nuestro equipo de estrategas, diseñadores e ingenieros.",
 };
 
 const dictionary: UiDictionary = { en, de, fr, es };

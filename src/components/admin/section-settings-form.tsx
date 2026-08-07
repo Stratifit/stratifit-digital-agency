@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch, type UseFormRegister } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   sectionSettingsSchema,
@@ -29,48 +29,89 @@ const LOCALE_NAMES: Record<string, string> = {
 /** Sections whose editor also manages a closing call-to-action. */
 const CTA_SECTIONS = new Set(["acquisition-cta"]);
 
-function tr(v: Record<string, string> | null | undefined): Record<string, string> {
-  return v ?? {};
+/** Sections whose editor also manages a stats band (/work page). */
+const STATS_SECTIONS = new Set(["portfolio"]);
+
+function StatsEditor({
+  register,
+}: {
+  register: UseFormRegister<SectionSettingsFormValues>;
+}) {
+  const fieldPrefix = "stats";
+  return (
+    <div className="space-y-4">
+      {[0, 1, 2].map((index) => (
+        <div
+          key={index}
+          className="rounded-card border border-white/5 bg-background p-4"
+        >
+          <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-text-subtle">
+            Stat {index + 1}
+          </p>
+          <div className="grid gap-4 sm:grid-cols-[120px_1fr]">
+            <div className="space-y-2">
+              <Label htmlFor={`${fieldPrefix}.${index}.value`}>Value</Label>
+              <Input
+                id={`${fieldPrefix}.${index}.value`}
+                placeholder="50+"
+                {...register(`${fieldPrefix}.${index}.value`)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor={`${fieldPrefix}.${index}.label_translations.en`}>
+                Label
+              </Label>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {SUPPORTED_LOCALES.map((locale) => (
+                  <Input
+                    key={locale}
+                    placeholder={LOCALE_NAMES[locale]}
+                    {...register(
+                      `${fieldPrefix}.${index}.label_translations.${locale}`
+                    )}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+      <p className="text-xs text-text-muted">
+        Up to 3 stats. Leave a row empty to hide it.
+      </p>
+    </div>
+  );
+}
+
+
+type LocaleRecord = { en: string; de: string; fr: string; es: string };
+
+function translations(
+  value: Record<string, string> | null | undefined
+): LocaleRecord {
+  const record = value ?? {};
+  return {
+    en: record.en ?? "",
+    de: record.de ?? "",
+    fr: record.fr ?? "",
+    es: record.es ?? "",
+  };
 }
 
 function toFormValues(settings: AdminSectionSettings): SectionSettingsFormValues {
-  const eyebrow = tr(settings.eyebrow_translations);
-  const title = tr(settings.title_translations);
-  const highlight = tr(settings.highlight_translations);
-  const description = tr(settings.description_translations);
-  const ctaLabel = tr(settings.cta_label_translations);
   return {
-    eyebrow_translations: {
-      en: eyebrow.en ?? "",
-      de: eyebrow.de ?? "",
-      fr: eyebrow.fr ?? "",
-      es: eyebrow.es ?? "",
-    },
-    title_translations: {
-      en: title.en ?? "",
-      de: title.de ?? "",
-      fr: title.fr ?? "",
-      es: title.es ?? "",
-    },
-    highlight_translations: {
-      en: highlight.en ?? "",
-      de: highlight.de ?? "",
-      fr: highlight.fr ?? "",
-      es: highlight.es ?? "",
-    },
-    description_translations: {
-      en: description.en ?? "",
-      de: description.de ?? "",
-      fr: description.fr ?? "",
-      es: description.es ?? "",
-    },
-    cta_label_translations: {
-      en: ctaLabel.en ?? "",
-      de: ctaLabel.de ?? "",
-      fr: ctaLabel.fr ?? "",
-      es: ctaLabel.es ?? "",
-    },
+    eyebrow_translations: translations(settings.eyebrow_translations),
+    title_translations: translations(settings.title_translations),
+    highlight_translations: translations(settings.highlight_translations),
+    description_translations: translations(settings.description_translations),
+    cta_label_translations: translations(settings.cta_label_translations),
     cta_url: settings.cta_url ?? "",
+    stats: Array.isArray(settings.stats)
+      ? settings.stats.map((stat) => ({
+          value: stat.value ?? "",
+          label_translations: translations(stat.label_translations),
+        }))
+      : [],
     is_visible: settings.is_visible,
   };
 }
@@ -320,6 +361,22 @@ export function SectionSettingsForm({
               />
             </div>
           </div>
+        </div>
+      ) : null}
+
+      {/* Optional stats band (portfolio section drives /work) */}
+      {STATS_SECTIONS.has(settings.section_key) ? (
+        <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm">
+          <div className="mb-4">
+            <h3 className="font-display text-base font-semibold text-text-primary">
+              Stats band
+            </h3>
+            <p className="mt-1 text-sm text-text-muted">
+              Numbers shown on the work page. Add or remove stats freely.
+            </p>
+          </div>
+
+          <StatsEditor register={register} />
         </div>
       ) : null}
 

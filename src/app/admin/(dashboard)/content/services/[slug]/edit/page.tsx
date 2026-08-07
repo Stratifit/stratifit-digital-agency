@@ -5,15 +5,27 @@ import type { ServiceFormValues } from "@/features/services/schemas";
 import { AdminPageHeader } from "@/components/admin/page-header";
 import { FormCard } from "@/components/admin/form-card";
 
+function translations(
+  v: unknown
+): { en: string; de: string; fr: string; es: string } {
+  const record = (v as Record<string, string> | null | undefined) ?? {};
+  return {
+    en: record.en ?? "",
+    de: record.de ?? "",
+    fr: record.fr ?? "",
+    es: record.es ?? "",
+  };
+}
+
 function toFormValues(data: Record<string, unknown>): ServiceFormValues {
   return {
     slug: String(data.slug ?? ""),
-    title_translations: (data.title_translations as Record<string, string>) ?? { en: "" },
-    short_description_translations:
-      (data.short_description_translations as Record<string, string>) ?? { en: "" },
+    title_translations: translations(data.title_translations),
+    short_description_translations: translations(
+      data.short_description_translations
+    ),
     icon_name: (data.icon_name as string | null) ?? "",
-    cta_label_translations:
-      (data.cta_label_translations as Record<string, string>) ?? { en: "" },
+    cta_label_translations: translations(data.cta_label_translations),
     cta_url: (data.cta_url as string | null) ?? "",
     cta_style: (data.cta_style as "full" | "compact" | null) ?? "full",
     display_order: Number(data.display_order ?? 0),

@@ -1,6 +1,7 @@
 import { pageMetadata } from "@/lib/seo";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { t } from "@/lib/i18n/ui-strings";
 import { getPublicAboutPage } from "@/features/about/queries";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
@@ -20,11 +21,14 @@ export default async function AboutPage() {
   const about = await getPublicAboutPage();
 
   const eyebrow =
-    resolveTranslation(about?.eyebrow_translations, locale) || "About";
+    resolveTranslation(about?.eyebrow_translations, locale) ||
+    t(locale, "aboutEyebrowFallback");
   const title =
-    resolveTranslation(about?.title_translations, locale) || "About ";
+    resolveTranslation(about?.title_translations, locale) ||
+    t(locale, "aboutTitleFallback");
   const highlight =
-    resolveTranslation(about?.highlight_translations, locale) || "Stratifit";
+    resolveTranslation(about?.highlight_translations, locale) ||
+    t(locale, "aboutHighlightFallback");
   const intro = resolveTranslation(about?.intro_translations, locale);
   const mission = about
     ? resolveTranslation(about.mission_translations, locale)
@@ -38,16 +42,16 @@ export default async function AboutPage() {
 
   const ctaTitle =
     resolveTranslation(about?.cta_title_translations, locale) ||
-    "Ready to Work ";
+    t(locale, "aboutCtaTitle");
   const ctaHighlight =
     resolveTranslation(about?.cta_highlight_translations, locale) ||
-    "Together?";
+    t(locale, "aboutCtaHighlight");
   const ctaDescription =
     resolveTranslation(about?.cta_description_translations, locale) ||
-    "Let's build something exceptional.";
+    t(locale, "aboutCtaDescription");
   const ctaLabel =
     resolveTranslation(about?.cta_label_translations, locale) ||
-    "Start Your Project";
+    t(locale, "servicesStartProject");
   const ctaHref = about?.cta_url || "/contact";
 
   return (
@@ -105,7 +109,7 @@ export default async function AboutPage() {
           {mission ? (
             <Reveal className="mb-16">
               <h2 className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                Our Mission
+                {t(locale, "aboutMission")}
               </h2>
               <p className="border-l-2 border-primary/30 pl-4 text-base leading-relaxed text-text-secondary sm:pl-6 md:text-lg">
                 {mission}
@@ -116,7 +120,7 @@ export default async function AboutPage() {
           {story ? (
             <Reveal className="mb-16">
               <h2 className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                Our Story
+                {t(locale, "aboutStory")}
               </h2>
               <p className="border-l-2 border-primary/30 pl-4 text-base leading-relaxed text-text-secondary sm:pl-6 md:text-lg">
                 {story}
@@ -127,7 +131,7 @@ export default async function AboutPage() {
           {values.length > 0 ? (
             <Reveal className="mb-16">
               <h2 className="mb-6 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                What We Stand For
+                {t(locale, "aboutValues")}
               </h2>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {values.map((value, index) => (
@@ -159,7 +163,7 @@ export default async function AboutPage() {
           {team ? (
             <Reveal className="mb-16">
               <h2 className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                Our Team
+                {t(locale, "aboutTeam")}
               </h2>
               <p className="border-l-2 border-primary/30 pl-4 text-base leading-relaxed text-text-secondary sm:pl-6 md:text-lg">
                 {team}

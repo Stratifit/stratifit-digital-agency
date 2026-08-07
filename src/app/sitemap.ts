@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { NICHE_ROUTES } from "@/features/acquisition/niches";
+import { getPublicAcquisitionNiches } from "@/features/acquisition/niche-queries";
 import { getPublicServicePageSlugs } from "@/features/service-pages/queries";
 import { getPublicDetailPageSlugs } from "@/features/detail-pages/queries";
 
@@ -14,6 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { data: insights },
     servicePageSlugs,
     detailPageSlugs,
+    niches,
   ] = await Promise.all([
     supabase
       .from("portfolio_projects")
@@ -25,6 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .eq("status", "published"),
     getPublicServicePageSlugs(),
     getPublicDetailPageSlugs(),
+    getPublicAcquisitionNiches(),
   ]);
 
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -35,8 +37,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/insights`, lastModified: new Date() },
     { url: `${BASE_URL}/about`, lastModified: new Date() },
     { url: `${BASE_URL}/buy-business`, lastModified: new Date() },
-    ...NICHE_ROUTES.map((slug) => ({
-      url: `${BASE_URL}/buy-business/niches/${slug}`,
+    ...niches.map((niche) => ({
+      url: `${BASE_URL}/buy-business/niches/${niche.slug}`,
       lastModified: new Date(),
     })),
     { url: `${BASE_URL}/contact`, lastModified: new Date() },

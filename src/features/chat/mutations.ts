@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/service-role";
 import { t } from "@/lib/i18n/ui-strings";
+import { readJsonObject } from "@/lib/json";
 import { isValidDisplayName } from "@/lib/validate-display-name";
 import type { Json } from "@/types/database.types";
 import { getChatbotSettings, getApprovedKnowledge } from "./knowledge";
@@ -382,9 +383,7 @@ export async function getVisitorChatState(input: {
     data: {
       conversation_id: conversation.id,
       mode: conversation.mode,
-      visitor: visitorStateFromMeta(
-        (visitor.metadata as Record<string, unknown>) ?? {}
-      ),
+      visitor: visitorStateFromMeta(readJsonObject(visitor.metadata)),
       messages,
     },
   };
@@ -408,16 +407,14 @@ export async function resetVisitorChat(input: {
   );
 
   // Clear onboarding identity so the welcome flow starts afresh.
-  const meta: Record<string, unknown> = {
-    ...((visitor.metadata as Record<string, unknown>) ?? {}),
-  };
+  const meta = { ...readJsonObject(visitor.metadata) };
   delete meta.name;
   delete meta.email;
   delete meta.email_choice;
   delete meta.onboarding_complete;
   await supabase
     .from("chat_visitors")
-    .update({ metadata: meta as unknown as Json })
+    .update({ metadata: meta })
     .eq("id", visitor.id);
 
   // Start the conversation over — remove the visitor's own messages and
@@ -459,9 +456,7 @@ export async function submitVisitorName(
   // Low-quality input never becomes the display name — the visitor stays
   // anonymous ("Visitor") but the conversation continues normally.
   const storedName = isValidDisplayName(name) ? name : "";
-  const meta: Record<string, unknown> = {
-    ...((visitor.metadata as Record<string, unknown>) ?? {}),
-  };
+  const meta = { ...readJsonObject(visitor.metadata) };
   if (storedName) {
     meta.name = storedName;
   } else {
@@ -469,7 +464,7 @@ export async function submitVisitorName(
   }
   await supabase
     .from("chat_visitors")
-    .update({ metadata: meta as unknown as Json, preferred_locale: parsed.data.locale })
+    .update({ metadata: meta, preferred_locale: parsed.data.locale })
     .eq("id", visitor.id);
   await supabase.from("chat_messages").insert({
     conversation_id: conversation.id,
@@ -497,9 +492,7 @@ export async function updateVisitorName(input: {
     hashToken(parsed.data.visitor_token),
     "en"
   );
-  const meta: Record<string, unknown> = {
-    ...((visitor.metadata as Record<string, unknown>) ?? {}),
-  };
+  const meta = { ...readJsonObject(visitor.metadata) };
   const storedName = isValidDisplayName(parsed.data.name.trim())
     ? parsed.data.name.trim()
     : (typeof meta.name === "string" ? meta.name : "");
@@ -510,7 +503,7 @@ export async function updateVisitorName(input: {
   }
   await supabase
     .from("chat_visitors")
-    .update({ metadata: meta as unknown as Json })
+    .update({ metadata: meta })
     .eq("id", visitor.id);
   revalidatePath("/admin/conversations");
   return { success: true, data: { name: storedName } };
@@ -532,9 +525,7 @@ export async function submitVisitorEmailChoice(
     parsed.data.locale
   );
 
-  const meta: Record<string, unknown> = {
-    ...((visitor.metadata as Record<string, unknown>) ?? {}),
-  };
+  const meta = { ...readJsonObject(visitor.metadata) };
   const previousChoice = meta.email_choice;
   if (previousChoice === "yes" || previousChoice === "later") {
     // Already answered — never duplicate the bot reply or the lead.
@@ -548,7 +539,7 @@ export async function submitVisitorEmailChoice(
   if (email) meta.email = email;
   await supabase
     .from("chat_visitors")
-    .update({ metadata: meta as unknown as Json })
+    .update({ metadata: meta })
     .eq("id", visitor.id);
 
   const visitorContent = parsed.data.choice === "yes" ? email || "Yes" : "Maybe later";

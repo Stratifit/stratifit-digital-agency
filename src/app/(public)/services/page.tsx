@@ -11,6 +11,8 @@ export const metadata = pageMetadata({
 });
 
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { getPublicSectionSetting } from "@/features/section-settings/queries";
+import { t } from "@/lib/i18n/ui-strings";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
@@ -20,24 +22,35 @@ import { Reveal } from "@/components/ui/reveal";
 
 export default async function ServicesPage() {
   const locale = await getLocale();
-  const [services, servicePages] = await Promise.all([
+  const [services, servicePages, settings] = await Promise.all([
     getPublicServices(),
     getPublicServicePages(),
+    getPublicSectionSetting("services"),
   ]);
   const pageSlugs = new Set(servicePages.map((page) => page.slug));
+
+  const eyebrow =
+    resolveTranslation(settings?.eyebrow_translations ?? null, locale) ||
+    t(locale, "servicesEyebrow");
+  const title =
+    resolveTranslation(settings?.title_translations ?? null, locale) ||
+    t(locale, "servicesTitle");
+  const description =
+    resolveTranslation(settings?.description_translations ?? null, locale) ||
+    t(locale, "servicesDescription");
 
   return (
     <>
       <section className="border-b border-border bg-background-deep">
         <Container className="py-20 md:py-24">
           <p className="text-sm font-medium uppercase tracking-widest text-primary">
-            Services
+            {eyebrow}
           </p>
           <h1 className="mt-4 max-w-3xl font-display text-4xl font-bold tracking-tight text-text-primary md:text-5xl">
-            What we do
+            {title}
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-text-secondary">
-            Four core disciplines, one integrated approach to digital growth.
+            {description}
           </p>
         </Container>
       </section>

@@ -3,6 +3,7 @@ import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { getPublicTestimonials } from "@/features/testimonials/queries";
 import { getPublicSectionSetting } from "@/features/section-settings/queries";
+import { t } from "@/lib/i18n/ui-strings";
 import { pageMetadata } from "@/lib/seo";
 import { Reveal } from "@/components/ui/reveal";
 import { TestimonialCard } from "@/components/sections/testimonial-card";
@@ -27,15 +28,15 @@ export default async function TestimonialsPage() {
 
   const eyebrow =
     resolveTranslation(settings?.eyebrow_translations ?? null, locale) ??
-    "Testimonials";
+    t(locale, "testimonialsEyebrow");
   const title =
     resolveTranslation(settings?.title_translations ?? null, locale) ??
-    "What Our Clients";
+    t(locale, "testimonialsTitle");
   const highlight =
     resolveTranslation(settings?.highlight_translations ?? null, locale) ?? null;
   const description =
     resolveTranslation(settings?.description_translations ?? null, locale) ??
-    "Don't take our word for it — hear from the brands we've helped scale.";
+    t(locale, "testimonialsDescription");
 
   return (
     <>

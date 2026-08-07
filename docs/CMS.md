@@ -507,6 +507,7 @@ Examples:
 - Detail pages (Privacy, Terms, Cookie Policy, Imprint, Careers)
 - Navigation items
 - Chatbot knowledge
+- Acquisition niches (Buy-a-Business catalog — `/admin/content/acquisition/niches`, 4-language editor with stats)
 - Leads
 - Conversations
 
@@ -716,6 +717,19 @@ Translatable fields generally use JSONB objects:
 ```
 
 The exact schema belongs in `DATABASE.md`.
+
+### 19.4 Collection editors (portfolio / insights / testimonials / pricing / FAQ)
+
+Implemented status: the generic collection editor (`ContentForm`, used by Portfolio Projects, Insights, Testimonials, Pricing, and FAQs) supports language tabs for every translatable field.
+
+Behavior:
+
+- A `EN / DE / FR / ES` tab row sits at the top of the form and controls which locale is edited
+- Slug, client name, status, display order, visibility, and other non-translatable fields are locale-independent
+- English is required; de/fr/es are optional but preserved on save
+- Each translation is stored as the full JSONB object (`en`/`de`/`fr`/`es`) — existing translations are never overwritten by saving another language
+- Field-level validation errors show for the currently active tab
+- Server-side Zod schemas validate the complete translation object shape before every write
 
 ---
 

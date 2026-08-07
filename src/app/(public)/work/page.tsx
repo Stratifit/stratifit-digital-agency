@@ -12,17 +12,21 @@ import { getPublicPortfolioProjects } from "@/features/portfolio/queries";
 import { getPublicServices } from "@/features/services/queries";
 import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { t } from "@/lib/i18n/ui-strings";
 import { Container } from "@/components/ui/container";
 import { CountUp } from "@/components/ui/count-up";
 import { Reveal } from "@/components/ui/reveal";
 import { WorkGrid } from "@/components/work/work-grid";
 
-function WorkStatsBand() {
-  const stats = [
-    { value: "50+", label: "Projects delivered" },
-    { value: "340%", label: "Average client ROAS" },
-    { value: "92%", label: "Clients who renew" },
-  ];
+interface WorkStat {
+  value: string;
+  label: string;
+}
+
+function WorkStatsBand({ stats }: { stats: WorkStat[] }) {
+  if (stats.length === 0) {
+    return null;
+  }
 
   return (
     <section>
@@ -30,7 +34,7 @@ function WorkStatsBand() {
         <Reveal className="grid grid-cols-3 gap-4">
           {stats.map((stat, index) => (
             <div
-              key={stat.label}
+              key={`${stat.label}-${index}`}
               className={`flex flex-col items-center px-2 text-center ${
                 index > 0 ? "border-white/10 sm:border-l" : ""
               }`}
@@ -59,16 +63,26 @@ export default async function WorkPage() {
 
   const eyebrow = settings
     ? resolveTranslation(settings.eyebrow_translations, locale)
-    : "Portfolio";
+    : t(locale, "workEyebrowFallback");
   const title = settings
     ? resolveTranslation(settings.title_translations, locale)
-    : "Our";
+    : t(locale, "workTitleFallback");
   const highlight = settings
     ? resolveTranslation(settings.highlight_translations, locale)
-    : "Work";
+    : t(locale, "workHighlightFallback");
   const description =
     (settings && resolveTranslation(settings.description_translations, locale)) ||
-    "We craft digital experiences that define industries and elevate brands through precision and creativity.";
+    t(locale, "workDescriptionFallback");
+
+  // Editable stats band from section settings (portfolio section).
+  const stats =
+    settings?.stats
+      ?.map((stat) => ({
+        value: stat.value,
+        label:
+          resolveTranslation(stat.label_translations, locale) || stat.value,
+      }))
+      .filter((stat) => stat.value.trim().length > 0) ?? [];
 
   return (
     <>
@@ -97,14 +111,14 @@ export default async function WorkPage() {
         </div>
       </section>
 
-      <WorkStatsBand />
+      <WorkStatsBand stats={stats} />
 
 
       <section className="pt-8 pb-16 md:pt-12 md:pb-24">
         <Container>
           {projects.length === 0 ? (
             <p className="py-20 text-center text-sm text-text-muted">
-              Projects will appear here soon.
+              {t(locale, "workEmptyProjects")}
             </p>
           ) : (
             <WorkGrid

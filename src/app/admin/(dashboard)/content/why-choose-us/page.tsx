@@ -1,4 +1,5 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { parseJsonArray } from "@/lib/json";
 import type { WhyChooseUsItem } from "@/features/why-choose-us/queries";
 import { WhyChooseUsForm } from "@/components/admin/why-choose-us-form";
 import { AdminPageHeader } from "@/components/admin/page-header";
@@ -14,7 +15,7 @@ async function getItems(): Promise<WhyChooseUsItem[]> {
   if (error || !data) {
     return [];
   }
-  return (data.items as unknown as WhyChooseUsItem[]) ?? [];
+  return parseJsonArray<WhyChooseUsItem>(data.items) ?? [];
 }
 
 export default async function AdminWhyChooseUsPage() {

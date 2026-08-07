@@ -230,30 +230,37 @@ export async function getPublicPortfolioDetail(
 
   const { data: galleryLinks } = await supabase
     .from("portfolio_media")
-    .select("media_id")
+    .select("image_url, media_id")
     .eq("portfolio_id", projectId)
     .order("display_order", { ascending: true });
 
   const galleryMediaIds = [
-    ...new Set((galleryLinks ?? []).map((g) => g.media_id)),
+    ...new Set(
+      (galleryLinks ?? []).map((g) => g.media_id).filter(Boolean)
+    ),
   ] as string[];
 
-  let gallery_urls: string[] = [];
+  let mediaUrlById = new Map<string, string>();
   if (galleryMediaIds.length > 0) {
     const { data: galleryMedia } = await supabase
       .from("media_assets")
       .select("id, bucket_name, storage_path")
       .in("id", galleryMediaIds);
-    const urlById = new Map(
-      (galleryMedia ?? []).map((m) => [
-        m.id,
-        getMediaPublicUrl(m.bucket_name, m.storage_path),
-      ])
+    mediaUrlById = new Map(
+      (galleryMedia ?? [])
+        .map((m) => [m.id, getMediaPublicUrl(m.bucket_name, m.storage_path)] as const)
+        .filter(([, url]) => Boolean(url)) as [string, string][]
     );
-    gallery_urls = galleryMediaIds
-      .map((id) => urlById.get(id))
-      .filter((url): url is string => Boolean(url));
   }
+  // Direct gallery URLs win over media-library lookups (matches the
+  // portfolio_projects.image_url convention from migration 00029/00041).
+  const gallery_urls = (galleryLinks ?? [])
+    .map((g) => {
+      if (g.image_url) return g.image_url;
+      if (g.media_id) return mediaUrlById.get(g.media_id) ?? null;
+      return null;
+    })
+    .filter((url): url is string => Boolean(url));
 
   // Linked testimonial.
   let testimonial: PublicPortfolioTestimonial | null = null;

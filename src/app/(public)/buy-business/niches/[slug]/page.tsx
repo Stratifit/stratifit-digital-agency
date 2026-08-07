@@ -2,11 +2,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPublicAcquisitionSection } from "@/features/acquisition/queries";
 import {
-  ACQUISITION_NICHES,
+  getPublicAcquisitionNiches,
+  getPublicAcquisitionNiche,
+} from "@/features/acquisition/niche-queries";
+import {
   getNicheBusinesses,
-  getNicheMeta,
   getNicheSummary,
+  nicheLabel,
 } from "@/features/acquisition/niches";
+import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { pageMetadata } from "@/lib/seo";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { t, tWithNumber, tWithValue } from "@/lib/i18n/ui-strings";
@@ -39,11 +43,11 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const locale = await getLocale();
-  const meta = getNicheMeta(slug);
+  const meta = await getPublicAcquisitionNiche(slug);
   return pageMetadata({
-    title: `${meta ? `${meta.label} ${t(locale, "businesses")}` : t(locale, "businesses")} — Stratifit`,
+    title: `${meta ? `${nicheLabel(meta, locale)} ${t(locale, "businesses")}` : t(locale, "businesses")} — Stratifit`,
     description:
-      meta?.description ??
+      resolveTranslation(meta?.description_translations ?? null, locale) ||
       "Browse curated, turnkey businesses for acquisition across high-demand niches.",
     path: `/buy-business/niches/${slug}`,
   });
@@ -56,16 +60,29 @@ export default async function NicheDetailPage({
 }) {
   const { slug } = await params;
   const locale = await getLocale();
-  const niche = getNicheMeta(slug);
+  const [niche, section] = await Promise.all([
+    getPublicAcquisitionNiche(slug),
+    getPublicAcquisitionSection(),
+  ]);
 
   if (!niche) {
     notFound();
   }
 
-  const section = await getPublicAcquisitionSection();
+  const label = nicheLabel(niche, locale);
+  const description = resolveTranslation(
+    niche.description_translations,
+    locale
+  );
+  const whyTitle = resolveTranslation(niche.why_title_translations, locale);
+  const whyDescription = resolveTranslation(
+    niche.why_description_translations,
+    locale
+  );
   const businesses = getNicheBusinesses(section?.businesses ?? [], slug);
   const summary = getNicheSummary(section?.businesses ?? [], slug);
-  const otherNiches = ACQUISITION_NICHES.filter((n) => n.slug !== slug);
+  const allNiches = await getPublicAcquisitionNiches();
+  const otherNiches = allNiches.filter((n) => n.slug !== slug);
 
   return (
     <>
@@ -80,14 +97,14 @@ export default async function NicheDetailPage({
           <Reveal immediate variant="revealUp">
             <p className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-primary">
               <span aria-hidden="true" className="h-px w-6 bg-primary/40" />
-              {t(locale, "acquisition")} — {niche.label}
+              {t(locale, "acquisition")} — {label}
             </p>
             <h1 className="mb-4 font-display text-4xl font-black leading-tight tracking-tight text-text-primary sm:text-5xl md:text-6xl md:leading-none lg:text-7xl">
-              {niche.label}{" "}
+              {label}{" "}
               <span className="text-primary">{t(locale, "businesses")}</span>
             </h1>
             <p className="mt-3 max-w-2xl border-l-2 border-primary/50 pl-4 text-base leading-relaxed text-text-muted sm:pl-6 sm:text-lg md:text-xl">
-              {niche.description}
+              {description}
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-bold text-text-secondary">
@@ -111,26 +128,26 @@ export default async function NicheDetailPage({
           <Reveal className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:gap-10">
             <div className="lg:col-span-2">
               <h2 className="mb-4 font-display text-2xl font-black tracking-tight text-text-primary sm:text-3xl">
-                {niche.why_title}
+                {whyTitle}
               </h2>
               <p className="border-l-2 border-primary/30 pl-4 text-sm leading-relaxed text-text-muted sm:pl-5 sm:text-base">
-                {niche.why_description}
+                {whyDescription}
               </p>
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:col-span-3">
-              {niche.stats.map((stat) => (
+              {niche.stats.map((stat, statIndex) => (
                 <div
-                  key={stat.label}
+                  key={`${stat.value}-${statIndex}`}
                   className="rounded-card border border-white/5 bg-card-dark p-5 transition-colors duration-300 hover:border-primary/20"
                 >
                   <p className="font-display text-3xl font-black tracking-tight text-primary sm:text-4xl">
                     {stat.value}
                   </p>
                   <p className="mt-1.5 text-xs font-bold uppercase tracking-[0.18em] text-text-secondary">
-                    {stat.label}
+                    {resolveTranslation(stat.label_translations, locale)}
                   </p>
                   <p className="mt-1 text-[11px] leading-relaxed text-text-subtle">
-                    {stat.hint}
+                    {resolveTranslation(stat.hint_translations, locale)}
                   </p>
                 </div>
               ))}
@@ -145,7 +162,7 @@ export default async function NicheDetailPage({
           <Reveal className="mb-8 flex flex-wrap items-end justify-between gap-4">
             <div>
               <h2 className="mb-2 font-display text-xl font-bold text-text-primary sm:text-2xl">
-                {t(locale, "available")} {niche.label}{" "}
+                {t(locale, "available")} {label}{" "}
                 <span className="text-primary">{t(locale, "businesses")}</span>
               </h2>
               <p className="text-sm text-text-muted">
@@ -179,7 +196,7 @@ export default async function NicheDetailPage({
                 <span className="text-3xl">{niche.emoji}</span>
               </div>
               <h3 className="mb-3 font-display text-xl font-bold text-text-primary sm:text-2xl">
-                {tWithValue(locale, "newListingsComingSoon", niche.label)}
+                {tWithValue(locale, "newListingsComingSoon", label)}
               </h3>
               <p className="mx-auto mb-8 max-w-md text-sm leading-relaxed text-text-muted">
                 {t(locale, "activelyVettingDescription")}
@@ -218,7 +235,7 @@ export default async function NicheDetailPage({
                   className="group inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-bold text-text-secondary transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/30 hover:bg-primary/10 hover:text-text-primary"
                 >
                   <span className="text-base">{other.emoji}</span>
-                  {other.label}
+                  {nicheLabel(other, locale)}
                   <span className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1">
                     <ArrowRightIcon />
                   </span>

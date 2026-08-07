@@ -10,6 +10,11 @@ const translations = () =>
     es: z.string(),
   });
 
+const statsItem = z.object({
+  value: z.string().min(1, "Value is required"),
+  label_translations: translations(),
+});
+
 export const sectionSettingsSchema = z.object({
   eyebrow_translations: translations(),
   title_translations: translations().refine(
@@ -21,6 +26,8 @@ export const sectionSettingsSchema = z.object({
   /** Optional closing call-to-action (CTA-capable sections only). */
   cta_label_translations: translations().optional(),
   cta_url: z.string().optional(),
+  /** Optional stats band (used by the /work page via the portfolio section). */
+  stats: z.array(statsItem).optional(),
   is_visible: z.boolean(),
 });
 

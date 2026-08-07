@@ -155,6 +155,54 @@ export type Database = {
           },
         ]
       }
+      acquisition_niches: {
+        Row: {
+          accent: string
+          created_at: string
+          description_translations: Json
+          display_order: number
+          emoji: string
+          id: string
+          is_visible: boolean
+          label_translations: Json
+          slug: string
+          stats: Json
+          updated_at: string
+          why_description_translations: Json
+          why_title_translations: Json
+        }
+        Insert: {
+          accent?: string
+          created_at?: string
+          description_translations?: Json
+          display_order?: number
+          emoji?: string
+          id?: string
+          is_visible?: boolean
+          label_translations?: Json
+          slug: string
+          stats?: Json
+          updated_at?: string
+          why_description_translations?: Json
+          why_title_translations?: Json
+        }
+        Update: {
+          accent?: string
+          created_at?: string
+          description_translations?: Json
+          display_order?: number
+          emoji?: string
+          id?: string
+          is_visible?: boolean
+          label_translations?: Json
+          slug?: string
+          stats?: Json
+          updated_at?: string
+          why_description_translations?: Json
+          why_title_translations?: Json
+        }
+        Relationships: []
+      }
       admin_users: {
         Row: {
           created_at: string
@@ -1340,8 +1388,9 @@ export type Database = {
           created_at: string
           display_order: number
           id: string
+          image_url: string | null
           is_featured: boolean
-          media_id: string
+          media_id: string | null
           portfolio_id: string
           updated_at: string
         }
@@ -1350,8 +1399,9 @@ export type Database = {
           created_at?: string
           display_order?: number
           id?: string
+          image_url?: string | null
           is_featured?: boolean
-          media_id: string
+          media_id?: string | null
           portfolio_id: string
           updated_at?: string
         }
@@ -1360,8 +1410,9 @@ export type Database = {
           created_at?: string
           display_order?: number
           id?: string
+          image_url?: string | null
           is_featured?: boolean
-          media_id?: string
+          media_id?: string | null
           portfolio_id?: string
           updated_at?: string
         }
@@ -1610,6 +1661,7 @@ export type Database = {
           is_visible: boolean
           label: string
           section_key: string
+          stats: Json
           title_translations: Json
           updated_at: string
         }
@@ -1624,6 +1676,7 @@ export type Database = {
           is_visible?: boolean
           label: string
           section_key: string
+          stats?: Json
           title_translations?: Json
           updated_at?: string
         }
@@ -1638,6 +1691,7 @@ export type Database = {
           is_visible?: boolean
           label?: string
           section_key?: string
+          stats?: Json
           title_translations?: Json
           updated_at?: string
         }

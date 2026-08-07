@@ -516,7 +516,9 @@ export function DetailPageForm({
                           onChange={(event) =>
                             setValue(
                               `content.${index}.icon` as Path<FormValues>,
-                              (event.target.value || undefined) as never
+                              (event.target.value || undefined) as
+                                | DetailPageIconKey
+                                | undefined
                             )
                           }
                         >

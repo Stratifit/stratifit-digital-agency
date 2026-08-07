@@ -77,6 +77,7 @@ export async function updateSectionSettings(
         parsed.data.cta_label_translations
       ),
       cta_url: parsed.data.cta_url?.trim() || null,
+      stats: parsed.data.stats ?? [],
       is_visible: parsed.data.is_visible,
     })
     .eq("section_key", sectionKey);

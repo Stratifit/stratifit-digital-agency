@@ -524,7 +524,30 @@ The public Buy a Business page (`/buy-business`) drives its section labels from 
 
 `section_settings` also carries two optional CTA columns used by CTA-capable sections: `cta_label_translations jsonb` and `cta_url text` (both nullable).
 
-## 9.4 `final_cta`
+Since migration `00042`, `section_settings` also has a `stats jsonb` column (default `[]`): an editable stats band of `{ value, label_translations }` items. The `/work` page reads the `portfolio` section's `stats` row instead of hardcoding its stats band; the admin editor (Sections → Portfolio) edits it in all 4 languages.
+
+## 9.4 `acquisition_niches`
+
+Collection table (migration `00043`) replacing the hardcoded niche catalog in `src/features/acquisition/niches.ts`. Editable from the CMS in all 4 languages; rendered on `/buy-business` (card grid) and `/buy-business/niches/[slug]` (detail page), and included in `sitemap.xml`.
+
+| Column | Type |
+|---|---|
+| `id` | `uuid` PK |
+| `slug` | `text` UNIQUE |
+| `emoji` | `text` |
+| `accent` | `text` |
+| `label_translations` | `jsonb` |
+| `description_translations` | `jsonb` |
+| `why_title_translations` | `jsonb` |
+| `why_description_translations` | `jsonb` |
+| `stats` | `jsonb` (array of `{ value, label_translations, hint_translations }`) |
+| `is_visible` | `boolean` |
+| `display_order` | `integer` |
+| timestamps | standard |
+
+RLS: public `SELECT` scoped to `is_visible = true`; admins manage rows via `is_admin()`.
+
+## 9.5 `final_cta`
 
 Singleton table.
 
@@ -540,7 +563,7 @@ Suggested columns:
 - `is_visible`
 - timestamps
 
-## 9.5 `about_page`
+## 9.6 `about_page`
 
 Singleton table for the public About page.
 
@@ -765,15 +788,20 @@ Composite primary key.
 
 ## 11.3 `portfolio_media`
 
-Suggested columns:
+Gallery rows for work detail pages.
+
+Columns:
 
 - `id`
 - `portfolio_id`
-- `media_id`
+- `media_id` — nullable; media-library reference (preferred when set)
+- `image_url` — nullable; direct gallery image URL, added by migration `00041`. Preferred over `media_id` when set (mirrors the `portfolio_projects.image_url` pattern from migration `00029`)
 - `caption_translations`
 - `display_order`
 - `is_featured`
 - timestamps
+
+Seeded gallery rows (27 rows across the 9 published case studies) ship in migration `00041` and `seed.sql` so work detail galleries render without a populated media library. Public read access is gated by the policies from migrations `00033`/`00034`.
 
 ---
 

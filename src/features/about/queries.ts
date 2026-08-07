@@ -1,4 +1,5 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { parseJsonArray } from "@/lib/json";
 
 export interface AboutStat {
   icon: string;
@@ -46,8 +47,8 @@ export async function getPublicAboutPage(): Promise<PublicAboutPage | null> {
 
   return {
     ...(data as Omit<PublicAboutPage, "stats" | "values">),
-    stats: (data.stats as unknown as AboutStat[] | null) ?? [],
-    values: (data.values as unknown as AboutValue[] | null) ?? [],
+    stats: parseJsonArray<AboutStat>(data.stats) ?? [],
+    values: parseJsonArray<AboutValue>(data.values) ?? [],
   };
 }
 
@@ -72,7 +73,7 @@ export async function getAdminAboutPage(): Promise<AdminAboutPage | null> {
 
   return {
     ...(data as Omit<AdminAboutPage, "stats" | "values">),
-    stats: (data.stats as unknown as AboutStat[] | null) ?? [],
-    values: (data.values as unknown as AboutValue[] | null) ?? [],
+    stats: parseJsonArray<AboutStat>(data.stats) ?? [],
+    values: parseJsonArray<AboutValue>(data.values) ?? [],
   };
 }

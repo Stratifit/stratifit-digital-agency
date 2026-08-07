@@ -24,6 +24,19 @@ interface ResendWebhookPayload {
   };
 }
 
+/**
+ * Resend's event data types are concrete interfaces without an index
+ * signature, so they cannot be directly asserted to a `[key: string]: unknown`
+ * shape. Normalizing through `unknown` keeps the webhook handler type-safe
+ * without a scattered double cast.
+ */
+function normalizeWebhookData(
+  value: unknown
+): ResendWebhookPayload["data"] {
+  if (typeof value !== "object" || value === null) return undefined;
+  return value as Record<string, unknown>;
+}
+
 export async function POST(request: Request) {
   const secret = process.env.RESEND_WEBHOOK_SIGNING_SECRET;
 
@@ -51,7 +64,7 @@ export async function POST(request: Request) {
     payload = {
       type:
         typeof verified.type === "string" ? verified.type : undefined,
-      data: verified.data as unknown as ResendWebhookPayload["data"],
+      data: normalizeWebhookData(verified.data),
     };
   } catch {
     return NextResponse.json({ error: "Invalid signature." }, { status: 400 });

@@ -1,4 +1,5 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { parseJsonArray } from "@/lib/json";
 
 export interface TechStackItem {
   name: string;
@@ -37,6 +38,6 @@ export async function getPublicHero(): Promise<PublicHero | null> {
 
   return {
     ...data,
-    tech_stack: (data.tech_stack as unknown as TechStackItem[] | null) ?? [],
+    tech_stack: parseJsonArray<TechStackItem>(data.tech_stack) ?? [],
   } as PublicHero;
 }

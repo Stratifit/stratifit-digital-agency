@@ -167,7 +167,7 @@ export default async function ServicePage({
               <Reveal>
                 <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 lg:justify-center">
                   <ContactAwareLink href="/contact" size="large" className="w-full sm:w-auto">
-                    {ctaButton || "Start Your Project"}
+                    {ctaButton || t(locale, "servicesStartProject")}
                   </ContactAwareLink>
                   {process.length > 0 ? (
                     <LinkButton
@@ -176,7 +176,7 @@ export default async function ServicePage({
                       size="large"
                       className="w-full sm:w-auto"
                     >
-                      How We Work
+                      {t(locale, "howWeWork")}
                     </LinkButton>
                   ) : null}
                 </div>
@@ -264,7 +264,9 @@ export default async function ServicePage({
                   {serviceName}
                 </p>
                 <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
-                  {highlightLastWord(capabilitiesTitle || "Capabilities")}
+                  {highlightLastWord(
+                    capabilitiesTitle || t(locale, "servicesCapabilities")
+                  )}
                 </h2>
                 {service?.short_description_translations ? (
                   <p className="mt-3 ml-1.5 max-w-2xl border-l-2 border-primary/50 pl-4 text-sm leading-relaxed text-text-muted sm:ml-2 sm:pl-6 sm:text-base md:text-lg">
@@ -295,7 +297,7 @@ export default async function ServicePage({
                     {capability.steps && capability.steps.length > 0 ? (
                       <>
                         <h4 className="mb-4 text-xs font-bold uppercase tracking-widest text-primary">
-                          How We Do It
+                          {t(locale, "servicesHowWeDoIt")}
                         </h4>
                         <div className="grid grid-cols-2 gap-3">
                           {capability.steps.map((step, stepIndex) => (
@@ -330,10 +332,12 @@ export default async function ServicePage({
             <Reveal>
               <div className="mb-10 md:mb-16">
                 <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                  Deliverables
+                  {t(locale, "servicesDeliverables")}
                 </p>
                 <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
-                  {highlightLastWord(deliverablesTitle || "What's Included")}
+                  {highlightLastWord(
+                    deliverablesTitle || t(locale, "servicesWhatsIncluded")
+                  )}
                 </h2>
               </div>
             </Reveal>
@@ -370,10 +374,12 @@ export default async function ServicePage({
             <Reveal>
               <div className="mb-10 md:mb-16">
                 <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                  Our Process
+                  {t(locale, "workOurProcess")}
                 </p>
                 <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
-                  {highlightLastWord(processTitle || "How It Works")}
+                  {highlightLastWord(
+                    processTitle || t(locale, "servicesHowItWorks")
+                  )}
                 </h2>
               </div>
             </Reveal>
@@ -425,10 +431,12 @@ export default async function ServicePage({
             <Reveal>
               <div className="mb-10 md:mb-16">
                 <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                  Toolkit
+                  {t(locale, "servicesToolkit")}
                 </p>
                 <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
-                  {highlightLastWord(toolkitTitle || "Tools & Technologies")}
+                  {highlightLastWord(
+                    toolkitTitle || t(locale, "servicesToolsTech")
+                  )}
                 </h2>
               </div>
             </Reveal>
@@ -470,14 +478,14 @@ export default async function ServicePage({
             <Reveal>
               <div className="mb-10 md:mb-16">
                 <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                  Case Studies
+                  {t(locale, "servicesCaseStudies")}
                 </p>
                 <h2 className="font-display text-3xl font-black tracking-tight leading-tight text-text-primary sm:text-4xl md:text-5xl lg:text-6xl">
-                  Selected <span className="text-primary">Work</span>
+                  {t(locale, "workSelected")}{" "}
+                  <span className="text-primary">{t(locale, "workWord")}</span>
                 </h2>
                 <p className="mt-3 max-w-2xl border-l-2 border-primary/50 pl-4 text-sm leading-relaxed text-text-muted sm:pl-6 sm:text-base md:text-lg">
-                  Real outcomes from real projects — measured by the metrics that
-                  matter to your business.
+                  {t(locale, "servicesSelectedWorkDesc")}
                 </p>
               </div>
             </Reveal>
@@ -504,7 +512,7 @@ export default async function ServicePage({
                 <div className="relative z-10 mb-5 flex items-center justify-center gap-2">
                   <ServicePageIcon name="spark" className="size-4 text-primary" />
                   <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary">
-                    Ready When You Are
+                    {t(locale, "servicesReadyWhenYouAre")}
                   </p>
                 </div>
 
@@ -518,7 +526,7 @@ export default async function ServicePage({
                     size="large"
                     className="group"
                   >
-                    {ctaButton || "Start Your Project"}
+                    {ctaButton || t(locale, "servicesStartProject")}
                     <svg
                       viewBox="0 0 24 24"
                       fill="currentColor"

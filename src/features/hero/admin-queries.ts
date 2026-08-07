@@ -1,4 +1,5 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { parseJsonArray } from "@/lib/json";
 import type { TechStackItem } from "./queries";
 
 export interface HeroMetric {
@@ -39,7 +40,7 @@ export async function getAdminHero(): Promise<AdminHero | null> {
 
   return {
     ...(data as Omit<AdminHero, "metrics" | "tech_stack">),
-    metrics: (data.metrics as unknown as HeroMetric[] | null) ?? [],
-    tech_stack: (data.tech_stack as unknown as TechStackItem[] | null) ?? [],
+    metrics: parseJsonArray<HeroMetric>(data.metrics) ?? [],
+    tech_stack: parseJsonArray<TechStackItem>(data.tech_stack) ?? [],
   };
 }

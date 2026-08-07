@@ -10,11 +10,16 @@ export interface PublicSectionSettings {
   /** Optional closing call-to-action (only populated for CTA-capable sections). */
   cta_label_translations?: Record<string, string> | null;
   cta_url?: string | null;
+  /** Optional stats band (portfolio section / /work page). */
+  stats?: {
+    value: string;
+    label_translations: Record<string, string> | null;
+  }[] | null;
   is_visible: boolean;
 }
 
 const SELECT_FIELDS =
-  "section_key, label, eyebrow_translations, title_translations, highlight_translations, description_translations, cta_label_translations, cta_url, is_visible";
+  "section_key, label, eyebrow_translations, title_translations, highlight_translations, description_translations, cta_label_translations, cta_url, stats, is_visible";
 
 export async function getPublicSectionSetting(
   sectionKey: string

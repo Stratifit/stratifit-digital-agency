@@ -2,14 +2,19 @@
 
 import * as React from "react";
 import Link from "next/link";
-import {
-  ACQUISITION_NICHES,
-  getNicheSummary,
-  type AcquisitionNicheMeta,
-} from "@/features/acquisition/niches";
+import { getNicheSummary } from "@/features/acquisition/niches";
 import type { AcquisitionBusiness } from "@/features/acquisition/queries";
 import { t, tWithNumber, tWithValue } from "@/lib/i18n/ui-strings";
 import { FilterPills } from "@/components/ui/filter-pills";
+
+/** Resolved niche card data (translations already resolved by the server). */
+export interface NicheCardData {
+  slug: string;
+  label: string;
+  emoji: string;
+  accent: string;
+  description: string;
+}
 
 function ArrowRightIcon() {
   return (
@@ -46,7 +51,7 @@ function NicheCard({
   businesses,
   locale,
 }: {
-  niche: AcquisitionNicheMeta;
+  niche: NicheCardData;
   businesses: AcquisitionBusiness[];
   locale: string;
 }) {
@@ -124,9 +129,11 @@ function NicheCard({
 }
 
 export function BuyBusinessNiches({
+  niches,
   businesses,
   locale,
 }: {
+  niches: NicheCardData[];
   businesses: AcquisitionBusiness[];
   locale: string;
 }) {
@@ -134,7 +141,7 @@ export function BuyBusinessNiches({
 
   const pills = [
     { slug: "all", label: t(locale, "filterAll") },
-    ...ACQUISITION_NICHES.map((niche) => ({
+    ...niches.map((niche) => ({
       slug: niche.slug,
       label: niche.label,
     })),
@@ -142,8 +149,8 @@ export function BuyBusinessNiches({
 
   const visible =
     active === "all"
-      ? ACQUISITION_NICHES
-      : ACQUISITION_NICHES.filter((niche) => niche.slug === active);
+      ? niches
+      : niches.filter((niche) => niche.slug === active);
 
   return (
     <div>

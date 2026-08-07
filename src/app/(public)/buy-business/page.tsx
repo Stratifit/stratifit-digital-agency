@@ -1,10 +1,12 @@
 import { getLocale } from "@/lib/i18n/get-locale";
 import { getPublicAcquisitionSection } from "@/features/acquisition/queries";
+import { getPublicAcquisitionNiches } from "@/features/acquisition/niche-queries";
+import { nicheLabel } from "@/features/acquisition/niches";
+import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import {
   getPublicSectionSetting,
   getPublicSectionSettingIncludingHidden,
 } from "@/features/section-settings/queries";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { t } from "@/lib/i18n/ui-strings";
 import { pageMetadata } from "@/lib/seo";
 import { ContactAwareLink } from "@/components/contact/contact-aware-link";
@@ -37,12 +39,14 @@ function ArrowRightIcon() {
 
 export default async function BuyBusinessPage() {
   const locale = await getLocale();
-  const [section, settings, nichesSettings, ctaSettings] = await Promise.all([
-    getPublicAcquisitionSection(),
-    getPublicSectionSetting("acquisition"),
-    getPublicSectionSettingIncludingHidden("acquisition-niches"),
-    getPublicSectionSettingIncludingHidden("acquisition-cta"),
-  ]);
+  const [section, settings, nichesSettings, ctaSettings, niches] =
+    await Promise.all([
+      getPublicAcquisitionSection(),
+      getPublicSectionSetting("acquisition"),
+      getPublicSectionSettingIncludingHidden("acquisition-niches"),
+      getPublicSectionSettingIncludingHidden("acquisition-cta"),
+      getPublicAcquisitionNiches(),
+    ]);
 
   // The new sections are hidden when an admin pauses them (row exists,
   // is_visible = false). A missing row falls back to the default copy.
@@ -50,6 +54,16 @@ export default async function BuyBusinessPage() {
   const ctaVisible = ctaSettings === null || ctaSettings.is_visible;
 
   const businesses = section?.businesses ?? [];
+
+  // Niche catalog comes from the DB (editable in the CMS) — resolve labels
+  // and descriptions for the current locale before passing to the client.
+  const nicheCards = niches.map((niche) => ({
+    slug: niche.slug,
+    label: nicheLabel(niche, locale),
+    emoji: niche.emoji,
+    accent: niche.accent,
+    description: resolveTranslation(niche.description_translations, locale),
+  }));
   const settingsTitle = resolveTranslation(
     settings?.title_translations ?? null,
     locale
@@ -137,7 +151,11 @@ export default async function BuyBusinessPage() {
             </Reveal>
           ) : null}
 
-          <BuyBusinessNiches businesses={businesses} locale={locale} />
+          <BuyBusinessNiches
+            niches={nicheCards}
+            businesses={businesses}
+            locale={locale}
+          />
 
           {/* Final CTA */}
           {ctaVisible ? (

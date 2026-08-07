@@ -57,33 +57,11 @@ export async function savePortfolio(
       fieldErrors: parsed.error.flatten().fieldErrors,
     };
   }
-  // Merge English into existing translations so de/fr/es are preserved on edit.
-  const titleEn = parsed.data.title;
-  const summaryEn = parsed.data.summary;
-  let titleTranslations: Record<string, string> = { en: titleEn };
-  let summaryTranslations: Record<string, string> = { en: summaryEn };
-  if (slug) {
-    const { data: existing } = await supabase
-      .from("portfolio_projects")
-      .select("title_translations, summary_translations")
-      .eq("slug", slug)
-      .single();
-    if (existing) {
-      titleTranslations = {
-        ...((existing.title_translations as Record<string, string> | null) ?? {}),
-        en: titleEn,
-      };
-      summaryTranslations = {
-        ...((existing.summary_translations as Record<string, string> | null) ?? {}),
-        en: summaryEn,
-      };
-    }
-  }
   const row = {
     slug: parsed.data.slug,
     client_name: parsed.data.client_name,
-    title_translations: titleTranslations,
-    summary_translations: summaryTranslations,
+    title_translations: parsed.data.title_translations,
+    summary_translations: parsed.data.summary_translations,
     image_url: parsed.data.image_url.trim() || null,
     status: parsed.data.status,
   };
@@ -115,31 +93,10 @@ export async function saveInsight(
       fieldErrors: parsed.error.flatten().fieldErrors,
     };
   }
-  const titleEn = parsed.data.title;
-  const excerptEn = parsed.data.excerpt;
-  let titleTranslations: Record<string, string> = { en: titleEn };
-  let excerptTranslations: Record<string, string> = { en: excerptEn };
-  if (slug) {
-    const { data: existing } = await supabase
-      .from("insights")
-      .select("title_translations, excerpt_translations")
-      .eq("slug", slug)
-      .single();
-    if (existing) {
-      titleTranslations = {
-        ...((existing.title_translations as Record<string, string> | null) ?? {}),
-        en: titleEn,
-      };
-      excerptTranslations = {
-        ...((existing.excerpt_translations as Record<string, string> | null) ?? {}),
-        en: excerptEn,
-      };
-    }
-  }
   const row = {
     slug: parsed.data.slug,
-    title_translations: titleTranslations,
-    excerpt_translations: excerptTranslations,
+    title_translations: parsed.data.title_translations,
+    excerpt_translations: parsed.data.excerpt_translations,
     reading_time_minutes: parsed.data.reading_time_minutes,
     status: parsed.data.status,
     published_at: parsed.data.status === "published" ? new Date().toISOString() : null,
@@ -172,24 +129,9 @@ export async function saveTestimonial(
       fieldErrors: parsed.error.flatten().fieldErrors,
     };
   }
-  const quoteEn = parsed.data.quote;
-  let quoteTranslations: Record<string, string> = { en: quoteEn };
-  if (id) {
-    const { data: existing } = await supabase
-      .from("testimonials")
-      .select("quote_translations")
-      .eq("id", id)
-      .single();
-    if (existing) {
-      quoteTranslations = {
-        ...((existing.quote_translations as Record<string, string> | null) ?? {}),
-        en: quoteEn,
-      };
-    }
-  }
   const row = {
     person_name: parsed.data.person_name,
-    quote_translations: quoteTranslations,
+    quote_translations: parsed.data.quote_translations,
     company_name: parsed.data.company_name || null,
     is_visible: parsed.data.is_visible,
     is_verified: parsed.data.is_verified,
@@ -222,31 +164,10 @@ export async function savePricing(
       fieldErrors: parsed.error.flatten().fieldErrors,
     };
   }
-  const nameEn = parsed.data.name;
-  const priceLabelEn = parsed.data.price_label;
-  let nameTranslations: Record<string, string> = { en: nameEn };
-  let priceLabelTranslations: Record<string, string> = { en: priceLabelEn };
-  if (slug) {
-    const { data: existing } = await supabase
-      .from("pricing_plans")
-      .select("name_translations, price_label_translations")
-      .eq("slug", slug)
-      .single();
-    if (existing) {
-      nameTranslations = {
-        ...((existing.name_translations as Record<string, string> | null) ?? {}),
-        en: nameEn,
-      };
-      priceLabelTranslations = {
-        ...((existing.price_label_translations as Record<string, string> | null) ?? {}),
-        en: priceLabelEn,
-      };
-    }
-  }
   const row = {
     slug: parsed.data.slug,
-    name_translations: nameTranslations,
-    price_label_translations: priceLabelTranslations,
+    name_translations: parsed.data.name_translations,
+    price_label_translations: parsed.data.price_label_translations,
     display_order: parsed.data.display_order,
     is_visible: parsed.data.is_visible,
     is_featured: parsed.data.is_featured,
@@ -277,30 +198,9 @@ export async function saveFaq(input: FaqFormValues, id?: string): Promise<Action
       fieldErrors: parsed.error.flatten().fieldErrors,
     };
   }
-  const questionEn = parsed.data.question;
-  const answerEn = parsed.data.answer;
-  let questionTranslations: Record<string, string> = { en: questionEn };
-  let answerTranslations: Record<string, string> = { en: answerEn };
-  if (id) {
-    const { data: existing } = await supabase
-      .from("faqs")
-      .select("question_translations, answer_translations")
-      .eq("id", id)
-      .single();
-    if (existing) {
-      questionTranslations = {
-        ...((existing.question_translations as Record<string, string> | null) ?? {}),
-        en: questionEn,
-      };
-      answerTranslations = {
-        ...((existing.answer_translations as Record<string, string> | null) ?? {}),
-        en: answerEn,
-      };
-    }
-  }
   const row = {
-    question_translations: questionTranslations,
-    answer_translations: answerTranslations,
+    question_translations: parsed.data.question_translations,
+    answer_translations: parsed.data.answer_translations,
     category: parsed.data.category,
     display_order: parsed.data.display_order,
     is_visible: parsed.data.is_visible,

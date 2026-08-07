@@ -1,4 +1,5 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { parseJsonArray } from "@/lib/json";
 
 export interface AcquisitionBusiness {
   slug: string;
@@ -42,6 +43,6 @@ export async function getPublicAcquisitionSection(): Promise<PublicAcquisitionSe
 
   return {
     ...data,
-    businesses: (data.businesses as unknown as AcquisitionBusiness[] | null) ?? null,
+    businesses: parseJsonArray<AcquisitionBusiness>(data.businesses) ?? null,
   } as PublicAcquisitionSection;
 }

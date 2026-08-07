@@ -49,15 +49,15 @@
 
 ## 3. Medium-Priority Findings (P2)
 
-1. **Generic content CMS is English-only** — the portfolio/insights/testimonials/pricing/faq editor (`content-form.tsx` + `content/schemas.ts`) can only edit the English translation. Existing de/fr/es values are preserved on save, but cannot be created or edited in the CMS. Contradicts the multilingual CMS spec (language tabs). *(Fixed 2026-08-07 — work detail page only; the generic editor remains English-only.)*
-2. **Type hacks remain** — `values as never` (5× in `content-form.tsx`), `[] as never[]` (`chat/admin-queries.ts`), plus `as unknown as` casts across acquisition/hero/chat/why-choose-us queries. Type-safety debt; the earlier report's claim that the `as never[]` hack was fully fixed was incorrect.
+1. **Generic content CMS is English-only** — the portfolio/insights/testimonials/pricing/faq editor (`content-form.tsx` + `content/schemas.ts`) can only edit the English translation. Existing de/fr/es values are preserved on save, but cannot be created or edited in the CMS. Contradicts the multilingual CMS spec (language tabs). *(Resolved 2026-08-07 — the generic collection editor now has EN/DE/FR/ES language tabs; see CMS.md §19.4.)*
+2. **Type hacks remain** — `values as never` (5× in `content-form.tsx`), `[] as never[]` (`chat/admin-queries.ts`), plus `as unknown as` casts across acquisition/hero/chat/why-choose-us queries. Type-safety debt; the earlier report's claim that the `as never[]` hack was fully fixed was incorrect. *(Resolved 2026-08-07 — all `as never` casts removed; JSONB column reads now go through the runtime-guarded `parseJsonArray`/`readJsonObject` helpers in `src/lib/json.ts`; the Resend webhook normalizes payload data through a typed `unknown` bridge.)*
 3. **`trusted_logos` table orphaned** — the public Trusted By section and its admin editor were removed (2026-08-07). *(Resolved 2026-08-07 — dropped by migration `00031_drop_trusted_logos.sql`; seed rows removed.)*
 4. **Stale docs prose** — `docs/COMPONENTS.md` states `radius-xl (24px)` but the token is 16px (globals.css + DESIGN_SYSTEM.md). *(FRONTEND.md §7.2 Trusted By prose removed 2026-08-07.)*
 
 ## 4. Low-Priority / Polish (P3)
 
-- Vitest prints a config warning on every run: `vitest.config.ts` is ESM loaded as CJS — rename to `vitest.config.mts`
-- `@types/node ^20` while engines + `.nvmrc` pin Node 22 (should be `^22`)
+- ~~Vitest config warning: `vitest.config.ts` ESM loaded as CJS~~ *(Resolved 2026-08-07 — renamed to `vitest.config.mts`, `__dirname` → `import.meta.dirname`; warning gone.)*
+- ~~`@types/node ^20` while engines + `.nvmrc` pin Node 22~~ *(Resolved 2026-08-07 — bumped to `^22`.)*
 - `select("*")` in 5 admin-only queries (`features/content/get-admin-item.ts`, services edit page)
 - `src/proxy.ts` (Next 16 middleware) matcher does not exclude `/api/*`; docs recommend it — minor per-request overhead
 - `audit_logs` has `previous_data` / `new_data` columns but no mutation populates them
@@ -97,19 +97,34 @@
 - **Shared `FilterPills` component** — extracted the duplicated pill rows into `src/components/ui/filter-pills.tsx`, reused by the acquisition, portfolio, work, and insights galleries.
 - **RLS fix for public link reads** — migrations `00033`/`00034` add public read policies for `portfolio_service_links`, `insight_category_links`, `insight_categories`, and `portfolio_media`, restoring category badges, gallery images, and filter pills.
 
+**Later session (2026-08-07, open follow-ups):**
+- **Multilingual generic content CMS** — the portfolio/insights/testimonials/pricing/faq editor (`content-form.tsx`, `features/content/schemas.ts`, `save-mutations.ts`) gained EN/DE/FR/ES language tabs; translations are stored/validated as full JSONB objects, English required, others preserved. New schema tests added (`schemas.test.ts`, 11 tests).
+- **Work detail gallery seed** — migration `00041` adds `portfolio_media.image_url` (media_id now nullable) and seeds 27 gallery rows across the 9 published case studies; `seed.sql` mirrors the seed; `features/portfolio/queries.ts` resolves direct image URLs ahead of media-library lookups; database types updated.
+- **Type-hack cleanup** — all `as never` casts removed; new runtime-guarded helpers `parseJsonArray` / `readJsonObject` in `src/lib/json.ts` replace `as unknown as` JSONB casts across about/hero/acquisition/why-choose-us/chat queries; Resend webhook normalizes payload data through a typed `unknown` bridge.
+- **Tooling polish** — `vitest.config.ts` → `vitest.config.mts` (`__dirname` → `import.meta.dirname`, warning gone); `@types/node` bumped `^20` → `^22`.
+
+**Connectivity audit session (2026-08-07, latest):**
+- **Full-stack connectivity audit** — verified every public section/page is DB-driven with an admin editor and 4-language support; all homepage sections (Hero → Contact) plus About, Services, Work, Insights, Testimonials, Buy-a-Business, and Detail pages render from Supabase and are editable in the CMS.
+- **Final CTA connected to the homepage** — `FinalCtaSection` was registered and admin-editable but never rendered. Added `finalCta` to `HOMEPAGE_SECTION_KEYS` (after Contact, before Footer); its seed and admin editor already existed.
+- **`/work` stats band is now CMS-editable** — migration `00042` adds `section_settings.stats` (jsonb); the `portfolio` section row is seeded with the default 3 stats; the Sections admin editor gained a Stats editor; `/work` reads the stats from the DB instead of hardcoded English strings.
+- **Acquisition niche catalog moved to the DB** — migration `00043` creates `acquisition_niches` (7 niches seeded in 4 languages with stats, RLS: public read visible only, admin manage) with admin CRUD (`/admin/content/acquisition/niches` + new/edit pages, `NicheForm` with locale tabs), replacing the hardcoded English catalog in `niches.ts`; public pages `/buy-business` + `/buy-business/niches/[slug]` and `sitemap.xml` now fetch from the DB.
+- **Services admin form gained EN/DE/FR/ES tabs** — `features/services/schemas.ts` now validates full 4-locale JSONB translation objects (English required); `service-form.tsx` has locale tabs; `updateService` merges translations so saving one language never wipes others.
+- **Hardcoded frontend strings localized** — `/services` page hero, `/services/[slug]` labels (Deliverables, Our Process, etc.), `/about` headings/fallbacks, `/work` hero fallbacks, `/testimonials` and `/insights` hero fallbacks all moved to `ui-strings.ts` (en/de/fr/es).
+
 ## 7. Remaining Work (for the owner)
 
 1. Set production environment variables (`RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_WEBHOOK_SIGNING_SECRET`, `AI_API_KEY`, `AI_MODEL`, `NEXT_PUBLIC_SITE_URL`)
 2. Enable Supabase Auth leaked-password protection (dashboard)
 3. Deploy to Vercel + verify domain, production migrations, and smoke tests
+4. Apply migration `00041_portfolio_media_gallery.sql` to the remote database (pending deploy)
 
 ## 8. Known Follow-ups (engineering)
 
-- Multi-language editing tabs in the generic content CMS (portfolio/insights/testimonials/pricing/faq)
-- Replace `as never` / `as unknown as` casts with proper discriminated typing
-- Rename `vitest.config.ts` → `.mts`; bump `@types/node` to `^22`
 - Sweep remaining stale doc prose (COMPONENTS radius note — FRONTEND §7.2 resolved)
-- Seed `portfolio_media` gallery links for work detail pages — the table has zero rows on the remote DB, so galleries render empty until data exists
+- `select("*")` in 5 admin-only queries
+- `audit_logs.previous_data` / `new_data` columns are never populated
+- Review `supabase/config.toml` signup/password settings before production
+- `.env.example` embeds the real Supabase project ref
 
 ---
 
