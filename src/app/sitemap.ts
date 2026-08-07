@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getPublicAcquisitionNiches } from "@/features/acquisition/niche-queries";
+import { FALLBACK_ACQUISITION_NICHES } from "@/features/acquisition/niche-fallbacks";
 import { getPublicServicePageSlugs } from "@/features/service-pages/queries";
 import { getPublicDetailPageSlugs } from "@/features/detail-pages/queries";
 
@@ -29,6 +30,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getPublicAcquisitionNiches(),
   ]);
 
+  // Niche pages render via the canonical fallback catalog when the DB table
+  // has no rows, so the sitemap should list the same URLs in that case.
+  const sitemapNiches =
+    niches.length > 0 ? niches : FALLBACK_ACQUISITION_NICHES;
+
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${BASE_URL}/`, lastModified: new Date() },
     { url: `${BASE_URL}/services`, lastModified: new Date() },
@@ -37,7 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/insights`, lastModified: new Date() },
     { url: `${BASE_URL}/about`, lastModified: new Date() },
     { url: `${BASE_URL}/buy-business`, lastModified: new Date() },
-    ...niches.map((niche) => ({
+    ...sitemapNiches.map((niche) => ({
       url: `${BASE_URL}/buy-business/niches/${niche.slug}`,
       lastModified: new Date(),
     })),

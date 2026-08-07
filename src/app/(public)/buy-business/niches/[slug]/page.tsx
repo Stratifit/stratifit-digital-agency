@@ -6,6 +6,10 @@ import {
   getPublicAcquisitionNiche,
 } from "@/features/acquisition/niche-queries";
 import {
+  FALLBACK_ACQUISITION_NICHES,
+  getFallbackAcquisitionNiche,
+} from "@/features/acquisition/niche-fallbacks";
+import {
   getNicheBusinesses,
   getNicheSummary,
   nicheLabel,
@@ -43,7 +47,8 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const locale = await getLocale();
-  const meta = await getPublicAcquisitionNiche(slug);
+  const meta =
+    (await getPublicAcquisitionNiche(slug)) ?? getFallbackAcquisitionNiche(slug);
   return pageMetadata({
     title: `${meta ? `${nicheLabel(meta, locale)} ${t(locale, "businesses")}` : t(locale, "businesses")} — Stratifit`,
     description:
@@ -60,10 +65,14 @@ export default async function NicheDetailPage({
 }) {
   const { slug } = await params;
   const locale = await getLocale();
-  const [niche, section] = await Promise.all([
+  const [dbNiche, section] = await Promise.all([
     getPublicAcquisitionNiche(slug),
     getPublicAcquisitionSection(),
   ]);
+
+  // Fall back to the canonical 4-language catalog when the DB has no rows
+  // (e.g. before migration 00043 is applied) so niche pages never 404.
+  const niche = dbNiche ?? getFallbackAcquisitionNiche(slug);
 
   if (!niche) {
     notFound();
@@ -81,7 +90,9 @@ export default async function NicheDetailPage({
   );
   const businesses = getNicheBusinesses(section?.businesses ?? [], slug);
   const summary = getNicheSummary(section?.businesses ?? [], slug);
-  const allNiches = await getPublicAcquisitionNiches();
+  const dbNiches = await getPublicAcquisitionNiches();
+  const allNiches =
+    dbNiches.length > 0 ? dbNiches : FALLBACK_ACQUISITION_NICHES;
   const otherNiches = allNiches.filter((n) => n.slug !== slug);
 
   return (

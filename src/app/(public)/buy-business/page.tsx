@@ -1,6 +1,7 @@
 import { getLocale } from "@/lib/i18n/get-locale";
 import { getPublicAcquisitionSection } from "@/features/acquisition/queries";
 import { getPublicAcquisitionNiches } from "@/features/acquisition/niche-queries";
+import { FALLBACK_ACQUISITION_NICHES } from "@/features/acquisition/niche-fallbacks";
 import { nicheLabel } from "@/features/acquisition/niches";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import {
@@ -55,9 +56,12 @@ export default async function BuyBusinessPage() {
 
   const businesses = section?.businesses ?? [];
 
-  // Niche catalog comes from the DB (editable in the CMS) — resolve labels
-  // and descriptions for the current locale before passing to the client.
-  const nicheCards = niches.map((niche) => ({
+  // Niche catalog comes from the DB (editable in the CMS). When the table has
+  // no rows (e.g. before migration 00043 is applied) fall back to the canonical
+  // 4-language catalog so the grid never renders empty.
+  const effectiveNiches =
+    niches.length > 0 ? niches : FALLBACK_ACQUISITION_NICHES;
+  const nicheCards = effectiveNiches.map((niche) => ({
     slug: niche.slug,
     label: nicheLabel(niche, locale),
     emoji: niche.emoji,
@@ -79,7 +83,9 @@ export default async function BuyBusinessPage() {
   const hasSplit = Boolean(settingsTitle && settingsHighlight);
   const title = hasSplit
     ? settingsTitle
-    : (sectionTitle ?? t(locale, "buyABusiness"));
+    : (sectionTitle ||
+      settingsTitle ||
+      t(locale, "buyABusiness"));
   const highlight = hasSplit ? settingsHighlight : null;
   const description =
     resolveTranslation(settings?.description_translations ?? null, locale) ||
@@ -120,7 +126,7 @@ export default async function BuyBusinessPage() {
         <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
           <Reveal immediate variant="revealUp">
             <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-              {resolveTranslation(settings?.eyebrow_translations ?? null, locale) ??
+              {resolveTranslation(settings?.eyebrow_translations ?? null, locale) ||
                 t(locale, "acquisition")}
             </p>
             <h1 className="mb-4 font-display text-4xl font-black leading-tight tracking-tight text-text-primary sm:text-5xl md:text-6xl md:leading-none lg:text-7xl">
