@@ -111,8 +111,11 @@ export default async function WorkPage() {
         </div>
       </section>
 
+      <div aria-hidden="true" className="h-px w-full bg-white/5" />
+
       <WorkStatsBand stats={stats} />
 
+      <div aria-hidden="true" className="h-px w-full bg-white/5" />
 
       <section className="pt-8 pb-16 md:pt-12 md:pb-24">
         <Container>

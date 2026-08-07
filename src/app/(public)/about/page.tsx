@@ -81,7 +81,10 @@ export default async function AboutPage() {
         </Container>
       </section>
 
+      <div aria-hidden="true" className="h-px w-full bg-white/5" />
+
       {stats.length > 0 ? (
+        <>
         <section className="pb-20">
           <Container width="md">
             <Reveal className="grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -102,6 +105,8 @@ export default async function AboutPage() {
             </Reveal>
           </Container>
         </section>
+        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+        </>
       ) : null}
 
       <section className="pb-4">

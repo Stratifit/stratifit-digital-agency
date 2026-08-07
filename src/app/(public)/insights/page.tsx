@@ -67,6 +67,8 @@ export default async function InsightsPage() {
         </div>
       </section>
 
+      <div aria-hidden="true" className="h-px w-full bg-white/5" />
+
       <section className="pb-16 md:pb-24">
         <Container>
           {insights.length === 0 ? (
