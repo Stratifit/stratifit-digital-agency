@@ -1,6 +1,10 @@
 import { cn } from "@/lib/cn";
 import type { PublicSectionSettings } from "@/features/section-settings/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import {
+  SECTION_HEADER_FALLBACKS,
+  type LocaleMap,
+} from "@/lib/i18n/section-fallbacks";
 import { SectionHeadingReveal } from "@/components/ui/section-heading-reveal";
 
 export function SectionHeader({
@@ -24,12 +28,27 @@ export function SectionHeader({
     return null;
   }
 
-  const eyebrow = resolveTranslation(settings.eyebrow_translations, locale);
-  const title = resolveTranslation(settings.title_translations, locale);
-  const highlight = resolveTranslation(settings.highlight_translations, locale);
-  const description = resolveTranslation(
+  // Fall back to the section's canonical copy when the DB row has no usable
+  // text, so headers never render empty (page/section titles included).
+  const fallback = SECTION_HEADER_FALLBACKS[settings.section_key];
+  const resolveField = (
+    translations: Record<string, string> | null | undefined,
+    fallbackField: LocaleMap | undefined
+  ) => {
+    const fromDb = resolveTranslation(translations, locale);
+    if (fromDb) return fromDb;
+    return fallbackField?.[locale as keyof LocaleMap] || fallbackField?.en || "";
+  };
+
+  const eyebrow = resolveField(settings.eyebrow_translations, fallback?.eyebrow);
+  const title = resolveField(settings.title_translations, fallback?.title);
+  const highlight = resolveField(
+    settings.highlight_translations,
+    fallback?.highlight
+  );
+  const description = resolveField(
     settings.description_translations,
-    locale
+    fallback?.description
   );
 
   if (!eyebrow && !title && !description) {

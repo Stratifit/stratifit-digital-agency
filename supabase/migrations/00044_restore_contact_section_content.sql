@@ -19,7 +19,7 @@ WHERE section_key = 'contact'
   AND (
     title_translations IS NULL
     OR title_translations = '{}'::jsonb
-    OR COALESCE(title_translations->>'en', '') = ''
+    OR NOT EXISTS (SELECT 1 FROM jsonb_each_text(title_translations) WHERE btrim(value) <> '')
   );
 
 -- Description: fill only when the stored translations have no usable value.
@@ -29,7 +29,7 @@ WHERE section_key = 'contact'
   AND (
     description_translations IS NULL
     OR description_translations = '{}'::jsonb
-    OR COALESCE(description_translations->>'en', '') = ''
+    OR NOT EXISTS (SELECT 1 FROM jsonb_each_text(description_translations) WHERE btrim(value) <> '')
   );
 
 -- =============================================================================
