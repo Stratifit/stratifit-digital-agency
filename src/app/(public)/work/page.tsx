@@ -21,23 +21,24 @@ function WorkStatsBand() {
   const stats = [
     { value: "50+", label: "Projects delivered" },
     { value: "340%", label: "Average client ROAS" },
-    { value: "4.9/5", label: "Average client rating" },
     { value: "92%", label: "Clients who renew" },
   ];
 
   return (
     <section className="border-y border-border bg-surface-soft/40">
       <Container className="py-12 md:py-14">
-        <Reveal className="grid grid-cols-2 gap-x-8 gap-y-10 md:grid-cols-4 md:divide-x md:divide-white/5">
-          {stats.map((stat) => (
-            <div key={stat.label} className="text-center md:px-4">
-              <div className="font-display text-3xl font-black leading-none tracking-tight text-primary md:text-5xl">
-                <CountUp
-                  value={stat.value}
-                  className="tabular-nums"
-                />
+        <Reveal className="grid grid-cols-3 gap-4">
+          {stats.map((stat, index) => (
+            <div
+              key={stat.label}
+              className={`flex flex-col items-center px-2 text-center ${
+                index > 0 ? "border-white/10 sm:border-l" : ""
+              }`}
+            >
+              <div className="mb-1 font-display text-2xl font-extrabold tracking-tight text-primary sm:mb-2 sm:text-3xl">
+                <CountUp value={stat.value} className="tabular-nums" />
               </div>
-              <div className="mt-3 text-[10px] font-bold uppercase leading-tight tracking-[0.2em] text-text-subtle md:mt-4 md:text-xs">
+              <div className="text-[9px] font-semibold uppercase leading-snug tracking-[0.1em] text-text-secondary sm:text-[11px]">
                 {stat.label}
               </div>
             </div>
