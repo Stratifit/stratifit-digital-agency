@@ -67,7 +67,7 @@ export function FaqHelpCard() {
         </span>
       </button>
 
-      <ContactTrigger className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-xs font-bold text-text-inverse shadow-[0_0_18px_rgba(245,158,11,0.25)] transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary-hover active:scale-95 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 group-hover:gap-3 sm:px-5 sm:py-3 sm:text-sm">
+      <ContactTrigger className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-xs font-bold text-black shadow-[0_0_18px_rgba(245,158,11,0.25)] transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary-light active:scale-95 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 group-hover:gap-3 sm:px-5 sm:py-3 sm:text-sm">
         Contact our team
         <ArrowRightIcon className="text-xs transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-0.5 sm:text-sm" />
       </ContactTrigger>
