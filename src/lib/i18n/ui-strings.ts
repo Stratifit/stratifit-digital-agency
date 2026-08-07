@@ -215,6 +215,8 @@ export type UiStringKey =
   | "servicesSelectedWorkDesc"
   | "servicesReadyWhenYouAre"
   | "servicesStartProject"
+  | "ctaStartService"
+  | "ctaExploreNiche"
   | "aboutEyebrowFallback"
   | "aboutTitleFallback"
   | "aboutHighlightFallback"
@@ -472,6 +474,8 @@ const en: UiStrings = {
     "Real outcomes from real projects — measured by the metrics that matter to your business.",
   servicesReadyWhenYouAre: "Ready When You Are",
   servicesStartProject: "Start Your Project",
+  ctaStartService: "Start Your {value} Project",
+  ctaExploreNiche: "Explore {value} Opportunities",
   aboutEyebrowFallback: "About",
   aboutTitleFallback: "About ",
   aboutHighlightFallback: "Stratifit",
@@ -732,6 +736,8 @@ const de: UiStrings = {
     "Echte Ergebnisse aus echten Projekten — gemessen an den Kennzahlen, die für Ihr Unternehmen zählen.",
   servicesReadyWhenYouAre: "Bereit, wenn Sie es sind",
   servicesStartProject: "Projekt starten",
+  ctaStartService: "{value}-Projekt starten",
+  ctaExploreNiche: "Chancen in {value} entdecken",
   aboutEyebrowFallback: "Über uns",
   aboutTitleFallback: "Über ",
   aboutHighlightFallback: "Stratifit",
@@ -992,6 +998,8 @@ const fr: UiStrings = {
     "De vrais résultats issus de vrais projets — mesurés par les indicateurs qui comptent pour votre entreprise.",
   servicesReadyWhenYouAre: "Prêt quand vous l'êtes",
   servicesStartProject: "Démarrer votre projet",
+  ctaStartService: "Démarrer votre projet {value}",
+  ctaExploreNiche: "Découvrir les opportunités {value}",
   aboutEyebrowFallback: "À propos",
   aboutTitleFallback: "À propos de ",
   aboutHighlightFallback: "Stratifit",
@@ -1252,6 +1260,8 @@ const es: UiStrings = {
     "Resultados reales de proyectos reales, medidos por las métricas que importan para tu negocio.",
   servicesReadyWhenYouAre: "Listos cuando tú lo estés",
   servicesStartProject: "Inicia tu proyecto",
+  ctaStartService: "Inicia tu proyecto de {value}",
+  ctaExploreNiche: "Explorar oportunidades de {value}",
   aboutEyebrowFallback: "Nosotros",
   aboutTitleFallback: "Sobre ",
   aboutHighlightFallback: "Stratifit",

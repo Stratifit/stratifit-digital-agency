@@ -10,8 +10,8 @@ import {
 } from "@/features/section-settings/queries";
 import { t } from "@/lib/i18n/ui-strings";
 import { pageMetadata } from "@/lib/seo";
-import { ContactAwareLink } from "@/components/contact/contact-aware-link";
 import { Reveal } from "@/components/ui/reveal";
+import { CtaCard } from "@/components/sections/cta-card";
 import { BuyBusinessNiches } from "@/components/acquisition/buy-business-niches";
 
 export const metadata = pageMetadata({
@@ -20,23 +20,6 @@ export const metadata = pageMetadata({
     "Skip the startup grind. Browse our curated marketplace of profitable, turnkey businesses across seven high-demand niches.",
   path: "/buy-business",
 });
-
-function ArrowRightIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-      className="size-4"
-    >
-      <path
-        fillRule="evenodd"
-        d="M12.97 3.97a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06l6.22-6.22H3a.75.75 0 0 1 0-1.5h16.19l-6.22-6.22a.75.75 0 0 1 0-1.06Z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
 
 export default async function BuyBusinessPage() {
   const locale = await getLocale();
@@ -165,22 +148,13 @@ export default async function BuyBusinessPage() {
 
           {/* Final CTA */}
           {ctaVisible ? (
-            <Reveal className="mt-16 rounded-card border border-white/5 bg-card-dark py-12 text-center">
-              <h2 className="mb-4 font-display text-2xl font-bold text-text-primary sm:text-3xl">
-                {ctaTitle}
-              </h2>
-              <p className="mx-auto mb-8 max-w-xl text-sm text-text-muted sm:text-base">
-                {ctaDescription}
-              </p>
-              <ContactAwareLink
+            <Reveal className="mt-16">
+              <CtaCard
+                title={ctaTitle}
+                description={ctaDescription}
+                label={ctaLabel}
                 href={ctaHref}
-                className="group inline-flex items-center justify-center gap-2 rounded-button bg-primary px-8 py-4 text-sm font-bold text-text-inverse shadow-[0_0_30px_rgba(245,158,11,0.2)] transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary-hover active:scale-95"
-              >
-                {ctaLabel}
-                <span className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1">
-                  <ArrowRightIcon />
-                </span>
-              </ContactAwareLink>
+              />
             </Reveal>
           ) : null}
         </div>

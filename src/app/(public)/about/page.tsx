@@ -6,8 +6,8 @@ import { getPublicAboutPage } from "@/features/about/queries";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import { CountUp } from "@/components/ui/count-up";
-import { ContactAwareLink } from "@/components/contact/contact-aware-link";
 import { AboutIcon } from "@/components/ui/about-icon";
+import { CtaCard } from "@/components/sections/cta-card";
 
 export const metadata = pageMetadata({
   title: "About — Stratifit",
@@ -171,17 +171,20 @@ export default async function AboutPage() {
             </Reveal>
           ) : null}
 
-          <Reveal className="border-t border-white/10 py-8 text-center">
-            <h2 className="mb-4 font-display text-2xl font-black tracking-tight text-text-primary md:text-3xl">
-              {ctaTitle}
-              {ctaHighlight ? (
-                <span className="text-primary">{ctaHighlight}</span>
-              ) : null}
-            </h2>
-            <p className="mb-6 text-sm text-text-muted">{ctaDescription}</p>
-            <ContactAwareLink href={ctaHref} size="large">
-              {ctaLabel}
-            </ContactAwareLink>
+          <Reveal className="py-8">
+            <CtaCard
+              title={
+                <>
+                  {ctaTitle}
+                  {ctaHighlight ? (
+                    <span className="text-primary">{ctaHighlight}</span>
+                  ) : null}
+                </>
+              }
+              description={ctaDescription}
+              label={ctaLabel}
+              href={ctaHref}
+            />
           </Reveal>
         </Container>
       </section>

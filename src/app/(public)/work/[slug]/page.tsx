@@ -9,10 +9,10 @@ import {
 import { getPublicServices } from "@/features/services/queries";
 import { getPublicProcessSteps } from "@/features/process/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
-import { t } from "@/lib/i18n/ui-strings";
+import { t, tWithValue } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
 import { articleJsonLd, canonical, pageMetadata } from "@/lib/seo";
-import { ContactAwareLink } from "@/components/contact/contact-aware-link";
+import { CtaCard } from "@/components/sections/cta-card";
 import { Reveal } from "@/components/ui/reveal";
 import { ProcessIcon } from "@/components/ui/process-icon";
 import { RelatedProjects } from "@/components/work/related-projects";
@@ -570,25 +570,17 @@ export default async function WorkDetailPage({
       {/* Final CTA */}
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
-          <Reveal className="rounded-card-lg border border-white/5 bg-card-dark p-8 text-center sm:p-12">
-            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.3em] text-primary">
-              {t(locale, "startYourProject")}
-            </p>
-            <h3 className="mb-3 font-display text-2xl font-black leading-tight text-text-primary sm:text-3xl md:text-4xl">
-              {t(locale, "workWantOutcome")}
-            </h3>
-            <p className="mx-auto mb-8 max-w-2xl text-sm leading-relaxed text-text-muted md:text-base">
-              {t(locale, "workSameRigor")}
-            </p>
-            <ContactAwareLink
+          <Reveal>
+            <CtaCard
+              title={t(locale, "workWantOutcome")}
+              description={t(locale, "workSameRigor")}
+              label={
+                serviceTitle
+                  ? tWithValue(locale, "ctaStartService", serviceTitle)
+                  : t(locale, "workStartCta")
+              }
               href="/contact"
-              className="group inline-flex items-center justify-center gap-3 rounded-button bg-primary px-8 py-4 text-base font-bold text-text-inverse shadow-[0_0_30px_rgba(245,158,11,0.3)] transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:bg-primary-hover hover:shadow-[0_0_50px_rgba(245,158,11,0.5)] active:scale-95 sm:px-12 sm:py-5 sm:text-lg"
-            >
-              {t(locale, "workStartCta")}
-              <span className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1">
-                <ArrowRightIcon />
-              </span>
-            </ContactAwareLink>
+            />
           </Reveal>
         </div>
       </section>

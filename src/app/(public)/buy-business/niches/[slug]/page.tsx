@@ -22,6 +22,7 @@ import { hexToRgba } from "@/lib/color";
 import { ContactAwareLink } from "@/components/contact/contact-aware-link";
 import { Reveal } from "@/components/ui/reveal";
 import { BusinessCard } from "@/components/sections/business-card";
+import { CtaCard } from "@/components/sections/cta-card";
 
 function ArrowRightIcon() {
   return (
@@ -260,29 +261,20 @@ export default async function NicheDetailPage({
       {/* Final CTA */}
       <section className="pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <Reveal className="relative overflow-hidden rounded-card border border-white/5 bg-card-dark px-6 py-12 text-center sm:px-12 sm:py-16">
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute left-1/2 top-0 h-64 w-[480px] -translate-x-1/2 rounded-full blur-[120px]"
-              style={{ background: hexToRgba(niche.accent, 0.12) }}
+          <Reveal>
+            <CtaCard
+              title={
+                <>
+                  {t(locale, "readyToOwnBusinessA")}{" "}
+                  <span className="text-primary">
+                    {t(locale, "readyToOwnBusinessQ")}
+                  </span>
+                </>
+              }
+              description={t(locale, "acquisitionGuideDescription")}
+              label={tWithValue(locale, "ctaExploreNiche", label)}
+              href="/contact"
             />
-            <div className="relative z-10">
-              <h2 className="mb-4 font-display text-2xl font-black tracking-tight text-text-primary sm:text-3xl">
-                {t(locale, "readyToOwnBusinessA")} <span className="text-primary">{t(locale, "readyToOwnBusinessQ")}</span>
-              </h2>
-              <p className="mx-auto mb-8 max-w-xl text-sm leading-relaxed text-text-muted sm:text-base">
-                {t(locale, "acquisitionGuideDescription")}
-              </p>
-              <ContactAwareLink
-                href="/contact"
-                className="group inline-flex items-center justify-center gap-2 rounded-button bg-primary px-8 py-4 text-sm font-bold text-text-inverse shadow-[0_0_30px_rgba(245,158,11,0.2)] transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary-hover hover:shadow-[0_0_45px_rgba(245,158,11,0.3)] active:scale-95"
-              >
-                {t(locale, "scheduleConsultation")}
-                <span className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1">
-                  <ArrowRightIcon />
-                </span>
-              </ContactAwareLink>
-            </div>
           </Reveal>
         </div>
       </section>
