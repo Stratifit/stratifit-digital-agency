@@ -14,7 +14,6 @@ import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
-import { TrustedBySection } from "@/components/sections/trusted-by-section";
 import { WorkGrid } from "@/components/work/work-grid";
 
 function WorkStatsBand() {
@@ -93,7 +92,6 @@ export default async function WorkPage() {
 
       <WorkStatsBand />
 
-      <TrustedBySection />
 
       <section className="pt-20 pb-24 md:pt-24 md:pb-32">
         <Container>

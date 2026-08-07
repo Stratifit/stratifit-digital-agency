@@ -197,7 +197,6 @@ Website
 ├── Header / Navigation
 ├── Home
 │   ├── Hero
-│   ├── Trusted By
 │   ├── Services
 │   ├── Process
 │   ├── Why Choose Us
@@ -323,17 +322,16 @@ The CMS should manage:
 The homepage order is fixed in version 1:
 
 1. Hero
-2. Trusted By
-3. Services
-4. Process
-5. Why Choose Us
-6. Insights & Expertise
-7. Portfolio
-8. Acquisition — Buy a Business
-9. Testimonials
-10. Pricing
-11. FAQ
-12. Final CTA
+2. Services
+3. Process
+4. Why Choose Us
+5. Insights & Expertise
+6. Portfolio
+7. Acquisition — Buy a Business
+8. Testimonials
+9. Pricing
+10. FAQ
+11. Final CTA
 
 The CMS may allow each section to be:
 

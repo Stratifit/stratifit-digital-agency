@@ -469,18 +469,17 @@ The complete public layout is:
 1. Announcement Bar
 2. Header / Navigation
 3. Hero
-4. Trusted By
-5. Services
-6. Process
-7. Why Choose Us
-8. Insights & Expertise
-9. Portfolio
-10. Acquisition — Buy a Business
-11. Testimonials
-12. Pricing
-13. FAQ
-14. Final CTA
-15. Footer
+4. Services
+5. Process
+6. Why Choose Us
+7. Insights & Expertise
+8. Portfolio
+9. Acquisition — Buy a Business
+10. Testimonials
+11. Pricing
+12. FAQ
+13. Final CTA
+14. Footer
 ```
 
 Global layout components:

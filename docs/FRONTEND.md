@@ -252,35 +252,33 @@ The complete homepage rendering order for version 1 is:
 1. Announcement Bar
 2. Header / Navigation
 3. Hero
-4. Trusted By
-5. Services
-6. Process
-7. Why Choose Us
-8. Insights & Expertise
-9. Portfolio
-10. Acquisition — Buy a Business
-11. Testimonials
-12. Pricing
-13. FAQ
-14. Final CTA
-15. Footer
+4. Services
+5. Process
+6. Why Choose Us
+7. Insights & Expertise
+8. Portfolio
+9. Acquisition — Buy a Business
+10. Testimonials
+11. Pricing
+12. FAQ
+13. Final CTA
+14. Footer
 
 The Announcement Bar, Header / Navigation, Footer, and the floating back arrow (`PublicBackButton`) are global layout components. The back arrow renders on every public page except the homepage and returns visitors to the page/section they clicked from (`router.back()` with a homepage fallback).
 
 The primary homepage content sections are:
 
 1. Hero
-2. Trusted By
-3. Services
-4. Process
-5. Why Choose Us
-6. Insights & Expertise
-7. Portfolio
-8. Acquisition — Buy a Business
-9. Testimonials
-10. Pricing
-11. FAQ
-12. Final CTA
+2. Services
+3. Process
+4. Why Choose Us
+5. Insights & Expertise
+6. Portfolio
+7. Acquisition — Buy a Business
+8. Testimonials
+9. Pricing
+10. FAQ
+11. Final CTA
 
 The order is fixed for version 1.
 

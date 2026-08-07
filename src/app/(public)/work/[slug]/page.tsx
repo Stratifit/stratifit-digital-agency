@@ -15,7 +15,6 @@ import { articleJsonLd, canonical, pageMetadata } from "@/lib/seo";
 import { ContactAwareLink } from "@/components/contact/contact-aware-link";
 import { Reveal } from "@/components/ui/reveal";
 import { ProcessIcon } from "@/components/ui/process-icon";
-import { TrustedBySection } from "@/components/sections/trusted-by-section";
 import { RelatedProjects } from "@/components/work/related-projects";
 
 export async function generateMetadata({
@@ -603,7 +602,6 @@ export default async function WorkDetailPage({
         </div>
       </section>
 
-      <TrustedBySection />
     </>
   );
 }

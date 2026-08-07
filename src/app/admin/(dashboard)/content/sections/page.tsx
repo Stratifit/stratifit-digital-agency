@@ -44,23 +44,6 @@ export default async function AdminSectionsPage() {
     });
   }
 
-  // Trusted By — content-driven
-  rows.push({
-    key: "trustedBy",
-    label: "Trusted By",
-    description: "Client and partner logos under the hero",
-    status: "auto",
-    isVisible: true,
-    editHref: "/admin/content/trusted-logos",
-    countLabel: "Shown automatically when logos are added",
-    preview: {
-      en: { eyebrow: "", title: "Trusted By", highlight: "", description: "Logos row — managed in Trusted Logos." },
-      de: { eyebrow: "", title: "Trusted By", highlight: "", description: "Logos row — managed in Trusted Logos." },
-      fr: { eyebrow: "", title: "Trusted By", highlight: "", description: "Logos row — managed in Trusted Logos." },
-      es: { eyebrow: "", title: "Trusted By", highlight: "", description: "Logos row — managed in Trusted Logos." },
-    },
-  });
-
   // Section-settings-backed sections
   const settingsSections: {
     key: string;

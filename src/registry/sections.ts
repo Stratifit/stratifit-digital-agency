@@ -1,6 +1,5 @@
 import type { ComponentType } from "react";
 import { HeroSection } from "@/components/sections/hero-section";
-import { TrustedBySection } from "@/components/sections/trusted-by-section";
 import { ServicesSection } from "@/components/sections/services-section";
 import { ProcessSection } from "@/components/sections/process-section";
 import { WhyChooseUsSection } from "@/components/sections/why-choose-us-section";
@@ -15,7 +14,6 @@ import { FinalCtaSection } from "@/components/sections/final-cta-section";
 
 export type SectionKey =
   | "hero"
-  | "trustedBy"
   | "services"
   | "process"
   | "whyChooseUs"
@@ -35,7 +33,6 @@ export interface RegisteredSection {
 
 export const HOMEPAGE_SECTION_KEYS: SectionKey[] = [
   "hero",
-  "trustedBy",
   "services",
   "process",
   "whyChooseUs",
@@ -50,7 +47,6 @@ export const HOMEPAGE_SECTION_KEYS: SectionKey[] = [
 
 export const sectionRegistry: Record<SectionKey, RegisteredSection> = {
   hero: { key: "hero", component: HeroSection },
-  trustedBy: { key: "trustedBy", component: TrustedBySection },
   services: { key: "services", component: ServicesSection },
   process: { key: "process", component: ProcessSection },
   whyChooseUs: { key: "whyChooseUs", component: WhyChooseUsSection },
