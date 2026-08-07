@@ -82,8 +82,10 @@ export function AcquisitionGallery({
   }
 
   function scrollByCard(direction: number) {
-    scrollRef.current?.scrollBy({
-      left: direction * 360,
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollBy({
+      left: direction * el.clientWidth,
       behavior: "smooth",
     });
   }
@@ -113,14 +115,11 @@ export function AcquisitionGallery({
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:gap-6 lg:-mx-8 lg:px-8"
+          className="mx-auto flex w-full max-w-2xl snap-x snap-mandatory gap-6 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {filtered.map((business) => (
             <div key={business.slug} data-business-card>
-              <BusinessCard
-                business={business}
-                className="w-[300px] sm:w-[340px] md:w-[380px]"
-              />
+              <BusinessCard business={business} />
             </div>
           ))}
         </div>
@@ -129,7 +128,7 @@ export function AcquisitionGallery({
           type="button"
           aria-label="Scroll businesses left"
           onClick={() => scrollByCard(-1)}
-          className="absolute -left-20 top-1/2 z-10 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/70 text-white shadow-lg backdrop-blur-sm transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary hover:text-black md:flex"
+          className="absolute -left-12 top-1/2 z-10 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/70 text-white shadow-lg backdrop-blur-sm transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary hover:text-black md:flex"
         >
           <ChevronLeftIcon />
         </button>
@@ -137,7 +136,7 @@ export function AcquisitionGallery({
           type="button"
           aria-label="Scroll businesses right"
           onClick={() => scrollByCard(1)}
-          className="absolute -right-20 top-1/2 z-10 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/70 text-white shadow-lg backdrop-blur-sm transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary hover:text-black md:flex"
+          className="absolute -right-12 top-1/2 z-10 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/70 text-white shadow-lg backdrop-blur-sm transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary hover:text-black md:flex"
         >
           <ArrowIcon />
         </button>
