@@ -14,6 +14,7 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { t } from "@/lib/i18n/ui-strings";
 import { Container } from "@/components/ui/container";
 import { InsightsGrid } from "@/components/insights/insights-grid";
+import { InsightsHero } from "@/components/insights/insights-hero";
 
 export default async function InsightsPage() {
   const locale = await getLocale();
@@ -38,28 +39,12 @@ export default async function InsightsPage() {
 
   return (
     <>
-      <section className="relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-20">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-primary/30 blur-[120px]"
-        />
-        <Container className="relative z-10">
-          {eyebrow ? (
-            <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-              {eyebrow}
-            </p>
-          ) : null}
-          <h1 className="mb-4 font-display text-4xl font-black leading-tight tracking-tight text-text-primary sm:text-5xl md:text-6xl md:leading-none lg:text-7xl">
-            <span>{title}</span>
-            {highlight ? <span className="text-primary"> {highlight}</span> : null}
-          </h1>
-          {description ? (
-            <p className="mt-3 max-w-2xl border-l-2 border-primary/50 pl-4 text-base leading-relaxed text-text-muted sm:pl-6 sm:text-lg md:text-xl">
-              {description}
-            </p>
-          ) : null}
-        </Container>
-      </section>
+      <InsightsHero
+        eyebrow={eyebrow}
+        title={title}
+        highlight={highlight}
+        description={description}
+      />
 
       <section className="pb-24 md:pb-32">
         <Container>
