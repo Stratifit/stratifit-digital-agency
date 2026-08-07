@@ -79,9 +79,9 @@ export default async function AboutPage() {
             ) : null}
           </Reveal>
         </Container>
-      </section>
 
-      <div aria-hidden="true" className="h-px w-full bg-white/5" />
+        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+      </section>
 
       {stats.length > 0 ? (
         <>
