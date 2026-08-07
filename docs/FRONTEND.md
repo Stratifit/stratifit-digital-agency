@@ -312,19 +312,7 @@ The Hero should feel premium without becoming visually crowded.
 
 The primary message must remain understandable without animation.
 
-### 7.2 Trusted By
-
-The Trusted By section may include:
-
-- Approved customer logos
-- Partner logos
-- Industry names
-- Proof metrics
-- Trust statement
-
-Fake or placeholder client logos must not be published as real clients.
-
-### 7.3 Services
+### 7.2 Services
 
 The Services section must present:
 
@@ -344,7 +332,7 @@ Each service card should support:
 - Link
 - Featured state
 
-### 7.4 Process
+### 7.3 Process
 
 The Process section should explain how Stratifit works.
 
@@ -359,7 +347,7 @@ Possible steps:
 
 The exact public wording remains editable in Supabase.
 
-### 7.5 Why Choose Us
+### 7.4 Why Choose Us
 
 This section should communicate differentiation such as:
 
@@ -371,7 +359,7 @@ This section should communicate differentiation such as:
 - Performance focus
 - Long-term support
 
-### 7.6 Insights & Expertise
+### 7.5 Insights & Expertise
 
 This section should:
 
@@ -381,7 +369,7 @@ This section should:
 - Link to the Insights page
 - Avoid looking like a generic blog feed
 
-### 7.7 Portfolio
+### 7.6 Portfolio
 
 The Portfolio section should:
 
@@ -392,7 +380,7 @@ The Portfolio section should:
 - Link to project details
 - Avoid overcrowding the homepage
 
-### 7.8 Acquisition
+### 7.7 Acquisition
 
 The Acquisition section should:
 
@@ -402,7 +390,7 @@ The Acquisition section should:
 - Include a dedicated CTA
 - Link to the Acquisition page
 
-### 7.9 Testimonials
+### 7.8 Testimonials
 
 Testimonials should support:
 
@@ -416,7 +404,7 @@ Testimonials should support:
 
 Testimonials must not be invented or misleading.
 
-### 7.10 Pricing
+### 7.9 Pricing
 
 Pricing may show:
 
@@ -429,7 +417,7 @@ Pricing may show:
 
 Pricing content must remain editable.
 
-### 7.11 FAQ
+### 7.10 FAQ
 
 The FAQ section should:
 
@@ -439,7 +427,7 @@ The FAQ section should:
 - Link to the AI FAQ assistant where appropriate
 - Avoid excessive animation
 
-### 7.12 Final CTA
+### 7.11 Final CTA
 
 The final CTA should:
 
@@ -448,7 +436,7 @@ The final CTA should:
 - Optionally provide a secondary contact path
 - Avoid introducing new complex information
 
-### 7.13 Footer
+### 7.12 Footer
 
 The footer should include:
 

@@ -49,7 +49,7 @@
 1. **Generic content CMS is English-only** — the portfolio/insights/testimonials/pricing/faq editor (`content-form.tsx` + `content/schemas.ts`) can only edit the English translation. Existing de/fr/es values are preserved on save, but cannot be created or edited in the CMS. Contradicts the multilingual CMS spec (language tabs). *(Fixed 2026-08-07 — work detail page only; the generic editor remains English-only.)*
 2. **Type hacks remain** — `values as never` (5× in `content-form.tsx`), `[] as never[]` (`chat/admin-queries.ts`), plus `as unknown as` casts across acquisition/hero/chat/why-choose-us queries. Type-safety debt; the earlier report's claim that the `as never[]` hack was fully fixed was incorrect.
 3. **`trusted_logos` table orphaned** — the public Trusted By section and its admin editor were removed (2026-08-07). *(Resolved 2026-08-07 — dropped by migration `00031_drop_trusted_logos.sql`; seed rows removed.)*
-4. **Stale docs prose** — `docs/FRONTEND.md` §7.2 still describes the removed Trusted By section; `docs/COMPONENTS.md` states `radius-xl (24px)` but the token is 16px (globals.css + DESIGN_SYSTEM.md).
+4. **Stale docs prose** — `docs/COMPONENTS.md` states `radius-xl (24px)` but the token is 16px (globals.css + DESIGN_SYSTEM.md). *(FRONTEND.md §7.2 Trusted By prose removed 2026-08-07.)*
 
 ## 4. Low-Priority / Polish (P3)
 
