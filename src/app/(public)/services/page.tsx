@@ -53,7 +53,6 @@ export default async function ServicesPage() {
             {description}
           </p>
         </Container>
-        <div aria-hidden="true" className="h-px w-full bg-primary/30" />
       </section>
 
       <Section>
