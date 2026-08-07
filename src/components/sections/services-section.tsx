@@ -98,6 +98,8 @@ export async function ServicesSection() {
         </Reveal>
 
       </Container>
+      {/* 1px amber separator between the Services and Process sections */}
+      <div aria-hidden="true" className="h-px w-full bg-primary/30" />
     </Section>
   );
 }
