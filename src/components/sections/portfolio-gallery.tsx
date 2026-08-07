@@ -203,7 +203,7 @@ export function PortfolioGallery({
         </button>
       </div>
 
-      <div className="relative mt-3 flex items-center justify-center gap-1.5">
+      <div className="relative mt-3 flex items-center justify-center gap-1.5 md:hidden">
         {filtered.map((project, index) => (
           <span
             key={project.slug}
@@ -215,7 +215,7 @@ export function PortfolioGallery({
         ))}
         <Link
           href="/work"
-          className="absolute right-0 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110 md:hidden"
+          className="absolute right-0 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110"
         >
           View All
           <span className="text-[10px]">

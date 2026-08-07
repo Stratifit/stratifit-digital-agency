@@ -130,10 +130,12 @@ export function TestimonialsCarousel({
           : null}
         <Link
           href="/testimonials"
-          className="absolute right-0 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-primary transition-colors hover:brightness-110"
+          className="absolute right-0 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110"
         >
           View All
-          <ArrowIcon className="size-3.5" />
+          <span className="text-[10px]">
+            <ArrowIcon className="size-4" />
+          </span>
         </Link>
       </div>
 
