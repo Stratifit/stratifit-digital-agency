@@ -55,6 +55,8 @@ export default async function ServicesPage() {
         </Container>
       </section>
 
+      <div aria-hidden="true" className="h-px w-full bg-white/5" />
+
       <Section>
         <Container>
           <Reveal stagger variant="card" className="space-y-6">

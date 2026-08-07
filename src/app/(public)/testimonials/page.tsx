@@ -65,6 +65,8 @@ export default async function TestimonialsPage() {
         </div>
       </section>
 
+      <div aria-hidden="true" className="h-px w-full bg-white/5" />
+
       {/* Testimonials grid */}
       <section className="pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">

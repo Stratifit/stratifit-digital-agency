@@ -342,6 +342,8 @@ export default async function WorkDetailPage({
         </div>
       </section>
 
+      <div aria-hidden="true" className="h-px w-full bg-white/5" />
+
       {/* Fact bar */}
       <section className="py-12 md:py-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -363,8 +365,11 @@ export default async function WorkDetailPage({
         </div>
       </section>
 
+      <div aria-hidden="true" className="h-px w-full bg-white/5" />
+
       {/* Challenge */}
       {challenge ? (
+        <>
         <section className="py-12 md:py-16">
           <div className="mx-auto max-w-3xl px-4 sm:px-6">
             <Reveal>
@@ -378,10 +383,13 @@ export default async function WorkDetailPage({
             </Reveal>
           </div>
         </section>
+        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+        </>
       ) : null}
 
       {/* Solution */}
       {solution ? (
+        <>
         <section className="py-12 md:py-16">
           <div className="mx-auto max-w-3xl px-4 sm:px-6">
             <Reveal>
@@ -395,10 +403,13 @@ export default async function WorkDetailPage({
             </Reveal>
           </div>
         </section>
+        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+        </>
       ) : null}
 
       {/* Process */}
       {steps.length > 0 ? (
+        <>
         <section className="py-12 md:py-16">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <SectionLabel>{t(locale, "workOurProcess")}</SectionLabel>
@@ -442,10 +453,13 @@ export default async function WorkDetailPage({
             </Reveal>
           </div>
         </section>
+        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+        </>
       ) : null}
 
       {/* Results */}
       {project.metrics.length > 0 || resultsText ? (
+        <>
         <section className="py-12 md:py-16">
           <div className="mx-auto max-w-3xl px-4 sm:px-6">
             <Reveal>
@@ -478,10 +492,13 @@ export default async function WorkDetailPage({
             </Reveal>
           </div>
         </section>
+        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+        </>
       ) : null}
 
       {/* Testimonial */}
       {project.testimonial ? (
+        <>
         <section className="py-12 md:py-16">
           <div className="mx-auto max-w-3xl px-4 sm:px-6">
             <Reveal className="relative overflow-hidden rounded-card-lg border border-white/5 bg-card-dark p-8 text-center md:p-12">
@@ -517,10 +534,13 @@ export default async function WorkDetailPage({
             </Reveal>
           </div>
         </section>
+        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+        </>
       ) : null}
 
       {/* Gallery */}
       {project.gallery_urls.length > 0 ? (
+        <>
         <section className="py-12 md:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <SectionLabel>{t(locale, "workGallery")}</SectionLabel>
@@ -547,10 +567,13 @@ export default async function WorkDetailPage({
             </Reveal>
           </div>
         </section>
+        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+        </>
       ) : null}
 
       {/* More work */}
       {relatedVisible.length > 0 ? (
+        <>
         <section className="pt-16 md:pt-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <SectionLabel>{t(locale, "workMoreWork")}</SectionLabel>
@@ -565,6 +588,8 @@ export default async function WorkDetailPage({
             />
           </div>
         </section>
+        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+        </>
       ) : null}
 
       {/* Final CTA */}

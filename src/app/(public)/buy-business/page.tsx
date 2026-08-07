@@ -125,6 +125,8 @@ export default async function BuyBusinessPage() {
         </div>
       </section>
 
+      <div aria-hidden="true" className="h-px w-full bg-white/5" />
+
       {/* Explore by Niche */}
       <section className="pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">

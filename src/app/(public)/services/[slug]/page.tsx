@@ -214,8 +214,11 @@ export default async function ServicePage({
         </Container>
       </section>
 
+      <div aria-hidden="true" className="h-px w-full bg-white/5" />
+
       {/* ================= WHY IT MATTERS ================= */}
       {(whyTitle || badges.length > 0) ? (
+        <>
         <Section>
           <Container>
             <Reveal variant="card">
@@ -260,10 +263,13 @@ export default async function ServicePage({
             </Reveal>
           </Container>
         </Section>
+        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+        </>
       ) : null}
 
       {/* ================= CAPABILITIES ================= */}
       {capabilities.length > 0 ? (
+        <>
         <Section>
           <Container>
             <Reveal>
@@ -331,10 +337,13 @@ export default async function ServicePage({
             </div>
           </Container>
         </Section>
+        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+        </>
       ) : null}
 
       {/* ================= DELIVERABLES ================= */}
       {deliverables.length > 0 ? (
+        <>
         <Section>
           <Container>
             <Reveal>
@@ -373,10 +382,13 @@ export default async function ServicePage({
             </div>
           </Container>
         </Section>
+        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+        </>
       ) : null}
 
       {/* ================= PROCESS ================= */}
       {process.length > 0 ? (
+        <>
         <Section id="how-it-works">
           <Container>
             <Reveal>
@@ -430,10 +442,13 @@ export default async function ServicePage({
             </div>
           </Container>
         </Section>
+        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+        </>
       ) : null}
 
       {/* ================= TOOLKIT ================= */}
       {toolkit.length > 0 ? (
+        <>
         <Section>
           <Container>
             <Reveal>
@@ -477,10 +492,13 @@ export default async function ServicePage({
             </div>
           </Container>
         </Section>
+        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+        </>
       ) : null}
 
       {/* ================= SELECTED WORK ================= */}
       {portfolio.length > 0 ? (
+        <>
         <Section>
           <Container>
             <Reveal>
@@ -507,6 +525,8 @@ export default async function ServicePage({
             </Reveal>
           </Container>
         </Section>
+        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+        </>
       ) : null}
 
       {/* ================= FINAL CTA ================= */}

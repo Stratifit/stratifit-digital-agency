@@ -134,6 +134,8 @@ export default async function NicheDetailPage({
         </div>
       </section>
 
+      <div aria-hidden="true" className="h-px w-full bg-white/5" />
+
       {/* Why this niche */}
       <section className="pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -167,6 +169,8 @@ export default async function NicheDetailPage({
           </Reveal>
         </div>
       </section>
+
+      <div aria-hidden="true" className="h-px w-full bg-white/5" />
 
       {/* Listings */}
       <section className="pb-16 md:pb-24">
@@ -227,8 +231,11 @@ export default async function NicheDetailPage({
         </div>
       </section>
 
+      <div aria-hidden="true" className="h-px w-full bg-white/5" />
+
       {/* Other niches */}
       {otherNiches.length > 0 ? (
+        <>
         <section className="pb-16 md:pb-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <Reveal className="mb-8">
@@ -256,6 +263,8 @@ export default async function NicheDetailPage({
             </Reveal>
           </div>
         </section>
+        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+        </>
       ) : null}
 
       {/* Final CTA */}

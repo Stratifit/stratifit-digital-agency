@@ -125,6 +125,8 @@ export default async function InsightDetailPage({
         </div>
       </section>
 
+      <div aria-hidden="true" className="h-px w-full bg-white/5" />
+
       {/* Title + article body overlapping the hero */}
       <section className="relative z-10 -mt-3 pb-4">
         <Container className="max-w-3xl">

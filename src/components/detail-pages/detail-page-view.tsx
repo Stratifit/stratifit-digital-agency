@@ -59,6 +59,8 @@ export function DetailPageView({
         </Container>
       </section>
 
+      <div aria-hidden="true" className="h-px w-full bg-white/5" />
+
       {/* Content */}
       <section className="pb-20 md:pb-24">
         <Container className="max-w-3xl">
