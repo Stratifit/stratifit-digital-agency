@@ -337,6 +337,7 @@ export async function HeroSection() {
         ) : null}
         </HeroEntrance>
       </div>
+      <div aria-hidden="true" className="h-px w-full bg-white/5" />
     </section>
   );
 }
