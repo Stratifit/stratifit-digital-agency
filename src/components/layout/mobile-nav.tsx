@@ -158,7 +158,7 @@ export function MobileNav({
                       <div
                         ref={servicesScrollRef}
                         onScroll={handleServicesScroll}
-                        className="-mx-1 flex touch-pan-x touch-pan-y snap-x gap-3 overflow-x-auto px-1 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                        className="-mx-1 flex touch-pan-x touch-pan-y overscroll-x-contain snap-x gap-3 overflow-x-auto px-1 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                       >
                         {services.map((service) => {
                           const hasPage = servicePageSlugs.has(service.slug);

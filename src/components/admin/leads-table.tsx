@@ -149,7 +149,7 @@ export function LeadsTable({ leads }: { leads: AdminLeadRow[] }) {
           <p className="mt-1 text-sm text-text-muted">Enquiries will appear here.</p>
         </div>
       ) : (
-        <div className="touch-pan-x touch-pan-y overflow-x-auto rounded-card border border-card-border bg-card-dark shadow-shadow-sm">
+        <div className="touch-pan-x touch-pan-y overscroll-x-contain overflow-x-auto rounded-card border border-card-border bg-card-dark shadow-shadow-sm">
           <table className="w-full min-w-[720px] text-left text-sm">
             <thead>
               <tr className="border-b border-border bg-surface-soft/60 text-text-muted">

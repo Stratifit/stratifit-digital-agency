@@ -127,7 +127,7 @@ export function PortfolioGallery({
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="-mx-6 flex touch-pan-x touch-pan-y snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:-mx-8 lg:px-8"
+          className="-mx-6 flex touch-pan-x touch-pan-y overscroll-x-contain snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:-mx-8 lg:px-8"
         >
           {filtered.map((project) => (
             <article
