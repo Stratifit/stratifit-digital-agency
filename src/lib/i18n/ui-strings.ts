@@ -138,7 +138,31 @@ export type UiStringKey =
   | "trustPrivate"
   | "trustPrivateDesc"
   | "trustQuickResponse"
-  | "trustQuickResponseDesc";
+  | "trustQuickResponseDesc"
+  | "workCaseStudy"
+  | "workCaseStudies"
+  | "workChallenge"
+  | "workClient"
+  | "workGallery"
+  | "workIndustry"
+  | "workMoreWork"
+  | "workMoved"
+  | "workNumbersThat"
+  | "workOurProcess"
+  | "workResults"
+  | "workSameRigor"
+  | "workSelected"
+  | "workServices"
+  | "workSimilar"
+  | "workSolution"
+  | "workStartCta"
+  | "workTheProblem"
+  | "workVisual"
+  | "workVisuals"
+  | "workWantOutcome"
+  | "workWhatWeDid"
+  | "workYear"
+  | "workYear";
 
 type UiStrings = Record<UiStringKey, string>;
 type UiDictionary = Record<(typeof SUPPORTED_LOCALES)[number], UiStrings>;
@@ -293,6 +317,30 @@ const en: UiStrings = {
   trustPrivateDesc: "Your data stays secure.",
   trustQuickResponse: "Quick response",
   trustQuickResponseDesc: "We reply within 24h.",
+  workCaseStudy: "Case Study",
+  workCaseStudies: "Case Studies",
+  workChallenge: "Challenge",
+  workClient: "Client",
+  workGallery: "Gallery",
+  workIndustry: "Industry",
+  workMoreWork: "More Work",
+  workMoved: "Moved",
+  workNumbersThat: "Numbers That",
+  workOurProcess: "Our Process",
+  workResults: "Results",
+  workSameRigor:
+    "Same rigor, same playbook — applied to your business and measured by your metrics.",
+  workSelected: "Selected",
+  workServices: "Services",
+  workSimilar: "Similar",
+  workSolution: "Solution",
+  workStartCta: "Start your project with Stratifit",
+  workTheProblem: "The Problem",
+  workVisual: "visual",
+  workVisuals: "Visuals",
+  workWantOutcome: "Want an outcome like this?",
+  workWhatWeDid: "What We Did",
+  workYear: "Year",
 };
 
 const de: UiStrings = {
@@ -447,6 +495,30 @@ const de: UiStrings = {
   trustPrivateDesc: "Ihre Daten bleiben sicher.",
   trustQuickResponse: "Schnelle Antwort",
   trustQuickResponseDesc: "Wir antworten innerhalb von 24 Std.",
+  workCaseStudy: "Fallstudie",
+  workCaseStudies: "Fallstudien",
+  workChallenge: "Herausforderung",
+  workClient: "Kunde",
+  workGallery: "Galerie",
+  workIndustry: "Branche",
+  workMoreWork: "Weitere Arbeiten",
+  workMoved: "bewegen",
+  workNumbersThat: "Zahlen, die",
+  workOurProcess: "Unser Prozess",
+  workResults: "Ergebnisse",
+  workSameRigor:
+    "Dieselbe Gründlichkeit, dasselbe Vorgehen — angewendet auf Ihr Unternehmen und gemessen an Ihren Kennzahlen.",
+  workSelected: "Ausgewählte",
+  workServices: "Leistungen",
+  workSimilar: "Ähnliche",
+  workSolution: "Lösung",
+  workStartCta: "Starten Sie Ihr Projekt mit Stratifit",
+  workTheProblem: "Das Problem",
+  workVisual: "Visual",
+  workVisuals: "Visuals",
+  workWantOutcome: "Möchten Sie ein solches Ergebnis?",
+  workWhatWeDid: "Was wir getan haben",
+  workYear: "Jahr",
 };
 
 const fr: UiStrings = {
@@ -601,6 +673,30 @@ const fr: UiStrings = {
   trustPrivateDesc: "Vos données restent sécurisées.",
   trustQuickResponse: "Réponse rapide",
   trustQuickResponseDesc: "Nous répondons sous 24h.",
+  workCaseStudy: "Étude de cas",
+  workCaseStudies: "similaires",
+  workChallenge: "Défi",
+  workClient: "Client",
+  workGallery: "Galerie",
+  workIndustry: "Secteur",
+  workMoreWork: "Autres projets",
+  workMoved: "parlent",
+  workNumbersThat: "Des chiffres qui",
+  workOurProcess: "Notre processus",
+  workResults: "Résultats",
+  workSameRigor:
+    "Même rigueur, même méthode — appliquées à votre entreprise et mesurées à vos indicateurs.",
+  workSelected: "Visuels",
+  workServices: "Services",
+  workSimilar: "Études de cas",
+  workSolution: "Solution",
+  workStartCta: "Lancez votre projet avec Stratifit",
+  workTheProblem: "Le problème",
+  workVisual: "visuel",
+  workVisuals: "sélectionnés",
+  workWantOutcome: "Vous voulez un résultat similaire ?",
+  workWhatWeDid: "Ce que nous avons fait",
+  workYear: "Année",
 };
 
 const es: UiStrings = {
@@ -755,6 +851,30 @@ const es: UiStrings = {
   trustPrivateDesc: "Tus datos están seguros.",
   trustQuickResponse: "Respuesta rápida",
   trustQuickResponseDesc: "Respondemos en 24h.",
+  workCaseStudy: "Estudio de caso",
+  workCaseStudies: "similares",
+  workChallenge: "Reto",
+  workClient: "Cliente",
+  workGallery: "Galería",
+  workIndustry: "Sector",
+  workMoreWork: "Más trabajos",
+  workMoved: "hablan",
+  workNumbersThat: "Números que",
+  workOurProcess: "Nuestro proceso",
+  workResults: "Resultados",
+  workSameRigor:
+    "El mismo rigor, el mismo plan de juego: aplicado a tu negocio y medido con tus métricas.",
+  workSelected: "Visuales",
+  workServices: "Servicios",
+  workSimilar: "Estudios de caso",
+  workSolution: "Solución",
+  workStartCta: "Comienza tu proyecto con Stratifit",
+  workTheProblem: "El problema",
+  workVisual: "visual",
+  workVisuals: "seleccionados",
+  workWantOutcome: "¿Quieres un resultado así?",
+  workWhatWeDid: "Lo que hicimos",
+  workYear: "Año",
 };
 
 const dictionary: UiDictionary = { en, de, fr, es };

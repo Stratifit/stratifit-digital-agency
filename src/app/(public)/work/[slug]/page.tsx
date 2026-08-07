@@ -9,6 +9,7 @@ import {
 import { getPublicServices } from "@/features/services/queries";
 import { getPublicProcessSteps } from "@/features/process/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { t } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
 import { articleJsonLd, canonical, pageMetadata } from "@/lib/seo";
 import { ContactAwareLink } from "@/components/contact/contact-aware-link";
@@ -251,22 +252,39 @@ export default async function WorkDetailPage({
   const solution = resolveTranslation(project.solution_translations, locale);
   const resultsText = resolveTranslation(project.results_translations, locale);
   const serviceTitle = resolveTranslation(project.service_titles, locale);
-  const categoryBadge = serviceTitle || deliverables[0] || "Case Study";
+  const categoryBadge =
+    serviceTitle || deliverables[0] || t(locale, "workCaseStudy");
   const servicesJoined = deliverables.join(" · ");
   const launchYear = project.published_at
     ? new Date(project.published_at).getFullYear().toString()
     : "";
 
   const facts: FactCardProps[] = [];
-  facts.push({ icon: <UserIcon />, label: "Client", value: project.client_name });
+  facts.push({
+    icon: <UserIcon />,
+    label: t(locale, "workClient"),
+    value: project.client_name,
+  });
   if (serviceTitle) {
-    facts.push({ icon: <BuildingIcon />, label: "Industry", value: serviceTitle });
+    facts.push({
+      icon: <BuildingIcon />,
+      label: t(locale, "workIndustry"),
+      value: serviceTitle,
+    });
   }
   if (launchYear) {
-    facts.push({ icon: <ClockIcon />, label: "Year", value: launchYear });
+    facts.push({
+      icon: <ClockIcon />,
+      label: t(locale, "workYear"),
+      value: launchYear,
+    });
   }
   if (servicesJoined) {
-    facts.push({ icon: <GridIcon />, label: "Services", value: servicesJoined });
+    facts.push({
+      icon: <GridIcon />,
+      label: t(locale, "workServices"),
+      value: servicesJoined,
+    });
   }
 
   const factColumns =
@@ -350,9 +368,9 @@ export default async function WorkDetailPage({
         <section className="py-12 md:py-16">
           <div className="mx-auto max-w-3xl px-4 sm:px-6">
             <Reveal>
-              <SectionLabel>Challenge</SectionLabel>
+              <SectionLabel>{t(locale, "workChallenge")}</SectionLabel>
               <h2 className="mb-6 font-display text-2xl font-black tracking-tight leading-tight text-text-primary sm:text-3xl md:text-4xl">
-                The Problem
+                {t(locale, "workTheProblem")}
               </h2>
               <p className="border-l-2 border-primary/30 pl-4 text-base leading-relaxed text-text-secondary sm:pl-6 md:text-lg">
                 {challenge}
@@ -367,9 +385,9 @@ export default async function WorkDetailPage({
         <section className="py-12 md:py-16">
           <div className="mx-auto max-w-3xl px-4 sm:px-6">
             <Reveal>
-              <SectionLabel>Solution</SectionLabel>
+              <SectionLabel>{t(locale, "workSolution")}</SectionLabel>
               <h2 className="mb-6 font-display text-2xl font-black tracking-tight leading-tight text-text-primary sm:text-3xl md:text-4xl">
-                What We Did
+                {t(locale, "workWhatWeDid")}
               </h2>
               <p className="border-l-2 border-primary/30 pl-4 text-base leading-relaxed text-text-secondary sm:pl-6 md:text-lg">
                 {solution}
@@ -383,7 +401,7 @@ export default async function WorkDetailPage({
       {steps.length > 0 ? (
         <section className="py-12 md:py-16">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            <SectionLabel>Our Process</SectionLabel>
+            <SectionLabel>{t(locale, "workOurProcess")}</SectionLabel>
             <h2 className="mb-10 font-display text-2xl font-black tracking-tight leading-tight text-text-primary sm:text-3xl md:text-4xl">
               {steps.map((step, index) => (
                 <span key={step.step_key}>
@@ -431,9 +449,10 @@ export default async function WorkDetailPage({
         <section className="py-12 md:py-16">
           <div className="mx-auto max-w-3xl px-4 sm:px-6">
             <Reveal>
-              <SectionLabel>Results</SectionLabel>
+              <SectionLabel>{t(locale, "workResults")}</SectionLabel>
               <h2 className="mb-8 font-display text-2xl font-black tracking-tight leading-tight text-text-primary sm:text-3xl md:text-4xl">
-                Numbers That <span className="text-primary">Moved</span>
+                {t(locale, "workNumbersThat")}{" "}
+                <span className="text-primary">{t(locale, "workMoved")}</span>
               </h2>
               <div className="grid gap-4">
                 {project.metrics.map((metric, index) => (
@@ -504,9 +523,10 @@ export default async function WorkDetailPage({
       {project.gallery_urls.length > 0 ? (
         <section className="py-12 md:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
-            <SectionLabel>Gallery</SectionLabel>
+            <SectionLabel>{t(locale, "workGallery")}</SectionLabel>
             <h2 className="mb-10 font-display text-2xl font-black tracking-tight leading-tight text-text-primary sm:text-3xl md:text-4xl">
-              Selected <span className="text-primary">Visuals</span>
+              {t(locale, "workSelected")}{" "}
+              <span className="text-primary">{t(locale, "workVisuals")}</span>
             </h2>
             <Reveal className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
               {project.gallery_urls.map((url, index) => (
@@ -516,7 +536,7 @@ export default async function WorkDetailPage({
                 >
                   <Image
                     src={url}
-                    alt={`${projectTitle} — visual ${index + 1}`}
+                    alt={`${projectTitle} — ${t(locale, "workVisual")} ${index + 1}`}
                     width={1600}
                     height={1000}
                     loading="lazy"
@@ -533,9 +553,10 @@ export default async function WorkDetailPage({
       {relatedVisible.length > 0 ? (
         <section className="border-t border-border pt-16 md:pt-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
-            <SectionLabel>More Work</SectionLabel>
+            <SectionLabel>{t(locale, "workMoreWork")}</SectionLabel>
             <h2 className="mb-10 font-display text-2xl font-black tracking-tight leading-tight text-text-primary sm:text-3xl md:text-4xl">
-              Similar <span className="text-primary">Case Studies</span>
+              {t(locale, "workSimilar")}{" "}
+              <span className="text-primary">{t(locale, "workCaseStudies")}</span>
             </h2>
             <RelatedProjects
               projects={relatedVisible}
@@ -551,20 +572,19 @@ export default async function WorkDetailPage({
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
           <Reveal className="rounded-card-lg border border-white/5 bg-card-dark p-8 text-center sm:p-12">
             <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.3em] text-primary">
-              Start Your Project
+              {t(locale, "startYourProject")}
             </p>
             <h3 className="mb-3 font-display text-2xl font-black leading-tight text-text-primary sm:text-3xl md:text-4xl">
-              Want an outcome like this?
+              {t(locale, "workWantOutcome")}
             </h3>
             <p className="mx-auto mb-8 max-w-2xl text-sm leading-relaxed text-text-muted md:text-base">
-              Same rigor, same playbook — applied to your business and measured by
-              your metrics.
+              {t(locale, "workSameRigor")}
             </p>
             <ContactAwareLink
               href="/contact"
               className="group inline-flex items-center justify-center gap-3 rounded-button bg-primary px-8 py-4 text-base font-bold text-text-inverse shadow-[0_0_30px_rgba(245,158,11,0.3)] transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:bg-primary-hover hover:shadow-[0_0_50px_rgba(245,158,11,0.5)] active:scale-95 sm:px-12 sm:py-5 sm:text-lg"
             >
-              Start your project with Stratifit
+              {t(locale, "workStartCta")}
               <span className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1">
                 <ArrowRightIcon />
               </span>

@@ -46,11 +46,10 @@
 
 ## 3. Medium-Priority Findings (P2)
 
-1. **Hardcoded English UI strings on `/work/[slug]`** — "Client", "Industry", "Year", "Services", "The Problem", "What We Did", "Our Process", "Results", "Numbers That Moved", "Selected Visuals", "More Work", "Similar Case Studies", and the final-CTA copy render in English in every locale. Belongs in `ui-strings.ts` (de/fr/es dictionaries already exist).
-2. **Generic content CMS is English-only** — the portfolio/insights/testimonials/pricing/faq editor (`content-form.tsx` + `content/schemas.ts`) can only edit the English translation. Existing de/fr/es values are preserved on save, but cannot be created or edited in the CMS. Contradicts the multilingual CMS spec (language tabs).
-3. **Type hacks remain** — `values as never` (5× in `content-form.tsx`), `[] as never[]` (`chat/admin-queries.ts`), plus `as unknown as` casts across acquisition/hero/chat/why-choose-us queries. Type-safety debt; the earlier report's claim that the `as never[]` hack was fully fixed was incorrect.
-4. **`trusted_logos` table orphaned** — the public Trusted By section and its admin editor were removed (2026-08-07), but the table (migration 00006) and seed rows still exist. Dropping it is a destructive migration awaiting owner approval.
-5. **Stale docs prose** — `docs/FRONTEND.md` §7.2 still describes the removed Trusted By section; `docs/COMPONENTS.md` states `radius-xl (24px)` but the token is 16px (globals.css + DESIGN_SYSTEM.md).
+1. **Generic content CMS is English-only** — the portfolio/insights/testimonials/pricing/faq editor (`content-form.tsx` + `content/schemas.ts`) can only edit the English translation. Existing de/fr/es values are preserved on save, but cannot be created or edited in the CMS. Contradicts the multilingual CMS spec (language tabs). *(Fixed 2026-08-07 — work detail page only; the generic editor remains English-only.)*
+2. **Type hacks remain** — `values as never` (5× in `content-form.tsx`), `[] as never[]` (`chat/admin-queries.ts`), plus `as unknown as` casts across acquisition/hero/chat/why-choose-us queries. Type-safety debt; the earlier report's claim that the `as never[]` hack was fully fixed was incorrect.
+3. **`trusted_logos` table orphaned** — the public Trusted By section and its admin editor were removed (2026-08-07), but the table (migration 00006) and seed rows still exist. Dropping it is a destructive migration awaiting owner approval.
+4. **Stale docs prose** — `docs/FRONTEND.md` §7.2 still describes the removed Trusted By section; `docs/COMPONENTS.md` states `radius-xl (24px)` but the token is 16px (globals.css + DESIGN_SYSTEM.md).
 
 ## 4. Low-Priority / Polish (P3)
 
@@ -87,6 +86,7 @@
 - **Single back arrow** — removed 4 page-specific hardcoded back buttons (`/work/[slug]`, `/testimonials`, `/buy-business`, `/buy-business/niches/[slug]`); the global localized `PublicBackButton` is now the only one.
 - **Back arrow clearance** — repositioned to `top-28` / `sm:top-32` so it clears the sticky header when the announcement bar is visible.
 - **Removed the Trusted Logos admin editor and feature module** (route, manager component, feature queries/mutations, nav link; DB table retained pending owner decision).
+- **Localized the work detail page** — every hardcoded UI string on `/work/[slug]` moved to `ui-strings.ts` (23 new keys × 4 languages): fact labels, section labels, headings, alt text, and the final CTA.
 
 ## 7. Remaining Work (for the owner)
 
@@ -94,8 +94,7 @@
 2. Enable Supabase Auth leaked-password protection (dashboard)
 3. Decide: drop the orphaned `trusted_logos` table (needs a migration)
 4. Add `/services/[slug]` to `sitemap.xml`
-5. Localize the hardcoded strings on `/work/[slug]` via `ui-strings.ts`
-6. Deploy to Vercel + verify domain, production migrations, and smoke tests
+5. Deploy to Vercel + verify domain, production migrations, and smoke tests
 
 ## 8. Known Follow-ups (engineering)
 
