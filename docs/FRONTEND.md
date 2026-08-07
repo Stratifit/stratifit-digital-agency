@@ -92,7 +92,10 @@ Initial public routes:
 /about
 /acquisition
 /contact
+/careers
 /privacy
+/terms-conditions
+/cookie-policy
 /imprint
 ```
 
@@ -235,15 +238,15 @@ The Contact page should include:
 - Chat access
 - Confirmation state
 
-### 5.10 Legal pages
+### 5.10 Legal and detail pages
 
-Legal pages must:
+Detail pages — Privacy Policy (`/privacy`), Terms of Service (`/terms-conditions`), Cookie Policy (`/cookie-policy`), Imprint (`/imprint`), and Careers (`/careers`) — are CMS-driven records in the `detail_pages` table. Each page renders a shared `DetailPageView` server component (`src/components/detail-pages/detail-page-view.tsx`) that renders its title, subtitle, and ordered content blocks (heading / paragraph / note) resolved per locale, falling back to English.
 
-- Be readable
-- Use suitable line length
-- Support versioning when needed
-- Avoid excessive animation
-- Preserve proper semantic heading structure
+Behavior:
+
+- A hidden page (`is_visible = false`) returns 404 and is excluded from the sitemap
+- A missing row renders the previous static copy so the site never breaks
+- Legal content must stay readable, use a suitable line length, avoid excessive animation, and preserve proper semantic heading structure
 
 ---
 

@@ -213,11 +213,12 @@ Website
 ├── Insights Page
 ├── Acquisition Page
 ├── Contact Page
-├── Legal Pages
+├── Pages (Privacy, Terms, Cookie Policy, Imprint, Careers)
 └── Footer
 
 Content
 ├── Sections (eyebrow / title / highlight / description for homepage sections)
+├── Pages (detail page editor)
 ├── Services
 ├── Process Steps
 ├── Why Choose Us (feature cards)
@@ -503,6 +504,7 @@ Examples:
 - Testimonials
 - Pricing plans
 - FAQs
+- Detail pages (Privacy, Terms, Cookie Policy, Imprint, Careers)
 - Navigation items
 - Chatbot knowledge
 - Leads
@@ -1224,7 +1226,71 @@ Footer management should support:
 
 ---
 
-## 39. User Management
+## 39. Page Content Management
+
+Detail pages — Privacy Policy, Terms of Service, Cookie Policy, Imprint, and Careers — are managed as structured, CMS-editable records rather than hardcoded static JSX.
+
+### 39.1 Managed pages
+
+Seeded pages (slug in parentheses):
+
+- Privacy Policy (`privacy`)
+- Terms of Service (`terms-conditions`)
+- Cookie Policy (`cookie-policy`)
+- Imprint (`imprint`)
+- Careers (`careers`)
+
+Each page is a record in the `detail_pages` table (see `DATABASE.md` §9.6).
+
+### 39.2 Page fields
+
+The editor should support:
+
+- Title (4 languages)
+- Subtitle, e.g. "Last updated: August 2026" (4 languages)
+- Ordered content blocks
+- Visibility
+
+### 39.3 Content blocks
+
+The CMS exposes only approved block types:
+
+- Heading
+- Paragraph
+- Note box
+
+Each block stores its text in all four languages. The CMS must not allow raw HTML, arbitrary markup, or free-form styling.
+
+### 39.4 Editor behavior
+
+The editor should support:
+
+- Reordering blocks
+- Adding blocks
+- Removing blocks
+- Per-block type selection
+- Per-block translations
+- Visibility toggle
+- English required on title and every block
+
+### 39.5 Public behavior
+
+- A visible page renders its stored blocks on its public route (`/privacy`, `/terms-conditions`, `/cookie-policy`, `/imprint`, `/careers`)
+- A hidden page is not reachable on the public site (404)
+- A page with no stored row falls back to the previous static copy so the site never breaks
+- Sitemap entries are generated only for visible pages
+
+### 39.6 Revalidation
+
+Saving a page must revalidate:
+
+- The public route (`/privacy`, …)
+- The admin Pages list
+- The admin edit route
+
+---
+
+## 40. User Management
 
 Initial roles:
 
@@ -1250,7 +1316,7 @@ High-risk actions should require stronger confirmation.
 
 ---
 
-## 40. Authentication
+## 41. Authentication
 
 Admin authentication uses Supabase Auth.
 
@@ -1268,7 +1334,7 @@ UI hiding is not authorization.
 
 ---
 
-## 41. Authorization
+## 42. Authorization
 
 Authorization must be enforced through:
 
@@ -1287,7 +1353,7 @@ Examples:
 
 ---
 
-## 42. RLS Requirements
+## 43. RLS Requirements
 
 RLS must protect:
 
@@ -1306,7 +1372,7 @@ Database details belong in `DATABASE.md`.
 
 ---
 
-## 43. Server-Side Operations
+## 44. Server-Side Operations
 
 Sensitive CMS operations must run on the server:
 
@@ -1323,7 +1389,7 @@ The browser must not receive secret keys.
 
 ---
 
-## 44. Revalidation
+## 45. Revalidation
 
 After successful content updates, the CMS should revalidate affected paths or tags.
 
@@ -1346,7 +1412,7 @@ Revalidation must happen only after successful writes.
 
 ---
 
-## 45. Search and Filtering
+## 46. Search and Filtering
 
 CMS collections should support search and filters where useful.
 
@@ -1363,7 +1429,7 @@ Search must not create unsafe unrestricted queries.
 
 ---
 
-## 46. Pagination
+## 47. Pagination
 
 Use pagination for large collections such as:
 
@@ -1377,7 +1443,7 @@ Small fixed collections do not require pagination.
 
 ---
 
-## 47. Tables and Mobile Behavior
+## 48. Tables and Mobile Behavior
 
 Tables should support:
 
@@ -1400,7 +1466,7 @@ Do not compress tables until text becomes unreadable.
 
 ---
 
-## 48. Loading States
+## 49. Loading States
 
 The CMS should use:
 
@@ -1414,7 +1480,7 @@ Loading states should preserve layout and clearly communicate progress.
 
 ---
 
-## 49. Empty States
+## 50. Empty States
 
 Empty states should explain:
 
@@ -1431,7 +1497,7 @@ Create your first project to display it on the website.
 
 ---
 
-## 50. Error States
+## 51. Error States
 
 CMS errors should be:
 
@@ -1450,7 +1516,7 @@ Do not show raw:
 
 ---
 
-## 51. Destructive Actions
+## 52. Destructive Actions
 
 Destructive actions include:
 
@@ -1472,7 +1538,7 @@ Prefer archive over permanent deletion when practical.
 
 ---
 
-## 52. Auditability
+## 53. Auditability
 
 Important future audit events may include:
 
@@ -1488,7 +1554,7 @@ Full audit logging may be introduced later.
 
 ---
 
-## 53. Accessibility
+## 54. Accessibility
 
 The CMS must support:
 
@@ -1507,7 +1573,7 @@ Non-technical usability depends on accessibility.
 
 ---
 
-## 54. Responsive CMS
+## 55. Responsive CMS
 
 The CMS should work on:
 
@@ -1531,7 +1597,7 @@ Complex visual editing may be optimized for tablet and desktop.
 
 ---
 
-## 55. Performance
+## 56. Performance
 
 The CMS should avoid:
 
@@ -1546,7 +1612,7 @@ Use server rendering, pagination, and controlled client state.
 
 ---
 
-## 56. Security
+## 57. Security
 
 The CMS must:
 
@@ -1563,7 +1629,7 @@ The CMS must:
 
 ---
 
-## 57. Testing
+## 58. Testing
 
 CMS testing should cover:
 
@@ -1592,7 +1658,7 @@ Possible tools:
 
 ---
 
-## 58. CMS Development Workflow
+## 59. CMS Development Workflow
 
 For each CMS feature:
 
@@ -1630,7 +1696,7 @@ Review
 
 ---
 
-## 59. AI Coding Rules
+## 60. AI Coding Rules
 
 Coding agents must:
 
@@ -1652,7 +1718,7 @@ AI agents must not create new content models or section types without approval.
 
 ---
 
-## 60. CMS Review Checklist
+## 61. CMS Review Checklist
 
 Before approving a CMS feature, confirm:
 
@@ -1692,7 +1758,7 @@ Before approving a CMS feature, confirm:
 
 ---
 
-## 61. Definition of CMS Completion
+## 62. Definition of CMS Completion
 
 The initial CMS is complete when:
 
@@ -1722,7 +1788,7 @@ The initial CMS is complete when:
 
 ---
 
-## 62. Related Documentation
+## 63. Related Documentation
 
 Read this document with:
 
@@ -1742,7 +1808,7 @@ Feature-specific CMS work should follow OpenSpec.
 
 ---
 
-## 63. CMS Summary
+## 64. CMS Summary
 
 The Stratifit CMS is a custom Next.js admin dashboard powered by Supabase.
 
