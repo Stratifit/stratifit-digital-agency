@@ -305,7 +305,7 @@ const en: UiStrings = {
   readyToOwnBusinessA: "Ready to Own a",
   readyToOwnBusinessQ: "Business?",
   acquisitionGuideDescription:
-    "Our team will guide you through every step of the acquisition process — from due diligence to transition.",
+    "We'll guide you from due diligence to transition.",
   scheduleConsultation: "Schedule a Consultation",
   businesses: "Businesses",
   avgAskingPrice: "{value} avg. asking price",
@@ -438,7 +438,7 @@ const en: UiStrings = {
   workOurProcess: "Our Process",
   workResults: "Results",
   workSameRigor:
-    "Same rigor, same playbook — applied to your business and measured by your metrics.",
+    "The same playbook, applied to your goals and your metrics.",
   workSelected: "Selected",
   workServices: "Services",
   workSimilar: "Similar",
@@ -565,7 +565,7 @@ const de: UiStrings = {
   readyToOwnBusinessA: "Bereit, ein Unternehmen zu",
   readyToOwnBusinessQ: "kaufen?",
   acquisitionGuideDescription:
-    "Unser Team begleitet Sie durch jeden Schritt des Übernahmeprozesses — von der Due Diligence bis zum Übergang.",
+    "Wir begleiten Sie von der Due Diligence bis zum Übergang.",
   scheduleConsultation: "Beratung vereinbaren",
   businesses: "Unternehmen",
   avgAskingPrice: "Ø-Kaufpreis {value}",
@@ -700,7 +700,7 @@ const de: UiStrings = {
   workOurProcess: "Unser Prozess",
   workResults: "Ergebnisse",
   workSameRigor:
-    "Dieselbe Gründlichkeit, dasselbe Vorgehen — angewendet auf Ihr Unternehmen und gemessen an Ihren Kennzahlen.",
+    "Dasselbe Vorgehen — angewendet auf Ihre Ziele und Kennzahlen.",
   workSelected: "Ausgewählte",
   workServices: "Leistungen",
   workSimilar: "Ähnliche",
@@ -827,7 +827,7 @@ const fr: UiStrings = {
   readyToOwnBusinessA: "Prêt à posséder une",
   readyToOwnBusinessQ: "entreprise ?",
   acquisitionGuideDescription:
-    "Notre équipe vous accompagne à chaque étape du processus d'acquisition — de la due diligence à la transition.",
+    "Nous vous accompagnons de la due diligence à la transition.",
   scheduleConsultation: "Planifier une consultation",
   businesses: "Entreprises",
   avgAskingPrice: "{value} prix moyen demandé",
@@ -962,7 +962,7 @@ const fr: UiStrings = {
   workOurProcess: "Notre processus",
   workResults: "Résultats",
   workSameRigor:
-    "Même rigueur, même méthode — appliquées à votre entreprise et mesurées à vos indicateurs.",
+    "La même méthode — appliquée à vos objectifs et vos indicateurs.",
   workSelected: "Visuels",
   workServices: "Services",
   workSimilar: "Études de cas",
@@ -1089,7 +1089,7 @@ const es: UiStrings = {
   readyToOwnBusinessA: "¿Listo para ser dueño de un",
   readyToOwnBusinessQ: "negocio?",
   acquisitionGuideDescription:
-    "Nuestro equipo te guiará en cada paso del proceso de adquisición: desde la debida diligencia hasta la transición.",
+    "Te guiamos desde la debida diligencia hasta la transición.",
   scheduleConsultation: "Programar una consulta",
   businesses: "Negocios",
   avgAskingPrice: "precio de venta prom. {value}",
@@ -1224,7 +1224,7 @@ const es: UiStrings = {
   workOurProcess: "Nuestro proceso",
   workResults: "Resultados",
   workSameRigor:
-    "El mismo rigor, el mismo plan de juego: aplicado a tu negocio y medido con tus métricas.",
+    "El mismo plan de juego — aplicado a tus objetivos y tus métricas.",
   workSelected: "Visuales",
   workServices: "Servicios",
   workSimilar: "Estudios de caso",

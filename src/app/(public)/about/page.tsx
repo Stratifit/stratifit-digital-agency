@@ -189,6 +189,7 @@ export default async function AboutPage() {
               description={ctaDescription}
               label={ctaLabel}
               href={ctaHref}
+              locale={locale}
             />
           </Reveal>
         </Container>

@@ -539,6 +539,7 @@ export default async function ServicePage({
                 description={ctaSubtitle || undefined}
                 label={ctaButton || t(locale, "servicesStartProject")}
                 href="/contact"
+                locale={locale}
               />
             </Reveal>
           </Container>

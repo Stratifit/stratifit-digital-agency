@@ -128,7 +128,7 @@ VALUES (
   '{"en": "", "de": "", "fr": "", "es": ""}'::jsonb,
   '{"en": "Ready to Own a Business?", "de": "Bereit, ein Unternehmen zu kaufen?", "fr": "Prêt à posséder une entreprise ?", "es": "¿Listo para ser dueño de un negocio?"}'::jsonb,
   '{}'::jsonb,
-  '{"en": "Our team will guide you through every step of the acquisition process — from due diligence to transition.", "de": "Unser Team begleitet Sie durch jeden Schritt des Übernahmeprozesses — von der Due Diligence bis zum Übergang.", "fr": "Notre équipe vous accompagne à chaque étape du processus d''acquisition — de la due diligence à la transition.", "es": "Nuestro equipo te guiará en cada paso del proceso de adquisición: desde la debida diligencia hasta la transición."}'::jsonb,
+  '{"en": "We'll guide you from due diligence to transition.", "de": "Wir begleiten Sie von der Due Diligence bis zum Übergang.", "fr": "Nous vous accompagnons de la due diligence à la transition.", "es": "Te guiamos desde la debida diligencia hasta la transición."}'::jsonb,
   '{"en": "Schedule a Consultation", "de": "Beratung vereinbaren", "fr": "Planifier une consultation", "es": "Programar una consulta"}'::jsonb,
   '/contact',
   true,

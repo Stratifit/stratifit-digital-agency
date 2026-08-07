@@ -283,6 +283,7 @@ export default async function NicheDetailPage({
               description={t(locale, "acquisitionGuideDescription")}
               label={tWithValue(locale, "ctaExploreNiche", label)}
               href="/contact"
+              locale={locale}
             />
           </Reveal>
         </div>

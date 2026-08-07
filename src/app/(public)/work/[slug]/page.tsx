@@ -605,6 +605,7 @@ export default async function WorkDetailPage({
                   : t(locale, "workStartCta")
               }
               href="/contact"
+              locale={locale}
             />
           </Reveal>
         </div>

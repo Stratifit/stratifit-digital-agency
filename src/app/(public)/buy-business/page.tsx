@@ -156,6 +156,7 @@ export default async function BuyBusinessPage() {
                 description={ctaDescription}
                 label={ctaLabel}
                 href={ctaHref}
+                locale={locale}
               />
             </Reveal>
           ) : null}
