@@ -31,6 +31,7 @@ export async function InsightsSection() {
           />
         </Reveal>
       </Container>
+      <div aria-hidden="true" className="h-px w-full bg-white/5" />
     </Section>
   );
 }

@@ -29,6 +29,7 @@ export async function TestimonialsSection() {
           />
         </Reveal>
       </Container>
+      <div aria-hidden="true" className="h-px w-full bg-white/5" />
     </Section>
   );
 }
