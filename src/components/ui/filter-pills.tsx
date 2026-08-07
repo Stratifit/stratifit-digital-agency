@@ -31,7 +31,7 @@ export function FilterPills({
   return (
     <div
       className={cn(
-        "flex gap-3 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+        "flex touch-pan-y gap-3 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
         className
       )}
     >

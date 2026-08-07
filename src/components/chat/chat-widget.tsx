@@ -1362,7 +1362,7 @@ export function ChatWidget({
           {/* Topic chips — only after onboarding */}
           {stage === "chat" ? (
             <div className="flex flex-none border-b border-border-subtle bg-background px-4 py-3">
-              <div className="-mx-1 flex gap-2 overflow-x-auto px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="-mx-1 flex touch-pan-y gap-2 overflow-x-auto px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {TOPIC_CHIPS.map((chip) => {
                   const isActive = view === chip.view;
                   return (
