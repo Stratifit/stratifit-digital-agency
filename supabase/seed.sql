@@ -563,28 +563,6 @@ JOIN public.services s ON s.slug = x.service_slug
 JOIN public.portfolio_projects p ON p.id = x.portfolio_id
 ON CONFLICT DO NOTHING;
 
--- =============================================================================
--- Trusted logos (full set lives in migration 00030_real_business_content.sql)
--- =============================================================================
-
-INSERT INTO public.trusted_logos (id, name, image_url, href, display_order, is_visible, is_verified)
-VALUES
-  ('55555555-5555-4555-8555-555555555501', 'Maison Lumière', 'https://images.unsplash.com/photo-1567449303078-57ad995bd17b?w=400&h=120&fit=crop&auto=format', NULL, 1, true, true),
-  ('55555555-5555-4555-8555-555555555502', 'Nova Fintech', 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=120&fit=crop&auto=format', NULL, 2, true, true),
-  ('55555555-5555-4555-8555-555555555503', 'Helios Health', 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=120&fit=crop&auto=format', NULL, 3, true, true),
-  ('55555555-5555-4555-8555-555555555504', 'Zenith Bank', 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=120&fit=crop&auto=format', NULL, 4, true, true),
-  ('55555555-5555-4555-8555-555555555505', 'Atlas Commerce', 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=120&fit=crop&auto=format', NULL, 5, true, true),
-  ('55555555-5555-4555-8555-555555555506', 'GrowthStack', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=120&fit=crop&auto=format', NULL, 6, true, true),
-  ('55555555-5555-4555-8555-555555555507', 'Aura Cosmetics', 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400&h=120&fit=crop&auto=format', NULL, 7, true, true),
-  ('55555555-5555-4555-8555-555555555508', 'Nordlicht Logistics', 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=120&fit=crop&auto=format', NULL, 8, true, true),
-  ('55555555-5555-4555-8555-555555555509', 'Vertex SaaS', 'https://images.unsplash.com/photo-1467232004584-a241de8a7c0d?w=400&h=120&fit=crop&auto=format', NULL, 9, true, true),
-  ('55555555-5555-4555-8555-555555555510', 'SmartFlow', 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=120&fit=crop&auto=format', NULL, 10, true, true)
-ON CONFLICT (id) DO UPDATE SET
-  name = EXCLUDED.name,
-  image_url = EXCLUDED.image_url,
-  href = EXCLUDED.href,
-  is_visible = EXCLUDED.is_visible,
-  is_verified = EXCLUDED.is_verified;
 
 -- =============================================================================
 -- =============================================================================

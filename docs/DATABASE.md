@@ -258,7 +258,6 @@ Global website
 
 Homepage and marketing content
 ├── hero
-├── trusted_logos
 ├── services
 ├── process_steps
 ├── why_choose_us
@@ -533,22 +532,7 @@ Suggested columns:
 
 ## 10. Marketing Collection Tables
 
-## 10.1 `trusted_logos`
-
-| Column | Type | Notes |
-|---|---|---|
-| `id` | `uuid` | PK |
-| `name` | `text` | Client or partner name |
-| `media_id` | `uuid` | FK to media_assets |
-| `href` | `text` | Optional |
-| `display_order` | `integer` | Order |
-| `is_visible` | `boolean` | Default true |
-| `is_verified` | `boolean` | Prevent fake proof |
-| timestamps | standard | |
-
-Only verified records may be publicly displayed.
-
-## 10.2 `services`
+## 10.1 `services`
 
 Initial seeded categories:
 
@@ -587,7 +571,7 @@ published
 archived
 ```
 
-## 10.3 `process_steps`
+## 10.2 `process_steps`
 
 Suggested columns:
 
@@ -601,7 +585,7 @@ Suggested columns:
 - `is_visible`
 - timestamps
 
-## 10.4 `testimonials`
+## 10.3 `testimonials`
 
 Suggested columns:
 
@@ -621,7 +605,7 @@ Suggested columns:
 
 Only verified testimonials may be published.
 
-## 10.5 `pricing_plans`
+## 10.4 `pricing_plans`
 
 Suggested columns:
 
@@ -642,7 +626,7 @@ Suggested columns:
 - `status`
 - timestamps
 
-## 10.6 `faqs`
+## 10.5 `faqs`
 
 Suggested columns:
 

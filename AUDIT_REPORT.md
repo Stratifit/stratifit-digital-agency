@@ -48,7 +48,7 @@
 
 1. **Generic content CMS is English-only** — the portfolio/insights/testimonials/pricing/faq editor (`content-form.tsx` + `content/schemas.ts`) can only edit the English translation. Existing de/fr/es values are preserved on save, but cannot be created or edited in the CMS. Contradicts the multilingual CMS spec (language tabs). *(Fixed 2026-08-07 — work detail page only; the generic editor remains English-only.)*
 2. **Type hacks remain** — `values as never` (5× in `content-form.tsx`), `[] as never[]` (`chat/admin-queries.ts`), plus `as unknown as` casts across acquisition/hero/chat/why-choose-us queries. Type-safety debt; the earlier report's claim that the `as never[]` hack was fully fixed was incorrect.
-3. **`trusted_logos` table orphaned** — the public Trusted By section and its admin editor were removed (2026-08-07), but the table (migration 00006) and seed rows still exist. Dropping it is a destructive migration awaiting owner approval.
+3. **`trusted_logos` table orphaned** — the public Trusted By section and its admin editor were removed (2026-08-07). *(Resolved 2026-08-07 — dropped by migration `00031_drop_trusted_logos.sql`; seed rows removed.)*
 4. **Stale docs prose** — `docs/FRONTEND.md` §7.2 still describes the removed Trusted By section; `docs/COMPONENTS.md` states `radius-xl (24px)` but the token is 16px (globals.css + DESIGN_SYSTEM.md).
 
 ## 4. Low-Priority / Polish (P3)
@@ -92,9 +92,8 @@
 
 1. Set production environment variables (`RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_WEBHOOK_SIGNING_SECRET`, `AI_API_KEY`, `AI_MODEL`, `NEXT_PUBLIC_SITE_URL`)
 2. Enable Supabase Auth leaked-password protection (dashboard)
-3. Decide: drop the orphaned `trusted_logos` table (needs a migration)
-4. Add `/services/[slug]` to `sitemap.xml`
-5. Deploy to Vercel + verify domain, production migrations, and smoke tests
+3. Add `/services/[slug]` to `sitemap.xml`
+4. Deploy to Vercel + verify domain, production migrations, and smoke tests
 
 ## 8. Known Follow-ups (engineering)
 

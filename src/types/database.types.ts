@@ -1816,53 +1816,6 @@ export type Database = {
           },
         ]
       }
-      trusted_logos: {
-        Row: {
-          created_at: string
-          display_order: number
-          href: string | null
-          id: string
-          is_verified: boolean
-          is_visible: boolean
-          image_url: string | null
-          media_id: string | null
-          name: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          display_order?: number
-          href?: string | null
-          id?: string
-          image_url?: string | null
-          is_verified?: boolean
-          is_visible?: boolean
-          media_id?: string | null
-          name: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          display_order?: number
-          href?: string | null
-          id?: string
-          image_url?: string | null
-          is_verified?: boolean
-          is_visible?: boolean
-          media_id?: string | null
-          name?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "trusted_logos_media_id_fkey"
-            columns: ["media_id"]
-            isOneToOne: false
-            referencedRelation: "media_assets"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       why_choose_us: {
         Row: {
           created_at: string
