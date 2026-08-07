@@ -137,7 +137,7 @@ export default async function ServicePage({
   return (
     <>
       {/* ================= HERO ================= */}
-      <section className="relative flex min-h-[60vh] items-center overflow-hidden bg-background-deep pt-24 pb-0 md:pt-20">
+      <section className="relative flex min-h-[60vh] items-center overflow-hidden bg-gradient-hero pt-24 pb-0 md:pt-20">
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute top-1/4 -right-20 h-[300px] w-[300px] rounded-full bg-primary/5 blur-[120px] md:h-[600px] md:w-[600px]" />
           <div className="absolute bottom-0 left-0 h-[300px] w-[300px] rounded-full bg-primary/3 blur-[100px] md:h-[400px] md:w-[400px]" />

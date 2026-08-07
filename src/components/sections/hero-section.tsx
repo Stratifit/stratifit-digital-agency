@@ -193,8 +193,7 @@ export async function HeroSection() {
   return (
     <>
     <section
-      className="relative flex min-h-[calc(100svh-4rem)] items-start justify-center overflow-hidden pb-16 pt-16 sm:min-h-[calc(100svh-5rem)] md:pb-24 lg:pb-32"
-      style={{ background: "linear-gradient(to right, #0B0F17, #0A0A0A)" }}
+      className="relative flex min-h-[calc(100svh-4rem)] items-start justify-center overflow-hidden bg-gradient-hero pb-16 pt-16 sm:min-h-[calc(100svh-5rem)] md:pb-24 lg:pb-32"
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-1/4 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />

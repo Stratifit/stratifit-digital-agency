@@ -41,7 +41,7 @@ export default async function ServicesPage() {
 
   return (
     <>
-      <section className="bg-background-deep">
+      <section className="bg-gradient-hero">
         <Container className="py-20 md:py-24">
           <p className="text-sm font-medium uppercase tracking-widest text-primary">
             {eyebrow}

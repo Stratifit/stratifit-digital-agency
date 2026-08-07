@@ -99,7 +99,7 @@ export default async function NicheDetailPage({
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden py-16">
+      <section className="relative overflow-hidden bg-gradient-hero py-16">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[600px] -translate-x-1/2 rounded-full blur-[120px]"

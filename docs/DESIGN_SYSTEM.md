@@ -799,6 +799,16 @@ Avoid glowing every card.
 linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%)
 ```
 
+#### Hero gradient
+
+Default background for all public hero sections (home, services, work, insights, about, testimonials, buy-business, niche, and policy/company pages).
+
+```css
+linear-gradient(135deg, #0B0F17 0%, #0E1420 55%, #111827 100%)
+```
+
+Exposed as the `--gradient-hero` token / `bg-gradient-hero` utility.
+
 #### Dark surface gradient
 
 ```css

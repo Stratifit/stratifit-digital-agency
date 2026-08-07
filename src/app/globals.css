@@ -222,6 +222,7 @@
      Gradient Tokens
      --------------------------------------------------------------------------- */
   --gradient-primary: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
+  --gradient-hero: linear-gradient(135deg, #0B0F17 0%, #0E1420 55%, #111827 100%);
   --gradient-dark-surface: linear-gradient(180deg, #111827 0%, #0A0A0A 100%);
   --gradient-hero-ambient: radial-gradient(circle at 70% 20%, rgba(245, 158, 11, 0.14) 0%, rgba(245, 158, 11, 0.04) 35%, transparent 70%);
   --gradient-ai-accent: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
@@ -454,6 +455,7 @@
 
   /* Gradient Tokens */
   --gradient-primary: var(--gradient-primary);
+  --gradient-hero: var(--gradient-hero);
   --gradient-dark-surface: var(--gradient-dark-surface);
   --gradient-hero-ambient: var(--gradient-hero-ambient);
   --gradient-ai-accent: var(--gradient-ai-accent);
@@ -527,6 +529,16 @@
   --tracking-wide: var(--tracking-wide);
   --tracking-wider: var(--tracking-wider);
   --tracking-widest: var(--tracking-widest);
+}
+
+/* Gradient utilities (Tailwind v4 does not auto-generate bg-gradient-*
+   utilities from --gradient-* tokens, so they are registered explicitly). */
+@utility bg-gradient-hero {
+  background-image: var(--gradient-hero);
+}
+
+@utility bg-gradient-dark-surface {
+  background-image: var(--gradient-dark-surface);
 }
 
 /* =============================================================================
