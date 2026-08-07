@@ -29,6 +29,14 @@ function ArrowIcon() {
   );
 }
 
+/** Full-width CTA — spans the entire card. */
+const FULL_CTA_CLASS =
+  "group/link flex w-full items-center justify-center gap-2 rounded-button border border-transparent bg-primary py-4 text-sm font-bold text-text-inverse transition-[background-color,border-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-hover active:translate-y-0 active:border-primary/60 active:bg-primary-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2";
+
+/** Compact CTA — smaller, left-aligned, no arrow. */
+const COMPACT_CTA_CLASS =
+  "group/link inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-button font-medium transition-[background-color,border-color,color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 border border-transparent bg-primary text-text-inverse hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-hover active:translate-y-0 active:border-primary/60 active:bg-primary-active shadow-shadow-amber h-9 px-3.5 text-sm mt-6";
+
 export async function ServicesSection() {
   const locale = await getLocale();
   const [services, settings, servicePages] = await Promise.all([
@@ -53,6 +61,10 @@ export async function ServicesSection() {
             const ctaLabel =
               resolveTranslation(service.cta_label_translations, locale) ||
               t(locale, "learnMore");
+            const ctaClassName =
+              service.cta_style === "compact"
+                ? COMPACT_CTA_CLASS
+                : FULL_CTA_CLASS;
 
             return (
               <ServiceCard
@@ -68,15 +80,15 @@ export async function ServicesSection() {
                           ? `/services/${service.slug}`
                           : service.cta_url ?? "/contact"
                       }
-                      className="group/link flex w-full items-center justify-center gap-2 rounded-button border border-transparent bg-primary py-4 text-sm font-bold text-text-inverse transition-[background-color,border-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-hover active:translate-y-0 active:border-primary/60 active:bg-primary-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
+                      className={ctaClassName}
                     >
                       {ctaLabel}
-                      <ArrowIcon />
+                      {service.cta_style === "compact" ? null : <ArrowIcon />}
                     </Link>
                   ) : (
-                    <ContactTrigger className="group/link flex w-full items-center justify-center gap-2 rounded-button border border-transparent bg-primary py-4 text-sm font-bold text-text-inverse transition-[background-color,border-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-hover active:translate-y-0 active:border-primary/60 active:bg-primary-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2">
+                    <ContactTrigger className={ctaClassName}>
                       {ctaLabel}
-                      <ArrowIcon />
+                      {service.cta_style === "compact" ? null : <ArrowIcon />}
                     </ContactTrigger>
                   )
                 }

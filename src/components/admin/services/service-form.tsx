@@ -80,6 +80,16 @@ export function ServiceForm({ slug, initial }: ServiceFormProps) {
           <Input id="cta-label-en" placeholder="Learn More" {...register("cta_label_translations.en")} />
         </div>
         <div className="space-y-2">
+          <Label htmlFor="cta-style">CTA Style</Label>
+          <Select id="cta-style" {...register("cta_style")}>
+            <option value="full">Full width</option>
+            <option value="compact">Compact</option>
+          </Select>
+          <p className="text-xs text-text-muted">
+            Full width spans the card; compact is a smaller left-aligned button.
+          </p>
+        </div>
+        <div className="space-y-2">
           <Label htmlFor="display-order">Display Order</Label>
           <Input
             id="display-order"

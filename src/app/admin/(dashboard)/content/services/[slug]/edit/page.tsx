@@ -15,6 +15,7 @@ function toFormValues(data: Record<string, unknown>): ServiceFormValues {
     cta_label_translations:
       (data.cta_label_translations as Record<string, string>) ?? { en: "" },
     cta_url: (data.cta_url as string | null) ?? "",
+    cta_style: (data.cta_style as "full" | "compact" | null) ?? "full",
     display_order: Number(data.display_order ?? 0),
     is_featured: Boolean(data.is_featured),
     is_visible: Boolean(data.is_visible),

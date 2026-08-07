@@ -14,6 +14,7 @@ export interface PublicServiceDetail extends PublicService {
   deliverables_translations: Record<string, unknown> | null;
   cta_label_translations: Record<string, string> | null;
   cta_url: string | null;
+  cta_style: string | null;
 }
 
 export async function getPublicServices(): Promise<PublicServiceDetail[]> {
@@ -22,7 +23,7 @@ export async function getPublicServices(): Promise<PublicServiceDetail[]> {
   const { data, error } = await supabase
     .from("services")
     .select(
-      "id, slug, title_translations, short_description_translations, full_description_translations, deliverables_translations, icon_name, cta_label_translations, cta_url, display_order"
+      "id, slug, title_translations, short_description_translations, full_description_translations, deliverables_translations, icon_name, cta_label_translations, cta_url, cta_style, display_order"
     )
     .eq("status", "published")
     .eq("is_visible", true)
@@ -43,7 +44,7 @@ export async function getPublicServiceBySlug(
   const { data, error } = await supabase
     .from("services")
     .select(
-      "id, slug, title_translations, short_description_translations, full_description_translations, deliverables_translations, icon_name, cta_label_translations, cta_url, display_order"
+      "id, slug, title_translations, short_description_translations, full_description_translations, deliverables_translations, icon_name, cta_label_translations, cta_url, cta_style, display_order"
     )
     .eq("slug", slug)
     .eq("status", "published")

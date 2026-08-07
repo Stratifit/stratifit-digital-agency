@@ -1631,6 +1631,7 @@ export type Database = {
         Row: {
           created_at: string
           cta_label_translations: Json
+          cta_style: string
           cta_url: string | null
           deliverables_translations: Json
           display_order: number
@@ -1651,6 +1652,7 @@ export type Database = {
         Insert: {
           created_at?: string
           cta_label_translations?: Json
+          cta_style?: string
           cta_url?: string | null
           deliverables_translations?: Json
           display_order?: number
@@ -1671,6 +1673,7 @@ export type Database = {
         Update: {
           created_at?: string
           cta_label_translations?: Json
+          cta_style?: string
           cta_url?: string | null
           deliverables_translations?: Json
           display_order?: number
