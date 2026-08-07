@@ -34,4 +34,22 @@ describe("sectionSettingsSchema", () => {
     const result = sectionSettingsSchema.safeParse({ ...valid, is_visible: false });
     expect(result.success).toBe(true);
   });
+
+  it("accepts optional CTA fields", () => {
+    const result = sectionSettingsSchema.safeParse({
+      ...valid,
+      cta_label_translations: { en: "Schedule a Consultation", de: "", fr: "", es: "" },
+      cta_url: "/contact",
+    });
+    expect(result.success).toBe(true);
+    expect(result.data?.cta_url).toBe("/contact");
+  });
+
+  it("rejects a partial CTA label translation object", () => {
+    const result = sectionSettingsSchema.safeParse({
+      ...valid,
+      cta_label_translations: { en: "Schedule a Consultation" },
+    });
+    expect(result.success).toBe(false);
+  });
 });

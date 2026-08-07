@@ -2,24 +2,30 @@ import type { MetadataRoute } from "next";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { NICHE_ROUTES } from "@/features/acquisition/niches";
 import { getPublicServicePageSlugs } from "@/features/service-pages/queries";
+import { getPublicDetailPageSlugs } from "@/features/detail-pages/queries";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = await createSupabaseServerClient();
 
-  const [{ data: portfolio }, { data: insights }, servicePageSlugs] =
-    await Promise.all([
-      supabase
-        .from("portfolio_projects")
-        .select("slug, published_at")
-        .eq("status", "published"),
-      supabase
-        .from("insights")
-        .select("slug, published_at")
-        .eq("status", "published"),
-      getPublicServicePageSlugs(),
-    ]);
+  const [
+    { data: portfolio },
+    { data: insights },
+    servicePageSlugs,
+    detailPageSlugs,
+  ] = await Promise.all([
+    supabase
+      .from("portfolio_projects")
+      .select("slug, published_at")
+      .eq("status", "published"),
+    supabase
+      .from("insights")
+      .select("slug, published_at")
+      .eq("status", "published"),
+    getPublicServicePageSlugs(),
+    getPublicDetailPageSlugs(),
+  ]);
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${BASE_URL}/`, lastModified: new Date() },
@@ -34,10 +40,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
     })),
     { url: `${BASE_URL}/contact`, lastModified: new Date() },
-    { url: `${BASE_URL}/privacy`, lastModified: new Date() },
-    { url: `${BASE_URL}/imprint`, lastModified: new Date() },
-    { url: `${BASE_URL}/terms-conditions`, lastModified: new Date() },
-    { url: `${BASE_URL}/cookie-policy`, lastModified: new Date() },
+    ...detailPageSlugs.map((slug) => ({
+      url: `${BASE_URL}/${slug}`,
+      lastModified: new Date(),
+    })),
   ];
 
   const portfolioRoutes: MetadataRoute.Sitemap = (portfolio ?? []).map((p) => ({

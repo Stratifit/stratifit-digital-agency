@@ -260,6 +260,7 @@ Homepage and marketing content
 ├── hero
 ├── about_page
 ├── services
+├── detail_pages
 ├── process_steps
 ├── why_choose_us
 ├── acquisition_section
@@ -513,6 +514,14 @@ Suggested columns:
 - `is_visible`
 - timestamps
 
+The public Buy a Business page (`/buy-business`) drives its section labels from `section_settings` rows:
+
+- `acquisition` — page hero heading (eyebrow, title, highlight, description)
+- `acquisition-niches` — "Explore by Niche" heading
+- `acquisition-cta` — closing call-to-action block (title, description, optional `cta_label_translations`, `cta_url`)
+
+`section_settings` also carries two optional CTA columns used by CTA-capable sections: `cta_label_translations jsonb` and `cta_url text` (both nullable).
+
 ## 9.4 `final_cta`
 
 Singleton table.
@@ -559,6 +568,33 @@ Suggested columns:
 `values` items: `{ icon, title_translations, description_translations }`.
 
 Icons are restricted to the approved set (`bolt`, `users`, `globe`, `chart`, `sparkles`).
+
+## 9.6 `detail_pages`
+
+CMS-editable detail pages such as Privacy Policy, Terms of Service, Cookie Policy, Imprint, and Careers.
+
+Suggested columns:
+
+| Column | Type |
+|---|---|
+| `slug` | `text` unique |
+| `title_translations` | `jsonb` |
+| `subtitle_translations` | `jsonb` |
+| `content_translations` | `jsonb` |
+| `is_visible` | `boolean` |
+| timestamps | standard |
+
+`content_translations` is an ordered array of structured blocks:
+
+```text
+{ type: heading | paragraph | note, text_translations: {...} }
+```
+
+The CMS exposes only these approved block types — no raw HTML or arbitrary markup.
+
+Seeded slugs: `privacy`, `terms-conditions`, `cookie-policy`, `imprint`, `careers`.
+
+The footer links to these pages via `footer_links`.
 
 ---
 

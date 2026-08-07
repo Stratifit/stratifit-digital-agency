@@ -26,11 +26,19 @@ const LOCALE_NAMES: Record<string, string> = {
   es: "Spanish",
 };
 
+/** Sections whose editor also manages a closing call-to-action. */
+const CTA_SECTIONS = new Set(["acquisition-cta"]);
+
+function tr(v: Record<string, string> | null | undefined): Record<string, string> {
+  return v ?? {};
+}
+
 function toFormValues(settings: AdminSectionSettings): SectionSettingsFormValues {
-  const eyebrow = settings.eyebrow_translations ?? {};
-  const title = settings.title_translations ?? {};
-  const highlight = settings.highlight_translations ?? {};
-  const description = settings.description_translations ?? {};
+  const eyebrow = tr(settings.eyebrow_translations);
+  const title = tr(settings.title_translations);
+  const highlight = tr(settings.highlight_translations);
+  const description = tr(settings.description_translations);
+  const ctaLabel = tr(settings.cta_label_translations);
   return {
     eyebrow_translations: {
       en: eyebrow.en ?? "",
@@ -56,6 +64,13 @@ function toFormValues(settings: AdminSectionSettings): SectionSettingsFormValues
       fr: description.fr ?? "",
       es: description.es ?? "",
     },
+    cta_label_translations: {
+      en: ctaLabel.en ?? "",
+      de: ctaLabel.de ?? "",
+      fr: ctaLabel.fr ?? "",
+      es: ctaLabel.es ?? "",
+    },
+    cta_url: settings.cta_url ?? "",
     is_visible: settings.is_visible,
   };
 }
@@ -271,6 +286,42 @@ export function SectionSettingsForm({
           </fieldset>
         ))}
       </div>
+
+      {/* Optional closing call-to-action */}
+      {CTA_SECTIONS.has(settings.section_key) ? (
+        <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm">
+          <div className="mb-4">
+            <h3 className="font-display text-base font-semibold text-text-primary">
+              Closing call to action
+            </h3>
+            <p className="mt-1 text-sm text-text-muted">
+              Button label and destination shown below this section.
+            </p>
+          </div>
+          <div className="space-y-4">
+            {SUPPORTED_LOCALES.map((locale) => (
+              <div key={locale} className="space-y-2">
+                <Label htmlFor={`cta-label-${locale}`}>
+                  Button label ({LOCALE_NAMES[locale]})
+                </Label>
+                <Input
+                  id={`cta-label-${locale}`}
+                  placeholder="Schedule a Consultation"
+                  {...register(`cta_label_translations.${locale}`)}
+                />
+              </div>
+            ))}
+            <div className="space-y-2">
+              <Label htmlFor="cta-url">Button URL</Label>
+              <Input
+                id="cta-url"
+                placeholder="/contact"
+                {...register("cta_url")}
+              />
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       {serverError ? (
         <p role="alert" className="rounded-card bg-error-soft px-3 py-2 text-sm text-error">

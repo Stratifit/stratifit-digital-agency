@@ -702,6 +702,39 @@ export type Database = {
           },
         ]
       }
+      detail_pages: {
+        Row: {
+          content_translations: Json
+          created_at: string
+          id: string
+          is_visible: boolean
+          slug: string
+          subtitle_translations: Json
+          title_translations: Json
+          updated_at: string
+        }
+        Insert: {
+          content_translations?: Json
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          slug: string
+          subtitle_translations?: Json
+          title_translations?: Json
+          updated_at?: string
+        }
+        Update: {
+          content_translations?: Json
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          slug?: string
+          subtitle_translations?: Json
+          title_translations?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
       email_events: {
         Row: {
           created_at: string
@@ -1562,6 +1595,8 @@ export type Database = {
       section_settings: {
         Row: {
           created_at: string
+          cta_label_translations: Json | null
+          cta_url: string | null
           description_translations: Json
           display_order: number
           eyebrow_translations: Json
@@ -1574,6 +1609,8 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          cta_label_translations?: Json | null
+          cta_url?: string | null
           description_translations?: Json
           display_order?: number
           eyebrow_translations?: Json
@@ -1586,6 +1623,8 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          cta_label_translations?: Json | null
+          cta_url?: string | null
           description_translations?: Json
           display_order?: number
           eyebrow_translations?: Json

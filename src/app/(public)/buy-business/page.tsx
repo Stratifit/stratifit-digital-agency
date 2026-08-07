@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { getPublicAcquisitionSection } from "@/features/acquisition/queries";
-import { getPublicSectionSetting } from "@/features/section-settings/queries";
+import {
+  getPublicSectionSetting,
+  getPublicSectionSettingIncludingHidden,
+} from "@/features/section-settings/queries";
 import {
   ACQUISITION_NICHES,
   getNicheSummary,
@@ -51,10 +54,17 @@ function GlobeIcon() {
 
 export default async function BuyBusinessPage() {
   const locale = await getLocale();
-  const [section, settings] = await Promise.all([
+  const [section, settings, nichesSettings, ctaSettings] = await Promise.all([
     getPublicAcquisitionSection(),
     getPublicSectionSetting("acquisition"),
+    getPublicSectionSettingIncludingHidden("acquisition-niches"),
+    getPublicSectionSettingIncludingHidden("acquisition-cta"),
   ]);
+
+  // The new sections are hidden when an admin pauses them (row exists,
+  // is_visible = false). A missing row falls back to the default copy.
+  const nichesVisible = nichesSettings === null || nichesSettings.is_visible;
+  const ctaVisible = ctaSettings === null || ctaSettings.is_visible;
 
   const businesses = section?.businesses ?? [];
   const settingsTitle = resolveTranslation(
@@ -78,6 +88,29 @@ export default async function BuyBusinessPage() {
     resolveTranslation(settings?.description_translations ?? null, locale) ||
     resolveTranslation(section?.description_translations ?? null, locale) ||
     t(locale, "buyBusinessFallback");
+
+  // Explore by Niche heading — editable via section_settings "acquisition-niches".
+  const nichesTitle =
+    resolveTranslation(nichesSettings?.title_translations ?? null, locale) ||
+    t(locale, "exploreBy");
+  const nichesHighlight =
+    resolveTranslation(nichesSettings?.highlight_translations ?? null, locale) ||
+    t(locale, "niche");
+  const nichesDescription =
+    resolveTranslation(nichesSettings?.description_translations ?? null, locale) ||
+    t(locale, "exploreByNicheDescription");
+
+  // Closing CTA — editable via section_settings "acquisition-cta".
+  const ctaTitle =
+    resolveTranslation(ctaSettings?.title_translations ?? null, locale) ||
+    t(locale, "readyToOwnBusiness");
+  const ctaDescription =
+    resolveTranslation(ctaSettings?.description_translations ?? null, locale) ||
+    t(locale, "acquisitionGuideDescription");
+  const ctaLabel =
+    resolveTranslation(ctaSettings?.cta_label_translations ?? null, locale) ||
+    t(locale, "scheduleConsultation");
+  const ctaHref = ctaSettings?.cta_url || "/contact";
 
   return (
     <>
@@ -109,14 +142,17 @@ export default async function BuyBusinessPage() {
       {/* Explore by Niche */}
       <section className="pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <Reveal className="mb-10">
-            <h2 className="mb-2 font-display text-xl font-bold text-text-primary sm:text-2xl">
-              {t(locale, "exploreBy")} <span className="text-primary">{t(locale, "niche")}</span>
-            </h2>
-            <p className="text-sm text-text-muted">
-              {t(locale, "exploreByNicheDescription")}
-            </p>
-          </Reveal>
+          {nichesVisible ? (
+            <Reveal className="mb-10">
+              <h2 className="mb-2 font-display text-xl font-bold text-text-primary sm:text-2xl">
+                {nichesTitle}
+                {nichesHighlight ? (
+                  <span className="text-primary"> {nichesHighlight}</span>
+                ) : null}
+              </h2>
+              <p className="text-sm text-text-muted">{nichesDescription}</p>
+            </Reveal>
+          ) : null}
 
           <Reveal className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {ACQUISITION_NICHES.map((niche) => {
@@ -195,23 +231,25 @@ export default async function BuyBusinessPage() {
           </Reveal>
 
           {/* Final CTA */}
-          <Reveal className="mt-16 rounded-card border border-white/5 bg-card-dark py-12 text-center">
-            <h2 className="mb-4 font-display text-2xl font-bold text-text-primary sm:text-3xl">
-              {t(locale, "readyToOwnBusiness")}
-            </h2>
-            <p className="mx-auto mb-8 max-w-xl text-sm text-text-muted sm:text-base">
-              {t(locale, "acquisitionGuideDescription")}
-            </p>
-            <ContactAwareLink
-              href="/contact"
-              className="group inline-flex items-center justify-center gap-2 rounded-button bg-primary px-8 py-4 text-sm font-bold text-text-inverse shadow-[0_0_30px_rgba(245,158,11,0.2)] transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary-hover active:scale-95"
-            >
-              {t(locale, "scheduleConsultation")}
-              <span className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1">
-                <ArrowRightIcon />
-              </span>
-            </ContactAwareLink>
-          </Reveal>
+          {ctaVisible ? (
+            <Reveal className="mt-16 rounded-card border border-white/5 bg-card-dark py-12 text-center">
+              <h2 className="mb-4 font-display text-2xl font-bold text-text-primary sm:text-3xl">
+                {ctaTitle}
+              </h2>
+              <p className="mx-auto mb-8 max-w-xl text-sm text-text-muted sm:text-base">
+                {ctaDescription}
+              </p>
+              <ContactAwareLink
+                href={ctaHref}
+                className="group inline-flex items-center justify-center gap-2 rounded-button bg-primary px-8 py-4 text-sm font-bold text-text-inverse shadow-[0_0_30px_rgba(245,158,11,0.2)] transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary-hover active:scale-95"
+              >
+                {ctaLabel}
+                <span className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1">
+                  <ArrowRightIcon />
+                </span>
+              </ContactAwareLink>
+            </Reveal>
+          ) : null}
         </div>
       </section>
     </>

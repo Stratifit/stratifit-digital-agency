@@ -7,11 +7,14 @@ export interface PublicSectionSettings {
   title_translations: Record<string, string> | null;
   highlight_translations: Record<string, string> | null;
   description_translations: Record<string, string> | null;
+  /** Optional closing call-to-action (only populated for CTA-capable sections). */
+  cta_label_translations?: Record<string, string> | null;
+  cta_url?: string | null;
   is_visible: boolean;
 }
 
 const SELECT_FIELDS =
-  "section_key, label, eyebrow_translations, title_translations, highlight_translations, description_translations, is_visible";
+  "section_key, label, eyebrow_translations, title_translations, highlight_translations, description_translations, cta_label_translations, cta_url, is_visible";
 
 export async function getPublicSectionSetting(
   sectionKey: string
@@ -23,6 +26,28 @@ export async function getPublicSectionSetting(
     .select(SELECT_FIELDS)
     .eq("section_key", sectionKey)
     .eq("is_visible", true)
+    .maybeSingle();
+
+  if (error || !data) {
+    return null;
+  }
+
+  return data as PublicSectionSettings;
+}
+
+/**
+ * Like `getPublicSectionSetting` but ignores `is_visible` so callers can
+ * distinguish a paused section (row exists, hidden) from a missing row.
+ */
+export async function getPublicSectionSettingIncludingHidden(
+  sectionKey: string
+): Promise<PublicSectionSettings | null> {
+  const supabase = await createSupabaseServerClient();
+
+  const { data, error } = await supabase
+    .from("section_settings")
+    .select(SELECT_FIELDS)
+    .eq("section_key", sectionKey)
     .maybeSingle();
 
   if (error || !data) {

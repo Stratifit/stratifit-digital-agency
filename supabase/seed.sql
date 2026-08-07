@@ -98,13 +98,61 @@ ON CONFLICT (section_key) DO UPDATE SET
   display_order = EXCLUDED.display_order;
 
 -- =============================================================================
+-- Buy a Business page sections (Explore by Niche heading + closing CTA)
+-- =============================================================================
+
+INSERT INTO public.section_settings (section_key, label, eyebrow_translations, title_translations, highlight_translations, description_translations, is_visible, display_order)
+VALUES (
+  'acquisition-niches',
+  'Acquisition — Niche Filter',
+  '{"en": "", "de": "", "fr": "", "es": ""}'::jsonb,
+  '{"en": "Explore by", "de": "Stöbern nach", "fr": "Explorer par", "es": "Explorar por"}'::jsonb,
+  '{"en": "Niche", "de": "Nische", "fr": "Niche", "es": "Nicho"}'::jsonb,
+  '{"en": "Select a niche to see available businesses for acquisition.", "de": "Wählen Sie eine Nische, um verfügbare Unternehmen zur Übernahme zu sehen.", "fr": "Sélectionnez une niche pour voir les sociétés disponibles à l''acquisition.", "es": "Selecciona un nicho para ver los negocios disponibles para adquisición."}'::jsonb,
+  true,
+  56
+)
+ON CONFLICT (section_key) DO UPDATE SET
+  label = EXCLUDED.label,
+  eyebrow_translations = EXCLUDED.eyebrow_translations,
+  title_translations = EXCLUDED.title_translations,
+  highlight_translations = EXCLUDED.highlight_translations,
+  description_translations = EXCLUDED.description_translations,
+  is_visible = EXCLUDED.is_visible,
+  display_order = EXCLUDED.display_order;
+
+INSERT INTO public.section_settings (section_key, label, eyebrow_translations, title_translations, highlight_translations, description_translations, cta_label_translations, cta_url, is_visible, display_order)
+VALUES (
+  'acquisition-cta',
+  'Acquisition — Final CTA',
+  '{"en": "", "de": "", "fr": "", "es": ""}'::jsonb,
+  '{"en": "Ready to Own a Business?", "de": "Bereit, ein Unternehmen zu kaufen?", "fr": "Prêt à posséder une entreprise ?", "es": "¿Listo para ser dueño de un negocio?"}'::jsonb,
+  '{}'::jsonb,
+  '{"en": "Our team will guide you through every step of the acquisition process — from due diligence to transition.", "de": "Unser Team begleitet Sie durch jeden Schritt des Übernahmeprozesses — von der Due Diligence bis zum Übergang.", "fr": "Notre équipe vous accompagne à chaque étape du processus d''acquisition — de la due diligence à la transition.", "es": "Nuestro equipo te guiará en cada paso del proceso de adquisición: desde la debida diligencia hasta la transición."}'::jsonb,
+  '{"en": "Schedule a Consultation", "de": "Beratung vereinbaren", "fr": "Planifier une consultation", "es": "Programar una consulta"}'::jsonb,
+  '/contact',
+  true,
+  57
+)
+ON CONFLICT (section_key) DO UPDATE SET
+  label = EXCLUDED.label,
+  eyebrow_translations = EXCLUDED.eyebrow_translations,
+  title_translations = EXCLUDED.title_translations,
+  highlight_translations = EXCLUDED.highlight_translations,
+  description_translations = EXCLUDED.description_translations,
+  cta_label_translations = EXCLUDED.cta_label_translations,
+  cta_url = EXCLUDED.cta_url,
+  is_visible = EXCLUDED.is_visible,
+  display_order = EXCLUDED.display_order;
+
+-- =============================================================================
 -- Footer Groups
 -- Stable UUIDs for idempotent re-runs.
 -- =============================================================================
 
 INSERT INTO public.footer_groups (id, title_translations, display_order, is_visible)
 VALUES
-  ('20000000-0000-4000-8000-000000000001', '{"en": "Services", "de": "Leistungen", "fr": "Services", "es": "Servicios"}'::jsonb, 1, true),
+  ('20000000-0000-4000-8000-000000000001', '{"en": "Platform", "de": "Plattform", "fr": "Plateforme", "es": "Plataforma"}'::jsonb, 1, true),
   ('20000000-0000-4000-8000-000000000002', '{"en": "Company", "de": "Unternehmen", "fr": "Entreprise", "es": "Empresa"}'::jsonb, 2, true),
   ('20000000-0000-4000-8000-000000000003', '{"en": "Legal", "de": "Rechtliches", "fr": "Mentions légales", "es": "Legal"}'::jsonb, 3, true)
 ON CONFLICT (id) DO UPDATE SET
@@ -119,19 +167,114 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.footer_links (id, group_id, label_translations, href, is_external, display_order, is_visible)
 VALUES
-  ('30000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000001', '{"en": "Services", "de": "Leistungen", "fr": "Services", "es": "Servicios"}'::jsonb, '/services', false, 1, true),
-  ('30000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000001', '{"en": "Work", "de": "Arbeiten", "fr": "Réalisations", "es": "Proyectos"}'::jsonb, '/work', false, 2, true),
-  ('30000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000001', '{"en": "Buy a Business", "de": "Unternehmen kaufen", "fr": "Acheter une entreprise", "es": "Comprar un negocio"}'::jsonb, '/buy-business', false, 3, true),
-  ('30000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000002', '{"en": "About", "de": "Über uns", "fr": "À propos", "es": "Nosotros"}'::jsonb, '/about', false, 1, true),
-  ('30000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000002', '{"en": "Insights", "de": "Einblicke", "fr": "Insights", "es": "Perspectivas"}'::jsonb, '/insights', false, 2, true),
-  ('30000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000002', '{"en": "Contact", "de": "Kontakt", "fr": "Contact", "es": "Contacto"}'::jsonb, '/contact', false, 3, true),
-  ('30000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000003', '{"en": "Privacy Policy", "de": "Datenschutz", "fr": "Politique de confidentialité", "es": "Política de privacidad"}'::jsonb, '/privacy', false, 1, true),
-  ('30000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000003', '{"en": "Imprint", "de": "Impressum", "fr": "Mentions légales", "es": "Aviso legal"}'::jsonb, '/imprint', false, 2, true)
+  ('30000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000001', '{"en": "Home", "de": "Startseite", "fr": "Accueil", "es": "Inicio"}'::jsonb, '/', false, 1, true),
+  ('30000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000001', '{"en": "Services", "de": "Leistungen", "fr": "Services", "es": "Servicios"}'::jsonb, '/services', false, 2, true),
+  ('30000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000001', '{"en": "Work", "de": "Arbeiten", "fr": "Réalisations", "es": "Proyectos"}'::jsonb, '/work', false, 3, true),
+  ('30000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000001', '{"en": "Insights", "de": "Einblicke", "fr": "Insights", "es": "Perspectivas"}'::jsonb, '/insights', false, 4, true),
+  ('30000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000002', '{"en": "About", "de": "Über uns", "fr": "À propos", "es": "Nosotros"}'::jsonb, '/about', false, 1, true),
+  ('30000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000002', '{"en": "Careers", "de": "Karriere", "fr": "Carrières", "es": "Carreras"}'::jsonb, '/careers', false, 2, true),
+  ('30000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000002', '{"en": "Contact", "de": "Kontakt", "fr": "Contact", "es": "Contacto"}'::jsonb, '/contact', false, 3, true),
+  ('30000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000003', '{"en": "Privacy Policy", "de": "Datenschutzerklärung", "fr": "Politique de confidentialité", "es": "Política de privacidad"}'::jsonb, '/privacy', false, 1, true),
+  ('30000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000003', '{"en": "Terms of Service", "de": "Nutzungsbedingungen", "fr": "Conditions d''utilisation", "es": "Términos del servicio"}'::jsonb, '/terms-conditions', false, 2, true),
+  ('30000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000003', '{"en": "Cookie Policy", "de": "Cookie-Richtlinie", "fr": "Politique de cookies", "es": "Política de cookies"}'::jsonb, '/cookie-policy', false, 3, true)
 ON CONFLICT (id) DO UPDATE SET
   group_id = EXCLUDED.group_id,
   label_translations = EXCLUDED.label_translations,
   href = EXCLUDED.href,
   display_order = EXCLUDED.display_order,
+  is_visible = EXCLUDED.is_visible;
+
+-- =============================================================================
+-- Detail Pages (Privacy, Terms, Cookie Policy, Imprint, Careers)
+-- Structured blocks: heading | paragraph | note, each with 4-language text.
+-- =============================================================================
+
+INSERT INTO public.detail_pages (slug, title_translations, subtitle_translations, content_translations, is_visible)
+VALUES
+  ('privacy',
+   '{"en": "Privacy Policy", "de": "Datenschutzerklärung", "fr": "Politique de confidentialité", "es": "Política de privacidad"}'::jsonb,
+   '{"en": "Last updated: August 2026", "de": "Zuletzt aktualisiert: August 2026", "fr": "Dernière mise à jour : août 2026", "es": "Última actualización: agosto de 2026"}'::jsonb,
+   '[
+     {"type": "paragraph", "text_translations": {"en": "This privacy policy explains how Stratifit collects, uses, and protects personal information submitted through this website.", "de": "Diese Datenschutzerklärung erläutert, wie Stratifit personenbezogene Daten erhebt, verwendet und schützt, die über diese Website übermittelt werden.", "fr": "Cette politique de confidentialité explique comment Stratifit collecte, utilise et protège les informations personnelles soumises via ce site web.", "es": "Esta política de privacidad explica cómo Stratifit recopila, utiliza y protege la información personal enviada a través de este sitio web."}},
+     {"type": "heading", "text_translations": {"en": "1. Data we collect", "de": "1. Welche Daten wir erheben", "fr": "1. Données que nous collectons", "es": "1. Datos que recopilamos"}},
+     {"type": "paragraph", "text_translations": {"en": "When you contact us, we collect the details you provide: name, email, phone, company, and message content. We also collect basic technical data such as the pages you visit.", "de": "Wenn Sie uns kontaktieren, erheben wir die von Ihnen angegebenen Daten: Name, E-Mail, Telefon, Unternehmen und Nachrichteninhalt. Wir erheben außerdem grundlegende technische Daten wie die von Ihnen besuchten Seiten.", "fr": "Lorsque vous nous contactez, nous collectons les informations que vous fournissez : nom, e-mail, téléphone, entreprise et contenu du message. Nous collectons également des données techniques de base telles que les pages que vous visitez.", "es": "Cuando nos contacta, recopilamos los datos que nos proporciona: nombre, correo electrónico, teléfono, empresa y contenido del mensaje. También recopilamos datos técnicos básicos como las páginas que visita."}},
+     {"type": "heading", "text_translations": {"en": "2. How we use data", "de": "2. Wie wir Daten verwenden", "fr": "2. Comment nous utilisons les données", "es": "2. Cómo utilizamos los datos"}},
+     {"type": "paragraph", "text_translations": {"en": "We use your information to respond to enquiries, qualify leads, and improve our services. We do not sell your personal data.", "de": "Wir verwenden Ihre Daten, um Anfragen zu beantworten, Leads zu qualifizieren und unsere Dienste zu verbessern. Wir verkaufen Ihre personenbezogenen Daten nicht.", "fr": "Nous utilisons vos informations pour répondre aux demandes, qualifier les prospects et améliorer nos services. Nous ne vendons pas vos données personnelles.", "es": "Utilizamos su información para responder consultas, calificar clientes potenciales y mejorar nuestros servicios. No vendemos sus datos personales."}},
+     {"type": "heading", "text_translations": {"en": "3. Legal basis", "de": "3. Rechtsgrundlage", "fr": "3. Base juridique", "es": "3. Base legal"}},
+     {"type": "paragraph", "text_translations": {"en": "We process personal data based on your consent and on our legitimate interest in operating our business and responding to enquiries.", "de": "Wir verarbeiten personenbezogene Daten auf Grundlage Ihrer Einwilligung und unseres berechtigten Interesses am Betrieb unseres Unternehmens und an der Beantwortung von Anfragen.", "fr": "Nous traitons les données personnelles sur la base de votre consentement et de notre intérêt légitime à exploiter notre entreprise et à répondre aux demandes.", "es": "Procesamos datos personales basándonos en su consentimiento y en nuestro interés legítimo de operar nuestro negocio y responder consultas."}},
+     {"type": "heading", "text_translations": {"en": "4. Your rights", "de": "4. Ihre Rechte", "fr": "4. Vos droits", "es": "4. Sus derechos"}},
+     {"type": "paragraph", "text_translations": {"en": "You may request access to, correction of, or deletion of your personal data at any time. Contact us to exercise these rights.", "de": "Sie können jederzeit Zugriff auf Ihre personenbezogenen Daten, deren Berichtigung oder Löschung verlangen. Kontaktieren Sie uns, um diese Rechte auszuüben.", "fr": "Vous pouvez demander l''accès à vos données personnelles, leur correction ou leur suppression à tout moment. Contactez-nous pour exercer ces droits.", "es": "Puede solicitar el acceso, la corrección o la eliminación de sus datos personales en cualquier momento. Contáctenos para ejercer estos derechos."}},
+     {"type": "heading", "text_translations": {"en": "5. Contact", "de": "5. Kontakt", "fr": "5. Contact", "es": "5. Contacto"}},
+     {"type": "paragraph", "text_translations": {"en": "For privacy questions, contact us through the contact page or email the address listed on this website.", "de": "Bei Datenschutzfragen kontaktieren Sie uns über die Kontaktseite oder per E-Mail an die auf dieser Website angegebene Adresse.", "fr": "Pour toute question relative à la confidentialité, contactez-nous via la page contact ou par e-mail à l''adresse indiquée sur ce site.", "es": "Para preguntas sobre privacidad, contáctenos a través de la página de contacto o por correo a la dirección indicada en este sitio web."}},
+     {"type": "note", "text_translations": {"en": "Note: This placeholder must be reviewed and finalized by qualified legal counsel before launch.", "de": "Hinweis: Dieser Platzhalter muss vor dem Launch von qualifiziertem Rechtsbeistand geprüft und finalisiert werden.", "fr": "Remarque : ce texte provisoire doit être révisé et finalisé par un conseiller juridique qualifié avant le lancement.", "es": "Nota: este texto provisional debe ser revisado y finalizado por un asesor legal cualificado antes del lanzamiento."}}
+   ]'::jsonb,
+   true),
+  ('terms-conditions',
+   '{"en": "Terms of Service", "de": "Nutzungsbedingungen", "fr": "Conditions d''utilisation", "es": "Términos del servicio"}'::jsonb,
+   '{"en": "Last updated: August 2026", "de": "Zuletzt aktualisiert: August 2026", "fr": "Dernière mise à jour : août 2026", "es": "Última actualización: agosto de 2026"}'::jsonb,
+   '[
+     {"type": "paragraph", "text_translations": {"en": "These terms govern the use of the Stratifit website and its services. By accessing this website, you agree to these terms.", "de": "Diese Bedingungen regeln die Nutzung der Stratifit-Website und ihrer Dienste. Mit dem Zugriff auf diese Website stimmen Sie diesen Bedingungen zu.", "fr": "Ces conditions régissent l''utilisation du site web Stratifit et de ses services. En accédant à ce site, vous acceptez ces conditions.", "es": "Estos términos rigen el uso del sitio web de Stratifit y sus servicios. Al acceder a este sitio web, acepta estos términos."}},
+     {"type": "heading", "text_translations": {"en": "1. Services", "de": "1. Dienstleistungen", "fr": "1. Services", "es": "1. Servicios"}},
+     {"type": "paragraph", "text_translations": {"en": "Stratifit provides digital agency services including brand design, website development, AI & automation, and growth marketing.", "de": "Stratifit bietet Digitalagentur-Leistungen an, darunter Markengestaltung, Webentwicklung, KI & Automatisierung und Growth Marketing.", "fr": "Stratifit fournit des services d''agence digitale, notamment le design de marque, le développement web, l''IA & l''automatisation et le marketing de croissance.", "es": "Stratifit ofrece servicios de agencia digital, incluidos diseño de marca, desarrollo web, IA y automatización, y marketing de crecimiento."}},
+     {"type": "heading", "text_translations": {"en": "2. Intellectual property", "de": "2. Geistiges Eigentum", "fr": "2. Propriété intellectuelle", "es": "2. Propiedad intelectual"}},
+     {"type": "paragraph", "text_translations": {"en": "All content, designs, and materials delivered remain the intellectual property of their respective owners unless agreed otherwise in writing.", "de": "Alle gelieferten Inhalte, Designs und Materialien bleiben Eigentum der jeweiligen Rechteinhaber, sofern nichts anderes schriftlich vereinbart wurde.", "fr": "Tous les contenus, designs et matériels livrés restent la propriété intellectuelle de leurs propriétaires respectifs, sauf accord écrit contraire.", "es": "Todo el contenido, los diseños y los materiales entregados siguen siendo propiedad intelectual de sus respectivos propietarios, salvo acuerdo escrito en contrario."}},
+     {"type": "heading", "text_translations": {"en": "3. Limitation of liability", "de": "3. Haftungsbeschränkung", "fr": "3. Limitation de responsabilité", "es": "3. Limitación de responsabilidad"}},
+     {"type": "paragraph", "text_translations": {"en": "Stratifit is not liable for indirect or consequential damages arising from the use of this website or its services.", "de": "Stratifit haftet nicht für mittelbare oder Folgeschäden, die aus der Nutzung dieser Website oder ihrer Dienste entstehen.", "fr": "Stratifit n''est pas responsable des dommages indirects ou consécutifs résultant de l''utilisation de ce site web ou de ses services.", "es": "Stratifit no es responsable de los daños indirectos o consecuentes derivados del uso de este sitio web o de sus servicios."}},
+     {"type": "heading", "text_translations": {"en": "4. Contact", "de": "4. Kontakt", "fr": "4. Contact", "es": "4. Contacto"}},
+     {"type": "paragraph", "text_translations": {"en": "For questions about these terms, contact us through the contact page.", "de": "Bei Fragen zu diesen Bedingungen kontaktieren Sie uns über die Kontaktseite.", "fr": "Pour toute question concernant ces conditions, contactez-nous via la page contact.", "es": "Para preguntas sobre estos términos, contáctenos a través de la página de contacto."}},
+     {"type": "note", "text_translations": {"en": "Note: This placeholder must be reviewed and finalized by qualified legal counsel before launch.", "de": "Hinweis: Dieser Platzhalter muss vor dem Launch von qualifiziertem Rechtsbeistand geprüft und finalisiert werden.", "fr": "Remarque : ce texte provisoire doit être révisé et finalisé par un conseiller juridique qualifié avant le lancement.", "es": "Nota: este texto provisional debe ser revisado y finalizado por un asesor legal cualificado antes del lanzamiento."}}
+   ]'::jsonb,
+   true),
+  ('cookie-policy',
+   '{"en": "Cookie Policy", "de": "Cookie-Richtlinie", "fr": "Politique de cookies", "es": "Política de cookies"}'::jsonb,
+   '{"en": "Last updated: August 2026", "de": "Zuletzt aktualisiert: August 2026", "fr": "Dernière mise à jour : août 2026", "es": "Última actualización: agosto de 2026"}'::jsonb,
+   '[
+     {"type": "paragraph", "text_translations": {"en": "This cookie policy explains how Stratifit uses cookies and similar technologies on this website.", "de": "Diese Cookie-Richtlinie erläutert, wie Stratifit Cookies und ähnliche Technologien auf dieser Website verwendet.", "fr": "Cette politique de cookies explique comment Stratifit utilise les cookies et technologies similaires sur ce site web.", "es": "Esta política de cookies explica cómo Stratifit utiliza cookies y tecnologías similares en este sitio web."}},
+     {"type": "heading", "text_translations": {"en": "1. What are cookies", "de": "1. Was sind Cookies", "fr": "1. Que sont les cookies", "es": "1. Qué son las cookies"}},
+     {"type": "paragraph", "text_translations": {"en": "Cookies are small text files stored on your device that help websites function and improve your browsing experience.", "de": "Cookies sind kleine Textdateien, die auf Ihrem Gerät gespeichert werden und Websites helfen, zu funktionieren und Ihr Surferlebnis zu verbessern.", "fr": "Les cookies sont de petits fichiers texte stockés sur votre appareil qui aident les sites web à fonctionner et à améliorer votre expérience de navigation.", "es": "Las cookies son pequeños archivos de texto almacenados en su dispositivo que ayudan a que los sitios web funcionen y mejoran su experiencia de navegación."}},
+     {"type": "heading", "text_translations": {"en": "2. How we use cookies", "de": "2. Wie wir Cookies verwenden", "fr": "2. Comment nous utilisons les cookies", "es": "2. Cómo utilizamos las cookies"}},
+     {"type": "paragraph", "text_translations": {"en": "We use essential cookies for basic site functionality and, where enabled, analytics cookies to understand how visitors use the site.", "de": "Wir verwenden notwendige Cookies für die grundlegende Funktionalität der Website und, sofern aktiviert, Analyse-Cookies, um zu verstehen, wie Besucher die Website nutzen.", "fr": "Nous utilisons des cookies essentiels pour le fonctionnement de base du site et, lorsqu''ils sont activés, des cookies d''analyse pour comprendre comment les visiteurs utilisent le site.", "es": "Utilizamos cookies esenciales para el funcionamiento básico del sitio y, cuando están habilitadas, cookies de análisis para entender cómo usan el sitio los visitantes."}},
+     {"type": "heading", "text_translations": {"en": "3. Managing cookies", "de": "3. Cookies verwalten", "fr": "3. Gestion des cookies", "es": "3. Gestión de cookies"}},
+     {"type": "paragraph", "text_translations": {"en": "You can control or delete cookies through your browser settings at any time. Disabling cookies may affect site functionality.", "de": "Sie können Cookies jederzeit über die Einstellungen Ihres Browsers steuern oder löschen. Das Deaktivieren von Cookies kann die Funktionalität der Website beeinträchtigen.", "fr": "Vous pouvez contrôler ou supprimer les cookies via les paramètres de votre navigateur à tout moment. La désactivation des cookies peut affecter le fonctionnement du site.", "es": "Puede controlar o eliminar las cookies a través de la configuración de su navegador en cualquier momento. Deshabilitar las cookies puede afectar el funcionamiento del sitio."}},
+     {"type": "heading", "text_translations": {"en": "4. Contact", "de": "4. Kontakt", "fr": "4. Contact", "es": "4. Contacto"}},
+     {"type": "paragraph", "text_translations": {"en": "For questions about this cookie policy, contact us through the contact page.", "de": "Bei Fragen zu dieser Cookie-Richtlinie kontaktieren Sie uns über die Kontaktseite.", "fr": "Pour toute question concernant cette politique de cookies, contactez-nous via la page contact.", "es": "Para preguntas sobre esta política de cookies, contáctenos a través de la página de contacto."}},
+     {"type": "note", "text_translations": {"en": "Note: This placeholder must be reviewed and finalized by qualified legal counsel before launch.", "de": "Hinweis: Dieser Platzhalter muss vor dem Launch von qualifiziertem Rechtsbeistand geprüft und finalisiert werden.", "fr": "Remarque : ce texte provisoire doit être révisé et finalisé par un conseiller juridique qualifié avant le lancement.", "es": "Nota: este texto provisional debe ser revisado y finalizado por un asesor legal cualificado antes del lanzamiento."}}
+   ]'::jsonb,
+   true),
+  ('imprint',
+   '{"en": "Imprint", "de": "Impressum", "fr": "Mentions légales", "es": "Aviso legal"}'::jsonb,
+   '{"en": "Legal notice / Impressum", "de": "Rechtliche Hinweise / Impressum", "fr": "Mentions légales", "es": "Aviso legal"}'::jsonb,
+   '[
+     {"type": "heading", "text_translations": {"en": "Company", "de": "Unternehmen", "fr": "Société", "es": "Empresa"}},
+     {"type": "paragraph", "text_translations": {"en": "Stratifit\nAddress to be provided", "de": "Stratifit\nAnschrift folgt", "fr": "Stratifit\nAdresse à fournir", "es": "Stratifit\nDirección por confirmar"}},
+     {"type": "heading", "text_translations": {"en": "Contact", "de": "Kontakt", "fr": "Contact", "es": "Contacto"}},
+     {"type": "paragraph", "text_translations": {"en": "Email: hello@stratifit.com", "de": "E-Mail: hello@stratifit.com", "fr": "E-mail : hello@stratifit.com", "es": "Correo: hello@stratifit.com"}},
+     {"type": "heading", "text_translations": {"en": "Represented by", "de": "Vertreten durch", "fr": "Représentée par", "es": "Representada por"}},
+     {"type": "paragraph", "text_translations": {"en": "Managing director / owner to be provided.", "de": "Geschäftsführer / Inhaber folgt.", "fr": "Directeur / propriétaire à fournir.", "es": "Director / propietario por confirmar."}},
+     {"type": "heading", "text_translations": {"en": "Responsible for content", "de": "Verantwortlich für den Inhalt", "fr": "Responsable du contenu", "es": "Responsable del contenido"}},
+     {"type": "paragraph", "text_translations": {"en": "To be provided.", "de": "Folgt.", "fr": "À fournir.", "es": "Por confirmar."}},
+     {"type": "note", "text_translations": {"en": "Note: This placeholder must be completed with the legally required company information before launch.", "de": "Hinweis: Dieser Platzhalter muss vor dem Launch mit den gesetzlich vorgeschriebenen Unternehmensangaben vervollständigt werden.", "fr": "Remarque : ce texte provisoire doit être complété avec les informations légales requises avant le lancement.", "es": "Nota: este texto provisional debe completarse con la información legal requerida antes del lanzamiento."}}
+   ]'::jsonb,
+   true),
+  ('careers',
+   '{"en": "Careers", "de": "Karriere", "fr": "Carrières", "es": "Carreras"}'::jsonb,
+   '{"en": "Join the Stratifit team", "de": "Werde Teil des Stratifit-Teams", "fr": "Rejoignez l''équipe Stratifit", "es": "Únete al equipo de Stratifit"}'::jsonb,
+   '[
+     {"type": "paragraph", "text_translations": {"en": "We are building a team of strategists, designers, engineers, and marketers obsessed with craft — people who want to build digital experiences that move businesses forward.", "de": "Wir bauen ein Team aus Strategen, Designern, Ingenieuren und Marketers auf, die Handwerkskunst lieben – Menschen, die digitale Erlebnisse schaffen wollen, die Unternehmen voranbringen.", "fr": "Nous constituons une équipe de stratèges, designers, ingénieurs et marketeurs passionnés par leur métier — des personnes qui veulent créer des expériences numériques qui font avancer les entreprises.", "es": "Estamos construyendo un equipo de estrategas, diseñadores, ingenieros y especialistas en marketing apasionados por el oficio: personas que quieren crear experiencias digitales que impulsen los negocios."}},
+     {"type": "heading", "text_translations": {"en": "Why Stratifit", "de": "Warum Stratifit", "fr": "Pourquoi Stratifit", "es": "Por qué Stratifit"}},
+     {"type": "paragraph", "text_translations": {"en": "You will work on premium projects with modern technology, collaborate directly with leadership, and see the real impact of your work on client outcomes.", "de": "Sie arbeiten an Premium-Projekten mit moderner Technologie, arbeiten direkt mit der Führungsebene zusammen und sehen die echten Auswirkungen Ihrer Arbeit auf die Ergebnisse unserer Kunden.", "fr": "Vous travaillerez sur des projets premium avec des technologies modernes, collaborerez directement avec la direction et verrez l''impact réel de votre travail sur les résultats des clients.", "es": "Trabajará en proyectos premium con tecnología moderna, colaborará directamente con el liderazgo y verá el impacto real de su trabajo en los resultados de los clientes."}},
+     {"type": "heading", "text_translations": {"en": "How we work", "de": "Wie wir arbeiten", "fr": "Comment nous travaillons", "es": "Cómo trabajamos"}},
+     {"type": "paragraph", "text_translations": {"en": "We are async-first: tight specs, short meetings, and high trust. We hire for seniority, autonomy, and judgment.", "de": "Wir arbeiten asynchron: präzise Spezifikationen, kurze Meetings und hohes Vertrauen. Wir stellen auf Erfahrung, Eigenverantwortung und Urteilsvermögen ein.", "fr": "Nous privilégions l''asynchrone : des spécifications précises, des réunions courtes et une grande confiance. Nous recrutons pour la séniorité, l''autonomie et le jugement.", "es": "Somos async-first: especificaciones precisas, reuniones cortas y alta confianza. Contratamos por seniority, autonomía y criterio."}},
+     {"type": "heading", "text_translations": {"en": "Open positions", "de": "Offene Positionen", "fr": "Postes ouverts", "es": "Puestos abiertos"}},
+     {"type": "paragraph", "text_translations": {"en": "We hire on a rolling basis for design, engineering, and growth roles. If you are exceptional at what you do, we want to hear from you.", "de": "Wir stellen laufend für Design-, Engineering- und Growth-Positionen ein. Wenn Sie außergewöhnlich gut in dem sind, was Sie tun, möchten wir von Ihnen hören.", "fr": "Nous recrutons en continu pour des postes en design, ingénierie et croissance. Si vous êtes exceptionnel dans ce que vous faites, nous voulons vous connaître.", "es": "Contratamos de forma continua para puestos de diseño, ingeniería y crecimiento. Si eres excepcional en lo que haces, queremos saber de ti."}},
+     {"type": "heading", "text_translations": {"en": "Apply", "de": "Bewerben", "fr": "Postuler", "es": "Aplicar"}},
+     {"type": "paragraph", "text_translations": {"en": "Send your portfolio or CV through the contact page and we will get back to you within a few days.", "de": "Senden Sie Ihr Portfolio oder Ihren Lebenslauf über die Kontaktseite – wir melden uns innerhalb weniger Tage.", "fr": "Envoyez votre portfolio ou CV via la page contact et nous vous répondrons sous quelques jours.", "es": "Envíe su portafolio o CV a través de la página de contacto y le responderemos en unos días."}}
+   ]'::jsonb,
+   true)
+ON CONFLICT (slug) DO UPDATE SET
+  title_translations = EXCLUDED.title_translations,
+  subtitle_translations = EXCLUDED.subtitle_translations,
+  content_translations = EXCLUDED.content_translations,
   is_visible = EXCLUDED.is_visible;
 
 -- =============================================================================

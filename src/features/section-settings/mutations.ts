@@ -17,7 +17,19 @@ const SECTION_SETTINGS_KEYS = [
   "pricing",
   "faq",
   "contact",
+  "acquisition-niches",
+  "acquisition-cta",
 ] as const;
+
+/** Normalizes an optional CTA label back to null when every locale is empty. */
+function ctaLabelToJson(
+  translations?: { en: string; de: string; fr: string; es: string }
+) {
+  if (!translations) return null;
+  return Object.values(translations).some((v) => v.trim().length > 0)
+    ? translations
+    : null;
+}
 
 
 async function requireAdmin() {
@@ -61,6 +73,10 @@ export async function updateSectionSettings(
       title_translations: parsed.data.title_translations,
       highlight_translations: parsed.data.highlight_translations,
       description_translations: parsed.data.description_translations,
+      cta_label_translations: ctaLabelToJson(
+        parsed.data.cta_label_translations
+      ),
+      cta_url: parsed.data.cta_url?.trim() || null,
       is_visible: parsed.data.is_visible,
     })
     .eq("section_key", sectionKey);
@@ -70,6 +86,7 @@ export async function updateSectionSettings(
   }
 
   revalidatePath("/");
+  revalidatePath("/buy-business");
   revalidatePath("/admin/content/sections");
   return { success: true };
 }
@@ -125,6 +142,7 @@ export async function toggleSectionVisibility(
   }
 
   revalidatePath("/");
+  revalidatePath("/buy-business");
   revalidatePath("/admin/content/sections");
   return { success: true };
 }

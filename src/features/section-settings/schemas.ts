@@ -18,6 +18,9 @@ export const sectionSettingsSchema = z.object({
   ),
   highlight_translations: translations(),
   description_translations: translations(),
+  /** Optional closing call-to-action (CTA-capable sections only). */
+  cta_label_translations: translations().optional(),
+  cta_url: z.string().optional(),
   is_visible: z.boolean(),
 });
 

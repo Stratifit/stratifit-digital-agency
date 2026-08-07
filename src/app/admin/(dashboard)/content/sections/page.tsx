@@ -60,6 +60,8 @@ export default async function AdminSectionsPage() {
     { key: "pricing", label: "Pricing", description: "Package plans", editHref: "/admin/content/pricing" },
     { key: "faq", label: "FAQ", description: "Frequently asked questions", editHref: "/admin/content/faq" },
     { key: "contact", label: "Contact", description: "Enquiry form section", editHref: "/admin/content/sections/contact/edit" },
+    { key: "acquisition-niches", label: "Acquisition — Niche Filter", description: "Explore by Niche heading", editHref: "/admin/content/sections/acquisition-niches/edit" },
+    { key: "acquisition-cta", label: "Acquisition — Final CTA", description: "Closing call-to-action on Buy a Business", editHref: "/admin/content/sections/acquisition-cta/edit" },
   ];
 
   for (const s of settingsSections) {
