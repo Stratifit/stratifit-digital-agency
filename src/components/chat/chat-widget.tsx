@@ -391,7 +391,7 @@ function ServicesPanel({
               service={service}
               locale={locale}
               cta={
-                <div className="mt-6 grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3">
                   <button
                     type="button"
                     onClick={() => onAsk(title, "interested")}

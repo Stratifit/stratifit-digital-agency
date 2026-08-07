@@ -98,7 +98,7 @@ export function ServiceCard({
 
         <div className="flex-1" />
 
-        <div>{cta}</div>
+        <div className="mt-2">{cta}</div>
       </div>
     </div>
   );
