@@ -54,7 +54,7 @@ export function FaqHelpCard() {
         className="flex w-full items-start gap-3 rounded-button text-left focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
       >
         <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-primary/30 bg-primary/15 transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:bg-primary/25 sm:size-10">
-          <ChatIcon className="text-base text-primary sm:text-lg" />
+          <ChatIcon className="size-4 text-primary sm:size-[18px]" />
         </span>
         <span className="min-w-0 flex-1">
           <span className="block font-display text-sm font-black tracking-tight text-text-primary sm:text-lg md:text-xl">
@@ -69,7 +69,7 @@ export function FaqHelpCard() {
 
       <ContactTrigger className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary h-11 px-[18px] text-sm font-bold text-black shadow-[0_0_18px_rgba(245,158,11,0.25)] transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary-light active:scale-95 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 group-hover:gap-3">
         Contact our team
-        <ArrowRightIcon className="text-xs transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-0.5 sm:text-sm" />
+        <ArrowRightIcon className="size-4 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-0.5" />
       </ContactTrigger>
     </div>
   );
