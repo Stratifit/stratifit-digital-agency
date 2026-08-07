@@ -12,7 +12,10 @@ export const metadata = pageMetadata({
   path: "/careers",
 });
 
+const FALLBACK_EYEBROW = "Careers";
 const FALLBACK_TITLE = "Careers";
+const FALLBACK_DESCRIPTION =
+  "Join the Stratifit team — strategists, designers, engineers, and marketers obsessed with craft.";
 const FALLBACK_SUBTITLE = "Join the Stratifit team";
 
 export default async function CareersPage() {
@@ -23,15 +26,22 @@ export default async function CareersPage() {
     notFound();
   }
 
+  const eyebrow =
+    resolveTranslation(page?.eyebrow_translations, locale) || FALLBACK_EYEBROW;
   const title =
     resolveTranslation(page?.title_translations, locale) || FALLBACK_TITLE;
+  const description =
+    resolveTranslation(page?.description_translations, locale) ||
+    FALLBACK_DESCRIPTION;
   const subtitle =
     resolveTranslation(page?.subtitle_translations, locale) || FALLBACK_SUBTITLE;
 
   return (
     <>
       <DetailPageView
+        eyebrow={eyebrow}
         title={title}
+        description={description}
         subtitle={subtitle}
         blocks={page?.content ?? []}
         locale={locale}

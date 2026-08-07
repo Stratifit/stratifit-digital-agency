@@ -11,8 +11,11 @@ export const metadata = pageMetadata({
   path: "/cookie-policy",
 });
 
+const FALLBACK_EYEBROW = "Legal";
 const FALLBACK_TITLE = "Cookie Policy";
-const FALLBACK_SUBTITLE = "Last updated: August 2026";
+const FALLBACK_DESCRIPTION =
+  "Cookies help us deliver a better experience. This policy explains what cookies we use and how you can control them.";
+const FALLBACK_SUBTITLE = "Last updated: July 2026";
 
 export default async function CookiePolicyPage() {
   const locale = await getLocale();
@@ -22,14 +25,21 @@ export default async function CookiePolicyPage() {
     notFound();
   }
 
+  const eyebrow =
+    resolveTranslation(page?.eyebrow_translations, locale) || FALLBACK_EYEBROW;
   const title =
     resolveTranslation(page?.title_translations, locale) || FALLBACK_TITLE;
+  const description =
+    resolveTranslation(page?.description_translations, locale) ||
+    FALLBACK_DESCRIPTION;
   const subtitle =
     resolveTranslation(page?.subtitle_translations, locale) || FALLBACK_SUBTITLE;
 
   return (
     <DetailPageView
+      eyebrow={eyebrow}
       title={title}
+      description={description}
       subtitle={subtitle}
       blocks={page?.content ?? []}
       locale={locale}

@@ -706,6 +706,8 @@ export type Database = {
         Row: {
           content_translations: Json
           created_at: string
+          description_translations: Json
+          eyebrow_translations: Json
           id: string
           is_visible: boolean
           slug: string
@@ -716,6 +718,8 @@ export type Database = {
         Insert: {
           content_translations?: Json
           created_at?: string
+          description_translations?: Json
+          eyebrow_translations?: Json
           id?: string
           is_visible?: boolean
           slug: string
@@ -726,6 +730,8 @@ export type Database = {
         Update: {
           content_translations?: Json
           created_at?: string
+          description_translations?: Json
+          eyebrow_translations?: Json
           id?: string
           is_visible?: boolean
           slug?: string

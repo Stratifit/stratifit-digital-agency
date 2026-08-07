@@ -12,7 +12,10 @@ export const metadata = pageMetadata({
   path: "/imprint",
 });
 
+const FALLBACK_EYEBROW = "Legal";
 const FALLBACK_TITLE = "Imprint";
+const FALLBACK_DESCRIPTION =
+  "Legal notice / Impressum — company information for Stratifit in accordance with applicable law.";
 const FALLBACK_SUBTITLE = "Legal notice / Impressum";
 
 export default async function ImprintPage() {
@@ -26,14 +29,21 @@ export default async function ImprintPage() {
     notFound();
   }
 
+  const eyebrow =
+    resolveTranslation(page?.eyebrow_translations, locale) || FALLBACK_EYEBROW;
   const title =
     resolveTranslation(page?.title_translations, locale) || FALLBACK_TITLE;
+  const description =
+    resolveTranslation(page?.description_translations, locale) ||
+    FALLBACK_DESCRIPTION;
   const subtitle =
     resolveTranslation(page?.subtitle_translations, locale) || FALLBACK_SUBTITLE;
 
   return (
     <DetailPageView
+      eyebrow={eyebrow}
       title={title}
+      description={description}
       subtitle={subtitle}
       blocks={page?.content ?? []}
       locale={locale}

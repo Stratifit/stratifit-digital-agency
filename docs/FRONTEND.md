@@ -90,7 +90,9 @@ Initial public routes:
 /insights
 /insights/[slug]
 /about
-/acquisition
+/buy-business
+/buy-business/niches/[slug]
+/acquisition (permanent redirect → /buy-business)
 /contact
 /careers
 /privacy
@@ -225,6 +227,8 @@ The Acquisition page should explain:
 - Privacy information
 - CTA
 
+V1 implementation: the public Buy a Business page (`/buy-business`) is the marketplace hub; the legacy `/acquisition` URL permanently redirects there. The page renders a hero driven by the `acquisition` section settings, a filterable niche grid (shared `FilterPills` row — All + each niche — filtering the client-side `BuyBusinessNiches` component), per-niche detail routes (`/buy-business/niches/[slug]`), and a closing CTA driven by the `acquisition-cta` section settings.
+
 ### 5.9 Contact
 
 The Contact page should include:
@@ -240,7 +244,11 @@ The Contact page should include:
 
 ### 5.10 Legal and detail pages
 
-Detail pages — Privacy Policy (`/privacy`), Terms of Service (`/terms-conditions`), Cookie Policy (`/cookie-policy`), Imprint (`/imprint`), and Careers (`/careers`) — are CMS-driven records in the `detail_pages` table. Each page renders a shared `DetailPageView` server component (`src/components/detail-pages/detail-page-view.tsx`) that renders its title, subtitle, and ordered content blocks (heading / paragraph / note) resolved per locale, falling back to English.
+Detail pages — Privacy Policy (`/privacy`), Terms of Service (`/terms-conditions`), Cookie Policy (`/cookie-policy`), Imprint (`/imprint`), and Careers (`/careers`) — are CMS-driven records in the `detail_pages` table. Each page renders a shared `DetailPageView` server component (`src/components/detail-pages/detail-page-view.tsx`) with a hero (eyebrow, title, description, subtitle) and an ordered list of content blocks resolved per locale, falling back to English.
+
+Blocks: `heading` (optional approved icon — starts a card), `subheading` (optional divider line), `paragraph`, `list`, `panel` (title / tag / body), and `note`. Paragraph and panel text supports `[label](url)` inline-link markup that renders only safe links. Section headings group following blocks into cards until the next heading; blocks before the first heading render as plain lead content above the cards.
+
+Rendering is shared between the public view and the CMS live preview through `src/components/detail-pages/detail-block.tsx` (which exposes `DetailPageContent`, `DetailBlock`, and `resolveDetailBlocks`) and `detail-page-preview.tsx`. Icons are restricted to the approved set in `src/features/detail-pages/icons.ts`.
 
 Behavior:
 
@@ -712,7 +720,7 @@ live once in `src/components/ui/` and are reused by both contexts.
 
 ### 11.7 Gallery filter pills
 
-All four galleries — Acquisition, Portfolio, Work, and Insights (homepage carousel and index page) — share one client component: `FilterPills` (`src/components/ui/filter-pills.tsx`). It renders the amber-active pill row (All + provided options), sets `aria-pressed` per pill, hides the row when only the All option exists, and each caller passes its own wrapper spacing via `className`. Options resolve server-side from published content through the public read policies added in migrations `00033`/`00034`.
+All four galleries — Acquisition, Portfolio, Work, and Insights (homepage carousel and index page) — share one client component: `FilterPills` (`src/components/ui/filter-pills.tsx`). It renders the amber-active pill row (All + provided options), sets `aria-pressed` per pill, hides the row when only the All option exists, and each caller passes its own wrapper spacing via `className`. Options resolve server-side from published content through the public read policies added in migrations `00033`/`00034`. The Buy a Business page uses the same component (`src/components/acquisition/buy-business-niches.tsx`) to filter its niche cards client-side.
 
 ---
 

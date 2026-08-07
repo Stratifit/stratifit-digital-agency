@@ -11,8 +11,11 @@ export const metadata = pageMetadata({
   path: "/terms-conditions",
 });
 
+const FALLBACK_EYEBROW = "Legal";
 const FALLBACK_TITLE = "Terms of Service";
-const FALLBACK_SUBTITLE = "Last updated: August 2026";
+const FALLBACK_DESCRIPTION =
+  "These terms set out the rules for using the Stratifit website and the services we provide.";
+const FALLBACK_SUBTITLE = "Last updated: July 2026";
 
 export default async function TermsConditionsPage() {
   const locale = await getLocale();
@@ -22,14 +25,21 @@ export default async function TermsConditionsPage() {
     notFound();
   }
 
+  const eyebrow =
+    resolveTranslation(page?.eyebrow_translations, locale) || FALLBACK_EYEBROW;
   const title =
     resolveTranslation(page?.title_translations, locale) || FALLBACK_TITLE;
+  const description =
+    resolveTranslation(page?.description_translations, locale) ||
+    FALLBACK_DESCRIPTION;
   const subtitle =
     resolveTranslation(page?.subtitle_translations, locale) || FALLBACK_SUBTITLE;
 
   return (
     <DetailPageView
+      eyebrow={eyebrow}
       title={title}
+      description={description}
       subtitle={subtitle}
       blocks={page?.content ?? []}
       locale={locale}

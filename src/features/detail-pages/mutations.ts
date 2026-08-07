@@ -43,7 +43,9 @@ export async function updateDetailPage(
   const { error } = await supabase
     .from("detail_pages")
     .update({
+      eyebrow_translations: parsed.data.eyebrow_translations,
       title_translations: parsed.data.title_translations,
+      description_translations: parsed.data.description_translations,
       subtitle_translations: parsed.data.subtitle_translations,
       content_translations: parsed.data.content,
       is_visible: parsed.data.is_visible,

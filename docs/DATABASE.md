@@ -449,6 +449,8 @@ Index:
 | `created_at` | `timestamptz` | Standard |
 | `updated_at` | `timestamptz` | Standard |
 
+Seed groups (Platform / Company / Legal) and links are maintained in `seed.sql` and migration `00039_footer_buy_business_and_pricing.sql`. The footer links to the detail pages, the Buy a Business hub (`/buy-business`, under Platform), and the homepage pricing anchor (`/#pricing`, under Company).
+
 ---
 
 ## 9. Homepage Singleton Tables
@@ -578,7 +580,9 @@ Suggested columns:
 | Column | Type |
 |---|---|
 | `slug` | `text` unique |
+| `eyebrow_translations` | `jsonb` |
 | `title_translations` | `jsonb` |
+| `description_translations` | `jsonb` |
 | `subtitle_translations` | `jsonb` |
 | `content_translations` | `jsonb` |
 | `is_visible` | `boolean` |
@@ -587,10 +591,21 @@ Suggested columns:
 `content_translations` is an ordered array of structured blocks:
 
 ```text
-{ type: heading | paragraph | note, text_translations: {...} }
+{ type: heading, icon?: string, text_translations: {...} }
+{ type: subheading, divider?: boolean, text_translations: {...} }
+{ type: paragraph, text_translations: {...} }
+{ type: list, items: [{ text_translations: {...} }] }
+{ type: panel, title_translations, tag_translations?, body_translations }
+{ type: note, text_translations: {...} }
 ```
 
 The CMS exposes only these approved block types — no raw HTML or arbitrary markup.
+Icons are restricted to the approved set in `src/features/detail-pages/icons.ts`.
+Paragraph and panel text may use the `[label](url)` inline-link markup, which
+renders only safe links. Section headings group the blocks after them into
+cards until the next heading.
+
+Block rendering is shared between the public `DetailPageView` and the CMS live preview via `src/components/detail-pages/detail-block.tsx` (see `docs/FRONTEND.md` §5.10 and `docs/CMS.md` §39.5).
 
 Seeded slugs: `privacy`, `terms-conditions`, `cookie-policy`, `imprint`, `careers`.
 

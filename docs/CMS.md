@@ -1246,8 +1246,10 @@ Each page is a record in the `detail_pages` table (see `DATABASE.md` §9.6).
 
 The editor should support:
 
+- Eyebrow, e.g. "Legal" (4 languages)
 - Title (4 languages)
-- Subtitle, e.g. "Last updated: August 2026" (4 languages)
+- Hero description (4 languages)
+- Subtitle, e.g. "Last updated: July 2026" (4 languages)
 - Ordered content blocks
 - Visibility
 
@@ -1255,11 +1257,22 @@ The editor should support:
 
 The CMS exposes only approved block types:
 
-- Heading
+- Section heading (card) — optional icon from the approved set, starts a card
+- Subheading — optional divider line above (e.g. a "Contact Us" block)
 - Paragraph
+- Bullet list
+- Info panel — title, optional tag, and body (used for cookie categories)
 - Note box
 
-Each block stores its text in all four languages. The CMS must not allow raw HTML, arbitrary markup, or free-form styling.
+Each block stores its text in all four languages. Paragraph and panel body text
+supports a tiny inline-link markup — `[label](url)` — that renders only safe
+links (`https://`, `mailto:`, `tel:`, or internal `/` paths); anything else
+stays literal. The CMS must not allow raw HTML, arbitrary markup, or free-form
+styling.
+
+Section headings group the blocks that follow them into cards until the next
+heading; blocks before the first heading render as plain lead content above the
+cards.
 
 ### 39.4 Editor behavior
 
@@ -1272,15 +1285,30 @@ The editor should support:
 - Per-block translations
 - Visibility toggle
 - English required on title and every block
+- Live preview pane with device (mobile / tablet / desktop) and language (EN / DE / FR / ES) switchers
 
-### 39.5 Public behavior
+### 39.5 Live preview
+
+The detail-page editor includes a sticky live preview pane on large screens (it stacks below the form on mobile). It renders draft values as the admin types, without saving or hitting the database.
+
+Preview behavior:
+
+- Device frames: mobile (390px), tablet (768px), desktop (full column width)
+- Language switcher resolves each title, subtitle, and block in the selected locale, falling back to English
+- Hidden pages show a "Hidden" badge in the preview header
+- A page with no blocks shows a controlled empty state
+- Preview uses the shared `DetailPagePreview` client component (`src/components/detail-pages/detail-page-preview.tsx`), which mirrors the public `DetailPageView` structure using the same `DetailBlock` renderer (`src/components/detail-pages/detail-block.tsx`)
+
+Preview is not the source of truth — Supabase remains the source of truth after save.
+
+### 39.6 Public behavior
 
 - A visible page renders its stored blocks on its public route (`/privacy`, `/terms-conditions`, `/cookie-policy`, `/imprint`, `/careers`)
 - A hidden page is not reachable on the public site (404)
 - A page with no stored row falls back to the previous static copy so the site never breaks
 - Sitemap entries are generated only for visible pages
 
-### 39.6 Revalidation
+### 39.7 Revalidation
 
 Saving a page must revalidate:
 
