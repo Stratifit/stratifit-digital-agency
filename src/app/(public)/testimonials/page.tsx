@@ -6,6 +6,7 @@ import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { t } from "@/lib/i18n/ui-strings";
 import { pageMetadata } from "@/lib/seo";
 import { Reveal } from "@/components/ui/reveal";
+import { ReviewSummaryBand } from "@/components/sections/review-summary-band";
 import { TestimonialCard } from "@/components/sections/testimonial-card";
 
 export const metadata = pageMetadata({
@@ -70,6 +71,9 @@ export default async function TestimonialsPage() {
       {/* Testimonials grid */}
       <section className="pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <Reveal className="mb-10">
+            <ReviewSummaryBand />
+          </Reveal>
           <Reveal className="grid grid-cols-1 gap-8 pt-6 sm:grid-cols-2 lg:grid-cols-3">
             {testimonials.map((testimonial, index) => (
               <TestimonialCard
