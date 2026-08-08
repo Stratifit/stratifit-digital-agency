@@ -57,7 +57,7 @@ export async function ServicesSection() {
       <Container>
         <SectionHeader settings={settings} locale={locale} />
 
-        <Reveal stagger variant="card" className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <Reveal stagger variant="card" className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           {services.map((service) => {
             const ctaLabel =
               resolveTranslation(service.cta_label_translations, locale) ||
