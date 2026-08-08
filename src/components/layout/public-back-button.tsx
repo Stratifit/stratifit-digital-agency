@@ -6,8 +6,10 @@ import { t } from "@/lib/i18n/ui-strings";
 
 /**
  * Floating back arrow shown on every public page except the homepage.
- * Returns the visitor to the previous in-app page (the route they clicked
- * from), falling back to the homepage for direct visits.
+ * Returns the visitor to their last click via native history — an in-app
+ * route they navigated from, or an external referrer (Google / shared
+ * link). Falls back to the homepage only when there is no history at all
+ * (fresh tab / typed URL).
  *
  * The button clears the sticky header plus the announcement bar. While the
  * announcement bar is visible it stays put; when the bar scrolls out of view
@@ -97,9 +99,15 @@ export function PublicBackButton({ locale }: { locale?: string }) {
   }
 
   function goBack() {
-    // Restore the previous page with native scroll position when the visitor
-    // navigated within the app; fall back to the homepage for direct visits.
-    if (prevPath) {
+    // Always return to the visitor's last click: use native browser history
+    // whenever there is an entry to go back to — either an in-app route the
+    // visitor navigated from, or an external referrer (e.g. Google / shared
+    // link). Only fall back to the homepage when the page was opened with no
+    // previous history at all (fresh tab / typed URL).
+    const hasBackHistory =
+      prevPath !== null ||
+      (typeof document !== "undefined" && document.referrer !== "");
+    if (hasBackHistory) {
       router.back();
     } else {
       router.push("/");
