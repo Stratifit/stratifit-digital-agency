@@ -370,10 +370,6 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
               placeholder="Client quote"
               {...register(`quote_translations.${locale}`)}
             />
-            <p className="text-xs text-text-muted">
-              Wrap a phrase in <span className="font-mono">*asterisks*</span> to
-              highlight it in amber, e.g. a *3x increase in leads*.
-            </p>
             {trErr("quote_translations", locale) ? (
               <p className="text-sm text-error">{trErr("quote_translations", locale)}</p>
             ) : null}

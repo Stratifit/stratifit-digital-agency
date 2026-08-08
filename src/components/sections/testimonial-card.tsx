@@ -28,23 +28,6 @@ function initials(name: string): string {
     .toUpperCase();
 }
 
-/**
- * Renders a quote, highlighting segments wrapped in `*asterisks*` in the
- * brand amber color. Non-matching text renders as plain strings — no HTML.
- */
-function renderQuote(text: string) {
-  return text.split(/(\*[^*]+\*)/g).map((part, index) => {
-    if (part.length > 2 && part.startsWith("*") && part.endsWith("*")) {
-      return (
-        <span key={index} className="font-semibold text-primary">
-          {part.slice(1, -1)}
-        </span>
-      );
-    }
-    return part;
-  });
-}
-
 export function TestimonialCard({
   testimonial,
   locale,
@@ -54,47 +37,39 @@ export function TestimonialCard({
   locale: string;
   className?: string;
 }) {
-  const quote = resolveTranslation(testimonial.quote_translations, locale);
-
   return (
     <article
       className={cn(
-        "flex h-full w-full flex-col rounded-card border border-card-border bg-gradient-to-b from-surface-elevated to-card-dark p-6 shadow-shadow-sm transition-all duration-[var(--motion-standard)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-amber md:p-8",
+        "rounded-card border border-white/5 bg-card-dark p-6 transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/20 md:p-8",
         className
       )}
     >
-      {/* Quote text */}
-      <p className="flex-1 text-base leading-relaxed text-text-secondary">
-        {quote ? renderQuote(quote) : null}
-      </p>
-
-      {/* Footer: avatar, name, role, stars */}
-      <div className="mt-8 flex items-center gap-4 border-t border-white/5 pt-6">
-        <div
-          aria-hidden="true"
-          className="flex size-12 shrink-0 items-center justify-center rounded-full border border-primary/40 bg-gradient-to-br from-surface-hover to-surface-active text-sm font-bold text-white"
-        >
+      <div className="mb-6 flex items-center gap-3">
+        <div className="flex size-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br from-surface-hover to-surface-active text-sm font-bold text-white">
           {initials(testimonial.person_name)}
         </div>
         <div className="min-w-0">
           <div className="truncate font-display font-bold text-text-primary">
             {testimonial.person_name}
           </div>
-          <div className="mt-0.5 truncate text-sm text-text-muted">
+          <div className="mt-0.5 truncate text-xs uppercase tracking-wide text-text-subtle">
             {resolveTranslation(testimonial.person_role_translations, locale) ||
               testimonial.company_name}
           </div>
-          <div
-            className="mt-1.5 flex gap-1"
-            role="img"
-            aria-label="5 out of 5 stars"
-          >
-            {Array.from({ length: 5 }).map((_, i) => (
-              <StarIcon key={i} />
-            ))}
-          </div>
         </div>
       </div>
+
+      <div className="mb-4 flex gap-1" role="img" aria-label="5 out of 5 stars">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <StarIcon key={i} />
+        ))}
+      </div>
+
+      <p className="text-sm leading-relaxed text-text-secondary">
+        &ldquo;
+        {resolveTranslation(testimonial.quote_translations, locale)}
+        &rdquo;
+      </p>
     </article>
   );
 }
