@@ -289,7 +289,7 @@ export default async function ServicePage({
                 ) : null}
               </div>
             </Reveal>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
               {capabilities.map((capability, index) => (
                 <Reveal key={index} variant="card" className="h-full">
                   <div className="group relative h-full overflow-hidden rounded-card border border-card-border bg-card-dark p-6 shadow-xl sm:p-8">

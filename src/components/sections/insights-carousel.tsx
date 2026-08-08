@@ -175,7 +175,7 @@ export function InsightsCarousel({
         </p>
       ) : (
         <>
-          <div className="hidden gap-6 md:grid md:grid-cols-2 lg:grid-cols-4">
+          <div className="hidden gap-8 md:grid md:grid-cols-2 lg:grid-cols-4">
             {filtered.map((insight) => (
               <InsightCard
                 key={insight.slug}

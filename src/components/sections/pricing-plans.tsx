@@ -176,7 +176,7 @@ export function PricingPlans({
 
   return (
     <div>
-      <div className="hidden gap-6 md:grid md:grid-cols-2 lg:grid-cols-4">
+      <div className="hidden gap-8 md:grid md:grid-cols-2 lg:grid-cols-4">
         {plans.map((plan) => (
           <PlanCard key={plan.slug} plan={plan} locale={locale} />
         ))}

@@ -32,7 +32,7 @@ export async function WhyChooseUsSection() {
       <Container>
         <SectionHeader settings={settings} locale={locale} dot />
 
-        <Reveal stagger variant="card" className="mt-12 hidden gap-6 md:grid md:grid-cols-2 lg:grid-cols-4">
+        <Reveal stagger variant="card" className="mt-12 hidden gap-8 md:grid md:grid-cols-2 lg:grid-cols-4">
           {items.map((item, index) => (
             <div
               key={index}

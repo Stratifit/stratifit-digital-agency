@@ -197,7 +197,7 @@ export default async function NicheDetailPage({
           </Reveal>
 
           {businesses.length > 0 ? (
-            <Reveal className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <Reveal className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {businesses.map((business) => (
                 <BusinessCard
                   key={business.slug}
