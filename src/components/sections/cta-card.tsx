@@ -81,18 +81,18 @@ export function CtaCard({
       </div>
 
       <div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-between md:gap-10">
-        <div className="max-w-2xl">
-          <div className="mb-3 flex items-center gap-2">
+        <div className="mx-auto max-w-2xl text-center md:mx-0 md:text-left">
+          <div className="mb-3 flex items-center justify-center gap-2 md:justify-start">
             <SparkleIcon className="size-4 shrink-0 text-primary" />
             <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary">
               {t(locale, "servicesReadyWhenYouAre")}
             </span>
           </div>
-          <h2 className="font-display text-sm font-black leading-[1.1] tracking-tight text-text-primary sm:text-3xl md:text-4xl">
+          <h2 className="font-display text-2xl font-black leading-[1.1] tracking-tight text-text-primary sm:text-3xl md:text-4xl">
             {title}
           </h2>
           {description ? (
-            <p className="mt-3 max-w-xl text-[10px] leading-relaxed text-text-muted sm:text-base">
+            <p className="mx-auto mt-3 max-w-xl text-[10px] leading-relaxed text-text-muted sm:text-base md:mx-0">
               {description}
             </p>
           ) : null}
