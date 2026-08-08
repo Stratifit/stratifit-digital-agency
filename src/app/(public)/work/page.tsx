@@ -117,7 +117,7 @@ export default async function WorkPage() {
 
       <div aria-hidden="true" className="h-px w-full bg-white/5" />
 
-      <section className="pt-8 pb-16 md:pt-12 md:pb-24">
+      <section className="pt-10 pb-10">
         <Container>
           {projects.length === 0 ? (
             <p className="py-20 text-center text-sm text-text-muted">
