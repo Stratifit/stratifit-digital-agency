@@ -1,16 +1,24 @@
 import { notFound } from "next/navigation";
-import { pageMetadata } from "@/lib/seo";
+import type { Metadata } from "next";
+import { pageMetadata, resolveSeoMetadata } from "@/lib/seo";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { getPublicDetailPageIncludingHidden } from "@/features/detail-pages/queries";
 import { DetailPageView } from "@/components/detail-pages/detail-page-view";
 import { COOKIE_FALLBACK_BLOCKS } from "@/lib/i18n/detail-page-fallbacks";
 
-export const metadata = pageMetadata({
-  title: "Cookie Policy — Stratifit",
-  description: "How Stratifit uses cookies.",
-  path: "/cookie-policy",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const page = await getPublicDetailPageIncludingHidden("cookie-policy");
+  const { title, description } = resolveSeoMetadata({
+    seoTitleTranslations: page?.seo_title_translations,
+    seoDescriptionTranslations: page?.seo_description_translations,
+    locale,
+    fallbackTitle: "Cookie Policy — Stratifit",
+    fallbackDescription: "How Stratifit uses cookies.",
+  });
+  return pageMetadata({ title, description, path: "/cookie-policy" });
+}
 
 const FALLBACK_EYEBROW = "Legal";
 const FALLBACK_TITLE = "Cookie Policy";

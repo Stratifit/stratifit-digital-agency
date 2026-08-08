@@ -1,17 +1,25 @@
 import { notFound } from "next/navigation";
-import { pageMetadata } from "@/lib/seo";
+import type { Metadata } from "next";
+import { pageMetadata, resolveSeoMetadata } from "@/lib/seo";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { getPublicDetailPageIncludingHidden } from "@/features/detail-pages/queries";
 import { DetailPageView } from "@/components/detail-pages/detail-page-view";
 import { CAREERS_FALLBACK_BLOCKS } from "@/lib/i18n/detail-page-fallbacks";
 
-export const metadata = pageMetadata({
-  title: "Careers — Stratifit",
-  description:
-    "Join the Stratifit team. We hire strategists, designers, engineers, and marketers.",
-  path: "/careers",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const page = await getPublicDetailPageIncludingHidden("careers");
+  const { title, description } = resolveSeoMetadata({
+    seoTitleTranslations: page?.seo_title_translations,
+    seoDescriptionTranslations: page?.seo_description_translations,
+    locale,
+    fallbackTitle: "Careers — Stratifit",
+    fallbackDescription:
+      "Join the Stratifit team. We hire strategists, designers, engineers, and marketers.",
+  });
+  return pageMetadata({ title, description, path: "/careers" });
+}
 
 const FALLBACK_EYEBROW = "Careers";
 const FALLBACK_TITLE = "Careers";

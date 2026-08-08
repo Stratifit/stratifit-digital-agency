@@ -92,6 +92,9 @@ export async function updateSectionSettings(
             googleReviewsUrl: parsed.data.review_summary.googleReviewsUrl.trim(),
           }
         : {},
+      seo_title_translations: parsed.data.seo_title_translations ?? {},
+      seo_description_translations:
+        parsed.data.seo_description_translations ?? {},
       is_visible: parsed.data.is_visible,
     })
     .eq("section_key", sectionKey);
@@ -101,6 +104,10 @@ export async function updateSectionSettings(
   }
 
   revalidatePath("/");
+  revalidatePath("/work");
+  revalidatePath("/services");
+  revalidatePath("/insights");
+  revalidatePath("/contact");
   revalidatePath("/buy-business");
   revalidatePath("/testimonials");
   revalidatePath("/admin/content/sections");
@@ -147,6 +154,10 @@ export async function toggleSectionVisibility(
   }
 
   revalidatePath("/");
+  revalidatePath("/work");
+  revalidatePath("/services");
+  revalidatePath("/insights");
+  revalidatePath("/contact");
   revalidatePath("/buy-business");
   revalidatePath("/testimonials");
   revalidatePath("/admin/content/sections");

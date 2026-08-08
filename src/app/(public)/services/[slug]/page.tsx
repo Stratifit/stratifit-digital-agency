@@ -1,12 +1,12 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getPublicServicePage } from "@/features/service-pages/queries";
-import { getPublicServices } from "@/features/services/queries";
+import { getPublicServices, getPublicServiceBySlug } from "@/features/services/queries";
 import { getPublicPortfolioProjects } from "@/features/portfolio/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { t } from "@/lib/i18n/ui-strings";
-import { pageMetadata, canonical } from "@/lib/seo";
+import { pageMetadata, canonical, resolveSeoMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
@@ -50,19 +50,29 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const locale = await getLocale();
-  const page = await getPublicServicePage(slug);
+  const [page, service] = await Promise.all([
+    getPublicServicePage(slug),
+    getPublicServiceBySlug(slug),
+  ]);
   if (!page) return {};
-  const title = `${resolveTranslation(page.hero_title_translations, locale)}${
+  const fallbackTitle = `${resolveTranslation(page.hero_title_translations, locale)}${
     page.hero_highlight_translations
       ? ` ${resolveTranslation(page.hero_highlight_translations, locale)}`
       : ""
   } — Stratifit`;
+  const fallbackDescription = resolveTranslation(
+    page.hero_description_translations,
+    locale
+  );
+  const { title, description } = resolveSeoMetadata({
+    seoTitleTranslations: service?.seo_title_translations,
+    seoDescriptionTranslations: service?.seo_description_translations,
+    locale,
+    fallbackTitle,
+    fallbackDescription,
+  });
   return {
-    ...pageMetadata({
-      title,
-      description: resolveTranslation(page.hero_description_translations, locale),
-      path: `/services/${slug}`,
-    }),
+    ...pageMetadata({ title, description, path: `/services/${slug}` }),
     openGraph: {
       title,
       description: resolveTranslation(page.hero_description_translations, locale),

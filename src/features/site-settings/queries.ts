@@ -7,6 +7,10 @@ export interface PublicSiteSettings {
   contact_phone: string | null;
   address_translations: Record<string, string> | null;
   default_locale: string;
+  /** Global SEO fallback, shaped as `{ [locale]: { title, description } }`. */
+  default_seo:
+    | Record<string, { title?: string; description?: string }>
+    | null;
   social_links: Record<string, string> | null;
 }
 
@@ -16,7 +20,7 @@ export async function getPublicSiteSettings(): Promise<PublicSiteSettings | null
   const { data, error } = await supabase
     .from("site_settings")
     .select(
-      "site_name, site_description_translations, contact_email, contact_phone, address_translations, default_locale, social_links"
+      "site_name, site_description_translations, contact_email, contact_phone, address_translations, default_locale, default_seo, social_links"
     )
     .single();
 

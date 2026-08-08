@@ -37,6 +37,8 @@ export interface PublicDetailPage {
   description_translations: Record<string, string> | null;
   subtitle_translations: Record<string, string> | null;
   content: DetailPageBlock[];
+  seo_title_translations: Record<string, string> | null;
+  seo_description_translations: Record<string, string> | null;
   is_visible: boolean;
 }
 
@@ -141,7 +143,7 @@ export async function getPublicDetailPageIncludingHidden(
   const { data, error } = await supabase
     .from("detail_pages")
     .select(
-      "slug, eyebrow_translations, title_translations, description_translations, subtitle_translations, content_translations, is_visible"
+      "slug, eyebrow_translations, title_translations, description_translations, subtitle_translations, content_translations, seo_title_translations, seo_description_translations, is_visible"
     )
     .eq("slug", slug)
     .maybeSingle();
@@ -161,6 +163,10 @@ export async function getPublicDetailPageIncludingHidden(
     subtitle_translations:
       (data.subtitle_translations as Record<string, string> | null) ?? null,
     content: normalizeContent(data.content_translations),
+    seo_title_translations:
+      (data.seo_title_translations as Record<string, string> | null) ?? null,
+    seo_description_translations:
+      (data.seo_description_translations as Record<string, string> | null) ?? null,
     is_visible: data.is_visible,
   };
 }
@@ -194,7 +200,7 @@ export async function getAdminDetailPage(
   const { data, error } = await supabase
     .from("detail_pages")
     .select(
-      "id, slug, eyebrow_translations, title_translations, description_translations, subtitle_translations, content_translations, is_visible, updated_at"
+      "id, slug, eyebrow_translations, title_translations, description_translations, subtitle_translations, content_translations, seo_title_translations, seo_description_translations, is_visible, updated_at"
     )
     .eq("slug", slug)
     .maybeSingle();
@@ -215,6 +221,10 @@ export async function getAdminDetailPage(
     subtitle_translations:
       (data.subtitle_translations as Record<string, string> | null) ?? null,
     content: normalizeContent(data.content_translations),
+    seo_title_translations:
+      (data.seo_title_translations as Record<string, string> | null) ?? null,
+    seo_description_translations:
+      (data.seo_description_translations as Record<string, string> | null) ?? null,
     is_visible: data.is_visible,
     updated_at: data.updated_at,
   };

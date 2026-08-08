@@ -1,16 +1,24 @@
 import { notFound } from "next/navigation";
 import { getPublicDetailPageIncludingHidden } from "@/features/detail-pages/queries";
-import { pageMetadata } from "@/lib/seo";
+import type { Metadata } from "next";
+import { pageMetadata, resolveSeoMetadata } from "@/lib/seo";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { DetailPageView } from "@/components/detail-pages/detail-page-view";
 import { IMPRINT_FALLBACK_BLOCKS } from "@/lib/i18n/detail-page-fallbacks";
 
-export const metadata = pageMetadata({
-  title: "Imprint — Stratifit",
-  description: "Imprint and legal information for Stratifit.",
-  path: "/imprint",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const page = await getPublicDetailPageIncludingHidden("imprint");
+  const { title, description } = resolveSeoMetadata({
+    seoTitleTranslations: page?.seo_title_translations,
+    seoDescriptionTranslations: page?.seo_description_translations,
+    locale,
+    fallbackTitle: "Imprint — Stratifit",
+    fallbackDescription: "Imprint and legal information for Stratifit.",
+  });
+  return pageMetadata({ title, description, path: "/imprint" });
+}
 
 const FALLBACK_EYEBROW = "Legal";
 const FALLBACK_TITLE = "Imprint";

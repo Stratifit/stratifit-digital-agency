@@ -28,6 +28,8 @@ export interface PublicAboutPage {
   cta_description_translations: Record<string, string> | null;
   cta_label_translations: Record<string, string> | null;
   cta_url: string | null;
+  seo_title_translations: Record<string, string> | null;
+  seo_description_translations: Record<string, string> | null;
 }
 
 export async function getPublicAboutPage(): Promise<PublicAboutPage | null> {
@@ -36,7 +38,7 @@ export async function getPublicAboutPage(): Promise<PublicAboutPage | null> {
   const { data, error } = await supabase
     .from("about_page")
     .select(
-      "eyebrow_translations, title_translations, highlight_translations, intro_translations, stats, mission_translations, story_translations, values, team_translations, cta_title_translations, cta_highlight_translations, cta_description_translations, cta_label_translations, cta_url"
+      "eyebrow_translations, title_translations, highlight_translations, intro_translations, stats, mission_translations, story_translations, values, team_translations, cta_title_translations, cta_highlight_translations, cta_description_translations, cta_label_translations, cta_url, seo_title_translations, seo_description_translations"
     )
     .eq("is_visible", true)
     .single();
@@ -62,7 +64,7 @@ export async function getAdminAboutPage(): Promise<AdminAboutPage | null> {
   const { data, error } = await supabase
     .from("about_page")
     .select(
-      "eyebrow_translations, title_translations, highlight_translations, intro_translations, stats, mission_translations, story_translations, values, team_translations, cta_title_translations, cta_highlight_translations, cta_description_translations, cta_label_translations, cta_url, is_visible"
+      "eyebrow_translations, title_translations, highlight_translations, intro_translations, stats, mission_translations, story_translations, values, team_translations, cta_title_translations, cta_highlight_translations, cta_description_translations, cta_label_translations, cta_url, seo_title_translations, seo_description_translations, is_visible"
     )
     .eq("singleton_key", true)
     .single();

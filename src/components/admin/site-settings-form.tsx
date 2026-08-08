@@ -18,6 +18,8 @@ const siteSettingsSchema = z.object({
   contact_phone: z.string(),
   address_en: z.string(),
   default_locale: z.string(),
+  seo_title_en: z.string(),
+  seo_description_en: z.string(),
   social_linkedin: z.string(),
   social_instagram: z.string(),
   social_facebook: z.string(),
@@ -33,6 +35,8 @@ export interface SiteSettingsInitial {
   contact_phone: string;
   address_en: string;
   default_locale: string;
+  seo_title_en: string;
+  seo_description_en: string;
   social: Record<string, string>;
 }
 
@@ -57,6 +61,8 @@ export function SiteSettingsForm({
       contact_phone: initial.contact_phone,
       address_en: initial.address_en,
       default_locale: initial.default_locale,
+      seo_title_en: initial.seo_title_en,
+      seo_description_en: initial.seo_description_en,
       social_linkedin: initial.social.linkedin ?? "",
       social_instagram: initial.social.instagram ?? "",
       social_facebook: initial.social.facebook ?? "",
@@ -131,6 +137,33 @@ export function SiteSettingsForm({
         <Label htmlFor="address_en">Address (English)</Label>
         <Input id="address_en" {...register("address_en")} />
       </div>
+
+      <fieldset className="rounded-md border border-border bg-background p-5">
+        <legend className="px-2 text-sm font-semibold text-text-primary">
+          Global SEO (homepage fallback)
+        </legend>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="seo_title_en">SEO title (English)</Label>
+            <Input
+              id="seo_title_en"
+              placeholder="Stratifit — Digital Agency"
+              {...register("seo_title_en")}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="seo_description_en">
+              SEO description (English)
+            </Label>
+            <Textarea
+              id="seo_description_en"
+              rows={3}
+              placeholder="Short description for search engines…"
+              {...register("seo_description_en")}
+            />
+          </div>
+        </div>
+      </fieldset>
 
       <fieldset className="rounded-md border border-border bg-background p-5">
         <legend className="px-2 text-sm font-semibold text-text-primary">

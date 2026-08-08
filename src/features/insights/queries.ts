@@ -136,6 +136,8 @@ export interface PublicInsightDetail {
   category_slugs: string[];
   reading_time_minutes: number | null;
   published_at: string | null;
+  seo_title_translations: Record<string, string> | null;
+  seo_description_translations: Record<string, string> | null;
 }
 
 export async function getPublicInsightDetail(
@@ -146,7 +148,7 @@ export async function getPublicInsightDetail(
   const { data, error } = await supabase
     .from("insights")
     .select(
-      "id, slug, title_translations, excerpt_translations, content_translations, featured_media_id, reading_time_minutes, published_at"
+      "id, slug, title_translations, excerpt_translations, content_translations, featured_media_id, reading_time_minutes, seo_title_translations, seo_description_translations, published_at"
     )
     .eq("slug", slug)
     .eq("status", "published")
@@ -185,8 +187,15 @@ export async function getPublicInsightDetail(
   }
 
   return {
-    ...(data as Omit<PublicInsightDetail, "featured_media_url" | "category_slugs">),
+    ...(data as Omit<
+      PublicInsightDetail,
+      "featured_media_url" | "category_slugs"
+    >),
     featured_media_url,
     category_slugs,
+    seo_title_translations:
+      (data.seo_title_translations as Record<string, string> | null) ?? null,
+    seo_description_translations:
+      (data.seo_description_translations as Record<string, string> | null) ?? null,
   };
 }

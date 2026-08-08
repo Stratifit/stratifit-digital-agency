@@ -52,6 +52,8 @@ export type Database = {
           intro_translations: Json
           is_visible: boolean
           mission_translations: Json
+          seo_description_translations: Json
+          seo_title_translations: Json
           singleton_key: boolean
           stats: Json
           story_translations: Json
@@ -72,6 +74,8 @@ export type Database = {
           intro_translations?: Json
           is_visible?: boolean
           mission_translations?: Json
+          seo_description_translations?: Json
+          seo_title_translations?: Json
           singleton_key?: boolean
           stats?: Json
           story_translations?: Json
@@ -92,6 +96,8 @@ export type Database = {
           intro_translations?: Json
           is_visible?: boolean
           mission_translations?: Json
+          seo_description_translations?: Json
+          seo_title_translations?: Json
           singleton_key?: boolean
           stats?: Json
           story_translations?: Json
@@ -758,6 +764,8 @@ export type Database = {
           eyebrow_translations: Json
           id: string
           is_visible: boolean
+          seo_description_translations: Json
+          seo_title_translations: Json
           slug: string
           subtitle_translations: Json
           title_translations: Json
@@ -770,6 +778,8 @@ export type Database = {
           eyebrow_translations?: Json
           id?: string
           is_visible?: boolean
+          seo_description_translations?: Json
+          seo_title_translations?: Json
           slug: string
           subtitle_translations?: Json
           title_translations?: Json
@@ -782,6 +792,8 @@ export type Database = {
           eyebrow_translations?: Json
           id?: string
           is_visible?: boolean
+          seo_description_translations?: Json
+          seo_title_translations?: Json
           slug?: string
           subtitle_translations?: Json
           title_translations?: Json
@@ -1620,6 +1632,8 @@ export type Database = {
           label: string
           review_summary: Json
           section_key: string
+          seo_description_translations: Json
+          seo_title_translations: Json
           stats: Json
           title_translations: Json
           updated_at: string
@@ -1636,6 +1650,8 @@ export type Database = {
           label: string
           review_summary?: Json
           section_key: string
+          seo_description_translations?: Json
+          seo_title_translations?: Json
           stats?: Json
           title_translations?: Json
           updated_at?: string
@@ -1652,6 +1668,8 @@ export type Database = {
           label?: string
           review_summary?: Json
           section_key?: string
+          seo_description_translations?: Json
+          seo_title_translations?: Json
           stats?: Json
           title_translations?: Json
           updated_at?: string

@@ -11,7 +11,7 @@ import { getPublicProcessSteps } from "@/features/process/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { t, tWithValue } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
-import { articleJsonLd, canonical, pageMetadata } from "@/lib/seo";
+import { articleJsonLd, canonical, pageMetadata, resolveSeoMetadata } from "@/lib/seo";
 import { CtaCard } from "@/components/sections/cta-card";
 import { Reveal } from "@/components/ui/reveal";
 import { ProcessIcon } from "@/components/ui/process-icon";
@@ -26,8 +26,16 @@ export async function generateMetadata({
   const locale = await getLocale();
   const project = await getPublicPortfolioDetail(slug);
   if (!project) return {};
-  const title = `${resolveTranslation(project.title_translations, locale)} — Stratifit`;
-  const description = resolveTranslation(project.summary_translations, locale);
+  const { title, description } = resolveSeoMetadata({
+    seoTitleTranslations: project.seo_title_translations,
+    seoDescriptionTranslations: project.seo_description_translations,
+    locale,
+    fallbackTitle: `${resolveTranslation(project.title_translations, locale)} — Stratifit`,
+    fallbackDescription: resolveTranslation(
+      project.summary_translations,
+      locale
+    ),
+  });
   return {
     ...pageMetadata({ title, description, path: `/work/${slug}` }),
     openGraph: {

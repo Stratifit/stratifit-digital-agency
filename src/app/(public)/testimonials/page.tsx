@@ -1,10 +1,14 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { getPublicTestimonials } from "@/features/testimonials/queries";
-import { getPublicSectionSetting } from "@/features/section-settings/queries";
+import {
+  getPublicSectionSetting,
+  getPublicSectionSettingIncludingHidden,
+} from "@/features/section-settings/queries";
 import { t } from "@/lib/i18n/ui-strings";
-import { pageMetadata } from "@/lib/seo";
+import { pageMetadata, resolveSeoMetadata } from "@/lib/seo";
 import { Reveal } from "@/components/ui/reveal";
 import {
   ReviewSummaryBand,
@@ -12,12 +16,19 @@ import {
 } from "@/components/sections/review-summary-band";
 import { TestimonialCard } from "@/components/sections/testimonial-card";
 
-export const metadata = pageMetadata({
-  title: "Testimonials — Stratifit",
-  description:
-    "Don't take our word for it — hear from the brands we've helped scale.",
-  path: "/testimonials",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const setting = await getPublicSectionSettingIncludingHidden("testimonials");
+  const { title, description } = resolveSeoMetadata({
+    seoTitleTranslations: setting?.seo_title_translations,
+    seoDescriptionTranslations: setting?.seo_description_translations,
+    locale,
+    fallbackTitle: "Testimonials — Stratifit",
+    fallbackDescription:
+      "Don't take our word for it — hear from the brands we've helped scale.",
+  });
+  return pageMetadata({ title, description, path: "/testimonials" });
+}
 
 export default async function TestimonialsPage() {
   const locale = await getLocale();

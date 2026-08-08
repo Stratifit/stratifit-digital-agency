@@ -301,6 +301,8 @@ export function DetailPageForm({
       title_translations: tr(initial.title_translations),
       description_translations: tr(initial.description_translations),
       subtitle_translations: tr(initial.subtitle_translations),
+      seo_title_translations: tr(initial.seo_title_translations),
+      seo_description_translations: tr(initial.seo_description_translations),
       content: (initial.content ?? []).map((block) => {
         const base = { ...block };
         if (base.type === "heading") {
@@ -452,6 +454,35 @@ export function DetailPageForm({
                 )}
               />
             </div>
+          </SectionCard>
+
+          <SectionCard
+            title="Page SEO"
+            description="Search-engine title and description for this page."
+          >
+            <LocaleGrid
+              render={(locale) => (
+                <LocaleInput
+                  controlName="seo_title_translations"
+                  label="SEO title"
+                  locale={locale}
+                  register={register}
+                  placeholder="Privacy Policy — Stratifit"
+                />
+              )}
+            />
+            <LocaleGrid
+              render={(locale) => (
+                <LocaleTextarea
+                  controlName="seo_description_translations"
+                  label="SEO description"
+                  locale={locale}
+                  register={register}
+                  placeholder="How Stratifit collects, uses, and protects personal data…"
+                  rows={2}
+                />
+              )}
+            />
           </SectionCard>
 
           <SectionCard

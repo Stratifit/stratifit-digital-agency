@@ -1,4 +1,5 @@
-import { pageMetadata } from "@/lib/seo";
+import type { Metadata } from "next";
+import { pageMetadata, resolveSeoMetadata } from "@/lib/seo";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { t } from "@/lib/i18n/ui-strings";
@@ -9,12 +10,19 @@ import { CountUp } from "@/components/ui/count-up";
 import { AboutIcon } from "@/components/ui/about-icon";
 import { CtaCard } from "@/components/sections/cta-card";
 
-export const metadata = pageMetadata({
-  title: "About — Stratifit",
-  description:
-    "Learn about Stratifit, a premium digital agency for web, brand, AI, and growth.",
-  path: "/about",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const page = await getPublicAboutPage();
+  const { title, description } = resolveSeoMetadata({
+    seoTitleTranslations: page?.seo_title_translations,
+    seoDescriptionTranslations: page?.seo_description_translations,
+    locale,
+    fallbackTitle: "About — Stratifit",
+    fallbackDescription:
+      "Learn about Stratifit, a premium digital agency for web, brand, AI, and growth.",
+  });
+  return pageMetadata({ title, description, path: "/about" });
+}
 
 export default async function AboutPage() {
   const locale = await getLocale();

@@ -120,11 +120,15 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
       d.title_translations = tr(initial.title_translations as Record<string, string> | null);
       d.summary_translations = tr(initial.summary_translations as Record<string, string> | null);
       d.image_url = initial.image_url ?? "";
+      d.seo_title_translations = tr(initial.seo_title_translations as Record<string, string> | null);
+      d.seo_description_translations = tr(initial.seo_description_translations as Record<string, string> | null);
     }
     if (type === "insights") {
       d.title_translations = tr(initial.title_translations as Record<string, string> | null);
       d.excerpt_translations = tr(initial.excerpt_translations as Record<string, string> | null);
       d.reading_time_minutes = initial.reading_time_minutes ?? 5;
+      d.seo_title_translations = tr(initial.seo_title_translations as Record<string, string> | null);
+      d.seo_description_translations = tr(initial.seo_description_translations as Record<string, string> | null);
     }
     if (type === "testimonials") {
       d.person_name = initial.person_name ?? "";
@@ -358,6 +362,34 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
                 {trErr(type === "portfolio" ? "summary_translations" : "excerpt_translations", locale)}
               </p>
             ) : null}
+          </div>
+        ) : null}
+
+        {type === "portfolio" || type === "insights" ? (
+          <div className="mt-5 rounded-card border border-white/5 bg-background p-4">
+            <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-text-subtle">
+              SEO ({LOCALE_NAMES[locale]})
+            </p>
+            <div className="space-y-2">
+              <Label htmlFor={`seo-title-${locale}`}>SEO title</Label>
+              <Input
+                id={`seo-title-${locale}`}
+                placeholder="Title — Stratifit"
+                {...register(`seo_title_translations.${locale}`)}
+              />
+              <Label htmlFor={`seo-description-${locale}`} className="mt-3 block">
+                SEO description
+              </Label>
+              <Textarea
+                id={`seo-description-${locale}`}
+                rows={2}
+                placeholder="Short description for search engines…"
+                {...register(`seo_description_translations.${locale}`)}
+              />
+              <p className="text-xs text-text-muted">
+                Leave empty to use the item title and summary.
+              </p>
+            </div>
           </div>
         ) : null}
 

@@ -15,6 +15,8 @@ export interface SiteSettingsFormValues {
   contact_phone: string;
   address_en: string;
   default_locale: string;
+  seo_title_en: string;
+  seo_description_en: string;
   social_linkedin: string;
   social_instagram: string;
   social_facebook: string;
@@ -35,13 +37,17 @@ export async function updateSiteSettings(
   // Merge English into existing translations so de/fr/es are preserved on edit.
   const { data: existing } = await supabase
     .from("site_settings")
-    .select("site_description_translations, address_translations")
+    .select("site_description_translations, address_translations, default_seo")
     .eq("singleton_key", true)
     .single();
   const existingDescription =
     (existing?.site_description_translations as Record<string, string> | null) ?? {};
   const existingAddress =
     (existing?.address_translations as Record<string, string> | null) ?? {};
+  const existingSeo = (existing?.default_seo as
+    | Record<string, { title?: string; description?: string }>
+    | null) ?? {};
+  const existingEnSeo = existingSeo.en ?? {};
   const { error } = await supabase
     .from("site_settings")
     .update({
@@ -57,6 +63,14 @@ export async function updateSiteSettings(
         en: values.address_en,
       },
       default_locale: values.default_locale,
+      default_seo: {
+        ...existingSeo,
+        en: {
+          ...existingEnSeo,
+          title: values.seo_title_en,
+          description: values.seo_description_en,
+        },
+      },
       social_links,
       updated_at: new Date().toISOString(),
     })

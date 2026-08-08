@@ -56,6 +56,8 @@ export async function updateAboutPage(
       cta_description_translations: parsed.data.cta_description_translations,
       cta_label_translations: parsed.data.cta_label_translations,
       cta_url: parsed.data.cta_url || null,
+      seo_title_translations: parsed.data.seo_title_translations ?? {},
+      seo_description_translations: parsed.data.seo_description_translations ?? {},
       is_visible: parsed.data.is_visible,
     })
     .eq("singleton_key", true);

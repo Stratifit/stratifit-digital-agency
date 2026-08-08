@@ -45,6 +45,8 @@ export const aboutPageSchema = z.object({
   cta_description_translations: translations(),
   cta_label_translations: englishRequired("English CTA label is required"),
   cta_url: z.string(),
+  seo_title_translations: translations().optional(),
+  seo_description_translations: translations().optional(),
   is_visible: z.boolean(),
 });
 

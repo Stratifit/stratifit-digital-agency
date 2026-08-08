@@ -161,6 +161,31 @@ export function ServiceForm({ slug, initial }: ServiceFormProps) {
         </div>
       </div>
 
+      <div className="rounded-card border border-white/5 bg-background p-4">
+        <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-text-subtle">
+          SEO ({LOCALE_NAMES[locale]})
+        </p>
+        <div className="space-y-2">
+          <Label htmlFor={`seo-title-${locale}`}>SEO title</Label>
+          <Input
+            id={`seo-title-${locale}`}
+            placeholder="Website Development — Stratifit"
+            {...register(`seo_title_translations.${locale}`)}
+          />
+          <Label htmlFor={`seo-description-${locale}`} className="mt-3 block">
+            SEO description
+          </Label>
+          <Input
+            id={`seo-description-${locale}`}
+            placeholder="Short description for search engines…"
+            {...register(`seo_description_translations.${locale}`)}
+          />
+          <p className="text-xs text-text-muted">
+            Leave empty to use the service title and description.
+          </p>
+        </div>
+      </div>
+
       <div className="flex flex-wrap gap-6">
         <label className="flex items-center gap-2 text-sm text-text-secondary">
           <input type="checkbox" {...register("is_visible")} className="size-4" />

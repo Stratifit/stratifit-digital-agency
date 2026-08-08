@@ -53,6 +53,8 @@ export const detailPageSchema = z.object({
   description_translations: translations(),
   subtitle_translations: translations(),
   content: z.array(detailPageBlockSchema),
+  seo_title_translations: translations().optional(),
+  seo_description_translations: translations().optional(),
   is_visible: z.boolean(),
 });
 

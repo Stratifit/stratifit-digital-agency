@@ -20,6 +20,8 @@ export const portfolioSchema = z.object({
   title_translations: englishRequired("English title is required"),
   summary_translations: englishRequired("English summary is required"),
   image_url: z.string(),
+  seo_title_translations: translations().optional(),
+  seo_description_translations: translations().optional(),
   status: z.enum(["draft", "published", "archived"]),
 });
 
@@ -31,6 +33,8 @@ export const insightSchema = z.object({
   title_translations: englishRequired("English title is required"),
   excerpt_translations: englishRequired("English excerpt is required"),
   reading_time_minutes: z.number().int().min(1),
+  seo_title_translations: translations().optional(),
+  seo_description_translations: translations().optional(),
   status: z.enum(["draft", "published", "archived"]),
 });
 

@@ -528,6 +528,8 @@ Since migration `00049`, `section_settings` also has a `review_summary jsonb` co
 
 Since migration `00050`, the `section_key` check constraint only allows live sections (`services`, `process`, `why-choose-us`, `insights`, `portfolio`, `testimonials`, `pricing`, `faq`, `acquisition`, `contact`, `acquisition-niches`, `acquisition-cta`). The removed `final-cta` and `trusted-by` keys were dropped from the constraint after their backing tables were removed (migrations `00046` and `00031`).
 
+Since migration `00051`, `section_settings`, `about_page`, and `detail_pages` also carry `seo_title_translations jsonb` and `seo_description_translations jsonb` (default `{}`, seeded with the previously hardcoded page metadata). Every public page now resolves its SEO from the database: `section_settings` rows drive `/work` (portfolio), `/services`, `/testimonials`, `/insights`, `/contact`, and `/buy-business` (acquisition); `about_page` drives `/about`; `detail_pages` drive the legal pages (privacy, terms, cookies, imprint, careers, hiring). The `services`, `insights`, and `portfolio_projects` tables already carried SEO columns and now drive their detail routes (`/services/[slug]`, `/insights/[slug]`, `/work/[slug]`). `site_settings.default_seo` (shaped `{ [locale]: { title, description } }`) is the global fallback used by the homepage and whenever a row's SEO is empty.
+
 ## 9.4 `acquisition_niches`
 
 Collection table (migration `00043`) replacing the hardcoded niche catalog in `src/features/acquisition/niches.ts`. Editable from the CMS in all 4 languages; rendered on `/buy-business` (card grid) and `/buy-business/niches/[slug]` (detail page), and included in `sitemap.xml`.

@@ -48,6 +48,8 @@ export async function updateDetailPage(
       description_translations: parsed.data.description_translations,
       subtitle_translations: parsed.data.subtitle_translations,
       content_translations: parsed.data.content,
+      seo_title_translations: parsed.data.seo_title_translations ?? {},
+      seo_description_translations: parsed.data.seo_description_translations ?? {},
       is_visible: parsed.data.is_visible,
     })
     .eq("slug", slug);

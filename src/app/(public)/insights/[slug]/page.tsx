@@ -12,7 +12,7 @@ import {
 } from "@/features/insights/display";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { tWithNumber } from "@/lib/i18n/ui-strings";
-import { articleJsonLd, canonical, pageMetadata } from "@/lib/seo";
+import { articleJsonLd, canonical, pageMetadata, resolveSeoMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import Image from "next/image";
@@ -26,8 +26,13 @@ export async function generateMetadata({
   const locale = await getLocale();
   const insight = await getPublicInsightDetail(slug);
   if (!insight) return {};
-  const title = `${resolveTranslation(insight.title_translations, locale)} — Stratifit`;
-  const description = resolveTranslation(insight.excerpt_translations, locale);
+  const { title, description } = resolveSeoMetadata({
+    seoTitleTranslations: insight.seo_title_translations,
+    seoDescriptionTranslations: insight.seo_description_translations,
+    locale,
+    fallbackTitle: `${resolveTranslation(insight.title_translations, locale)} — Stratifit`,
+    fallbackDescription: resolveTranslation(insight.excerpt_translations, locale),
+  });
   return {
     ...pageMetadata({ title, description, path: `/insights/${slug}` }),
     openGraph: {

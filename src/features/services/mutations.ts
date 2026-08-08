@@ -51,6 +51,7 @@ export async function createService(
   }
 
   revalidatePath("/");
+  revalidatePath("/services");
   revalidatePath("/admin/content/services");
   return { success: true };
 }
@@ -90,6 +91,8 @@ export async function updateService(
       ...((existing?.cta_label_translations as Record<string, string> | null) ?? {}),
       ...parsed.data.cta_label_translations,
     },
+    seo_title_translations: parsed.data.seo_title_translations ?? {},
+    seo_description_translations: parsed.data.seo_description_translations ?? {},
   };
   const { error } = await supabase
     .from("services")
@@ -104,6 +107,8 @@ export async function updateService(
   }
 
   revalidatePath("/");
+  revalidatePath("/services");
+  revalidatePath(`/services/${slug}`);
   revalidatePath("/admin/content/services");
   return { success: true };
 }
@@ -116,5 +121,7 @@ export async function deleteService(slug: string): Promise<void> {
   await recordAuditLog({ action: "delete", target_table: "services", metadata: { slug } });
 
   revalidatePath("/");
+  revalidatePath("/services");
+  revalidatePath(`/services/${slug}`);
   revalidatePath("/admin/content/services");
 }

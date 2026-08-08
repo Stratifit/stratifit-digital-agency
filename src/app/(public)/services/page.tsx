@@ -1,14 +1,23 @@
 ﻿import { getPublicServices } from "@/features/services/queries";
+import type { Metadata } from "next";
 import { getPublicServicePages } from "@/features/service-pages/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
-import { pageMetadata } from "@/lib/seo";
+import { getPublicSectionSettingIncludingHidden } from "@/features/section-settings/queries";
+import { pageMetadata, resolveSeoMetadata } from "@/lib/seo";
 
-export const metadata = pageMetadata({
-  title: "Services — Stratifit",
-  description:
-    "Explore Stratifit's core services: brand design, website development, AI & automation, and growth marketing.",
-  path: "/services",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const setting = await getPublicSectionSettingIncludingHidden("services");
+  const { title, description } = resolveSeoMetadata({
+    seoTitleTranslations: setting?.seo_title_translations,
+    seoDescriptionTranslations: setting?.seo_description_translations,
+    locale,
+    fallbackTitle: "Services — Stratifit",
+    fallbackDescription:
+      "Explore Stratifit's core services: brand design, website development, AI & automation, and growth marketing.",
+  });
+  return pageMetadata({ title, description, path: "/services" });
+}
 
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { getPublicSectionSetting } from "@/features/section-settings/queries";

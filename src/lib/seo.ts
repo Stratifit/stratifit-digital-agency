@@ -11,6 +11,30 @@ export function canonical(path = "/"): string {
   return new URL(cleanPath, getSiteUrl()).toString();
 }
 
+/**
+ * Resolves a page's SEO title/description from optional DB translations,
+ * falling back to the provided defaults (previously hardcoded per page).
+ * Callers pass the row's `seo_title_translations` / `seo_description_translations`
+ * (or null when the row is missing).
+ */
+export function resolveSeoMetadata(input: {
+  seoTitleTranslations?: Record<string, string> | null;
+  seoDescriptionTranslations?: Record<string, string> | null;
+  locale: string;
+  fallbackTitle: string;
+  fallbackDescription: string;
+}): { title: string; description: string } {
+  const pick = (translations?: Record<string, string> | null) => {
+    if (!translations) return "";
+    return translations[input.locale] || translations.en || "";
+  };
+  return {
+    title: pick(input.seoTitleTranslations) || input.fallbackTitle,
+    description:
+      pick(input.seoDescriptionTranslations) || input.fallbackDescription,
+  };
+}
+
 export function pageMetadata(input: {
   title: string;
   description: string;

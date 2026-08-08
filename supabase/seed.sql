@@ -15,7 +15,7 @@ VALUES (
   'hello@stratifit.com',
   'en',
   ARRAY['en', 'de', 'fr', 'es'],
-  '{"en": {"title": "Stratifit | Premium Digital Agency", "description": "We build premium digital experiences that drive growth."}}'::jsonb
+  '{"en": {"title": "Stratifit — Digital Agency", "description": "Stratifit is a premium multilingual digital agency delivering websites, web applications, e-commerce, and AI solutions."}}'::jsonb
 )
 ON CONFLICT (singleton_key) DO UPDATE SET
   site_name = EXCLUDED.site_name,

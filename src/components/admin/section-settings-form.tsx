@@ -195,6 +195,10 @@ function toFormValues(settings: AdminSectionSettings): SectionSettingsFormValues
           googleReviewsUrl: settings.review_summary.googleReviewsUrl ?? "",
         }
       : undefined,
+    seo_title_translations: translations(settings.seo_title_translations),
+    seo_description_translations: translations(
+      settings.seo_description_translations
+    ),
     is_visible: settings.is_visible,
   };
 }
@@ -478,6 +482,52 @@ export function SectionSettingsForm({
           <ReviewSummaryEditor register={register} />
         </div>
       ) : null}
+
+      {/* Page SEO metadata (title + description in all locales) */}
+      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm">
+        <div className="mb-4">
+          <h3 className="font-display text-base font-semibold text-text-primary">
+            Page SEO
+          </h3>
+          <p className="mt-1 text-sm text-text-muted">
+            Search-engine title and description for this section&apos;s page.
+            Leave empty to use the built-in defaults.
+          </p>
+        </div>
+        <div className="space-y-4">
+          {SUPPORTED_LOCALES.map((locale) => (
+            <div
+              key={locale}
+              className="rounded-card border border-white/5 bg-background p-4"
+            >
+              <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-text-subtle">
+                {LOCALE_NAMES[locale]}
+              </p>
+              <div className="space-y-3">
+                <div className="space-y-2">
+                  <Label htmlFor={`seo-title-${locale}`}>SEO title</Label>
+                  <Input
+                    id={`seo-title-${locale}`}
+                    placeholder="Our Work — Stratifit"
+                    {...register(`seo_title_translations.${locale}`)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor={`seo-description-${locale}`}>
+                    SEO description
+                  </Label>
+                  <Textarea
+                    id={`seo-description-${locale}`}
+                    rows={2}
+                    placeholder="Selected case studies and projects…"
+                    {...register(`seo_description_translations.${locale}`)}
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {serverError ? (
         <p role="alert" className="rounded-card bg-error-soft px-3 py-2 text-sm text-error">

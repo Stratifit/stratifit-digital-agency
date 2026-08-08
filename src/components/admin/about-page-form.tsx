@@ -113,6 +113,8 @@ export function AboutPageForm({ initial }: { initial: AdminAboutPage }) {
       cta_description_translations: tr(initial.cta_description_translations),
       cta_label_translations: tr(initial.cta_label_translations),
       cta_url: initial.cta_url ?? "",
+      seo_title_translations: tr(initial.seo_title_translations),
+      seo_description_translations: tr(initial.seo_description_translations),
       is_visible: initial.is_visible,
     },
   });
@@ -399,6 +401,35 @@ export function AboutPageForm({ initial }: { initial: AdminAboutPage }) {
         >
           Add value
         </Button>
+      </SectionCard>
+
+      <SectionCard
+        title="Page SEO"
+        description="Search-engine title and description for the About page."
+      >
+        {LOCALES.map((locale) => (
+          <LocaleFieldset key={locale} locale={locale}>
+            <div className="space-y-2">
+              <Label htmlFor={`seo-title-${locale}`}>SEO title</Label>
+              <Input
+                id={`seo-title-${locale}`}
+                placeholder="About — Stratifit"
+                {...register(`seo_title_translations.${locale}`)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor={`seo-description-${locale}`}>
+                SEO description
+              </Label>
+              <Textarea
+                id={`seo-description-${locale}`}
+                rows={2}
+                placeholder="Learn about Stratifit, a premium digital agency…"
+                {...register(`seo_description_translations.${locale}`)}
+              />
+            </div>
+          </LocaleFieldset>
+        ))}
       </SectionCard>
 
       <SectionCard title="Team" description="Team introduction copy.">

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { getPublicAcquisitionSection } from "@/features/acquisition/queries";
 import { getPublicAcquisitionNiches } from "@/features/acquisition/niche-queries";
@@ -9,17 +10,24 @@ import {
   getPublicSectionSettingIncludingHidden,
 } from "@/features/section-settings/queries";
 import { t } from "@/lib/i18n/ui-strings";
-import { pageMetadata } from "@/lib/seo";
+import { pageMetadata, resolveSeoMetadata } from "@/lib/seo";
 import { Reveal } from "@/components/ui/reveal";
 import { CtaCard } from "@/components/sections/cta-card";
 import { BuyBusinessNiches } from "@/components/acquisition/buy-business-niches";
 
-export const metadata = pageMetadata({
-  title: "Buy a Business — Stratifit",
-  description:
-    "Skip the startup grind. Browse our curated marketplace of profitable, turnkey businesses across seven high-demand niches.",
-  path: "/buy-business",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const setting = await getPublicSectionSettingIncludingHidden("acquisition");
+  const { title, description } = resolveSeoMetadata({
+    seoTitleTranslations: setting?.seo_title_translations,
+    seoDescriptionTranslations: setting?.seo_description_translations,
+    locale,
+    fallbackTitle: "Buy a Business — Stratifit",
+    fallbackDescription:
+      "Skip the startup grind. Browse our curated marketplace of profitable, turnkey businesses across seven high-demand niches.",
+  });
+  return pageMetadata({ title, description, path: "/buy-business" });
+}
 
 export default async function BuyBusinessPage() {
   const locale = await getLocale();

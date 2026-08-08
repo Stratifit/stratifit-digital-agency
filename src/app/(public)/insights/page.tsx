@@ -1,15 +1,26 @@
-import { pageMetadata } from "@/lib/seo";
+import type { Metadata } from "next";
+import { pageMetadata, resolveSeoMetadata } from "@/lib/seo";
 
-export const metadata = pageMetadata({
-  title: "Insights — Stratifit",
-  description:
-    "Insights and expertise from the Stratifit team on design, development, AI, and growth.",
-  path: "/insights",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const setting = await getPublicSectionSettingIncludingHidden("insights");
+  const { title, description } = resolveSeoMetadata({
+    seoTitleTranslations: setting?.seo_title_translations,
+    seoDescriptionTranslations: setting?.seo_description_translations,
+    locale,
+    fallbackTitle: "Insights — Stratifit",
+    fallbackDescription:
+      "Insights and expertise from the Stratifit team on design, development, AI, and growth.",
+  });
+  return pageMetadata({ title, description, path: "/insights" });
+}
 
 import { getLocale } from "@/lib/i18n/get-locale";
 import { getPublicInsights, getPublicInsightCategories } from "@/features/insights/queries";
-import { getPublicSectionSetting } from "@/features/section-settings/queries";
+import {
+  getPublicSectionSetting,
+  getPublicSectionSettingIncludingHidden,
+} from "@/features/section-settings/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { t } from "@/lib/i18n/ui-strings";
 import { Container } from "@/components/ui/container";

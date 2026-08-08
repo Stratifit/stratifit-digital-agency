@@ -1,16 +1,27 @@
+import type { Metadata } from "next";
 import { getLocale } from "@/lib/i18n/get-locale";
-import { pageMetadata } from "@/lib/seo";
+import { pageMetadata, resolveSeoMetadata } from "@/lib/seo";
 
-export const metadata = pageMetadata({
-  title: "Our Work — Stratifit",
-  description:
-    "Selected case studies and projects by Stratifit across web, brand, and growth.",
-  path: "/work",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const setting = await getPublicSectionSettingIncludingHidden("portfolio");
+  const { title, description } = resolveSeoMetadata({
+    seoTitleTranslations: setting?.seo_title_translations,
+    seoDescriptionTranslations: setting?.seo_description_translations,
+    locale,
+    fallbackTitle: "Our Work — Stratifit",
+    fallbackDescription:
+      "Selected case studies and projects by Stratifit across web, brand, and growth.",
+  });
+  return pageMetadata({ title, description, path: "/work" });
+}
 
 import { getPublicPortfolioProjects } from "@/features/portfolio/queries";
 import { getPublicServices } from "@/features/services/queries";
-import { getPublicSectionSetting } from "@/features/section-settings/queries";
+import {
+  getPublicSectionSetting,
+  getPublicSectionSettingIncludingHidden,
+} from "@/features/section-settings/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { t } from "@/lib/i18n/ui-strings";
 import { Container } from "@/components/ui/container";

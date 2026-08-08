@@ -17,6 +17,8 @@ export default async function AdminSettingsPage() {
     contact_phone: settings?.contact_phone ?? "",
     address_en: settings?.address_translations?.en ?? "",
     default_locale: settings?.default_locale ?? "en",
+    seo_title_en: settings?.default_seo?.en?.title ?? "",
+    seo_description_en: settings?.default_seo?.en?.description ?? "",
     social: settings?.social_links ?? {},
   };
 

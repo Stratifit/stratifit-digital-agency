@@ -63,6 +63,8 @@ export async function savePortfolio(
     title_translations: parsed.data.title_translations,
     summary_translations: parsed.data.summary_translations,
     image_url: parsed.data.image_url.trim() || null,
+    seo_title_translations: parsed.data.seo_title_translations ?? {},
+    seo_description_translations: parsed.data.seo_description_translations ?? {},
     status: parsed.data.status,
   };
   const { error } = slug
@@ -77,6 +79,7 @@ export async function savePortfolio(
   });
   revalidatePath("/admin/content/portfolio");
   revalidatePath("/");
+  revalidatePath(`/work/${parsed.data.slug}`);
   return { success: true };
 }
 
@@ -98,6 +101,8 @@ export async function saveInsight(
     title_translations: parsed.data.title_translations,
     excerpt_translations: parsed.data.excerpt_translations,
     reading_time_minutes: parsed.data.reading_time_minutes,
+    seo_title_translations: parsed.data.seo_title_translations ?? {},
+    seo_description_translations: parsed.data.seo_description_translations ?? {},
     status: parsed.data.status,
     published_at: parsed.data.status === "published" ? new Date().toISOString() : null,
   };
@@ -113,6 +118,7 @@ export async function saveInsight(
   });
   revalidatePath("/admin/content/insights");
   revalidatePath("/");
+  revalidatePath(`/insights/${parsed.data.slug}`);
   return { success: true };
 }
 

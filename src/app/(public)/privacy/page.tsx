@@ -1,16 +1,24 @@
 import { notFound } from "next/navigation";
-import { pageMetadata } from "@/lib/seo";
+import type { Metadata } from "next";
+import { pageMetadata, resolveSeoMetadata } from "@/lib/seo";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { getPublicDetailPageIncludingHidden } from "@/features/detail-pages/queries";
 import { DetailPageView } from "@/components/detail-pages/detail-page-view";
 import { PRIVACY_FALLBACK_BLOCKS } from "@/lib/i18n/detail-page-fallbacks";
 
-export const metadata = pageMetadata({
-  title: "Privacy Policy — Stratifit",
-  description: "How Stratifit collects, uses, and protects personal data.",
-  path: "/privacy",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const page = await getPublicDetailPageIncludingHidden("privacy");
+  const { title, description } = resolveSeoMetadata({
+    seoTitleTranslations: page?.seo_title_translations,
+    seoDescriptionTranslations: page?.seo_description_translations,
+    locale,
+    fallbackTitle: "Privacy Policy — Stratifit",
+    fallbackDescription: "How Stratifit collects, uses, and protects personal data.",
+  });
+  return pageMetadata({ title, description, path: "/privacy" });
+}
 
 const FALLBACK_EYEBROW = "Legal";
 const FALLBACK_TITLE = "Privacy Policy";

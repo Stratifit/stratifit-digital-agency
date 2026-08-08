@@ -1189,19 +1189,16 @@ The exact statuses depend on implemented Resend events.
 
 ## 36. SEO Management
 
-The CMS should support:
+Implemented status: SEO metadata is fully database-driven and editable from the CMS in all 4 languages (migration `00051`).
 
-- Global SEO defaults
-- Page-specific SEO
-- Service SEO
-- Portfolio SEO
-- Insight SEO
-- Open Graph images
-- Canonical URLs
-- Indexing controls
-- Localized metadata
+- **Global defaults** — Settings → Site Settings → "Global SEO" edits `site_settings.default_seo` (shape `{ [locale]: { title, description } }`). It drives the homepage and any page without row-level SEO.
+- **Section pages** — Content → Sections → [section] → "Page SEO" edits `section_settings.seo_title_translations` / `seo_description_translations`, driving `/work` (portfolio), `/services`, `/testimonials`, `/insights`, `/contact`, and `/buy-business` (acquisition).
+- **About** — Content → About → "Page SEO" (`about_page`).
+- **Legal pages** — Content → Pages → [page] → SEO fields (`detail_pages`).
+- **Collections** — Services, Portfolio Projects, and Insights editors each include SEO title/description; the detail routes `/services/[slug]`, `/work/[slug]`, and `/insights/[slug]` read them.
+- **Canonical URLs and Open Graph** are generated in code (`lib/seo.ts`) from the resolved title/description. Indexing controls and Open Graph image selection are not exposed in version 1.
 
-SEO forms should use clear guidance and character-count indicators where useful.
+Every public page resolves its metadata at request time via `generateMetadata` with safe fallbacks (the previous built-in copy), so empty SEO never breaks the site. Saving any SEO edit revalidates the affected public routes.
 
 ---
 
