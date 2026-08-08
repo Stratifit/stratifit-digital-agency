@@ -41,8 +41,14 @@ export default async function ServicesPage() {
 
   return (
     <>
-      <section className="bg-gradient-hero">
-        <Container className="py-20 md:py-24">
+      <section className="relative overflow-hidden bg-gradient-hero">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+          {/* Warm amber halo behind the heading */}
+          <div className="absolute left-1/2 top-0 h-[320px] w-[520px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
+          {/* Faint indigo depth glow in the bottom-left */}
+          <div className="absolute -bottom-40 -left-40 h-[360px] w-[460px] rounded-full bg-secondary/10 opacity-70 blur-[140px]" />
+        </div>
+        <Container className="relative py-20 md:py-24">
           <p className="text-sm font-medium uppercase tracking-widest text-primary">
             {eyebrow}
           </p>

@@ -222,7 +222,9 @@
      Gradient Tokens
      --------------------------------------------------------------------------- */
   --gradient-primary: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
-  --gradient-hero: linear-gradient(135deg, #0B0F17 0%, #0E1420 55%, #111827 100%);
+  /* Hero gradient: deep navy base with a warm amber bloom baked into the
+     top-right corner so every public hero gets the same premium depth. */
+  --gradient-hero: radial-gradient(90% 75% at 78% 0%, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.03) 40%, transparent 72%), linear-gradient(135deg, #070A10 0%, #0B0F17 45%, #111827 100%);
   --gradient-dark-surface: linear-gradient(180deg, #111827 0%, #0A0A0A 100%);
   --gradient-hero-ambient: radial-gradient(circle at 70% 20%, rgba(245, 158, 11, 0.14) 0%, rgba(245, 158, 11, 0.04) 35%, transparent 70%);
   --gradient-ai-accent: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);

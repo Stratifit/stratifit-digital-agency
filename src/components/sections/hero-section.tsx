@@ -196,7 +196,10 @@ export async function HeroSection() {
       className="relative flex min-h-[calc(100svh-4rem)] items-start justify-center overflow-hidden bg-gradient-hero pb-16 pt-16 sm:min-h-[calc(100svh-5rem)] md:pb-24 lg:pb-32"
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-1/4 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
+        {/* Warm amber halo behind the headline */}
+        <div className="absolute left-1/2 top-[10%] h-[400px] w-[620px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
+        {/* Faint indigo depth glow in the bottom-left */}
+        <div className="absolute -bottom-44 -left-44 h-[420px] w-[520px] rounded-full bg-secondary/10 opacity-70 blur-[140px]" />
       </div>
 
       <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center px-4 text-center lg:px-8">

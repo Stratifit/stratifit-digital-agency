@@ -804,10 +804,18 @@ linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%)
 Default background for all public hero sections (home, services, work, insights, about, testimonials, buy-business, niche, and policy/company pages).
 
 ```css
-linear-gradient(135deg, #0B0F17 0%, #0E1420 55%, #111827 100%)
+radial-gradient(
+  90% 75% at 78% 0%,
+  rgba(245, 158, 11, 0.10) 0%,
+  rgba(245, 158, 11, 0.03) 40%,
+  transparent 72%
+),
+linear-gradient(135deg, #070A10 0%, #0B0F17 45%, #111827 100%)
 ```
 
 Exposed as the `--gradient-hero` token / `bg-gradient-hero` utility.
+
+The base is a deep-navy 135deg wash (`background-deep` → `#0B0F17` → `surface`) with a warm amber bloom baked into the top-right corner so every hero shares the same premium depth. The home and services heroes add a coordinated ambient layer on top — a warm amber halo near the headline and a faint indigo depth glow in the bottom-left.
 
 #### Dark surface gradient
 
