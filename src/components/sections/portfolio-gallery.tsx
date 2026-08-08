@@ -203,7 +203,7 @@ export function PortfolioGallery({
         </button>
       </div>
 
-      <div className="relative mt-3 flex items-center justify-center gap-1.5 md:hidden">
+      <div className="relative mt-6 flex items-center justify-center gap-1.5 md:hidden">
         {filtered.map((project, index) => (
           <span
             key={project.slug}

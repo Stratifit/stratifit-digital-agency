@@ -76,7 +76,7 @@ export function ProcessCarousel({
         ))}
       </div>
       {steps.length > 1 ? (
-        <div className="mt-3 flex items-center justify-center gap-1.5">
+        <div className="mt-6 flex items-center justify-center gap-1.5">
           {steps.map((step, index) => (
             <span
               key={step.step_key}

@@ -116,7 +116,7 @@ export function TestimonialsCarousel({
         </button>
       </div>
 
-      <div className="relative mt-3 flex items-center justify-center gap-1.5 md:hidden">
+      <div className="relative mt-6 flex items-center justify-center gap-1.5 md:hidden">
         {testimonials.length > 1
           ? testimonials.map((testimonial, index) => (
               <span

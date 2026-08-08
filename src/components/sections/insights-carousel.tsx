@@ -208,7 +208,7 @@ export function InsightsCarousel({
               ))}
             </div>
 
-            <div className="relative mt-3 flex items-center justify-center gap-1.5">
+            <div className="relative mt-6 flex items-center justify-center gap-1.5">
               {filtered.map((insight, index) => (
                 <span
                   key={insight.slug}

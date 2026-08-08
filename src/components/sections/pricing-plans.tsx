@@ -195,7 +195,7 @@ export function PricingPlans({
           ))}
         </div>
         {plans.length > 1 ? (
-          <div className="mt-3 flex items-center justify-center gap-1.5">
+          <div className="mt-6 flex items-center justify-center gap-1.5">
             {plans.map((plan, index) => (
               <span
                 key={plan.slug}

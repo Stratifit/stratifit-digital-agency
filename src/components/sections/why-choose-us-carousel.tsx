@@ -93,7 +93,7 @@ export function WhyChooseUsCarousel({
         ))}
       </div>
       {items.length > 1 ? (
-        <div className="mt-3 flex items-center justify-center gap-1.5">
+        <div className="mt-6 flex items-center justify-center gap-1.5">
           {items.map((item, index) => (
             <span
               key={index}
