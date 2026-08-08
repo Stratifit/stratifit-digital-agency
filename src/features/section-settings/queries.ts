@@ -15,11 +15,19 @@ export interface PublicSectionSettings {
     value: string;
     label_translations: Record<string, string> | null;
   }[] | null;
+  /** Optional review summary band (testimonials section / /testimonials page). */
+  review_summary?: {
+    rating: string;
+    verifiedReviews: number;
+    googleRating: string;
+    googleReviews: number;
+    googleReviewsUrl: string;
+  } | null;
   is_visible: boolean;
 }
 
 const SELECT_FIELDS =
-  "section_key, label, eyebrow_translations, title_translations, highlight_translations, description_translations, cta_label_translations, cta_url, stats, is_visible";
+  "section_key, label, eyebrow_translations, title_translations, highlight_translations, description_translations, cta_label_translations, cta_url, stats, review_summary, is_visible";
 
 export async function getPublicSectionSetting(
   sectionKey: string

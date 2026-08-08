@@ -86,6 +86,12 @@ export async function updateSectionSettings(
       ),
       cta_url: parsed.data.cta_url?.trim() || null,
       stats: parsed.data.stats ?? [],
+      review_summary: parsed.data.review_summary
+        ? {
+            ...parsed.data.review_summary,
+            googleReviewsUrl: parsed.data.review_summary.googleReviewsUrl.trim(),
+          }
+        : {},
       is_visible: parsed.data.is_visible,
     })
     .eq("section_key", sectionKey);
@@ -96,6 +102,7 @@ export async function updateSectionSettings(
 
   revalidatePath("/");
   revalidatePath("/buy-business");
+  revalidatePath("/testimonials");
   revalidatePath("/admin/content/sections");
   return { success: true };
 }
@@ -141,6 +148,7 @@ export async function toggleSectionVisibility(
 
   revalidatePath("/");
   revalidatePath("/buy-business");
+  revalidatePath("/testimonials");
   revalidatePath("/admin/content/sections");
   return { success: true };
 }

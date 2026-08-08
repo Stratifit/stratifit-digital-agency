@@ -15,6 +15,18 @@ const statsItem = z.object({
   label_translations: translations(),
 });
 
+/**
+ * Review summary band shown on /testimonials: client rating, verified review
+ * count, Google rating/count, and the Google reviews link.
+ */
+const reviewSummary = z.object({
+  rating: z.string().min(1, "Rating is required"),
+  verifiedReviews: z.number().int().min(0),
+  googleRating: z.string().min(1, "Rating is required"),
+  googleReviews: z.number().int().min(0),
+  googleReviewsUrl: z.string(),
+});
+
 export const sectionSettingsSchema = z.object({
   eyebrow_translations: translations(),
   title_translations: translations().refine(
@@ -28,6 +40,8 @@ export const sectionSettingsSchema = z.object({
   cta_url: z.string().optional(),
   /** Optional stats band (used by the /work page via the portfolio section). */
   stats: z.array(statsItem).optional(),
+  /** Optional review summary band (used by the /testimonials page). */
+  review_summary: reviewSummary.optional(),
   is_visible: z.boolean(),
 });
 

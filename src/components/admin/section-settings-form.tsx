@@ -32,6 +32,80 @@ const CTA_SECTIONS = new Set(["acquisition-cta"]);
 /** Sections whose editor also manages a stats band (/work page). */
 const STATS_SECTIONS = new Set(["portfolio"]);
 
+/** Sections whose editor also manages a review summary band (/testimonials page). */
+const REVIEW_SUMMARY_SECTIONS = new Set(["testimonials"]);
+
+function ReviewSummaryEditor({
+  register,
+}: {
+  register: UseFormRegister<SectionSettingsFormValues>;
+}) {
+  const fieldPrefix = "review_summary";
+  return (
+    <div className="space-y-4">
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="space-y-2">
+          <Label htmlFor={`${fieldPrefix}.rating`}>Client rating</Label>
+          <Input
+            id={`${fieldPrefix}.rating`}
+            placeholder="4.9"
+            {...register(`${fieldPrefix}.rating`)}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor={`${fieldPrefix}.verifiedReviews`}>
+            Verified client reviews
+          </Label>
+          <Input
+            id={`${fieldPrefix}.verifiedReviews`}
+            type="number"
+            min={0}
+            placeholder="47"
+            {...register(`${fieldPrefix}.verifiedReviews`, {
+              valueAsNumber: true,
+            })}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor={`${fieldPrefix}.googleRating`}>Google rating</Label>
+          <Input
+            id={`${fieldPrefix}.googleRating`}
+            placeholder="4.9"
+            {...register(`${fieldPrefix}.googleRating`)}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor={`${fieldPrefix}.googleReviews`}>
+            Google reviews
+          </Label>
+          <Input
+            id={`${fieldPrefix}.googleReviews`}
+            type="number"
+            min={0}
+            placeholder="18"
+            {...register(`${fieldPrefix}.googleReviews`, {
+              valueAsNumber: true,
+            })}
+          />
+        </div>
+        <div className="space-y-2 sm:col-span-2">
+          <Label htmlFor={`${fieldPrefix}.googleReviewsUrl`}>
+            Google reviews URL
+          </Label>
+          <Input
+            id={`${fieldPrefix}.googleReviewsUrl`}
+            placeholder="https://www.google.com/maps/…"
+            {...register(`${fieldPrefix}.googleReviewsUrl`)}
+          />
+        </div>
+      </div>
+      <p className="text-xs text-text-muted">
+        Ratings and review counts shown at the top of the reviews page.
+      </p>
+    </div>
+  );
+}
+
 function StatsEditor({
   register,
 }: {
@@ -112,6 +186,15 @@ function toFormValues(settings: AdminSectionSettings): SectionSettingsFormValues
           label_translations: translations(stat.label_translations),
         }))
       : [],
+    review_summary: settings.review_summary
+      ? {
+          rating: settings.review_summary.rating ?? "",
+          verifiedReviews: settings.review_summary.verifiedReviews ?? 0,
+          googleRating: settings.review_summary.googleRating ?? "",
+          googleReviews: settings.review_summary.googleReviews ?? 0,
+          googleReviewsUrl: settings.review_summary.googleReviewsUrl ?? "",
+        }
+      : undefined,
     is_visible: settings.is_visible,
   };
 }
@@ -377,6 +460,22 @@ export function SectionSettingsForm({
           </div>
 
           <StatsEditor register={register} />
+        </div>
+      ) : null}
+
+      {/* Optional review summary band (testimonials section drives /testimonials) */}
+      {REVIEW_SUMMARY_SECTIONS.has(settings.section_key) ? (
+        <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm">
+          <div className="mb-4">
+            <h3 className="font-display text-base font-semibold text-text-primary">
+              Review summary band
+            </h3>
+            <p className="mt-1 text-sm text-text-muted">
+              Ratings and review counts shown at the top of the reviews page.
+            </p>
+          </div>
+
+          <ReviewSummaryEditor register={register} />
         </div>
       ) : null}
 

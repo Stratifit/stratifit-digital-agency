@@ -524,6 +524,8 @@ The public Buy a Business page (`/buy-business`) drives its section labels from 
 
 Since migration `00042`, `section_settings` also has a `stats jsonb` column (default `[]`): an editable stats band of `{ value, label_translations }` items. The `/work` page reads the `portfolio` section's `stats` row instead of hardcoding its stats band; the admin editor (Sections → Portfolio) edits it in all 4 languages.
 
+Since migration `00049`, `section_settings` also has a `review_summary jsonb` column (default `{}`): the review summary band on `/testimonials`, shaped as `{ rating, verifiedReviews, googleRating, googleReviews, googleReviewsUrl }`. The `/testimonials` page reads the `testimonials` section's `review_summary` row (falling back to approved defaults); the admin editor (Sections → Testimonials) edits it. The `googleReviewsUrl` is an external link to the agency's Google reviews listing.
+
 ## 9.4 `acquisition_niches`
 
 Collection table (migration `00043`) replacing the hardcoded niche catalog in `src/features/acquisition/niches.ts`. Editable from the CMS in all 4 languages; rendered on `/buy-business` (card grid) and `/buy-business/niches/[slug]` (detail page), and included in `sitemap.xml`.

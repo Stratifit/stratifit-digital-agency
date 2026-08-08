@@ -1618,6 +1618,7 @@ export type Database = {
           highlight_translations: Json
           is_visible: boolean
           label: string
+          review_summary: Json
           section_key: string
           stats: Json
           title_translations: Json
@@ -1633,6 +1634,7 @@ export type Database = {
           highlight_translations?: Json
           is_visible?: boolean
           label: string
+          review_summary?: Json
           section_key: string
           stats?: Json
           title_translations?: Json
@@ -1648,6 +1650,7 @@ export type Database = {
           highlight_translations?: Json
           is_visible?: boolean
           label?: string
+          review_summary?: Json
           section_key?: string
           stats?: Json
           title_translations?: Json

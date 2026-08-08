@@ -52,4 +52,47 @@ describe("sectionSettingsSchema", () => {
     });
     expect(result.success).toBe(false);
   });
+
+  it("accepts a full review summary", () => {
+    const result = sectionSettingsSchema.safeParse({
+      ...valid,
+      review_summary: {
+        rating: "4.9",
+        verifiedReviews: 47,
+        googleRating: "4.9",
+        googleReviews: 18,
+        googleReviewsUrl: "https://www.google.com/maps",
+      },
+    });
+    expect(result.success).toBe(true);
+    expect(result.data?.review_summary?.verifiedReviews).toBe(47);
+  });
+
+  it("rejects a review summary with missing rating", () => {
+    const result = sectionSettingsSchema.safeParse({
+      ...valid,
+      review_summary: {
+        rating: "",
+        verifiedReviews: 47,
+        googleRating: "4.9",
+        googleReviews: 18,
+        googleReviewsUrl: "",
+      },
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it("rejects non-numeric review counts", () => {
+    const result = sectionSettingsSchema.safeParse({
+      ...valid,
+      review_summary: {
+        rating: "4.8",
+        verifiedReviews: "47",
+        googleRating: "4.8",
+        googleReviews: 18,
+        googleReviewsUrl: "",
+      },
+    });
+    expect(result.success).toBe(false);
+  });
 });
