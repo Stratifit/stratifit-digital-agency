@@ -88,11 +88,11 @@ export function CtaCard({
               {t(locale, "servicesReadyWhenYouAre")}
             </span>
           </div>
-          <h2 className="font-display text-2xl font-black leading-[1.1] tracking-tight text-text-primary sm:text-3xl md:text-4xl">
+          <h2 className="font-display text-sm font-black leading-[1.1] tracking-tight text-text-primary sm:text-3xl md:text-4xl">
             {title}
           </h2>
           {description ? (
-            <p className="mt-3 max-w-xl text-sm leading-relaxed text-text-muted sm:text-base">
+            <p className="mt-3 max-w-xl text-[10px] leading-relaxed text-text-muted sm:text-base">
               {description}
             </p>
           ) : null}

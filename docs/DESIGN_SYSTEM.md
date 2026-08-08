@@ -805,17 +805,17 @@ Default background for all public hero sections (home, services, work, insights,
 
 ```css
 radial-gradient(
-  90% 75% at 78% 0%,
-  rgba(245, 158, 11, 0.10) 0%,
-  rgba(245, 158, 11, 0.03) 40%,
-  transparent 72%
+  100% 80% at 80% 0%,
+  rgba(245, 158, 11, 0.16) 0%,
+  rgba(245, 158, 11, 0.05) 42%,
+  transparent 75%
 ),
-linear-gradient(135deg, #070A10 0%, #0B0F17 45%, #111827 100%)
+linear-gradient(135deg, #000000 0%, #0A0A0A 55%, rgba(245, 158, 11, 0.18) 100%)
 ```
 
 Exposed as the `--gradient-hero` token / `bg-gradient-hero` utility.
 
-The base is a deep-navy 135deg wash (`background-deep` → `#0B0F17` → `surface`) with a warm amber bloom baked into the top-right corner so every hero shares the same premium depth. The home and services heroes add a coordinated ambient layer on top — a warm amber halo near the headline and a faint indigo depth glow in the bottom-left.
+The hero uses Stratifit colors only — yellow and black. The base is a 135deg wash that mixes pure black (`#000000` → `background`) into a warm amber tint toward the bottom-right corner, with an amber bloom also baked into the top-right corner so every hero shares the same premium depth. The home and services heroes add a warm amber halo near the headline on top.
 
 #### Dark surface gradient
 
@@ -824,6 +824,8 @@ linear-gradient(180deg, #111827 0%, #0A0A0A 100%)
 ```
 
 #### Hero ambient glow
+
+Applied as a soft layered halo over the hero gradient in the home and services heroes — amber only, on black.
 
 ```css
 radial-gradient(
