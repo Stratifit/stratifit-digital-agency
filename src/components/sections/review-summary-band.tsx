@@ -1,7 +1,24 @@
-import { ArrowUpRight, Users } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 const GOOGLE_REVIEWS_URL =
   "https://www.google.com/maps/search/?api=1&query=Stratifit";
+
+/** Defaults matching the approved design; overridden by CMS settings. */
+export const REVIEW_SUMMARY_DEFAULTS = {
+  rating: "4.9",
+  verifiedReviews: 47,
+  googleRating: "4.9",
+  googleReviews: 18,
+  googleReviewsUrl: GOOGLE_REVIEWS_URL,
+};
+
+export type ReviewSummaryValues = {
+  rating: string;
+  verifiedReviews: number;
+  googleRating: string;
+  googleReviews: number;
+  googleReviewsUrl: string;
+};
 
 function StarIcon() {
   return (
@@ -9,7 +26,7 @@ function StarIcon() {
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden="true"
-      className="size-4 text-primary"
+      className="size-3 text-primary"
     >
       <path
         fillRule="evenodd"
@@ -32,7 +49,7 @@ function Stars({ label }: { label: string }) {
 
 function GoogleIcon() {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="size-5">
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="size-4 shrink-0">
       <path
         fill="#4285F4"
         d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -55,87 +72,56 @@ function GoogleIcon() {
 
 /**
  * Review summary band shown at the top of the reviews grid: an overall
- * client-satisfaction summary on the left and a Google Reviews summary with a
- * link to the full listing on the right.
+ * client-satisfaction summary on the left and a Google Reviews summary with an
+ * arrow link to the full listing on the right. Compact single-line layout.
  */
 export function ReviewSummaryBand({
-  rating = "4.9",
-  verifiedReviews = 47,
-  googleRating = "4.9",
-  googleReviews = 18,
-  googleReviewsUrl = GOOGLE_REVIEWS_URL,
-}: {
-  rating?: string;
-  verifiedReviews?: number;
-  googleRating?: string;
-  googleReviews?: number;
-  googleReviewsUrl?: string;
-}) {
+  rating = REVIEW_SUMMARY_DEFAULTS.rating,
+  verifiedReviews = REVIEW_SUMMARY_DEFAULTS.verifiedReviews,
+  googleRating = REVIEW_SUMMARY_DEFAULTS.googleRating,
+  googleReviews = REVIEW_SUMMARY_DEFAULTS.googleReviews,
+  googleReviewsUrl = REVIEW_SUMMARY_DEFAULTS.googleReviewsUrl,
+}: Partial<ReviewSummaryValues>) {
   return (
-    <div className="flex flex-col divide-y divide-primary/15 overflow-hidden rounded-card border border-primary/25 bg-card-dark md:flex-row md:items-stretch md:divide-x md:divide-y-0">
+    <div className="flex items-stretch divide-x divide-primary/15 overflow-hidden rounded-card border border-primary/25 bg-card-dark">
       {/* Client satisfaction */}
-      <div className="flex items-center gap-4 p-6 md:flex-1 md:p-8">
-        <div className="flex size-12 shrink-0 items-center justify-center rounded-full border border-primary/40 bg-primary/10 text-primary">
-          <Users className="size-5" aria-hidden="true" />
+      <div className="flex flex-1 flex-col items-center justify-center gap-1 px-3 py-3 text-center sm:px-4">
+        <div className="flex items-center gap-2">
+          <span className="font-display text-3xl font-black leading-none tracking-tight text-text-primary sm:text-4xl">
+            {rating}
+          </span>
+          <Stars label={`${rating} out of 5 stars`} />
         </div>
-        <div className="min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="font-display text-2xl font-black tracking-tight text-text-primary">
-              {rating}
-            </span>
-            <Stars label={`${rating} out of 5 stars`} />
-          </div>
-          <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.2em] text-text-secondary">
-            Client Satisfaction
-          </p>
-          <p className="mt-1 text-xs text-text-muted">
-            Based on{" "}
-            <span className="font-semibold text-primary">{verifiedReviews}</span>{" "}
-            verified client reviews
-          </p>
-        </div>
+        <p className="text-[10px] leading-tight text-text-muted sm:text-[11px]">
+          <span className="font-semibold text-primary">{verifiedReviews}</span>{" "}
+          verified client reviews
+        </p>
       </div>
 
-      {/* Google reviews */}
-      <div className="flex items-center gap-4 p-6 md:flex-1 md:p-8">
-        <div className="flex size-12 shrink-0 items-center justify-center rounded-full border border-primary/40 bg-primary/10">
-          <GoogleIcon />
-        </div>
-        <div className="min-w-0">
-          <p className="font-display text-sm font-bold text-text-primary">
-            Google
-          </p>
-          <div className="flex items-center gap-2">
-            <span className="font-display text-2xl font-black tracking-tight text-text-primary">
-              {googleRating}
-            </span>
-            <Stars label={`${googleRating} out of 5 stars`} />
-          </div>
-          <p className="mt-1 text-xs text-text-muted">
-            Based on{" "}
-            <span className="font-semibold text-primary">{googleReviews}</span>{" "}
-            Google reviews
-          </p>
-        </div>
-      </div>
-
-      {/* See all reviews CTA */}
+      {/* Google reviews — whole block links to the listing */}
       <a
         href={googleReviewsUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="group flex items-center gap-3 p-6 text-left transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary/5 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary md:shrink-0 md:p-8"
+        title="on Google"
+        aria-label="See all reviews on Google"
+        className="group flex flex-1 flex-col items-center justify-center gap-1 px-3 py-3 text-center transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary/5 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary sm:px-4"
       >
-        <span className="flex flex-col">
-          <span className="text-sm font-semibold text-text-primary">
-            See all reviews
+        <div className="flex items-center gap-2">
+          <GoogleIcon />
+          <span className="font-display text-2xl font-black leading-none tracking-tight text-text-primary sm:text-3xl">
+            {googleRating}
           </span>
-          <span className="text-xs text-text-muted">on Google</span>
-        </span>
-        <ArrowUpRight
-          className="size-4 shrink-0 text-primary transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-          aria-hidden="true"
-        />
+          <Stars label={`${googleRating} out of 5 stars`} />
+          <ArrowUpRight
+            className="size-3.5 shrink-0 text-primary transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            aria-hidden="true"
+          />
+        </div>
+        <p className="text-[10px] leading-tight text-text-muted sm:text-[11px]">
+          <span className="font-semibold text-primary">{googleReviews}</span>{" "}
+          Google reviews
+        </p>
       </a>
     </div>
   );
