@@ -46,7 +46,7 @@ export default async function ServicesPage() {
           {/* Warm amber halo behind the heading — Stratifit yellow on black */}
           <div className="absolute left-1/2 top-0 h-[320px] w-[520px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
         </div>
-        <Container className="relative pt-0 pb-8">
+        <Container className="relative pt-16 pb-8">
           <p className="text-sm font-medium uppercase tracking-widest text-primary">
             {eyebrow}
           </p>
