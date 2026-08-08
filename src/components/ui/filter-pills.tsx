@@ -42,7 +42,7 @@ export function FilterPills({
           aria-pressed={active === pill.slug}
           onClick={() => onSelect(pill.slug)}
           className={cn(
-            "shrink-0 rounded-[10px] px-4 py-2 text-xs font-bold transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
+            "shrink-0 rounded-[10px] px-5 py-2.5 text-sm font-bold transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
             active === pill.slug
               ? "bg-primary text-text-inverse shadow-[0_0_20px_rgba(245,158,11,0.3)]"
               : "border border-white/10 bg-white/5 text-white hover:border-primary/30"
