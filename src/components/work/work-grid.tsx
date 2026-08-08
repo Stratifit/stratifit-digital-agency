@@ -176,7 +176,7 @@ export function WorkGrid({
   return (
     <div>
       <FilterPills
-        className="-mx-6 px-6 pb-6 lg:-mx-8 lg:px-8"
+        className="-mx-6 mt-10 mb-10 px-6 pb-6 lg:-mx-8 lg:px-8"
         pills={pills}
         active={active}
         onSelect={setActive}

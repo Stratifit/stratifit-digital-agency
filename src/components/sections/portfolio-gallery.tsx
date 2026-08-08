@@ -114,7 +114,7 @@ export function PortfolioGallery({
     <div>
       {!hideFilters ? (
         <FilterPills
-          className="mb-6 pb-2"
+          className="-mx-6 mt-10 mb-10 px-6 pb-6 lg:-mx-8 lg:px-8"
           pills={[
             { slug: "all", label: t(locale, "filterAll") },
             ...categories.map((service) => ({
