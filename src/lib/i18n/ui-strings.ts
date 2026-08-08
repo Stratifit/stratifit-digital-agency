@@ -52,9 +52,6 @@ export type UiStringKey =
   | "buyABusiness"
   | "buyBusinessFallback"
   | "acquisition"
-  | "exploreBy"
-  | "niche"
-  | "exploreByNicheDescription"
   | "businessesCount"
   | "avgShort"
   | "viewListings"
@@ -293,10 +290,6 @@ const en: UiStrings = {
   buyBusinessFallback:
     "Skip the startup grind. Browse our curated marketplace of profitable, turnkey businesses across high-demand niches.",
   acquisition: "Acquisition",
-  exploreBy: "Explore by",
-  niche: "Niche",
-  exploreByNicheDescription:
-    "Select a niche to see available businesses for acquisition.",
   businessesCount: "{n} businesses",
   avgShort: "avg.",
   viewListings: "View Listings",
@@ -553,10 +546,6 @@ const de: UiStrings = {
   buyBusinessFallback:
     "Überspringen Sie den Start-up-Dschungel. Stöbern Sie in unserem kuratierten Marktplatz für profitable, schlüsselfertige Unternehmen aus stark nachgefragten Nischen.",
   acquisition: "Akquisition",
-  exploreBy: "Stöbern nach",
-  niche: "Nische",
-  exploreByNicheDescription:
-    "Wählen Sie eine Nische, um verfügbare Unternehmen zur Übernahme zu sehen.",
   businessesCount: "{n} Unternehmen",
   avgShort: "Ø",
   viewListings: "Listings ansehen",
@@ -815,10 +804,6 @@ const fr: UiStrings = {
   buyBusinessFallback:
     "Évitez la galère du démarrage. Parcourez notre marketplace de sociétés rentables et clés en main dans sept niches très demandées.",
   acquisition: "Acquisition",
-  exploreBy: "Explorer par",
-  niche: "Niche",
-  exploreByNicheDescription:
-    "Sélectionnez une niche pour voir les sociétés disponibles à l'acquisition.",
   businessesCount: "{n} sociétés",
   avgShort: "moy.",
   viewListings: "Voir les annonces",
@@ -1077,10 +1062,6 @@ const es: UiStrings = {
   buyBusinessFallback:
     "Olvídate de empezar de cero. Explora nuestro mercado seleccionado de negocios rentables y listos para operar en nichos de alta demanda.",
   acquisition: "Adquisición",
-  exploreBy: "Explorar por",
-  niche: "Nicho",
-  exploreByNicheDescription:
-    "Selecciona un nicho para ver los negocios disponibles para adquisición.",
   businessesCount: "{n} negocios",
   avgShort: "prom.",
   viewListings: "Ver anuncios",

@@ -518,7 +518,6 @@ Suggested columns:
 The public Buy a Business page (`/buy-business`) drives its section labels from `section_settings` rows:
 
 - `acquisition` — page hero heading (eyebrow, title, highlight, description)
-- `acquisition-niches` — "Explore by Niche" heading
 - `acquisition-cta` — closing call-to-action block (title, description, optional `cta_label_translations`, `cta_url`)
 
 `section_settings` also carries two optional CTA columns used by CTA-capable sections: `cta_label_translations jsonb` and `cta_url text` (both nullable).

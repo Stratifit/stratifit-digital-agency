@@ -17,7 +17,6 @@ const SECTION_SETTINGS_KEYS = [
   "pricing",
   "faq",
   "contact",
-  "acquisition-niches",
   "acquisition-cta",
 ] as const;
 
@@ -56,6 +55,15 @@ export async function updateSectionSettings(
   input: SectionSettingsFormValues
 ): Promise<ActionResult> {
   const supabase = await requireAdmin();
+
+  if (
+    !SECTION_SETTINGS_KEYS.includes(
+      sectionKey as (typeof SECTION_SETTINGS_KEYS)[number]
+    )
+  ) {
+    return { success: false, error: "Unknown section." };
+  }
+
   const parsed = sectionSettingsSchema.safeParse(input);
 
   if (!parsed.success) {

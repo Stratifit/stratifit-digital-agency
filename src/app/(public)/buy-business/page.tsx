@@ -23,18 +23,16 @@ export const metadata = pageMetadata({
 
 export default async function BuyBusinessPage() {
   const locale = await getLocale();
-  const [section, settings, nichesSettings, ctaSettings, niches] =
+  const [section, settings, ctaSettings, niches] =
     await Promise.all([
       getPublicAcquisitionSection(),
       getPublicSectionSetting("acquisition"),
-      getPublicSectionSettingIncludingHidden("acquisition-niches"),
       getPublicSectionSettingIncludingHidden("acquisition-cta"),
       getPublicAcquisitionNiches(),
     ]);
 
-  // The new sections are hidden when an admin pauses them (row exists,
+  // The closing CTA is hidden when an admin pauses it (row exists,
   // is_visible = false). A missing row falls back to the default copy.
-  const nichesVisible = nichesSettings === null || nichesSettings.is_visible;
   const ctaVisible = ctaSettings === null || ctaSettings.is_visible;
 
   const businesses = section?.businesses ?? [];
@@ -74,17 +72,6 @@ export default async function BuyBusinessPage() {
     resolveTranslation(settings?.description_translations ?? null, locale) ||
     resolveTranslation(section?.description_translations ?? null, locale) ||
     t(locale, "buyBusinessFallback");
-
-  // Explore by Niche heading — editable via section_settings "acquisition-niches".
-  const nichesTitle =
-    resolveTranslation(nichesSettings?.title_translations ?? null, locale) ||
-    t(locale, "exploreBy");
-  const nichesHighlight =
-    resolveTranslation(nichesSettings?.highlight_translations ?? null, locale) ||
-    t(locale, "niche");
-  const nichesDescription =
-    resolveTranslation(nichesSettings?.description_translations ?? null, locale) ||
-    t(locale, "exploreByNicheDescription");
 
   // Closing CTA — editable via section_settings "acquisition-cta".
   const ctaTitle =
@@ -127,21 +114,9 @@ export default async function BuyBusinessPage() {
 
       <div aria-hidden="true" className="h-px w-full bg-white/5" />
 
-      {/* Explore by Niche */}
+      {/* Niche catalog */}
       <section className="pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          {nichesVisible ? (
-            <Reveal className="mb-6">
-              <h2 className="mb-2 font-display text-xl font-bold text-text-primary sm:text-2xl">
-                {nichesTitle}
-                {nichesHighlight ? (
-                  <span className="text-primary"> {nichesHighlight}</span>
-                ) : null}
-              </h2>
-              <p className="text-sm text-text-muted">{nichesDescription}</p>
-            </Reveal>
-          ) : null}
-
           <BuyBusinessNiches
             niches={nicheCards}
             businesses={businesses}
