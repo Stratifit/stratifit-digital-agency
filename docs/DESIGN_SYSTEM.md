@@ -810,12 +810,12 @@ radial-gradient(
   rgba(245, 158, 11, 0.05) 42%,
   transparent 75%
 ),
-linear-gradient(135deg, #000000 0%, #0A0A0A 55%, rgba(245, 158, 11, 0.18) 100%)
+linear-gradient(135deg, #000000 0%, rgba(245, 158, 11, 0.14) 40%, rgba(245, 158, 11, 0.06) 60%, #0A0A0A 85%)
 ```
 
 Exposed as the `--gradient-hero` token / `bg-gradient-hero` utility.
 
-The hero uses Stratifit colors only — yellow and black. The base is a 135deg wash that mixes pure black (`#000000` → `background`) into a warm amber tint toward the bottom-right corner, with an amber bloom also baked into the top-right corner so every hero shares the same premium depth. The home and services heroes add a warm amber halo near the headline on top.
+The hero uses Stratifit colors only — yellow and black. The base is a 135deg wash that starts pure black, blends a warm amber tint through the middle, and returns to pure black at the bottom edge so the hero aligns seamlessly with the section below. An amber bloom is also baked into the top-right corner so every hero shares the same premium depth. The home and services heroes add a warm amber halo near the headline on top.
 
 #### Dark surface gradient
 
