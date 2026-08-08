@@ -2,13 +2,13 @@
 
 ## Purpose
 
-Defines the Stratifit homepage: twelve approved sections in fixed order, each rendered from Supabase content through registered section components with safe empty states.
+Defines the Stratifit homepage: eleven approved sections in fixed order, each rendered from Supabase content through registered section components with safe empty states.
 
 ## Requirements
 
 ### Requirement: Fixed section order
 
-The homepage SHALL render sections in the approved order: Hero, Trusted By, Services, Process, Why Choose Us, Insights & Expertise, Portfolio, Acquisition, Testimonials, Pricing, FAQ, Final CTA.
+The homepage SHALL render sections in the approved order: Hero, Services, Process, Why Choose Us, Insights & Expertise, Portfolio, Acquisition, Testimonials, Pricing, FAQ, Contact.
 
 #### Scenario: Homepage renders in order
 
@@ -117,15 +117,6 @@ The FAQ section SHALL render published, visible FAQs ordered by `display_order`.
 
 - **WHEN** FAQs render
 - **THEN** questions SHALL be disclosed one at a time in an accessible accordion pattern
-
-### Requirement: Final CTA section
-
-The Final CTA section SHALL render from the `final_cta` singleton when visible.
-
-#### Scenario: Final CTA content
-
-- **WHEN** the section is visible
-- **THEN** it SHALL render title, description, and CTA buttons
 
 ### Requirement: Empty-state safety
 

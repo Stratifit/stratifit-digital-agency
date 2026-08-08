@@ -40,7 +40,7 @@ Translatable text fields SHALL use the naming pattern `<field>_translations` and
 
 ### Requirement: Singleton table enforcement
 
-Singleton tables (`site_settings`, `announcement_bar`, `hero`, `why_choose_us`, `acquisition_section`, `final_cta`, `chatbot_settings`, `ai_faq_settings`) SHALL prevent more than one active row. The approved pattern is `singleton_key boolean primary key default true check (singleton_key)`.
+Singleton tables (`site_settings`, `announcement_bar`, `hero`, `why_choose_us`, `acquisition_section`, `chatbot_settings`, `ai_faq_settings`) SHALL prevent more than one active row. The approved pattern is `singleton_key boolean primary key default true check (singleton_key)`.
 
 #### Scenario: Singleton row limit
 
@@ -127,7 +127,7 @@ The `media_assets` table SHALL track Supabase Storage metadata. Unique constrain
 
 ### Requirement: Public content tables
 
-Public-facing content tables (`services`, `portfolio_projects`, `insights`, `testimonials`, `pricing_plans`, `faqs`, `trusted_logos`, `process_steps`) SHALL include status, visibility, and ordering fields as specified in `docs/DATABASE.md`.
+Public-facing content tables (`services`, `portfolio_projects`, `insights`, `testimonials`, `pricing_plans`, `faqs`, `process_steps`) SHALL include status, visibility, and ordering fields as specified in `docs/DATABASE.md`.
 
 #### Scenario: Services table structure
 

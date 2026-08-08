@@ -17,7 +17,7 @@ Seed data SHALL be stored in `supabase/seed.sql` as plain SQL. The file SHALL us
 
 ### Requirement: Singleton defaults seeded
 
-Seed data SHALL include default rows for all singleton tables: `site_settings`, `announcement_bar`, `hero`, `why_choose_us`, `acquisition_section`, `final_cta`, `chatbot_settings`, and `ai_faq_settings`.
+Seed data SHALL include default rows for all singleton tables: `site_settings`, `announcement_bar`, `hero`, `why_choose_us`, `acquisition_section`, `chatbot_settings`, and `ai_faq_settings`.
 
 #### Scenario: Site settings seeded
 
@@ -67,7 +67,7 @@ Seed data SHALL include process steps with `step_key`, `number`, `title_translat
 
 ### Requirement: Homepage content seeded
 
-Seed data SHALL include default content for `why_choose_us`, `acquisition_section`, and `final_cta` with populated translation fields and `is_visible = true`.
+Seed data SHALL include default content for `why_choose_us` and `acquisition_section` with populated translation fields and `is_visible = true`.
 
 #### Scenario: Homepage sections populated
 

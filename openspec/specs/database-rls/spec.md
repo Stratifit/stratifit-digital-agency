@@ -17,7 +17,7 @@ Every application table in the `public` schema SHALL have Row Level Security ena
 
 ### Requirement: Public read for published content
 
-Public users (anon and authenticated) SHALL be able to read rows from content tables only when `status = 'published'` AND `is_visible = true`. Tables affected: `services`, `portfolio_projects`, `insights`, `testimonials`, `pricing_plans`, `faqs`, `trusted_logos`, `process_steps`.
+Public users (anon and authenticated) SHALL be able to read rows from content tables only when `status = 'published'` AND `is_visible = true`. Tables affected: `services`, `portfolio_projects`, `insights`, `testimonials`, `pricing_plans`, `faqs`, `process_steps`.
 
 #### Scenario: Published visible content readable
 
@@ -33,7 +33,7 @@ Public users (anon and authenticated) SHALL be able to read rows from content ta
 
 ### Requirement: Public read for singleton sections
 
-Public users SHALL be able to read singleton section tables (`hero`, `why_choose_us`, `acquisition_section`, `final_cta`) when `is_visible = true`. The `announcement_bar` table SHALL be readable when `is_enabled = true`.
+Public users SHALL be able to read singleton section tables (`hero`, `why_choose_us`, `acquisition_section`) when `is_visible = true`. The `announcement_bar` table SHALL be readable when `is_enabled = true`.
 
 #### Scenario: Visible singleton readable
 
@@ -83,7 +83,7 @@ Authenticated users WHERE `public.is_admin()` returns `true` SHALL have full SEL
 
 ### Requirement: Admin access for singleton tables
 
-Authenticated users WHERE `public.is_admin()` returns `true` SHALL have full access to singleton tables (`site_settings`, `announcement_bar`, `hero`, `why_choose_us`, `acquisition_section`, `final_cta`, `chatbot_settings`, `ai_faq_settings`).
+Authenticated users WHERE `public.is_admin()` returns `true` SHALL have full access to singleton tables (`site_settings`, `announcement_bar`, `hero`, `why_choose_us`, `acquisition_section`, `chatbot_settings`, `ai_faq_settings`).
 
 #### Scenario: Admin manages singleton
 
