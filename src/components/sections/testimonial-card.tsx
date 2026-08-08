@@ -1,4 +1,3 @@
-import { Quote } from "lucide-react";
 import type { PublicTestimonial } from "@/features/testimonials/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { cn } from "@/lib/cn";
@@ -60,19 +59,12 @@ export function TestimonialCard({
   return (
     <article
       className={cn(
-        "flex h-full flex-col rounded-card border border-card-border bg-card-dark p-6 transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/20 md:p-8",
+        "flex h-full w-full flex-col rounded-card border border-card-border bg-gradient-to-b from-surface-elevated to-card-dark p-6 shadow-shadow-sm transition-all duration-[var(--motion-standard)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-amber md:p-8",
         className
       )}
     >
-      {/* Gold quote icon */}
-      <Quote
-        aria-hidden="true"
-        className="size-8 shrink-0 text-primary md:size-9"
-        strokeWidth={1.5}
-      />
-
       {/* Quote text */}
-      <p className="mt-5 flex-1 text-base leading-relaxed text-text-secondary">
+      <p className="flex-1 text-base leading-relaxed text-text-secondary">
         {quote ? renderQuote(quote) : null}
       </p>
 

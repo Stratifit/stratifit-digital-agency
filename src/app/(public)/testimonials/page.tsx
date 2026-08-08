@@ -74,7 +74,7 @@ export default async function TestimonialsPage() {
       {/* Testimonials grid */}
       <section className="pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <Reveal className="mb-10">
+          <Reveal className="pt-6">
             <ReviewSummaryBand
               {...settings?.review_summary}
               googleReviewsUrl={
