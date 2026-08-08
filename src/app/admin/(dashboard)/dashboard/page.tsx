@@ -43,7 +43,7 @@ export default async function AdminDashboardPage() {
     {
       label: "Edit Hero",
       href: "/admin/content/hero",
-      icon: "final-cta",
+      icon: "hero",
       hint: "Headline, CTAs, stats",
     },
     {

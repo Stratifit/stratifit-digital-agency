@@ -64,7 +64,7 @@ export const icons: Record<string, NavIcon> = {
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z" />
     </svg>
   ),
-  "final-cta": (p: NavIconProps) => (
+  hero: (p: NavIconProps) => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={p.className}>
       <path d="m3 11 18-5v12L3 14v-3z" /><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
     </svg>
@@ -122,7 +122,7 @@ export const NAV_SECTIONS: NavSection[] = [
     label: "Content",
     items: [
       { href: "/admin/content/sections", label: "Sections", icon: "sections" },
-      { href: "/admin/content/hero", label: "Hero", icon: "final-cta" },
+      { href: "/admin/content/hero", label: "Hero", icon: "hero" },
       { href: "/admin/content/about", label: "About Page", icon: "why" },
       { href: "/admin/content/announcement", label: "Announcement", icon: "faq" },
       { href: "/admin/content/services", label: "Services", icon: "services" },

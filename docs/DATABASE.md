@@ -526,6 +526,8 @@ Since migration `00042`, `section_settings` also has a `stats jsonb` column (def
 
 Since migration `00049`, `section_settings` also has a `review_summary jsonb` column (default `{}`): the review summary band on `/testimonials`, shaped as `{ rating, verifiedReviews, googleRating, googleReviews, googleReviewsUrl }`. The `/testimonials` page reads the `testimonials` section's `review_summary` row (falling back to approved defaults); the admin editor (Sections → Testimonials) edits it. The `googleReviewsUrl` is an external link to the agency's Google reviews listing.
 
+Since migration `00050`, the `section_key` check constraint only allows live sections (`services`, `process`, `why-choose-us`, `insights`, `portfolio`, `testimonials`, `pricing`, `faq`, `acquisition`, `contact`, `acquisition-niches`, `acquisition-cta`). The removed `final-cta` and `trusted-by` keys were dropped from the constraint after their backing tables were removed (migrations `00046` and `00031`).
+
 ## 9.4 `acquisition_niches`
 
 Collection table (migration `00043`) replacing the hardcoded niche catalog in `src/features/acquisition/niches.ts`. Editable from the CMS in all 4 languages; rendered on `/buy-business` (card grid) and `/buy-business/niches/[slug]` (detail page), and included in `sitemap.xml`.
