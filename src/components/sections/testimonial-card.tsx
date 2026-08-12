@@ -1,6 +1,7 @@
 import type { PublicTestimonial } from "@/features/testimonials/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { cn } from "@/lib/cn";
+import { tWithNumber } from "@/lib/i18n/ui-strings";
 
 function StarIcon() {
   return (
@@ -59,7 +60,7 @@ export function TestimonialCard({
         </div>
       </div>
 
-      <div className="mb-4 flex gap-1" role="img" aria-label="5 out of 5 stars">
+      <div className="mb-4 flex gap-1" role="img" aria-label={tWithNumber(locale, "starsOutOfFive", 5)}>
         {Array.from({ length: 5 }).map((_, i) => (
           <StarIcon key={i} />
         ))}

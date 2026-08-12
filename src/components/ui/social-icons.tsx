@@ -1,3 +1,5 @@
+import { t } from "@/lib/i18n/ui-strings";
+
 const SOCIAL_ICONS: {
   key: string;
   label: string;
@@ -32,13 +34,15 @@ const SOCIAL_ICONS: {
 
 export function SocialIcons({
   socialLinks,
+  locale,
 }: {
   socialLinks: Record<string, string> | null;
+  locale: string;
 }) {
   return (
     <div className="flex flex-col items-center gap-3 sm:items-start">
       <p className="text-xs font-bold uppercase tracking-wider text-text-muted">
-        Follow Us
+        {t(locale, "followUs")}
       </p>
       <div className="flex gap-4">
         {SOCIAL_ICONS.map(({ key, label, viewBox, path }) => {

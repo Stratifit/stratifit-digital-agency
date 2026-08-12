@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import type { PublicTestimonial } from "@/features/testimonials/queries";
 import { cn } from "@/lib/cn";
+import { t } from "@/lib/i18n/ui-strings";
 import { TestimonialCard } from "./testimonial-card";
 
 function ArrowIcon({ className }: { className?: string }) {
@@ -100,7 +101,7 @@ export function TestimonialsCarousel({
 
         <button
           type="button"
-          aria-label="Scroll testimonials left"
+          aria-label={t(locale, "scrollLeft")}
           onClick={() => scrollByCard(-1)}
           className="absolute -left-20 top-1/2 z-10 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/70 text-white shadow-lg backdrop-blur-sm transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary hover:text-black md:flex"
         >
@@ -108,7 +109,7 @@ export function TestimonialsCarousel({
         </button>
         <button
           type="button"
-          aria-label="Scroll testimonials right"
+          aria-label={t(locale, "scrollRight")}
           onClick={() => scrollByCard(1)}
           className="absolute -right-20 top-1/2 z-10 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/70 text-white shadow-lg backdrop-blur-sm transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary hover:text-black md:flex"
         >
@@ -132,7 +133,7 @@ export function TestimonialsCarousel({
           href="/testimonials"
           className="absolute right-0 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110"
         >
-          View All
+          {t(locale, "viewAll")}
           <span className="text-[10px]">
             <ArrowIcon className="size-4" />
           </span>
@@ -144,7 +145,7 @@ export function TestimonialsCarousel({
           href="/testimonials"
           className="group inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-primary transition-colors hover:brightness-110"
         >
-          View All Testimonials
+          {t(locale, "viewAllTestimonials")}
           <span className="transition-transform group-hover:translate-x-1">
             <ArrowIcon className="size-4" />
           </span>

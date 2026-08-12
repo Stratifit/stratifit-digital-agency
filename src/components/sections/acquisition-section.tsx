@@ -27,7 +27,7 @@ export async function AcquisitionSection() {
         <SectionHeader settings={settings} locale={locale} />
         <div className="mt-12">
           <Reveal cardSelector="[data-business-card]">
-            <AcquisitionGallery businesses={businesses} />
+            <AcquisitionGallery businesses={businesses} locale={locale} />
           </Reveal>
         </div>
       </Container>

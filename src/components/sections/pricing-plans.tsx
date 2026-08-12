@@ -6,6 +6,7 @@ import type { PublicPricingPlan } from "@/features/pricing/queries";
 import { ContactTrigger } from "@/components/contact/contact-trigger";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { cn } from "@/lib/cn";
+import { t } from "@/lib/i18n/ui-strings";
 
 function CheckIcon() {
   return (
@@ -47,7 +48,7 @@ export function PlanCard({
     locale
   );
   const ctaLabel =
-    resolveTranslation(plan.cta_label_translations, locale) || "Get Started";
+    resolveTranslation(plan.cta_label_translations, locale) || t(locale, "getStarted");
 
   return (
     <div
@@ -63,7 +64,7 @@ export function PlanCard({
     >
       {plan.is_featured ? (
         <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-primary px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider text-black">
-          Most Popular
+          {t(locale, "mostPopular")}
         </div>
       ) : null}
 

@@ -135,7 +135,7 @@ function WorkProjectCard({
           href={`/work/${project.slug}`}
           className="group/link mt-auto inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-primary-light"
         >
-          View Case Study
+          {t(locale, "viewCaseStudy")}
           <span className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover/link:translate-x-1">
             <ArrowIcon />
           </span>

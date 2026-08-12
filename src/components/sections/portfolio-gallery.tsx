@@ -175,7 +175,7 @@ export function PortfolioGallery({
                   href={`/work/${project.slug}`}
                   className="group/link inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110"
                 >
-                  View Case Study
+                  {t(locale, "viewCaseStudy")}
                   <span className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover/link:translate-x-1">
                     <ArrowIcon />
                   </span>

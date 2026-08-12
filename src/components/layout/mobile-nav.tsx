@@ -9,6 +9,7 @@ import { SocialIcons } from "@/components/ui/social-icons";
 import type { PublicNavigationItem } from "@/features/navigation/queries";
 import type { PublicServiceDetail } from "@/features/services/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { t } from "@/lib/i18n/ui-strings";
 
 interface MobileNavProps {
   items: PublicNavigationItem[];
@@ -247,7 +248,7 @@ export function MobileNav({
                   onClick={() => setOpen(false)}
                   className="transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
-                  Privacy Policy
+                  {t(locale, "privacyPolicy")}
                 </a>
                 <span className="mx-1">.</span>
                 <a
@@ -255,15 +256,15 @@ export function MobileNav({
                   onClick={() => setOpen(false)}
                   className="transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
-                  Terms of Service
+                  {t(locale, "termsOfService")}
                 </a>
                 <span className="mx-1">.</span>
                 <a
                   href="/cookie-policy"
                   onClick={() => setOpen(false)}
                   className="transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                >
-                  Cookie Policy
+>
+                  {t(locale, "cookiePolicy")}
                 </a>
                 <span className="mx-1">.</span>
                 <a
@@ -271,14 +272,14 @@ export function MobileNav({
                   onClick={() => setOpen(false)}
                   className="transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
-                  Imprint
+                  {t(locale, "imprint")}
                 </a>
               </p>
 
-              <SocialIcons socialLinks={socialLinks} />
+              <SocialIcons socialLinks={socialLinks} locale={locale} />
 
               <p className="text-[10px] font-medium text-text-subtle">
-                © {currentYear} {siteName}. All rights reserved.
+                © {currentYear} {siteName}. {t(locale, "allRightsReserved")}
               </p>
             </div>
           </footer>

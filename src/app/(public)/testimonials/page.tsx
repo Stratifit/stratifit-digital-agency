@@ -87,6 +87,7 @@ export default async function TestimonialsPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <Reveal className="pt-6">
             <ReviewSummaryBand
+              locale={locale}
               {...settings?.review_summary}
               googleReviewsUrl={
                 settings?.review_summary?.googleReviewsUrl ||

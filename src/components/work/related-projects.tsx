@@ -6,6 +6,7 @@ import type {
 } from "@/features/portfolio/queries";
 import type { PublicServiceDetail } from "@/features/services/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { t } from "@/lib/i18n/ui-strings";
 
 function ArrowIcon() {
   return (
@@ -88,7 +89,7 @@ export function RelatedProjects({
                 {title}
               </h3>
               <span className="group/link mt-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-primary-light">
-                View Case Study
+                {t(locale, "viewCaseStudy")}
                 <span className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover/link:translate-x-1">
                   <ArrowIcon />
                 </span>

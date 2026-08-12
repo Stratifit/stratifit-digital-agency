@@ -1,4 +1,6 @@
+import { Fragment } from "react";
 import { ArrowUpRight } from "lucide-react";
+import { t, tWithNumber } from "@/lib/i18n/ui-strings";
 
 const GOOGLE_REVIEWS_URL =
   "https://www.google.com/maps/search/?api=1&query=Stratifit";
@@ -81,7 +83,8 @@ export function ReviewSummaryBand({
   googleRating = REVIEW_SUMMARY_DEFAULTS.googleRating,
   googleReviews = REVIEW_SUMMARY_DEFAULTS.googleReviews,
   googleReviewsUrl = REVIEW_SUMMARY_DEFAULTS.googleReviewsUrl,
-}: Partial<ReviewSummaryValues>) {
+  locale,
+}: Partial<ReviewSummaryValues> & { locale: string }) {
   return (
     <div className="flex items-stretch divide-x divide-primary/15 overflow-hidden rounded-card border border-primary/25 bg-card-dark">
       {/* Client satisfaction */}
@@ -90,11 +93,21 @@ export function ReviewSummaryBand({
           <span className="font-display text-3xl font-black leading-none tracking-tight text-text-primary sm:text-4xl">
             {rating}
           </span>
-          <Stars label={`${rating} out of 5 stars`} />
+          <Stars label={tWithNumber(locale, "starsOutOfFive", Number(rating))} />
         </div>
         <p className="text-[10px] leading-tight text-text-muted sm:text-[11px]">
-          <span className="font-semibold text-primary">{verifiedReviews}</span>{" "}
-          verified client reviews
+          {tWithNumber(locale, "verifiedClientReviews", verifiedReviews)
+            .split(String(verifiedReviews))
+            .map((part, index) => (
+              <Fragment key={index}>
+                {index > 0 ? (
+                  <span className="font-semibold text-primary">
+                    {verifiedReviews}
+                  </span>
+                ) : null}
+                {part}
+              </Fragment>
+            ))}
         </p>
       </div>
 
@@ -103,8 +116,8 @@ export function ReviewSummaryBand({
         href={googleReviewsUrl}
         target="_blank"
         rel="noopener noreferrer"
-        title="on Google"
-        aria-label="See all reviews on Google"
+        title={t(locale, "seeAllReviewsOnGoogle")}
+        aria-label={t(locale, "seeAllReviewsOnGoogle")}
         className="group flex flex-1 flex-col items-center justify-center gap-1 px-3 py-3 text-center transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary/5 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary sm:px-4"
       >
         <div className="flex items-center gap-2">
@@ -112,15 +125,25 @@ export function ReviewSummaryBand({
           <span className="font-display text-2xl font-black leading-none tracking-tight text-text-primary sm:text-3xl">
             {googleRating}
           </span>
-          <Stars label={`${googleRating} out of 5 stars`} />
+          <Stars label={tWithNumber(locale, "starsOutOfFive", Number(googleRating))} />
           <ArrowUpRight
             className="size-3.5 shrink-0 text-primary transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
             aria-hidden="true"
           />
         </div>
         <p className="text-[10px] leading-tight text-text-muted sm:text-[11px]">
-          <span className="font-semibold text-primary">{googleReviews}</span>{" "}
-          Google reviews
+          {tWithNumber(locale, "googleReviewsLabel", googleReviews)
+            .split(String(googleReviews))
+            .map((part, index) => (
+              <Fragment key={index}>
+                {index > 0 ? (
+                  <span className="font-semibold text-primary">
+                    {googleReviews}
+                  </span>
+                ) : null}
+                {part}
+              </Fragment>
+            ))}
         </p>
       </a>
     </div>

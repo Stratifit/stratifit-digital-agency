@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { t } from "@/lib/i18n/ui-strings";
 import type { PublicFooterGroup } from "@/features/footer/queries";
 import { BrandLogo } from "@/components/ui/brand-logo";
 import { SocialIcons } from "@/components/ui/social-icons";
@@ -71,20 +72,20 @@ export function FooterContent({
         ))}
       </div>
 
-      <SocialIcons socialLinks={socialLinks} />
+      <SocialIcons socialLinks={socialLinks} locale={locale} />
 
       <div className="space-y-4">
         <div className="h-px w-full bg-primary/30" />
         <div className="flex items-center justify-between">
           <p className="text-[10px] font-medium text-text-subtle sm:text-xs">
-            © {currentYear} {siteName}. All rights reserved.
+            © {currentYear} {siteName}. {t(locale, "allRightsReserved")}
           </p>
           <button
             type="button"
             onClick={handleBackToTop}
             className="text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:text-xs"
           >
-            Back to Top
+            {t(locale, "backToTop")}
           </button>
         </div>
       </div>

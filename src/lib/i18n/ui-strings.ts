@@ -3,36 +3,20 @@ import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from "./resolve-translation";
 export type UiStringKey =
   | "skipToContent"
   | "startAProject"
-  | "startYourProject"
   | "yourName"
   | "yourEmail"
   | "emailLabel"
-  | "companyName"
-  | "phoneOptional"
   | "selectServices"
   | "servicesSelected"
-  | "projectBudget"
-  | "selectRange"
-  | "customBudget"
-  | "customBudgetOptional"
-  | "budgetRangeOptional"
-  | "whichBusiness"
-  | "otherNotListed"
   | "tellUsProject"
   | "messagePlaceholder"
-  | "tellUsAcquisition"
-  | "sendMessage"
-  | "sendEnquiry"
   | "sending"
   | "thankYou"
   | "messageReceived"
-  | "enquiryReceived"
   | "sendAnotherMessage"
-  | "sendAnotherEnquiry"
   | "nameRequired"
   | "validEmail"
   | "messageMinLength"
-  | "readMore"
   | "readInsight"
   | "readArticle"
   | "minRead"
@@ -40,11 +24,16 @@ export type UiStringKey =
   | "goBack"
   | "noInsightsInCategory"
   | "noInsightsYet"
-  | "insightFallback"
   | "viewAll"
   | "viewAllInsights"
   | "viewAllProjects"
   | "viewAllBusinesses"
+  | "viewAllTestimonials"
+  | "getStarted"
+  | "verifiedClientReviews"
+  | "googleReviewsLabel"
+  | "seeAllReviewsOnGoogle"
+  | "starsOutOfFive"
   | "viewCaseStudy"
   | "viewFullDetail"
   | "visitSite"
@@ -79,6 +68,10 @@ export type UiStringKey =
   | "followUs"
   | "backToTop"
   | "allRightsReserved"
+  | "privacyPolicy"
+  | "termsOfService"
+  | "cookiePolicy"
+  | "imprint"
   | "scrollLeft"
   | "scrollRight"
   | "categoryEcommerce"
@@ -93,19 +86,14 @@ export type UiStringKey =
   | "chatPlaceholder"
   | "chatSend"
   | "chatEscalated"
-  | "chatOffline"
   | "chatError"
   | "chatName"
   | "chatOnline"
-  | "chatGreeting"
   | "chatChat"
   | "chatFaq"
   | "chatServices"
   | "chatPricing"
   | "chatSupport"
-  | "chatHelp"
-  | "chatContact"
-  | "chatWelcomeTitle"
   | "chatWelcome"
   | "chatDataSafe"
   | "chatReadMore"
@@ -148,15 +136,10 @@ export type UiStringKey =
   | "chatUploadFile"
   | "chatStatusLine"
   | "chatBuiltBy"
-  | "heroEyebrowFallback"
-  | "viewSite"
   | "contactEyebrow"
-  | "contactTitleFallback"
-  | "contactDescriptionFallback"
   | "getInTouch"
   | "popupHeadingA"
   | "popupHeadingB"
-  | "noSpamNote"
   | "closePopup"
   | "popupSubheading"
   | "sendProjectRequest"
@@ -240,38 +223,21 @@ type UiDictionary = Record<(typeof SUPPORTED_LOCALES)[number], UiStrings>;
 const en: UiStrings = {
   skipToContent: "Skip to content",
   startAProject: "Start a Project",
-  startYourProject: "Start Your Project",
   yourName: "Your name *",
   yourEmail: "you@company.com *",
   emailLabel: "Email *",
-  companyName: "Company name",
-  phoneOptional: "Phone (optional)",
   selectServices: "Select services",
   servicesSelected: "{n} services selected",
-  projectBudget: "Project Budget",
-  selectRange: "Select a range",
-  customBudget: "Custom budget",
-  customBudgetOptional: "Custom budget (optional)",
-  budgetRangeOptional: "Budget range (optional)",
-  whichBusiness: "Which business are you interested in?",
-  otherNotListed: "Other / not listed",
   tellUsProject: "Tell us about your project *",
   messagePlaceholder: "How can we help?",
-  tellUsAcquisition: "Tell us about the acquisition you have in mind *",
-  sendMessage: "Send Message",
-  sendEnquiry: "Send Enquiry",
   sending: "Sending…",
   thankYou: "Thank you!",
   messageReceived:
     "Your message has been received. We will get back to you shortly.",
-  enquiryReceived:
-    "Your acquisition enquiry has been received. We will get back to you shortly.",
   sendAnotherMessage: "Send another message",
-  sendAnotherEnquiry: "Send another enquiry",
   nameRequired: "Name is required",
   validEmail: "Enter a valid email address",
   messageMinLength: "Message must be at least 10 characters",
-  readMore: "Read more",
   readInsight: "Read Insight",
   readArticle: "Read Article",
   minRead: "{n} min read",
@@ -279,11 +245,16 @@ const en: UiStrings = {
   goBack: "Go back",
   noInsightsInCategory: "No articles in this category yet.",
   noInsightsYet: "Articles will appear here soon.",
-  insightFallback: "Insight",
   viewAll: "View All",
   viewAllInsights: "View All Insights",
   viewAllProjects: "View All Projects",
   viewAllBusinesses: "View All Businesses",
+  viewAllTestimonials: "View All Testimonials",
+  getStarted: "Get Started",
+  verifiedClientReviews: "{n} verified client reviews",
+  googleReviewsLabel: "{n} Google reviews",
+  seeAllReviewsOnGoogle: "See all reviews on Google",
+  starsOutOfFive: "{n} out of 5 stars",
   viewCaseStudy: "View Case Study",
   viewFullDetail: "View Full Detail",
   visitSite: "Visit Site",
@@ -322,6 +293,10 @@ const en: UiStrings = {
   followUs: "Follow Us",
   backToTop: "Back to Top",
   allRightsReserved: "All rights reserved.",
+  privacyPolicy: "Privacy Policy",
+  termsOfService: "Terms of Service",
+  cookiePolicy: "Cookie Policy",
+  imprint: "Imprint",
   scrollLeft: "Scroll left",
   scrollRight: "Scroll right",
   categoryEcommerce: "Ecommerce",
@@ -336,20 +311,14 @@ const en: UiStrings = {
   chatPlaceholder: "Type a message…",
   chatSend: "Send",
   chatEscalated: "A team member has been notified and will help shortly.",
-  chatOffline: "We're offline right now. Leave a message and we'll get back to you.",
   chatError: "Something went wrong. Please try again.",
   chatName: "Stratifit AI",
   chatOnline: "Online",
-  chatGreeting:
-    "👋 Hi! I'm Stratifit AI — here to help. What would you like to know?",
   chatChat: "Chat",
   chatFaq: "FAQ",
   chatServices: "Services",
   chatPricing: "Pricing",
   chatSupport: "Support",
-  chatHelp: "Help",
-  chatContact: "Contact",
-  chatWelcomeTitle: "Welcome to Stratifit",
   chatWelcome:
     "Welcome to Stratifit — your digital agency for growth. What's your name? It helps me personalize your chat. Email is optional and only used for follow-ups.",
   chatDataSafe: "Your data is safe",
@@ -401,16 +370,10 @@ const en: UiStrings = {
   chatUploadFile: "Upload file",
   chatStatusLine: "AI assistant · Human support available",
   chatBuiltBy: "Built by STRATIFIT team",
-  heroEyebrowFallback: "Premium Digital Agency",
-  viewSite: "View site",
   contactEyebrow: "Contact",
-  contactTitleFallback: "Let's Talk",
-  contactDescriptionFallback:
-    "Ready to start your project? Fill out the form and we'll get back to you within 24 hours.",
   getInTouch: "Get in Touch",
   popupHeadingA: "Tell us about your",
   popupHeadingB: "project",
-  noSpamNote: "No spam. Your data stays private.",
   closePopup: "Close",
   popupSubheading:
     "Share what you're building and where you need help. We'll review it and recommend the right approach.",
@@ -499,39 +462,21 @@ const en: UiStrings = {
 const de: UiStrings = {
   skipToContent: "Zum Inhalt springen",
   startAProject: "Projekt starten",
-  startYourProject: "Projekt starten",
   yourName: "Ihr Name *",
   yourEmail: "sie@firma.com *",
   emailLabel: "E-Mail *",
-  companyName: "Firmenname",
-  phoneOptional: "Telefon (optional)",
   selectServices: "Leistungen auswählen",
   servicesSelected: "{n} Leistungen ausgewählt",
-  projectBudget: "Projektbudget",
-  selectRange: "Bereich auswählen",
-  customBudget: "Eigenes Budget",
-  customBudgetOptional: "Eigenes Budget (optional)",
-  budgetRangeOptional: "Budgetbereich (optional)",
-  whichBusiness: "An welchem Unternehmen sind Sie interessiert?",
-  otherNotListed: "Andere / nicht gelistet",
   tellUsProject: "Erzählen Sie uns von Ihrem Projekt *",
   messagePlaceholder: "Wie können wir helfen?",
-  tellUsAcquisition:
-    "Erzählen Sie uns von der Akquisition, die Sie im Sinn haben *",
-  sendMessage: "Nachricht senden",
-  sendEnquiry: "Anfrage senden",
   sending: "Wird gesendet…",
   thankYou: "Vielen Dank!",
   messageReceived:
     "Ihre Nachricht ist eingegangen. Wir melden uns in Kürze bei Ihnen.",
-  enquiryReceived:
-    "Ihre Akquisitionsanfrage ist eingegangen. Wir melden uns in Kürze bei Ihnen.",
   sendAnotherMessage: "Weitere Nachricht senden",
-  sendAnotherEnquiry: "Weitere Anfrage senden",
   nameRequired: "Name erforderlich",
   validEmail: "Geben Sie eine gültige E-Mail-Adresse ein",
   messageMinLength: "Die Nachricht muss mindestens 10 Zeichen enthalten",
-  readMore: "Weiterlesen",
   readInsight: "Einblick lesen",
   readArticle: "Artikel lesen",
   minRead: "{n} Min. Lesezeit",
@@ -539,11 +484,16 @@ const de: UiStrings = {
   goBack: "Zurück",
   noInsightsInCategory: "Noch keine Artikel in dieser Kategorie.",
   noInsightsYet: "Artikel erscheinen hier bald.",
-  insightFallback: "Einblick",
   viewAll: "Alle ansehen",
   viewAllInsights: "Alle Einblicke ansehen",
   viewAllProjects: "Alle Projekte ansehen",
   viewAllBusinesses: "Alle Unternehmen ansehen",
+  viewAllTestimonials: "Alle Testimonials ansehen",
+  getStarted: "Loslegen",
+  verifiedClientReviews: "{n} bestätigte Kundenbewertungen",
+  googleReviewsLabel: "{n} Google-Bewertungen",
+  seeAllReviewsOnGoogle: "Alle Bewertungen auf Google ansehen",
+  starsOutOfFive: "{n} von 5 Sternen",
   viewCaseStudy: "Fallstudie ansehen",
   viewFullDetail: "Alle Details ansehen",
   visitSite: "Website besuchen",
@@ -583,6 +533,10 @@ const de: UiStrings = {
   followUs: "Folgen Sie uns",
   backToTop: "Nach oben",
   allRightsReserved: "Alle Rechte vorbehalten.",
+  privacyPolicy: "Datenschutzerklärung",
+  termsOfService: "Nutzungsbedingungen",
+  cookiePolicy: "Cookie-Richtlinie",
+  imprint: "Impressum",
   scrollLeft: "Nach links scrollen",
   scrollRight: "Nach rechts scrollen",
   categoryEcommerce: "E-Commerce",
@@ -597,21 +551,14 @@ const de: UiStrings = {
   chatPlaceholder: "Nachricht eingeben…",
   chatSend: "Senden",
   chatEscalated: "Ein Teammitglied wurde benachrichtigt und hilft Ihnen gleich.",
-  chatOffline:
-    "Wir sind gerade offline. Hinterlassen Sie eine Nachricht, wir melden uns.",
   chatError: "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
   chatName: "Stratifit AI",
   chatOnline: "Online",
-  chatGreeting:
-    "👋 Hallo! Ich bin Stratifit AI — wie kann ich Ihnen helfen?",
   chatChat: "Chat",
   chatFaq: "FAQ",
   chatServices: "Leistungen",
   chatPricing: "Preise",
   chatSupport: "Support",
-  chatHelp: "Hilfe",
-  chatContact: "Kontakt",
-  chatWelcomeTitle: "Willkommen bei Stratifit",
   chatWelcome:
     "Willkommen bei Stratifit — Ihre Digitalagentur für Wachstum. Wie heißen Sie? So kann ich den Chat personalisieren. Die E-Mail ist optional und wird nur für Follow-ups verwendet.",
   chatDataSafe: "Ihre Daten sind sicher",
@@ -663,16 +610,10 @@ const de: UiStrings = {
   chatUploadFile: "Datei hochladen",
   chatStatusLine: "KI-Assistent · Menschlicher Support verfügbar",
   chatBuiltBy: "Erstellt vom STRATIFIT-Team",
-  heroEyebrowFallback: "Premium-Digitalagentur",
-  viewSite: "Website ansehen",
   contactEyebrow: "Kontakt",
-  contactTitleFallback: "Sprechen wir",
-  contactDescriptionFallback:
-    "Bereit, Ihr Projekt zu starten? Füllen Sie das Formular aus – wir melden uns innerhalb von 24 Stunden.",
   getInTouch: "Kontakt aufnehmen",
   popupHeadingA: "Erzählen Sie uns von Ihrem",
   popupHeadingB: "Projekt",
-  noSpamNote: "Kein Spam. Ihre Daten bleiben privat.",
   closePopup: "Schließen",
   popupSubheading:
     "Teilen Sie uns mit, was Sie bauen und wo Sie Hilfe benötigen. Wir prüfen es und empfehlen den richtigen Ansatz.",
@@ -761,39 +702,21 @@ const de: UiStrings = {
 const fr: UiStrings = {
   skipToContent: "Aller au contenu",
   startAProject: "Démarrer un projet",
-  startYourProject: "Démarrer votre projet",
   yourName: "Votre nom *",
   yourEmail: "vous@entreprise.com *",
   emailLabel: "E-mail *",
-  companyName: "Nom de l'entreprise",
-  phoneOptional: "Téléphone (facultatif)",
   selectServices: "Sélectionnez les services",
   servicesSelected: "{n} services sélectionnés",
-  projectBudget: "Budget du projet",
-  selectRange: "Sélectionner une fourchette",
-  customBudget: "Budget personnalisé",
-  customBudgetOptional: "Budget personnalisé (facultatif)",
-  budgetRangeOptional: "Fourchette de budget (facultatif)",
-  whichBusiness: "Quelle entreprise vous intéresse ?",
-  otherNotListed: "Autre / non répertorié",
   tellUsProject: "Parlez-nous de votre projet *",
   messagePlaceholder: "Comment pouvons-nous aider ?",
-  tellUsAcquisition:
-    "Parlez-nous de l'acquisition que vous envisagez *",
-  sendMessage: "Envoyer le message",
-  sendEnquiry: "Envoyer la demande",
   sending: "Envoi…",
   thankYou: "Merci !",
   messageReceived:
     "Votre message a bien été reçu. Nous vous répondrons rapidement.",
-  enquiryReceived:
-    "Votre demande d'acquisition a bien été reçue. Nous vous répondrons rapidement.",
   sendAnotherMessage: "Envoyer un autre message",
-  sendAnotherEnquiry: "Envoyer une autre demande",
   nameRequired: "Le nom est requis",
   validEmail: "Saisissez une adresse e-mail valide",
   messageMinLength: "Le message doit contenir au moins 10 caractères",
-  readMore: "Lire la suite",
   readInsight: "Lire l'article",
   readArticle: "Lire l'article",
   minRead: "{n} min de lecture",
@@ -801,11 +724,16 @@ const fr: UiStrings = {
   goBack: "Retour",
   noInsightsInCategory: "Aucun article dans cette catégorie pour le moment.",
   noInsightsYet: "Les articles apparaîtront bientôt ici.",
-  insightFallback: "Article",
   viewAll: "Voir tout",
   viewAllInsights: "Voir tous les articles",
   viewAllProjects: "Voir tous les projets",
   viewAllBusinesses: "Voir toutes les entreprises",
+  viewAllTestimonials: "Voir tous les témoignages",
+  getStarted: "Commencer",
+  verifiedClientReviews: "{n} avis clients vérifiés",
+  googleReviewsLabel: "{n} avis Google",
+  seeAllReviewsOnGoogle: "Voir tous les avis sur Google",
+  starsOutOfFive: "{n} étoiles sur 5",
   viewCaseStudy: "Voir l'étude de cas",
   viewFullDetail: "Voir le détail complet",
   visitSite: "Visiter le site",
@@ -845,6 +773,10 @@ const fr: UiStrings = {
   followUs: "Suivez-nous",
   backToTop: "Haut de page",
   allRightsReserved: "Tous droits réservés.",
+  privacyPolicy: "Politique de confidentialité",
+  termsOfService: "Conditions d'utilisation",
+  cookiePolicy: "Politique de cookies",
+  imprint: "Mentions légales",
   scrollLeft: "Faire défiler à gauche",
   scrollRight: "Faire défiler à droite",
   categoryEcommerce: "E-commerce",
@@ -859,21 +791,14 @@ const fr: UiStrings = {
   chatPlaceholder: "Écrivez un message…",
   chatSend: "Envoyer",
   chatEscalated: "Un membre de l'équipe a été prévenu et vous aidera bientôt.",
-  chatOffline:
-    "Nous sommes hors ligne. Laissez un message, nous vous répondrons.",
   chatError: "Une erreur est survenue. Veuillez réessayer.",
   chatName: "Stratifit AI",
   chatOnline: "En ligne",
-  chatGreeting:
-    "👋 Bonjour ! Je suis Stratifit AI — comment puis-je vous aider ?",
   chatChat: "Chat",
   chatFaq: "FAQ",
   chatServices: "Services",
   chatPricing: "Tarifs",
   chatSupport: "Support",
-  chatHelp: "Aide",
-  chatContact: "Contact",
-  chatWelcomeTitle: "Bienvenue chez Stratifit",
   chatWelcome:
     "Bienvenue chez Stratifit — votre agence digitale pour la croissance. Quel est votre prénom ? Cela m'aide à personnaliser le chat. L'e-mail est facultatif et sert uniquement aux relances.",
   chatDataSafe: "Vos données sont en sécurité",
@@ -925,16 +850,10 @@ const fr: UiStrings = {
   chatUploadFile: "Téléverser un fichier",
   chatStatusLine: "Assistant IA · Support humain disponible",
   chatBuiltBy: "Créé par l'équipe STRATIFIT",
-  heroEyebrowFallback: "Agence digitale premium",
-  viewSite: "Voir le site",
   contactEyebrow: "Contact",
-  contactTitleFallback: "Parlons-en",
-  contactDescriptionFallback:
-    "Prêt à lancer votre projet ? Remplissez le formulaire et nous vous répondrons sous 24 heures.",
   getInTouch: "Prenez contact",
   popupHeadingA: "Parlez-nous de votre",
   popupHeadingB: "projet",
-  noSpamNote: "Pas de spam. Vos données restent privées.",
   closePopup: "Fermer",
   popupSubheading:
     "Partagez ce que vous construisez et où vous avez besoin d'aide. Nous l'examinerons et recommanderons la bonne approche.",
@@ -1023,39 +942,21 @@ const fr: UiStrings = {
 const es: UiStrings = {
   skipToContent: "Saltar al contenido",
   startAProject: "Iniciar un proyecto",
-  startYourProject: "Inicia tu proyecto",
   yourName: "Su nombre *",
   yourEmail: "usted@empresa.com *",
   emailLabel: "Correo electrónico *",
-  companyName: "Nombre de la empresa",
-  phoneOptional: "Teléfono (opcional)",
   selectServices: "Selecciona los servicios",
   servicesSelected: "{n} servicios seleccionados",
-  projectBudget: "Presupuesto del proyecto",
-  selectRange: "Seleccionar un rango",
-  customBudget: "Presupuesto personalizado",
-  customBudgetOptional: "Presupuesto personalizado (opcional)",
-  budgetRangeOptional: "Rango de presupuesto (opcional)",
-  whichBusiness: "¿Qué empresa le interesa?",
-  otherNotListed: "Otro / no listado",
   tellUsProject: "Cuéntanos sobre tu proyecto *",
   messagePlaceholder: "¿Cómo podemos ayudarte?",
-  tellUsAcquisition:
-    "Cuéntanos sobre la adquisición que tienes en mente *",
-  sendMessage: "Enviar mensaje",
-  sendEnquiry: "Enviar consulta",
   sending: "Enviando…",
   thankYou: "¡Gracias!",
   messageReceived:
     "Hemos recibido su mensaje. Le responderemos en breve.",
-  enquiryReceived:
-    "Hemos recibido su consulta de adquisición. Le responderemos en breve.",
   sendAnotherMessage: "Enviar otro mensaje",
-  sendAnotherEnquiry: "Enviar otra consulta",
   nameRequired: "El nombre es obligatorio",
   validEmail: "Introduzca una dirección de correo válida",
   messageMinLength: "El mensaje debe tener al menos 10 caracteres",
-  readMore: "Leer más",
   readInsight: "Leer artículo",
   readArticle: "Leer artículo",
   minRead: "{n} min de lectura",
@@ -1063,11 +964,16 @@ const es: UiStrings = {
   goBack: "Atrás",
   noInsightsInCategory: "Aún no hay artículos en esta categoría.",
   noInsightsYet: "Los artículos aparecerán pronto aquí.",
-  insightFallback: "Artículo",
   viewAll: "Ver todo",
   viewAllInsights: "Ver todos los artículos",
   viewAllProjects: "Ver todos los proyectos",
   viewAllBusinesses: "Ver todas las empresas",
+  viewAllTestimonials: "Ver todos los testimonios",
+  getStarted: "Empezar",
+  verifiedClientReviews: "{n} reseñas verificadas de clientes",
+  googleReviewsLabel: "{n} reseñas de Google",
+  seeAllReviewsOnGoogle: "Ver todas las reseñas en Google",
+  starsOutOfFive: "{n} de 5 estrellas",
   viewCaseStudy: "Ver estudio de caso",
   viewFullDetail: "Ver detalle completo",
   visitSite: "Visitar sitio",
@@ -1107,6 +1013,10 @@ const es: UiStrings = {
   followUs: "Síguenos",
   backToTop: "Volver arriba",
   allRightsReserved: "Todos los derechos reservados.",
+  privacyPolicy: "Política de privacidad",
+  termsOfService: "Términos del servicio",
+  cookiePolicy: "Política de cookies",
+  imprint: "Aviso legal",
   scrollLeft: "Desplazarse a la izquierda",
   scrollRight: "Desplazarse a la derecha",
   categoryEcommerce: "Ecommerce",
@@ -1121,21 +1031,14 @@ const es: UiStrings = {
   chatPlaceholder: "Escribe un mensaje…",
   chatSend: "Enviar",
   chatEscalated: "Se ha notificado a un miembro del equipo y le ayudará pronto.",
-  chatOffline:
-    "Estamos fuera de línea. Deja un mensaje y te responderemos.",
   chatError: "Algo salió mal. Inténtalo de nuevo.",
   chatName: "Stratifit AI",
   chatOnline: "En línea",
-  chatGreeting:
-    "👋 ¡Hola! Soy Stratifit AI — ¿en qué puedo ayudarte?",
   chatChat: "Chat",
   chatFaq: "FAQ",
   chatServices: "Servicios",
   chatPricing: "Precios",
   chatSupport: "Soporte",
-  chatHelp: "Ayuda",
-  chatContact: "Contacto",
-  chatWelcomeTitle: "Bienvenido a Stratifit",
   chatWelcome:
     "Bienvenido a Stratifit — tu agencia digital para el crecimiento. ¿Cómo te llamas? Me ayuda a personalizar el chat. El correo es opcional y solo se usa para seguimiento.",
   chatDataSafe: "Tus datos están seguros",
@@ -1187,16 +1090,10 @@ const es: UiStrings = {
   chatUploadFile: "Subir archivo",
   chatStatusLine: "Asistente de IA · Soporte humano disponible",
   chatBuiltBy: "Creado por el equipo de STRATIFIT",
-  heroEyebrowFallback: "Agencia digital premium",
-  viewSite: "Ver sitio",
   contactEyebrow: "Contacto",
-  contactTitleFallback: "Hablemos",
-  contactDescriptionFallback:
-    "¿Listo para empezar su proyecto? Complete el formulario y le responderemos en 24 horas.",
   getInTouch: "Ponte en contacto",
   popupHeadingA: "Cuéntanos sobre tu",
   popupHeadingB: "proyecto",
-  noSpamNote: "Sin spam. Tus datos permanecen privados.",
   closePopup: "Cerrar",
   popupSubheading:
     "Comparte lo que estás construyendo y dónde necesitas ayuda. Lo revisaremos y recomendaremos el enfoque adecuado.",
