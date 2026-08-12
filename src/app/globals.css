@@ -223,10 +223,12 @@
      --------------------------------------------------------------------------- */
   --gradient-primary: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
   /* Hero gradient: Stratifit colors only — yellow (amber) mixed into black.
-     Black at the top edge, amber blended through the middle, and black again
-     at the bottom edge so the hero aligns seamlessly with the section below.
+     Vertical (180deg) so the amber band sits at the same position on every
+     viewport size, keeping desktop and mobile backgrounds identical. Black at
+     the top edge under the header, amber blended through the upper middle, and
+     a dark bottom edge so the hero aligns seamlessly with the section below.
      An amber bloom sits in the top-right corner. No navy. */
-  --gradient-hero: radial-gradient(100% 80% at 80% 0%, rgba(245, 158, 11, 0.16) 0%, rgba(245, 158, 11, 0.05) 42%, transparent 75%), linear-gradient(135deg, #000000 0%, rgba(245, 158, 11, 0.14) 40%, rgba(245, 158, 11, 0.06) 60%, #0A0A0A 85%);
+  --gradient-hero: radial-gradient(100% 80% at 80% 0%, rgba(245, 158, 11, 0.16) 0%, rgba(245, 158, 11, 0.05) 42%, transparent 75%), linear-gradient(180deg, #000000 0%, rgba(245, 158, 11, 0.14) 35%, rgba(245, 158, 11, 0.06) 60%, #0A0A0A 100%);
   --gradient-dark-surface: linear-gradient(180deg, #111827 0%, #0A0A0A 100%);
   --gradient-hero-ambient: radial-gradient(circle at 70% 20%, rgba(245, 158, 11, 0.14) 0%, rgba(245, 158, 11, 0.04) 35%, transparent 70%);
   --gradient-ai-accent: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
