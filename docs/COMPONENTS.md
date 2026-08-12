@@ -43,15 +43,13 @@ sizing.
 
 ### 2.4 Shadow tokens
 
-`shadow-xs` through `shadow-lg` provide elevation. `shadow-amber` provides the
-controlled amber glow used selectively on primary surfaces. `shadow-indigo`
-supports limited AI/information contexts.
+`shadow-sm` through `shadow-lg` provide elevation. `shadow-amber` provides the
+controlled amber glow used selectively on primary surfaces.
 
 ### 2.5 Gradient tokens
 
-Approved gradients (`gradient-primary`, `gradient-dark-surface`,
-`gradient-hero-ambient`, `gradient-ai-accent`, `gradient-mixed-premium`) are
-available but used sparingly and only with a documented design purpose.
+Approved gradients (`gradient-primary`, `gradient-hero`) are available but used
+sparingly and only with a documented design purpose.
 
 ### 2.6 Motion tokens
 

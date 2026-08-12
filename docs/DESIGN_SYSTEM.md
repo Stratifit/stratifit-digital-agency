@@ -239,7 +239,6 @@ Purposeful GSAP motion
 | `surface-hover` | `#1D293B` | Hovered dark cards |
 | `surface-active` | `#243249` | Selected admin controls |
 | `overlay` | `rgba(7, 10, 16, 0.72)` | Modal and drawer overlays |
-| `overlay-strong` | `rgba(7, 10, 16, 0.88)` | Strong modal overlays |
 
 ### 4.3 Text colors
 
@@ -530,7 +529,6 @@ Font loading must:
 
 | Token | Mobile | Desktop | Weight | Line height |
 |---|---:|---:|---:|---:|
-| `display-xl` | `3rem` | `5.5rem` | 700–900 | 0.95–1.0 |
 | `display-lg` | `2.5rem` | `4.5rem` | 700–900 | 0.98–1.05 |
 | `display-md` | `2rem` | `3.5rem` | 700 | 1.0–1.1 |
 | `display-sm` | `1.75rem` | `2.75rem` | 600–700 | 1.05–1.15 |
@@ -547,7 +545,6 @@ font-size: clamp(3rem, 7vw, 5.5rem);
 
 | Element | Mobile | Desktop | Weight |
 |---|---:|---:|---:|
-| `h1` | `2.75rem` | `5rem` | 700–900 |
 | `h2` | `2.125rem` | `3.75rem` | 700 |
 | `h3` | `1.5rem` | `2.25rem` | 600–700 |
 | `h4` | `1.25rem` | `1.5rem` | 600 |
@@ -562,7 +559,6 @@ font-size: clamp(3rem, 7vw, 5.5rem);
 | `body-md` | `1rem` | 1.65 | Standard body copy |
 | `body-sm` | `0.875rem` | 1.55 | Supporting text |
 | `caption` | `0.75rem` | 1.45 | Metadata |
-| `overline` | `0.75rem` | 1.2 | Section labels |
 
 ### 6.7 Tracking
 
@@ -767,12 +763,10 @@ Avoid bright borders on every card.
 
 | Token | Value | Usage |
 |---|---|---|
-| `shadow-xs` | `0 1px 2px rgba(0,0,0,0.18)` | Inputs and small controls |
 | `shadow-sm` | `0 6px 20px rgba(0,0,0,0.22)` | Cards |
 | `shadow-md` | `0 16px 48px rgba(0,0,0,0.30)` | Floating panels |
 | `shadow-lg` | `0 28px 80px rgba(0,0,0,0.38)` | Modals and hero media |
 | `shadow-amber` | `0 0 40px rgba(245,158,11,0.20)` | Select premium accents |
-| `shadow-indigo` | `0 0 36px rgba(79,70,229,0.18)` | AI support accents |
 
 ### 11.2 Shadow rules
 
@@ -810,45 +804,12 @@ radial-gradient(
   rgba(245, 158, 11, 0.05) 42%,
   transparent 75%
 ),
-linear-gradient(135deg, #000000 0%, rgba(245, 158, 11, 0.14) 40%, rgba(245, 158, 11, 0.06) 60%, #0A0A0A 85%)
+linear-gradient(180deg, rgba(245, 158, 11, 0.08) 0%, rgba(245, 158, 11, 0.14) 35%, rgba(245, 158, 11, 0.06) 60%, #0A0A0A 100%)
 ```
 
 Exposed as the `--gradient-hero` token / `bg-gradient-hero` utility.
 
-The hero uses Stratifit colors only — yellow and black. The base is a 135deg wash that starts pure black, blends a warm amber tint through the middle, and returns to pure black at the bottom edge so the hero aligns seamlessly with the section below. An amber bloom is also baked into the top-right corner so every hero shares the same premium depth. The home and services heroes add a warm amber halo near the headline on top.
-
-#### Dark surface gradient
-
-```css
-linear-gradient(180deg, #111827 0%, #0A0A0A 100%)
-```
-
-#### Hero ambient glow
-
-Applied as a soft layered halo over the hero gradient in the home and services heroes — amber only, on black.
-
-```css
-radial-gradient(
-  circle at 70% 20%,
-  rgba(245, 158, 11, 0.14) 0%,
-  rgba(245, 158, 11, 0.04) 35%,
-  transparent 70%
-)
-```
-
-#### AI accent gradient
-
-```css
-linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)
-```
-
-#### Mixed premium accent
-
-```css
-linear-gradient(135deg, #F59E0B 0%, #FBBF24 55%, #4F46E5 140%)
-```
-
-Use the mixed gradient only in selected branded moments.
+The hero uses Stratifit colors only — yellow and black. The base is a 180deg vertical wash with a faint amber tint at the top edge so the black header reads as its own bar instead of merging with the hero, a warm amber band through the middle, and a dark bottom edge that aligns the hero with the section below. An amber bloom is baked into the top-right corner so every hero shares the same premium depth. The home and services heroes add a warm amber halo near the headline on top.
 
 ### 12.2 Gradient rules
 

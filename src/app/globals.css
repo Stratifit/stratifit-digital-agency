@@ -86,7 +86,6 @@
      Overlay Tokens
      --------------------------------------------------------------------------- */
   --overlay: rgba(7, 10, 16, 0.72);
-  --overlay-strong: rgba(7, 10, 16, 0.88);
 
   /* ---------------------------------------------------------------------------
      Legacy Aliases (kept for existing utilities)
@@ -211,12 +210,10 @@
   /* ---------------------------------------------------------------------------
      Shadow Tokens
      --------------------------------------------------------------------------- */
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.18);
   --shadow-sm: 0 6px 20px rgba(0, 0, 0, 0.22);
   --shadow-md: 0 16px 48px rgba(0, 0, 0, 0.30);
   --shadow-lg: 0 28px 80px rgba(0, 0, 0, 0.38);
   --shadow-amber: 0 0 40px rgba(245, 158, 11, 0.20);
-  --shadow-indigo: 0 0 36px rgba(79, 70, 229, 0.18);
 
   /* ---------------------------------------------------------------------------
      Gradient Tokens
@@ -230,10 +227,6 @@
      middle, and a dark bottom edge aligns the hero with the section below.
      An amber bloom sits in the top-right corner. No navy. */
   --gradient-hero: radial-gradient(100% 80% at 80% 0%, rgba(245, 158, 11, 0.16) 0%, rgba(245, 158, 11, 0.05) 42%, transparent 75%), linear-gradient(180deg, rgba(245, 158, 11, 0.08) 0%, rgba(245, 158, 11, 0.14) 35%, rgba(245, 158, 11, 0.06) 60%, #0A0A0A 100%);
-  --gradient-dark-surface: linear-gradient(180deg, #111827 0%, #0A0A0A 100%);
-  --gradient-hero-ambient: radial-gradient(circle at 70% 20%, rgba(245, 158, 11, 0.14) 0%, rgba(245, 158, 11, 0.04) 35%, transparent 70%);
-  --gradient-ai-accent: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-  --gradient-mixed-premium: linear-gradient(135deg, #F59E0B 0%, #FBBF24 55%, #4F46E5 140%);
 
   /* ---------------------------------------------------------------------------
      Layout Width Tokens
@@ -269,13 +262,11 @@
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
   /* Display Scale */
-  --text-display-xl: clamp(3rem, 7vw, 5.5rem);
   --text-display-lg: clamp(2.5rem, 6vw, 4.5rem);
   --text-display-md: clamp(2rem, 5vw, 3.5rem);
   --text-display-sm: clamp(1.75rem, 4vw, 2.75rem);
 
   /* Heading Scale */
-  --text-h1: clamp(2.75rem, 6vw, 5rem);
   --text-h2: clamp(2.125rem, 5vw, 3.75rem);
   --text-h3: clamp(1.5rem, 3.5vw, 2.25rem);
   --text-h4: clamp(1.25rem, 2.5vw, 1.5rem);
@@ -287,10 +278,8 @@
   --text-body-md: 1rem;
   --text-body-sm: 0.875rem;
   --text-caption: 0.75rem;
-  --text-overline: 0.75rem;
 
   /* Line Heights */
-  --leading-display: 0.95;
   --leading-heading: 1.1;
   --leading-body-lg: 1.7;
   --leading-body-md: 1.65;
@@ -347,7 +336,6 @@
   --color-surface-hover: var(--surface-hover);
   --color-surface-active: var(--surface-active);
   --color-overlay: var(--overlay);
-  --color-overlay-strong: var(--overlay-strong);
 
   /* Card State Colors */
   --color-card-border: var(--card-border);
@@ -453,20 +441,14 @@
   --radius-input: var(--radius-input);
 
   /* Shadow Tokens */
-  --shadow-xs: var(--shadow-xs);
   --shadow-sm: var(--shadow-sm);
   --shadow-md: var(--shadow-md);
   --shadow-lg: var(--shadow-lg);
   --shadow-amber: var(--shadow-amber);
-  --shadow-indigo: var(--shadow-indigo);
 
   /* Gradient Tokens */
   --gradient-primary: var(--gradient-primary);
   --gradient-hero: var(--gradient-hero);
-  --gradient-dark-surface: var(--gradient-dark-surface);
-  --gradient-hero-ambient: var(--gradient-hero-ambient);
-  --gradient-ai-accent: var(--gradient-ai-accent);
-  --gradient-mixed-premium: var(--gradient-mixed-premium);
 
   /* Layout Width Tokens */
   --container-sm: var(--container-sm);
@@ -494,13 +476,11 @@
   --font-mono: var(--font-mono);
 
   /* Display Scale */
-  --text-display-xl: var(--text-display-xl);
   --text-display-lg: var(--text-display-lg);
   --text-display-md: var(--text-display-md);
   --text-display-sm: var(--text-display-sm);
 
   /* Heading Scale */
-  --text-h1: var(--text-h1);
   --text-h2: var(--text-h2);
   --text-h3: var(--text-h3);
   --text-h4: var(--text-h4);
@@ -512,10 +492,8 @@
   --text-body-md: var(--text-body-md);
   --text-body-sm: var(--text-body-sm);
   --text-caption: var(--text-caption);
-  --text-overline: var(--text-overline);
 
   /* Line Heights */
-  --leading-display: var(--leading-display);
   --leading-heading: var(--leading-heading);
   --leading-body-lg: var(--leading-body-lg);
   --leading-body-md: var(--leading-body-md);
@@ -542,10 +520,6 @@
    utilities from --gradient-* tokens, so they are registered explicitly). */
 @utility bg-gradient-hero {
   background-image: var(--gradient-hero);
-}
-
-@utility bg-gradient-dark-surface {
-  background-image: var(--gradient-dark-surface);
 }
 
 /* =============================================================================

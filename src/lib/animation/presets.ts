@@ -80,12 +80,6 @@ export const MOBILE_BLOCK_FROM = {
 } as const;
 
 export const STAGGER_DESKTOP = 0.08;
-export const STAGGER_MOBILE = 0.05;
 
 export const SCROLL_TRIGGER_START = "top 85%";
 export const MOBILE_TRIGGER_START = "top 90%";
-
-export function prefersReducedMotion(): boolean {
-  if (typeof window === "undefined") return true;
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
