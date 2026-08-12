@@ -33,6 +33,13 @@ interface RevealProps {
   /** Disable the scroll trigger and animate immediately on mount (hero). */
   immediate?: boolean;
   variant?: RevealVariant;
+  /**
+   * Override the desktop breakpoint for the grouped entrance. Use when a
+   * stagger grid stays `display:none` below a custom breakpoint (e.g. a
+   * `hidden lg:grid` grid) so ScrollTrigger never measures a hidden element.
+   * Defaults to 768px (the `md` breakpoint).
+   */
+  desktopMinWidth?: number;
 }
 
 /**
@@ -49,6 +56,7 @@ export function Reveal({
   cardSelector,
   immediate = false,
   variant = "revealUp",
+  desktopMinWidth = 768,
 }: RevealProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -64,18 +72,21 @@ export function Reveal({
       });
 
       // Desktop / tablet: grouped entrance. Grids trigger once, cards stagger.
-      mm.add("(prefers-reduced-motion: no-preference) and (min-width: 768px)", () => {
-        const targets: gsap.TweenTarget = stagger
-          ? gsap.utils.toArray<HTMLElement>(el.children)
-          : el;
-        gsap.from(targets, {
-          ...PRESETS[variant],
-          stagger: stagger ? STAGGER_DESKTOP : 0,
-          scrollTrigger: immediate
-            ? undefined
-            : { trigger: el, start: SCROLL_TRIGGER_START, once: true },
-        });
-      });
+      mm.add(
+        `(prefers-reduced-motion: no-preference) and (min-width: ${desktopMinWidth}px)`,
+        () => {
+          const targets: gsap.TweenTarget = stagger
+            ? gsap.utils.toArray<HTMLElement>(el.children)
+            : el;
+          gsap.from(targets, {
+            ...PRESETS[variant],
+            stagger: stagger ? STAGGER_DESKTOP : 0,
+            scrollTrigger: immediate
+              ? undefined
+              : { trigger: el, start: SCROLL_TRIGGER_START, once: true },
+          });
+        }
+      );
 
       // Mobile: stronger, clearly visible rise. Staggered groups reveal each
       // card independently with its own ScrollTrigger when it approaches the
@@ -83,38 +94,41 @@ export function Reveal({
       // (cardSelector) reveal each card with its own trigger + small delay.
       // From-states apply at creation (default immediateRender) so content is
       // hidden before it enters the viewport — no flash when it appears.
-      mm.add("(prefers-reduced-motion: no-preference) and (max-width: 767px)", () => {
-        if (cardSelector) {
-          gsap.utils
-            .toArray<HTMLElement>(el.querySelectorAll(cardSelector))
-            .forEach((card, index) => {
-              gsap.from(card, {
-                ...MOBILE_CAROUSEL_CARD_FROM,
-                delay: index * 0.06,
-                      scrollTrigger: immediate
+      mm.add(
+        `(prefers-reduced-motion: no-preference) and (max-width: ${desktopMinWidth - 1}px)`,
+        () => {
+          if (cardSelector) {
+            gsap.utils
+              .toArray<HTMLElement>(el.querySelectorAll(cardSelector))
+              .forEach((card, index) => {
+                gsap.from(card, {
+                  ...MOBILE_CAROUSEL_CARD_FROM,
+                  delay: index * 0.06,
+                  scrollTrigger: immediate
+                    ? undefined
+                    : { trigger: card, start: MOBILE_TRIGGER_START, once: true },
+                });
+              });
+          } else if (stagger) {
+            gsap.utils.toArray<HTMLElement>(el.children).forEach((item) => {
+              gsap.from(item, {
+                ...MOBILE_CARD_FROM,
+                scrollTrigger: immediate
                   ? undefined
-                  : { trigger: card, start: MOBILE_TRIGGER_START, once: true },
+                  : { trigger: item, start: MOBILE_TRIGGER_START, once: true },
               });
             });
-        } else if (stagger) {
-          gsap.utils.toArray<HTMLElement>(el.children).forEach((item) => {
-            gsap.from(item, {
-              ...MOBILE_CARD_FROM,
-                  scrollTrigger: immediate
+          } else {
+            gsap.from(el, {
+              ...MOBILE_BLOCK_FROM,
+              ...(MOBILE_PRESETS[variant] ?? {}),
+              scrollTrigger: immediate
                 ? undefined
-                : { trigger: item, start: MOBILE_TRIGGER_START, once: true },
+                : { trigger: el, start: MOBILE_TRIGGER_START, once: true },
             });
-          });
-        } else {
-          gsap.from(el, {
-            ...MOBILE_BLOCK_FROM,
-            ...(MOBILE_PRESETS[variant] ?? {}),
-            scrollTrigger: immediate
-              ? undefined
-              : { trigger: el, start: MOBILE_TRIGGER_START, once: true },
-          });
+          }
         }
-      });
+      );
 
       return () => mm.revert();
     },
