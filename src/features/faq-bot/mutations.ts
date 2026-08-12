@@ -10,8 +10,6 @@ import {
   loadStoredMessages,
   type ChatStoredMessage,
 } from "@/features/chat/mutations";
-
-export type { ChatStoredMessage };
 import { getChatProvider } from "@/features/chat/ai";
 import { getApprovedKnowledge } from "@/features/chat/knowledge";
 import { getPublicFaqBotSettings } from "./queries";

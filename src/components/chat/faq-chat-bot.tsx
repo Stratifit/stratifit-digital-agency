@@ -6,8 +6,8 @@ import {
   sendFaqBotMessage,
   getFaqBotChatState,
   resetFaqBotChat,
-  type ChatStoredMessage,
 } from "@/features/faq-bot/mutations";
+import type { ChatStoredMessage } from "@/features/chat/mutations";
 import type { PublicFaqBotSettings } from "@/features/faq-bot/queries";
 import { t } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
