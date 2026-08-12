@@ -139,7 +139,7 @@ export default function AdminLoginPage() {
             aria-label="Back to the Stratifit website"
             className="group inline-flex items-center gap-3 rounded-card transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:scale-[1.02] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-4"
           >
-            <span className="flex size-12 shrink-0 items-center justify-center rounded-card bg-primary font-display text-base font-black text-text-inverse shadow-shadow-amber transition-shadow duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:shadow-[0_0_30px_rgba(245,158,11,0.3)]">
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-card bg-primary font-display text-base font-black text-text-inverse shadow-amber transition-shadow duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:shadow-[0_0_30px_rgba(245,158,11,0.3)]">
               ST
             </span>
             <span className="flex flex-col items-start leading-none">

@@ -89,7 +89,7 @@ export function LanguageSwitcher({
         role="menu"
         aria-hidden={!open}
         className={cn(
-          "absolute right-0 top-full z-50 mt-2 w-36 origin-top-right rounded-input border border-card-border bg-card-dark p-1 shadow-shadow-md transition-[opacity,transform,visibility] duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
+          "absolute right-0 top-full z-50 mt-2 w-36 origin-top-right rounded-input border border-card-border bg-card-dark p-1 shadow-md transition-[opacity,transform,visibility] duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
           open
             ? "visible pointer-events-auto translate-y-0 scale-100 opacity-100"
             : "invisible pointer-events-none -translate-y-1 scale-95 opacity-0"

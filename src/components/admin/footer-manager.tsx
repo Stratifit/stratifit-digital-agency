@@ -106,7 +106,7 @@ export function FooterManager({ groups }: { groups: AdminFooterGroup[] }) {
       {/* Add group */}
       <form
         onSubmit={handleAddGroup}
-        className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm"
+        className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm"
       >
         <h2 className="font-display text-sm font-bold text-text-primary">Add a footer group</h2>
         <div className="mt-4">
@@ -127,7 +127,7 @@ export function FooterManager({ groups }: { groups: AdminFooterGroup[] }) {
 
       {/* Groups */}
       {groups.length === 0 ? (
-        <div className="rounded-card border border-card-border bg-card-dark p-10 text-center shadow-shadow-sm">
+        <div className="rounded-card border border-card-border bg-card-dark p-10 text-center shadow-sm">
           <p className="text-sm text-text-secondary">No footer groups yet.</p>
           <p className="mt-1 text-sm text-text-muted">Add one above to start building the footer.</p>
         </div>
@@ -136,7 +136,7 @@ export function FooterManager({ groups }: { groups: AdminFooterGroup[] }) {
           {groups.map((group) => (
             <div
               key={group.id}
-              className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm"
+              className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm"
             >
               <div className="flex flex-wrap items-center gap-3">
                 <h3 className="font-display text-sm font-bold text-text-primary">

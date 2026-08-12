@@ -222,7 +222,7 @@ export function Topbar({
           {menuOpen ? (
             <div
               role="menu"
-              className="absolute right-0 top-[calc(100%+8px)] w-60 rounded-card border border-border bg-surface-elevated p-1.5 shadow-shadow-lg"
+              className="absolute right-0 top-[calc(100%+8px)] w-60 rounded-card border border-border bg-surface-elevated p-1.5 shadow-lg"
             >
               <div className="border-b border-border px-3 py-2.5">
                 <p className="truncate text-sm font-medium text-text-primary">

@@ -250,7 +250,7 @@ export function NavigationManager({
               ) : (
                 <div
                   key={item.id}
-                  className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-card border border-card-border bg-card-dark px-4 py-3 shadow-shadow-sm"
+                  className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-card border border-card-border bg-card-dark px-4 py-3 shadow-sm"
                 >
                   <span className="font-medium text-text-primary">
                     {resolveTranslation(item.label_translations, "en") || "—"}

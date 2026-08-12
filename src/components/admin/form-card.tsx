@@ -11,7 +11,7 @@ export function FormCard({
   return (
     <div
       className={cn(
-        "rounded-card border border-card-border bg-card-dark p-6 shadow-shadow-sm",
+        "rounded-card border border-card-border bg-card-dark p-6 shadow-sm",
         className
       )}
     >

@@ -87,7 +87,7 @@ export function LeadsTable({ leads }: { leads: AdminLeadRow[] }) {
   return (
     <div className="space-y-4">
       {/* Bulk action bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-card border border-card-border bg-card-dark px-4 py-3 shadow-shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-card border border-card-border bg-card-dark px-4 py-3 shadow-sm">
         <div className="flex items-center gap-3">
           <Checkbox
             checked={allSelected}
@@ -144,12 +144,12 @@ export function LeadsTable({ leads }: { leads: AdminLeadRow[] }) {
       ) : null}
 
       {leads.length === 0 ? (
-        <div className="rounded-card border border-card-border bg-card-dark p-10 text-center shadow-shadow-sm">
+        <div className="rounded-card border border-card-border bg-card-dark p-10 text-center shadow-sm">
           <p className="text-sm text-text-secondary">No leads yet.</p>
           <p className="mt-1 text-sm text-text-muted">Enquiries will appear here.</p>
         </div>
       ) : (
-        <div className="touch-pan-x touch-pan-y overscroll-x-contain overflow-x-auto rounded-card border border-card-border bg-card-dark shadow-shadow-sm">
+        <div className="touch-pan-x touch-pan-y overscroll-x-contain overflow-x-auto rounded-card border border-card-border bg-card-dark shadow-sm">
           <table className="w-full min-w-[720px] text-left text-sm">
             <thead>
               <tr className="border-b border-border bg-surface-soft/60 text-text-muted">

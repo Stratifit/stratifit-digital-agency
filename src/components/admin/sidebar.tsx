@@ -60,12 +60,12 @@ export function Sidebar({
           className="block w-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:w-auto"
         >
           {collapsed ? (
-            <span className="flex size-9 items-center justify-center rounded-card bg-primary font-display text-sm font-black text-text-inverse shadow-shadow-amber">
+            <span className="flex size-9 items-center justify-center rounded-card bg-primary font-display text-sm font-black text-text-inverse shadow-amber">
               ST
             </span>
           ) : (
             <span className="flex items-center gap-2.5 font-display text-base font-extrabold uppercase tracking-tight text-white">
-              <span className="flex size-6 items-center justify-center rounded-button bg-primary font-display text-[10px] font-extrabold text-text-inverse shadow-shadow-amber">
+              <span className="flex size-6 items-center justify-center rounded-button bg-primary font-display text-[10px] font-extrabold text-text-inverse shadow-amber">
                 ST
               </span>
               <span className="flex items-baseline gap-1.5">

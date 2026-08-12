@@ -42,14 +42,14 @@ export function AdminList<T>({
       />
 
       {rows.length === 0 ? (
-        <div className="rounded-card border border-card-border bg-card-dark p-10 text-center shadow-shadow-sm">
+        <div className="rounded-card border border-card-border bg-card-dark p-10 text-center shadow-sm">
           <p className="text-sm text-text-secondary">No items yet.</p>
           <p className="mt-1 text-sm text-text-muted">
             Create your first item to get started.
           </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-card border border-card-border bg-card-dark shadow-shadow-sm">
+        <div className="overflow-hidden rounded-card border border-card-border bg-card-dark shadow-sm">
           <table className="w-full text-left text-sm">
             <thead>
               <tr className="border-b border-border bg-surface-soft/60 text-text-muted">

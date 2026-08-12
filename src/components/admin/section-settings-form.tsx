@@ -264,7 +264,7 @@ export function SectionSettingsForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       {/* Visibility toggle */}
-      <div className="flex items-center justify-between rounded-card border border-card-border bg-card-dark px-4 py-3.5 shadow-shadow-sm">
+      <div className="flex items-center justify-between rounded-card border border-card-border bg-card-dark px-4 py-3.5 shadow-sm">
         <div>
           <p className="text-sm font-medium text-text-primary">
             Show this section on the website
@@ -281,7 +281,7 @@ export function SectionSettingsForm({
       </div>
 
       {/* Live preview */}
-      <div className="rounded-card border border-card-border bg-card-dark p-4 shadow-shadow-sm">
+      <div className="rounded-card border border-card-border bg-card-dark p-4 shadow-sm">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm font-medium text-text-primary">
             Live preview
@@ -356,7 +356,7 @@ export function SectionSettingsForm({
         {SUPPORTED_LOCALES.map((locale) => (
           <fieldset
             key={locale}
-            className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm"
+            className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm"
           >
             <legend className="px-2 text-[10px] font-bold uppercase tracking-[0.28em] text-primary">
               {LOCALE_NAMES[locale]}
@@ -417,7 +417,7 @@ export function SectionSettingsForm({
 
       {/* Optional closing call-to-action */}
       {CTA_SECTIONS.has(settings.section_key) ? (
-        <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm">
+        <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
           <div className="mb-4">
             <h3 className="font-display text-base font-semibold text-text-primary">
               Closing call to action
@@ -453,7 +453,7 @@ export function SectionSettingsForm({
 
       {/* Optional stats band (portfolio section drives /work) */}
       {STATS_SECTIONS.has(settings.section_key) ? (
-        <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm">
+        <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
           <div className="mb-4">
             <h3 className="font-display text-base font-semibold text-text-primary">
               Stats band
@@ -469,7 +469,7 @@ export function SectionSettingsForm({
 
       {/* Optional review summary band (testimonials section drives /testimonials) */}
       {REVIEW_SUMMARY_SECTIONS.has(settings.section_key) ? (
-        <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm">
+        <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
           <div className="mb-4">
             <h3 className="font-display text-base font-semibold text-text-primary">
               Review summary band
@@ -484,7 +484,7 @@ export function SectionSettingsForm({
       ) : null}
 
       {/* Page SEO metadata (title + description in all locales) */}
-      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm">
+      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
         <div className="mb-4">
           <h3 className="font-display text-base font-semibold text-text-primary">
             Page SEO

@@ -114,7 +114,7 @@ export default async function AdminDashboardPage() {
                   <span
                     className={
                       kpi.accent
-                        ? "flex size-10 shrink-0 items-center justify-center rounded-card bg-primary/15 text-primary shadow-shadow-amber"
+                        ? "flex size-10 shrink-0 items-center justify-center rounded-card bg-primary/15 text-primary shadow-amber"
                         : "flex size-10 shrink-0 items-center justify-center rounded-card border border-border bg-surface-soft text-text-secondary"
                     }
                   >
@@ -131,7 +131,7 @@ export default async function AdminDashboardPage() {
       {stats.waitingForAdmin > 0 ? (
         <Link
           href="/admin/conversations"
-          className="group block rounded-card-lg border border-primary/25 bg-surface-elevated p-5 shadow-shadow-amber transition-colors hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          className="group block rounded-card-lg border border-primary/25 bg-surface-elevated p-5 shadow-amber transition-colors hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex min-w-0 items-center gap-3">

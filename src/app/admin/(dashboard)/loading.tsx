@@ -8,7 +8,7 @@ export default function Loading() {
       >
         <span className="relative flex size-12 items-center justify-center">
           <span className="absolute inset-0 animate-ping rounded-full bg-primary/10" />
-          <span className="size-10 animate-spin rounded-full border-2 border-card-border border-t-primary shadow-shadow-amber" />
+          <span className="size-10 animate-spin rounded-full border-2 border-card-border border-t-primary shadow-amber" />
         </span>
         <p className="text-sm font-medium text-text-muted">Loading…</p>
       </div>

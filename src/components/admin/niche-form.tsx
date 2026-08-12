@@ -166,7 +166,7 @@ export function NicheForm({ slug, initial }: NicheFormProps) {
       </div>
 
       {/* Stats */}
-      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm">
+      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
         <div className="mb-4">
           <h3 className="font-display text-base font-semibold text-text-primary">
             Stats

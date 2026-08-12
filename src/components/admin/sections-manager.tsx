@@ -54,9 +54,9 @@ function SectionCard({
   return (
     <article
       className={cn(
-        "flex flex-col overflow-hidden rounded-card border bg-card-dark shadow-shadow-sm transition-[border-color,box-shadow] duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
+        "flex flex-col overflow-hidden rounded-card border bg-card-dark shadow-sm transition-[border-color,box-shadow] duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
         row.status === "live" && row.isVisible
-          ? "border-card-border hover:border-primary/30 hover:shadow-shadow-md"
+          ? "border-card-border hover:border-primary/30 hover:shadow-md"
           : "border-border opacity-90"
       )}
     >

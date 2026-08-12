@@ -12,7 +12,7 @@ export const FULL_CTA_CLASS =
 
 /** Compact CTA — smaller, left-aligned, no arrow. */
 export const COMPACT_CTA_CLASS =
-  "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-button font-medium transition-[background-color,border-color,color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 border border-transparent bg-primary text-text-inverse hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-hover active:translate-y-0 active:border-primary/60 active:bg-primary-active shadow-shadow-amber h-9 px-3.5 text-sm";
+  "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-button font-medium transition-[background-color,border-color,color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 border border-transparent bg-primary text-text-inverse hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-hover active:translate-y-0 active:border-primary/60 active:bg-primary-active shadow-amber h-9 px-3.5 text-sm";
 
 export function ServiceCtaArrowIcon() {
   return (
@@ -128,7 +128,7 @@ export function ServiceCard({
   );
 
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-card border border-card-border bg-card-dark p-6 shadow-shadow-lg transition-[border-color,transform,background-color] duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-card-border-hover active:translate-y-0 active:border-card-border-active active:bg-card-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2 md:p-8">
+    <div className="group relative flex flex-col overflow-hidden rounded-card border border-card-border bg-card-dark p-6 shadow-lg transition-[border-color,transform,background-color] duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-card-border-hover active:translate-y-0 active:border-card-border-active active:bg-card-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2 md:p-8">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-20 -top-20 h-40 w-40 rounded-full bg-primary/5 blur-3xl transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] group-hover:bg-primary/10"

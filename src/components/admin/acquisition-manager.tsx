@@ -316,7 +316,7 @@ export function AcquisitionManager({
   return (
     <div className="space-y-8">
       {/* Section heading */}
-      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm">
+      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <p className="font-display text-sm font-bold text-text-primary">
             Section heading
@@ -399,7 +399,7 @@ export function AcquisitionManager({
       </div>
 
       {/* Business listings */}
-      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm">
+      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="font-display text-sm font-bold text-text-primary">

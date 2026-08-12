@@ -127,7 +127,7 @@ export function FaqBotSettingsForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       {/* Enable */}
-      <div className="flex items-center justify-between rounded-card border border-card-border bg-card-dark px-4 py-3.5 shadow-shadow-sm">
+      <div className="flex items-center justify-between rounded-card border border-card-border bg-card-dark px-4 py-3.5 shadow-sm">
         <div>
           <p className="text-sm font-medium text-text-primary">FAQ bot enabled</p>
           <p className="mt-0.5 text-xs text-text-muted">
@@ -142,7 +142,7 @@ export function FaqBotSettingsForm({
       </div>
 
       {/* Suggested questions (multilingual) */}
-      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm">
+      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
         <Label className="mb-1 block">Default questions</Label>
         <p className="mb-3 text-xs text-text-muted">
           Question chips shown to visitors when the FAQ bot opens. Fill each language; rows
@@ -197,7 +197,7 @@ export function FaqBotSettingsForm({
       </div>
 
       {/* Allowed categories */}
-      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm">
+      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
         <Label className="mb-1 block">Categories the bot may answer from</Label>
         <p className="mb-3 text-xs text-text-muted">
           Restrict the FAQ bot to these knowledge categories (FAQs, services, knowledge base).
@@ -219,7 +219,7 @@ export function FaqBotSettingsForm({
         {SUPPORTED_LOCALES.map((locale) => (
           <fieldset
             key={locale}
-            className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm"
+            className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm"
           >
             <legend className="px-2 text-[10px] font-bold uppercase tracking-[0.28em] text-primary">
               {LOCALE_NAMES[locale]}

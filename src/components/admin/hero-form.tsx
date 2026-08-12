@@ -106,7 +106,7 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       {/* Visibility */}
-      <div className="flex items-center justify-between rounded-card border border-card-border bg-card-dark px-4 py-3.5 shadow-shadow-sm">
+      <div className="flex items-center justify-between rounded-card border border-card-border bg-card-dark px-4 py-3.5 shadow-sm">
         <div>
           <p className="text-sm font-medium text-text-primary">Show hero on the homepage</p>
           <p className="mt-0.5 text-xs text-text-muted">Pause the hero without losing content.</p>
@@ -119,7 +119,7 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
       </div>
 
       {/* Headline fields — active locale */}
-      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm">
+      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm font-medium text-text-primary">Headline</p>
           <LocaleTabs value={locale} onChange={setLocale} />
@@ -148,7 +148,7 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
       </div>
 
       {/* CTAs */}
-      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm">
+      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm font-medium text-text-primary">Call-to-action buttons</p>
           <LocaleTabs value={locale} onChange={setLocale} />
@@ -174,7 +174,7 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
       </div>
 
       {/* Metrics */}
-      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm">
+      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm font-medium text-text-primary">Stat metrics</p>
           <button
@@ -217,7 +217,7 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
       </div>
 
       {/* Tech stack */}
-      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-shadow-sm">
+      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm font-medium text-text-primary">Tech stack chips</p>
           <button

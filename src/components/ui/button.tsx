@@ -20,7 +20,7 @@ export interface ButtonClassesOptions {
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    "border border-transparent bg-primary text-text-inverse hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-hover active:translate-y-0 active:border-primary/60 active:bg-primary-active shadow-shadow-amber",
+    "border border-transparent bg-primary text-text-inverse hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-hover active:translate-y-0 active:border-primary/60 active:bg-primary-active shadow-amber",
   secondary:
     "border border-card-border bg-card-dark text-text-primary hover:-translate-y-0.5 hover:border-primary/25 active:translate-y-0 active:border-primary/40 active:bg-card-active",
   tertiary:

@@ -32,7 +32,7 @@ export default async function AdminMediaPage() {
         </h2>
 
         {media.length === 0 ? (
-          <div className="mt-4 rounded-card border border-card-border bg-card-dark p-10 text-center shadow-shadow-sm">
+          <div className="mt-4 rounded-card border border-card-border bg-card-dark p-10 text-center shadow-sm">
             <p className="text-sm text-text-secondary">No media assets yet.</p>
             <p className="mt-1 text-sm text-text-muted">
               Upload your first image using the form above.
@@ -53,7 +53,7 @@ export default async function AdminMediaPage() {
               return (
                 <div
                   key={asset.id}
-                  className="group overflow-hidden rounded-card border border-card-border bg-card-dark shadow-shadow-sm transition-[border-color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-border-interactive hover:shadow-shadow-md"
+                  className="group overflow-hidden rounded-card border border-card-border bg-card-dark shadow-sm transition-[border-color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-border-interactive hover:shadow-md"
                 >
                   <div className="relative aspect-video overflow-hidden bg-background-deep">
                     {url && asset.mime_type.startsWith("image/") ? (

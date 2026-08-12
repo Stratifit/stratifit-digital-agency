@@ -41,7 +41,7 @@ export const DrawerContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed z-50 w-full max-w-sm border-border bg-surface-elevated shadow-shadow-lg sm:max-w-md",
+        "fixed z-50 w-full max-w-sm border-border bg-surface-elevated shadow-lg sm:max-w-md",
         directionClasses[direction],
         className
       )}

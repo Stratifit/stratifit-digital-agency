@@ -139,7 +139,7 @@ export function ConversationsList({
       </div>
 
       {/* Bulk action bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-card border border-card-border bg-card-dark px-4 py-3 shadow-shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-card border border-card-border bg-card-dark px-4 py-3 shadow-sm">
         <div className="flex items-center gap-3">
           <Checkbox
             checked={allSelected}
@@ -234,7 +234,7 @@ export function ConversationsList({
       ) : null}
 
       {filtered.length === 0 ? (
-        <div className="rounded-card border border-card-border bg-card-dark p-10 text-center shadow-shadow-sm">
+        <div className="rounded-card border border-card-border bg-card-dark p-10 text-center shadow-sm">
           <p className="text-sm text-text-secondary">No conversations yet.</p>
           <p className="mt-1 text-sm text-text-muted">
             {query.trim()
@@ -248,7 +248,7 @@ export function ConversationsList({
             <div
               key={c.id}
               className={cn(
-                "group flex items-start gap-3 rounded-card border border-card-border bg-card-dark p-4 shadow-shadow-sm transition-[border-color,box-shadow] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-border-interactive hover:shadow-shadow-md",
+                "group flex items-start gap-3 rounded-card border border-card-border bg-card-dark p-4 shadow-sm transition-[border-color,box-shadow] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-border-interactive hover:shadow-md",
                 selected.has(c.id) && "border-primary/40 bg-primary/5"
               )}
             >
