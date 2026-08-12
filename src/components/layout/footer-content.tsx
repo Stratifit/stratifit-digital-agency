@@ -43,7 +43,7 @@ export function FooterContent({
           <BrandLogo alt={siteName} />
         </div>
         {siteDescription ? (
-          <p className="text-sm font-medium leading-snug text-text-subtle sm:max-w-[80%] sm:leading-relaxed">
+          <p className="text-sm font-medium leading-snug text-text-subtle sm:max-w-[80%] sm:text-[15px] sm:leading-relaxed">
             {siteDescription}
           </p>
         ) : null}
@@ -62,7 +62,7 @@ export function FooterContent({
                 target={link.is_external ? "_blank" : undefined}
                 rel={link.is_external ? "noopener noreferrer" : undefined}
                 onClick={onLinkClick}
-                className="text-xs text-text-subtle transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary break-words"
+                className="text-xs text-text-subtle transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary break-words sm:text-sm"
               >
                 {resolveTranslation(link.label_translations, locale)}
               </a>
@@ -76,13 +76,13 @@ export function FooterContent({
       <div className="space-y-4">
         <div className="h-px w-full bg-primary/30" />
         <div className="flex items-center justify-between">
-          <p className="text-[10px] font-medium text-text-subtle">
+          <p className="text-[10px] font-medium text-text-subtle sm:text-xs">
             © {currentYear} {siteName}. All rights reserved.
           </p>
           <button
             type="button"
             onClick={handleBackToTop}
-            className="text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            className="text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:text-xs"
           >
             Back to Top
           </button>
