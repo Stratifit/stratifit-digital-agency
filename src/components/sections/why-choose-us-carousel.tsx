@@ -80,7 +80,7 @@ export function WhyChooseUsCarousel({
   }
 
   return (
-    <div className="lg:hidden">
+    <div>
       <div
         ref={scrollRef}
         onScroll={handleScroll}
