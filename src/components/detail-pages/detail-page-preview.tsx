@@ -35,7 +35,7 @@ export function DetailPagePreview({
   return (
     <div>
       {/* Hero */}
-      <div className="relative overflow-hidden bg-background-deep pt-14">
+      <div className="relative overflow-hidden bg-background-deep pt-14 pb-8">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute left-1/2 top-0 h-[300px] w-[480px] -translate-x-1/2 rounded-full bg-primary/5 blur-[100px]"
@@ -62,15 +62,17 @@ export function DetailPagePreview({
         </Container>
       </div>
 
+      <div aria-hidden="true" className="h-px w-full bg-white/5" />
+
       {/* Content */}
       <div className="bg-background">
         <Container className="max-w-3xl">
           {hasContent ? (
-            <div className="pt-6 pb-10">
+            <div className="pt-8 pb-10">
               <DetailPageContent blocks={renderBlocks} />
             </div>
           ) : (
-            <p className="pt-6 pb-10 text-sm text-text-muted">
+            <p className="pt-8 pb-10 text-sm text-text-muted">
               Nothing to preview yet — add a heading, subheading, paragraph,
               list, panel, or note box.
             </p>
