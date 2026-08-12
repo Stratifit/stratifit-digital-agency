@@ -40,7 +40,7 @@ export async function Header() {
   const servicePageSlugs = new Set(servicePages.map((page) => page.slug));
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/5 bg-black">
+    <header className="sticky top-0 z-40 border-b border-white/10 bg-black/80 backdrop-blur-md">
       <Container className="relative flex h-16 items-center justify-between sm:h-20">
         {/* Mobile: hamburger (left) */}
         <div className="md:hidden">
