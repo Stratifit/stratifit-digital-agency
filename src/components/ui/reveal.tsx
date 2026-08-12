@@ -136,14 +136,30 @@ export function Reveal({
   );
 
   // Correct ScrollTrigger positions that were measured while a grid was still
-  // display:none (e.g. breakpoint-based grids). Refreshing after layout and on
-  // window load prevents reveals from firing at the wrong scroll position.
+  // display:none (e.g. breakpoint-based grids) or before webfonts finished
+  // loading (font-display: swap reflows the page after window.load, so the
+  // measured trigger starts drift and reveals never fire). Refreshing after
+  // layout, on window load, when fonts are ready, and once more after a delay
+  // prevents reveals from firing at the wrong scroll position or never firing.
   React.useEffect(() => {
     const refresh = () => ScrollTrigger.refresh();
+    let cancelled = false;
     const raf = requestAnimationFrame(() => ScrollTrigger.refresh());
+    const finalRefresh = window.setTimeout(() => {
+      if (!cancelled) ScrollTrigger.refresh();
+    }, 2500);
     window.addEventListener("load", refresh);
+    if (typeof document !== "undefined" && document.fonts?.ready) {
+      document.fonts.ready
+        .then(() => {
+          if (!cancelled) refresh();
+        })
+        .catch(() => {});
+    }
     return () => {
+      cancelled = true;
       cancelAnimationFrame(raf);
+      window.clearTimeout(finalRefresh);
       window.removeEventListener("load", refresh);
     };
   }, []);
