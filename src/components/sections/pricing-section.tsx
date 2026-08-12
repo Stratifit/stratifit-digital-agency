@@ -20,7 +20,7 @@ export async function PricingSection() {
 
   return (
     <>
-    <Section>
+    <Section id="pricing" className="scroll-mt-24">
       <Container>
         <SectionHeader settings={settings} locale={locale} align="left" />
         <Reveal variant="card" className="mt-12" cardSelector="[data-plan-card]">

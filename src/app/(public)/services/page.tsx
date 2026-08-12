@@ -1,9 +1,16 @@
-﻿import { getPublicServices } from "@/features/services/queries";
+import { getPublicServices } from "@/features/services/queries";
 import type { Metadata } from "next";
 import { getPublicServicePages } from "@/features/service-pages/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { getPublicSectionSettingIncludingHidden } from "@/features/section-settings/queries";
 import { pageMetadata, resolveSeoMetadata } from "@/lib/seo";
+import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { getPublicSectionSetting } from "@/features/section-settings/queries";
+import { t } from "@/lib/i18n/ui-strings";
+import { Container } from "@/components/ui/container";
+import { Section } from "@/components/ui/section";
+import { Reveal } from "@/components/ui/reveal";
+import { ServiceCard, ServiceCardCta } from "@/components/sections/service-card";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
@@ -18,16 +25,6 @@ export async function generateMetadata(): Promise<Metadata> {
   });
   return pageMetadata({ title, description, path: "/services" });
 }
-
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
-import { getPublicSectionSetting } from "@/features/section-settings/queries";
-import { t } from "@/lib/i18n/ui-strings";
-import { Container } from "@/components/ui/container";
-import { Section } from "@/components/ui/section";
-import { Card } from "@/components/ui/card";
-import { ContactAwareLink } from "@/components/contact/contact-aware-link";
-import { ServiceIcon } from "@/components/ui/service-icon";
-import { Reveal } from "@/components/ui/reveal";
 
 export default async function ServicesPage() {
   const locale = await getLocale();
@@ -72,48 +69,20 @@ export default async function ServicesPage() {
 
       <Section>
         <Container>
-          <Reveal stagger variant="card" className="space-y-6">
-            {services.map((service, index) => (
-              <Card
+          <Reveal stagger variant="card" className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+            {services.map((service) => (
+              <ServiceCard
                 key={service.slug}
-                variant={index === 0 ? "featured" : "standard"}
-                className="p-8"
-              >
-                <div className="grid gap-6 lg:grid-cols-3 lg:items-start">
-                  <div>
-                    {service.icon_name ? (
-                      <span className="text-primary">
-                        <ServiceIcon name={service.icon_name} />
-                      </span>
-                    ) : null}
-                    <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-text-primary">
-                      {resolveTranslation(service.title_translations, locale)}
-                    </h2>
-                    <p className="mt-2 text-sm leading-6 text-text-secondary">
-                      {resolveTranslation(service.short_description_translations, locale)}
-                    </p>
-                  </div>
-                  <div className="lg:col-span-2">
-                    <p className="text-base leading-7 text-text-secondary">
-                      {resolveTranslation(service.full_description_translations, locale)}
-                    </p>
-                    {service.cta_label_translations &&
-                    resolveTranslation(service.cta_label_translations, locale) ? (
-                      <ContactAwareLink
-                        href={
-                          pageSlugs.has(service.slug)
-                            ? `/services/${service.slug}`
-                            : service.cta_url
-                        }
-                        size="small"
-                        className="mt-6"
-                      >
-                        {resolveTranslation(service.cta_label_translations, locale)}
-                      </ContactAwareLink>
-                    ) : null}
-                  </div>
-                </div>
-              </Card>
+                service={service}
+                locale={locale}
+                cta={
+                  <ServiceCardCta
+                    service={service}
+                    locale={locale}
+                    hasDetailPage={pageSlugs.has(service.slug)}
+                  />
+                }
+              />
             ))}
           </Reveal>
         </Container>
@@ -121,5 +90,3 @@ export default async function ServicesPage() {
     </>
   );
 }
-
-
