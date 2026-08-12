@@ -96,7 +96,7 @@ export default async function AboutPage() {
 
       {stats.length > 0 ? (
         <>
-        <section className="pb-20">
+        <section className="bg-background pb-20">
           <Container width="md">
             <Reveal className="grid grid-cols-2 gap-4 md:grid-cols-4">
               {stats.map((stat, index) => (
