@@ -1,6 +1,5 @@
 "use client";
 
-import { ContactTrigger } from "@/components/contact/contact-trigger";
 import { buttonClasses } from "@/components/ui/button";
 import { t } from "@/lib/i18n/ui-strings";
 
@@ -37,13 +36,11 @@ function ArrowRightIcon({ className }: { className?: string }) {
 
 /**
  * "Still have more questions?" card shown beneath the FAQ section.
- * The primary CTA opens the FAQ chat; the outline CTA opens the contact popup.
+ * The single CTA opens the dedicated FAQ section bot.
  */
 export function FaqHelpCard({ locale }: { locale: string }) {
-  function openFaqChat() {
-    window.dispatchEvent(
-      new CustomEvent("stratifit:open-chat", { detail: { view: "faq" } })
-    );
+  function openFaqBot() {
+    window.dispatchEvent(new CustomEvent("stratifit:open-faq-bot"));
   }
 
   const title = t(locale, "faqHelpCardTitle");
@@ -62,20 +59,13 @@ export function FaqHelpCard({ locale }: { locale: string }) {
 
       <button
         type="button"
-        onClick={openFaqChat}
+        onClick={openFaqBot}
         className={buttonClasses({ variant: "primary", size: "medium", className: "w-full" })}
       >
         <ChatIcon className="size-4 shrink-0" />
         {t(locale, "faqAskMoreQuestions")}
         <ArrowRightIcon className="size-4 shrink-0 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-0.5" />
       </button>
-
-      <ContactTrigger
-        className={buttonClasses({ variant: "tertiary", size: "medium", className: "w-full" })}
-      >
-        {t(locale, "faqContactTeam")}
-        <ArrowRightIcon className="size-4 shrink-0 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-0.5" />
-      </ContactTrigger>
     </div>
   );
 }

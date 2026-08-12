@@ -243,11 +243,16 @@ export type Database = {
           cta_label_translations: Json
           cta_url: string | null
           fallback_translations: Json
+          faq_bot_allowed_categories: string[]
+          faq_bot_enabled: boolean
+          faq_bot_fallback_translations: Json
           intro_translations: Json
           is_enabled: boolean
           singleton_key: boolean
+          suggested_question_translations: Json
           suggested_questions: Json
           updated_at: string
+          welcome_message_translations: Json
         }
         Insert: {
           allowed_categories?: string[]
@@ -255,11 +260,16 @@ export type Database = {
           cta_label_translations?: Json
           cta_url?: string | null
           fallback_translations?: Json
+          faq_bot_allowed_categories?: string[]
+          faq_bot_enabled?: boolean
+          faq_bot_fallback_translations?: Json
           intro_translations?: Json
           is_enabled?: boolean
           singleton_key?: boolean
+          suggested_question_translations?: Json
           suggested_questions?: Json
           updated_at?: string
+          welcome_message_translations?: Json
         }
         Update: {
           allowed_categories?: string[]
@@ -267,11 +277,16 @@ export type Database = {
           cta_label_translations?: Json
           cta_url?: string | null
           fallback_translations?: Json
+          faq_bot_allowed_categories?: string[]
+          faq_bot_enabled?: boolean
+          faq_bot_fallback_translations?: Json
           intro_translations?: Json
           is_enabled?: boolean
           singleton_key?: boolean
+          suggested_question_translations?: Json
           suggested_questions?: Json
           updated_at?: string
+          welcome_message_translations?: Json
         }
         Relationships: []
       }
@@ -392,6 +407,7 @@ export type Database = {
         Row: {
           archived_at: string | null
           assigned_to: string | null
+          bot_type: string
           created_at: string
           id: string
           last_message_at: string
@@ -407,6 +423,7 @@ export type Database = {
         Insert: {
           archived_at?: string | null
           assigned_to?: string | null
+          bot_type?: string
           created_at?: string
           id?: string
           last_message_at?: string
@@ -422,6 +439,7 @@ export type Database = {
         Update: {
           archived_at?: string | null
           assigned_to?: string | null
+          bot_type?: string
           created_at?: string
           id?: string
           last_message_at?: string

@@ -10,6 +10,7 @@ export interface AdminConversationRow {
   id: string;
   status: string;
   mode: string;
+  bot_type: string;
   source_page: string | null;
   last_message_at: string;
   created_at: string;
@@ -22,6 +23,7 @@ interface ConversationRow {
   id: string;
   status: string;
   mode: string;
+  bot_type: string;
   source_page: string | null;
   last_message_at: string;
   created_at: string;
@@ -102,7 +104,7 @@ export async function getAdminConversations(): Promise<AdminConversationRow[]> {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("chat_conversations")
-    .select("id, status, mode, source_page, last_message_at, created_at, visitor_id")
+    .select("id, status, mode, bot_type, source_page, last_message_at, created_at, visitor_id")
     .order("last_message_at", { ascending: false });
   if (error) return [];
   return enrichConversations(supabase, (data ?? []) as ConversationRow[]);
@@ -126,7 +128,7 @@ export async function getAdminConversation(
 
   const { data: conversation, error } = await supabase
     .from("chat_conversations")
-    .select("id, status, mode, source_page, last_message_at, created_at, visitor_id")
+    .select("id, status, mode, bot_type, source_page, last_message_at, created_at, visitor_id")
     .eq("id", id)
     .single();
 

@@ -9,9 +9,11 @@ import {
   knowledgeEntrySchema,
   chatbotSettingsSchema,
   aiFaqSettingsSchema,
+  faqBotSettingsSchema,
   type KnowledgeEntryFormValues,
   type ChatbotSettingsFormValues,
   type AiFaqSettingsFormValues,
+  type FaqBotSettingsFormValues,
 } from "./chat-admin-schemas";
 
 async function requireAdmin() {
@@ -214,6 +216,47 @@ export async function updateAiFaqSettings(
     target_id: "singleton",
   });
   revalidatePath("/admin/content/chatbot/ai-faq");
+  revalidatePath("/");
+  return { success: true };
+}
+
+export async function updateFaqBotSettings(
+  input: FaqBotSettingsFormValues
+): Promise<ActionResult> {
+  const supabase = await requireAdmin();
+  const parsed = faqBotSettingsSchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: "Please check the form for errors.",
+      fieldErrors: parsed.error.flatten().fieldErrors,
+    };
+  }
+
+  const { error } = await supabase.from("ai_faq_settings").upsert(
+    {
+      singleton_key: true,
+      faq_bot_enabled: parsed.data.faq_bot_enabled,
+      welcome_message_translations: parsed.data.welcome_message_translations,
+      faq_bot_fallback_translations: parsed.data.faq_bot_fallback_translations,
+      suggested_question_translations: parsed.data.suggested_question_translations.filter(
+        (q) => q.en.trim().length > 0
+      ),
+      faq_bot_allowed_categories: parsed.data.faq_bot_allowed_categories,
+    },
+    { onConflict: "singleton_key" }
+  );
+
+  if (error) {
+    return { success: false, error: "Failed to save FAQ bot settings." };
+  }
+
+  await recordAuditLog({
+    action: "update",
+    target_table: "ai_faq_settings",
+    target_id: "singleton",
+  });
+  revalidatePath("/admin/content/chatbot/faq-bot");
   revalidatePath("/");
   return { success: true };
 }

@@ -3,6 +3,7 @@ import {
   knowledgeEntrySchema,
   chatbotSettingsSchema,
   aiFaqSettingsSchema,
+  faqBotSettingsSchema,
 } from "@/features/chat/chat-admin-schemas";
 
 describe("knowledgeEntrySchema", () => {
@@ -74,5 +75,39 @@ describe("aiFaqSettingsSchema", () => {
       allowed_categories: ["general"],
     });
     expect(result.success).toBe(true);
+  });
+});
+
+describe("faqBotSettingsSchema", () => {
+  const valid = {
+    faq_bot_enabled: true,
+    welcome_message_translations: { en: "Hi! Ask me anything.", de: "", fr: "", es: "" },
+    faq_bot_fallback_translations: { en: "I couldn't find an answer.", de: "", fr: "", es: "" },
+    suggested_question_translations: [
+      { en: "What services do you offer?", de: "", fr: "", es: "" },
+      { en: "How much does a website cost?", de: "", fr: "", es: "" },
+    ],
+    faq_bot_allowed_categories: ["general", "services", "pricing", "process"],
+  };
+
+  it("accepts valid settings with multilingual suggested questions", () => {
+    const result = faqBotSettingsSchema.safeParse(valid);
+    expect(result.success).toBe(true);
+  });
+
+  it("accepts an empty suggested question list", () => {
+    const result = faqBotSettingsSchema.safeParse({
+      ...valid,
+      suggested_question_translations: [],
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("rejects a suggested question missing a locale key", () => {
+    const result = faqBotSettingsSchema.safeParse({
+      ...valid,
+      suggested_question_translations: [{ en: "What?", de: "", fr: "", es: "" }, { en: "Only en" }],
+    });
+    expect(result.success).toBe(false);
   });
 });

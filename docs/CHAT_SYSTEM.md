@@ -731,6 +731,28 @@ The database flags control eligibility.
 
 ---
 
+## 27.1 FAQ Section Bot (Implementation)
+
+The FAQ section's "Ask More Questions" CTA opens a dedicated FAQ bot popup
+(`src/components/chat/faq-chat-bot.tsx`) styled like the main chat widget.
+
+- **Own conversation scope** — FAQ-bot conversations are stored in
+  `chat_conversations` with `bot_type = 'faq'` (migration `00052`), so they
+  never mix with the main chat conversation for the same visitor. They appear
+  in the admin inbox (badged "FAQ bot") and support the same human takeover,
+  replies, resolve, and archive flows.
+- **Separate settings** — the bot reads `ai_faq_settings`
+  (`faq_bot_enabled`, `welcome_message_translations`,
+  `suggested_question_translations` — a curated multilingual list of default
+  question chips, `fallback_translations`, `allowed_categories`). Managed at
+  `/admin/content/chatbot/faq-bot`.
+- **Knowledge scoping** — answers come only from approved knowledge filtered
+  to the configured allowed categories; when the AI cannot answer safely the
+  bot sends the configured fallback and escalates to `waiting_for_admin`.
+- **Writes** are mediated by the service-role server actions in
+  `src/features/faq-bot/mutations.ts` (same anonymous-access model as the
+  main chat).
+
 ## 28. Chatbot Knowledge Management
 
 The CMS should allow administrators to manage:

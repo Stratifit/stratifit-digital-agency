@@ -270,6 +270,11 @@ export function ConversationsList({
                   <span className="font-medium text-text-primary">
                     {c.visitor.name}
                   </span>
+                  {c.bot_type === "faq" ? (
+                    <span className="rounded-full border border-secondary/30 bg-secondary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-secondary-light">
+                      FAQ bot
+                    </span>
+                  ) : null}
                   {c.visitor.email ? (
                     <span className="text-xs text-text-muted">{c.visitor.email}</span>
                   ) : null}

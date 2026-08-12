@@ -17,6 +17,7 @@ interface DetailData {
   id: string;
   status: string;
   mode: string;
+  bot_type: string;
   visitor: AdminVisitorSummary;
   messages: {
     id: string;
@@ -111,6 +112,11 @@ export function ConversationDetail({ conversation }: { conversation: DetailData 
         <div className="flex gap-2">
           <BadgeLabel label={conversation.status} />
           <BadgeLabel label={`mode: ${conversation.mode}`} />
+          {conversation.bot_type === "faq" ? (
+            <span className="rounded-full border border-secondary/30 bg-secondary/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-secondary-light">
+              FAQ bot
+            </span>
+          ) : null}
         </div>
         <div className="flex flex-wrap gap-2">
           {conversation.mode !== "human" ? (

@@ -137,7 +137,9 @@ export type UiStringKey =
   | "faqHelpCardTitle"
   | "faqHelpCardSubtitle"
   | "faqAskMoreQuestions"
-  | "faqContactTeam"
+  | "faqBotSuggestionsTitle"
+  | "faqBotWelcomeFallback"
+  | "faqBotFallbackFallback"
   | "chatSave"
   | "chatCancel"
   | "chatLanguage"
@@ -386,7 +388,11 @@ const en: UiStrings = {
   faqHelpCardTitle: "Still have more questions?",
   faqHelpCardSubtitle: "Chat with our FAQ AI bot — instant answers, 24/7.",
   faqAskMoreQuestions: "Ask More Questions",
-  faqContactTeam: "Contact our team",
+  faqBotSuggestionsTitle: "Suggested questions",
+  faqBotWelcomeFallback:
+    "👋 Hi! I'm the Stratifit FAQ assistant. Ask me anything about our services, pricing, or process.",
+  faqBotFallbackFallback:
+    "I couldn't find an answer to that. A team member has been notified and will help you shortly.",
   chatSave: "Save",
   chatCancel: "Cancel",
   chatLanguage: "Select language",
@@ -644,7 +650,11 @@ const de: UiStrings = {
   faqHelpCardTitle: "Haben Sie noch mehr Fragen?",
   faqHelpCardSubtitle: "Chatten Sie mit unserem FAQ-KI-Bot – sofortige Antworten, rund um die Uhr.",
   faqAskMoreQuestions: "Weitere Fragen stellen",
-  faqContactTeam: "Kontaktieren Sie unser Team",
+  faqBotSuggestionsTitle: "Vorgeschlagene Fragen",
+  faqBotWelcomeFallback:
+    "👋 Hallo! Ich bin der Stratifit-FAQ-Assistent. Fragen Sie mich alles zu unseren Leistungen, Preisen oder unserem Prozess.",
+  faqBotFallbackFallback:
+    "Dafür habe ich keine Antwort gefunden. Ein Teammitglied wurde benachrichtigt und hilft Ihnen gleich weiter.",
   chatSave: "Speichern",
   chatCancel: "Abbrechen",
   chatLanguage: "Sprache auswählen",
@@ -902,7 +912,11 @@ const fr: UiStrings = {
   faqHelpCardTitle: "Encore des questions ?",
   faqHelpCardSubtitle: "Discutez avec notre bot IA FAQ – réponses instantanées, 24h/24.",
   faqAskMoreQuestions: "Poser d'autres questions",
-  faqContactTeam: "Contacter notre équipe",
+  faqBotSuggestionsTitle: "Questions suggérées",
+  faqBotWelcomeFallback:
+    "👋 Bonjour ! Je suis l'assistant FAQ Stratifit. Posez-moi toutes vos questions sur nos services, tarifs ou notre processus.",
+  faqBotFallbackFallback:
+    "Je n'ai pas trouvé de réponse à cela. Un membre de l'équipe a été prévenu et vous aidera bientôt.",
   chatSave: "Enregistrer",
   chatCancel: "Annuler",
   chatLanguage: "Choisir la langue",
@@ -1160,7 +1174,11 @@ const es: UiStrings = {
   faqHelpCardTitle: "¿Aún tiene más preguntas?",
   faqHelpCardSubtitle: "Chatea con nuestro bot de IA de preguntas frecuentes: respuestas instantáneas, 24/7.",
   faqAskMoreQuestions: "Hacer más preguntas",
-  faqContactTeam: "Contacta con nuestro equipo",
+  faqBotSuggestionsTitle: "Preguntas sugeridas",
+  faqBotWelcomeFallback:
+    "👋 ¡Hola! Soy el asistente de preguntas frecuentes de Stratifit. Pregúntame cualquier cosa sobre nuestros servicios, precios o proceso.",
+  faqBotFallbackFallback:
+    "No encontré una respuesta para eso. Se ha notificado a un miembro del equipo y le ayudará pronto.",
   chatSave: "Guardar",
   chatCancel: "Cancelar",
   chatLanguage: "Seleccionar idioma",

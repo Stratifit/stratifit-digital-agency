@@ -83,3 +83,12 @@ export const aiFaqSettingsSchema = z.object({
   allowed_categories: z.array(z.string()),
 });
 export type AiFaqSettingsFormValues = z.infer<typeof aiFaqSettingsSchema>;
+
+export const faqBotSettingsSchema = z.object({
+  faq_bot_enabled: z.boolean(),
+  welcome_message_translations: translations(),
+  faq_bot_fallback_translations: translations(),
+  suggested_question_translations: z.array(translations()),
+  faq_bot_allowed_categories: z.array(z.string()),
+});
+export type FaqBotSettingsFormValues = z.infer<typeof faqBotSettingsSchema>;

@@ -776,7 +776,7 @@ ON CONFLICT (singleton_key) DO UPDATE SET
 -- AI FAQ Settings (Singleton)
 -- =============================================================================
 
-INSERT INTO public.ai_faq_settings (singleton_key, is_enabled, intro_translations, suggested_questions, allowed_categories, fallback_translations, cta_label_translations, cta_url)
+INSERT INTO public.ai_faq_settings (singleton_key, is_enabled, intro_translations, suggested_questions, allowed_categories, fallback_translations, cta_label_translations, cta_url, faq_bot_enabled, welcome_message_translations, suggested_question_translations, faq_bot_fallback_translations, faq_bot_allowed_categories)
 VALUES (
   true,
   false,
@@ -785,7 +785,18 @@ VALUES (
   ARRAY['general', 'services', 'pricing', 'process'],
   '{"en": "I do not have an answer for that. Please contact our team directly.", "de": "Dafür habe ich keine Antwort. Bitte kontaktieren Sie unser Team direkt.", "fr": "Je n ai pas de réponse pour cela. Veuillez contacter directement notre équipe.", "es": "No tengo una respuesta para eso. Por favor contacta a nuestro equipo directamente."}'::jsonb,
   '{"en": "Contact Us", "de": "Kontaktieren Sie uns", "fr": "Contactez-nous", "es": "Contáctanos"}'::jsonb,
-  '/contact'
+  '/contact',
+  true,
+  '{"en": "👋 Hi! I am the Stratifit FAQ assistant. Ask me anything about our services, pricing, process, or projects.", "de": "👋 Hallo! Ich bin der Stratifit-FAQ-Assistent. Fragen Sie mich alles zu unseren Leistungen, Preisen, Prozessen oder Projekten.", "fr": "👋 Bonjour ! Je suis l'assistant FAQ Stratifit. Posez-moi toutes vos questions sur nos services, tarifs, processus ou projets.", "es": "👋 ¡Hola! Soy el asistente de preguntas frecuentes de Stratifit. Pregúntame cualquier cosa sobre nuestros servicios, precios, procesos o proyectos."}'::jsonb,
+  '[
+    {"en": "What services do you offer?", "de": "Welche Leistungen bieten Sie an?", "fr": "Quels services proposez-vous ?", "es": "¿Qué servicios ofrecen?"},
+    {"en": "How much does a website cost?", "de": "Was kostet eine Website?", "fr": "Combien coûte un site web ?", "es": "¿Cuánto cuesta un sitio web?"},
+    {"en": "How long does a project take?", "de": "Wie lange dauert ein Projekt?", "fr": "Combien de temps prend un projet ?", "es": "¿Cuánto tarda un proyecto?"},
+    {"en": "Do you work internationally?", "de": "Arbeiten Sie international?", "fr": "Travaillez-vous à l'international ?", "es": "¿Trabajan internacionalmente?"},
+    {"en": "What is your process?", "de": "Wie läuft Ihr Prozess ab?", "fr": "Quel est votre processus ?", "es": "¿Cuál es su proceso?"}
+  ]'::jsonb,
+  '{"en": "I could not find an answer to that. A team member has been notified and will help you shortly.", "de": "Dafür habe ich keine Antwort gefunden. Ein Teammitglied wurde benachrichtigt und hilft Ihnen gleich weiter.", "fr": "Je n'ai pas trouvé de réponse à cela. Un membre de l'équipe a été prévenu et vous aidera bientôt.", "es": "No encontré una respuesta para eso. Se ha notificado a un miembro del equipo y le ayudará pronto."}'::jsonb,
+  ARRAY['general', 'services', 'pricing', 'process']
 )
 ON CONFLICT (singleton_key) DO UPDATE SET
   is_enabled = EXCLUDED.is_enabled,
@@ -794,7 +805,12 @@ ON CONFLICT (singleton_key) DO UPDATE SET
   allowed_categories = EXCLUDED.allowed_categories,
   fallback_translations = EXCLUDED.fallback_translations,
   cta_label_translations = EXCLUDED.cta_label_translations,
-  cta_url = EXCLUDED.cta_url;
+  cta_url = EXCLUDED.cta_url,
+  faq_bot_enabled = EXCLUDED.faq_bot_enabled,
+  welcome_message_translations = EXCLUDED.welcome_message_translations,
+  suggested_question_translations = EXCLUDED.suggested_question_translations,
+  faq_bot_fallback_translations = EXCLUDED.faq_bot_fallback_translations,
+  faq_bot_allowed_categories = EXCLUDED.faq_bot_allowed_categories;
 
 -- =============================================================================
 -- Acquisition Niches (catalog)

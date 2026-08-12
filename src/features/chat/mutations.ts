@@ -1,8 +1,8 @@
 "use server";
 import type { ActionResult } from "@/types/action-result";
 
-import { createHash } from "crypto";
 import { revalidatePath } from "next/cache";
+import { hashToken } from "./token";
 import { z } from "zod";
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/service-role";
 import { t } from "@/lib/i18n/ui-strings";
@@ -19,9 +19,6 @@ const messageSchema = z.object({
   source_page: z.string().max(300).optional(),
 });
 
-function hashToken(token: string): string {
-  return createHash("sha256").update(token).digest("hex");
-}
 
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX = 10;
@@ -71,11 +68,13 @@ export async function sendVisitorMessage(
     return { success: false, error: "Could not create a chat session." };
   }
 
-  // Resolve or create conversation
+  // Resolve or create conversation (main chat scope only — FAQ-bot
+  // conversations live under bot_type = 'faq' and must stay separate).
   let { data: conversation } = await supabase
     .from("chat_conversations")
     .select("id, mode, status")
     .eq("visitor_id", visitor.id)
+    .eq("bot_type", "main")
     .in("status", ["open", "waiting_for_admin", "waiting_for_visitor"])
     .order("created_at", { ascending: false })
     .limit(1)
@@ -88,6 +87,7 @@ export async function sendVisitorMessage(
         visitor_id: visitor.id,
         status: "open",
         mode: "ai",
+        bot_type: "main",
         source_page: parsed.data.source_page,
       })
       .select("id, mode, status")
@@ -261,11 +261,13 @@ interface ChatConversationRow {
   status: string;
 }
 
-async function resolveChatContext(
+export async function resolveChatContext(
   supabase: ReturnType<typeof createSupabaseServiceRoleClient>,
   tokenHash: string,
   locale: string,
-  sourcePage?: string
+  sourcePage?: string,
+  botType: "main" | "faq" = "main",
+  sourceLabel = "chat_widget"
 ): Promise<{ visitor: ChatVisitorRow; conversation: ChatConversationRow }> {
   let { data: visitor } = await supabase
     .from("chat_visitors")
@@ -293,6 +295,7 @@ async function resolveChatContext(
     .from("chat_conversations")
     .select("id, mode, status")
     .eq("visitor_id", visitor.id)
+    .eq("bot_type", botType)
     .in("status", ["open", "waiting_for_admin", "waiting_for_visitor"])
     .order("created_at", { ascending: false })
     .limit(1)
@@ -305,6 +308,7 @@ async function resolveChatContext(
         visitor_id: visitor.id,
         status: "open",
         mode: "ai",
+        bot_type: botType,
         source_page: sourcePage,
       })
       .select("id, mode, status")
@@ -314,7 +318,7 @@ async function resolveChatContext(
       await supabase.from("conversation_events").insert({
         conversation_id: conversation.id,
         event_type: "created",
-        metadata: { source: "chat_widget" },
+        metadata: { source: sourceLabel },
       });
     }
   }
@@ -333,7 +337,7 @@ async function resolveChatContext(
   return { visitor: visitor as ChatVisitorRow, conversation: conversation as ChatConversationRow };
 }
 
-async function loadStoredMessages(
+export async function loadStoredMessages(
   supabase: ReturnType<typeof createSupabaseServiceRoleClient>,
   conversationId: string
 ): Promise<ChatStoredMessage[]> {

@@ -154,6 +154,7 @@ export const NAV_SECTIONS: NavSection[] = [
     items: [
       { href: "/admin/content/chatbot/knowledge", label: "Knowledge Base", icon: "knowledge" },
       { href: "/admin/content/chatbot/ai-faq", label: "AI FAQ", icon: "faq" },
+      { href: "/admin/content/chatbot/faq-bot", label: "FAQ Bot", icon: "faq" },
       { href: "/admin/content/chatbot/settings", label: "Chatbot Settings", icon: "chat" },
     ],
   },
