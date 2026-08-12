@@ -193,7 +193,7 @@ export async function HeroSection() {
   return (
     <>
     <section
-      className="relative flex min-h-[calc(100svh-4rem)] items-start justify-center overflow-hidden bg-gradient-hero pb-16 pt-16 sm:min-h-[calc(100svh-5rem)] md:pb-24 lg:pb-32"
+      className="relative flex min-h-[calc(100svh-4rem)] items-start justify-center overflow-hidden bg-gradient-hero pb-16 pt-16 sm:min-h-[calc(100svh-5rem)] md:pb-24 lg:pb-24 lg:pt-24"
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         {/* Warm amber halo behind the headline — Stratifit yellow on black */}
