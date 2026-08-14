@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
 import type { CurrentAdmin } from "@/actions/auth";
 import { signOut } from "@/actions/auth";
-import { Button } from "@/components/ui/button";
 import { getNavLabel } from "./nav-data";
 
 function HamburgerIcon() {
@@ -45,6 +44,22 @@ function ExternalIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={className ?? "size-4"}>
       <path d="M15 3h6v6" /><path d="M10 14 21 3" /><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+    </svg>
+  );
+}
+
+function FilledExternalIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={cn("size-4", className)}>
+      <path fillRule="evenodd" d="M15.75 2.25H21a.75.75 0 0 1 .75.75v5.25a.75.75 0 0 1-1.5 0V4.81L8.03 17.03a.75.75 0 0 1-1.06-1.06L19.19 3.75h-3.44a.75.75 0 0 1 0-1.5Zm-10.5 4.5a1.5 1.5 0 0 0-1.5 1.5v10.5a1.5 1.5 0 0 0 1.5 1.5h10.5a1.5 1.5 0 0 0 1.5-1.5V10.5a.75.75 0 0 1 1.5 0v8.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V8.25a3 3 0 0 1 3-3h8.25a.75.75 0 0 1 0 1.5H5.25Z" clipRule="evenodd" />
+    </svg>
+  );
+}
+
+function SignOutIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={cn("size-4", className)}>
+      <path fillRule="evenodd" d="M7.5 3.75A1.5 1.5 0 0 0 6 5.25v13.5a1.5 1.5 0 0 0 1.5 1.5h6a1.5 1.5 0 0 0 1.5-1.5V15a.75.75 0 0 1 1.5 0v3.75a3 3 0 0 1-3 3h-6a3 3 0 0 1-3-3V5.25a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3V9A.75.75 0 0 1 15 9V5.25a1.5 1.5 0 0 0-1.5-1.5h-6Zm10.72 4.72a.75.75 0 0 1 1.06 0l3 3a.75.75 0 0 1 0 1.06l-3 3a.75.75 0 1 1-1.06-1.06l1.72-1.72H9a.75.75 0 0 1 0-1.5h10.94l-1.72-1.72a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
     </svg>
   );
 }
@@ -222,33 +237,39 @@ export function Topbar({
           {menuOpen ? (
             <div
               role="menu"
-              className="absolute right-0 top-[calc(100%+8px)] w-60 rounded-card border border-border bg-surface-elevated p-1.5 shadow-lg"
+              className="absolute right-0 top-full z-[60] mt-2 w-64 overflow-hidden rounded-card-lg border border-white/10 bg-card-dark shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)]"
             >
-              <div className="border-b border-border px-3 py-2.5">
-                <p className="truncate text-sm font-medium text-text-primary">
-                  {admin.display_name ?? "Admin"}
+              <div className="border-b border-white/5 p-3.5">
+                <p className="mb-0.5 font-mono text-[10px] text-text-subtle">
+                  Signed in as
                 </p>
-                <p className="truncate text-xs text-text-muted">{admin.email}</p>
+                <p className="truncate text-sm font-medium text-text-primary">
+                  {admin.display_name ?? admin.email}
+                </p>
               </div>
-              <Link
-                href="/"
-                target="_blank"
-                rel="noopener noreferrer"
-                role="menuitem"
-                className="flex items-center gap-2.5 rounded-card px-3 py-2 text-sm text-text-secondary transition-colors hover:bg-surface-hover hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              >
-                <ExternalIcon className="text-text-subtle" />
-                View public site
-              </Link>
-              <form
-                action={signOut}
-                className="pt-1"
-                onSubmit={() => setMenuOpen(false)}
-              >
-                <Button type="submit" variant="secondary" size="small" className="w-full">
-                  Sign Out
-                </Button>
-              </form>
+              <nav className="flex flex-col gap-0.5 p-1.5">
+                <Link
+                  href="/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  role="menuitem"
+                  className="flex items-center gap-2.5 rounded-button px-3 py-2.5 text-[13px] text-text-secondary transition-colors hover:bg-white/5 hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  <FilledExternalIcon className="text-primary" />
+                  View Live Site
+                </Link>
+                <div className="my-0.5 h-px bg-white/5" />
+                <form action={signOut} onSubmit={() => setMenuOpen(false)}>
+                  <button
+                    type="submit"
+                    role="menuitem"
+                    className="flex w-full items-center gap-2.5 rounded-button px-3 py-2.5 text-left text-[13px] font-bold text-text-secondary transition-colors hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  >
+                    <SignOutIcon />
+                    Sign out
+                  </button>
+                </form>
+              </nav>
             </div>
           ) : null}
         </div>
