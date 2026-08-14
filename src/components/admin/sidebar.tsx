@@ -23,15 +23,22 @@ function ShieldIcon({ className }: NavIconProps) {
   );
 }
 
-function sectionForPath(pathname: string): string {
-  for (const section of NAV_SECTIONS) {
-    for (const item of section.items) {
-      if (pathname === item.href || pathname.startsWith(`${item.href}/`)) {
-        return section.label;
-      }
-    }
-  }
-  return NAV_SECTIONS[0]?.label ?? "Overview";
+function CollapseToggleIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className={className ?? "size-4"}
+    >
+      <path d="m11 17-5-5 5-5" />
+      <path d="m18 17-5-5 5-5" />
+    </svg>
+  );
 }
 
 function NavItemLink({
@@ -55,7 +62,7 @@ function NavItemLink({
         onClick={onNavigate}
         aria-current={active ? "page" : undefined}
         className={cn(
-          "group relative flex items-center gap-2.5 rounded-card px-3 py-2 text-sm text-text-secondary transition-[background-color,color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-surface-hover hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+          "group relative flex items-center gap-3 rounded-card px-3 py-2.5 text-sm text-text-secondary transition-[background-color,color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-surface-hover hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
           active
             ? "bg-primary/10 font-medium text-primary hover:bg-primary/10 hover:text-primary"
             : "border border-transparent"
@@ -70,7 +77,7 @@ function NavItemLink({
         />
         <Icon
           className={cn(
-            "size-[18px] shrink-0 transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:text-text-primary",
+            "size-5 shrink-0 transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:text-text-primary",
             active && "text-primary group-hover:text-primary"
           )}
         />
@@ -84,162 +91,129 @@ export function Sidebar({
   collapsed,
   query = "",
   onNavigate,
+  onToggleCollapse,
 }: {
   collapsed: boolean;
   query?: string;
   onNavigate?: () => void;
+  onToggleCollapse: () => void;
 }) {
   const pathname = usePathname();
-  const [openSection, setOpenSection] = React.useState<string>(() =>
-    sectionForPath(pathname)
-  );
-
-  // Keep the flyout on the section that owns the current route. Adjusting state
-  // during render (guarded by the previous pathname) avoids a sync effect.
-  const [prevPathname, setPrevPathname] = React.useState(pathname);
-  if (prevPathname !== pathname) {
-    setPrevPathname(pathname);
-    setOpenSection(sectionForPath(pathname));
-  }
-
   const q = query.trim().toLowerCase();
-  const activeSection = sectionForPath(pathname);
 
-  const filteredSections = q
+  const sections = q
     ? NAV_SECTIONS.map((s) => ({
         label: s.label,
         items: s.items.filter((i) => i.label.toLowerCase().includes(q)),
       })).filter((s) => s.items.length > 0)
-    : null;
+    : NAV_SECTIONS;
 
-  const open = filteredSections
-    ? null
-    : NAV_SECTIONS.find((s) => s.label === openSection) ?? NAV_SECTIONS[0];
+  function isActive(href: string) {
+    return pathname === href || pathname.startsWith(`${href}/`);
+  }
+
+  // Collapsed shows only the dashboard toggle; searching always expands.
+  const showNav = !collapsed || Boolean(q);
 
   return (
-    <div className="flex h-full w-full">
-      {/* Icon rail */}
-      <div className="flex w-[76px] shrink-0 flex-col border-r border-border bg-background-deep">
-        <div className="flex h-16 shrink-0 items-center justify-center border-b border-border">
-          <Link
-            href="/admin/dashboard"
-            aria-label="Stratifit CMS dashboard"
-            onClick={onNavigate}
+    <div className="flex h-full w-full flex-col">
+      {/* Header: brand + collapse toggle */}
+      <div
+        className={cn(
+          "flex h-16 shrink-0 items-center border-b border-border px-4",
+          !showNav && "justify-center px-0"
+        )}
+      >
+        {!showNav ? (
+          <button
+            type="button"
+            onClick={onToggleCollapse}
+            aria-label="Expand navigation"
             className="flex size-10 items-center justify-center rounded-card bg-primary font-display text-sm font-black text-text-inverse shadow-amber transition-transform duration-[var(--motion-fast)] hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             ST
-          </Link>
-        </div>
-
-        <nav aria-label="Admin" className="min-h-0 flex-1 space-y-1 overflow-y-auto py-3">
-          {NAV_SECTIONS.map((section) => {
-            const Icon = icons[section.icon] ?? icons.dashboard;
-            const active = section.label === activeSection;
-            const isOpen = !filteredSections && section.label === openSection;
-            return (
-              <div key={section.label} className="flex justify-center">
-                <button
-                  type="button"
-                  title={section.label}
-                  aria-label={section.label}
-                  aria-current={active ? "true" : undefined}
-                  onClick={() => setOpenSection(section.label)}
-                  onMouseEnter={() => setOpenSection(section.label)}
-                  className={cn(
-                    "relative flex size-11 items-center justify-center rounded-card text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-surface-hover hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
-                    (active || isOpen) && "bg-primary/10 text-primary"
-                  )}
-                >
-                  {active ? (
-                    <span
-                      aria-hidden="true"
-                      className="absolute left-0 top-1/2 h-6 w-[3px] -translate-y-1/2 rounded-r-full bg-primary"
-                    />
-                  ) : null}
-                  <Icon className="size-5" />
-                </button>
-              </div>
-            );
-          })}
-        </nav>
-
-        <div className="shrink-0 border-t border-border py-3 text-center">
-          <ShieldIcon className="mx-auto size-4 text-primary" />
-        </div>
+          </button>
+        ) : (
+          <>
+            <Link
+              href="/admin/dashboard"
+              aria-label="Stratifit CMS dashboard"
+              onClick={onNavigate}
+              className="flex min-w-0 items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-button bg-primary font-display text-[10px] font-extrabold text-text-inverse shadow-amber">
+                ST
+              </span>
+              <span className="flex items-baseline gap-1.5 font-display text-base font-extrabold uppercase tracking-tight text-white">
+                Stratifit
+                <span className="hidden text-[9px] font-bold tracking-[0.3em] text-primary lg:inline">
+                  CMS
+                </span>
+              </span>
+            </Link>
+            <button
+              type="button"
+              onClick={onToggleCollapse}
+              aria-label="Collapse navigation"
+              className="ml-auto flex size-9 shrink-0 items-center justify-center rounded-card text-text-subtle transition-colors hover:bg-surface-hover hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              <CollapseToggleIcon />
+            </button>
+          </>
+        )}
       </div>
 
-      {/* Flyout panel */}
-      <div
-        className={cn(
-          "flex min-w-0 flex-1 flex-col border-r border-border bg-background-deep",
-          collapsed && !q && "md:hidden"
-        )}
-      >
-        <div className="flex h-16 shrink-0 items-center justify-between border-b border-border px-4">
-          <span className="flex items-baseline gap-1.5 font-display text-base font-extrabold uppercase tracking-tight text-white">
-            Stratifit
-            <span className="text-[9px] font-bold tracking-[0.3em] text-primary">CMS</span>
-          </span>
-        </div>
+      {/* Nav */}
+      {showNav ? (
+        <nav
+          className="min-h-0 flex-1 space-y-6 overflow-y-auto px-3 py-5"
+          aria-label="Admin"
+        >
+          {q ? (
+            <p className="px-3 text-[10px] font-bold uppercase tracking-[0.28em] text-text-muted">
+              Results for “{query.trim()}”
+            </p>
+          ) : null}
 
-        <div className="min-h-0 flex-1 overflow-y-auto p-3">
-          {filteredSections ? (
-            <>
-              <p className="mb-3 px-2 text-[10px] font-bold uppercase tracking-[0.28em] text-text-muted">
-                Results for “{query.trim()}”
+          {sections.map((section) => (
+            <div key={section.label}>
+              <p className="flex items-center gap-2 px-3 text-[10px] font-bold uppercase tracking-[0.28em] text-text-muted">
+                <span aria-hidden="true" className="h-px w-4 bg-primary/50" />
+                {q ? `in ${section.label}` : section.label}
               </p>
-              {filteredSections.map((section) => (
-                <div key={section.label} className="mb-4">
-                  <p className="mb-1.5 flex items-center gap-2 px-2 text-[10px] font-bold uppercase tracking-[0.28em] text-text-muted">
-                    <span aria-hidden="true" className="h-px w-3 bg-primary/50" />
-                    {section.label}
-                  </p>
-                  <ul className="space-y-0.5">
-                    {section.items.map((item) => (
-                      <NavItemLink
-                        key={item.href}
-                        href={item.href}
-                        label={item.label}
-                        icon={item.icon}
-                        active={pathname === item.href || pathname.startsWith(`${item.href}/`)}
-                        onNavigate={onNavigate}
-                      />
-                    ))}
-                  </ul>
-                </div>
-              ))}
-              {filteredSections.length === 0 ? (
-                <p className="px-2 text-sm text-text-muted">No matches found.</p>
-              ) : null}
-            </>
-          ) : open ? (
-            <div>
-              <p className="mb-1.5 flex items-center gap-2 px-2 text-[10px] font-bold uppercase tracking-[0.28em] text-text-muted">
-                <span aria-hidden="true" className="h-px w-3 bg-primary/50" />
-                {open.label}
-              </p>
-              <ul className="space-y-0.5">
-                {open.items.map((item) => (
+              <ul className="mt-2.5 space-y-1">
+                {section.items.map((item) => (
                   <NavItemLink
                     key={item.href}
                     href={item.href}
                     label={item.label}
                     icon={item.icon}
-                    active={pathname === item.href || pathname.startsWith(`${item.href}/`)}
+                    active={isActive(item.href)}
                     onNavigate={onNavigate}
                   />
                 ))}
               </ul>
             </div>
-          ) : null}
-        </div>
+          ))}
 
-        <div className="shrink-0 border-t border-border px-4 py-3">
+          {sections.length === 0 ? (
+            <p className="px-3 text-sm text-text-muted">No matches found.</p>
+          ) : null}
+        </nav>
+      ) : null}
+
+      {/* Footer */}
+      <div className="shrink-0 border-t border-border px-4 py-4">
+        {!showNav ? (
+          <span className="flex justify-center">
+            <ShieldIcon className="size-4 text-primary" />
+          </span>
+        ) : (
           <p className="flex items-center gap-2 font-mono text-[10px] text-text-subtle">
             <ShieldIcon className="size-3 text-primary" />
             Built by Stratifit
           </p>
-        </div>
+        )}
       </div>
     </div>
   );

@@ -38,7 +38,7 @@ export function AdminShell({
       {/* Sidebar: off-canvas drawer on mobile, collapsible on md+ */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex h-full w-[316px] max-w-[88vw] flex-col border-r border-border bg-background-deep shadow-xl shadow-black/40 transition-[width,transform] duration-300 ease-[var(--ease-standard)] md:sticky md:top-0 md:z-auto md:h-screen md:w-[316px] md:max-w-none md:shadow-none",
+          "fixed inset-y-0 left-0 z-50 flex h-full w-72 max-w-[88vw] flex-col border-r border-border bg-background-deep shadow-xl shadow-black/40 transition-[width,transform] duration-300 ease-[var(--ease-standard)] md:sticky md:top-0 md:z-auto md:h-screen md:w-72 md:max-w-none md:shadow-none",
           mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0",
           collapsed && !query.trim() && "md:w-[76px]"
         )}
@@ -47,6 +47,7 @@ export function AdminShell({
           collapsed={collapsed}
           query={query}
           onNavigate={handleNavigate}
+          onToggleCollapse={() => setCollapsed((v) => !v)}
         />
       </aside>
 
