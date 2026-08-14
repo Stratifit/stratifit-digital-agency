@@ -110,16 +110,19 @@ export interface NavItem {
 
 export interface NavSection {
   label: string;
+  icon: string;
   items: NavItem[];
 }
 
 export const NAV_SECTIONS: NavSection[] = [
   {
     label: "Overview",
+    icon: "dashboard",
     items: [{ href: "/admin/dashboard", label: "Dashboard", icon: "dashboard" }],
   },
   {
     label: "Content",
+    icon: "sections",
     items: [
       { href: "/admin/content/sections", label: "Sections", icon: "sections" },
       { href: "/admin/content/hero", label: "Hero", icon: "hero" },
@@ -143,6 +146,7 @@ export const NAV_SECTIONS: NavSection[] = [
   },
   {
     label: "Communication",
+    icon: "conversations",
     items: [
       { href: "/admin/leads", label: "Leads", icon: "leads" },
       { href: "/admin/conversations", label: "Conversations", icon: "conversations" },
@@ -151,6 +155,7 @@ export const NAV_SECTIONS: NavSection[] = [
   },
   {
     label: "Chatbot",
+    icon: "chat",
     items: [
       { href: "/admin/content/chatbot/knowledge", label: "Knowledge Base", icon: "knowledge" },
       { href: "/admin/content/chatbot/ai-faq", label: "AI FAQ", icon: "faq" },
@@ -160,10 +165,12 @@ export const NAV_SECTIONS: NavSection[] = [
   },
   {
     label: "Media",
+    icon: "media",
     items: [{ href: "/admin/media", label: "Media", icon: "media" }],
   },
   {
     label: "Settings",
+    icon: "settings",
     items: [
       { href: "/admin/settings", label: "Settings", icon: "settings" },
       { href: "/admin/users", label: "Users", icon: "users" },

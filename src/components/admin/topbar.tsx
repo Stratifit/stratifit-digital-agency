@@ -219,7 +219,7 @@ export function Topbar({
               menuOpen && "bg-surface-hover"
             )}
           >
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-card border border-primary/25 bg-primary/10 font-display text-xs font-bold text-primary">
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-primary/25 bg-primary/10 font-display text-xs font-bold text-primary">
               {getInitials(admin)}
             </span>
             <span className="hidden min-w-0 lg:block">
