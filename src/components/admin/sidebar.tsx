@@ -78,7 +78,7 @@ export function Sidebar({
       </div>
 
       <nav
-        className="flex-1 space-y-6 overflow-y-auto px-3 py-5"
+        className="min-h-0 flex-1 space-y-6 overflow-y-auto px-3 py-5"
         aria-label="Admin"
       >
         {q ? (
