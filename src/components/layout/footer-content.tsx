@@ -133,7 +133,7 @@ export function FooterContent({
                 target={link.is_external ? "_blank" : undefined}
                 rel={link.is_external ? "noopener noreferrer" : undefined}
                 onClick={onLinkClick}
-                className="text-[11px] text-text-subtle transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary break-words sm:text-sm"
+                className="text-xs text-text-subtle transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary break-words sm:text-sm"
               >
                 {resolveTranslation(link.label_translations, locale)}
               </a>
