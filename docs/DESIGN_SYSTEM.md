@@ -793,29 +793,6 @@ Avoid glowing every card.
 linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%)
 ```
 
-#### Hero gradient
-
-Default background for all public hero sections (home, services, work, insights, about, testimonials, buy-business, niche, and policy/company pages).
-
-```css
-radial-gradient(
-  90% 70% at 50% 0%,
-  rgba(245, 158, 11, 0.14) 0%,
-  rgba(245, 158, 11, 0.04) 45%,
-  transparent 70%
-),
-radial-gradient(
-  55% 45% at 88% 10%,
-  rgba(245, 158, 11, 0.10) 0%,
-  transparent 65%
-),
-linear-gradient(180deg, #0A0A0A 0%, #070A10 100%)
-```
-
-Exposed as the `--gradient-hero` token / `bg-gradient-hero` utility.
-
-The hero uses Stratifit colors only — black and amber. The base is a deep-black vertical wash (from `#0A0A0A` to `#070A10`) that keeps the hero premium and clean, with two controlled amber radial blooms — one centered behind the headline and one in the top-right corner — adding depth without washing the section in yellow. The home and services heroes add an additional warm amber halo near the headline on top.
-
 ### 12.2 Gradient rules
 
 Do not:

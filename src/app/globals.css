@@ -219,12 +219,6 @@
      Gradient Tokens
      --------------------------------------------------------------------------- */
   --gradient-primary: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
-  /* Hero gradient: brand black with controlled amber glows. A deep-black
-     vertical base (--background → --background-deep) keeps the hero premium
-     and clean, while two low-opacity amber radial blooms — one centered
-     behind the headline, one in the top-right corner — add depth without
-     washing the whole section in yellow. Amber only, no navy. */
-  --gradient-hero: radial-gradient(90% 70% at 50% 0%, rgba(245, 158, 11, 0.14) 0%, rgba(245, 158, 11, 0.04) 45%, transparent 70%), radial-gradient(55% 45% at 88% 10%, rgba(245, 158, 11, 0.10) 0%, transparent 65%), linear-gradient(180deg, #0A0A0A 0%, #070A10 100%);
 
   /* ---------------------------------------------------------------------------
      Layout Width Tokens
@@ -446,7 +440,6 @@
 
   /* Gradient Tokens */
   --gradient-primary: var(--gradient-primary);
-  --gradient-hero: var(--gradient-hero);
 
   /* Layout Width Tokens */
   --container-sm: var(--container-sm);
@@ -512,12 +505,6 @@
   --tracking-wide: var(--tracking-wide);
   --tracking-wider: var(--tracking-wider);
   --tracking-widest: var(--tracking-widest);
-}
-
-/* Gradient utilities (Tailwind v4 does not auto-generate bg-gradient-*
-   utilities from --gradient-* tokens, so they are registered explicitly). */
-@utility bg-gradient-hero {
-  background-image: var(--gradient-hero);
 }
 
 /* =============================================================================
