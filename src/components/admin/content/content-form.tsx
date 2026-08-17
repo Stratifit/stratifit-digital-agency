@@ -133,6 +133,7 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
     if (type === "testimonials") {
       d.person_name = initial.person_name ?? "";
       d.quote_translations = tr(initial.quote_translations as Record<string, string> | null);
+      d.person_role_translations = tr(initial.person_role_translations as Record<string, string> | null);
       d.company_name = initial.company_name ?? "";
       d.is_visible = initial.is_visible ?? true;
       d.is_verified = initial.is_verified ?? false;
@@ -141,6 +142,15 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
       d.name_translations = tr(initial.name_translations as Record<string, string> | null);
       d.description_translations = tr(initial.description_translations as Record<string, string> | null);
       d.price_label_translations = tr(initial.price_label_translations as Record<string, string> | null);
+      d.billing_label_translations = tr(initial.billing_label_translations as Record<string, string> | null);
+      d.features_translations = {
+        en: ((initial.features_translations as Record<string, unknown> | null)?.en as string[] | undefined) ?? [],
+        de: ((initial.features_translations as Record<string, unknown> | null)?.de as string[] | undefined) ?? [],
+        fr: ((initial.features_translations as Record<string, unknown> | null)?.fr as string[] | undefined) ?? [],
+        es: ((initial.features_translations as Record<string, unknown> | null)?.es as string[] | undefined) ?? [],
+      };
+      d.cta_label_translations = tr(initial.cta_label_translations as Record<string, string> | null);
+      d.cta_url = initial.cta_url ?? "";
     }
     if (type === "faq") {
       d.question_translations = tr(initial.question_translations as Record<string, string> | null);
@@ -157,6 +167,8 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
   const {
     register,
     handleSubmit,
+    getValues,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(
@@ -300,6 +312,22 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
                   <p className="text-sm text-error">{trErr("price_label_translations", locale)}</p>
                 ) : null}
               </div>
+              <div className="space-y-2">
+                <Label htmlFor={`billing-label-${locale}`}>Billing Label ({LOCALE_NAMES[locale]})</Label>
+                <Input
+                  id={`billing-label-${locale}`}
+                  placeholder="/ project"
+                  {...register(`billing_label_translations.${locale}`)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor={`cta-label-${locale}`}>CTA Label ({LOCALE_NAMES[locale]})</Label>
+                <Input
+                  id={`cta-label-${locale}`}
+                  placeholder="Get Started"
+                  {...register(`cta_label_translations.${locale}`)}
+                />
+              </div>
             </>
           ) : null}
 
@@ -335,6 +363,13 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
             </div>
           ) : null}
 
+          {type === "pricing" ? (
+            <div className="space-y-2">
+              <Label htmlFor="cta_url">CTA URL (optional)</Label>
+              <Input id="cta_url" placeholder="/contact" {...register("cta_url")} />
+            </div>
+          ) : null}
+
           {showStatus ? (
             <div className="space-y-2">
               <Label htmlFor="status">Status</Label>
@@ -348,22 +383,48 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
         </div>
 
         {type === "pricing" ? (
-          <div className="mt-5 space-y-2">
-            <Label htmlFor={`description-${locale}`}>
-              Description ({LOCALE_NAMES[locale]})
-            </Label>
-            <Textarea
-              id={`description-${locale}`}
-              rows={3}
-              placeholder="Short plan description"
-              {...register(`description_translations.${locale}`)}
-            />
-            {trErr("description_translations", locale) ? (
-              <p className="text-sm text-error">
-                {trErr("description_translations", locale)}
+          <>
+            <div className="mt-5 space-y-2">
+              <Label htmlFor={`description-${locale}`}>
+                Description ({LOCALE_NAMES[locale]})
+              </Label>
+              <Textarea
+                id={`description-${locale}`}
+                rows={3}
+                placeholder="Short plan description"
+                {...register(`description_translations.${locale}`)}
+              />
+              {trErr("description_translations", locale) ? (
+                <p className="text-sm text-error">
+                  {trErr("description_translations", locale)}
+                </p>
+              ) : null}
+            </div>
+            <div className="mt-5 space-y-2">
+              <Label htmlFor={`features-${locale}`}>
+                Features ({LOCALE_NAMES[locale]})
+              </Label>
+              <Textarea
+                id={`features-${locale}`}
+                rows={5}
+                placeholder="One feature per line"
+                value={
+                  (getValues(
+                    `features_translations.${locale}`
+                  ) as string[] | undefined)?.join("\n") ?? ""
+                }
+                onChange={(e) =>
+                  setValue(
+                    `features_translations.${locale}` as const,
+                    e.target.value.split("\n") as never
+                  )
+                }
+              />
+              <p className="text-xs text-text-muted">
+                One feature per line — rendered as the plan checklist.
               </p>
-            ) : null}
-          </div>
+            </div>
+          </>
         ) : null}
 
         {type === "portfolio" || type === "insights" ? (
@@ -415,7 +476,15 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
 
         {type === "testimonials" ? (
           <div className="mt-5 space-y-2">
-            <Label htmlFor={`quote-${locale}`}>Quote ({LOCALE_NAMES[locale]})</Label>
+            <Label htmlFor={`role-${locale}`}>Role ({LOCALE_NAMES[locale]})</Label>
+            <Input
+              id={`role-${locale}`}
+              placeholder="CEO, Founder, Marketing Lead…"
+              {...register(`person_role_translations.${locale}`)}
+            />
+            <Label htmlFor={`quote-${locale}`} className="mt-4 block">
+              Quote ({LOCALE_NAMES[locale]})
+            </Label>
             <Textarea
               id={`quote-${locale}`}
               rows={3}

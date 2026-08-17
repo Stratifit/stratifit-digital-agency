@@ -101,6 +101,18 @@ describe("testimonialSchema", () => {
     });
     expect(result.success).toBe(false);
   });
+
+  it("accepts a person role translation", () => {
+    const result = testimonialSchema.safeParse({
+      person_name: "Claire Fontaine",
+      quote_translations: fullTranslations,
+      person_role_translations: fullTranslations,
+      company_name: "Maison Lumière",
+      is_visible: true,
+      is_verified: true,
+    });
+    expect(result.success).toBe(true);
+  });
 });
 
 describe("pricingSchema", () => {
@@ -127,6 +139,28 @@ describe("pricingSchema", () => {
       is_visible: true,
       is_featured: false,
       status: "draft",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("accepts billing, features, and CTA fields", () => {
+    const result = pricingSchema.safeParse({
+      slug: "growth",
+      name_translations: fullTranslations,
+      price_label_translations: fullTranslations,
+      billing_label_translations: fullTranslations,
+      features_translations: {
+        en: ["Identity & Logo", "5-Page Site"],
+        de: ["Identität & Logo", "5-Seiten Website"],
+        fr: ["Identité & logo", "Site de 5 pages"],
+        es: ["Identidad y logo", "Sitio de 5 páginas"],
+      },
+      cta_label_translations: fullTranslations,
+      cta_url: "/contact",
+      display_order: 2,
+      is_visible: true,
+      is_featured: false,
+      status: "published",
     });
     expect(result.success).toBe(true);
   });

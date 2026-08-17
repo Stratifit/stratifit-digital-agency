@@ -138,6 +138,7 @@ export async function saveTestimonial(
   const row = {
     person_name: parsed.data.person_name,
     quote_translations: parsed.data.quote_translations,
+    person_role_translations: parsed.data.person_role_translations ?? {},
     company_name: parsed.data.company_name || null,
     is_visible: parsed.data.is_visible,
     is_verified: parsed.data.is_verified,
@@ -175,6 +176,10 @@ export async function savePricing(
     name_translations: parsed.data.name_translations,
     description_translations: parsed.data.description_translations ?? {},
     price_label_translations: parsed.data.price_label_translations,
+    billing_label_translations: parsed.data.billing_label_translations ?? {},
+    features_translations: parsed.data.features_translations ?? {},
+    cta_label_translations: parsed.data.cta_label_translations ?? {},
+    cta_url: parsed.data.cta_url?.trim() || null,
     display_order: parsed.data.display_order,
     is_visible: parsed.data.is_visible,
     is_featured: parsed.data.is_featured,
