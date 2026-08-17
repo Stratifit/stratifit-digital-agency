@@ -8,7 +8,7 @@ const GOOGLE_REVIEWS_URL =
 /** Defaults matching the approved design; overridden by CMS settings. */
 export const REVIEW_SUMMARY_DEFAULTS = {
   rating: "4.9",
-  verifiedReviews: 47,
+  verifiedReviews: 57,
   googleRating: "4.9",
   googleReviews: 18,
   googleReviewsUrl: GOOGLE_REVIEWS_URL,
@@ -49,9 +49,9 @@ function Stars({ label }: { label: string }) {
   );
 }
 
-function GoogleIcon() {
+function GoogleIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="size-4 shrink-0">
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className}>
       <path
         fill="#4285F4"
         d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -72,12 +72,28 @@ function GoogleIcon() {
   );
 }
 
+/** Highlight the number inside a "{n} …" string. */
+function CountText({
+  text,
+  count,
+}: {
+  text: string;
+  count: number;
+}): React.ReactNode {
+  return text.split(String(count)).map((part, index) => (
+    <Fragment key={index}>
+      {index > 0 ? (
+        <span className="font-semibold text-primary">{count}</span>
+      ) : null}
+      {part}
+    </Fragment>
+  ));
+}
+
 /**
- * Review summary band shown at the top of the reviews grid: an overall
- * client-satisfaction summary on the left and a Google Reviews summary on the
- * right. The Google cell mirrors the rating layout and leads with its own icon
- * next to the review count, so no "Google" text is needed. Everything stays on
- * a single line per cell, even on mobile (long captions truncate).
+ * Review summary band: an overall client-satisfaction summary on the left and a
+ * Google Reviews summary on the right (big Google logo, "Google" label, review
+ * count + arrow). The Google cell links to the listing.
  */
 export function ReviewSummaryBand({
   rating = REVIEW_SUMMARY_DEFAULTS.rating,
@@ -100,18 +116,10 @@ export function ReviewSummaryBand({
           <Stars label={tWithNumber(locale, "starsOutOfFive", Number(rating))} />
         </div>
         <p className="min-w-0 max-w-full truncate text-[10px] leading-tight text-text-muted sm:text-[11px]">
-          {tWithNumber(locale, "verifiedClientReviews", verifiedReviews)
-            .split(String(verifiedReviews))
-            .map((part, index) => (
-              <Fragment key={index}>
-                {index > 0 ? (
-                  <span className="font-semibold text-primary">
-                    {verifiedReviews}
-                  </span>
-                ) : null}
-                {part}
-              </Fragment>
-            ))}
+          {CountText({
+            text: tWithNumber(locale, "verifiedClientReviews", verifiedReviews),
+            count: verifiedReviews,
+          })}
         </p>
       </div>
 
@@ -122,28 +130,24 @@ export function ReviewSummaryBand({
         rel="noopener noreferrer"
         title={t(locale, "seeAllReviewsOnGoogle")}
         aria-label={t(locale, "seeAllReviewsOnGoogle")}
-        className="group flex min-w-0 flex-1 items-center justify-center gap-2 px-2 py-3 text-center transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary/5 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary sm:px-4"
+        className="group flex min-w-0 flex-1 flex-col items-center justify-center gap-1 px-2 py-3 text-center transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary/5 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary sm:px-4"
       >
-        <GoogleIcon />
-        <span className="min-w-0 truncate text-sm font-semibold text-text-primary">
-          {"Google · "}
-          {tWithNumber(locale, "reviewsCount", googleReviews)
-            .split(String(googleReviews))
-            .map((part, index) => (
-              <Fragment key={index}>
-                {index > 0 ? (
-                  <span className="font-semibold text-primary">
-                    {googleReviews}
-                  </span>
-                ) : null}
-                {part}
-              </Fragment>
-            ))}
+        <GoogleIcon className="size-7 shrink-0 sm:size-9" />
+        <span className="text-[11px] font-bold uppercase tracking-wider text-text-primary sm:text-xs">
+          Google
         </span>
-        <ArrowUpRight
-          className="size-4 shrink-0 text-primary transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-          aria-hidden="true"
-        />
+        <span className="flex items-center gap-1 text-[10px] leading-tight text-text-muted sm:text-[11px]">
+          <span className="truncate">
+            {CountText({
+              text: tWithNumber(locale, "reviewsCount", googleReviews),
+              count: googleReviews,
+            })}
+          </span>
+          <ArrowUpRight
+            className="size-3 shrink-0 text-primary transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            aria-hidden="true"
+          />
+        </span>
       </a>
     </div>
   );
