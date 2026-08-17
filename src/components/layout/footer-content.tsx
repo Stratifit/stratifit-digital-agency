@@ -32,9 +32,13 @@ export function FooterContent({
   function handleBackToTop() {
     if (backToTopRef?.current) {
       backToTopRef.current.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
     }
+    // Scroll the document's scrolling element so the page returns to the very
+    // top (announcement bar + sticky header), regardless of which element the
+    // browser treats as the viewport scroller.
+    const scroller = document.scrollingElement ?? document.documentElement;
+    scroller.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   return (
