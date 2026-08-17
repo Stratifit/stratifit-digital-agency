@@ -92,7 +92,7 @@ export function ReviewSummaryBand({
       {/* Client satisfaction */}
       <div className="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 px-2 py-3 text-center sm:px-4">
         <div className="flex items-center gap-1.5">
-          <span className="font-display text-3xl font-black leading-none tracking-tight text-text-primary sm:text-4xl">
+          <span className="font-display text-2xl font-bold leading-none tracking-tight text-text-primary sm:text-3xl">
             {rating}
           </span>
           <Stars label={tWithNumber(locale, "starsOutOfFive", Number(rating))} />
@@ -123,7 +123,7 @@ export function ReviewSummaryBand({
         className="group flex min-w-0 flex-1 flex-col items-center justify-center gap-1 px-2 py-3 text-center transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary/5 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary sm:px-4"
       >
         <div className="flex items-center gap-1.5">
-          <span className="font-display text-3xl font-black leading-none tracking-tight text-text-primary sm:text-4xl">
+          <span className="font-display text-2xl font-bold leading-none tracking-tight text-text-primary sm:text-3xl">
             {googleRating}
           </span>
           <Stars label={tWithNumber(locale, "starsOutOfFive", Number(googleRating))} />
