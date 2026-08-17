@@ -7,6 +7,7 @@ import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { WhyChooseUsIcon } from "@/components/ui/why-choose-us-icon";
 import { Reveal } from "@/components/ui/reveal";
+import { WhyChooseUsCarousel } from "./why-choose-us-carousel";
 
 export async function WhyChooseUsSection() {
   const locale = await getLocale();
@@ -34,7 +35,7 @@ export async function WhyChooseUsSection() {
         <Reveal
           stagger
           variant="card"
-          className="mt-12 grid gap-8 lg:grid-cols-4"
+          className="mt-12 hidden gap-8 md:grid md:grid-cols-2 lg:grid-cols-4"
         >
           {items.map((item, index) => (
             <div
@@ -66,6 +67,10 @@ export async function WhyChooseUsSection() {
               </div>
             </div>
           ))}
+        </Reveal>
+
+        <Reveal cardSelector="[data-why-card]">
+          <WhyChooseUsCarousel items={items} locale={locale} />
         </Reveal>
       </Container>
     </Section>
