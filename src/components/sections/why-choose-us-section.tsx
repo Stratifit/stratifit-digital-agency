@@ -34,7 +34,7 @@ export async function WhyChooseUsSection() {
         <Reveal
           stagger
           variant="card"
-          className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4"
+          className="mt-12 grid gap-8 lg:grid-cols-4"
         >
           {items.map((item, index) => (
             <div
