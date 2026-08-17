@@ -5,7 +5,6 @@ import { useForm, useWatch, type UseFormRegister } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   sectionSettingsSchema,
-  SUPPORTED_LOCALES,
   type SectionSettingsFormValues,
 } from "@/features/section-settings/schemas";
 import { updateSectionSettings } from "@/features/section-settings/mutations";
@@ -16,6 +15,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { SectionHeader } from "@/components/ui/section-header";
+import {
+  EditorSectionSwitcher,
+  type EditorSectionOption,
+} from "@/components/admin/editor-section-switcher";
+import { LocaleTabs, type EditorLocale } from "@/components/admin/locale-tabs";
 import { cn } from "@/lib/cn";
 import type { PublicSectionSettings } from "@/features/section-settings/queries";
 
@@ -34,6 +38,8 @@ const STATS_SECTIONS = new Set(["portfolio"]);
 
 /** Sections whose editor also manages a review summary band (/testimonials page). */
 const REVIEW_SUMMARY_SECTIONS = new Set(["testimonials"]);
+
+type SectionKey = "header" | "cta" | "stats" | "review" | "seo";
 
 function ReviewSummaryEditor({
   register,
@@ -108,8 +114,10 @@ function ReviewSummaryEditor({
 
 function StatsEditor({
   register,
+  locale,
 }: {
   register: UseFormRegister<SectionSettingsFormValues>;
+  locale: EditorLocale;
 }) {
   const fieldPrefix = "stats";
   return (
@@ -132,20 +140,17 @@ function StatsEditor({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor={`${fieldPrefix}.${index}.label_translations.en`}>
-                Label
+              <Label htmlFor={`${fieldPrefix}.${index}.label_translations.${locale}`}>
+                Label ({LOCALE_NAMES[locale]})
               </Label>
-              <div className="grid gap-2 sm:grid-cols-2">
-                {SUPPORTED_LOCALES.map((locale) => (
-                  <Input
-                    key={locale}
-                    placeholder={LOCALE_NAMES[locale]}
-                    {...register(
-                      `${fieldPrefix}.${index}.label_translations.${locale}`
-                    )}
-                  />
-                ))}
-              </div>
+              <Input
+                key={locale}
+                id={`${fieldPrefix}.${index}.label_translations.${locale}`}
+                placeholder="Projects delivered"
+                {...register(
+                  `${fieldPrefix}.${index}.label_translations.${locale}`
+                )}
+              />
             </div>
           </div>
         </div>
@@ -156,7 +161,6 @@ function StatsEditor({
     </div>
   );
 }
-
 
 type LocaleRecord = { en: string; de: string; fr: string; es: string };
 
@@ -216,6 +220,10 @@ export function SectionSettingsForm({
   const [previewAlign, setPreviewAlign] = React.useState<"left" | "center">(
     "left"
   );
+  const [locale, setLocale] = React.useState<EditorLocale>("en");
+  const [activeSection, setActiveSection] = React.useState<SectionKey>(
+    "header"
+  );
 
   const {
     register,
@@ -260,6 +268,47 @@ export function SectionSettingsForm({
       setServerError(result.error);
     }
   }
+
+  const sectionOptions: EditorSectionOption<SectionKey>[] = [
+    {
+      key: "header",
+      label: "Header",
+      description: "Eyebrow, title, amber highlight, and description.",
+      hasError: Boolean(errors.title_translations?.en),
+    },
+    ...(CTA_SECTIONS.has(settings.section_key)
+      ? [
+          {
+            key: "cta" as const,
+            label: "Call to action",
+            description: "Button label and destination shown below this section.",
+          },
+        ]
+      : []),
+    ...(STATS_SECTIONS.has(settings.section_key)
+      ? [
+          {
+            key: "stats" as const,
+            label: "Stats band",
+            description: "Numbers shown on the work page.",
+          },
+        ]
+      : []),
+    ...(REVIEW_SUMMARY_SECTIONS.has(settings.section_key)
+      ? [
+          {
+            key: "review" as const,
+            label: "Review summary band",
+            description: "Ratings and counts shown at the top of the reviews page.",
+          },
+        ]
+      : []),
+    {
+      key: "seo",
+      label: "Page SEO",
+      description: "Search-engine title and description for this section's page.",
+    },
+  ];
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
@@ -351,94 +400,82 @@ export function SectionSettingsForm({
         </div>
       </div>
 
-      {/* Locale fieldsets */}
-      <div className="space-y-6">
-        {SUPPORTED_LOCALES.map((locale) => (
-          <fieldset
-            key={locale}
-            className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm"
-          >
-            <legend className="px-2 text-[10px] font-bold uppercase tracking-[0.28em] text-primary">
-              {LOCALE_NAMES[locale]}
-            </legend>
-
-            <div className="space-y-4">
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor={`eyebrow-${locale}`}>Eyebrow label</Label>
-                  <Input
-                    id={`eyebrow-${locale}`}
-                    placeholder="Process"
-                    {...register(`eyebrow_translations.${locale}`)}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor={`highlight-${locale}`}>
-                    Amber highlight
-                  </Label>
-                  <Input
-                    id={`highlight-${locale}`}
-                    placeholder="Work"
-                    {...register(`highlight_translations.${locale}`)}
-                  />
-                  <p className="text-xs text-text-muted">
-                    Shown in amber right after the title. Leave empty to skip.
-                  </p>
-                </div>
-              </div>
-
+      <EditorSectionSwitcher
+        options={sectionOptions}
+        value={activeSection}
+        onChange={setActiveSection}
+        headerRight={
+          <div className="flex items-center gap-3">
+            <p className="text-xs font-medium text-text-muted">Language</p>
+            <LocaleTabs value={locale} onChange={setLocale} />
+          </div>
+        }
+      >
+        {activeSection === "header" ? (
+          <div className="space-y-4">
+            <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor={`title-${locale}`}>Title</Label>
+                <Label htmlFor={`eyebrow-${locale}`}>Eyebrow label</Label>
                 <Input
-                  id={`title-${locale}`}
-                  placeholder="How We"
-                  {...register(`title_translations.${locale}`)}
+                  key={locale}
+                  id={`eyebrow-${locale}`}
+                  placeholder="Process"
+                  {...register(`eyebrow_translations.${locale}`)}
                 />
-                {errors.title_translations?.en?.message ? (
-                  <p className="mt-1 text-xs text-error">
-                    {errors.title_translations.en.message}
-                  </p>
-                ) : null}
               </div>
-
               <div className="space-y-2">
-                <Label htmlFor={`description-${locale}`}>Description</Label>
-                <Textarea
-                  id={`description-${locale}`}
-                  rows={3}
-                  placeholder="A short sentence describing this section…"
-                  {...register(`description_translations.${locale}`)}
+                <Label htmlFor={`highlight-${locale}`}>Amber highlight</Label>
+                <Input
+                  key={locale}
+                  id={`highlight-${locale}`}
+                  placeholder="Work"
+                  {...register(`highlight_translations.${locale}`)}
                 />
+                <p className="text-xs text-text-muted">
+                  Shown in amber right after the title. Leave empty to skip.
+                </p>
               </div>
             </div>
-          </fieldset>
-        ))}
-      </div>
-
-      {/* Optional closing call-to-action */}
-      {CTA_SECTIONS.has(settings.section_key) ? (
-        <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
-          <div className="mb-4">
-            <h3 className="font-display text-base font-semibold text-text-primary">
-              Closing call to action
-            </h3>
-            <p className="mt-1 text-sm text-text-muted">
-              Button label and destination shown below this section.
-            </p>
+            <div className="space-y-2">
+              <Label htmlFor={`title-${locale}`}>Title</Label>
+              <Input
+                key={locale}
+                id={`title-${locale}`}
+                placeholder="How We"
+                {...register(`title_translations.${locale}`)}
+              />
+              {errors.title_translations?.en?.message ? (
+                <p className="mt-1 text-xs text-error">
+                  {errors.title_translations.en.message}
+                </p>
+              ) : null}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor={`description-${locale}`}>Description</Label>
+              <Textarea
+                key={locale}
+                id={`description-${locale}`}
+                rows={3}
+                placeholder="A short sentence describing this section…"
+                {...register(`description_translations.${locale}`)}
+              />
+            </div>
           </div>
+        ) : null}
+
+        {activeSection === "cta" ? (
           <div className="space-y-4">
-            {SUPPORTED_LOCALES.map((locale) => (
-              <div key={locale} className="space-y-2">
-                <Label htmlFor={`cta-label-${locale}`}>
-                  Button label ({LOCALE_NAMES[locale]})
-                </Label>
-                <Input
-                  id={`cta-label-${locale}`}
-                  placeholder="Schedule a Consultation"
-                  {...register(`cta_label_translations.${locale}`)}
-                />
-              </div>
-            ))}
+            <div className="space-y-2">
+              <Label htmlFor={`cta-label-${locale}`}>
+                Button label ({LOCALE_NAMES[locale]})
+              </Label>
+              <Input
+                key={locale}
+                id={`cta-label-${locale}`}
+                placeholder="Schedule a Consultation"
+                {...register(`cta_label_translations.${locale}`)}
+              />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="cta-url">Button URL</Label>
               <Input
@@ -448,86 +485,46 @@ export function SectionSettingsForm({
               />
             </div>
           </div>
-        </div>
-      ) : null}
+        ) : null}
 
-      {/* Optional stats band (portfolio section drives /work) */}
-      {STATS_SECTIONS.has(settings.section_key) ? (
-        <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
-          <div className="mb-4">
-            <h3 className="font-display text-base font-semibold text-text-primary">
-              Stats band
-            </h3>
-            <p className="mt-1 text-sm text-text-muted">
-              Numbers shown on the work page. Add or remove stats freely.
-            </p>
-          </div>
+        {activeSection === "stats" ? (
+          <StatsEditor register={register} locale={locale} />
+        ) : null}
 
-          <StatsEditor register={register} />
-        </div>
-      ) : null}
-
-      {/* Optional review summary band (testimonials section drives /testimonials) */}
-      {REVIEW_SUMMARY_SECTIONS.has(settings.section_key) ? (
-        <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
-          <div className="mb-4">
-            <h3 className="font-display text-base font-semibold text-text-primary">
-              Review summary band
-            </h3>
-            <p className="mt-1 text-sm text-text-muted">
-              Ratings and review counts shown at the top of the reviews page.
-            </p>
-          </div>
-
+        {activeSection === "review" ? (
           <ReviewSummaryEditor register={register} />
-        </div>
-      ) : null}
+        ) : null}
 
-      {/* Page SEO metadata (title + description in all locales) */}
-      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
-        <div className="mb-4">
-          <h3 className="font-display text-base font-semibold text-text-primary">
-            Page SEO
-          </h3>
-          <p className="mt-1 text-sm text-text-muted">
-            Search-engine title and description for this section&apos;s page.
-            Leave empty to use the built-in defaults.
-          </p>
-        </div>
-        <div className="space-y-4">
-          {SUPPORTED_LOCALES.map((locale) => (
-            <div
-              key={locale}
-              className="rounded-card border border-white/5 bg-background p-4"
-            >
-              <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-text-subtle">
-                {LOCALE_NAMES[locale]}
-              </p>
-              <div className="space-y-3">
-                <div className="space-y-2">
-                  <Label htmlFor={`seo-title-${locale}`}>SEO title</Label>
-                  <Input
-                    id={`seo-title-${locale}`}
-                    placeholder="Our Work — Stratifit"
-                    {...register(`seo_title_translations.${locale}`)}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor={`seo-description-${locale}`}>
-                    SEO description
-                  </Label>
-                  <Textarea
-                    id={`seo-description-${locale}`}
-                    rows={2}
-                    placeholder="Selected case studies and projects…"
-                    {...register(`seo_description_translations.${locale}`)}
-                  />
-                </div>
-              </div>
+        {activeSection === "seo" ? (
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor={`seo-title-${locale}`}>SEO title</Label>
+              <Input
+                key={locale}
+                id={`seo-title-${locale}`}
+                placeholder="Our Work — Stratifit"
+                {...register(`seo_title_translations.${locale}`)}
+              />
             </div>
-          ))}
-        </div>
-      </div>
+            <div className="space-y-2">
+              <Label htmlFor={`seo-description-${locale}`}>
+                SEO description
+              </Label>
+              <Textarea
+                key={locale}
+                id={`seo-description-${locale}`}
+                rows={2}
+                placeholder="Selected case studies and projects…"
+                {...register(`seo_description_translations.${locale}`)}
+              />
+            </div>
+            <p className="text-xs text-text-muted">
+              Search-engine title and description for this section&apos;s page.
+              Leave empty to use the built-in defaults.
+            </p>
+          </div>
+        ) : null}
+      </EditorSectionSwitcher>
 
       {serverError ? (
         <p role="alert" className="rounded-card bg-error-soft px-3 py-2 text-sm text-error">

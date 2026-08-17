@@ -15,9 +15,10 @@ import {
   EditorSectionSwitcher,
   type EditorSectionOption,
 } from "@/components/admin/editor-section-switcher";
-import { cn } from "@/lib/cn";
-
-const LOCALES = ["en", "de", "fr", "es"] as const;
+import {
+  LocaleTabs,
+  type EditorLocale,
+} from "@/components/admin/locale-tabs";
 
 type SectionKey = "headline" | "cta" | "metrics" | "tech";
 
@@ -50,38 +51,10 @@ function toFormValues(hero: AdminHero): HeroFormValues {
   };
 }
 
-function LocaleTabs({
-  value,
-  onChange,
-}: {
-  value: (typeof LOCALES)[number];
-  onChange: (l: (typeof LOCALES)[number]) => void;
-}) {
-  return (
-    <div className="flex gap-1">
-      {LOCALES.map((l) => (
-        <button
-          key={l}
-          type="button"
-          onClick={() => onChange(l)}
-          className={cn(
-            "rounded-button px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
-            value === l
-              ? "bg-primary/15 text-primary"
-              : "text-text-muted hover:text-text-secondary"
-          )}
-        >
-          {l}
-        </button>
-      ))}
-    </div>
-  );
-}
-
 export function HeroForm({ hero }: { hero: AdminHero }) {
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [saved, setSaved] = React.useState(false);
-  const [locale, setLocale] = React.useState<(typeof LOCALES)[number]>("en");
+  const [locale, setLocale] = React.useState<EditorLocale>("en");
   const [activeSection, setActiveSection] = React.useState<SectionKey>(
     "headline"
   );

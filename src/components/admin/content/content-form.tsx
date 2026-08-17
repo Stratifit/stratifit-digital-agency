@@ -29,7 +29,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
-import { cn } from "@/lib/cn";
+import { EditorSectionSwitcher } from "@/components/admin/editor-section-switcher";
+import { LocaleTabs, type EditorLocale } from "@/components/admin/locale-tabs";
 
 export type ContentType = "portfolio" | "insights" | "testimonials" | "pricing" | "faq";
 
@@ -39,8 +40,7 @@ interface ContentFormProps {
   initial?: Record<string, unknown>;
 }
 
-const LOCALES = ["en", "de", "fr", "es"] as const;
-type Locale = (typeof LOCALES)[number];
+type Locale = EditorLocale;
 
 const LOCALE_NAMES: Record<Locale, string> = {
   en: "English",
@@ -67,39 +67,14 @@ const TITLES: Record<ContentType, string> = {
   return { en: v?.en ?? "", de: v?.de ?? "", fr: v?.fr ?? "", es: v?.es ?? "" };
 }
 
-function LocaleTabs({
-  value,
-  onChange,
-}: {
-  value: Locale;
-  onChange: (l: Locale) => void;
-}) {
-  return (
-    <div className="flex flex-wrap gap-1">
-      {LOCALES.map((l) => (
-        <button
-          key={l}
-          type="button"
-          onClick={() => onChange(l)}
-          className={cn(
-            "rounded-button px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
-            value === l
-              ? "bg-primary/15 text-primary"
-              : "text-text-muted hover:text-text-secondary"
-          )}
-        >
-          {l}
-        </button>
-      ))}
-    </div>
-  );
-}
-
 export function ContentForm({ type, id, initial }: ContentFormProps) {
   const router = useRouter();
   const schema = SCHEMAS[type];
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [locale, setLocale] = React.useState<Locale>("en");
+  const [activeSection, setActiveSection] = React.useState<"content" | "publishing">(
+    "content"
+  );
   const isEdit = Boolean(id);
 
   const defaultValues = React.useMemo(() => {
@@ -226,22 +201,23 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm font-medium text-text-primary">
-            {TITLES[type]} — language
-          </p>
-          <LocaleTabs value={locale} onChange={setLocale} />
-        </div>
-        <div className="grid gap-5 md:grid-cols-2">
-          {showSlug ? (
-            <div className="space-y-2">
-              <Label htmlFor="slug">Slug</Label>
-              <Input id="slug" placeholder="my-item" disabled={isEdit} {...register("slug")} />
-              {err("slug") ? <p className="text-sm text-error">{err("slug")}</p> : null}
-            </div>
-          ) : null}
-
+      <EditorSectionSwitcher
+        options={[
+          { key: "content", label: "Content", description: "The visible content and its translations." },
+          { key: "publishing", label: "Publishing", description: "Slug, status, order, and visibility." },
+        ]}
+        value={activeSection}
+        onChange={setActiveSection}
+        headerRight={
+          <div className="flex items-center gap-3">
+            <p className="text-xs font-medium text-text-muted">Language</p>
+            <LocaleTabs value={locale} onChange={setLocale} />
+          </div>
+        }
+      >
+        {activeSection === "content" ? (
+          <div className="space-y-6">
+            <div className="grid gap-5 md:grid-cols-2">
           {type === "portfolio" ? (
             <div className="space-y-2">
               <Label htmlFor="client_name">Client Name</Label>
@@ -350,30 +326,6 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
             </div>
           ) : null}
 
-          {type === "insights" ? (
-            <div className="space-y-2">
-              <Label htmlFor="reading_time_minutes">Reading Time (minutes)</Label>
-              <Input
-                id="reading_time_minutes"
-                type="number"
-                min={1}
-                {...register("reading_time_minutes", { valueAsNumber: true })}
-              />
-            </div>
-          ) : null}
-
-          {type === "pricing" || type === "faq" ? (
-            <div className="space-y-2">
-              <Label htmlFor="display_order">Display Order</Label>
-              <Input
-                id="display_order"
-                type="number"
-                min={0}
-                {...register("display_order", { valueAsNumber: true })}
-              />
-            </div>
-          ) : null}
-
           {type === "pricing" ? (
             <div className="space-y-2">
               <Label htmlFor="cta_url">CTA URL (optional)</Label>
@@ -381,16 +333,6 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
             </div>
           ) : null}
 
-          {showStatus ? (
-            <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
-              <Select id="status" {...register("status")}>
-                <option value="draft">Draft</option>
-                <option value="published">Published</option>
-                <option value="archived">Archived</option>
-              </Select>
-            </div>
-          ) : null}
         </div>
 
         {type === "pricing" ? (
@@ -534,45 +476,94 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
           </div>
         ) : null}
 
-        <div className="mt-5 flex flex-wrap gap-6">
-          {type === "testimonials" ? (
-            <>
-              <label className="flex items-center gap-2 text-sm text-text-secondary">
-                <input type="checkbox" {...register("is_visible")} className="size-4" />
-                Visible
-              </label>
-              <label className="flex items-center gap-2 text-sm text-text-secondary">
-                <input type="checkbox" {...register("is_verified")} className="size-4" />
-                Verified
-              </label>
-            </>
-          ) : null}
-          {type === "pricing" ? (
-            <>
-              <label className="flex items-center gap-2 text-sm text-text-secondary">
-                <input type="checkbox" {...register("is_visible")} className="size-4" />
-                Visible
-              </label>
-              <label className="flex items-center gap-2 text-sm text-text-secondary">
-                <input type="checkbox" {...register("is_featured")} className="size-4" />
-                Featured
-              </label>
-            </>
-          ) : null}
-          {type === "faq" ? (
-            <>
-              <label className="flex items-center gap-2 text-sm text-text-secondary">
-                <input type="checkbox" {...register("is_visible")} className="size-4" />
-                Visible
-              </label>
-              <label className="flex items-center gap-2 text-sm text-text-secondary">
-                <input type="checkbox" {...register("is_ai_eligible")} className="size-4" />
-                AI Eligible
-              </label>
-            </>
-          ) : null}
-        </div>
-      </div>
+          </div>
+        ) : null}
+
+        {activeSection === "publishing" ? (
+          <div className="space-y-6">
+            <div className="grid gap-5 md:grid-cols-2">
+              {showSlug ? (
+                <div className="space-y-2">
+                  <Label htmlFor="slug">Slug</Label>
+                  <Input id="slug" placeholder="my-item" disabled={isEdit} {...register("slug")} />
+                  {err("slug") ? <p className="text-sm text-error">{err("slug")}</p> : null}
+                </div>
+              ) : null}
+              {type === "insights" ? (
+                <div className="space-y-2">
+                  <Label htmlFor="reading_time_minutes">Reading Time (minutes)</Label>
+                  <Input
+                    id="reading_time_minutes"
+                    type="number"
+                    min={1}
+                    {...register("reading_time_minutes", { valueAsNumber: true })}
+                  />
+                </div>
+              ) : null}
+              {type === "pricing" || type === "faq" ? (
+                <div className="space-y-2">
+                  <Label htmlFor="display_order">Display Order</Label>
+                  <Input
+                    id="display_order"
+                    type="number"
+                    min={0}
+                    {...register("display_order", { valueAsNumber: true })}
+                  />
+                </div>
+              ) : null}
+              {showStatus ? (
+                <div className="space-y-2">
+                  <Label htmlFor="status">Status</Label>
+                  <Select id="status" {...register("status")}>
+                    <option value="draft">Draft</option>
+                    <option value="published">Published</option>
+                    <option value="archived">Archived</option>
+                  </Select>
+                </div>
+              ) : null}
+            </div>
+
+            <div className="flex flex-wrap gap-6">
+              {type === "testimonials" ? (
+                <>
+                  <label className="flex items-center gap-2 text-sm text-text-secondary">
+                    <input type="checkbox" {...register("is_visible")} className="size-4" />
+                    Visible
+                  </label>
+                  <label className="flex items-center gap-2 text-sm text-text-secondary">
+                    <input type="checkbox" {...register("is_verified")} className="size-4" />
+                    Verified
+                  </label>
+                </>
+              ) : null}
+              {type === "pricing" ? (
+                <>
+                  <label className="flex items-center gap-2 text-sm text-text-secondary">
+                    <input type="checkbox" {...register("is_visible")} className="size-4" />
+                    Visible
+                  </label>
+                  <label className="flex items-center gap-2 text-sm text-text-secondary">
+                    <input type="checkbox" {...register("is_featured")} className="size-4" />
+                    Featured
+                  </label>
+                </>
+              ) : null}
+              {type === "faq" ? (
+                <>
+                  <label className="flex items-center gap-2 text-sm text-text-secondary">
+                    <input type="checkbox" {...register("is_visible")} className="size-4" />
+                    Visible
+                  </label>
+                  <label className="flex items-center gap-2 text-sm text-text-secondary">
+                    <input type="checkbox" {...register("is_ai_eligible")} className="size-4" />
+                    AI Eligible
+                  </label>
+                </>
+              ) : null}
+            </div>
+          </div>
+        ) : null}
+      </EditorSectionSwitcher>
 
       {serverError ? (
         <p role="alert" className="rounded-card bg-error-soft px-3 py-2 text-sm text-error">
