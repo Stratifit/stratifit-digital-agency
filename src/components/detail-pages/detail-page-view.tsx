@@ -30,7 +30,7 @@ export function DetailPageView({
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-hero pt-16 pb-8">
+      <section className="relative overflow-hidden bg-background pt-16 pb-8">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-primary/5 opacity-30 blur-[120px]"

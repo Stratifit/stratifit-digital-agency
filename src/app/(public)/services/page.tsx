@@ -47,7 +47,7 @@ export default async function ServicesPage() {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-gradient-hero">
+      <section className="relative overflow-hidden bg-background">
         <div aria-hidden="true" className="pointer-events-none absolute inset-0">
           {/* Warm amber halo behind the heading — Stratifit yellow on black */}
           <div className="absolute left-1/2 top-0 h-[320px] w-[520px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
