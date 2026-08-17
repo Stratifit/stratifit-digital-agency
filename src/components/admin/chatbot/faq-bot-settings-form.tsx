@@ -228,7 +228,7 @@ export function FaqBotSettingsForm({
               <div className="space-y-2">
                 <Label htmlFor={`welcome-${locale}`}>Welcome message</Label>
                 <Textarea
-                  id={`welcome-${locale}`}
+                  key={locale} id={`welcome-${locale}`}
                   rows={2}
                   placeholder="👋 Hi! Ask me anything about Stratifit…"
                   {...register(`welcome_message_translations.${locale}`)}
@@ -237,7 +237,7 @@ export function FaqBotSettingsForm({
               <div className="space-y-2">
                 <Label htmlFor={`fallback-${locale}`}>Fallback message</Label>
                 <Textarea
-                  id={`fallback-${locale}`}
+                  key={locale} id={`fallback-${locale}`}
                   rows={2}
                   placeholder="I couldn't find an answer to that…"
                   {...register(`faq_bot_fallback_translations.${locale}`)}

@@ -109,7 +109,7 @@ export function NicheForm({ slug, initial }: NicheFormProps) {
       <div className="space-y-2">
         <Label htmlFor={`label-${locale}`}>Label ({LOCALE_NAMES[locale]})</Label>
         <Input
-          id={`label-${locale}`}
+          key={locale} id={`label-${locale}`}
           placeholder="Ecommerce"
           {...register(`label_translations.${locale}`)}
         />
@@ -123,7 +123,7 @@ export function NicheForm({ slug, initial }: NicheFormProps) {
           Description ({LOCALE_NAMES[locale]})
         </Label>
         <Textarea
-          id={`description-${locale}`}
+          key={locale} id={`description-${locale}`}
           rows={3}
           placeholder="Short card description…"
           {...register(`description_translations.${locale}`)}
@@ -139,7 +139,7 @@ export function NicheForm({ slug, initial }: NicheFormProps) {
             Why title ({LOCALE_NAMES[locale]})
           </Label>
           <Input
-            id={`why-title-${locale}`}
+            key={locale} id={`why-title-${locale}`}
             placeholder="Why Ecommerce?"
             {...register(`why_title_translations.${locale}`)}
           />
@@ -152,7 +152,7 @@ export function NicheForm({ slug, initial }: NicheFormProps) {
             Why description ({LOCALE_NAMES[locale]})
           </Label>
           <Textarea
-            id={`why-desc-${locale}`}
+            key={locale} id={`why-desc-${locale}`}
             rows={4}
             placeholder="Longer justification shown on the niche detail page…"
             {...register(`why_description_translations.${locale}`)}

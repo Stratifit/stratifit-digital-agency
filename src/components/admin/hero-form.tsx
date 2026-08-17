@@ -127,22 +127,22 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor={`eyebrow-${locale}`}>Eyebrow label</Label>
-            <Input id={`eyebrow-${locale}`} placeholder="Premium Digital Agency" {...register(`eyebrow_translations.${locale}`)} />
+            <Input key={locale} id={`eyebrow-${locale}`} placeholder="Premium Digital Agency" {...register(`eyebrow_translations.${locale}`)} />
           </div>
           <div className="space-y-2">
             <Label htmlFor={`title-${locale}`}>Title</Label>
-            <Input id={`title-${locale}`} placeholder="We Build Websites, Brands & Systems" {...register(`title_translations.${locale}`)} />
+            <Input key={locale} id={`title-${locale}`} placeholder="We Build Websites, Brands & Systems" {...register(`title_translations.${locale}`)} />
             {locale === "en" && errors.title_translations?.en?.message ? (
               <p className="mt-1 text-xs text-error">{errors.title_translations.en.message}</p>
             ) : null}
           </div>
           <div className="space-y-2">
             <Label htmlFor={`highlight-${locale}`}>Amber highlight</Label>
-            <Input id={`highlight-${locale}`} placeholder="That Grow Businesses." {...register(`highlight_translations.${locale}`)} />
+            <Input key={locale} id={`highlight-${locale}`} placeholder="That Grow Businesses." {...register(`highlight_translations.${locale}`)} />
           </div>
           <div className="space-y-2">
             <Label htmlFor={`description-${locale}`}>Description</Label>
-            <Textarea id={`description-${locale}`} rows={3} placeholder="We help startups and growing businesses…" {...register(`description_translations.${locale}`)} />
+            <Textarea key={locale} id={`description-${locale}`} rows={3} placeholder="We help startups and growing businesses…" {...register(`description_translations.${locale}`)} />
           </div>
         </div>
       </div>
@@ -156,7 +156,7 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor={`pcta-label-${locale}`}>Primary button label</Label>
-            <Input id={`pcta-label-${locale}`} placeholder="Start Your Project" {...register(`primary_cta_label_translations.${locale}`)} />
+            <Input key={locale} id={`pcta-label-${locale}`} placeholder="Start Your Project" {...register(`primary_cta_label_translations.${locale}`)} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="primary_cta_url">Primary button URL</Label>
@@ -164,7 +164,7 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
           </div>
           <div className="space-y-2">
             <Label htmlFor={`scta-label-${locale}`}>Secondary button label</Label>
-            <Input id={`scta-label-${locale}`} placeholder="View Our Work" {...register(`secondary_cta_label_translations.${locale}`)} />
+            <Input key={locale} id={`scta-label-${locale}`} placeholder="View Our Work" {...register(`secondary_cta_label_translations.${locale}`)} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="secondary_cta_url">Secondary button URL</Label>
@@ -205,7 +205,7 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
                 </div>
                 <div className="space-y-1.5">
                   <Label htmlFor={`metric-${index}-label-${locale}`}>Label ({locale.toUpperCase()})</Label>
-                  <Input id={`metric-${index}-label-${locale}`} placeholder="Projects Delivered" {...register(`metrics.${index}.label_translations.${locale}`)} />
+                  <Input key={locale} id={`metric-${index}-label-${locale}`} placeholder="Projects Delivered" {...register(`metrics.${index}.label_translations.${locale}`)} />
                 </div>
               </div>
             </div>
@@ -231,11 +231,11 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
         <div className="mb-4 grid gap-4 sm:grid-cols-2">
           <div className="space-y-1.5">
             <Label htmlFor={`ts-heading-${locale}`}>Tech stack heading ({locale.toUpperCase()})</Label>
-            <Input id={`ts-heading-${locale}`} placeholder="Built with modern tools" {...register(`tech_stack_heading_translations.${locale}`)} />
+            <Input key={locale} id={`ts-heading-${locale}`} placeholder="Built with modern tools" {...register(`tech_stack_heading_translations.${locale}`)} />
           </div>
           <div className="space-y-1.5">
             <Label htmlFor={`ts-desc-${locale}`}>Tech stack description ({locale.toUpperCase()})</Label>
-            <Input id={`ts-desc-${locale}`} placeholder="The technologies behind our work" {...register(`tech_stack_description_translations.${locale}`)} />
+            <Input key={locale} id={`ts-desc-${locale}`} placeholder="The technologies behind our work" {...register(`tech_stack_description_translations.${locale}`)} />
           </div>
         </div>
         <div className="space-y-3">

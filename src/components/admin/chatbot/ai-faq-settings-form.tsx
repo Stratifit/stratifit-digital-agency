@@ -238,7 +238,7 @@ export function AiFaqSettingsForm({
               <div className="space-y-2">
                 <Label htmlFor={`intro-${locale}`}>Intro text</Label>
                 <Textarea
-                  id={`intro-${locale}`}
+                  key={locale} id={`intro-${locale}`}
                   rows={2}
                   placeholder="Quick answers, powered by our AI…"
                   {...register(`intro_translations.${locale}`)}
@@ -248,7 +248,7 @@ export function AiFaqSettingsForm({
                 <div className="space-y-2">
                   <Label htmlFor={`fallback-${locale}`}>Fallback message</Label>
                   <Textarea
-                    id={`fallback-${locale}`}
+                    key={locale} id={`fallback-${locale}`}
                     rows={2}
                     placeholder="I couldn't find an answer…"
                     {...register(`fallback_translations.${locale}`)}
@@ -257,7 +257,7 @@ export function AiFaqSettingsForm({
                 <div className="space-y-2">
                   <Label htmlFor={`cta-${locale}`}>CTA label</Label>
                   <Input
-                    id={`cta-${locale}`}
+                    key={locale} id={`cta-${locale}`}
                     placeholder="Contact our team"
                     {...register(`cta_label_translations.${locale}`)}
                   />

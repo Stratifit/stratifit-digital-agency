@@ -146,7 +146,7 @@ function SlideCard({
       <div className="space-y-1.5">
         <Label htmlFor={`slide-${index}-${locale}`}>Message text</Label>
         <Input
-          id={`slide-${index}-${locale}`}
+          key={locale} id={`slide-${index}-${locale}`}
           placeholder="Now offering AI automation services — book a call"
           {...register(`slides.${index}.${locale}`)}
         />
@@ -261,7 +261,7 @@ export function AnnouncementForm({
           <div className="space-y-1.5">
             <Label htmlFor={`link-label-${locale}`}>Link label</Label>
             <Input
-              id={`link-label-${locale}`}
+              key={locale} id={`link-label-${locale}`}
               placeholder="Learn more"
               {...register(`link_label_translations.${locale}`)}
             />

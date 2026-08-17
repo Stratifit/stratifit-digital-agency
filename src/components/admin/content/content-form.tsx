@@ -264,7 +264,7 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
             <div className="space-y-2">
               <Label htmlFor={`title-${locale}`}>Title ({LOCALE_NAMES[locale]})</Label>
               <Input
-                id={`title-${locale}`}
+                key={locale} id={`title-${locale}`}
                 placeholder="Title"
                 {...register(`title_translations.${locale}`)}
               />
@@ -293,7 +293,7 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
               <div className="space-y-2">
                 <Label htmlFor={`name-${locale}`}>Name ({LOCALE_NAMES[locale]})</Label>
                 <Input
-                  id={`name-${locale}`}
+                  key={locale} id={`name-${locale}`}
                   placeholder="Plan name"
                   {...register(`name_translations.${locale}`)}
                 />
@@ -304,7 +304,7 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
               <div className="space-y-2">
                 <Label htmlFor={`price-label-${locale}`}>Price Label ({LOCALE_NAMES[locale]})</Label>
                 <Input
-                  id={`price-label-${locale}`}
+                  key={locale} id={`price-label-${locale}`}
                   placeholder="From $2,990"
                   {...register(`price_label_translations.${locale}`)}
                 />
@@ -315,7 +315,7 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
               <div className="space-y-2">
                 <Label htmlFor={`billing-label-${locale}`}>Billing Label ({LOCALE_NAMES[locale]})</Label>
                 <Input
-                  id={`billing-label-${locale}`}
+                  key={locale} id={`billing-label-${locale}`}
                   placeholder="/ project"
                   {...register(`billing_label_translations.${locale}`)}
                 />
@@ -323,7 +323,7 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
               <div className="space-y-2">
                 <Label htmlFor={`cta-label-${locale}`}>CTA Label ({LOCALE_NAMES[locale]})</Label>
                 <Input
-                  id={`cta-label-${locale}`}
+                  key={locale} id={`cta-label-${locale}`}
                   placeholder="Get Started"
                   {...register(`cta_label_translations.${locale}`)}
                 />
@@ -389,7 +389,7 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
                 Description ({LOCALE_NAMES[locale]})
               </Label>
               <Textarea
-                id={`description-${locale}`}
+                key={locale} id={`description-${locale}`}
                 rows={3}
                 placeholder="Short plan description"
                 {...register(`description_translations.${locale}`)}
@@ -405,7 +405,7 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
                 Features ({LOCALE_NAMES[locale]})
               </Label>
               <Textarea
-                id={`features-${locale}`}
+                key={locale} id={`features-${locale}`}
                 rows={5}
                 placeholder="One feature per line"
                 value={
@@ -433,7 +433,7 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
               {type === "portfolio" ? "Summary" : "Excerpt"} ({LOCALE_NAMES[locale]})
             </Label>
             <Textarea
-              id={`summary-${locale}`}
+              key={locale} id={`summary-${locale}`}
               rows={3}
               placeholder={type === "portfolio" ? "Short summary" : "Short excerpt"}
               {...register(`${type === "portfolio" ? "summary_translations" : "excerpt_translations"}.${locale}`)}
@@ -454,7 +454,7 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
             <div className="space-y-2">
               <Label htmlFor={`seo-title-${locale}`}>SEO title</Label>
               <Input
-                id={`seo-title-${locale}`}
+                key={locale} id={`seo-title-${locale}`}
                 placeholder="Title — Stratifit"
                 {...register(`seo_title_translations.${locale}`)}
               />
@@ -462,7 +462,7 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
                 SEO description
               </Label>
               <Textarea
-                id={`seo-description-${locale}`}
+                key={locale} id={`seo-description-${locale}`}
                 rows={2}
                 placeholder="Short description for search engines…"
                 {...register(`seo_description_translations.${locale}`)}
@@ -478,7 +478,7 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
           <div className="mt-5 space-y-2">
             <Label htmlFor={`role-${locale}`}>Role ({LOCALE_NAMES[locale]})</Label>
             <Input
-              id={`role-${locale}`}
+              key={locale} id={`role-${locale}`}
               placeholder="CEO, Founder, Marketing Lead…"
               {...register(`person_role_translations.${locale}`)}
             />
@@ -486,7 +486,7 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
               Quote ({LOCALE_NAMES[locale]})
             </Label>
             <Textarea
-              id={`quote-${locale}`}
+              key={locale} id={`quote-${locale}`}
               rows={3}
               placeholder="Client quote"
               {...register(`quote_translations.${locale}`)}
@@ -501,7 +501,7 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
           <div className="mt-5 space-y-2">
             <Label htmlFor={`question-${locale}`}>Question ({LOCALE_NAMES[locale]})</Label>
             <Input
-              id={`question-${locale}`}
+              key={locale} id={`question-${locale}`}
               placeholder="Question"
               {...register(`question_translations.${locale}`)}
             />
@@ -512,7 +512,7 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
               Answer ({LOCALE_NAMES[locale]})
             </Label>
             <Textarea
-              id={`answer-${locale}`}
+              key={locale} id={`answer-${locale}`}
               rows={3}
               placeholder="Answer"
               {...register(`answer_translations.${locale}`)}

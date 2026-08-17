@@ -231,7 +231,7 @@ export function KnowledgeForm({
               <div className="space-y-2">
                 <Label htmlFor={`title-${locale}`}>Title</Label>
                 <Input
-                  id={`title-${locale}`}
+                  key={locale} id={`title-${locale}`}
                   placeholder="How long does delivery take?"
                   {...register(`title_translations.${locale}`)}
                 />
@@ -244,7 +244,7 @@ export function KnowledgeForm({
               <div className="space-y-2">
                 <Label htmlFor={`content-${locale}`}>Content</Label>
                 <Textarea
-                  id={`content-${locale}`}
+                  key={locale} id={`content-${locale}`}
                   rows={5}
                   placeholder="The factual answer the AI should give…"
                   {...register(`content_translations.${locale}`)}

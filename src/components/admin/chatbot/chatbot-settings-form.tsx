@@ -236,7 +236,7 @@ export function ChatbotSettingsForm({
               <div className="space-y-2">
                 <Label htmlFor={`welcome-${locale}`}>Welcome message</Label>
                 <Input
-                  id={`welcome-${locale}`}
+                  key={locale} id={`welcome-${locale}`}
                   placeholder="Hi! How can we help you today?"
                   {...register(`welcome_message_translations.${locale}`)}
                 />
@@ -244,7 +244,7 @@ export function ChatbotSettingsForm({
               <div className="space-y-2">
                 <Label htmlFor={`offline-${locale}`}>Offline message</Label>
                 <Textarea
-                  id={`offline-${locale}`}
+                  key={locale} id={`offline-${locale}`}
                   rows={2}
                   placeholder="Our team is offline right now…"
                   {...register(`offline_message_translations.${locale}`)}
@@ -256,7 +256,7 @@ export function ChatbotSettingsForm({
                     Escalation message
                   </Label>
                   <Textarea
-                    id={`escalation-${locale}`}
+                    key={locale} id={`escalation-${locale}`}
                     rows={2}
                     placeholder="Let me connect you with a human…"
                     {...register(`escalation_message_translations.${locale}`)}
@@ -265,7 +265,7 @@ export function ChatbotSettingsForm({
                 <div className="space-y-2">
                   <Label htmlFor={`fallback-${locale}`}>Fallback message</Label>
                   <Textarea
-                    id={`fallback-${locale}`}
+                    key={locale} id={`fallback-${locale}`}
                     rows={2}
                     placeholder="I'm not sure about that — ask our team."
                     {...register(`fallback_message_translations.${locale}`)}

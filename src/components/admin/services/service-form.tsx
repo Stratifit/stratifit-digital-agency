@@ -93,7 +93,7 @@ export function ServiceForm({ slug, initial }: ServiceFormProps) {
             Title ({LOCALE_NAMES[locale]})
           </Label>
           <Input
-            id={`title-${locale}`}
+            key={locale} id={`title-${locale}`}
             placeholder="Service title"
             {...register(`title_translations.${locale}`)}
           />
@@ -112,7 +112,7 @@ export function ServiceForm({ slug, initial }: ServiceFormProps) {
             Short Description ({LOCALE_NAMES[locale]})
           </Label>
           <Input
-            id={`short-${locale}`}
+            key={locale} id={`short-${locale}`}
             placeholder="Short description"
             {...register(`short_description_translations.${locale}`)}
           />
@@ -127,7 +127,7 @@ export function ServiceForm({ slug, initial }: ServiceFormProps) {
             CTA Label ({LOCALE_NAMES[locale]})
           </Label>
           <Input
-            id={`cta-label-${locale}`}
+            key={locale} id={`cta-label-${locale}`}
             placeholder="Learn More"
             {...register(`cta_label_translations.${locale}`)}
           />
@@ -168,7 +168,7 @@ export function ServiceForm({ slug, initial }: ServiceFormProps) {
         <div className="space-y-2">
           <Label htmlFor={`seo-title-${locale}`}>SEO title</Label>
           <Input
-            id={`seo-title-${locale}`}
+            key={locale} id={`seo-title-${locale}`}
             placeholder="Website Development — Stratifit"
             {...register(`seo_title_translations.${locale}`)}
           />
@@ -176,7 +176,7 @@ export function ServiceForm({ slug, initial }: ServiceFormProps) {
             SEO description
           </Label>
           <Input
-            id={`seo-description-${locale}`}
+            key={locale} id={`seo-description-${locale}`}
             placeholder="Short description for search engines…"
             {...register(`seo_description_translations.${locale}`)}
           />

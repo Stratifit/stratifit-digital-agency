@@ -174,7 +174,7 @@ export function ProcessStepForm({
               <div className="space-y-2">
                 <Label htmlFor={`title-${locale}`}>Title</Label>
                 <Input
-                  id={`title-${locale}`}
+                  key={locale} id={`title-${locale}`}
                   placeholder="Discovery"
                   {...register(`title_translations.${locale}`)}
                 />
@@ -182,7 +182,7 @@ export function ProcessStepForm({
               <div className="space-y-2">
                 <Label htmlFor={`description-${locale}`}>Description</Label>
                 <Textarea
-                  id={`description-${locale}`}
+                  key={locale} id={`description-${locale}`}
                   rows={3}
                   placeholder="Describe this step…"
                   {...register(`description_translations.${locale}`)}

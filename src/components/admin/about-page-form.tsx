@@ -163,7 +163,7 @@ export function AboutPageForm({ initial }: { initial: AdminAboutPage }) {
               <div className="space-y-2">
                 <Label htmlFor={`eyebrow-${locale}`}>Eyebrow</Label>
                 <Input
-                  id={`eyebrow-${locale}`}
+                  key={locale} id={`eyebrow-${locale}`}
                   placeholder="About"
                   {...register(`eyebrow_translations.${locale}`)}
                 />
@@ -171,7 +171,7 @@ export function AboutPageForm({ initial }: { initial: AdminAboutPage }) {
               <div className="space-y-2">
                 <Label htmlFor={`title-${locale}`}>Title</Label>
                 <Input
-                  id={`title-${locale}`}
+                  key={locale} id={`title-${locale}`}
                   placeholder="About "
                   {...register(`title_translations.${locale}`)}
                 />
@@ -181,7 +181,7 @@ export function AboutPageForm({ initial }: { initial: AdminAboutPage }) {
                   Highlighted word
                 </Label>
                 <Input
-                  id={`highlight-${locale}`}
+                  key={locale} id={`highlight-${locale}`}
                   placeholder="Stratifit"
                   {...register(`highlight_translations.${locale}`)}
                 />
@@ -190,7 +190,7 @@ export function AboutPageForm({ initial }: { initial: AdminAboutPage }) {
             <div className="space-y-2">
               <Label htmlFor={`intro-${locale}`}>Intro</Label>
               <Textarea
-                id={`intro-${locale}`}
+                key={locale} id={`intro-${locale}`}
                 rows={2}
                 placeholder="We are a premium digital agency…"
                 {...register(`intro_translations.${locale}`)}
@@ -290,7 +290,7 @@ export function AboutPageForm({ initial }: { initial: AdminAboutPage }) {
             <div className="space-y-2">
               <Label htmlFor={`mission-${locale}`}>Mission</Label>
               <Textarea
-                id={`mission-${locale}`}
+                key={locale} id={`mission-${locale}`}
                 rows={2}
                 placeholder="To empower ambitious brands…"
                 {...register(`mission_translations.${locale}`)}
@@ -309,7 +309,7 @@ export function AboutPageForm({ initial }: { initial: AdminAboutPage }) {
             <div className="space-y-2">
               <Label htmlFor={`story-${locale}`}>Story</Label>
               <Textarea
-                id={`story-${locale}`}
+                key={locale} id={`story-${locale}`}
                 rows={4}
                 placeholder="Founded with a vision…"
                 {...register(`story_translations.${locale}`)}
