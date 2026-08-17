@@ -74,8 +74,10 @@ function GoogleIcon() {
 
 /**
  * Review summary band shown at the top of the reviews grid: an overall
- * client-satisfaction summary on the left and a Google Reviews summary with an
- * arrow link to the full listing on the right. Compact single-line layout.
+ * client-satisfaction summary on the left and a Google Reviews summary on the
+ * right. The Google cell mirrors the rating layout and leads with its own icon
+ * next to the review count, so no "Google" text is needed. Everything stays on
+ * a single line per cell, even on mobile (long captions truncate).
  */
 export function ReviewSummaryBand({
   rating = REVIEW_SUMMARY_DEFAULTS.rating,
@@ -88,14 +90,14 @@ export function ReviewSummaryBand({
   return (
     <div className="flex items-stretch divide-x divide-primary/15 overflow-hidden rounded-card border border-primary/25 bg-card-dark">
       {/* Client satisfaction */}
-      <div className="flex flex-1 flex-col items-center justify-center gap-1 px-3 py-3 text-center sm:px-4">
-        <div className="flex items-center gap-2">
+      <div className="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 px-2 py-3 text-center sm:px-4">
+        <div className="flex items-center gap-1.5">
           <span className="font-display text-3xl font-black leading-none tracking-tight text-text-primary sm:text-4xl">
             {rating}
           </span>
           <Stars label={tWithNumber(locale, "starsOutOfFive", Number(rating))} />
         </div>
-        <p className="text-[10px] leading-tight text-text-muted sm:text-[11px]">
+        <p className="min-w-0 max-w-full truncate text-[10px] leading-tight text-text-muted sm:text-[11px]">
           {tWithNumber(locale, "verifiedClientReviews", verifiedReviews)
             .split(String(verifiedReviews))
             .map((part, index) => (
@@ -118,32 +120,34 @@ export function ReviewSummaryBand({
         rel="noopener noreferrer"
         title={t(locale, "seeAllReviewsOnGoogle")}
         aria-label={t(locale, "seeAllReviewsOnGoogle")}
-        className="group flex flex-1 flex-col items-center justify-center gap-1 px-3 py-3 text-center transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary/5 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary sm:px-4"
+        className="group flex min-w-0 flex-1 flex-col items-center justify-center gap-1 px-2 py-3 text-center transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary/5 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary sm:px-4"
       >
-        <div className="flex items-center gap-2">
-          <GoogleIcon />
-          <span className="font-display text-2xl font-black leading-none tracking-tight text-text-primary sm:text-3xl">
+        <div className="flex items-center gap-1.5">
+          <span className="font-display text-3xl font-black leading-none tracking-tight text-text-primary sm:text-4xl">
             {googleRating}
           </span>
           <Stars label={tWithNumber(locale, "starsOutOfFive", Number(googleRating))} />
+        </div>
+        <p className="flex min-w-0 max-w-full items-center justify-center gap-1.5 text-[10px] leading-tight text-text-muted sm:text-[11px]">
+          <GoogleIcon />
+          <span className="truncate">
+            {tWithNumber(locale, "reviewsCount", googleReviews)
+              .split(String(googleReviews))
+              .map((part, index) => (
+                <Fragment key={index}>
+                  {index > 0 ? (
+                    <span className="font-semibold text-primary">
+                      {googleReviews}
+                    </span>
+                  ) : null}
+                  {part}
+                </Fragment>
+              ))}
+          </span>
           <ArrowUpRight
             className="size-3.5 shrink-0 text-primary transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
             aria-hidden="true"
           />
-        </div>
-        <p className="text-[10px] leading-tight text-text-muted sm:text-[11px]">
-          {tWithNumber(locale, "googleReviewsLabel", googleReviews)
-            .split(String(googleReviews))
-            .map((part, index) => (
-              <Fragment key={index}>
-                {index > 0 ? (
-                  <span className="font-semibold text-primary">
-                    {googleReviews}
-                  </span>
-                ) : null}
-                {part}
-              </Fragment>
-            ))}
         </p>
       </a>
     </div>

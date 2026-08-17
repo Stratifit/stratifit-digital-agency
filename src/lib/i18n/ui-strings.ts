@@ -31,7 +31,7 @@ export type UiStringKey =
   | "viewAllTestimonials"
   | "getStarted"
   | "verifiedClientReviews"
-  | "googleReviewsLabel"
+  | "reviewsCount"
   | "seeAllReviewsOnGoogle"
   | "starsOutOfFive"
   | "viewCaseStudy"
@@ -252,7 +252,7 @@ const en: UiStrings = {
   viewAllTestimonials: "View All Testimonials",
   getStarted: "Get Started",
   verifiedClientReviews: "{n} verified client reviews",
-  googleReviewsLabel: "{n} Google reviews",
+  reviewsCount: "{n} reviews",
   seeAllReviewsOnGoogle: "See all reviews on Google",
   starsOutOfFive: "{n} out of 5 stars",
   viewCaseStudy: "View Case Study",
@@ -491,7 +491,7 @@ const de: UiStrings = {
   viewAllTestimonials: "Alle Testimonials ansehen",
   getStarted: "Loslegen",
   verifiedClientReviews: "{n} bestätigte Kundenbewertungen",
-  googleReviewsLabel: "{n} Google-Bewertungen",
+  reviewsCount: "{n} Bewertungen",
   seeAllReviewsOnGoogle: "Alle Bewertungen auf Google ansehen",
   starsOutOfFive: "{n} von 5 Sternen",
   viewCaseStudy: "Fallstudie ansehen",
@@ -731,7 +731,7 @@ const fr: UiStrings = {
   viewAllTestimonials: "Voir tous les témoignages",
   getStarted: "Commencer",
   verifiedClientReviews: "{n} avis clients vérifiés",
-  googleReviewsLabel: "{n} avis Google",
+  reviewsCount: "{n} avis",
   seeAllReviewsOnGoogle: "Voir tous les avis sur Google",
   starsOutOfFive: "{n} étoiles sur 5",
   viewCaseStudy: "Voir l'étude de cas",
@@ -971,7 +971,7 @@ const es: UiStrings = {
   viewAllTestimonials: "Ver todos los testimonios",
   getStarted: "Empezar",
   verifiedClientReviews: "{n} reseñas verificadas de clientes",
-  googleReviewsLabel: "{n} reseñas de Google",
+  reviewsCount: "{n} reseñas",
   seeAllReviewsOnGoogle: "Ver todas las reseñas en Google",
   starsOutOfFive: "{n} de 5 estrellas",
   viewCaseStudy: "Ver estudio de caso",
