@@ -10,6 +10,9 @@ import { BrandLogo } from "@/components/ui/brand-logo";
 import { SocialIcons } from "@/components/ui/social-icons";
 import { Reveal } from "@/components/ui/reveal";
 
+// Track the in-flight scroll so a second click cleanly restarts it.
+let cancelScrollToTop: (() => void) | undefined;
+
 export function FooterContent({
   groups,
   locale,
@@ -39,7 +42,65 @@ export function FooterContent({
       backToTopRef?.current ??
       document.scrollingElement ??
       document.documentElement;
-    scroller.scrollTo({ top: 0, behavior: "smooth" });
+
+    const start = scroller.scrollTop;
+    if (start <= 0) return;
+
+    // Reduced motion: jump straight to the top instead of animating.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      scroller.scrollTo({ top: 0, behavior: "auto" });
+      return;
+    }
+
+    // Native behavior:"smooth" scrolls are compositor-driven and get cancelled
+    // mid-flight under heavy GSAP ScrollTrigger activity, layout shifts, or
+    // leftover touch momentum — which makes the button stop halfway or not move
+    // at all. Drive the scroll ourselves: every frame re-asserts the position,
+    // so nothing can interrupt it, and the final frame force-lands on 0.
+    cancelScrollToTop?.();
+
+    const duration = Math.min(900, 350 + start * 0.25);
+    const startTime = performance.now();
+    let cancelled = false;
+
+    const cancel = () => {
+      cancelled = true;
+      cancelScrollToTop = undefined;
+      window.removeEventListener("wheel", cancel);
+      window.removeEventListener("touchstart", cancel);
+    };
+    cancelScrollToTop = cancel;
+
+    // Let the user interrupt and take over at any moment.
+    window.addEventListener("wheel", cancel, { passive: true });
+    window.addEventListener("touchstart", cancel, { passive: true });
+
+    const step = (now: number) => {
+      const progress = Math.min(1, (now - startTime) / duration);
+      // easeInOutCubic — starts slow, accelerates, then eases into the top.
+      const eased =
+        progress < 0.5
+          ? 4 * progress ** 3
+          : 1 - (-2 * progress + 2) ** 3 / 2;
+      // behavior: "auto" is synchronous, so this re-asserts the position every
+      // frame and nothing can cancel the animation.
+      scroller.scrollTo({ top: start * (1 - eased), behavior: "auto" });
+
+      if (cancelled) return;
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        // Guarantee the page lands exactly at the top (announcement bar
+        // visible), even if the layout shifted while we were animating.
+        scroller.scrollTo({ top: 0, behavior: "auto" });
+        cancelScrollToTop = undefined;
+        window.removeEventListener("wheel", cancel);
+        window.removeEventListener("touchstart", cancel);
+      }
+    };
+
+    requestAnimationFrame(step);
   }
 
   return (
