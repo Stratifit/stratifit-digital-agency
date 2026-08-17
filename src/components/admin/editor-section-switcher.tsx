@@ -57,6 +57,7 @@ export function EditorSectionSwitcher<T extends string>({
             >
               {options.map((o) => (
                 <option key={o.key} value={o.key}>
+                  {o.hasError ? "⚠ " : ""}
                   {o.label}
                 </option>
               ))}
