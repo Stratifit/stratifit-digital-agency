@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { CollapsibleSection } from "@/components/admin/collapsible-section";
 import { cn } from "@/lib/cn";
 
 const LOCALES = ["en", "de", "fr", "es"] as const;
@@ -119,9 +120,14 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
       </div>
 
       {/* Headline fields — active locale */}
-      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
+      <CollapsibleSection
+        title="Headline"
+        description="Eyebrow, title, amber highlight, and description."
+        defaultOpen
+        hasError={Boolean(errors.title_translations?.en)}
+      >
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm font-medium text-text-primary">Headline</p>
+          <p className="text-xs font-medium text-text-muted">Language</p>
           <LocaleTabs value={locale} onChange={setLocale} />
         </div>
         <div className="space-y-4">
@@ -145,12 +151,16 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
             <Textarea key={locale} id={`description-${locale}`} rows={3} placeholder="We help startups and growing businesses…" {...register(`description_translations.${locale}`)} />
           </div>
         </div>
-      </div>
+      </CollapsibleSection>
 
       {/* CTAs */}
-      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
+      <CollapsibleSection
+        title="Call-to-action buttons"
+        description="Primary and secondary button labels and URLs."
+        hasError={Boolean(errors.primary_cta_label_translations)}
+      >
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm font-medium text-text-primary">Call-to-action buttons</p>
+          <p className="text-xs font-medium text-text-muted">Language</p>
           <LocaleTabs value={locale} onChange={setLocale} />
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -171,12 +181,13 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
             <Input id="secondary_cta_url" placeholder="/work" {...register("secondary_cta_url")} />
           </div>
         </div>
-      </div>
+      </CollapsibleSection>
 
       {/* Metrics */}
-      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm font-medium text-text-primary">Stat metrics</p>
+      <CollapsibleSection
+        title="Stat metrics"
+        description="Numbers shown under the hero, e.g. projects delivered."
+        action={
           <button
             type="button"
             onClick={() => metricFields.append({ value: "", label_translations: emptyTr() })}
@@ -184,7 +195,8 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
           >
             + Add metric
           </button>
-        </div>
+        }
+      >
         <div className="space-y-4">
           {metricFields.fields.map((field, index) => (
             <div key={field.id} className="rounded-card border border-border bg-background p-4">
@@ -214,12 +226,13 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
             <p className="text-xs text-text-muted">No metrics yet — add one above.</p>
           ) : null}
         </div>
-      </div>
+      </CollapsibleSection>
 
       {/* Tech stack */}
-      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm font-medium text-text-primary">Tech stack chips</p>
+      <CollapsibleSection
+        title="Tech stack chips"
+        description="Technologies shown in the scrolling marquee."
+        action={
           <button
             type="button"
             onClick={() => techFields.append({ name: "", icon: "" })}
@@ -227,7 +240,8 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
           >
             + Add chip
           </button>
-        </div>
+        }
+      >
         <div className="mb-4 grid gap-4 sm:grid-cols-2">
           <div className="space-y-1.5">
             <Label htmlFor={`ts-heading-${locale}`}>Tech stack heading ({locale.toUpperCase()})</Label>
@@ -264,7 +278,7 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
             <p className="text-xs text-text-muted">No tech stack chips yet — add one above.</p>
           ) : null}
         </div>
-      </div>
+      </CollapsibleSection>
 
       {serverError ? (
         <p role="alert" className="rounded-card bg-error-soft px-3 py-2 text-sm text-error">
