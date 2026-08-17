@@ -8,7 +8,7 @@ const GOOGLE_REVIEWS_URL =
 /** Defaults matching the approved design; overridden by CMS settings. */
 export const REVIEW_SUMMARY_DEFAULTS = {
   rating: "4.9",
-  verifiedReviews: 57,
+  verifiedReviews: 49,
   googleRating: "4.9",
   googleReviews: 18,
   googleReviewsUrl: GOOGLE_REVIEWS_URL,
@@ -130,20 +130,24 @@ export function ReviewSummaryBand({
         rel="noopener noreferrer"
         title={t(locale, "seeAllReviewsOnGoogle")}
         aria-label={t(locale, "seeAllReviewsOnGoogle")}
-        className="group flex min-w-0 flex-1 items-center justify-center gap-2 px-2 py-3 text-center transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary/5 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary sm:px-4"
+        className="group flex min-w-0 flex-1 flex-col items-center justify-center gap-1 px-2 py-3 text-center transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary/5 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary sm:px-4"
       >
-        <GoogleIcon className="size-5 shrink-0 sm:size-6" />
-        <span className="min-w-0 truncate text-sm font-semibold text-text-primary">
-          {"Google · "}
-          {CountText({
-            text: tWithNumber(locale, "reviewsCount", googleReviews),
-            count: googleReviews,
-          })}
+        <span className="flex items-center gap-2">
+          <GoogleIcon className="size-7 shrink-0 sm:size-9" />
+          <span className="text-sm font-semibold text-text-primary">Google</span>
         </span>
-        <ArrowUpRight
-          className="size-4 shrink-0 text-primary transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-          aria-hidden="true"
-        />
+        <span className="flex items-center gap-1 text-[10px] leading-tight text-text-muted sm:text-[11px]">
+          <span className="truncate">
+            {CountText({
+              text: tWithNumber(locale, "reviewsCount", googleReviews),
+              count: googleReviews,
+            })}
+          </span>
+          <ArrowUpRight
+            className="size-3 shrink-0 text-primary transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            aria-hidden="true"
+          />
+        </span>
       </a>
     </div>
   );
