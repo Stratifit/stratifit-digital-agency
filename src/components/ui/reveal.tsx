@@ -59,6 +59,9 @@ export function Reveal({
   desktopMinWidth = 768,
 }: RevealProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
+  // Mirror props for the mount-once effect (they never change for a given
+  // Reveal, so keeping them out of the dependency array is intentional).
+  const revealPropsRef = React.useRef({ stagger, cardSelector });
 
   useGSAP(
     () => {
@@ -144,10 +147,19 @@ export function Reveal({
   React.useEffect(() => {
     const refresh = () => ScrollTrigger.refresh();
     let cancelled = false;
+    const timers: number[] = [];
+
     const raf = requestAnimationFrame(() => ScrollTrigger.refresh());
-    const finalRefresh = window.setTimeout(() => {
-      if (!cancelled) ScrollTrigger.refresh();
-    }, 2500);
+    // Keep re-measuring while the page settles (webfonts, images, lazy
+    // content, breakpoint grids) so triggers never keep a stale start position
+    // that would stop a reveal from firing.
+    [750, 1500, 3000, 4500].forEach((ms) => {
+      timers.push(
+        window.setTimeout(() => {
+          if (!cancelled) refresh();
+        }, ms)
+      );
+    });
     window.addEventListener("load", refresh);
     if (typeof document !== "undefined" && document.fonts?.ready) {
       document.fonts.ready
@@ -156,10 +168,43 @@ export function Reveal({
         })
         .catch(() => {});
     }
+
+    // Fail-safe: if a trigger measured a stale position (e.g. while its grid
+    // was still display:none or before fonts/images settled) and its content is
+    // now in or near the viewport, force-show it. Content can never be left
+    // permanently hidden (black/empty sections); normal scroll reveals are
+    // unaffected because below-fold targets are skipped until scrolled to.
+    const failSafe = window.setTimeout(() => {
+      if (cancelled) return;
+      ScrollTrigger.refresh();
+      const el = containerRef.current;
+      if (!el) return;
+      const { stagger, cardSelector } = revealPropsRef.current;
+      const targets: HTMLElement[] = stagger
+        ? Array.from(el.children as HTMLCollectionOf<HTMLElement>)
+        : cardSelector
+          ? Array.from(el.querySelectorAll<HTMLElement>(cardSelector))
+          : [el];
+      targets.forEach((target) => {
+        const rect = target.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          gsap.to(target, {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.45,
+            ease: "power2.out",
+            overwrite: "auto",
+          });
+        }
+      });
+    }, 5500);
+
     return () => {
       cancelled = true;
       cancelAnimationFrame(raf);
-      window.clearTimeout(finalRefresh);
+      timers.forEach((id) => window.clearTimeout(id));
+      window.clearTimeout(failSafe);
       window.removeEventListener("load", refresh);
     };
   }, []);
