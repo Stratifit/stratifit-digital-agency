@@ -5,6 +5,10 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Reveal } from "@/components/ui/reveal";
+import {
+  ReviewSummaryBand,
+  REVIEW_SUMMARY_DEFAULTS,
+} from "./review-summary-band";
 import { TestimonialsCarousel } from "./testimonials-carousel";
 
 export async function TestimonialsSection() {
@@ -23,6 +27,16 @@ export async function TestimonialsSection() {
     <Section>
       <Container>
         <SectionHeader settings={settings} locale={locale} />
+        <Reveal className="mt-8">
+          <ReviewSummaryBand
+            locale={locale}
+            {...settings?.review_summary}
+            googleReviewsUrl={
+              settings?.review_summary?.googleReviewsUrl ||
+              REVIEW_SUMMARY_DEFAULTS.googleReviewsUrl
+            }
+          />
+        </Reveal>
         <Reveal variant="card" className="mt-12" cardSelector="[data-testimonial-card]">
           <TestimonialsCarousel
             testimonials={testimonials}
