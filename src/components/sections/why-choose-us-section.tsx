@@ -29,22 +29,20 @@ export async function WhyChooseUsSection() {
     <>
     <Section>
       <Container>
-        <SectionHeader settings={settings} locale={locale} dot />
+        <SectionHeader settings={settings} locale={locale} />
 
         <Reveal
           stagger
           variant="card"
-          className="grid gap-8 md:grid-cols-2 lg:grid-cols-4"
+          className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4"
         >
           {items.map((item, index) => (
             <div
               key={index}
-              className="group relative flex flex-col overflow-hidden rounded-card border border-white/5 bg-card-dark p-6 shadow-xl shadow-black/50 transition-all duration-500 hover:-translate-y-0.5 hover:border-primary/20 md:p-8"
+              className="group relative flex h-full flex-col overflow-hidden rounded-card border border-card-border bg-card-dark p-6 transition-[border-color,transform,background-color] duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/20 active:translate-y-0 active:border-primary/40 active:bg-card-active focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2 md:p-8"
             >
-              <div className="pointer-events-none absolute -right-20 -top-20 size-40 rounded-full bg-primary/5 blur-3xl transition-all duration-500 group-hover:bg-primary/10" />
-
-              <div className="relative z-10 flex flex-1 flex-col gap-5">
-                <div className="flex size-14 items-center justify-center rounded-full border border-primary/30 bg-gradient-to-br from-primary/20 to-primary/5 shadow-[0_0_15px_rgba(245,158,11,0.1)] transition-shadow group-hover:shadow-[0_0_25px_rgba(245,158,11,0.2)]">
+              <div className="flex flex-1 flex-col gap-5">
+                <div className="flex size-14 items-center justify-center rounded-full border border-primary/30 bg-gradient-to-br from-primary/20 to-primary/5 shadow-[0_0_15px_rgba(245,158,11,0.1)]">
                   <WhyChooseUsIcon name={item.icon} className="size-7 text-primary" />
                 </div>
 
