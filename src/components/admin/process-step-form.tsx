@@ -19,16 +19,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import {
+  EditorSectionSwitcher,
+  type EditorSectionOption,
+} from "@/components/admin/editor-section-switcher";
+import {
+  LocaleTabs,
+  type EditorLocale,
+} from "@/components/admin/locale-tabs";
 
-const LOCALES = ["en", "de", "fr", "es"] as const;
-type Locale = (typeof LOCALES)[number];
-
-const LOCALE_NAMES: Record<Locale, string> = {
-  en: "English",
-  de: "German",
-  fr: "French",
-  es: "Spanish",
-};
+type SectionKey = "details" | "translations";
 
 function toFormValues(
   step: Partial<AdminProcessStep> | null
@@ -65,6 +65,10 @@ export function ProcessStepForm({
 }) {
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [saved, setSaved] = React.useState(false);
+  const [locale, setLocale] = React.useState<EditorLocale>("en");
+  const [activeSection, setActiveSection] = React.useState<SectionKey>(
+    "details"
+  );
 
   const {
     register,
@@ -92,117 +96,143 @@ export function ProcessStepForm({
     }
   }
 
+  const sectionOptions: EditorSectionOption<SectionKey>[] = [
+    {
+      key: "details",
+      label: "Details",
+      description: "Step key, number, icon, and visibility.",
+      hasError: Boolean(errors.step_key || errors.number),
+    },
+    {
+      key: "translations",
+      label: "Translations",
+      description: "Title and description in each language.",
+      hasError: Boolean(
+        errors.title_translations?.en || errors.description_translations?.en
+      ),
+    },
+  ];
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-      <div className="grid gap-4 sm:grid-cols-3">
-        <div className="space-y-2">
-          <Label htmlFor="step_key">Step key</Label>
-          <Input
-            id="step_key"
-            placeholder="discovery"
-            disabled={!isNew}
-            {...register("step_key")}
-          />
-          {errors.step_key ? (
-            <p className="mt-1 text-xs text-error">{errors.step_key.message}</p>
-          ) : null}
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="number">Step number</Label>
-          <Input
-            id="number"
-            type="number"
-            min={1}
-            placeholder="1"
-            {...register("number", { valueAsNumber: true })}
-          />
-          {errors.number ? (
-            <p className="mt-1 text-xs text-error">{errors.number.message}</p>
-          ) : null}
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="display_order">Display order</Label>
-          <Input
-            id="display_order"
-            type="number"
-            min={0}
-            placeholder="0"
-            {...register("display_order", { valueAsNumber: true })}
-          />
-        </div>
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-2">
-          <Label htmlFor="icon_name">Icon</Label>
-          <Select id="icon_name" {...register("icon_name")}>
-            {PROCESS_ICON_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </Select>
-          {errors.icon_name ? (
-            <p className="mt-1 text-xs text-error">{errors.icon_name.message}</p>
-          ) : null}
-        </div>
-        <div className="flex items-center justify-between rounded-md border border-border bg-background px-4 py-3">
-          <div>
-            <p className="text-sm font-medium text-text-primary">Show this step</p>
-            <p className="text-xs text-text-muted">
-              Hide it without deleting.
-            </p>
+      <EditorSectionSwitcher
+        options={sectionOptions}
+        value={activeSection}
+        onChange={setActiveSection}
+        headerRight={
+          <div className="flex items-center gap-3">
+            <p className="text-xs font-medium text-text-muted">Language</p>
+            <LocaleTabs value={locale} onChange={setLocale} />
           </div>
-          <Switch
-            checked={isVisible}
-            onCheckedChange={(checked) => setValue("is_visible", checked)}
-            aria-label="Step visible"
-          />
-        </div>
-      </div>
-
-      <div className="space-y-6">
-        {LOCALES.map((locale) => (
-          <fieldset
-            key={locale}
-            className="rounded-md border border-border bg-background p-5"
-          >
-            <legend className="px-2 text-sm font-semibold text-text-primary">
-              {LOCALE_NAMES[locale]}
-            </legend>
-            <div className="space-y-4">
+        }
+      >
+        {activeSection === "details" ? (
+          <div className="space-y-6">
+            <div className="grid gap-4 sm:grid-cols-3">
               <div className="space-y-2">
-                <Label htmlFor={`title-${locale}`}>Title</Label>
+                <Label htmlFor="step_key">Step key</Label>
                 <Input
-                  key={locale} id={`title-${locale}`}
-                  placeholder="Discovery"
-                  {...register(`title_translations.${locale}`)}
+                  id="step_key"
+                  placeholder="discovery"
+                  disabled={!isNew}
+                  {...register("step_key")}
                 />
+                {errors.step_key ? (
+                  <p className="mt-1 text-xs text-error">
+                    {errors.step_key.message}
+                  </p>
+                ) : null}
               </div>
               <div className="space-y-2">
-                <Label htmlFor={`description-${locale}`}>Description</Label>
-                <Textarea
-                  key={locale} id={`description-${locale}`}
-                  rows={3}
-                  placeholder="Describe this step…"
-                  {...register(`description_translations.${locale}`)}
+                <Label htmlFor="number">Step number</Label>
+                <Input
+                  id="number"
+                  type="number"
+                  min={1}
+                  placeholder="1"
+                  {...register("number", { valueAsNumber: true })}
+                />
+                {errors.number ? (
+                  <p className="mt-1 text-xs text-error">{errors.number.message}</p>
+                ) : null}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="display_order">Display order</Label>
+                <Input
+                  id="display_order"
+                  type="number"
+                  min={0}
+                  placeholder="0"
+                  {...register("display_order", { valueAsNumber: true })}
                 />
               </div>
             </div>
-          </fieldset>
-        ))}
-      </div>
-
-      {errors.title_translations?.en?.message ? (
-        <p className="rounded-card bg-error-soft px-3 py-2 text-sm text-error">
-          {errors.title_translations.en.message}
-        </p>
-      ) : null}
-      {errors.description_translations?.en?.message ? (
-        <p className="rounded-card bg-error-soft px-3 py-2 text-sm text-error">
-          {errors.description_translations.en.message}
-        </p>
-      ) : null}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="icon_name">Icon</Label>
+                <Select id="icon_name" {...register("icon_name")}>
+                  {PROCESS_ICON_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </Select>
+                {errors.icon_name ? (
+                  <p className="mt-1 text-xs text-error">
+                    {errors.icon_name.message}
+                  </p>
+                ) : null}
+              </div>
+              <div className="flex items-center justify-between rounded-md border border-border bg-background px-4 py-3">
+                <div>
+                  <p className="text-sm font-medium text-text-primary">Show this step</p>
+                  <p className="text-xs text-text-muted">
+                    Hide it without deleting.
+                  </p>
+                </div>
+                <Switch
+                  checked={isVisible}
+                  onCheckedChange={(checked) => setValue("is_visible", checked)}
+                  aria-label="Step visible"
+                />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor={`title-${locale}`}>Title</Label>
+              <Input
+                key={locale}
+                id={`title-${locale}`}
+                placeholder="Discovery"
+                {...register(`title_translations.${locale}`)}
+              />
+              {locale === "en" && errors.title_translations?.en?.message ? (
+                <p className="mt-1 text-xs text-error">
+                  {errors.title_translations.en.message}
+                </p>
+              ) : null}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor={`description-${locale}`}>Description</Label>
+              <Textarea
+                key={locale}
+                id={`description-${locale}`}
+                rows={3}
+                placeholder="Describe this step…"
+                {...register(`description_translations.${locale}`)}
+              />
+              {locale === "en" &&
+              errors.description_translations?.en?.message ? (
+                <p className="mt-1 text-xs text-error">
+                  {errors.description_translations.en.message}
+                </p>
+              ) : null}
+            </div>
+          </div>
+        )}
+      </EditorSectionSwitcher>
 
       {serverError ? (
         <p role="alert" className="rounded-card bg-error-soft px-3 py-2 text-sm text-error">
