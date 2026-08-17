@@ -142,8 +142,8 @@ export function Reveal({
   // display:none (e.g. breakpoint-based grids) or before webfonts finished
   // loading (font-display: swap reflows the page after window.load, so the
   // measured trigger starts drift and reveals never fire). Refreshing after
-  // layout, on window load, when fonts are ready, and once more after a delay
-  // prevents reveals from firing at the wrong scroll position or never firing.
+  // layout, on window load, and when fonts are ready prevents reveals from
+  // firing at the wrong scroll position or never firing.
   React.useEffect(() => {
     const refresh = () => ScrollTrigger.refresh();
     let cancelled = false;
@@ -153,7 +153,7 @@ export function Reveal({
     // Keep re-measuring while the page settles (webfonts, images, lazy
     // content, breakpoint grids) so triggers never keep a stale start position
     // that would stop a reveal from firing.
-    [750, 1500, 3000, 4500].forEach((ms) => {
+    [750, 1500, 3000, 4500, 6000].forEach((ms) => {
       timers.push(
         window.setTimeout(() => {
           if (!cancelled) refresh();
@@ -169,42 +169,51 @@ export function Reveal({
         .catch(() => {});
     }
 
-    // Fail-safe: if a trigger measured a stale position (e.g. while its grid
-    // was still display:none or before fonts/images settled) and its content is
-    // now in or near the viewport, force-show it. Content can never be left
-    // permanently hidden (black/empty sections); normal scroll reveals are
-    // unaffected because below-fold targets are skipped until scrolled to.
-    const failSafe = window.setTimeout(() => {
-      if (cancelled) return;
-      ScrollTrigger.refresh();
-      const el = containerRef.current;
-      if (!el) return;
-      const { stagger, cardSelector } = revealPropsRef.current;
+    // Permanent safety net: if a ScrollTrigger measured a stale position and
+    // never fires, its targets would stay hidden forever. An IntersectionObserver
+    // watches the ACTUAL rendered position (independent of ScrollTrigger's
+    // position math), so the moment a target enters the viewport while still
+    // fully hidden, it is force-shown. Normal scroll reveals are untouched —
+    // by the time the grace check runs they are already animating (opacity > 0).
+    let observer: IntersectionObserver | null = null;
+    const el = containerRef.current;
+    const { stagger, cardSelector } = revealPropsRef.current;
+    if (el && typeof IntersectionObserver !== "undefined") {
       const targets: HTMLElement[] = stagger
         ? Array.from(el.children as HTMLCollectionOf<HTMLElement>)
         : cardSelector
           ? Array.from(el.querySelectorAll<HTMLElement>(cardSelector))
           : [el];
-      targets.forEach((target) => {
-        const rect = target.getBoundingClientRect();
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
-          gsap.to(target, {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.45,
-            ease: "power2.out",
-            overwrite: "auto",
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const target = entry.target as HTMLElement;
+            observer?.unobserve(target);
+            window.setTimeout(() => {
+              if (!cancelled && target.style.opacity === "0") {
+                gsap.to(target, {
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                  duration: 0.45,
+                  ease: "power2.out",
+                  overwrite: "auto",
+                });
+              }
+            }, 350);
           });
-        }
-      });
-    }, 5500);
+        },
+        { rootMargin: "0px 0px 10% 0px" }
+      );
+      targets.forEach((t) => observer?.observe(t));
+    }
 
     return () => {
       cancelled = true;
       cancelAnimationFrame(raf);
       timers.forEach((id) => window.clearTimeout(id));
-      window.clearTimeout(failSafe);
+      observer?.disconnect();
       window.removeEventListener("load", refresh);
     };
   }, []);

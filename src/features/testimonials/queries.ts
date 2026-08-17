@@ -9,6 +9,9 @@ export interface PublicTestimonial {
   source: "website" | "google";
 }
 
+const TESTIMONIAL_BASE_SELECT =
+  "quote_translations, person_name, person_role_translations, company_name, is_verified";
+
 export async function getPublicTestimonials(
   limit = 3
 ): Promise<PublicTestimonial[]> {
@@ -16,16 +19,28 @@ export async function getPublicTestimonials(
 
   const { data, error } = await supabase
     .from("testimonials")
-    .select(
-      "quote_translations, person_name, person_role_translations, company_name, is_verified, source"
-    )
+    .select(`${TESTIMONIAL_BASE_SELECT}, source`)
     .eq("is_visible", true)
     .eq("is_verified", true)
     .order("display_order", { ascending: true })
     .limit(limit);
 
   if (error) {
-    return [];
+    // Graceful fallback for databases that haven't applied migration 00056
+    // (testimonials.source) yet: retry without the column so the section keeps
+    // rendering. The Google icon appears once the migration is applied.
+    const { data: legacyData, error: legacyError } = await supabase
+      .from("testimonials")
+      .select(TESTIMONIAL_BASE_SELECT)
+      .eq("is_visible", true)
+      .eq("is_verified", true)
+      .order("display_order", { ascending: true })
+      .limit(limit);
+    if (legacyError) return [];
+    return (legacyData ?? []).map((row) => ({
+      ...row,
+      source: "website" as const,
+    })) as PublicTestimonial[];
   }
 
   return (data ?? []) as PublicTestimonial[];
