@@ -5,6 +5,7 @@ import Link from "next/link";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { t } from "@/lib/i18n/ui-strings";
 import type { PublicFooterGroup } from "@/features/footer/queries";
+import { ArrowUp } from "lucide-react";
 import { BrandLogo } from "@/components/ui/brand-logo";
 import { SocialIcons } from "@/components/ui/social-icons";
 import { Reveal } from "@/components/ui/reveal";
@@ -31,14 +32,13 @@ export function FooterContent({
   backToTopRef?: React.RefObject<HTMLElement | null>;
 }) {
   function handleBackToTop() {
-    if (backToTopRef?.current) {
-      backToTopRef.current.scrollTo({ top: 0, behavior: "smooth" });
-      return;
-    }
-    // Scroll the document's scrolling element so the page returns to the very
-    // top (announcement bar + sticky header), regardless of which element the
-    // browser treats as the viewport scroller.
-    const scroller = document.scrollingElement ?? document.documentElement;
+    // Prefer the element that actually scrolls the page (e.g. a custom scroll
+    // container if the footer is rendered inside one), otherwise the document's
+    // scroller. Scrolling to 0 lands on the announcement bar + sticky header.
+    const scroller =
+      backToTopRef?.current ??
+      document.scrollingElement ??
+      document.documentElement;
     scroller.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -92,8 +92,13 @@ export function FooterContent({
           <button
             type="button"
             onClick={handleBackToTop}
-            className="text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:text-xs"
+            className="group inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:text-xs"
           >
+            <ArrowUp
+              aria-hidden="true"
+              className="size-3.5 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:-translate-y-0.5"
+              strokeWidth={2.5}
+            />
             {t(locale, "backToTop")}
           </button>
         </div>
