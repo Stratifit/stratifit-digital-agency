@@ -36,6 +36,10 @@ export type UiStringKey =
   | "starsOutOfFive"
   | "viewCaseStudy"
   | "viewFullDetail"
+  | "browserNavHome"
+  | "browserNavAbout"
+  | "browserNavProducts"
+  | "browserNavContact"
   | "visitSite"
   | "buyBusiness"
   | "buyABusiness"
@@ -257,6 +261,10 @@ const en: UiStrings = {
   starsOutOfFive: "{n} out of 5 stars",
   viewCaseStudy: "View Case Study",
   viewFullDetail: "View Full Detail",
+  browserNavHome: "Home",
+  browserNavAbout: "About",
+  browserNavProducts: "Products",
+  browserNavContact: "Contact",
   visitSite: "Visit Site",
   buyBusiness: "Buy Business",
   buyABusiness: "Buy a Business",
@@ -496,6 +504,10 @@ const de: UiStrings = {
   starsOutOfFive: "{n} von 5 Sternen",
   viewCaseStudy: "Fallstudie ansehen",
   viewFullDetail: "Alle Details ansehen",
+  browserNavHome: "Start",
+  browserNavAbout: "Über uns",
+  browserNavProducts: "Produkte",
+  browserNavContact: "Kontakt",
   visitSite: "Website besuchen",
   buyBusiness: "Unternehmen kaufen",
   buyABusiness: "Ein Unternehmen kaufen",
@@ -736,6 +748,10 @@ const fr: UiStrings = {
   starsOutOfFive: "{n} étoiles sur 5",
   viewCaseStudy: "Voir l'étude de cas",
   viewFullDetail: "Voir le détail complet",
+  browserNavHome: "Accueil",
+  browserNavAbout: "À propos",
+  browserNavProducts: "Produits",
+  browserNavContact: "Contact",
   visitSite: "Visiter le site",
   buyBusiness: "Acheter l'entreprise",
   buyABusiness: "Acheter une entreprise",
@@ -976,6 +992,10 @@ const es: UiStrings = {
   starsOutOfFive: "{n} de 5 estrellas",
   viewCaseStudy: "Ver estudio de caso",
   viewFullDetail: "Ver detalle completo",
+  browserNavHome: "Inicio",
+  browserNavAbout: "Nosotros",
+  browserNavProducts: "Productos",
+  browserNavContact: "Contacto",
   visitSite: "Visitar sitio",
   buyBusiness: "Comprar negocio",
   buyABusiness: "Comprar un negocio",

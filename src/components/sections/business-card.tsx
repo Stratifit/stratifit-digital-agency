@@ -122,7 +122,14 @@ export function BusinessCard({
           </span>
         </div>
         <div className="flex items-center gap-2 sm:gap-3">
-          {["Home", "About", "Products", "Contact"].map((label, index) => (
+          {(
+            [
+              t(locale, "browserNavHome"),
+              t(locale, "browserNavAbout"),
+              t(locale, "browserNavProducts"),
+              t(locale, "browserNavContact"),
+            ] as const
+          ).map((label, index) => (
             <span
               key={label}
               className={cn(
