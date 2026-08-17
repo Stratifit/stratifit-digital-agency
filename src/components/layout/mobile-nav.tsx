@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
 import { LanguageSwitcher } from "./language-switcher";
 import { ServiceIcon } from "@/components/ui/service-icon";
@@ -128,9 +129,14 @@ export function MobileNav({
 
           <header className="relative z-20 flex min-h-20 shrink-0 items-center justify-between border-b border-border-subtle bg-background px-6 pr-16">
             <div className="flex min-w-0 items-center">
-              <div className="flex w-[160px] items-center">
+              <Link
+                href="/"
+                aria-label={`${siteName} home`}
+                onClick={() => setOpen(false)}
+                className="flex w-[160px] items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
                 <BrandLogo alt={siteName} />
-              </div>
+              </Link>
             </div>
 
             <LanguageSwitcher currentLocale={locale} onLocaleSelect={() => setOpen(false)} />

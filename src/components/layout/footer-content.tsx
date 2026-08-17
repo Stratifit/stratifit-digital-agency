@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { t } from "@/lib/i18n/ui-strings";
 import type { PublicFooterGroup } from "@/features/footer/queries";
@@ -44,9 +45,13 @@ export function FooterContent({
   return (
     <Reveal variant="calm" className={className}>
       <div className="space-y-4">
-        <div className="w-32">
+        <Link
+          href="/"
+          aria-label={`${siteName} home`}
+          className="inline-flex w-32 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        >
           <BrandLogo alt={siteName} />
-        </div>
+        </Link>
         {siteDescription ? (
           <p className="text-sm font-medium leading-snug text-text-subtle sm:max-w-[80%] sm:text-[15px] sm:leading-relaxed">
             {siteDescription}
