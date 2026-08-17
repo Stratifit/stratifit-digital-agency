@@ -173,6 +173,7 @@ export async function savePricing(
   const row = {
     slug: parsed.data.slug,
     name_translations: parsed.data.name_translations,
+    description_translations: parsed.data.description_translations ?? {},
     price_label_translations: parsed.data.price_label_translations,
     display_order: parsed.data.display_order,
     is_visible: parsed.data.is_visible,

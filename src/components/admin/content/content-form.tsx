@@ -139,6 +139,7 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
     }
     if (type === "pricing") {
       d.name_translations = tr(initial.name_translations as Record<string, string> | null);
+      d.description_translations = tr(initial.description_translations as Record<string, string> | null);
       d.price_label_translations = tr(initial.price_label_translations as Record<string, string> | null);
     }
     if (type === "faq") {
@@ -345,6 +346,25 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
             </div>
           ) : null}
         </div>
+
+        {type === "pricing" ? (
+          <div className="mt-5 space-y-2">
+            <Label htmlFor={`description-${locale}`}>
+              Description ({LOCALE_NAMES[locale]})
+            </Label>
+            <Textarea
+              id={`description-${locale}`}
+              rows={3}
+              placeholder="Short plan description"
+              {...register(`description_translations.${locale}`)}
+            />
+            {trErr("description_translations", locale) ? (
+              <p className="text-sm text-error">
+                {trErr("description_translations", locale)}
+              </p>
+            ) : null}
+          </div>
+        ) : null}
 
         {type === "portfolio" || type === "insights" ? (
           <div className="mt-5 space-y-2">

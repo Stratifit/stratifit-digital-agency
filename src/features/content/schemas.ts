@@ -52,6 +52,7 @@ export const pricingSchema = z.object({
     .min(1, "Slug is required")
     .regex(/^[a-z0-9-]+$/, "Lowercase letters, numbers, hyphens only"),
   name_translations: englishRequired("English name is required"),
+  description_translations: translations().optional(),
   price_label_translations: englishRequired("English price label is required"),
   display_order: z.number().int().min(0),
   is_visible: z.boolean(),

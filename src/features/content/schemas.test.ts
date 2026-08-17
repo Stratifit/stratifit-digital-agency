@@ -108,11 +108,25 @@ describe("pricingSchema", () => {
     const result = pricingSchema.safeParse({
       slug: "growth",
       name_translations: fullTranslations,
+      description_translations: fullTranslations,
       price_label_translations: fullTranslations,
       display_order: 2,
       is_visible: true,
       is_featured: false,
       status: "published",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("accepts a plan without a description", () => {
+    const result = pricingSchema.safeParse({
+      slug: "growth",
+      name_translations: fullTranslations,
+      price_label_translations: fullTranslations,
+      display_order: 2,
+      is_visible: true,
+      is_featured: false,
+      status: "draft",
     });
     expect(result.success).toBe(true);
   });
