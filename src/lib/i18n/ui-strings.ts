@@ -33,6 +33,7 @@ export type UiStringKey =
   | "getStarted"
   | "verifiedClientReviews"
   | "verifiedClient"
+  | "verified"
   | "reviewsCount"
   | "seeAllReviewsOnGoogle"
   | "starsOutOfFive"
@@ -260,6 +261,7 @@ const en: UiStrings = {
   getStarted: "Get Started",
   verifiedClientReviews: "Based on {n} verified client reviews",
   verifiedClient: "Verified client",
+  verified: "Verified",
   reviewsCount: "{n} reviews",
   seeAllReviewsOnGoogle: "See all reviews on Google",
   starsOutOfFive: "{n} out of 5 stars",
@@ -505,6 +507,7 @@ const de: UiStrings = {
   getStarted: "Loslegen",
   verifiedClientReviews: "Basierend auf {n} bestätigten Kundenbewertungen",
   verifiedClient: "Verifizierter Kunde",
+  verified: "Verifiziert",
   reviewsCount: "{n} Bewertungen",
   seeAllReviewsOnGoogle: "Alle Bewertungen auf Google ansehen",
   starsOutOfFive: "{n} von 5 Sternen",
@@ -751,6 +754,7 @@ const fr: UiStrings = {
   getStarted: "Commencer",
   verifiedClientReviews: "Basé sur {n} avis clients vérifiés",
   verifiedClient: "Client vérifié",
+  verified: "Vérifié",
   reviewsCount: "{n} avis",
   seeAllReviewsOnGoogle: "Voir tous les avis sur Google",
   starsOutOfFive: "{n} étoiles sur 5",
@@ -997,6 +1001,7 @@ const es: UiStrings = {
   getStarted: "Empezar",
   verifiedClientReviews: "Basado en {n} reseñas verificadas de clientes",
   verifiedClient: "Cliente verificado",
+  verified: "Verificado",
   reviewsCount: "{n} reseñas",
   seeAllReviewsOnGoogle: "Ver todas las reseñas en Google",
   starsOutOfFive: "{n} de 5 estrellas",

@@ -20,6 +20,19 @@ function StarIcon() {
   );
 }
 
+function CheckIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      className="size-3 shrink-0"
+    >
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+    </svg>
+  );
+}
+
 function initials(name: string): string {
   return name
     .split(" ")
@@ -50,17 +63,16 @@ export function TestimonialCard({
         className
       )}
     >
-      {/* Decorative quote mark */}
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-1 left-4 select-none font-display text-7xl font-black leading-none text-primary/25"
-      >
-        &ldquo;
-      </span>
-
-      <div className="relative flex flex-1 flex-col">
+      {/* Top row: decorative quote + stars */}
+      <div className="flex items-center justify-between gap-4">
+        <span
+          aria-hidden="true"
+          className="select-none font-display text-4xl font-black leading-none text-primary md:text-5xl"
+        >
+          &ldquo;
+        </span>
         <div
-          className="mb-4 flex gap-1"
+          className="flex gap-1"
           role="img"
           aria-label={tWithNumber(locale, "starsOutOfFive", 5)}
         >
@@ -68,32 +80,38 @@ export function TestimonialCard({
             <StarIcon key={i} />
           ))}
         </div>
+      </div>
 
-        <blockquote className="font-display text-lg font-bold leading-snug tracking-tight text-text-primary sm:text-xl">
-          &ldquo;
-          {resolveTranslation(testimonial.quote_translations, locale)}
-          &rdquo;
-        </blockquote>
+      {/* Quote */}
+      <blockquote className="mt-5 font-display text-lg font-bold leading-snug tracking-tight text-text-primary sm:text-xl">
+        {resolveTranslation(testimonial.quote_translations, locale)}
+      </blockquote>
 
-        <div className="mt-auto flex items-center gap-3 pt-7">
-          <div className="flex size-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br from-surface-hover to-surface-active text-sm font-bold text-white">
+      {/* Divider + author footer pinned to the bottom */}
+      <div className="mt-auto">
+        <div className="mt-6 border-t border-primary/10" aria-hidden="true" />
+
+        <footer className="mt-5 flex items-center gap-3">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br from-surface-hover to-surface-active text-xs font-bold text-white">
             {initials(name)}
           </div>
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <div className="truncate font-display font-bold text-text-primary">
               {name}
             </div>
-            <div className="mt-0.5 truncate text-xs text-text-subtle">
-              {role ? (
-                <>
-                  {role}
-                  <span className="mx-1.5 text-primary/40">·</span>
-                </>
-              ) : null}
-              {t(locale, "verifiedClient")}
-            </div>
+            {role ? (
+              <div className="mt-0.5 truncate text-xs text-text-subtle">
+                {role}
+              </div>
+            ) : null}
           </div>
-        </div>
+          {testimonial.is_verified ? (
+            <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-primary/25 bg-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-primary">
+              <CheckIcon />
+              {t(locale, "verified")}
+            </span>
+          ) : null}
+        </footer>
       </div>
     </article>
   );

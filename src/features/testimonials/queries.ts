@@ -5,6 +5,7 @@ export interface PublicTestimonial {
   person_name: string;
   person_role_translations: Record<string, string> | null;
   company_name: string | null;
+  is_verified: boolean;
 }
 
 export async function getPublicTestimonials(
@@ -15,7 +16,7 @@ export async function getPublicTestimonials(
   const { data, error } = await supabase
     .from("testimonials")
     .select(
-      "quote_translations, person_name, person_role_translations, company_name"
+      "quote_translations, person_name, person_role_translations, company_name, is_verified"
     )
     .eq("is_visible", true)
     .eq("is_verified", true)
