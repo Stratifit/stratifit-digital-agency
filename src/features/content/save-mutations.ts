@@ -140,6 +140,7 @@ export async function saveTestimonial(
     quote_translations: parsed.data.quote_translations,
     person_role_translations: parsed.data.person_role_translations ?? {},
     company_name: parsed.data.company_name || null,
+    source: parsed.data.source,
     is_visible: parsed.data.is_visible,
     is_verified: parsed.data.is_verified,
   };

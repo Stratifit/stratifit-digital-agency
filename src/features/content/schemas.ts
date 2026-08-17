@@ -43,6 +43,7 @@ export const testimonialSchema = z.object({
   quote_translations: englishRequired("English quote is required"),
   person_role_translations: translations().optional(),
   company_name: z.string(),
+  source: z.enum(["website", "google"]).default("website"),
   is_visible: z.boolean(),
   is_verified: z.boolean(),
 });

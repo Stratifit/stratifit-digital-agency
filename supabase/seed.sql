@@ -1107,10 +1107,10 @@ ON CONFLICT DO NOTHING;
 -- NOTE: Development placeholders. Replace with verified real client quotes before launch.
 -- =============================================================================
 
-INSERT INTO public.testimonials (id, quote_translations, person_name, person_role_translations, company_name, display_order, is_featured, is_visible, is_verified)
+INSERT INTO public.testimonials (id, quote_translations, person_name, person_role_translations, company_name, display_order, is_featured, is_visible, is_verified, source)
 VALUES
   ('33333333-3333-4333-8333-333333333311', '{"en": "Stratifit rebuilt our entire digital presence. Within six months we doubled online revenue and our brand finally looks the part.", "de": "Stratifit hat unsere gesamte digitale Präsenz neu aufgebaut. Innerhalb von sechs Monaten haben wir den Online-Umsatz verdoppelt und unsere Marke sieht endlich danach aus.", "fr": "Stratifit a reconstruit toute notre présence numérique. En six mois, nous avons doublé notre chiffre d affaires en ligne et notre marque a enfin l allure qu elle mérite.", "es": "Stratifit reconstruyó toda nuestra presencia digital. En seis meses duplicamos los ingresos online y nuestra marca por fin tiene la imagen que merece."}'::jsonb, 'Claire Fontaine', '{"en": "CEO", "de": "CEO", "fr": "PDG", "es": "CEO"}'::jsonb, 'Maison Lumière', 1, true, true, true),
-  ('33333333-3333-4333-8333-333333333312', '{"en": "The website Stratifit delivered converts beautifully. Our demo requests grew 340% in the first quarter after launch.", "de": "Die Website, die Stratifit geliefert hat, konvertiert hervorragend. Unsere Demo-Anfragen stiegen im ersten Quartal nach dem Start um 340 %.", "fr": "Le site livré par Stratifit convertit magnifiquement. Nos demandes de démo ont augmenté de 340 % au premier trimestre après le lancement.", "es": "El sitio web que Stratifit entregó convierte de maravilla. Nuestras solicitudes de demo crecieron un 340 % en el primer trimestre tras el lanzamiento."}'::jsonb, 'Marcus Weber', '{"en": "Co-Founder & CTO", "de": "Mitgründer & CTO", "fr": "Co-fondateur & CTO", "es": "Co-fundador y CTO"}'::jsonb, 'Nova Fintech', 2, true, true, true),
+  ('33333333-3333-4333-8333-333333333312', '{"en": "The website Stratifit delivered converts beautifully. Our demo requests grew 340% in the first quarter after launch.", "de": "Die Website, die Stratifit geliefert hat, konvertiert hervorragend. Unsere Demo-Anfragen stiegen im ersten Quartal nach dem Start um 340 %.", "fr": "Le site livré par Stratifit convertit magnifiquement. Nos demandes de démo ont augmenté de 340 % au premier trimestre après le lancement.", "es": "El sitio web que Stratifit entregó convierte de maravilla. Nuestras solicitudes de demo crecieron un 340 % en el primer trimestre tras el lanzamiento."}'::jsonb, 'Marcus Weber', '{"en": "Co-Founder & CTO", "de": "Mitgründer & CTO", "fr": "Co-fondateur & CTO", "es": "Co-fundador y CTO"}'::jsonb, 'Nova Fintech', 2, true, true, true, 'google'),
   ('33333333-3333-4333-8333-333333333313', '{"en": "Their AI assistant handles 78% of our support tickets end-to-end. Our team finally focuses on complex cases instead of repetitive ones.", "de": "Ihr KI-Assistent bearbeitet 78 % unserer Support-Tickets vollständig. Unser Team konzentriert sich endlich auf komplexe Fälle statt auf Routineaufgaben.", "fr": "Leur assistant IA traite 78 % de nos tickets de support de bout en bout. Notre équipe se concentre enfin sur les cas complexes plutôt que répétitifs.", "es": "Su asistente de IA gestiona el 78 % de nuestros tickets de soporte de principio a fin. Nuestro equipo por fin se centra en casos complejos en lugar de repetitivos."}'::jsonb, 'Sofia Rossi', '{"en": "Head of Customer Experience", "de": "Leiterin Kundenerlebnis", "fr": "Responsable de l expérience client", "es": "Directora de Experiencia del Cliente"}'::jsonb, 'Helios Health', 3, true, true, true)
 ON CONFLICT (id) DO UPDATE SET
   quote_translations = EXCLUDED.quote_translations,
@@ -1118,6 +1118,7 @@ ON CONFLICT (id) DO UPDATE SET
   person_role_translations = EXCLUDED.person_role_translations,
   company_name = EXCLUDED.company_name,
   is_visible = EXCLUDED.is_visible,
-  is_verified = EXCLUDED.is_verified;
+  is_verified = EXCLUDED.is_verified,
+  source = EXCLUDED.source;
 
 

@@ -1918,6 +1918,7 @@ export type Database = {
           person_name: string
           person_role_translations: Json
           quote_translations: Json
+          source: string
           related_portfolio_id: string | null
           related_service_id: string | null
           updated_at: string
@@ -1934,6 +1935,7 @@ export type Database = {
           person_name: string
           person_role_translations?: Json
           quote_translations?: Json
+          source?: string
           related_portfolio_id?: string | null
           related_service_id?: string | null
           updated_at?: string
@@ -1950,6 +1952,7 @@ export type Database = {
           person_name?: string
           person_role_translations?: Json
           quote_translations?: Json
+          source?: string
           related_portfolio_id?: string | null
           related_service_id?: string | null
           updated_at?: string

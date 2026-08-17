@@ -135,6 +135,7 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
       d.quote_translations = tr(initial.quote_translations as Record<string, string> | null);
       d.person_role_translations = tr(initial.person_role_translations as Record<string, string> | null);
       d.company_name = initial.company_name ?? "";
+      d.source = initial.source ?? "website";
       d.is_visible = initial.is_visible ?? true;
       d.is_verified = initial.is_verified ?? false;
     }
@@ -284,6 +285,16 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
               <div className="space-y-2">
                 <Label htmlFor="company_name">Company (optional)</Label>
                 <Input id="company_name" placeholder="Company" {...register("company_name")} />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="source">Source</Label>
+                <Select id="source" {...register("source")}>
+                  <option value="website">Website</option>
+                  <option value="google">Google</option>
+                </Select>
+                <p className="text-xs text-text-muted">
+                  Google reviews show a Google icon on the card.
+                </p>
               </div>
             </>
           ) : null}
