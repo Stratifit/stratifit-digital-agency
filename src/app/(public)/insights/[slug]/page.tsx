@@ -132,8 +132,8 @@ export default async function InsightDetailPage({
 
       <div aria-hidden="true" className="h-px w-full bg-white/5" />
 
-      {/* Title + article body overlapping the hero */}
-      <section className="relative z-10 -mt-3 pb-4">
+      {/* Title + article body */}
+      <section className="relative z-10 py-16 md:py-24">
         <Container className="max-w-3xl">
           <Reveal variant="fade">
             <h1 className="mb-8 font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
