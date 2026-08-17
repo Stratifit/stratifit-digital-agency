@@ -82,7 +82,6 @@ function GoogleIcon() {
 export function ReviewSummaryBand({
   rating = REVIEW_SUMMARY_DEFAULTS.rating,
   verifiedReviews = REVIEW_SUMMARY_DEFAULTS.verifiedReviews,
-  googleRating = REVIEW_SUMMARY_DEFAULTS.googleRating,
   googleReviews = REVIEW_SUMMARY_DEFAULTS.googleReviews,
   googleReviewsUrl = REVIEW_SUMMARY_DEFAULTS.googleReviewsUrl,
   locale,
@@ -94,6 +93,9 @@ export function ReviewSummaryBand({
         <div className="flex items-center gap-1.5">
           <span className="font-display text-2xl font-bold leading-none tracking-tight text-text-primary sm:text-3xl">
             {rating}
+            <span className="text-lg font-medium text-text-subtle sm:text-xl">
+              {" / 5"}
+            </span>
           </span>
           <Stars label={tWithNumber(locale, "starsOutOfFive", Number(rating))} />
         </div>
@@ -120,35 +122,28 @@ export function ReviewSummaryBand({
         rel="noopener noreferrer"
         title={t(locale, "seeAllReviewsOnGoogle")}
         aria-label={t(locale, "seeAllReviewsOnGoogle")}
-        className="group flex min-w-0 flex-1 flex-col items-center justify-center gap-1 px-2 py-3 text-center transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary/5 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary sm:px-4"
+        className="group flex min-w-0 flex-1 items-center justify-center gap-2 px-2 py-3 text-center transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary/5 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary sm:px-4"
       >
-        <div className="flex items-center gap-1.5">
-          <span className="font-display text-2xl font-bold leading-none tracking-tight text-text-primary sm:text-3xl">
-            {googleRating}
-          </span>
-          <Stars label={tWithNumber(locale, "starsOutOfFive", Number(googleRating))} />
-        </div>
-        <p className="flex min-w-0 max-w-full items-center justify-center gap-1.5 text-[10px] leading-tight text-text-muted sm:text-[11px]">
-          <GoogleIcon />
-          <span className="truncate">
-            {tWithNumber(locale, "reviewsCount", googleReviews)
-              .split(String(googleReviews))
-              .map((part, index) => (
-                <Fragment key={index}>
-                  {index > 0 ? (
-                    <span className="font-semibold text-primary">
-                      {googleReviews}
-                    </span>
-                  ) : null}
-                  {part}
-                </Fragment>
-              ))}
-          </span>
-          <ArrowUpRight
-            className="size-3.5 shrink-0 text-primary transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-            aria-hidden="true"
-          />
-        </p>
+        <GoogleIcon />
+        <span className="min-w-0 truncate text-sm font-semibold text-text-primary">
+          {"Google · "}
+          {tWithNumber(locale, "reviewsCount", googleReviews)
+            .split(String(googleReviews))
+            .map((part, index) => (
+              <Fragment key={index}>
+                {index > 0 ? (
+                  <span className="font-semibold text-primary">
+                    {googleReviews}
+                  </span>
+                ) : null}
+                {part}
+              </Fragment>
+            ))}
+        </span>
+        <ArrowUpRight
+          className="size-4 shrink-0 text-primary transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+          aria-hidden="true"
+        />
       </a>
     </div>
   );

@@ -29,8 +29,10 @@ export type UiStringKey =
   | "viewAllProjects"
   | "viewAllBusinesses"
   | "viewAllTestimonials"
+  | "viewAllStories"
   | "getStarted"
   | "verifiedClientReviews"
+  | "verifiedClient"
   | "reviewsCount"
   | "seeAllReviewsOnGoogle"
   | "starsOutOfFive"
@@ -254,8 +256,10 @@ const en: UiStrings = {
   viewAllProjects: "View All Projects",
   viewAllBusinesses: "View All Businesses",
   viewAllTestimonials: "View All Testimonials",
+  viewAllStories: "View all stories",
   getStarted: "Get Started",
-  verifiedClientReviews: "{n} verified client reviews",
+  verifiedClientReviews: "Based on {n} verified client reviews",
+  verifiedClient: "Verified client",
   reviewsCount: "{n} reviews",
   seeAllReviewsOnGoogle: "See all reviews on Google",
   starsOutOfFive: "{n} out of 5 stars",
@@ -497,8 +501,10 @@ const de: UiStrings = {
   viewAllProjects: "Alle Projekte ansehen",
   viewAllBusinesses: "Alle Unternehmen ansehen",
   viewAllTestimonials: "Alle Testimonials ansehen",
+  viewAllStories: "Alle Geschichten ansehen",
   getStarted: "Loslegen",
-  verifiedClientReviews: "{n} bestätigte Kundenbewertungen",
+  verifiedClientReviews: "Basierend auf {n} bestätigten Kundenbewertungen",
+  verifiedClient: "Verifizierter Kunde",
   reviewsCount: "{n} Bewertungen",
   seeAllReviewsOnGoogle: "Alle Bewertungen auf Google ansehen",
   starsOutOfFive: "{n} von 5 Sternen",
@@ -741,8 +747,10 @@ const fr: UiStrings = {
   viewAllProjects: "Voir tous les projets",
   viewAllBusinesses: "Voir toutes les entreprises",
   viewAllTestimonials: "Voir tous les témoignages",
+  viewAllStories: "Voir toutes les histoires",
   getStarted: "Commencer",
-  verifiedClientReviews: "{n} avis clients vérifiés",
+  verifiedClientReviews: "Basé sur {n} avis clients vérifiés",
+  verifiedClient: "Client vérifié",
   reviewsCount: "{n} avis",
   seeAllReviewsOnGoogle: "Voir tous les avis sur Google",
   starsOutOfFive: "{n} étoiles sur 5",
@@ -985,8 +993,10 @@ const es: UiStrings = {
   viewAllProjects: "Ver todos los proyectos",
   viewAllBusinesses: "Ver todas las empresas",
   viewAllTestimonials: "Ver todos los testimonios",
+  viewAllStories: "Ver todas las historias",
   getStarted: "Empezar",
-  verifiedClientReviews: "{n} reseñas verificadas de clientes",
+  verifiedClientReviews: "Basado en {n} reseñas verificadas de clientes",
+  verifiedClient: "Cliente verificado",
   reviewsCount: "{n} reseñas",
   seeAllReviewsOnGoogle: "Ver todas las reseñas en Google",
   starsOutOfFive: "{n} de 5 estrellas",

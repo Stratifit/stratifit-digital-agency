@@ -1,7 +1,7 @@
 import type { PublicTestimonial } from "@/features/testimonials/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { cn } from "@/lib/cn";
-import { tWithNumber } from "@/lib/i18n/ui-strings";
+import { t, tWithNumber } from "@/lib/i18n/ui-strings";
 
 function StarIcon() {
   return (
@@ -38,39 +38,63 @@ export function TestimonialCard({
   locale: string;
   className?: string;
 }) {
+  const name = testimonial.person_name;
+  const role =
+    resolveTranslation(testimonial.person_role_translations, locale) ||
+    testimonial.company_name;
+
   return (
     <article
       className={cn(
-        "rounded-card border border-white/5 bg-card-dark p-6 transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/20 md:p-8",
+        "relative flex h-full flex-col rounded-card border border-primary/25 bg-card-dark p-6 transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/40 hover:shadow-[0_0_30px_-10px_rgba(245,158,11,0.25)] md:p-8",
         className
       )}
     >
-      <div className="mb-6 flex items-center gap-3">
-        <div className="flex size-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br from-surface-hover to-surface-active text-sm font-bold text-white">
-          {initials(testimonial.person_name)}
-        </div>
-        <div className="min-w-0">
-          <div className="truncate font-display font-bold text-text-primary">
-            {testimonial.person_name}
-          </div>
-          <div className="mt-0.5 truncate text-xs uppercase tracking-wide text-text-subtle">
-            {resolveTranslation(testimonial.person_role_translations, locale) ||
-              testimonial.company_name}
-          </div>
-        </div>
-      </div>
-
-      <div className="mb-4 flex gap-1" role="img" aria-label={tWithNumber(locale, "starsOutOfFive", 5)}>
-        {Array.from({ length: 5 }).map((_, i) => (
-          <StarIcon key={i} />
-        ))}
-      </div>
-
-      <p className="text-sm leading-relaxed text-text-secondary">
+      {/* Decorative quote mark */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-1 left-4 select-none font-display text-7xl font-black leading-none text-primary/25"
+      >
         &ldquo;
-        {resolveTranslation(testimonial.quote_translations, locale)}
-        &rdquo;
-      </p>
+      </span>
+
+      <div className="relative flex flex-1 flex-col">
+        <div
+          className="mb-4 flex gap-1"
+          role="img"
+          aria-label={tWithNumber(locale, "starsOutOfFive", 5)}
+        >
+          {Array.from({ length: 5 }).map((_, i) => (
+            <StarIcon key={i} />
+          ))}
+        </div>
+
+        <blockquote className="font-display text-lg font-bold leading-snug tracking-tight text-text-primary sm:text-xl">
+          &ldquo;
+          {resolveTranslation(testimonial.quote_translations, locale)}
+          &rdquo;
+        </blockquote>
+
+        <div className="mt-auto flex items-center gap-3 pt-7">
+          <div className="flex size-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br from-surface-hover to-surface-active text-sm font-bold text-white">
+            {initials(name)}
+          </div>
+          <div className="min-w-0">
+            <div className="truncate font-display font-bold text-text-primary">
+              {name}
+            </div>
+            <div className="mt-0.5 truncate text-xs text-text-subtle">
+              {role ? (
+                <>
+                  {role}
+                  <span className="mx-1.5 text-primary/40">·</span>
+                </>
+              ) : null}
+              {t(locale, "verifiedClient")}
+            </div>
+          </div>
+        </div>
+      </div>
     </article>
   );
 }
