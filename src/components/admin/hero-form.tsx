@@ -63,22 +63,30 @@ function TrustedLogoImageUpload({
     if (!file) return;
     setUploading(true);
     setError(null);
-    const formData = new FormData();
-    formData.set("file", file);
-    formData.set("bucket", "logos");
-    formData.set("alt_text", file.name);
-    const result = await uploadMediaAsset(formData);
-    setUploading(false);
-    if (result.success) {
-      setValue(`trusted_by.${index}.media_id`, result.data.id, {
-        shouldDirty: true,
-      });
-      setValue(`trusted_by.${index}.image_url`, result.data.url, {
-        shouldDirty: true,
-      });
-      if (inputRef.current) inputRef.current.value = "";
-    } else {
-      setError(result.error);
+    try {
+      const formData = new FormData();
+      formData.set("file", file);
+      formData.set("bucket", "logos");
+      formData.set("alt_text", file.name);
+      const result = await uploadMediaAsset(formData);
+      if (result.success) {
+        setValue(`trusted_by.${index}.media_id`, result.data.id, {
+          shouldDirty: true,
+        });
+        setValue(`trusted_by.${index}.image_url`, result.data.url, {
+          shouldDirty: true,
+        });
+        if (inputRef.current) inputRef.current.value = "";
+      } else {
+        setError(result.error);
+      }
+    } catch {
+      // The server action can still reject despite uploadMediaAsset returning
+      // results (e.g. request body limits on the proxy, network errors). Show
+      // a message instead of leaving the spinner stuck forever.
+      setError("Upload failed. Please try again.");
+    } finally {
+      setUploading(false);
     }
   }
 

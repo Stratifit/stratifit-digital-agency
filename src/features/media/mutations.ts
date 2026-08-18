@@ -63,62 +63,72 @@ export async function uploadMediaAsset(
     };
   }
 
-  const supabase = await createSupabaseServerClient();
+  try {
+    const supabase = await createSupabaseServerClient();
 
-  // Generate a unique storage path
-  const timestamp = Date.now();
-  const safeName = sanitizeFilename(file.name);
-  const extension = safeName.includes(".") ? safeName.split(".").pop() : "bin";
-  const baseName = safeName.includes(".")
-    ? safeName.slice(0, safeName.lastIndexOf("."))
-    : safeName;
-  const storagePath = `${baseName}-${timestamp}.${extension}`;
+    // Generate a unique storage path
+    const timestamp = Date.now();
+    const safeName = sanitizeFilename(file.name);
+    const extension = safeName.includes(".") ? safeName.split(".").pop() : "bin";
+    const baseName = safeName.includes(".")
+      ? safeName.slice(0, safeName.lastIndexOf("."))
+      : safeName;
+    const storagePath = `${baseName}-${timestamp}.${extension}`;
 
-  // Upload to Supabase Storage
-  const { error: uploadError } = await supabase.storage
-    .from(bucket)
-    .upload(storagePath, file, {
-      contentType: file.type,
-      cacheControl: "3600",
-      upsert: false,
-    });
+    // Upload to Supabase Storage
+    const { error: uploadError } = await supabase.storage
+      .from(bucket)
+      .upload(storagePath, file, {
+        contentType: file.type,
+        cacheControl: "3600",
+        upsert: false,
+      });
 
-  if (uploadError) {
+    if (uploadError) {
+      return {
+        success: false,
+        error: "Failed to upload file to storage. Please try again.",
+      };
+    }
+
+    // Insert metadata record
+    const { data, error: dbError } = await supabase
+      .from("media_assets")
+      .insert({
+        bucket_name: bucket,
+        storage_path: storagePath,
+        original_filename: file.name,
+        mime_type: file.type,
+        file_size_bytes: file.size,
+        alt_text_translations: altText ? { en: altText } : {},
+        category: BUCKET_CATEGORIES[bucket] ?? "general",
+        is_public: true,
+      })
+      .select("id")
+      .single();
+
+    if (dbError || !data) {
+      // Attempt to clean up the uploaded file if metadata insert fails
+      await supabase.storage.from(bucket).remove([storagePath]);
+      return {
+        success: false,
+        error: "Failed to save media metadata. Please try again.",
+      };
+    }
+
+    revalidatePath("/admin/media");
+
+    const url = getMediaPublicUrl(bucket, storagePath) ?? "";
+    return { success: true, data: { id: data.id, url } };
+  } catch {
+    // Never let a thrown error escape a server action: the caller must always
+    // receive a result it can render (e.g. request body limits, network
+    // failures, unexpected storage errors).
     return {
       success: false,
-      error: "Failed to upload file to storage. Please try again.",
+      error: "Upload failed unexpectedly. Please try again.",
     };
   }
-
-  // Insert metadata record
-  const { data, error: dbError } = await supabase
-    .from("media_assets")
-    .insert({
-      bucket_name: bucket,
-      storage_path: storagePath,
-      original_filename: file.name,
-      mime_type: file.type,
-      file_size_bytes: file.size,
-      alt_text_translations: altText ? { en: altText } : {},
-      category: BUCKET_CATEGORIES[bucket] ?? "general",
-      is_public: true,
-    })
-    .select("id")
-    .single();
-
-  if (dbError || !data) {
-    // Attempt to clean up the uploaded file if metadata insert fails
-    await supabase.storage.from(bucket).remove([storagePath]);
-    return {
-      success: false,
-      error: "Failed to save media metadata. Please try again.",
-    };
-  }
-
-  revalidatePath("/admin/media");
-
-  const url = getMediaPublicUrl(bucket, storagePath) ?? "";
-  return { success: true, data: { id: data.id, url } };
 }
 
 export async function deleteMediaAsset(id: string): Promise<void> {

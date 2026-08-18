@@ -25,7 +25,14 @@ async function uploadAction(
   _prevState: MediaActionResult | null,
   formData: FormData
 ): Promise<MediaActionResult> {
-  return uploadMediaAsset(formData);
+  try {
+    return await uploadMediaAsset(formData);
+  } catch {
+    // Server actions can reject (request body limits, network errors) even
+    // though uploadMediaAsset returns results; surface a message instead of
+    // letting the error bubble into the page error boundary.
+    return { success: false, error: "Upload failed. Please try again." };
+  }
 }
 
 function SubmitButton() {

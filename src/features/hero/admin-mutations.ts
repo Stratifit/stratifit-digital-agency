@@ -37,22 +37,28 @@ export async function updateHero(input: HeroFormValues): Promise<ActionResult> {
     };
   }
 
+  // Upsert so saving also creates the singleton row when it is missing
+  // (e.g. a database that hasn't been seeded). A plain update on a missing
+  // row would silently update nothing and still report success.
   const { error } = await supabase
     .from("hero")
-    .update({
-      eyebrow_translations: parsed.data.eyebrow_translations,
-      title_translations: parsed.data.title_translations,
-      highlight_translations: parsed.data.highlight_translations,
-      description_translations: parsed.data.description_translations,
-      primary_cta_label_translations: parsed.data.primary_cta_label_translations,
-      primary_cta_url: parsed.data.primary_cta_url || null,
-      secondary_cta_label_translations: parsed.data.secondary_cta_label_translations,
-      secondary_cta_url: parsed.data.secondary_cta_url || null,
-      metrics: parsed.data.metrics,
-      trusted_by: parsed.data.trusted_by,
-      is_visible: parsed.data.is_visible,
-    })
-    .eq("singleton_key", true);
+    .upsert(
+      {
+        singleton_key: true,
+        eyebrow_translations: parsed.data.eyebrow_translations,
+        title_translations: parsed.data.title_translations,
+        highlight_translations: parsed.data.highlight_translations,
+        description_translations: parsed.data.description_translations,
+        primary_cta_label_translations: parsed.data.primary_cta_label_translations,
+        primary_cta_url: parsed.data.primary_cta_url || null,
+        secondary_cta_label_translations: parsed.data.secondary_cta_label_translations,
+        secondary_cta_url: parsed.data.secondary_cta_url || null,
+        metrics: parsed.data.metrics,
+        trusted_by: parsed.data.trusted_by,
+        is_visible: parsed.data.is_visible,
+      },
+      { onConflict: "singleton_key" }
+    );
 
   if (error) {
     return { success: false, error: "Failed to save hero." };
