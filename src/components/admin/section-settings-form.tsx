@@ -1,7 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { useForm, useWatch, type UseFormRegister } from "react-hook-form";
+import {
+  useForm,
+  useWatch,
+  useFieldArray,
+  type UseFormRegister,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   sectionSettingsSchema,
@@ -39,7 +44,10 @@ const STATS_SECTIONS = new Set(["portfolio"]);
 /** Sections whose editor also manages a review summary band (/testimonials page). */
 const REVIEW_SUMMARY_SECTIONS = new Set(["testimonials"]);
 
-type SectionKey = "header" | "cta" | "stats" | "review" | "seo";
+/** Sections whose editor also manages a tech-stack marquee. */
+const TECH_STACK_SECTIONS = new Set(["tech-stack"]);
+
+type SectionKey = "header" | "cta" | "stats" | "review" | "tech" | "seo";
 
 function ReviewSummaryEditor({
   register,
@@ -107,6 +115,76 @@ function ReviewSummaryEditor({
       </div>
       <p className="text-xs text-text-muted">
         Ratings and review counts shown at the top of the reviews page.
+      </p>
+    </div>
+  );
+}
+
+function TechStackEditor({
+  register,
+  fields,
+  onAppend,
+  onRemove,
+}: {
+  register: UseFormRegister<SectionSettingsFormValues>;
+  fields: { id: string }[];
+  onAppend: () => void;
+  onRemove: (index: number) => void;
+}) {
+  const fieldPrefix = "tech_stack";
+  return (
+    <div className="space-y-4">
+      <div className="space-y-3">
+        {fields.map((field, index) => (
+          <div key={field.id} className="flex items-start gap-3">
+            <div className="grid flex-1 gap-3 sm:grid-cols-2">
+              <div className="space-y-1.5">
+                <Label htmlFor={`${fieldPrefix}-${index}-name`}>Name</Label>
+                <Input
+                  id={`${fieldPrefix}-${index}-name`}
+                  placeholder="Next.js"
+                  {...register(`${fieldPrefix}.${index}.name`)}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor={`${fieldPrefix}-${index}-icon`}>
+                  Icon label
+                </Label>
+                <Input
+                  id={`${fieldPrefix}-${index}-icon`}
+                  placeholder="code"
+                  {...register(`${fieldPrefix}.${index}.icon`)}
+                />
+                <p className="text-xs text-text-muted">
+                  One of: brush, zap, code, atom.
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => onRemove(index)}
+              className="mt-6 text-xs text-text-muted transition-colors hover:text-error focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+        {fields.length === 0 ? (
+          <p className="text-xs text-text-muted">
+            No technologies yet — add one above.
+          </p>
+        ) : null}
+      </div>
+      <button
+        type="button"
+        onClick={onAppend}
+        className="rounded-button border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      >
+        + Add technology
+      </button>
+      <p className="text-xs text-text-muted">
+        Technologies shown in the scrolling marquee under this section&apos;s
+        heading.
       </p>
     </div>
   );
@@ -199,6 +277,12 @@ function toFormValues(settings: AdminSectionSettings): SectionSettingsFormValues
           googleReviewsUrl: settings.review_summary.googleReviewsUrl ?? "",
         }
       : undefined,
+    tech_stack: Array.isArray(settings.tech_stack)
+      ? settings.tech_stack.map((item) => ({
+          name: item.name ?? "",
+          icon: item.icon ?? "",
+        }))
+      : [],
     seo_title_translations: translations(settings.seo_title_translations),
     seo_description_translations: translations(
       settings.seo_description_translations
@@ -237,6 +321,7 @@ export function SectionSettingsForm({
   });
 
   const isVisible = useWatch({ control, name: "is_visible" });
+  const techFields = useFieldArray({ control, name: "tech_stack" });
   const eyebrowTranslations = useWatch({ control, name: "eyebrow_translations" });
   const titleTranslations = useWatch({ control, name: "title_translations" });
   const highlightTranslations = useWatch({
@@ -300,6 +385,15 @@ export function SectionSettingsForm({
             key: "review" as const,
             label: "Review summary band",
             description: "Ratings and counts shown at the top of the reviews page.",
+          },
+        ]
+      : []),
+    ...(TECH_STACK_SECTIONS.has(settings.section_key)
+      ? [
+          {
+            key: "tech" as const,
+            label: "Tech stack",
+            description: "Technologies shown in the scrolling marquee.",
           },
         ]
       : []),
@@ -493,6 +587,15 @@ export function SectionSettingsForm({
 
         {activeSection === "review" ? (
           <ReviewSummaryEditor register={register} />
+        ) : null}
+
+        {activeSection === "tech" ? (
+          <TechStackEditor
+            register={register}
+            fields={techFields.fields}
+            onAppend={() => techFields.append({ name: "", icon: "" })}
+            onRemove={(index) => techFields.remove(index)}
+          />
         ) : null}
 
         {activeSection === "seo" ? (

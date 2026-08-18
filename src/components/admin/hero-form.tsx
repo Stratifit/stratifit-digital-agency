@@ -20,7 +20,7 @@ import {
   type EditorLocale,
 } from "@/components/admin/locale-tabs";
 
-type SectionKey = "headline" | "cta" | "metrics" | "tech";
+type SectionKey = "headline" | "cta" | "metrics";
 
 const emptyTr = () => ({ en: "", de: "", fr: "", es: "" });
 
@@ -43,10 +43,6 @@ function toFormValues(hero: AdminHero): HeroFormValues {
         value: m.value,
         label_translations: tr(m.label_translations),
       })) ?? [{ value: "", label_translations: emptyTr() }],
-    tech_stack:
-      hero.tech_stack?.map((t) => ({ name: t.name, icon: t.icon ?? "" })) ?? [],
-    tech_stack_heading_translations: tr(hero.tech_stack_heading_translations),
-    tech_stack_description_translations: tr(hero.tech_stack_description_translations),
     is_visible: hero.is_visible,
   };
 }
@@ -72,7 +68,6 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
 
   const isVisible = useWatch({ control, name: "is_visible" });
   const metricFields = useFieldArray({ control, name: "metrics" });
-  const techFields = useFieldArray({ control, name: "tech_stack" });
 
   async function onSubmit(values: HeroFormValues) {
     setServerError(null);
@@ -111,20 +106,6 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
           className="rounded-button border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
           + Add metric
-        </button>
-      ),
-    },
-    {
-      key: "tech",
-      label: "Tech stack chips",
-      description: "Technologies shown in the scrolling marquee.",
-      action: (
-        <button
-          type="button"
-          onClick={() => techFields.append({ name: "", icon: "" })}
-          className="rounded-button border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-        >
-          + Add chip
         </button>
       ),
     },
@@ -232,46 +213,6 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
           </div>
         ) : null}
 
-        {activeSection === "tech" ? (
-          <div className="space-y-4">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-1.5">
-                <Label htmlFor={`ts-heading-${locale}`}>Tech stack heading ({locale.toUpperCase()})</Label>
-                <Input key={locale} id={`ts-heading-${locale}`} placeholder="Built with modern tools" {...register(`tech_stack_heading_translations.${locale}`)} />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor={`ts-desc-${locale}`}>Tech stack description ({locale.toUpperCase()})</Label>
-                <Input key={locale} id={`ts-desc-${locale}`} placeholder="The technologies behind our work" {...register(`tech_stack_description_translations.${locale}`)} />
-              </div>
-            </div>
-            <div className="space-y-3">
-              {techFields.fields.map((field, index) => (
-                <div key={field.id} className="flex items-start gap-3">
-                  <div className="grid flex-1 gap-3 sm:grid-cols-2">
-                    <div className="space-y-1.5">
-                      <Label htmlFor={`ts-${index}-name`}>Name</Label>
-                      <Input id={`ts-${index}-name`} placeholder="Next.js" {...register(`tech_stack.${index}.name`)} />
-                    </div>
-                    <div className="space-y-1.5">
-                      <Label htmlFor={`ts-${index}-icon`}>Icon label</Label>
-                      <Input id={`ts-${index}-icon`} placeholder="▲" {...register(`tech_stack.${index}.icon`)} />
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => techFields.remove(index)}
-                    className="mt-6 text-xs text-text-muted transition-colors hover:text-error focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                  >
-                    Remove
-                  </button>
-                </div>
-              ))}
-              {techFields.fields.length === 0 ? (
-                <p className="text-xs text-text-muted">No tech stack chips yet — add one above.</p>
-              ) : null}
-            </div>
-          </div>
-        ) : null}
       </EditorSectionSwitcher>
 
       {serverError ? (

@@ -18,9 +18,6 @@ const valid = {
       label_translations: tr("Projects Delivered"),
     },
   ],
-  tech_stack: [{ name: "Next.js", icon: "▲" }],
-  tech_stack_heading_translations: tr("Built with modern tools"),
-  tech_stack_description_translations: tr("The stack behind our work"),
   is_visible: true,
 };
 
@@ -38,14 +35,6 @@ describe("heroSchema", () => {
     const result = heroSchema.safeParse({
       ...valid,
       metrics: [{ value: "", label_translations: tr("Label") }],
-    });
-    expect(result.success).toBe(false);
-  });
-
-  it("rejects a tech stack chip without a name", () => {
-    const result = heroSchema.safeParse({
-      ...valid,
-      tech_stack: [{ name: "", icon: "▲" }],
     });
     expect(result.success).toBe(false);
   });

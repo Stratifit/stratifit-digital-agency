@@ -23,6 +23,8 @@ export interface PublicSectionSettings {
     googleReviews: number;
     googleReviewsUrl: string;
   } | null;
+  /** Optional tech-stack marquee items (tech-stack section). */
+  tech_stack?: { name: string; icon: string }[] | null;
   /** Optional page SEO metadata (title + description). */
   seo_title_translations?: Record<string, string> | null;
   seo_description_translations?: Record<string, string> | null;
@@ -30,7 +32,7 @@ export interface PublicSectionSettings {
 }
 
 const SELECT_FIELDS =
-  "section_key, label, eyebrow_translations, title_translations, highlight_translations, description_translations, cta_label_translations, cta_url, stats, review_summary, seo_title_translations, seo_description_translations, is_visible";
+  "section_key, label, eyebrow_translations, title_translations, highlight_translations, description_translations, cta_label_translations, cta_url, stats, review_summary, tech_stack, seo_title_translations, seo_description_translations, is_visible";
 
 export async function getPublicSectionSetting(
   sectionKey: string

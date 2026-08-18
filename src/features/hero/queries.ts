@@ -1,10 +1,4 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { parseJsonArray } from "@/lib/json";
-
-export interface TechStackItem {
-  name: string;
-  icon: string;
-}
 
 export interface PublicHero {
   eyebrow_translations: Record<string, string> | null;
@@ -16,9 +10,6 @@ export interface PublicHero {
   secondary_cta_label_translations: Record<string, string> | null;
   secondary_cta_url: string | null;
   metrics: unknown[] | null;
-  tech_stack: TechStackItem[] | null;
-  tech_stack_heading_translations: Record<string, string> | null;
-  tech_stack_description_translations: Record<string, string> | null;
 }
 
 export async function getPublicHero(): Promise<PublicHero | null> {
@@ -27,7 +18,7 @@ export async function getPublicHero(): Promise<PublicHero | null> {
   const { data, error } = await supabase
     .from("hero")
     .select(
-      "eyebrow_translations, title_translations, highlight_translations, description_translations, primary_cta_label_translations, primary_cta_url, secondary_cta_label_translations, secondary_cta_url, metrics, tech_stack, tech_stack_heading_translations, tech_stack_description_translations"
+      "eyebrow_translations, title_translations, highlight_translations, description_translations, primary_cta_label_translations, primary_cta_url, secondary_cta_label_translations, secondary_cta_url, metrics"
     )
     .eq("is_visible", true)
     .single();
@@ -36,8 +27,5 @@ export async function getPublicHero(): Promise<PublicHero | null> {
     return null;
   }
 
-  return {
-    ...data,
-    tech_stack: parseJsonArray<TechStackItem>(data.tech_stack) ?? [],
-  } as PublicHero;
+  return data as PublicHero;
 }

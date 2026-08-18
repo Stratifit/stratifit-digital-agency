@@ -18,6 +18,7 @@ const SECTION_SETTINGS_KEYS = [
   "faq",
   "contact",
   "acquisition-cta",
+  "tech-stack",
 ] as const;
 
 /** Normalizes an optional CTA label back to null when every locale is empty. */
@@ -92,6 +93,7 @@ export async function updateSectionSettings(
             googleReviewsUrl: parsed.data.review_summary.googleReviewsUrl.trim(),
           }
         : {},
+      tech_stack: parsed.data.tech_stack ?? [],
       seo_title_translations: parsed.data.seo_title_translations ?? {},
       seo_description_translations:
         parsed.data.seo_description_translations ?? {},

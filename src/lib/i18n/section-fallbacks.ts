@@ -22,6 +22,22 @@ export const SECTION_HEADER_FALLBACKS: Record<
   string,
   SectionHeaderFallback
 > = {
+  "tech-stack": {
+    eyebrow: { en: "", de: "", fr: "", es: "" },
+    title: { en: "Our", de: "Unser", fr: "Notre", es: "Nuestro" },
+    highlight: {
+      en: "Tech Stack",
+      de: "Tech-Stack",
+      fr: "stack technique",
+      es: "stack tecnológico",
+    },
+    description: {
+      en: "We build with trusted, modern technologies.",
+      de: "Wir bauen mit vertrauenswürdigen, modernen Technologien.",
+      fr: "Nous construisons avec des technologies modernes et éprouvées.",
+      es: "Construimos con tecnologías modernas y confiables.",
+    },
+  },
   services: {
     eyebrow: { en: "Services", de: "Leistungen", fr: "Services", es: "Servicios" },
     title: {

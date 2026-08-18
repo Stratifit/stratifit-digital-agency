@@ -29,7 +29,7 @@ export default async function AdminSectionsPage() {
     rows.push({
       key: "hero",
       label: "Hero",
-      description: "Headline, CTAs, metrics, tech stack",
+      description: "Headline, CTAs, metrics, trusted-by strip",
       status: "live",
       isVisible: hero.is_visible,
       editHref: "/admin/content/hero",
@@ -49,6 +49,7 @@ export default async function AdminSectionsPage() {
     description: string;
     editHref: string;
   }[] = [
+    { key: "tech-stack", label: "Tech Stack", description: "Scrolling technology marquee", editHref: "/admin/content/sections/tech-stack/edit" },
     { key: "services", label: "Services", description: "Core service cards", editHref: "/admin/content/services" },
     { key: "process", label: "Process", description: "How we work steps", editHref: "/admin/content/process" },
     { key: "why-choose-us", label: "Why Choose Us", description: "Differentiators", editHref: "/admin/content/why-choose-us" },

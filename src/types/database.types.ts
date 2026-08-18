@@ -1653,6 +1653,7 @@ export type Database = {
           seo_description_translations: Json
           seo_title_translations: Json
           stats: Json
+          tech_stack: Json
           title_translations: Json
           updated_at: string
         }
@@ -1671,6 +1672,7 @@ export type Database = {
           seo_description_translations?: Json
           seo_title_translations?: Json
           stats?: Json
+          tech_stack?: Json
           title_translations?: Json
           updated_at?: string
         }
@@ -1689,6 +1691,7 @@ export type Database = {
           seo_description_translations?: Json
           seo_title_translations?: Json
           stats?: Json
+          tech_stack?: Json
           title_translations?: Json
           updated_at?: string
         }

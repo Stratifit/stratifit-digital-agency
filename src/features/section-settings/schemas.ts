@@ -15,6 +15,11 @@ const statsItem = z.object({
   label_translations: translations(),
 });
 
+const techStackItem = z.object({
+  name: z.string().min(1, "Name is required"),
+  icon: z.string(),
+});
+
 /**
  * Review summary band shown on /testimonials: client rating, verified review
  * count, Google rating/count, and the Google reviews link.
@@ -42,6 +47,8 @@ export const sectionSettingsSchema = z.object({
   stats: z.array(statsItem).optional(),
   /** Optional review summary band (used by the /testimonials page). */
   review_summary: reviewSummary.optional(),
+  /** Optional tech-stack marquee items (used by the tech-stack section). */
+  tech_stack: z.array(techStackItem).optional(),
   /** Optional page SEO metadata (title + description, all locales). */
   seo_title_translations: translations().optional(),
   seo_description_translations: translations().optional(),

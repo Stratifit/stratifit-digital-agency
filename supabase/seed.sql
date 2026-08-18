@@ -146,6 +146,32 @@ ON CONFLICT (section_key) DO UPDATE SET
   display_order = EXCLUDED.display_order;
 
 -- =============================================================================
+-- Tech Stack section (scrolling marquee between the hero and Services)
+-- =============================================================================
+
+INSERT INTO public.section_settings (section_key, label, eyebrow_translations, title_translations, highlight_translations, description_translations, tech_stack, is_visible, display_order)
+VALUES (
+  'tech-stack',
+  'Tech Stack',
+  '{"en": "", "de": "", "fr": "", "es": ""}'::jsonb,
+  '{"en": "Our", "de": "Unser", "fr": "Notre", "es": "Nuestro"}'::jsonb,
+  '{"en": "Tech Stack", "de": "Tech-Stack", "fr": "stack technique", "es": "stack tecnológico"}'::jsonb,
+  '{"en": "We build with trusted, modern technologies.", "de": "Wir bauen mit vertrauenswürdigen, modernen Technologien.", "fr": "Nous construisons avec des technologies modernes et éprouvées.", "es": "Construimos con tecnologías modernas y confiables."}'::jsonb,
+  '[{"name": "Tailwind CSS", "icon": "brush"}, {"name": "Framer Motion", "icon": "zap"}, {"name": "GSAP", "icon": "zap"}, {"name": "Next.js", "icon": "code"}, {"name": "React", "icon": "atom"}, {"name": "TypeScript", "icon": "code"}]'::jsonb,
+  true,
+  5
+)
+ON CONFLICT (section_key) DO UPDATE SET
+  label = EXCLUDED.label,
+  eyebrow_translations = EXCLUDED.eyebrow_translations,
+  title_translations = EXCLUDED.title_translations,
+  highlight_translations = EXCLUDED.highlight_translations,
+  description_translations = EXCLUDED.description_translations,
+  tech_stack = EXCLUDED.tech_stack,
+  is_visible = EXCLUDED.is_visible,
+  display_order = EXCLUDED.display_order;
+
+-- =============================================================================
 -- Footer Groups
 -- Stable UUIDs for idempotent re-runs.
 -- =============================================================================
