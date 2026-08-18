@@ -128,7 +128,7 @@ export function TrustedByStrip({ items }: { items: TrustedByItem[] }) {
   }
 
   return (
-    <div className="w-full pb-6 lg:mx-auto lg:max-w-3xl">
+    <div className="w-full lg:mx-auto lg:max-w-3xl">
       {/* Mobile: single scrollable line + dots */}
       <div className="sm:hidden">
         <div className="flex items-center gap-3 pb-4 opacity-90">
