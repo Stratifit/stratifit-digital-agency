@@ -317,9 +317,9 @@ export async function HeroSection() {
                 {[...techStack, ...techStack].map((tech, index) => (
                   <div
                     key={`${tech.name}-${index}`}
-                    className="group flex cursor-pointer flex-row items-center justify-center gap-2.5 text-white/70 transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-white"
+                    className="group flex cursor-pointer flex-row items-center justify-center gap-2.5 text-text-muted transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-text-secondary"
                   >
-                    <span className="text-primary transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:scale-110">
+                    <span className="text-text-subtle transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:scale-110">
                       <TechIcon name={tech.icon} />
                     </span>
                     <span className="text-base font-semibold tracking-wide sm:text-lg">
