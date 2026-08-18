@@ -85,10 +85,10 @@ function TechIcon({ name }: { name: string }) {
 }
 
 /**
- * Tech stack marquee section shown between the hero and Services on the
- * homepage. Uses the standard section header (same size/position as the other
- * sections) above the scrolling marquee. Content (heading + technologies) is
- * CMS-editable via Sections → Tech Stack.
+ * Tech stack section shown between the hero and Services on the homepage.
+ * Uses the standard section header (same size/position as the other sections)
+ * above two swipeable rows of technologies. Content (heading + technologies)
+ * is CMS-editable via Sections → Tech Stack.
  */
 export async function TechStackSection() {
   const locale = await getLocale();
@@ -113,6 +113,11 @@ export async function TechStackSection() {
       ? (dbItems as TechStackItem[])
       : DEFAULT_TECH_STACK;
 
+  // Two rows of swipeable strips (3 icons each with the default seed) — each
+  // icon appears exactly once, no duplication; rows scroll left/right by hand.
+  const midpoint = Math.ceil(items.length / 2);
+  const rows = [items.slice(0, midpoint), items.slice(midpoint)];
+
   const headerSettings: PublicSectionSettings =
     settings ?? FALLBACK_HEADER_SETTINGS;
 
@@ -126,22 +131,27 @@ export async function TechStackSection() {
             className="mb-0 md:mb-0 pb-4"
           />
 
-          <Reveal className="marquee-pause relative overflow-hidden py-4">
-            <div className="marquee-scroll flex w-max gap-10 whitespace-nowrap sm:gap-12">
-              {[...items, ...items].map((tech, index) => (
-                <div
-                  key={`${tech.name}-${index}`}
-                  className="group flex cursor-pointer flex-row items-center justify-center gap-2.5 text-text-muted transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-text-secondary"
-                >
-                  <span className="text-text-subtle transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:scale-110">
-                    <TechIcon name={tech.icon} />
-                  </span>
-                  <span className="text-base font-semibold tracking-wide sm:text-lg">
-                    {tech.name}
-                  </span>
-                </div>
-              ))}
-            </div>
+          <Reveal className="space-y-4 py-4">
+            {rows.map((row, rowIndex) => (
+              <div
+                key={rowIndex}
+                className="flex touch-pan-x overscroll-x-contain gap-6 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:gap-8"
+              >
+                {row.map((tech, index) => (
+                  <div
+                    key={`${tech.name}-${index}`}
+                    className="group flex shrink-0 cursor-pointer flex-row items-center justify-center gap-2.5 text-text-muted transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-text-secondary"
+                  >
+                    <span className="text-text-subtle transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:scale-110">
+                      <TechIcon name={tech.icon} />
+                    </span>
+                    <span className="text-base font-semibold tracking-wide sm:text-lg">
+                      {tech.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ))}
           </Reveal>
         </Container>
       </Section>
