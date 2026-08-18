@@ -22,10 +22,15 @@ DialogOverlay.displayName = "DialogOverlay";
 
 export const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
+    /** Extra classes for the overlay (e.g. a stronger backdrop tint). */
+    overlayClassName?: string;
+    /** Hide the default close (X) button in the corner. */
+    hideClose?: boolean;
+  }
+>(({ className, overlayClassName, hideClose, children, ...props }, ref) => (
   <DialogPrimitive.Portal>
-    <DialogOverlay />
+    <DialogOverlay className={overlayClassName} />
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
@@ -35,19 +40,21 @@ export const DialogContent = React.forwardRef<
       {...props}
     >
       {children}
-      <DialogPrimitive.Close
-        aria-label="Close dialog"
-        className="absolute right-4 top-4 rounded-xs p-1 text-text-muted transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-      >
-        <svg className="size-4" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path
-            d="M4 4l8 8M12 4l-8 8"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-        </svg>
-      </DialogPrimitive.Close>
+      {!hideClose ? (
+        <DialogPrimitive.Close
+          aria-label="Close dialog"
+          className="absolute right-4 top-4 rounded-xs p-1 text-text-muted transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        >
+          <svg className="size-4" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path
+              d="M4 4l8 8M12 4l-8 8"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+          </svg>
+        </DialogPrimitive.Close>
+      ) : null}
     </DialogPrimitive.Content>
   </DialogPrimitive.Portal>
 ));

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Mail } from "lucide-react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { leadSchema, type LeadFormValues } from "@/features/leads/schemas";
 import { submitLead } from "@/features/leads/mutations";
 import type { PublicServiceDetail } from "@/features/services/queries";
@@ -274,36 +275,47 @@ export function ContactForm({
     }
   }
 
-  if (submitted) {
-    return (
-      <div className="p-6 sm:p-8">
-        <div className="py-8 text-center">
-          <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-full border border-primary/20 bg-primary/10">
-            <Mail className="size-6 text-primary" aria-hidden="true" />
-          </div>
-          <h3 className="font-display text-2xl font-bold tracking-tight text-text-primary">
-            {t(locale, "thankYou")}
-          </h3>
-          <p className="mt-3 text-sm text-text-muted">
-            {t(locale, "messageReceived")}
-          </p>
-          <button
-            type="button"
-            onClick={() => setSubmitted(false)}
-            className="mt-6 inline-flex items-center justify-center rounded-button border border-card-border bg-transparent px-5 py-2.5 text-sm font-medium text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/30 hover:text-text-primary focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
-          >
-            {t(locale, "sendAnotherMessage")}
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className={compact ? "space-y-4" : "space-y-5"}
-    >
+    <>
+      {/* Thank-you confirmation — a modal over the page, so only the sent
+          card is visible (the contact section stays hidden behind the
+          backdrop until the visitor closes or sends another message). */}
+      <Dialog
+        open={submitted}
+        onOpenChange={(open) => {
+          if (!open) setSubmitted(false);
+        }}
+      >
+        <DialogContent
+          overlayClassName="bg-black/80"
+          hideClose
+          className="max-w-md border-card-border bg-card-dark p-6 sm:p-8"
+        >
+          <div className="py-6 text-center sm:py-8">
+            <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-full border border-primary/20 bg-primary/10">
+              <Mail className="size-6 text-primary" aria-hidden="true" />
+            </div>
+            <h3 className="font-display text-2xl font-bold tracking-tight text-text-primary">
+              {t(locale, "thankYou")}
+            </h3>
+            <p className="mt-3 text-sm text-text-muted">
+              {t(locale, "messageReceived")}
+            </p>
+            <button
+              type="button"
+              onClick={() => setSubmitted(false)}
+              className="mt-6 inline-flex items-center justify-center rounded-button border border-card-border bg-transparent px-5 py-2.5 text-sm font-medium text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/30 hover:text-text-primary focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
+            >
+              {t(locale, "sendAnotherMessage")}
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className={compact ? "space-y-4" : "space-y-5"}
+      >
       {/* Honeypot */}
       <input
         type="text"
@@ -571,6 +583,7 @@ export function ContactForm({
         {isSubmitting ? t(locale, "sending") : t(locale, "sendProjectRequest")}
         <ArrowRightIcon className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1" />
       </button>
-    </form>
+      </form>
+    </>
   );
 }
