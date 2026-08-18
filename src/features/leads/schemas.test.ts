@@ -64,4 +64,26 @@ describe("leadSchema", () => {
       expect(result.data.preferred_locale).toBe("en");
     }
   });
+
+  it("accepts form values without source (never registered) and defaults it", () => {
+    // The public contact form never registers a `source` field, so
+    // react-hook-form's zodResolver receives values without it. If `source`
+    // were required, the submit would be rejected silently and the lead would
+    // never reach the database. Regression test for that bug.
+    const result = leadSchema.safeParse({
+      name: "Jane Doe",
+      email: "jane@example.com",
+      phone: "",
+      company: "",
+      requested_service_ids: [],
+      budget_range: "",
+      honeypot: "",
+      message: "I would like to discuss a website project.",
+      preferred_locale: "en",
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.source).toBe("contact_form");
+    }
+  });
 });

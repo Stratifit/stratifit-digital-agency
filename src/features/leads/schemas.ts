@@ -11,7 +11,9 @@ export const leadSchema = z.object({
   honeypot: z.string().optional(),
   message: z.string().min(10, "Message must be at least 10 characters"),
   preferred_locale: z.string().default("en"),
-  source: z.literal("contact_form"),
+  // Defaulted so the public form (which never registers this field) passes
+  // validation; `submitLead` overrides it with the real source on submit.
+  source: z.literal("contact_form").default("contact_form"),
 });
 
 export type LeadFormValues = z.infer<typeof leadSchema>;

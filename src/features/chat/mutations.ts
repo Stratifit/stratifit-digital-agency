@@ -565,26 +565,27 @@ export async function submitVisitorEmailChoice(
     content_format: "text",
   });
 
-  // Create a follow-up lead for the dashboard
+  // Create a follow-up lead for the dashboard. The id is generated here and
+  // the insert is a plain insert (no `.select()`) because anon has no SELECT
+  // policy on `leads` — chaining `.select()` makes PostgREST reject the whole
+  // insert under RLS.
   const name = typeof meta.name === "string" ? meta.name : "";
-  const { data: lead } = await supabase
-    .from("leads")
-    .insert({
-      name: name || null,
-      email: email || null,
-      preferred_locale: parsed.data.locale,
-      source: "chat",
-      message: email
-        ? `Chat visitor ${name || "Anonymous"} provided contact details for follow-up.`
-        : `Chat visitor ${name || "Anonymous"} declined to share an email.`,
-      consent_data: { via: "chat", email_choice: parsed.data.choice },
-    })
-    .select("id")
-    .single();
-  if (lead) {
+  const leadId = crypto.randomUUID();
+  const { error: leadError } = await supabase.from("leads").insert({
+    id: leadId,
+    name: name || null,
+    email: email || null,
+    preferred_locale: parsed.data.locale,
+    source: "chat",
+    message: email
+      ? `Chat visitor ${name || "Anonymous"} provided contact details for follow-up.`
+      : `Chat visitor ${name || "Anonymous"} declined to share an email.`,
+    consent_data: { via: "chat", email_choice: parsed.data.choice },
+  });
+  if (!leadError) {
     await supabase
       .from("chat_conversations")
-      .update({ lead_id: lead.id })
+      .update({ lead_id: leadId })
       .eq("id", conversation.id);
   }
 
