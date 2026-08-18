@@ -71,23 +71,24 @@ function TrustedLogoImage({
   );
 }
 
-/** Icon + label pair styled like the Tech Stack marquee items. */
+/** Logo + label pair styled like the Tech Stack marquee items. */
 function TrustedByLogo({ item }: { item: TrustedByItem }) {
-  if (item.image_url) {
-    return <TrustedLogoImage item={item} />;
-  }
   return (
     <span className="flex items-center gap-2 whitespace-nowrap text-lg font-medium text-text-secondary sm:text-xl">
-      <span className="shrink-0 text-text-subtle">
-        <svg
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          aria-hidden="true"
-          className="size-6 shrink-0"
-        >
-          {TRUSTED_BY_ICON_PATHS[item.icon] ?? TRUSTED_BY_ICON_PATHS.pulse}
-        </svg>
-      </span>
+      {item.image_url ? (
+        <TrustedLogoImage item={item} />
+      ) : (
+        <span className="shrink-0 text-text-subtle">
+          <svg
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+            className="size-6 shrink-0"
+          >
+            {TRUSTED_BY_ICON_PATHS[item.icon] ?? TRUSTED_BY_ICON_PATHS.pulse}
+          </svg>
+        </span>
+      )}
       {item.name}
     </span>
   );
@@ -181,7 +182,10 @@ export function TrustedByStrip({ items }: { items: TrustedByItem[] }) {
             className="flex shrink-0 items-center gap-2 whitespace-nowrap font-display text-base font-black tracking-[0.3em]"
           >
             {item.image_url ? (
-              <TrustedLogoImage item={item} className="h-6" />
+              <>
+                <TrustedLogoImage item={item} className="h-6" />
+                <span className="text-gray-100">{item.name}</span>
+              </>
             ) : (
               <>
                 <svg
