@@ -50,31 +50,34 @@ export async function updateSiteSettings(
   const existingEnSeo = existingSeo.en ?? {};
   const { error } = await supabase
     .from("site_settings")
-    .update({
-      site_name: values.site_name,
-      site_description_translations: {
-        ...existingDescription,
-        en: values.site_description_en,
-      },
-      contact_email: values.contact_email || null,
-      contact_phone: values.contact_phone || null,
-      address_translations: {
-        ...existingAddress,
-        en: values.address_en,
-      },
-      default_locale: values.default_locale,
-      default_seo: {
-        ...existingSeo,
-        en: {
-          ...existingEnSeo,
-          title: values.seo_title_en,
-          description: values.seo_description_en,
+    .upsert(
+      {
+        singleton_key: true,
+        site_name: values.site_name,
+        site_description_translations: {
+          ...existingDescription,
+          en: values.site_description_en,
         },
+        contact_email: values.contact_email || null,
+        contact_phone: values.contact_phone || null,
+        address_translations: {
+          ...existingAddress,
+          en: values.address_en,
+        },
+        default_locale: values.default_locale,
+        default_seo: {
+          ...existingSeo,
+          en: {
+            ...existingEnSeo,
+            title: values.seo_title_en,
+            description: values.seo_description_en,
+          },
+        },
+        social_links,
+        updated_at: new Date().toISOString(),
       },
-      social_links,
-      updated_at: new Date().toISOString(),
-    })
-    .eq("singleton_key", true);
+      { onConflict: "singleton_key" }
+    );
 
   if (error) {
     return { success: false, error: "Failed to update site settings." };

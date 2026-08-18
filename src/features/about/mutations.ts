@@ -41,26 +41,29 @@ export async function updateAboutPage(
 
   const { error } = await supabase
     .from("about_page")
-    .update({
-      eyebrow_translations: parsed.data.eyebrow_translations,
-      title_translations: parsed.data.title_translations,
-      highlight_translations: parsed.data.highlight_translations,
-      intro_translations: parsed.data.intro_translations,
-      stats: parsed.data.stats,
-      mission_translations: parsed.data.mission_translations,
-      story_translations: parsed.data.story_translations,
-      values: parsed.data.values,
-      team_translations: parsed.data.team_translations,
-      cta_title_translations: parsed.data.cta_title_translations,
-      cta_highlight_translations: parsed.data.cta_highlight_translations,
-      cta_description_translations: parsed.data.cta_description_translations,
-      cta_label_translations: parsed.data.cta_label_translations,
-      cta_url: parsed.data.cta_url || null,
-      seo_title_translations: parsed.data.seo_title_translations ?? {},
-      seo_description_translations: parsed.data.seo_description_translations ?? {},
-      is_visible: parsed.data.is_visible,
-    })
-    .eq("singleton_key", true);
+    .upsert(
+      {
+        singleton_key: true,
+        eyebrow_translations: parsed.data.eyebrow_translations,
+        title_translations: parsed.data.title_translations,
+        highlight_translations: parsed.data.highlight_translations,
+        intro_translations: parsed.data.intro_translations,
+        stats: parsed.data.stats,
+        mission_translations: parsed.data.mission_translations,
+        story_translations: parsed.data.story_translations,
+        values: parsed.data.values,
+        team_translations: parsed.data.team_translations,
+        cta_title_translations: parsed.data.cta_title_translations,
+        cta_highlight_translations: parsed.data.cta_highlight_translations,
+        cta_description_translations: parsed.data.cta_description_translations,
+        cta_label_translations: parsed.data.cta_label_translations,
+        cta_url: parsed.data.cta_url || null,
+        seo_title_translations: parsed.data.seo_title_translations ?? {},
+        seo_description_translations: parsed.data.seo_description_translations ?? {},
+        is_visible: parsed.data.is_visible,
+      },
+      { onConflict: "singleton_key" }
+    );
 
   if (error) {
     return { success: false, error: "Failed to save the About page." };

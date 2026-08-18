@@ -84,15 +84,18 @@ export async function updateAcquisitionSection(
 
   const { error } = await supabase
     .from("acquisition_section")
-    .update({
-      title_translations: parsed.data.title_translations,
-      description_translations: parsed.data.description_translations,
-      cta_label_translations: parsed.data.cta_label_translations,
-      cta_url: parsed.data.cta_url || null,
-      is_visible: parsed.data.is_visible,
-      businesses: parsed.data.businesses,
-    })
-    .eq("singleton_key", true);
+    .upsert(
+      {
+        singleton_key: true,
+        title_translations: parsed.data.title_translations,
+        description_translations: parsed.data.description_translations,
+        cta_label_translations: parsed.data.cta_label_translations,
+        cta_url: parsed.data.cta_url || null,
+        is_visible: parsed.data.is_visible,
+        businesses: parsed.data.businesses,
+      },
+      { onConflict: "singleton_key" }
+    );
 
   if (error) {
     return { success: false, error: "Failed to save the acquisition section." };

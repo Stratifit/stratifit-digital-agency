@@ -44,8 +44,10 @@ export async function updateWhyChooseUsItems(
 
   const { error } = await supabase
     .from("why_choose_us")
-    .update({ items: parsed.data })
-    .eq("singleton_key", true);
+    .upsert(
+      { singleton_key: true, items: parsed.data },
+      { onConflict: "singleton_key" }
+    );
 
   if (error) {
     return { success: false, error: "Failed to save the features." };
