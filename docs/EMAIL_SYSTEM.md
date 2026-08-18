@@ -94,11 +94,19 @@ lead_notification
 acquisition_notification
 chat_escalation
 admin_invitation
+email_inbox_auto_reply
+email_inbox_reply
 ```
 
 Each key has a Zod schema in `src/features/email/templates.ts`.
 
 The system rejects unknown template keys.
+
+`email_inbox_auto_reply` renders the per-section auto-reply subject/body from
+CMS-editable translations inside the branded shell.
+
+`email_inbox_reply` renders a free-form admin reply (written in the email
+inbox) as plain paragraphs inside the branded shell.
 
 ---
 
@@ -181,7 +189,9 @@ delivered_at
 
 Event writes use the service-role client because `email_events` is admin-only under RLS.
 
-## 11. Webhook Route
+## 11. Webhook Routes
+
+### Delivery events
 
 Route: `POST /api/webhooks/email`
 
@@ -202,7 +212,76 @@ email.complained  → complained
 4. Updates the matching `email_events` row by `provider_message_id`
 5. Returns 400 for invalid signatures, 500 for update failures
 
-## 12. Public Routes and Abuse Prevention
+### Inbound email (Email Inbox)
+
+Route: `POST /api/email/inbound`
+
+Receives Resend `email.received` webhooks (metadata only) and powers the
+admin Email Inbox (`/admin/email/inbox`). See `docs/` OpenSpec change
+`2026-08-18-email-inbox` for the full design.
+
+Behavior:
+
+1. Requires `RESEND_WEBHOOK_SIGNING_SECRET`; verifies the Svix signature
+   (401 on failure)
+2. Fetches the full email (body + threading headers) from the Resend
+   Received emails API via `resend.emails.receiving.get(emailId)`
+3. Routes the email to an inbox section by matching `to`/`received_for`
+   against section `routing_addresses` (fallback: `other`)
+4. Resolves the thread via `in-reply-to`/`references` headers, then by
+   customer email + normalized subject (30-day window), then creates a new
+   thread
+5. Persists the message idempotently by the Resend email id and updates the
+   thread (reopening resolved threads)
+6. Sends the section auto-reply when `auto_reply_enabled` (with
+   `In-Reply-To`/`References` threading headers and an idempotency key that
+   includes the inbound message id)
+7. Returns 200 for every verified delivery (including duplicates) so Resend
+   stops retrying; processing errors are logged and do not cause retries
+
+## 12. Email Inbox (Conversations)
+
+The admin Email Inbox turns inbound email and website form enquiries into
+threaded conversations:
+
+- `email_inbox_sections` — admin-managed categories (slug, multilingual
+  name, routing addresses, form-source mapping, from address, auto-reply
+  toggle + subject/body translations, display order)
+- `email_threads` — one conversation per customer (status: needs_reply /
+  waiting_on_customer / resolved / archived; source: inbound_email /
+  contact_form / acquisition_form / manual)
+- `email_messages` — inbound/outbound messages with provider ids and
+  threading headers
+
+Admin reply flow (outgoing):
+
+```text
+Admin types a reply in /admin/email/inbox/[id]
+↓
+sendEmailReply server action (admin-guarded, Zod-validated)
+↓
+Resend outbound (from = section from_address, In-Reply-To/References)
+↓
+email_messages outbound row + email_events idempotency
+↓
+Thread → waiting_on_customer
+```
+
+Threading:
+
+- Outbound sends record the RFC message-id (fetched from Resend after
+  sending) so customer replies thread back reliably
+- Inbound replies match `in-reply-to`/`references` against stored RFC
+  message-ids, falling back to customer email + normalized subject
+
+Form integration:
+
+- `submitLead` creates-or-joins a thread in the section mapped to the form
+  source (`contact_form` → Contact) via the service-role client; thread
+  failures never fail the lead submission
+- Form threads do not trigger auto-reply (forms already acknowledge)
+
+## 13. Public Routes and Abuse Prevention
 
 Public routes must not accept arbitrary:
 
@@ -216,7 +295,7 @@ Only the approved send functions may construct emails.
 
 This prevents open-relay behavior.
 
-## 13. Notifications
+## 14. Notifications
 
 ### Contact acknowledgement
 
@@ -238,7 +317,7 @@ Sent to the admin email when a visitor requests human support.
 
 Sent when inviting a new admin user.
 
-## 14. Retry Behavior
+## 15. Retry Behavior
 
 The system does not retry automatically.
 
@@ -248,7 +327,7 @@ This avoids duplicate sends and keeps the flow predictable.
 
 Controlled retry can be added later if justified.
 
-## 15. Multilingual Behavior
+## 16. Multilingual Behavior
 
 Templates are currently English copy.
 
@@ -256,14 +335,14 @@ A `locale` field is stored in template data and event metadata to support future
 
 Supported languages: `en`, `de`, `fr`, `es`.
 
-## 16. Error Handling
+## 17. Error Handling
 
 - Public users never see provider errors
 - Form success does not depend on email success
 - Email failures are logged with safe context
 - Missing configuration skips email without failing the business operation
 
-## 17. Security
+## 18. Security
 
 - Resend keys remain server-side
 - Webhook signatures are verified
@@ -271,7 +350,7 @@ Supported languages: `en`, `de`, `fr`, `es`.
 - No secrets are logged
 - No arbitrary email construction from public input
 
-## 18. Testing
+## 19. Testing
 
 Cover at minimum:
 
@@ -282,7 +361,7 @@ Cover at minimum:
 - Send failure logging
 - Missing-configuration behavior
 
-## 19. Related Documentation
+## 20. Related Documentation
 
 ```text
 docs/PROJECT.md

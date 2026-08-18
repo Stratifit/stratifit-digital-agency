@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { ActionResult } from "@/types/action-result";
 import { sendLeadEmails } from "@/features/email/lead-notifications";
+import { syncLeadToEmailThread } from "@/features/email-inbox/forms";
 import { leadSchema, type LeadFormValues } from "./schemas";
 
 const RATE_WINDOW_MS = 10 * 60 * 1000;
@@ -93,6 +94,16 @@ async function recordLead(values: LeadRecord): Promise<ActionResult> {
     budgetRange: values.budget_range,
     message: values.message,
     locale: values.preferred_locale,
+  });
+
+  // Unified inbox: mirror the enquiry as a conversation in the mapped
+  // section. Best-effort — never fails the lead submission.
+  await syncLeadToEmailThread({
+    leadId,
+    name: values.name,
+    email: values.email,
+    message: values.message,
+    source: values.source,
   });
 
   return { success: true };

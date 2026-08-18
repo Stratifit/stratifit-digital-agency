@@ -30,11 +30,30 @@ const adminInvitationDataSchema = z.object({
   locale: z.string().default("en"),
 });
 
+// Auto-reply sent from the email inbox when a section has
+// auto_reply_enabled. Subject/body come from the section's CMS-editable
+// translations; this template only renders them inside the branded shell.
+const emailInboxAutoReplyDataSchema = z.object({
+  customer_name: z.string().optional().nullable(),
+  section_name: z.string().optional().default("Stratifit"),
+  subject: z.string().min(1),
+  body: z.string().min(1),
+});
+
+// Free-form admin reply sent from the email inbox. The body is written by
+// the admin and rendered as plain paragraphs inside the branded shell.
+const emailInboxReplyDataSchema = z.object({
+  subject: z.string().min(1),
+  body: z.string().min(1),
+});
+
 export const emailTemplateDataSchemas = {
   contact_acknowledgement: contactAcknowledgmentDataSchema,
   lead_notification: leadNotificationDataSchema,
   chat_escalation: chatEscalationDataSchema,
   admin_invitation: adminInvitationDataSchema,
+  email_inbox_auto_reply: emailInboxAutoReplyDataSchema,
+  email_inbox_reply: emailInboxReplyDataSchema,
 } as const;
 
 export type EmailTemplateData<TKey extends EmailTemplateKey> = z.input<
@@ -66,5 +85,11 @@ export function buildEmailSubject<TKey extends EmailTemplateKey>(
       }`;
     case "admin_invitation":
       return "You have been invited to the Stratifit CMS";
+    case "email_inbox_auto_reply":
+      return (
+        (data as EmailTemplateDataMap["email_inbox_auto_reply"]).subject
+      );
+    case "email_inbox_reply":
+      return (data as EmailTemplateDataMap["email_inbox_reply"]).subject;
   }
 }

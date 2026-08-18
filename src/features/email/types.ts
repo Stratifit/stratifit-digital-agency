@@ -3,6 +3,8 @@ export const EMAIL_TEMPLATE_KEYS = [
   "lead_notification",
   "chat_escalation",
   "admin_invitation",
+  "email_inbox_auto_reply",
+  "email_inbox_reply",
 ] as const;
 
 export type EmailTemplateKey = (typeof EMAIL_TEMPLATE_KEYS)[number];

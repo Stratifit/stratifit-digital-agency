@@ -921,6 +921,188 @@ export type Database = {
         }
         Relationships: []
       }
+      email_inbox_sections: {
+        Row: {
+          auto_reply_body_translations: Json
+          auto_reply_enabled: boolean
+          auto_reply_subject_translations: Json
+          created_at: string
+          display_order: number
+          enabled: boolean
+          form_source_key: string | null
+          from_address: string | null
+          id: string
+          name_translations: Json
+          routing_addresses: string[]
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          auto_reply_body_translations?: Json
+          auto_reply_enabled?: boolean
+          auto_reply_subject_translations?: Json
+          created_at?: string
+          display_order?: number
+          enabled?: boolean
+          form_source_key?: string | null
+          from_address?: string | null
+          id?: string
+          name_translations?: Json
+          routing_addresses?: string[]
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          auto_reply_body_translations?: Json
+          auto_reply_enabled?: boolean
+          auto_reply_subject_translations?: Json
+          created_at?: string
+          display_order?: number
+          enabled?: boolean
+          form_source_key?: string | null
+          from_address?: string | null
+          id?: string
+          name_translations?: Json
+          routing_addresses?: string[]
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      email_messages: {
+        Row: {
+          attachments: Json
+          created_at: string
+          direction: string
+          error_message: string | null
+          from_email: string
+          headers: Json
+          html_content: string | null
+          id: string
+          in_reply_to: string | null
+          provider_message_id: string | null
+          references: string | null
+          sent_at: string | null
+          status: string
+          subject: string
+          text_content: string
+          thread_id: string
+          to_email: string
+        }
+        Insert: {
+          attachments?: Json
+          created_at?: string
+          direction: string
+          error_message?: string | null
+          from_email: string
+          headers?: Json
+          html_content?: string | null
+          id?: string
+          in_reply_to?: string | null
+          provider_message_id?: string | null
+          references?: string | null
+          sent_at?: string | null
+          status: string
+          subject: string
+          text_content: string
+          thread_id: string
+          to_email: string
+        }
+        Update: {
+          attachments?: Json
+          created_at?: string
+          direction?: string
+          error_message?: string | null
+          from_email?: string
+          headers?: Json
+          html_content?: string | null
+          id?: string
+          in_reply_to?: string | null
+          provider_message_id?: string | null
+          references?: string | null
+          sent_at?: string | null
+          status?: string
+          subject?: string
+          text_content?: string
+          thread_id?: string
+          to_email?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_messages_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "email_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_threads: {
+        Row: {
+          assigned_to: string | null
+          created_at: string
+          customer_email: string
+          customer_name: string | null
+          id: string
+          last_inbound_at: string | null
+          last_message_at: string
+          last_outbound_at: string | null
+          lead_id: string | null
+          section_id: string
+          source: string
+          status: string
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string
+          customer_email: string
+          customer_name?: string | null
+          id?: string
+          last_inbound_at?: string | null
+          last_message_at?: string
+          last_outbound_at?: string | null
+          lead_id?: string | null
+          section_id: string
+          source?: string
+          status?: string
+          subject: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string
+          customer_email?: string
+          customer_name?: string | null
+          id?: string
+          last_inbound_at?: string | null
+          last_message_at?: string
+          last_outbound_at?: string | null
+          lead_id?: string | null
+          section_id?: string
+          source?: string
+          status?: string
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_threads_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "email_threads_section_id_fkey"
+            columns: ["section_id"]
+            isOneToOne: false
+            referencedRelation: "email_inbox_sections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       faqs: {
         Row: {
           answer_translations: Json

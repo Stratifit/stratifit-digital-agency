@@ -13,6 +13,15 @@ export interface SendEmailInput<TKey extends EmailTemplateKey> {
   templateKey: TKey;
   to: string;
   data: EmailTemplateDataMap[TKey];
+  /**
+   * Optional sender override (e.g. a section's from_address). Falls back to
+   * RESEND_FROM_EMAIL. Must be on a verified Resend domain.
+   */
+  from?: string;
+  /**
+   * Optional raw headers, used for threading (In-Reply-To / References).
+   */
+  headers?: Record<string, string>;
   relatedType?: string;
   relatedId?: string;
   idempotencyKey?: string;
@@ -195,6 +204,23 @@ function renderBody<TKey extends EmailTemplateKey>(
         ],
       };
     }
+    case "email_inbox_auto_reply": {
+      const d = data as EmailTemplateDataMap["email_inbox_auto_reply"];
+      const greeting = d.customer_name
+        ? `Hi ${d.customer_name},`
+        : `Hello,`;
+      return {
+        title: d.subject,
+        bodyLines: [greeting, ...d.body.split(/\n+/).filter(Boolean)],
+      };
+    }
+    case "email_inbox_reply": {
+      const d = data as EmailTemplateDataMap["email_inbox_reply"];
+      return {
+        title: d.subject,
+        bodyLines: d.body.split(/\n+/).filter(Boolean),
+      };
+    }
   }
 }
 
@@ -210,7 +236,7 @@ export async function sendEmail<TKey extends EmailTemplateKey>(
   }
 
   const client = getResendClient();
-  const from = getEmailFrom();
+  const from = input.from || getEmailFrom();
 
   if (!client || !from) {
     console.warn("Resend not configured; skipping email:", input.templateKey);
@@ -255,6 +281,7 @@ export async function sendEmail<TKey extends EmailTemplateKey>(
       subject,
       html: renderEmailHtml(title, bodyLines),
       text: [title, ...bodyLines].join("\n\n"),
+      ...(input.headers ? { headers: input.headers } : {}),
     });
 
     if (response.error) {

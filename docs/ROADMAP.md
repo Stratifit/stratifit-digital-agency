@@ -694,6 +694,12 @@ Add reliable transactional and operational communication.
 - Verify webhook signatures
 - Add CMS email activity
 - Add controlled retry
+- ✅ **Delivered:** Email Inbox (OpenSpec `2026-08-18-email-inbox`) — inbound
+  email via Resend `email.received` webhook → `/api/email/inbound`, admin
+  inbox `/admin/email/inbox` + thread replies, section management
+  `/admin/email/sections` (routing addresses, form-source mapping,
+  per-section auto-reply on/off), unified form→thread integration, admin
+  auth gate in the proxy
 
 ### Completion criteria
 
@@ -703,6 +709,9 @@ Add reliable transactional and operational communication.
 - Failed sends are visible
 - Public routes cannot send arbitrary emails
 - Offline chat replies work
+- Inbound emails thread into admin conversations grouped by section
+- Admins reply from the dashboard with threading preserved
+- Form enquiries join the same inbox
 
 ---
 

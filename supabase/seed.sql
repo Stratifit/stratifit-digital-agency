@@ -1198,3 +1198,61 @@ ON CONFLICT (id) DO UPDATE SET
   source = EXCLUDED.source;
 
 
+
+-- =============================================================================
+-- Email Inbox Sections
+-- NOTE: Defaults mirror migration 00060; safe to rerun.
+-- =============================================================================
+
+INSERT INTO public.email_inbox_sections (slug, name_translations, enabled, routing_addresses, form_source_key, from_address, display_order)
+VALUES
+  ('contact',
+   '{"en": "Contact", "de": "Kontakt", "fr": "Contact", "es": "Contacto"}'::jsonb,
+   true,
+   '{"contact@stratifit.com", "hello@stratifit.com"}'::text[],
+   'contact_form',
+   'hello@stratifit.com',
+   1),
+  ('brand-design',
+   '{"en": "Brand Design", "de": "Markengestaltung", "fr": "Design de marque", "es": "Diseño de marca"}'::jsonb,
+   true,
+   '{"branding@stratifit.com"}'::text[],
+   null,
+   'hello@stratifit.com',
+   2),
+  ('website-development',
+   '{"en": "Website Development", "de": "Webentwicklung", "fr": "Développement web", "es": "Desarrollo web"}'::jsonb,
+   true,
+   '{"web@stratifit.com"}'::text[],
+   null,
+   'hello@stratifit.com',
+   3),
+  ('ai-automation',
+   '{"en": "AI & Automation", "de": "KI & Automatisierung", "fr": "IA & Automatisation", "es": "IA y automatización"}'::jsonb,
+   true,
+   '{"ai@stratifit.com"}'::text[],
+   null,
+   'hello@stratifit.com',
+   4),
+  ('acquisition',
+   '{"en": "Acquisition", "de": "Unternehmenskauf", "fr": "Acquisition", "es": "Adquisición"}'::jsonb,
+   true,
+   '{"acquisition@stratifit.com"}'::text[],
+   'acquisition_form',
+   'hello@stratifit.com',
+   5),
+  ('support',
+   '{"en": "Support", "de": "Support", "fr": "Support", "es": "Soporte"}'::jsonb,
+   true,
+   '{"support@stratifit.com"}'::text[],
+   null,
+   'hello@stratifit.com',
+   6),
+  ('other',
+   '{"en": "Other", "de": "Sonstiges", "fr": "Autre", "es": "Otro"}'::jsonb,
+   true,
+   '{}'::text[],
+   null,
+   'hello@stratifit.com',
+   99)
+ON CONFLICT (slug) DO NOTHING;
