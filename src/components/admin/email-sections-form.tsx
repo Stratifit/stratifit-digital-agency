@@ -26,6 +26,14 @@ import { cn } from "@/lib/cn";
 
 const EMPTY_TRANSLATIONS = { en: "", de: "", fr: "", es: "" };
 
+const LANGUAGE_OPTIONS: { value: "" | "en" | "de" | "fr" | "es"; label: string }[] = [
+  { value: "", label: "Any language" },
+  { value: "en", label: "English" },
+  { value: "de", label: "German" },
+  { value: "fr", label: "French" },
+  { value: "es", label: "Spanish" },
+];
+
 function emptyValues(): EmailSectionInput {
   return {
     slug: "",
@@ -34,6 +42,7 @@ function emptyValues(): EmailSectionInput {
     routing_addresses: [],
     form_source_key: null,
     from_address: "hello@stratifit.com",
+    language: null,
     auto_reply_enabled: false,
     auto_reply_subject_translations: { ...EMPTY_TRANSLATIONS },
     auto_reply_body_translations: { ...EMPTY_TRANSLATIONS },
@@ -59,6 +68,7 @@ function fromRecord(section: EmailInboxSectionRecord): EmailSectionInput {
     routing_addresses: section.routing_addresses ?? [],
     form_source_key: section.form_source_key,
     from_address: section.from_address ?? "hello@stratifit.com",
+    language: (section.language as "en" | "de" | "fr" | "es" | null) ?? null,
     auto_reply_enabled: section.auto_reply_enabled,
     auto_reply_subject_translations: tr(
       section.auto_reply_subject_translations
@@ -343,8 +353,35 @@ function SectionEditorCard({
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-xs font-medium text-text-muted">Language</p>
+          <p className="text-xs font-medium text-text-muted">Editing language</p>
           <LocaleTabs value={locale} onChange={setLocale} />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor={`language-${initial.slug}`}>Routing language</Label>
+          <select
+            id={`language-${initial.slug}`}
+            className="h-11 w-full cursor-pointer rounded-input border border-field-border bg-field-bg px-3.5 text-sm font-medium text-field-text transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover focus-visible:border-primary focus-visible:outline-none"
+            value={watch("language") ?? ""}
+            onChange={(e) =>
+              setValue(
+                "language",
+                e.target.value === ""
+                  ? null
+                  : (e.target.value as "en" | "de" | "fr" | "es")
+              )
+            }
+          >
+            {LANGUAGE_OPTIONS.map((option) => (
+              <option key={option.value || "any"} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <p className="text-xs text-text-muted">
+            Inbound email detected as this language routes here when its address
+            matches. “Any language” applies to all languages.
+          </p>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">

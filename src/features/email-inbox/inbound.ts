@@ -10,6 +10,7 @@ import {
   type ReceivedEmail,
 } from "./schemas";
 import { detectEmailLanguage } from "./language";
+import { selectSectionForLanguage } from "./routing";
 import {
   fetchRfcMessageId,
   recordOutboundMessage,
@@ -24,39 +25,34 @@ const THREAD_MATCH_WINDOW_DAYS = 30;
 
 /**
  * Resolve the inbox section for a received email by matching the envelope
- * recipients (to / received_for) against section routing addresses. Falls
- * back to the `other` section when nothing matches.
+ * recipients (to / received_for) against section routing addresses, preferring
+ * a section whose `language` matches the detected language. Falls back to the
+ * `other` section when nothing matches.
  */
 async function resolveSection(
   supabase: ServiceRoleClient,
-  recipients: string[]
+  recipients: string[],
+  language: ReturnType<typeof detectEmailLanguage>
 ): Promise<{ id: string; slug: string } | null> {
   const { data: sections, error } = await supabase
     .from("email_inbox_sections")
-    .select("id, slug, routing_addresses, enabled")
+    .select("id, slug, language, routing_addresses, enabled")
     .eq("enabled", true);
 
   if (error || !sections || sections.length === 0) {
     return null;
   }
 
-  const normalizedRecipients = recipients.map((r) =>
-    r.trim().toLowerCase()
+  return selectSectionForLanguage(
+    sections.map((section) => ({
+      id: section.id,
+      slug: section.slug,
+      language: section.language ?? null,
+      routing_addresses: section.routing_addresses ?? [],
+    })),
+    recipients,
+    language
   );
-
-  for (const section of sections) {
-    const routing = (section.routing_addresses ?? []).map((r) =>
-      r.trim().toLowerCase()
-    );
-    if (
-      routing.some((address) => normalizedRecipients.includes(address))
-    ) {
-      return { id: section.id, slug: section.slug };
-    }
-  }
-
-  const fallback = sections.find((s) => s.slug === "other");
-  return fallback ? { id: fallback.id, slug: fallback.slug } : null;
 }
 
 /** Extract RFC 5322 message-ids from a raw In-Reply-To / References header. */
@@ -316,10 +312,19 @@ export async function processInboundEmail(
     return { ok: true, duplicate: true };
   }
 
-  const section = await resolveSection(supabase, [
-    ...rawEmail.to,
-    ...(rawEmail.received_for ?? []),
-  ]);
+  // Detect the customer's language first so it can steer both the section
+  // routing and the language of the automatic reply.
+  const language = detectEmailLanguage({
+    headers: rawEmail.headers,
+    subject: rawEmail.subject,
+    text: rawEmail.text,
+  });
+
+  const section = await resolveSection(
+    supabase,
+    [...rawEmail.to, ...(rawEmail.received_for ?? [])],
+    language
+  );
   if (!section) {
     console.warn("No email inbox section found; skipping inbound email.");
     return { ok: true };
@@ -333,13 +338,6 @@ export async function processInboundEmail(
     customerEmail,
     rawEmail.subject
   );
-
-  // Detect the customer's language so automatic replies match it.
-  const language = detectEmailLanguage({
-    headers: rawEmail.headers,
-    subject: rawEmail.subject,
-    text: rawEmail.text,
-  });
 
   let threadId: string;
   if (existingThread) {

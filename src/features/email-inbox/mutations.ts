@@ -418,6 +418,7 @@ export async function createEmailSection(
     routing_addresses: parsed.data.routing_addresses,
     form_source_key: parsed.data.form_source_key,
     from_address: parsed.data.from_address || null,
+    language: parsed.data.language || null,
     auto_reply_enabled: parsed.data.auto_reply_enabled,
     auto_reply_subject_translations:
       parsed.data.auto_reply_subject_translations,
@@ -483,6 +484,7 @@ export async function updateEmailSection(
       routing_addresses: parsed.data.routing_addresses,
       form_source_key: parsed.data.form_source_key,
       from_address: parsed.data.from_address || null,
+      language: parsed.data.language || null,
       auto_reply_enabled: parsed.data.auto_reply_enabled,
       auto_reply_subject_translations:
         parsed.data.auto_reply_subject_translations,

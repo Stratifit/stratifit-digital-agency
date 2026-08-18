@@ -98,6 +98,13 @@ export const emailSectionSchema = z.object({
   ),
   enabled: z.boolean(),
   routing_addresses: z.array(z.string().trim().min(1)),
+  /** Optional routing language; null/empty means the section matches any language. */
+  language: z
+    .enum(SUPPORTED_LOCALES)
+    .or(z.literal(""))
+    .optional()
+    .nullable()
+    .transform((v) => (v === "" || v == null ? null : v)),
   form_source_key: z
     .string()
     .trim()

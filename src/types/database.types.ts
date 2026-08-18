@@ -933,6 +933,7 @@ export type Database = {
           form_source_key: string | null
           from_address: string | null
           id: string
+          language: string | null
           name_translations: Json
           resolved_email_enabled: boolean
           resolved_template_id: string | null
@@ -951,6 +952,7 @@ export type Database = {
           form_source_key?: string | null
           from_address?: string | null
           id?: string
+          language?: string | null
           name_translations?: Json
           resolved_email_enabled?: boolean
           resolved_template_id?: string | null
@@ -969,6 +971,7 @@ export type Database = {
           form_source_key?: string | null
           from_address?: string | null
           id?: string
+          language?: string | null
           name_translations?: Json
           resolved_email_enabled?: boolean
           resolved_template_id?: string | null

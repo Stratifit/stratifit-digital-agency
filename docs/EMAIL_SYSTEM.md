@@ -245,13 +245,21 @@ The admin Email Inbox turns inbound email and website form enquiries into
 threaded conversations:
 
 - `email_inbox_sections` — admin-managed categories (slug, multilingual
-  name, routing addresses, form-source mapping, from address, auto-reply
-  toggle + subject/body translations, display order)
+  name, routing addresses, form-source mapping, from address, optional
+  routing language, auto-reply toggle + subject/body translations, display
+  order)
 - `email_threads` — one conversation per customer (status: needs_reply /
   waiting_on_customer / resolved / archived; source: inbound_email /
-  contact_form / acquisition_form / manual)
+  contact_form / acquisition_form / manual; detected language)
 - `email_messages` — inbound/outbound messages with provider ids and
   threading headers
+
+Language-aware routing: when inbound email arrives, its language is detected
+first (see §16), then the section is resolved by routing address **preferring
+a section whose `language` matches the detected language**. A section with
+no language (`null`) is language-agnostic and matches any language, so
+existing sections keep their current behaviour until an admin opts a section
+into a specific language.
 
 Admin reply flow (outgoing):
 

@@ -10,6 +10,7 @@ export interface EmailInboxSectionRecord {
   routing_addresses: string[] | null;
   form_source_key: string | null;
   from_address: string | null;
+  language: string | null;
   auto_reply_enabled: boolean;
   auto_reply_subject_translations: Record<string, string> | null;
   auto_reply_body_translations: Record<string, string> | null;
@@ -27,7 +28,7 @@ export async function getEmailSectionsForAdmin(): Promise<
   const { data, error } = await supabase
     .from("email_inbox_sections")
     .select(
-      "id, slug, name_translations, enabled, routing_addresses, form_source_key, from_address, auto_reply_enabled, auto_reply_subject_translations, auto_reply_body_translations, auto_reply_template_id, resolved_template_id, resolved_email_enabled, display_order"
+      "id, slug, name_translations, enabled, routing_addresses, form_source_key, from_address, language, auto_reply_enabled, auto_reply_subject_translations, auto_reply_body_translations, auto_reply_template_id, resolved_template_id, resolved_email_enabled, display_order"
     )
     .order("display_order", { ascending: true });
 
@@ -43,6 +44,7 @@ export async function getEmailSectionsForAdmin(): Promise<
     routing_addresses: row.routing_addresses ?? [],
     form_source_key: row.form_source_key ?? null,
     from_address: row.from_address ?? null,
+    language: row.language ?? null,
     auto_reply_enabled: row.auto_reply_enabled,
     auto_reply_subject_translations:
       row.auto_reply_subject_translations as Record<string, string> | null,
@@ -63,6 +65,7 @@ export interface EmailInboxSectionSummary {
   routing_addresses: string[];
   form_source_key: string | null;
   from_address: string | null;
+  language: string | null;
   auto_reply_enabled: boolean;
   display_order: number;
   counts: {
@@ -113,7 +116,7 @@ export interface EmailMessageRecord {
 }
 
 const SECTION_SELECT =
-  "id, slug, name_translations, enabled, routing_addresses, form_source_key, from_address, auto_reply_enabled, display_order";
+  "id, slug, name_translations, enabled, routing_addresses, form_source_key, from_address, language, auto_reply_enabled, display_order";
 
 const THREAD_SELECT =
   "id, section_id, customer_email, customer_name, subject, status, source, lead_id, assigned_to, last_inbound_at, last_outbound_at, last_message_at";
@@ -152,6 +155,7 @@ export async function getEmailSectionsWithCounts(): Promise<
       routing_addresses: section.routing_addresses ?? [],
       form_source_key: section.form_source_key ?? null,
       from_address: section.from_address ?? null,
+      language: section.language ?? null,
       auto_reply_enabled: section.auto_reply_enabled,
       display_order: section.display_order,
       counts: {
@@ -205,6 +209,7 @@ export async function getEmailSectionsWithCounts(): Promise<
       routing_addresses: section.routing_addresses ?? [],
       form_source_key: section.form_source_key ?? null,
       from_address: section.from_address ?? null,
+      language: section.language ?? null,
       auto_reply_enabled: section.auto_reply_enabled,
       display_order: section.display_order,
       counts: { ...counts, total },

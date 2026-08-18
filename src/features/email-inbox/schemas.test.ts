@@ -15,6 +15,7 @@ const validSection = {
   routing_addresses: ["support@stratifit.com"],
   form_source_key: null,
   from_address: "hello@stratifit.com",
+  language: null,
   auto_reply_enabled: false,
   auto_reply_subject_translations: tr("Thank you for contacting Stratifit"),
   auto_reply_body_translations: tr("We typically reply within 24 hours."),
@@ -149,6 +150,34 @@ describe("emailSectionSchema", () => {
     if (result.success) {
       expect(result.data.form_source_key).toBeNull();
     }
+  });
+
+  it("accepts a routing language and normalizes empty to null", () => {
+    const withLanguage = emailSectionSchema.safeParse({
+      ...validSection,
+      language: "de",
+    });
+    expect(withLanguage.success).toBe(true);
+    if (withLanguage.success) {
+      expect(withLanguage.data.language).toBe("de");
+    }
+
+    const withEmpty = emailSectionSchema.safeParse({
+      ...validSection,
+      language: "",
+    });
+    expect(withEmpty.success).toBe(true);
+    if (withEmpty.success) {
+      expect(withEmpty.data.language).toBeNull();
+    }
+  });
+
+  it("rejects an unsupported routing language", () => {
+    const result = emailSectionSchema.safeParse({
+      ...validSection,
+      language: "ja",
+    });
+    expect(result.success).toBe(false);
   });
 
   it("accepts linked auto-reply and resolved templates", () => {

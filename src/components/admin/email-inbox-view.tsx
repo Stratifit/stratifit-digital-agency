@@ -160,6 +160,11 @@ export function EmailInboxView({
               )}
             >
               {section.name}
+              {section.language ? (
+                <span className="rounded-sm border border-white/10 bg-white/5 px-1 py-0.5 text-[9px] font-bold uppercase tracking-wider text-text-muted">
+                  {section.language}
+                </span>
+              ) : null}
               {section.counts.total > 0 ? (
                 <span
                   className={cn(
