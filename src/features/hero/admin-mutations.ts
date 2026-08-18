@@ -40,6 +40,14 @@ export async function updateHero(input: HeroFormValues): Promise<ActionResult> {
   // Upsert so saving also creates the singleton row when it is missing
   // (e.g. a database that hasn't been seeded). A plain update on a missing
   // row would silently update nothing and still report success.
+  //
+  // `image_url` is a display-only convenience resolved at read time; the
+  // database stores the `media_id` reference and never a raw URL.
+  const trustedBy = parsed.data.trusted_by.map((item) => ({
+    name: item.name,
+    icon: item.icon,
+    media_id: item.media_id || null,
+  }));
   const { error } = await supabase
     .from("hero")
     .upsert(
@@ -54,7 +62,7 @@ export async function updateHero(input: HeroFormValues): Promise<ActionResult> {
         secondary_cta_label_translations: parsed.data.secondary_cta_label_translations,
         secondary_cta_url: parsed.data.secondary_cta_url || null,
         metrics: parsed.data.metrics,
-        trusted_by: parsed.data.trusted_by,
+        trusted_by: trustedBy,
         is_visible: parsed.data.is_visible,
       },
       { onConflict: "singleton_key" }

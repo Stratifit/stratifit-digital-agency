@@ -17,9 +17,9 @@ export const heroTrustedByItemSchema = z.object({
   name: z.string().min(1, "Name is required"),
   icon: z.string(),
   /** Media-library id of an uploaded logo image (overrides the icon). */
-  media_id: z.string().optional(),
+  media_id: z.string().nullish(),
   /** Resolved public URL for the uploaded logo (display convenience). */
-  image_url: z.string().optional(),
+  image_url: z.string().nullish(),
 });
 
 export const heroSchema = z.object({

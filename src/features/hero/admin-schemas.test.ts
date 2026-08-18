@@ -70,4 +70,17 @@ describe("heroSchema", () => {
     });
     expect(result.success).toBe(true);
   });
+
+  it("accepts a logo whose image_url is null (resolved items without an upload)", () => {
+    // resolveTrustedByImages() sets image_url: null for logos without an
+    // uploaded image; the form receives those items and submits them back.
+    const result = heroSchema.safeParse({
+      ...valid,
+      trusted_by: [
+        { name: "LUMEN", icon: "lumen", media_id: null, image_url: null },
+        { name: "NOVUS", icon: "novus", image_url: null },
+      ],
+    });
+    expect(result.success).toBe(true);
+  });
 });
