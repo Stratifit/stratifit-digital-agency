@@ -110,27 +110,26 @@ export function ReviewSummaryBand({
 }: Partial<ReviewSummaryValues> & { locale: string }) {
   return (
     <div className="flex items-stretch divide-x divide-primary/15 overflow-hidden rounded-card border border-primary/25 bg-card-dark">
-      {/* Client satisfaction — mirrors the Google cell: stars lead like the
-          Google logo, with the rating stacked above the review count. */}
-      <div className="flex min-w-0 flex-1 items-center justify-center gap-2 px-2 py-3 text-center sm:px-4">
-        <Stars
-          label={tWithNumber(locale, "starsOutOfFive", Number(rating))}
-          className="size-5 shrink-0 sm:size-6"
-        />
-        <span className="flex min-w-0 flex-col items-start justify-center leading-tight">
+      {/* Client satisfaction — rating and stars on one line, description under */}
+      <div className="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 px-2 py-3 text-center sm:px-4">
+        <div className="flex items-center gap-1.5">
           <span className="font-display text-2xl font-bold leading-none tracking-tight text-text-primary sm:text-3xl">
             {rating}
             <span className="text-lg font-medium text-text-subtle sm:text-xl">
               {" / 5"}
             </span>
           </span>
-          <span className="min-w-0 max-w-full truncate text-[10px] leading-tight text-text-muted sm:text-[11px]">
-            {CountText({
-              text: tWithNumber(locale, "verifiedClientReviews", verifiedReviews),
-              count: verifiedReviews,
-            })}
-          </span>
-        </span>
+          <Stars
+            label={tWithNumber(locale, "starsOutOfFive", Number(rating))}
+            className="size-4 sm:size-5"
+          />
+        </div>
+        <p className="min-w-0 max-w-full truncate text-[10px] leading-tight text-text-muted sm:text-[11px]">
+          {CountText({
+            text: tWithNumber(locale, "verifiedClientReviews", verifiedReviews),
+            count: verifiedReviews,
+          })}
+        </p>
       </div>
 
       {/* Google reviews — whole block links to the listing */}
