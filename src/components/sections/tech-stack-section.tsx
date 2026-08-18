@@ -127,7 +127,7 @@ export async function TechStackSection() {
               <div key={rowIndex} className="overflow-hidden">
                 <div
                   className={cn(
-                    "flex w-max gap-10 whitespace-nowrap",
+                    "flex w-max gap-10 whitespace-nowrap py-2",
                     rowIndex === 0 ? "marquee-scroll" : "marquee-scroll-reverse"
                   )}
                 >
