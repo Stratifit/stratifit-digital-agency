@@ -113,9 +113,18 @@ export function SectionHeader({
     );
   }
 
+  // cn() does not dedupe conflicting utilities, so when the caller supplies a
+  // margin override (e.g. className="mb-0") the default bottom margin is
+  // dropped instead of both classes being emitted.
+  const overridesMargin = className?.includes("mb-");
+
   return (
     <SectionHeadingReveal
-      className={cn("mb-10 md:mb-16", centered && "text-center", className)}
+      className={cn(
+        overridesMargin ? undefined : "mb-10 md:mb-16",
+        centered && "text-center",
+        className
+      )}
     >
       {heading}
     </SectionHeadingReveal>

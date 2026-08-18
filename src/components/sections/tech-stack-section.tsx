@@ -120,7 +120,11 @@ export async function TechStackSection() {
     <>
       <Section>
         <Container>
-          <SectionHeader settings={headerSettings} locale={locale} />
+          <SectionHeader
+            settings={headerSettings}
+            locale={locale}
+            className="mb-0 md:mb-0"
+          />
 
           <Reveal className="marquee-pause relative overflow-hidden py-4">
             <div className="marquee-scroll flex w-max gap-10 whitespace-nowrap sm:gap-12">
