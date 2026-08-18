@@ -124,7 +124,7 @@ export async function TechStackSection() {
 
           <div>
             {rows.map((row, rowIndex) => (
-              <div key={rowIndex} className="overflow-hidden py-4 md:py-6">
+              <div key={rowIndex} className="overflow-hidden">
                 <div
                   className={cn(
                     "flex w-max gap-10 whitespace-nowrap",
