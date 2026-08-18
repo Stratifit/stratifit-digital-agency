@@ -22,13 +22,13 @@ export type ReviewSummaryValues = {
   googleReviewsUrl: string;
 };
 
-function StarIcon() {
+function StarIcon({ className }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden="true"
-      className="size-3 text-primary"
+      className={`${className ?? "size-3"} text-primary`}
     >
       <path
         fillRule="evenodd"
@@ -39,11 +39,17 @@ function StarIcon() {
   );
 }
 
-function Stars({ label }: { label: string }) {
+function Stars({
+  label,
+  className = "size-3",
+}: {
+  label: string;
+  className?: string;
+}) {
   return (
     <div className="flex gap-0.5" role="img" aria-label={label}>
       {Array.from({ length: 5 }).map((_, i) => (
-        <StarIcon key={i} />
+        <StarIcon key={i} className={className} />
       ))}
     </div>
   );
@@ -104,23 +110,27 @@ export function ReviewSummaryBand({
 }: Partial<ReviewSummaryValues> & { locale: string }) {
   return (
     <div className="flex items-stretch divide-x divide-primary/15 overflow-hidden rounded-card border border-primary/25 bg-card-dark">
-      {/* Client satisfaction */}
-      <div className="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 px-2 py-3 text-center sm:px-4">
-        <div className="flex items-center gap-1.5">
+      {/* Client satisfaction — mirrors the Google cell: stars lead like the
+          Google logo, with the rating stacked above the review count. */}
+      <div className="flex min-w-0 flex-1 items-center justify-center gap-2 px-2 py-3 text-center sm:px-4">
+        <Stars
+          label={tWithNumber(locale, "starsOutOfFive", Number(rating))}
+          className="size-5 shrink-0 sm:size-6"
+        />
+        <span className="flex min-w-0 flex-col items-start justify-center leading-tight">
           <span className="font-display text-2xl font-bold leading-none tracking-tight text-text-primary sm:text-3xl">
             {rating}
             <span className="text-lg font-medium text-text-subtle sm:text-xl">
               {" / 5"}
             </span>
           </span>
-          <Stars label={tWithNumber(locale, "starsOutOfFive", Number(rating))} />
-        </div>
-        <p className="min-w-0 max-w-full truncate text-[10px] leading-tight text-text-muted sm:text-[11px]">
-          {CountText({
-            text: tWithNumber(locale, "verifiedClientReviews", verifiedReviews),
-            count: verifiedReviews,
-          })}
-        </p>
+          <span className="min-w-0 max-w-full truncate text-[10px] leading-tight text-text-muted sm:text-[11px]">
+            {CountText({
+              text: tWithNumber(locale, "verifiedClientReviews", verifiedReviews),
+              count: verifiedReviews,
+            })}
+          </span>
+        </span>
       </div>
 
       {/* Google reviews — whole block links to the listing */}
@@ -133,7 +143,7 @@ export function ReviewSummaryBand({
         className="group flex min-w-0 flex-1 items-center justify-center gap-2 px-2 py-3 text-center transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary/5 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary sm:px-4"
       >
         <GoogleIcon className="size-7 shrink-0 sm:size-9" />
-        <span className="flex min-w-0 flex-col items-center justify-center leading-tight">
+        <span className="flex min-w-0 flex-col items-start justify-center leading-tight">
           <span className="text-sm font-semibold text-text-primary">Google</span>
           <span className="flex items-center gap-1 text-[10px] leading-tight text-text-muted sm:text-[11px]">
             <span className="truncate">
