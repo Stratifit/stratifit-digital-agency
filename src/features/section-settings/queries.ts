@@ -34,23 +34,46 @@ export interface PublicSectionSettings {
 const SELECT_FIELDS =
   "section_key, label, eyebrow_translations, title_translations, highlight_translations, description_translations, cta_label_translations, cta_url, stats, review_summary, tech_stack, seo_title_translations, seo_description_translations, is_visible";
 
+/** Same fields without `tech_stack`, for databases that haven't applied
+ *  migration 00057 yet (the column doesn't exist there). */
+const LEGACY_SELECT_FIELDS = SELECT_FIELDS.replace(
+  "review_summary, tech_stack, seo_title_translations",
+  "review_summary, seo_title_translations"
+);
+
+/**
+ * Runs the query with the full field list; if that fails because a column is
+ * missing (pending migration), retries without the new column so every
+ * section keeps rendering. The database remains the source of truth once the
+ * migration is applied.
+ */
+async function withLegacyFallback<T>(
+  run: (
+    fields: string
+  ) => PromiseLike<{ data: T | null; error: { message: string } | null }>
+): Promise<T | null> {
+  const full = await run(SELECT_FIELDS);
+  if (!full.error) return full.data;
+  const legacy = await run(LEGACY_SELECT_FIELDS);
+  if (legacy.error) return legacy.data;
+  return legacy.data;
+}
+
 export async function getPublicSectionSetting(
   sectionKey: string
 ): Promise<PublicSectionSettings | null> {
   const supabase = await createSupabaseServerClient();
 
-  const { data, error } = await supabase
-    .from("section_settings")
-    .select(SELECT_FIELDS)
-    .eq("section_key", sectionKey)
-    .eq("is_visible", true)
-    .maybeSingle();
+  const data = await withLegacyFallback((fields) =>
+    supabase
+      .from("section_settings")
+      .select(fields)
+      .eq("section_key", sectionKey)
+      .eq("is_visible", true)
+      .maybeSingle()
+  );
 
-  if (error || !data) {
-    return null;
-  }
-
-  return data as PublicSectionSettings;
+  return data as PublicSectionSettings | null;
 }
 
 /**
@@ -62,17 +85,15 @@ export async function getPublicSectionSettingIncludingHidden(
 ): Promise<PublicSectionSettings | null> {
   const supabase = await createSupabaseServerClient();
 
-  const { data, error } = await supabase
-    .from("section_settings")
-    .select(SELECT_FIELDS)
-    .eq("section_key", sectionKey)
-    .maybeSingle();
+  const data = await withLegacyFallback((fields) =>
+    supabase
+      .from("section_settings")
+      .select(fields)
+      .eq("section_key", sectionKey)
+      .maybeSingle()
+  );
 
-  if (error || !data) {
-    return null;
-  }
-
-  return data as PublicSectionSettings;
+  return data as PublicSectionSettings | null;
 }
 
 export interface AdminSectionSettings extends PublicSectionSettings {
@@ -83,16 +104,14 @@ export interface AdminSectionSettings extends PublicSectionSettings {
 export async function getAdminSectionSettings(): Promise<AdminSectionSettings[]> {
   const supabase = await createSupabaseServerClient();
 
-  const { data, error } = await supabase
-    .from("section_settings")
-    .select(`${SELECT_FIELDS}, display_order, updated_at`)
-    .order("display_order", { ascending: true });
+  const data = await withLegacyFallback((fields) =>
+    supabase
+      .from("section_settings")
+      .select(`${fields}, display_order, updated_at`)
+      .order("display_order", { ascending: true })
+  );
 
-  if (error || !data) {
-    return [];
-  }
-
-  return data as AdminSectionSettings[];
+  return (data ?? []) as unknown as AdminSectionSettings[];
 }
 
 export async function getAdminSectionSetting(
@@ -100,15 +119,13 @@ export async function getAdminSectionSetting(
 ): Promise<AdminSectionSettings | null> {
   const supabase = await createSupabaseServerClient();
 
-  const { data, error } = await supabase
-    .from("section_settings")
-    .select(`${SELECT_FIELDS}, display_order, updated_at`)
-    .eq("section_key", sectionKey)
-    .maybeSingle();
+  const data = await withLegacyFallback((fields) =>
+    supabase
+      .from("section_settings")
+      .select(`${fields}, display_order, updated_at`)
+      .eq("section_key", sectionKey)
+      .maybeSingle()
+  );
 
-  if (error || !data) {
-    return null;
-  }
-
-  return data as AdminSectionSettings;
+  return data as unknown as AdminSectionSettings | null;
 }

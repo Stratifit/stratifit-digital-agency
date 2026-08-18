@@ -1,4 +1,8 @@
-import { getPublicSectionSetting } from "@/features/section-settings/queries";
+import {
+  getPublicSectionSetting,
+  getPublicSectionSettingIncludingHidden,
+  type PublicSectionSettings,
+} from "@/features/section-settings/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
@@ -9,6 +13,30 @@ interface TechStackItem {
   name: string;
   icon: string;
 }
+
+/** Built-in fallback matching migration 00057's seed. Used only while the
+ *  migration isn't applied (no section_settings.tech_stack column/row), so the
+ *  section still renders. The database is the source of truth once applied. */
+const DEFAULT_TECH_STACK: TechStackItem[] = [
+  { name: "Tailwind CSS", icon: "brush" },
+  { name: "Framer Motion", icon: "zap" },
+  { name: "GSAP", icon: "zap" },
+  { name: "Next.js", icon: "code" },
+  { name: "React", icon: "atom" },
+  { name: "TypeScript", icon: "code" },
+];
+
+/** Header translations mirrored from the seed; empty fields make SectionHeader
+ *  fall back to the shared SECTION_HEADER_FALLBACKS map. */
+const FALLBACK_HEADER_SETTINGS: PublicSectionSettings = {
+  section_key: "tech-stack",
+  label: "Tech Stack",
+  eyebrow_translations: {},
+  title_translations: {},
+  highlight_translations: {},
+  description_translations: {},
+  is_visible: true,
+};
 
 function TechIcon({ name }: { name: string }) {
   const svgProps = {
@@ -64,17 +92,38 @@ function TechIcon({ name }: { name: string }) {
 export async function TechStackSection() {
   const locale = await getLocale();
   const settings = await getPublicSectionSetting("tech-stack");
-  const items = (settings?.tech_stack ?? []) as TechStackItem[];
+  const includingHidden =
+    await getPublicSectionSettingIncludingHidden("tech-stack");
 
-  if (items.length === 0) {
+  // Row exists but is paused → honor the pause and render nothing.
+  if (!settings && includingHidden) {
     return null;
   }
+
+  // Row exists with an explicitly empty item list → the admin cleared it, so
+  // the section hides (use the visibility toggle to hide the whole section).
+  const dbItems = settings?.tech_stack ?? null;
+  if (settings && Array.isArray(dbItems) && dbItems.length === 0) {
+    return null;
+  }
+
+  const items =
+    Array.isArray(dbItems) && dbItems.length > 0
+      ? (dbItems as TechStackItem[])
+      : DEFAULT_TECH_STACK;
+
+  const headerSettings: PublicSectionSettings =
+    settings ?? FALLBACK_HEADER_SETTINGS;
 
   return (
     <>
       <Section>
         <Container>
-          <SectionHeader settings={settings} locale={locale} align="center" />
+          <SectionHeader
+            settings={headerSettings}
+            locale={locale}
+            align="center"
+          />
 
           <Reveal className="marquee-pause relative overflow-hidden py-4">
             <div className="marquee-scroll flex w-max gap-10 whitespace-nowrap sm:gap-12">
