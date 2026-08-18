@@ -15,6 +15,7 @@ import {
 } from "@/features/email-inbox/mutations";
 import { emailReplySchema } from "@/features/email-inbox/schemas";
 import type { EmailThreadDetail } from "@/features/email-inbox/queries";
+import { EMAIL_LANGUAGE_LABELS } from "@/features/email-inbox/language";
 import { AdminPageHeader } from "@/components/admin/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -107,6 +108,11 @@ export function EmailThreadDetailView({
             {thread.status.replace(/_/g, " ")}
           </Badge>
           <Badge variant="information">{thread.section_name}</Badge>
+          <Badge variant="neutral">
+            {EMAIL_LANGUAGE_LABELS[
+              thread.language as keyof typeof EMAIL_LANGUAGE_LABELS
+            ] ?? thread.language}
+          </Badge>
           <span className="text-xs text-text-muted">
             {thread.source === "inbound_email" ? "Email conversation" : "Form enquiry"}
           </span>

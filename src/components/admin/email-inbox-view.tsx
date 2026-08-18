@@ -13,6 +13,7 @@ import {
   deleteEmailThreads,
 } from "@/features/email-inbox/mutations";
 import type { ThreadStatus } from "@/features/email-inbox/schemas";
+import { EMAIL_LANGUAGE_LABELS } from "@/features/email-inbox/language";
 import { Badge } from "@/components/ui/badge";
 
 const STATUS_TABS: { key: ThreadStatus | "all"; label: string }[] = [
@@ -32,6 +33,14 @@ const STATUS_VARIANT: Record<
   resolved: "success",
   archived: "neutral",
 };
+
+function languageLabel(language: string): string {
+  return (
+    EMAIL_LANGUAGE_LABELS[
+      language as keyof typeof EMAIL_LANGUAGE_LABELS
+    ] ?? language
+  );
+}
 
 function formatTime(value: string | null): string {
   if (!value) return "";
@@ -309,6 +318,12 @@ export function EmailInboxView({
                         <Badge variant={STATUS_VARIANT[thread.status] ?? "neutral"}>
                           {thread.status.replace(/_/g, " ")}
                         </Badge>
+                        <span
+                          className="rounded-sm border border-white/10 bg-white/5 px-1 py-0.5 text-[9px] font-bold uppercase tracking-wider text-text-subtle"
+                          title={languageLabel(thread.language)}
+                        >
+                          {thread.language.toUpperCase()}
+                        </span>
                       </div>
                       <p className="mt-0.5 truncate text-sm text-text-secondary">
                         {thread.subject}

@@ -85,6 +85,7 @@ export interface EmailThreadSummary {
   subject: string;
   status: ThreadStatus;
   source: string;
+  language: string;
   lead_id: string | null;
   assigned_to: string | null;
   last_inbound_at: string | null;
@@ -119,7 +120,7 @@ const SECTION_SELECT =
   "id, slug, name_translations, enabled, routing_addresses, form_source_key, from_address, language, auto_reply_enabled, display_order";
 
 const THREAD_SELECT =
-  "id, section_id, customer_email, customer_name, subject, status, source, lead_id, assigned_to, last_inbound_at, last_outbound_at, last_message_at";
+  "id, section_id, customer_email, customer_name, subject, status, source, language, lead_id, assigned_to, last_inbound_at, last_outbound_at, last_message_at";
 
 /**
  * All inbox sections with per-status thread counts, ordered by display_order.
@@ -294,6 +295,7 @@ export async function getEmailThreadDetail(
     subject: raw.subject as string,
     status: raw.status as ThreadStatus,
     source: raw.source as string,
+    language: (raw.language as string) ?? "en",
     lead_id: (raw.lead_id as string | null) ?? null,
     assigned_to: (raw.assigned_to as string | null) ?? null,
     last_inbound_at: (raw.last_inbound_at as string | null) ?? null,

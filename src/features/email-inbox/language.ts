@@ -3,6 +3,13 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 export const SUPPORTED_EMAIL_LANGUAGES = ["en", "de", "fr", "es"] as const;
 export type EmailLanguage = (typeof SUPPORTED_EMAIL_LANGUAGES)[number];
 
+export const EMAIL_LANGUAGE_LABELS: Record<EmailLanguage, string> = {
+  en: "English",
+  de: "German",
+  fr: "French",
+  es: "Spanish",
+};
+
 /**
  * Lightweight stop-word sets for detecting the language of an inbound email.
  * Deterministic and dependency-free; best-effort with an English fallback.
