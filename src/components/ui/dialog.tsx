@@ -14,7 +14,9 @@ export const DialogOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Overlay
     ref={ref}
-    className={cn("overlay-anim fixed inset-0 z-50 bg-overlay backdrop-blur-sm", className)}
+    // z-[90]: sits above every public overlay (contact popup z-[80], chat
+    // panel z-[70]) so confirmations opened from within a popup stay visible.
+    className={cn("overlay-anim fixed inset-0 z-[90] bg-overlay backdrop-blur-sm", className)}
     {...props}
   />
 ));
@@ -34,7 +36,7 @@ export const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "dialog-anim fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-card-lg border border-border bg-surface-elevated p-6 shadow-lg",
+        "dialog-anim fixed left-1/2 top-1/2 z-[90] w-full max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-card-lg border border-border bg-surface-elevated p-6 shadow-lg",
         className
       )}
       {...props}
