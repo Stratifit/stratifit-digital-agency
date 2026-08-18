@@ -137,6 +137,13 @@ export interface TemplateRenderContext {
   amount?: string | null;
   due_date?: string | null;
   invoice_number?: string | null;
+  project_name?: string | null;
+  project_stage?: string | null;
+  payment_status?: string | null;
+  issue_description?: string | null;
+  meeting_date?: string | null;
+  admin_name?: string | null;
+  customer_email?: string | null;
 }
 
 const KNOWN_KEYS = new Set([
@@ -146,6 +153,13 @@ const KNOWN_KEYS = new Set([
   "amount",
   "due_date",
   "invoice_number",
+  "project_name",
+  "project_stage",
+  "payment_status",
+  "issue_description",
+  "meeting_date",
+  "admin_name",
+  "customer_email",
 ]);
 
 /** Replace {{key}} placeholders; unknown keys become an empty string. */

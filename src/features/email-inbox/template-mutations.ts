@@ -134,6 +134,89 @@ export async function updateEmailTemplate(
   return { success: true };
 }
 
+/**
+ * Duplicate an existing template (admin only). The copy gets a unique key
+ * (`<key>-copy`, then `-copy-2`, …), "(Copy)" appended to the name in every
+ * language, and starts disabled so it cannot fire automatically before it is
+ * reviewed.
+ */
+export async function duplicateEmailTemplate(
+  templateId: string
+): Promise<ActionResult<{ id: string }>> {
+  const supabase = await requireAdmin();
+
+  const { data: template } = await supabase
+    .from("email_templates")
+    .select(
+      "key, category, name_translations, subject_translations, body_translations, description, trigger_event, display_order"
+    )
+    .eq("id", templateId)
+    .single();
+
+  if (!template) {
+    return { success: false, error: "Template not found." };
+  }
+
+  // Resolve a unique key for the copy.
+  let key = `${template.key}-copy`;
+  for (let attempt = 2; ; attempt++) {
+    const { data: existing } = await supabase
+      .from("email_templates")
+      .select("id")
+      .eq("key", key)
+      .maybeSingle();
+    if (!existing) break;
+    key = `${template.key}-copy-${attempt}`;
+  }
+
+  const appendCopy = (translations: Record<string, string> | null) => {
+    if (!translations || typeof translations !== "object") return {};
+    return Object.fromEntries(
+      Object.entries(translations).map(([locale, value]) => [
+        locale,
+        typeof value === "string" ? `${value} (Copy)` : value,
+      ])
+    );
+  };
+
+  const { data: inserted, error } = await supabase
+    .from("email_templates")
+    .insert({
+      key,
+      category: template.category,
+      name_translations: appendCopy(
+        template.name_translations as Record<string, string> | null
+      ),
+      subject_translations: template.subject_translations,
+      body_translations: template.body_translations,
+      description: template.description,
+      trigger_event: template.trigger_event,
+      is_enabled: false,
+      display_order: (template.display_order ?? 0) + 1,
+    })
+    .select("id")
+    .single();
+
+  if (error || !inserted) {
+    return {
+      success: false,
+      error:
+        error?.code === "23505"
+          ? "A template with this key already exists."
+          : "Failed to duplicate the template.",
+    };
+  }
+
+  await recordAuditLog({
+    action: "duplicate",
+    target_table: "email_templates",
+    target_id: key,
+  });
+  revalidatePath("/admin/email/templates");
+  revalidatePath("/admin/email/sections");
+  return { success: true, data: { id: inserted.id } };
+}
+
 export async function deleteEmailTemplate(
   templateId: string
 ): Promise<ActionResult> {

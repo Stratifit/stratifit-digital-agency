@@ -278,6 +278,14 @@ email_messages outbound row + email_events idempotency
 Thread → waiting_on_customer
 ```
 
+The reply composer includes an **Insert template** picker listing the enabled
+template library (grouped by category). Selecting one fills the subject and
+body with the template rendered in the thread's language; values the thread
+knows (`name`, `section_name`, `customer_email`) are injected and unknown
+variables stay as `{{placeholders}}` for the admin to replace before sending.
+An optional subject override is accepted by `sendEmailReply` (falls back to
+`Re: <thread subject>` when empty).
+
 Threading:
 
 - Outbound sends record the RFC message-id (fetched from Resend after
@@ -346,14 +354,17 @@ Supported languages: `en`, `de`, `fr`, `es`. English is the fallback.
 
 ### Email template library
 
-The Email Inbox ships with a multilingual template library (`email_templates`, migration `00061`) covering the categories Stratifit needs:
+The Email Inbox ships with a multilingual template library (`email_templates`, migrations `00061` + `00065`) covering the categories Stratifit needs. The complete version-1 library contains **39 templates — 23 auto-replies and 16 manual templates**:
 
-- **Auto-replies** — instant replies to inbound email and form leads (`auto_reply`, `lead_auto_thanks`)
-- **Lifecycle** — onboarding, project kickoff, milestone updates, project delivered, invoice received, payment received, payment reminder
-- **Follow-ups** — conversation resolved follow-up, churn prevention
-- **Billing** — payment reminders, overdue notices, receipts
+- **Auto-replies (23)** — instant replies to inbound email and form leads: contact/lead thank-yous, per-section auto-replies (contact, brand design, web development, AI & automation, acquisition, support), a generic fallback, plus lifecycle notifications (project started, milestone reached, project delayed, problem detected, revision requested, approval needed, meeting reminder, inactive client follow-up), billing notifications (invoice sent, payment received, payment failed, payment overdue), and an enquiry/service-request confirmation.
+- **Lifecycle (manual)** — proposal, contract, onboarding, project kickoff, weekly update, design delivery, development update, testing update, launch announcement, project complete.
+- **Follow-ups** — conversation resolved follow-up, feedback request.
+- **Billing (manual)** — invoice ready, payment reminder, overdue notice, refund confirmation.
+- **Custom** — support response, generic proposal/contract templates.
 
-Each template stores `subject_translations` and `body_translations` as `{ en, de, fr, es }` JSONB, plus a category, trigger event (`on_lead`, `on_inbound_email`, `on_thread_resolved`, `manual`), an on/off switch, and display order. Content supports `{{placeholder}}` keys (`name`, `section_name`, `company`, `amount`, `due_date`, `invoice_number`); unknown keys render empty.
+Each template stores `subject_translations` and `body_translations` as `{ en, de, fr, es }` JSONB, plus a category, trigger event (`on_lead`, `on_inbound_email`, `on_thread_resolved`, `manual`), an on/off switch, and display order. Content supports `{{placeholder}}` keys (`name`, `section_name`, `company`, `project_name`, `project_stage`, `amount`, `due_date`, `invoice_number`, `payment_status`, `issue_description`, `meeting_date`, `admin_name`, `customer_email`); unknown keys render empty.
+
+Admin management lives under **Admin → Communication → Email Templates** (`/admin/email/templates`, category-filtered editor). Each editor card includes a **live preview** (branded email shell with sample data injected into placeholders, dark/light toggle, per-language rendering) and a **Duplicate** action that copies a template with a unique key and starts it disabled until reviewed.
 
 ### Automatic sends
 

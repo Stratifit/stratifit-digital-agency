@@ -103,6 +103,27 @@ describe("emailReplySchema", () => {
     ).toBe(true);
   });
 
+  it("accepts an optional subject override (template reply)", () => {
+    const result = emailReplySchema.safeParse({
+      thread_id: "11111111-1111-4111-8111-111111111111",
+      subject: "Your invoice INV-2026-0142 from Stratifit",
+      body: "Hi Roland,\n\nYour invoice is ready.",
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.subject).toBe("Your invoice INV-2026-0142 from Stratifit");
+    }
+  });
+
+  it("rejects an overly long subject", () => {
+    const result = emailReplySchema.safeParse({
+      thread_id: "11111111-1111-4111-8111-111111111111",
+      subject: "x".repeat(201),
+      body: "Hello",
+    });
+    expect(result.success).toBe(false);
+  });
+
   it("rejects an empty body", () => {
     const result = emailReplySchema.safeParse({
       thread_id: "11111111-1111-4111-8111-111111111111",

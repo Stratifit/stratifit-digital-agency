@@ -75,6 +75,12 @@ export type ReceivedEmail = z.infer<typeof receivedEmailSchema>;
 /** Admin reply editor input. */
 export const emailReplySchema = z.object({
   thread_id: z.string().uuid(),
+  /** Optional subject override (e.g. from an inserted template). When empty, "Re: …" is derived from the thread subject. */
+  subject: z
+    .string()
+    .trim()
+    .max(200, "Subject is too long.")
+    .optional(),
   body: z
     .string()
     .trim()

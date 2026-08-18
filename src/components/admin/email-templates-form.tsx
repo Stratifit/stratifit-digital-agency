@@ -9,8 +9,11 @@ import { z } from "zod";
 import {
   createEmailTemplate,
   updateEmailTemplate,
+  duplicateEmailTemplate,
   deleteEmailTemplate,
 } from "@/features/email-inbox/template-mutations";
+import { Copy } from "lucide-react";
+import { EmailTemplatePreview } from "./email-template-preview";
 import {
   emailTemplateSchema,
   TEMPLATE_CATEGORIES,
@@ -138,6 +141,17 @@ function TemplateEditorCard({
     }
   }
 
+  async function handleDuplicate() {
+    if (!initial.id) return;
+    setServerError(null);
+    const result = await duplicateEmailTemplate(initial.id);
+    if (!result.success) {
+      setServerError(result.error ?? "Failed to duplicate the template.");
+      return;
+    }
+    router.refresh();
+  }
+
   async function handleDelete() {
     if (!initial.id) return;
     if (
@@ -184,18 +198,30 @@ function TemplateEditorCard({
             />
           </div>
           {!isNew ? (
-            <button
-              type="button"
-              onClick={handleDelete}
-              className="text-xs text-text-muted transition-colors hover:text-error focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-            >
-              Delete
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={handleDuplicate}
+                className="flex items-center gap-1.5 text-xs text-text-muted transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                <Copy className="size-3.5" aria-hidden="true" />
+                Duplicate
+              </button>
+              <button
+                type="button"
+                onClick={handleDelete}
+                className="text-xs text-text-muted transition-colors hover:text-error focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                Delete
+              </button>
+            </div>
           ) : null}
         </div>
       </div>
 
-      <div className="space-y-5 p-5">
+      <div className="p-5">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(320px,400px)] lg:items-start">
+          <div className="space-y-5">
         <div className="grid gap-4 sm:grid-cols-3">
           <div className="space-y-2">
             <Label htmlFor={`key-${initial.key || "new"}`}>Key</Label>
@@ -298,14 +324,22 @@ function TemplateEditorCard({
             placeholder={"Hi {{name}},\n\nThank you for your enquiry…"}
             {...register(`body_translations.${locale}`)}
           />
-          <p className="text-xs text-text-muted">
-            Placeholders:{" "}
+          <p className="text-xs leading-relaxed text-text-muted">
+            Placeholders (auto-filled from lead, project, and invoice data; the
+            preview injects sample values):{" "}
             <code className="rounded-sm bg-surface px-1">{"{{name}}"}</code>{" "}
             <code className="rounded-sm bg-surface px-1">{"{{section_name}}"}</code>{" "}
             <code className="rounded-sm bg-surface px-1">{"{{company}}"}</code>{" "}
+            <code className="rounded-sm bg-surface px-1">{"{{project_name}}"}</code>{" "}
+            <code className="rounded-sm bg-surface px-1">{"{{project_stage}}"}</code>{" "}
             <code className="rounded-sm bg-surface px-1">{"{{amount}}"}</code>{" "}
             <code className="rounded-sm bg-surface px-1">{"{{due_date}}"}</code>{" "}
-            <code className="rounded-sm bg-surface px-1">{"{{invoice_number}}"}</code>
+            <code className="rounded-sm bg-surface px-1">{"{{invoice_number}}"}</code>{" "}
+            <code className="rounded-sm bg-surface px-1">{"{{payment_status}}"}</code>{" "}
+            <code className="rounded-sm bg-surface px-1">{"{{issue_description}}"}</code>{" "}
+            <code className="rounded-sm bg-surface px-1">{"{{meeting_date}}"}</code>{" "}
+            <code className="rounded-sm bg-surface px-1">{"{{admin_name}}"}</code>{" "}
+            <code className="rounded-sm bg-surface px-1">{"{{customer_email}}"}</code>
           </p>
         </div>
 
@@ -346,6 +380,17 @@ function TemplateEditorCard({
                 ? "Create template"
                 : "Save template"}
           </Button>
+        </div>
+          </div>
+
+          {/* Live preview with sample variable injection */}
+          <div className="lg:sticky lg:top-6 lg:self-start">
+            <EmailTemplatePreview
+              subjectTranslations={watch("subject_translations")}
+              bodyTranslations={watch("body_translations")}
+              locale={locale}
+            />
+          </div>
         </div>
       </div>
     </form>

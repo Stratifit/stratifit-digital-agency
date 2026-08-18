@@ -123,9 +123,12 @@ export async function sendEmailReply(
 
   const threading = await getThreadingContext(thread.id);
   const outboundKey = crypto.randomUUID();
-  const subject = /^re\s*:/i.test(thread.subject)
-    ? thread.subject
-    : `Re: ${thread.subject}`;
+  const customSubject = parsed.data.subject?.trim();
+  const subject = customSubject
+    ? customSubject
+    : /^re\s*:/i.test(thread.subject)
+      ? thread.subject
+      : `Re: ${thread.subject}`;
 
   const result = await sendEmail({
     templateKey: "email_inbox_reply",

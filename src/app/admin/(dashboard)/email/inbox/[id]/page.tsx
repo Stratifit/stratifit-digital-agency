@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getEmailThreadDetail } from "@/features/email-inbox/queries";
+import { getEnabledEmailTemplates } from "@/features/email-inbox/template-queries";
 import { EmailThreadDetailView } from "@/components/admin/email-thread-detail";
 
 export const metadata = {
@@ -18,9 +19,13 @@ export default async function AdminEmailThreadPage({
     notFound();
   }
 
+  // Enabled templates power the "Insert template" picker in the reply
+  // composer, so manual templates can be sent straight from a conversation.
+  const templates = await getEnabledEmailTemplates();
+
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <EmailThreadDetailView thread={thread} />
+      <EmailThreadDetailView thread={thread} templates={templates} />
     </div>
   );
 }
