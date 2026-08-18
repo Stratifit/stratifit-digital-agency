@@ -1,4 +1,8 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import {
+  resolveTrustedByImages,
+  type TrustedByMediaItem,
+} from "./media";
 
 export interface PublicHero {
   eyebrow_translations: Record<string, string> | null;
@@ -10,7 +14,7 @@ export interface PublicHero {
   secondary_cta_label_translations: Record<string, string> | null;
   secondary_cta_url: string | null;
   metrics: unknown[] | null;
-  trusted_by: unknown[] | null;
+  trusted_by: TrustedByMediaItem[] | null;
 }
 
 const SELECT_FIELDS =
@@ -48,5 +52,22 @@ export async function getPublicHero(): Promise<PublicHero | null> {
       .single()
   );
 
-  return data as PublicHero | null;
+  if (!data) {
+    return null;
+  }
+
+  const hero = data as unknown as PublicHero & { trusted_by?: unknown };
+  const rawTrustedBy = Array.isArray(hero.trusted_by)
+    ? (hero.trusted_by as TrustedByMediaItem[])
+    : null;
+
+  return {
+    ...hero,
+    // Resolve uploaded logo images (media_id → public URL). A missing column
+    // (pending migration) stays null so callers fall back to the canonical
+    // icon-based logos; an explicitly cleared strip stays an empty array.
+    trusted_by: rawTrustedBy
+      ? await resolveTrustedByImages(supabase, rawTrustedBy)
+      : null,
+  };
 }

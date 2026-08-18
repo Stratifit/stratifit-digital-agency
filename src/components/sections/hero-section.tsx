@@ -89,6 +89,7 @@ const FALLBACK_HERO = {
 interface TrustedByItem {
   name: string;
   icon: string;
+  image_url?: string | null;
 }
 
 export async function HeroSection() {

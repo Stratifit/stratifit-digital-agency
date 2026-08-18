@@ -1,12 +1,19 @@
 "use client";
 
 import * as React from "react";
-import { useForm, useWatch, useFieldArray } from "react-hook-form";
+import {
+  useForm,
+  useWatch,
+  useFieldArray,
+  type Control,
+  type UseFormSetValue,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { heroSchema, type HeroFormValues } from "@/features/hero/admin-schemas";
 import { updateHero } from "@/features/hero/admin-mutations";
 import type { AdminHero } from "@/features/hero/admin-queries";
 import { DEFAULT_TRUSTED_BY } from "@/features/hero/defaults";
+import { uploadMediaAsset } from "@/features/media/mutations";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -27,6 +34,105 @@ const emptyTr = () => ({ en: "", de: "", fr: "", es: "" });
 
 function tr(v: Record<string, string> | null | undefined) {
   return { en: v?.en ?? "", de: v?.de ?? "", fr: v?.fr ?? "", es: v?.es ?? "" };
+}
+
+/**
+ * Per-logo image uploader: uploads a file to the `logos` storage bucket and
+ * stores the media id + public URL on the trusted_by item. An uploaded image
+ * overrides the icon on the public website.
+ */
+function TrustedLogoImageUpload({
+  control,
+  index,
+  setValue,
+}: {
+  control: Control<HeroFormValues>;
+  index: number;
+  setValue: UseFormSetValue<HeroFormValues>;
+}) {
+  const imageUrl = useWatch({
+    control,
+    name: `trusted_by.${index}.image_url`,
+  });
+  const [uploading, setUploading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setError(null);
+    const formData = new FormData();
+    formData.set("file", file);
+    formData.set("bucket", "logos");
+    formData.set("alt_text", file.name);
+    const result = await uploadMediaAsset(formData);
+    setUploading(false);
+    if (result.success) {
+      setValue(`trusted_by.${index}.media_id`, result.data.id, {
+        shouldDirty: true,
+      });
+      setValue(`trusted_by.${index}.image_url`, result.data.url, {
+        shouldDirty: true,
+      });
+      if (inputRef.current) inputRef.current.value = "";
+    } else {
+      setError(result.error);
+    }
+  }
+
+  function handleRemove() {
+    setValue(`trusted_by.${index}.media_id`, "", { shouldDirty: true });
+    setValue(`trusted_by.${index}.image_url`, "", { shouldDirty: true });
+    if (inputRef.current) inputRef.current.value = "";
+    setError(null);
+  }
+
+  return (
+    <div className="rounded-card border border-border bg-background p-4">
+      <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-text-subtle">
+        Logo image (optional)
+      </p>
+      {imageUrl ? (
+        <div className="flex items-center gap-3">
+          {/* eslint-disable-next-line @next/next/no-img-element -- admin preview of the uploaded logo */}
+          <img
+            src={imageUrl}
+            alt=""
+            className="h-10 w-auto max-w-[160px] rounded-sm border border-border bg-white object-contain p-1"
+          />
+          <button
+            type="button"
+            onClick={handleRemove}
+            className="text-xs text-text-muted transition-colors hover:text-error focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            Remove image
+          </button>
+        </div>
+      ) : (
+        <div className="flex flex-wrap items-center gap-3">
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml,image/avif"
+            onChange={handleFile}
+            className="block w-full max-w-xs cursor-pointer rounded-input border border-card-border bg-card-dark text-xs text-text-secondary file:mr-3 file:cursor-pointer file:rounded-sm file:border-0 file:bg-primary file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-text-inverse transition-[border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          />
+          {uploading ? (
+            <span className="text-xs text-text-muted">Uploading…</span>
+          ) : null}
+        </div>
+      )}
+      {error ? (
+        <p className="mt-2 text-xs text-error">{error}</p>
+      ) : null}
+      <p className="mt-2 text-xs text-text-muted">
+        Upload an image logo (max 10 MB, JPG/PNG/WebP/GIF/SVG/AVIF). When set,
+        it replaces the icon on the website.
+      </p>
+    </div>
+  );
 }
 
 function toFormValues(hero: AdminHero): HeroFormValues {
@@ -254,9 +360,17 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
                     <Label htmlFor={`trusted-${index}-icon`}>Icon</Label>
                     <Input id={`trusted-${index}-icon`} placeholder="lumen" {...register(`trusted_by.${index}.icon`)} />
                     <p className="text-xs text-text-muted">
-                      One of: lumen, novus, pulse, vertex, orbit, nexus.
+                      One of: lumen, novus, pulse, vertex, orbit, nexus. Used
+                      only when no logo image is uploaded.
                     </p>
                   </div>
+                </div>
+                <div className="mt-3">
+                  <TrustedLogoImageUpload
+                    control={control}
+                    index={index}
+                    setValue={setValue}
+                  />
                 </div>
               </div>
             ))}

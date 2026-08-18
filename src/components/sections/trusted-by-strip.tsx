@@ -6,6 +6,8 @@ import { cn } from "@/lib/cn";
 interface TrustedByItem {
   name: string;
   icon: string;
+  /** Public URL of an uploaded logo image (overrides the icon). */
+  image_url?: string | null;
 }
 
 /**
@@ -46,8 +48,34 @@ const TRUSTED_BY_ICON_PATHS: Record<string, React.ReactNode> = {
   ),
 };
 
+/** Uploaded logo image rendered from the media library. */
+function TrustedLogoImage({
+  item,
+  className,
+}: {
+  item: TrustedByItem;
+  className?: string;
+}) {
+  if (!item.image_url) return null;
+  return (
+    // eslint-disable-next-line @next/next/no-img-element -- user-uploaded logos (incl. SVG) render as plain images
+    <img
+      src={item.image_url}
+      alt={item.name}
+      loading="lazy"
+      className={cn(
+        "h-8 w-auto max-w-[140px] object-contain",
+        className
+      )}
+    />
+  );
+}
+
 /** Icon + label pair styled like the Tech Stack marquee items. */
 function TrustedByLogo({ item }: { item: TrustedByItem }) {
+  if (item.image_url) {
+    return <TrustedLogoImage item={item} />;
+  }
   return (
     <span className="flex items-center gap-2 whitespace-nowrap text-lg font-medium text-text-secondary sm:text-xl">
       <span className="shrink-0 text-text-subtle">
@@ -152,17 +180,24 @@ export function TrustedByStrip({ items }: { items: TrustedByItem[] }) {
             key={item.name}
             className="flex shrink-0 items-center gap-2 whitespace-nowrap font-display text-base font-black tracking-[0.3em]"
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              aria-hidden="true"
-              className="shrink-0 text-xl text-gray-300"
-              height="1em"
-              width="1em"
-            >
-              {TRUSTED_BY_ICON_PATHS[item.icon] ?? TRUSTED_BY_ICON_PATHS.pulse}
-            </svg>
-            <span className="text-gray-100">{item.name}</span>
+            {item.image_url ? (
+              <TrustedLogoImage item={item} className="h-6" />
+            ) : (
+              <>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  className="shrink-0 text-xl text-gray-300"
+                  height="1em"
+                  width="1em"
+                >
+                  {TRUSTED_BY_ICON_PATHS[item.icon] ??
+                    TRUSTED_BY_ICON_PATHS.pulse}
+                </svg>
+                <span className="text-gray-100">{item.name}</span>
+              </>
+            )}
           </span>
         ))}
       </div>

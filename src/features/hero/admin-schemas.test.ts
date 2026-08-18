@@ -55,4 +55,19 @@ describe("heroSchema", () => {
     });
     expect(result.success).toBe(false);
   });
+
+  it("accepts a trusted-by logo with an uploaded image", () => {
+    const result = heroSchema.safeParse({
+      ...valid,
+      trusted_by: [
+        {
+          name: "ACME",
+          icon: "",
+          media_id: "11111111-1111-1111-1111-111111111111",
+          image_url: "https://xyz.supabase.co/storage/v1/object/public/logos/acme.png",
+        },
+      ],
+    });
+    expect(result.success).toBe(true);
+  });
 });

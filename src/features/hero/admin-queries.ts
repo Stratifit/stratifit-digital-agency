@@ -1,15 +1,16 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { parseJsonArray } from "@/lib/json";
+import {
+  resolveTrustedByImages,
+  type TrustedByMediaItem,
+} from "./media";
 
 export interface HeroMetric {
   value: string;
   label_translations: Record<string, string> | null;
 }
 
-export interface HeroTrustedByItem {
-  name: string;
-  icon: string;
-}
+export type HeroTrustedByItem = TrustedByMediaItem;
 
 export interface AdminHero {
   is_visible: boolean;
@@ -61,9 +62,13 @@ export async function getAdminHero(): Promise<AdminHero | null> {
     return null;
   }
 
+  const trustedBy = parseJsonArray<HeroTrustedByItem>(data.trusted_by);
+
   return {
     ...data,
     metrics: parseJsonArray<HeroMetric>(data.metrics) ?? [],
-    trusted_by: parseJsonArray<HeroTrustedByItem>(data.trusted_by),
+    trusted_by: trustedBy
+      ? await resolveTrustedByImages(supabase, trustedBy)
+      : null,
   };
 }

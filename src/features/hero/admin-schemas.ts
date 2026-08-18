@@ -16,6 +16,10 @@ export const heroMetricSchema = z.object({
 export const heroTrustedByItemSchema = z.object({
   name: z.string().min(1, "Name is required"),
   icon: z.string(),
+  /** Media-library id of an uploaded logo image (overrides the icon). */
+  media_id: z.string().optional(),
+  /** Resolved public URL for the uploaded logo (display convenience). */
+  image_url: z.string().optional(),
 });
 
 export const heroSchema = z.object({
