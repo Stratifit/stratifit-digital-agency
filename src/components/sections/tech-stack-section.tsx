@@ -120,6 +120,7 @@ export async function TechStackSection() {
             settings={headerSettings}
             locale={locale}
             className="mb-0 md:mb-0"
+            splitHighlightFirstWord
           />
 
           <div>

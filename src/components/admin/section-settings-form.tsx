@@ -490,6 +490,9 @@ export function SectionSettingsForm({
             settings={previewSettings}
             locale="en"
             align={previewAlign}
+            splitHighlightFirstWord={
+              settings.section_key === "tech-stack"
+            }
           />
         </div>
       </div>

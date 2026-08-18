@@ -14,6 +14,7 @@ export function SectionHeader({
   dot = false,
   compact = false,
   className,
+  splitHighlightFirstWord = false,
 }: {
   settings: PublicSectionSettings | null;
   locale: string;
@@ -23,6 +24,10 @@ export function SectionHeader({
       animation, smaller heading type and margins. */
   compact?: boolean;
   className?: string;
+  /** Render only the first word of the highlight in amber and the rest of the
+      highlight in the normal heading color (e.g. "Tech Stack" → amber
+      "Tech"). Opt-in per section. */
+  splitHighlightFirstWord?: boolean;
 }) {
   if (!settings) {
     return null;
@@ -50,6 +55,16 @@ export function SectionHeader({
     settings.description_translations,
     fallback?.description
   );
+
+  let amberHighlight = highlight;
+  let highlightRest: string | null = null;
+  if (splitHighlightFirstWord && highlight) {
+    const firstSpace = highlight.indexOf(" ");
+    if (firstSpace > 0) {
+      amberHighlight = highlight.slice(0, firstSpace);
+      highlightRest = highlight.slice(firstSpace + 1);
+    }
+  }
 
   if (!eyebrow && !title && !description) {
     return null;
@@ -86,7 +101,10 @@ export function SectionHeader({
         )}
       >
         <span>{title}</span>
-        {highlight ? <span className="text-primary"> {highlight}</span> : null}
+        {amberHighlight ? (
+          <span className="text-primary"> {amberHighlight}</span>
+        ) : null}
+        {highlightRest ? <span> {highlightRest}</span> : null}
       </h2>
       {description ? (
         <p
