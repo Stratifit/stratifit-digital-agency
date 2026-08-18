@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { heroSchema, type HeroFormValues } from "@/features/hero/admin-schemas";
 import { updateHero } from "@/features/hero/admin-mutations";
 import type { AdminHero } from "@/features/hero/admin-queries";
+import { DEFAULT_TRUSTED_BY } from "@/features/hero/defaults";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -20,7 +21,7 @@ import {
   type EditorLocale,
 } from "@/components/admin/locale-tabs";
 
-type SectionKey = "headline" | "cta" | "metrics";
+type SectionKey = "headline" | "cta" | "metrics" | "trusted";
 
 const emptyTr = () => ({ en: "", de: "", fr: "", es: "" });
 
@@ -43,6 +44,9 @@ function toFormValues(hero: AdminHero): HeroFormValues {
         value: m.value,
         label_translations: tr(m.label_translations),
       })) ?? [{ value: "", label_translations: emptyTr() }],
+    // Pre-fill the canonical logos while migration 00058 is pending; an
+    // explicitly cleared strip stays empty.
+    trusted_by: hero.trusted_by ?? DEFAULT_TRUSTED_BY,
     is_visible: hero.is_visible,
   };
 }
@@ -68,6 +72,7 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
 
   const isVisible = useWatch({ control, name: "is_visible" });
   const metricFields = useFieldArray({ control, name: "metrics" });
+  const trustedFields = useFieldArray({ control, name: "trusted_by" });
 
   async function onSubmit(values: HeroFormValues) {
     setServerError(null);
@@ -106,6 +111,20 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
           className="rounded-button border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
           + Add metric
+        </button>
+      ),
+    },
+    {
+      key: "trusted",
+      label: "Trusted by logos",
+      description: "Client logos shown under the hero stats.",
+      action: (
+        <button
+          type="button"
+          onClick={() => trustedFields.append({ name: "", icon: "" })}
+          className="rounded-button border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        >
+          + Add logo
         </button>
       ),
     },
@@ -209,6 +228,40 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
             ))}
             {metricFields.fields.length === 0 ? (
               <p className="text-xs text-text-muted">No metrics yet — add one above.</p>
+            ) : null}
+          </div>
+        ) : null}
+
+        {activeSection === "trusted" ? (
+          <div className="space-y-4">
+            {trustedFields.fields.map((field, index) => (
+              <div key={field.id} className="rounded-card border border-border bg-background p-4">
+                <div className="mb-3 flex items-center justify-end">
+                  <button
+                    type="button"
+                    onClick={() => trustedFields.remove(index)}
+                    className="text-xs text-text-muted transition-colors hover:text-error focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  >
+                    Remove
+                  </button>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="space-y-1.5">
+                    <Label htmlFor={`trusted-${index}-name`}>Logo name</Label>
+                    <Input id={`trusted-${index}-name`} placeholder="LUMEN" {...register(`trusted_by.${index}.name`)} />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label htmlFor={`trusted-${index}-icon`}>Icon</Label>
+                    <Input id={`trusted-${index}-icon`} placeholder="lumen" {...register(`trusted_by.${index}.icon`)} />
+                    <p className="text-xs text-text-muted">
+                      One of: lumen, novus, pulse, vertex, orbit, nexus.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+            {trustedFields.fields.length === 0 ? (
+              <p className="text-xs text-text-muted">No logos yet — add one above.</p>
             ) : null}
           </div>
         ) : null}

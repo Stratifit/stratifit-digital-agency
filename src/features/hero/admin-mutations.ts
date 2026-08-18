@@ -49,6 +49,7 @@ export async function updateHero(input: HeroFormValues): Promise<ActionResult> {
       secondary_cta_label_translations: parsed.data.secondary_cta_label_translations,
       secondary_cta_url: parsed.data.secondary_cta_url || null,
       metrics: parsed.data.metrics,
+      trusted_by: parsed.data.trusted_by,
       is_visible: parsed.data.is_visible,
     })
     .eq("singleton_key", true);

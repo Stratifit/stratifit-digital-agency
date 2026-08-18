@@ -19,7 +19,7 @@ export default async function AdminHeroPage() {
     <div className="mx-auto max-w-3xl space-y-6">
       <AdminPageHeader
         title="Hero"
-        description="Headline, call-to-action buttons, stats, and tech stack shown at the top of the homepage."
+        description="Headline, call-to-action buttons, stat metrics, and trusted-by logos shown at the top of the homepage."
       />
       <FormCard>
         <HeroForm hero={hero} />

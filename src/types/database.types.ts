@@ -1008,6 +1008,7 @@ export type Database = {
           tech_stack_description_translations: Json
           tech_stack_heading_translations: Json
           title_translations: Json
+          trusted_by: Json
           updated_at: string
           variant: string
         }
@@ -1029,6 +1030,7 @@ export type Database = {
           tech_stack_description_translations?: Json
           tech_stack_heading_translations?: Json
           title_translations?: Json
+          trusted_by?: Json
           updated_at?: string
           variant?: string
         }
@@ -1050,6 +1052,7 @@ export type Database = {
           tech_stack_description_translations?: Json
           tech_stack_heading_translations?: Json
           title_translations?: Json
+          trusted_by?: Json
           updated_at?: string
           variant?: string
         }

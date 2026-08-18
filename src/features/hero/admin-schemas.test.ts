@@ -18,6 +18,10 @@ const valid = {
       label_translations: tr("Projects Delivered"),
     },
   ],
+  trusted_by: [
+    { name: "LUMEN", icon: "lumen" },
+    { name: "NOVUS", icon: "novus" },
+  ],
   is_visible: true,
 };
 
@@ -35,6 +39,19 @@ describe("heroSchema", () => {
     const result = heroSchema.safeParse({
       ...valid,
       metrics: [{ value: "", label_translations: tr("Label") }],
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it("accepts an empty trusted-by strip", () => {
+    const result = heroSchema.safeParse({ ...valid, trusted_by: [] });
+    expect(result.success).toBe(true);
+  });
+
+  it("rejects a trusted-by logo without a name", () => {
+    const result = heroSchema.safeParse({
+      ...valid,
+      trusted_by: [{ name: "", icon: "lumen" }],
     });
     expect(result.success).toBe(false);
   });

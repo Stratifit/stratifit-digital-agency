@@ -13,6 +13,11 @@ export const heroMetricSchema = z.object({
   label_translations: translations(),
 });
 
+export const heroTrustedByItemSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  icon: z.string(),
+});
+
 export const heroSchema = z.object({
   eyebrow_translations: translations(),
   title_translations: translations().refine(
@@ -26,6 +31,7 @@ export const heroSchema = z.object({
   secondary_cta_label_translations: translations(),
   secondary_cta_url: z.string(),
   metrics: z.array(heroMetricSchema),
+  trusted_by: z.array(heroTrustedByItemSchema),
   is_visible: z.boolean(),
 });
 

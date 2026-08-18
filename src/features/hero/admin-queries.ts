@@ -6,6 +6,11 @@ export interface HeroMetric {
   label_translations: Record<string, string> | null;
 }
 
+export interface HeroTrustedByItem {
+  name: string;
+  icon: string;
+}
+
 export interface AdminHero {
   is_visible: boolean;
   eyebrow_translations: Record<string, string> | null;
@@ -17,25 +22,48 @@ export interface AdminHero {
   secondary_cta_label_translations: Record<string, string> | null;
   secondary_cta_url: string | null;
   metrics: HeroMetric[] | null;
+  trusted_by: HeroTrustedByItem[] | null;
 }
+
+const SELECT_FIELDS =
+  "is_visible, eyebrow_translations, title_translations, highlight_translations, description_translations, primary_cta_label_translations, primary_cta_url, secondary_cta_label_translations, secondary_cta_url, metrics, trusted_by";
+
+/** Same fields without `trusted_by`, for databases that haven't applied
+ *  migration 00058 yet (the column doesn't exist there). */
+const LEGACY_SELECT_FIELDS = SELECT_FIELDS.replace(", trusted_by", "");
 
 export async function getAdminHero(): Promise<AdminHero | null> {
   const supabase = await createSupabaseServerClient();
 
-  const { data, error } = await supabase
+  // Retry without the new column while migration 00058 is pending, so the
+  // editor opens instead of failing when the hero row exists.
+  const full = await supabase
     .from("hero")
-    .select(
-      "is_visible, eyebrow_translations, title_translations, highlight_translations, description_translations, primary_cta_label_translations, primary_cta_url, secondary_cta_label_translations, secondary_cta_url, metrics"
-    )
+    .select(SELECT_FIELDS)
     .eq("singleton_key", true)
     .single();
 
-  if (error || !data) {
+  let data: AdminHero | null = null;
+  if (!full.error) {
+    data = full.data as unknown as AdminHero;
+  } else {
+    const legacy = await supabase
+      .from("hero")
+      .select(LEGACY_SELECT_FIELDS)
+      .eq("singleton_key", true)
+      .single();
+    if (!legacy.error) {
+      data = legacy.data as unknown as AdminHero;
+    }
+  }
+
+  if (!data) {
     return null;
   }
 
   return {
-    ...(data as Omit<AdminHero, "metrics">),
+    ...data,
     metrics: parseJsonArray<HeroMetric>(data.metrics) ?? [],
+    trusted_by: parseJsonArray<HeroTrustedByItem>(data.trusted_by),
   };
 }
