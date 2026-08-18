@@ -13,7 +13,11 @@ import {
   deleteEmailThreads,
 } from "@/features/email-inbox/mutations";
 import type { ThreadStatus } from "@/features/email-inbox/schemas";
-import { EMAIL_LANGUAGE_LABELS } from "@/features/email-inbox/language";
+import {
+  EMAIL_LANGUAGE_LABELS,
+  SUPPORTED_EMAIL_LANGUAGES,
+  type EmailLanguage,
+} from "@/features/email-inbox/language";
 import { Badge } from "@/components/ui/badge";
 
 const STATUS_TABS: { key: ThreadStatus | "all"; label: string }[] = [
@@ -42,6 +46,11 @@ function languageLabel(language: string): string {
   );
 }
 
+const LANGUAGE_OPTIONS = SUPPORTED_EMAIL_LANGUAGES.map((code) => ({
+  value: code,
+  label: EMAIL_LANGUAGE_LABELS[code],
+}));
+
 function formatTime(value: string | null): string {
   if (!value) return "";
   const date = new Date(value);
@@ -56,11 +65,13 @@ export function EmailInboxView({
   sections,
   activeSlug,
   activeStatus,
+  activeLanguage,
   threads,
 }: {
   sections: EmailInboxSectionSummary[];
   activeSlug: string;
   activeStatus?: ThreadStatus;
+  activeLanguage?: EmailLanguage;
   threads: EmailThreadSummary[];
 }) {
   const router = useRouter();
@@ -71,11 +82,12 @@ export function EmailInboxView({
 
   const activeSection = sections.find((section) => section.slug === activeSlug);
 
-  function go(slug: string, status?: ThreadStatus) {
+  function go(slug: string, status?: ThreadStatus, language?: string) {
     setSelected(new Set());
     const params = new URLSearchParams();
     if (slug) params.set("section", slug);
     if (status) params.set("status", status);
+    if (language) params.set("language", language);
     router.push(`/admin/email/inbox?${params.toString()}`);
   }
 
@@ -202,15 +214,36 @@ export function EmailInboxView({
         </Link>
       </div>
 
-      {/* Status filter */}
+      {/* Language + status filters */}
       <div className="flex flex-wrap items-center gap-1.5">
+        <select
+          value={activeLanguage ?? ""}
+          onChange={(e) =>
+            go(activeSlug, activeStatus, e.target.value || undefined)
+          }
+          aria-label="Filter by language"
+          className="h-8 cursor-pointer rounded-button border border-card-border bg-card-dark px-2.5 text-xs font-medium text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover hover:text-text-primary focus-visible:border-primary focus-visible:outline-none"
+        >
+          <option value="">All languages</option>
+          {LANGUAGE_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
         {STATUS_TABS.map((tab) => {
           const active = (tab.key === "all" && !activeStatus) || activeStatus === tab.key;
           return (
             <button
               key={tab.key}
               type="button"
-              onClick={() => go(activeSlug, tab.key === "all" ? undefined : tab.key)}
+              onClick={() =>
+                go(
+                  activeSlug,
+                  tab.key === "all" ? undefined : tab.key,
+                  activeLanguage
+                )
+              }
               className={cn(
                 "rounded-button px-3 py-1.5 text-xs font-medium transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
                 active

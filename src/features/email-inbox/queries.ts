@@ -224,7 +224,8 @@ export async function getEmailSectionsWithCounts(): Promise<
  */
 export async function getEmailThreads(
   sectionId: string,
-  status?: ThreadStatus
+  status?: ThreadStatus,
+  language?: string
 ): Promise<EmailThreadSummary[]> {
   const supabase = await createSupabaseServerClient();
 
@@ -238,6 +239,10 @@ export async function getEmailThreads(
     query = query.eq("status", status);
   } else {
     query = query.neq("status", "archived");
+  }
+
+  if (language) {
+    query = query.eq("language", language);
   }
 
   const { data, error } = await query;
