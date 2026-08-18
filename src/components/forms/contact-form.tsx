@@ -4,6 +4,7 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { Mail } from "lucide-react";
 import { leadSchema, type LeadFormValues } from "@/features/leads/schemas";
 import { submitLead } from "@/features/leads/mutations";
 import type { PublicServiceDetail } from "@/features/services/queries";
@@ -275,18 +276,25 @@ export function ContactForm({
 
   if (submitted) {
     return (
-      <div className="rounded-card border border-success-border bg-success-soft p-8 text-center">
-        <p className="font-medium text-success">{t(locale, "thankYou")}</p>
-        <p className="mt-2 text-sm text-text-secondary">
-          {t(locale, "messageReceived")}
-        </p>
-        <button
-          type="button"
-          onClick={() => setSubmitted(false)}
-          className="mt-4 inline-flex items-center justify-center rounded-button border border-card-border bg-transparent px-5 py-2.5 text-sm font-medium text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/30 hover:text-text-primary focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
-        >
-          {t(locale, "sendAnotherMessage")}
-        </button>
+      <div className="p-6 sm:p-8">
+        <div className="py-8 text-center">
+          <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-full border border-primary/20 bg-primary/10">
+            <Mail className="size-6 text-primary" aria-hidden="true" />
+          </div>
+          <h3 className="font-display text-2xl font-bold tracking-tight text-text-primary">
+            {t(locale, "thankYou")}
+          </h3>
+          <p className="mt-3 text-sm text-text-muted">
+            {t(locale, "messageReceived")}
+          </p>
+          <button
+            type="button"
+            onClick={() => setSubmitted(false)}
+            className="mt-6 inline-flex items-center justify-center rounded-button border border-card-border bg-transparent px-5 py-2.5 text-sm font-medium text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/30 hover:text-text-primary focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
+          >
+            {t(locale, "sendAnotherMessage")}
+          </button>
+        </div>
       </div>
     );
   }
