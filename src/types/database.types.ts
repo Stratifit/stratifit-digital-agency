@@ -108,6 +108,54 @@ export type Database = {
         }
         Relationships: []
       }
+      acquisition_niches: {
+        Row: {
+          accent: string
+          created_at: string
+          description_translations: Json
+          display_order: number
+          emoji: string
+          id: string
+          is_visible: boolean
+          label_translations: Json
+          slug: string
+          stats: Json
+          updated_at: string
+          why_description_translations: Json
+          why_title_translations: Json
+        }
+        Insert: {
+          accent?: string
+          created_at?: string
+          description_translations?: Json
+          display_order?: number
+          emoji?: string
+          id?: string
+          is_visible?: boolean
+          label_translations?: Json
+          slug: string
+          stats?: Json
+          updated_at?: string
+          why_description_translations?: Json
+          why_title_translations?: Json
+        }
+        Update: {
+          accent?: string
+          created_at?: string
+          description_translations?: Json
+          display_order?: number
+          emoji?: string
+          id?: string
+          is_visible?: boolean
+          label_translations?: Json
+          slug?: string
+          stats?: Json
+          updated_at?: string
+          why_description_translations?: Json
+          why_title_translations?: Json
+        }
+        Relationships: []
+      }
       acquisition_section: {
         Row: {
           benefits: Json
@@ -160,54 +208,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      acquisition_niches: {
-        Row: {
-          accent: string
-          created_at: string
-          description_translations: Json
-          display_order: number
-          emoji: string
-          id: string
-          is_visible: boolean
-          label_translations: Json
-          slug: string
-          stats: Json
-          updated_at: string
-          why_description_translations: Json
-          why_title_translations: Json
-        }
-        Insert: {
-          accent?: string
-          created_at?: string
-          description_translations?: Json
-          display_order?: number
-          emoji?: string
-          id?: string
-          is_visible?: boolean
-          label_translations?: Json
-          slug: string
-          stats?: Json
-          updated_at?: string
-          why_description_translations?: Json
-          why_title_translations?: Json
-        }
-        Update: {
-          accent?: string
-          created_at?: string
-          description_translations?: Json
-          display_order?: number
-          emoji?: string
-          id?: string
-          is_visible?: boolean
-          label_translations?: Json
-          slug?: string
-          stats?: Json
-          updated_at?: string
-          why_description_translations?: Json
-          why_title_translations?: Json
-        }
-        Relationships: []
       }
       admin_users: {
         Row: {
@@ -563,9 +563,9 @@ export type Database = {
           id: string
           last_seen_at: string
           metadata: Json
-          visitor_number: number | null
           preferred_locale: string
           updated_at: string
+          visitor_number: number | null
         }
         Insert: {
           anonymous_token_hash?: string | null
@@ -575,9 +575,9 @@ export type Database = {
           id?: string
           last_seen_at?: string
           metadata?: Json
-          visitor_number?: number | null
           preferred_locale?: string
           updated_at?: string
+          visitor_number?: number | null
         }
         Update: {
           anonymous_token_hash?: string | null
@@ -587,9 +587,9 @@ export type Database = {
           id?: string
           last_seen_at?: string
           metadata?: Json
-          visitor_number?: number | null
           preferred_locale?: string
           updated_at?: string
+          visitor_number?: number | null
         }
         Relationships: [
           {
@@ -773,6 +773,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      cookie_settings: {
+        Row: {
+          accept_all_label_translations: Json
+          banner_enabled: boolean
+          banner_text_translations: Json
+          banner_title_translations: Json
+          categories: Json
+          created_at: string
+          essential_only_label_translations: Json
+          policy_url: string
+          save_preferences_label_translations: Json
+          settings_label_translations: Json
+          singleton_key: boolean
+          updated_at: string
+        }
+        Insert: {
+          accept_all_label_translations?: Json
+          banner_enabled?: boolean
+          banner_text_translations?: Json
+          banner_title_translations?: Json
+          categories?: Json
+          created_at?: string
+          essential_only_label_translations?: Json
+          policy_url?: string
+          save_preferences_label_translations?: Json
+          settings_label_translations?: Json
+          singleton_key?: boolean
+          updated_at?: string
+        }
+        Update: {
+          accept_all_label_translations?: Json
+          banner_enabled?: boolean
+          banner_text_translations?: Json
+          banner_title_translations?: Json
+          categories?: Json
+          created_at?: string
+          essential_only_label_translations?: Json
+          policy_url?: string
+          save_preferences_label_translations?: Json
+          settings_label_translations?: Json
+          singleton_key?: boolean
+          updated_at?: string
+        }
+        Relationships: []
       }
       detail_pages: {
         Row: {
@@ -1924,9 +1969,9 @@ export type Database = {
           person_name: string
           person_role_translations: Json
           quote_translations: Json
-          source: string
           related_portfolio_id: string | null
           related_service_id: string | null
+          source: string
           updated_at: string
         }
         Insert: {
@@ -1941,9 +1986,9 @@ export type Database = {
           person_name: string
           person_role_translations?: Json
           quote_translations?: Json
-          source?: string
           related_portfolio_id?: string | null
           related_service_id?: string | null
+          source?: string
           updated_at?: string
         }
         Update: {
@@ -1958,9 +2003,9 @@ export type Database = {
           person_name?: string
           person_role_translations?: Json
           quote_translations?: Json
-          source?: string
           related_portfolio_id?: string | null
           related_service_id?: string | null
+          source?: string
           updated_at?: string
         }
         Relationships: [

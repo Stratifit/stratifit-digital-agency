@@ -7,6 +7,54 @@
 -- Site Settings (Singleton)
 -- =============================================================================
 
+INSERT INTO public.cookie_settings (
+  singleton_key,
+  banner_title_translations,
+  banner_text_translations,
+  accept_all_label_translations,
+  essential_only_label_translations,
+  settings_label_translations,
+  save_preferences_label_translations,
+  policy_url,
+  categories
+)
+VALUES (
+  true,
+  '{"en": "Cookie Preferences"}'::jsonb,
+  '{"en": "We use cookies to enhance your browsing experience, analyze site traffic, and deliver personalized content. By clicking “Accept All”, you consent to our use of cookies. You can learn more in our"}'::jsonb,
+  '{"en": "Accept All"}'::jsonb,
+  '{"en": "Essential Only"}'::jsonb,
+  '{"en": "Settings"}'::jsonb,
+  '{"en": "Save Preferences"}'::jsonb,
+  '/cookie-policy',
+  '[
+    {
+      "key": "essential",
+      "essential": true,
+      "enabled": true,
+      "name_translations": { "en": "Essential cookies" },
+      "description_translations": { "en": "Required for the website to function. Cannot be switched off." }
+    },
+    {
+      "key": "analytics",
+      "essential": false,
+      "enabled": true,
+      "name_translations": { "en": "Analytics cookies" },
+      "description_translations": { "en": "Help us understand how visitors interact with the site. All data is aggregated and anonymous." }
+    },
+    {
+      "key": "marketing",
+      "essential": false,
+      "enabled": false,
+      "name_translations": { "en": "Marketing cookies" },
+      "description_translations": { "en": "Used to show relevant advertising. Currently not in use unless you consent." }
+    }
+  ]'::jsonb
+)
+ON CONFLICT (singleton_key) DO NOTHING;
+
+-- =============================================================================
+
 INSERT INTO public.site_settings (singleton_key, site_name, site_description_translations, contact_email, default_locale, supported_locales, default_seo)
 VALUES (
   true,

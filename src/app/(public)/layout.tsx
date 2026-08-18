@@ -10,6 +10,8 @@ import { getPublicPricingPlans } from "@/features/pricing/queries";
 import { getPublicServicePageSlugs } from "@/features/service-pages/queries";
 import { getPublicFaqs } from "@/features/faq/queries";
 import { getPublicSectionSetting } from "@/features/section-settings/queries";
+import { getPublicCookieSettings } from "@/features/cookie-settings/queries";
+import { CookieConsentBanner } from "@/components/cookie/cookie-consent-banner";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { t } from "@/lib/i18n/ui-strings";
 
@@ -18,8 +20,8 @@ export default async function PublicLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
   const [
-    locale,
     services,
     plans,
     servicePageSlugs,
@@ -27,8 +29,8 @@ export default async function PublicLayout({
     faqSettings,
     servicesSettings,
     pricingSettings,
+    cookieSettings,
   ] = await Promise.all([
-    getLocale(),
     getPublicServices(),
     getPublicPricingPlans(),
     getPublicServicePageSlugs(),
@@ -36,6 +38,7 @@ export default async function PublicLayout({
     getPublicSectionSetting("faq"),
     getPublicSectionSetting("services"),
     getPublicSectionSetting("pricing"),
+    getPublicCookieSettings(locale),
   ]);
 
   return (
@@ -64,6 +67,7 @@ export default async function PublicLayout({
         pricingSettings={pricingSettings}
       />
       <ContactPopup services={services} locale={locale} />
+      <CookieConsentBanner settings={cookieSettings} locale={locale} />
     </>
   );
 }

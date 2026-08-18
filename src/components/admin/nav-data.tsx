@@ -84,6 +84,11 @@ export const icons: Record<string, NavIcon> = {
       <rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" />
     </svg>
   ),
+  cookie: (p: NavIconProps) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={p.className}>
+      <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5Z" /><path d="M8.5 8.5h.01" /><path d="M16 15.5h.01" /><path d="M12 12h.01" /><path d="M11 17h.01" /><path d="M7 14h.01" />
+    </svg>
+  ),
   media: (p: NavIconProps) => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={p.className}>
       <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-3.5-3.5a2 2 0 0 0-2.8 0L6 20" />
@@ -173,6 +178,7 @@ export const NAV_SECTIONS: NavSection[] = [
     icon: "settings",
     items: [
       { href: "/admin/settings", label: "Settings", icon: "settings" },
+      { href: "/admin/cookie-settings", label: "Cookie Settings", icon: "cookie" },
       { href: "/admin/users", label: "Users", icon: "users" },
     ],
   },

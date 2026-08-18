@@ -78,6 +78,8 @@ export type UiStringKey =
   | "privacyPolicy"
   | "termsOfService"
   | "cookiePolicy"
+  | "alwaysActive"
+  | "back"
   | "imprint"
   | "scrollLeft"
   | "scrollRight"
@@ -310,6 +312,8 @@ const en: UiStrings = {
   privacyPolicy: "Privacy Policy",
   termsOfService: "Terms of Service",
   cookiePolicy: "Cookie Policy",
+  alwaysActive: "Always active",
+  back: "Back",
   imprint: "Imprint",
   scrollLeft: "Scroll left",
   scrollRight: "Scroll right",
@@ -557,6 +561,8 @@ const de: UiStrings = {
   privacyPolicy: "Datenschutzerklärung",
   termsOfService: "Nutzungsbedingungen",
   cookiePolicy: "Cookie-Richtlinie",
+  alwaysActive: "Immer aktiv",
+  back: "Zurück",
   imprint: "Impressum",
   scrollLeft: "Nach links scrollen",
   scrollRight: "Nach rechts scrollen",
@@ -804,6 +810,8 @@ const fr: UiStrings = {
   privacyPolicy: "Politique de confidentialité",
   termsOfService: "Conditions d'utilisation",
   cookiePolicy: "Politique de cookies",
+  alwaysActive: "Toujours actifs",
+  back: "Retour",
   imprint: "Mentions légales",
   scrollLeft: "Faire défiler à gauche",
   scrollRight: "Faire défiler à droite",
@@ -1051,6 +1059,8 @@ const es: UiStrings = {
   privacyPolicy: "Política de privacidad",
   termsOfService: "Términos del servicio",
   cookiePolicy: "Política de cookies",
+  alwaysActive: "Siempre activas",
+  back: "Volver",
   imprint: "Aviso legal",
   scrollLeft: "Desplazarse a la izquierda",
   scrollRight: "Desplazarse a la derecha",
