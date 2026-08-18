@@ -10,7 +10,7 @@ Premium multilingual digital agency platform — public marketing website, custo
 - **GSAP** for hero / scroll storytelling
 - **Supabase** (PostgreSQL, Auth, Storage, RLS) with local CLI + migrations
 - **Zod** + **React Hook Form**
-- **Resend** for transactional email
+- **Nodemailer + AWS SES SMTP** for the multilingual Communication Engine
 - **OpenSpec** for feature planning
 
 ## Getting Started
@@ -28,8 +28,8 @@ Open http://localhost:3000.
 See `.env.example`. Key groups:
 
 - `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` — public Supabase
-- `SUPABASE_SERVICE_ROLE_KEY` — server-only (used only for email event logging)
-- `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_WEBHOOK_SIGNING_SECRET` — transactional email
+- `SUPABASE_SERVICE_ROLE_KEY` — server-only
+- `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `COMMUNICATION_FROM_EMAIL` — Communication Engine (AWS SES SMTP)
 - `AI_API_KEY`, `AI_BASE_URL`, `AI_MODEL` — AI chatbot provider (OpenAI-compatible)
 - `NEXT_PUBLIC_SITE_URL` — canonical site URL for SEO
 

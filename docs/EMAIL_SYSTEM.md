@@ -1,411 +1,330 @@
-# EMAIL_SYSTEM.md — Stratifit Digital Agency Platform
+# EMAIL_SYSTEM.md — Stratifit Communication Engine
 
 **Project:** Stratifit Digital Agency
-**Document type:** Email system specification
-**Status:** Initial approved email-system specification
-**Primary references:** `docs/PROJECT.md`, `docs/ARCHITECTURE.md`, `docs/DATABASE.md`, `docs/CMS.md`, `AGENTS.md`
+**Document type:** Communication engine specification
+**Status:** Supersedes the Resend-era email system (2026-08-18 rebuild)
+**Primary references:** `docs/PROJECT.md`, `docs/ARCHITECTURE.md`, `docs/DATABASE.md`, `docs/CMS.md`, `openspec/changes/2026-08-18-communication-engine/`, `AGENTS.md`
 
 ---
 
 ## 1. Purpose
 
-This document defines the Stratifit transactional and operational email system.
+This document defines the Stratifit Communication Engine — the unified
+multilingual email system for automatic and manual customer communication.
 
 It specifies:
 
-- Email provider usage (Resend)
-- Server-only client boundaries
-- Approved template keys
-- Typed template data
-- Idempotency
-- Delivery-event logging
-- Webhook verification
-- Retry behavior
-- Multilingual behavior
+- Email provider usage (Nodemailer over AWS SES SMTP)
+- Multilingual templates (en, de, fr, es)
+- Language detection and template selection
+- Auto-fill of customer data
+- Server-only sender boundaries
+- Idempotency and logging
+- Delivery webhooks
+- Automation triggers
+- Schedules
+- Admin dashboard (non-technical friendly)
 - Security and abuse prevention
-- CMS email activity
 - Testing
 
-Emails support the lead, acquisition, chat, and admin workflows without exposing the system to open-relay abuse.
+The engine powers the lead, project lifecycle, payment, inbound-email, and
+admin workflows without exposing the system to open-relay abuse.
 
 ---
 
-## 2. Email System Goals
+## 2. Goals
 
-The email system must:
+The Communication Engine must:
 
-- Send reliable transactional and operational emails
+- Send reliable transactional and operational emails in all four languages
+- Detect the visitor's language and reply in that language
+- Auto-fill customer name/email/project data into every template
 - Keep all provider credentials server-side
-- Use approved template keys only
-- Validate template data before sending
-- Prevent duplicate sends
-- Record delivery events
-- Verify webhook signatures
-- Fail safely when the provider is unavailable
-- Prevent arbitrary email sending from public routes
-- Support the supported languages where applicable
+- Let non-technical admins preview, edit, and send from the dashboard
+- Never send silently — failures surface in the UI and the logs
+- Support "Reply as:" address selection per send
 
 ---
 
-## 3. Approved Provider
+## 3. Architecture Overview
 
-Resend is the approved email provider.
-
-Resend API calls must happen server-side only.
-
-Never expose the Resend API key to the browser.
-
----
-
-## 4. Scope
-
-Version 1 includes:
-
-- Server-only Resend client
-- Typed template schemas
-- Contact form acknowledgement
-- New-lead notification (admin)
-- Acquisition enquiry notification (admin)
-- Chat escalation notification
-- Admin invitation
-- Plain-text fallbacks
-- Email-event logging
-- Idempotency
-- Verified webhook route
-- Controlled send behavior
-
-Version 1 does not include:
-
-- Marketing campaigns
-- Unrestricted recipient lists
-- Arbitrary public email submission
-- Full multilingual template libraries beyond approved copy
-- Complex retry queues
-
----
-
-## 5. Template Keys
-
-Approved template keys:
-
-```text
-contact_acknowledgement
-lead_notification
-acquisition_notification
-chat_escalation
-admin_invitation
-email_inbox_auto_reply
-email_inbox_reply
+```
+Template library (email_templates, 4 languages)
+        │
+        ▼
+Admin dashboard / trigger / schedule / webhook
+        │
+        ▼
+sendTemplateEmail (send-template.ts)
+  1. Load template (key or inline object)
+  2. Render subject + body with {{placeholders}} auto-filled
+  3. Wrap in branded HTML shell (renderer.ts)
+  4. Send via Nodemailer → AWS SES SMTP (sender.ts)
+  5. Log to email_logs (idempotent by idempotency_key)
+  6. Optionally record outbound message on a conversation thread
 ```
 
-Each key has a Zod schema in `src/features/email/templates.ts`.
+Module layout (`src/features/communication/`):
 
-The system rejects unknown template keys.
+| File | Responsibility |
+| --- | --- |
+| `types.ts` | Supported languages, template/log/schedule/trigger types |
+| `schemas.ts` | Zod validation for template/log/schedule/trigger input |
+| `language.ts` | Language detection (stop words) + translation picking |
+| `auto-fill.ts` | `{{placeholder}}` replacement + sender-header parsing |
+| `renderer.ts` | HTML/text rendering with shared partials |
+| `sender.ts` | Nodemailer + AWS SES SMTP transport |
+| `send-template.ts` | Orchestration: load → render → send → log → thread |
+| `triggers.ts` | Event → template mapping (admin-configurable) |
+| `lead-notifications.ts` | Lead acknowledgement + admin notification |
+| `queries.ts` / `mutations.ts` | Admin data access and server actions |
+| `templates/partials.ts` | Header/footer/signature/brand-intro partials |
 
-`email_inbox_auto_reply` renders the per-section auto-reply subject/body from
-CMS-editable translations inside the branded shell.
-
-`email_inbox_reply` renders a free-form admin reply (written in the email
-inbox) as plain paragraphs inside the branded shell.
-
----
-
-## 6. Environment Variables
-
-```text
-RESEND_API_KEY=
-RESEND_FROM_EMAIL=
-RESEND_WEBHOOK_SIGNING_SECRET=
-```
-
-- `RESEND_API_KEY` — Resend API key (server-only)
-- `RESEND_FROM_EMAIL` — verified sender address
-- `RESEND_WEBHOOK_SIGNING_SECRET` — `whsec_` secret for webhook signature verification
-
-When `RESEND_API_KEY` or `RESEND_FROM_EMAIL` is missing, email sending is skipped with a warning instead of failing the business operation.
+The inbox (`src/features/email-inbox/`) re-exports the send pipeline and adds
+threading, section routing, and language-aware auto-replies on top.
 
 ---
 
-## 7. Server-Only Client
+## 4. Provider: Nodemailer + AWS SES SMTP
 
-The Resend client lives in `src/features/email/client.ts`.
+All email leaves the app through `sender.ts`:
 
-It:
+- Nodemailer transport over AWS SES SMTP (587/TLS, or 465/SSL)
+- Credentials from environment variables (server-only)
 
-- Imports `server-only`
-- Caches the client instance
-- Returns `null` when the API key is missing
-
-It must never be imported from a Client Component.
-
----
-
-## 8. Send Flow
+Required environment variables:
 
 ```text
-Validate template data (Zod)
-↓
-Resolve sender and client
-↓
-Build idempotency key
-↓
-Log queued event (unique idempotency key)
-↓
-If already queued → skip send
-↓
-Call Resend
-↓
-Update event to sent or failed
+SMTP_HOST
+SMTP_PORT          # default 587
+SMTP_USER
+SMTP_PASS
+COMMUNICATION_FROM_EMAIL   # default sender (must be SES-verified)
+COMMUNICATION_REPLY_AS     # optional comma-separated reply-as addresses
+COMMUNICATION_WEBHOOK_SECRET  # optional delivery-webhook secret
 ```
-
-## 9. Idempotency
-
-Every send records an `email_events` row with a unique `idempotency_key`.
-
-When the idempotency key already exists, the send is skipped.
-
-Lead-related emails use a deterministic key based on the lead ID, which prevents duplicate acknowledgement or notification emails for the same lead.
-
-## 10. Event Logging
-
-All sends are recorded in `public.email_events`:
-
-```text
-template_key
-recipient_email
-sender_email
-provider
-provider_message_id
-status (queued, sent, delivered, failed, bounced, complained)
-related_type
-related_id
-idempotency_key
-error_code
-error_message
-metadata
-sent_at
-delivered_at
-```
-
-Event writes use the service-role client because `email_events` is admin-only under RLS.
-
-## 11. Webhook Routes
-
-### Delivery events
-
-Route: `POST /api/webhooks/email`
 
 Behavior:
 
-1. Requires `RESEND_WEBHOOK_SIGNING_SECRET`
-2. Verifies the Svix-style signature using `resend.webhooks.verify`
-3. Maps event types to statuses:
+- When SMTP or the from-address is not configured, `sendEmail` returns
+  `{ ok: false, error }` — it never silently succeeds.
+- Admins choose "Reply as:" from the configured `COMMUNICATION_REPLY_AS`
+  list (defaults to contact/sales/info/support@stratifit.com).
+
+---
+
+## 5. Multilingual Templates
+
+The library lives in the `email_templates` table (23 auto-replies + 16 manual
+templates, each with en/de/fr/es subject and body translations). Template
+content is stored in the database so non-technical admins can edit it from the
+CMS without a redeploy.
+
+Template fields:
+
+| Column | Purpose |
+| --- | --- |
+| `key` | Stable identifier (`new_inquiry`, `proposal`, …) |
+| `template_type` | `auto` or `manual` |
+| `category` | `auto_reply`, `lifecycle`, `follow_up`, `billing`, `custom` |
+| `name_translations` | Display name in all 4 languages |
+| `subject_translations` | Subject in all 4 languages |
+| `body_translations` | Body in all 4 languages (`{{placeholders}}` allowed) |
+| `description` | Plain-language help text for admins |
+| `trigger_event` | Suggested trigger (`manual`, `on_lead`, `on_inbound_email`, …) |
+| `is_enabled` | Whether the template may be sent |
+| `display_order` | Sort order in the dashboard |
+
+Auto-replies (23): new inquiry, service request, coming soon, quote request,
+support, project start, milestone reached, delay notification, problem
+detected, revision requested, project completed, invoice sent, payment
+received, payment failed, upcoming payment reminder, overdue payment, meeting
+reminder, document needed, approval needed, inactive client follow-up, email
+received, file upload, form submission.
+
+Manual templates (16): proposal, contract, onboarding welcome, kickoff
+meeting, weekly update, design delivery, development update, testing phase,
+launch announcement, invoice, payment reminder, overdue payment, refund, bug
+report response, feature request response, general support response.
+
+---
+
+## 6. Language Detection & Selection
+
+`language.ts` detects the language of an inbound message:
+
+1. `Content-Language` header when it is in the supported set.
+2. Stop-word scoring over subject + text (most hits wins, ties → en).
+3. Default: English.
+
+Translation picking (`pickTranslation`) falls back to English for missing
+keys, then to the first available key. Detection and selection are automatic:
+
+- Incoming email → language detected → auto-reply sent in that language.
+- Manual reply → template preview shown in the thread's language.
+- Unknown language → English.
+
+---
+
+## 7. Auto-Fill
+
+`auto-fill.ts` replaces `{{placeholders}}` in template content:
+
+| Placeholder | Source |
+| --- | --- |
+| `{{name}}` | customer name |
+| `{{customer_email}}` | customer email |
+| `{{section_name}}` | inbox section / service name |
+| `{{company}}` | customer company |
+| `{{project_name}}` / `{{project_stage}}` | CRM project data |
+| `{{amount}}` / `{{due_date}}` / `{{invoice_number}}` | billing data |
+| `{{payment_status}}` | payment state |
+| `{{issue_description}}` | support context |
+| `{{meeting_date}}` | scheduled meeting |
+| `{{admin_name}}` | signed-in admin |
+
+Inbound messages populate name/email automatically (sender-header parsing);
+manual replies pre-fill from the conversation so the admin only reviews before
+sending.
+
+---
+
+## 8. Idempotency & Logging
+
+Every send is logged to `email_logs` (idempotent by `idempotency_key` when
+provided — webhook retries and double-clicks do not double-send):
+
+| Column | Purpose |
+| --- | --- |
+| `template_key` | Template used (null for free-form replies) |
+| `recipient_email` / `sender_email` | Envelope |
+| `subject` / `language` | Rendered output |
+| `status` | `queued` `sent` `failed` `delivered` `bounced` `complained` |
+| `provider_message_id` | SES message id |
+| `error_message` | Failure detail (safe, never secrets) |
+| `related_type` / `related_id` | e.g. `lead` → lead uuid, `email_thread` → thread |
+| `idempotency_key` | Dedupe key (unique) |
+
+Failed sends are recorded as `failed` with the error — the UI surfaces
+"could not be sent" instead of a phantom success.
+
+---
+
+## 9. Delivery Webhooks
+
+SES delivery/bounce/complaint notifications (via SNS → HTTPS endpoint) POST to:
 
 ```text
-email.sent        → sent
-email.delivered   → delivered
-email.failed      → failed
-email.bounced     → bounced
-email.complained  → complained
+POST /api/webhooks/email
 ```
 
-4. Updates the matching `email_events` row by `provider_message_id`
-5. Returns 400 for invalid signatures, 500 for update failures
+Payload: `{ "messageId": "…", "eventType": "delivered"|"bounced"|"complained"|"failed", … }`
 
-### Inbound email (Email Inbox)
+- Updates `email_logs` by `provider_message_id`.
+- When `COMMUNICATION_WEBHOOK_SECRET` is set, requests must carry it in the
+  `x-communication-secret` header.
+- Unknown events are acknowledged without error (safe to retry).
 
-Route: `POST /api/email/inbound`
+---
 
-Receives Resend `email.received` webhooks (metadata only) and powers the
-admin Email Inbox (`/admin/email/inbox`). See `docs/` OpenSpec change
-`2026-08-18-email-inbox` for the full design.
+## 10. Inbound Email & Auto-Replies
 
-Behavior:
-
-1. Requires `RESEND_WEBHOOK_SIGNING_SECRET`; verifies the Svix signature
-   (401 on failure)
-2. Fetches the full email (body + threading headers) from the Resend
-   Received emails API via `resend.emails.receiving.get(emailId)`
-3. Routes the email to an inbox section by matching `to`/`received_for`
-   against section `routing_addresses` (fallback: `other`)
-4. Resolves the thread via `in-reply-to`/`references` headers, then by
-   customer email + normalized subject (30-day window), then creates a new
-   thread
-5. Persists the message idempotently by the Resend email id and updates the
-   thread (reopening resolved threads)
-6. Sends the section auto-reply when `auto_reply_enabled` (with
-   `In-Reply-To`/`References` threading headers and an idempotency key that
-   includes the inbound message id)
-7. Returns 200 for every verified delivery (including duplicates) so Resend
-   stops retrying; processing errors are logged and do not cause retries
-
-## 12. Email Inbox (Conversations)
-
-The admin Email Inbox turns inbound email and website form enquiries into
-threaded conversations:
-
-- `email_inbox_sections` — admin-managed categories (slug, multilingual
-  name, routing addresses, form-source mapping, from address, optional
-  routing language, auto-reply toggle + subject/body translations, display
-  order)
-- `email_threads` — one conversation per customer (status: needs_reply /
-  waiting_on_customer / resolved / archived; source: inbound_email /
-  contact_form / acquisition_form / manual; detected language)
-- `email_messages` — inbound/outbound messages with provider ids and
-  threading headers
-
-Language-aware routing: when inbound email arrives, its language is detected
-first (see §16), then the section is resolved by routing address **preferring
-a section whose `language` matches the detected language**. A section with
-no language (`null`) is language-agnostic and matches any language, so
-existing sections keep their current behaviour until an admin opts a section
-into a specific language. The default seed ships German, French, and Spanish
-variants of the contact section (`contact-de`, `contact-fr`, `contact-es`) so
-language routing is active out of the box, with English served by the
-language-agnostic `contact` section.
-
-Admin reply flow (outgoing):
+Inbound email (SES inbound → adapter → app) POSTs to:
 
 ```text
-Admin types a reply in /admin/email/inbox/[id]
-↓
-sendEmailReply server action (admin-guarded, Zod-validated)
-↓
-Resend outbound (from = section from_address, In-Reply-To/References)
-↓
-email_messages outbound row + email_events idempotency
-↓
-Thread → waiting_on_customer
+POST /api/email/inbound
 ```
 
-The reply composer includes an **Insert template** picker listing the enabled
-template library (grouped by category). Selecting one fills the subject and
-body with the template rendered in the thread's language; values the thread
-knows (`name`, `section_name`, `customer_email`) are injected and unknown
-variables stay as `{{placeholders}}` for the admin to replace before sending.
-An optional subject override is accepted by `sendEmailReply` (falls back to
-`Re: <thread subject>` when empty).
+Processing (`src/features/email-inbox/inbound.ts`):
 
-Threading:
+1. Validate the received-email payload.
+2. Idempotency check by provider message id.
+3. Detect the customer's language.
+4. Resolve the inbox section by routing address + language.
+5. Resolve or create the conversation thread (threading headers first,
+   then customer email + subject within 30 days).
+6. Persist the inbound message; reopen resolved threads.
+7. Send the language-matched auto-reply:
+   - section `auto_reply_template_id` template when configured (customer's
+     language), else the inline section auto-reply fields (English).
+   - Threading headers (`In-Reply-To`, `References`) are included so replies
+     stay in the same thread.
 
-- Outbound sends record the RFC message-id (fetched from Resend after
-  sending) so customer replies thread back reliably
-- Inbound replies match `in-reply-to`/`references` against stored RFC
-  message-ids, falling back to customer email + normalized subject
+---
 
-Form integration:
+## 11. Automation Triggers
 
-- `submitLead` creates-or-joins a thread in the section mapped to the form
-  source (`contact_form` → Contact) via the service-role client, preferring a
-  language-specific section when one matches the visitor's language (falling
-  back to the language-agnostic default); thread failures never fail the lead
-  submission
-- Form threads do not trigger auto-reply (forms already acknowledge)
+`automation_triggers` maps business events to templates:
 
-## 13. Public Routes and Abuse Prevention
+| Column | Purpose |
+| --- | --- |
+| `event_type` | `lead_created`, `inbound_email`, `project_started`, `milestone_reached`, `project_delayed`, `problem_detected`, `revision_requested`, `project_completed`, `invoice_sent`, `payment_received`, `payment_failed`, `payment_upcoming`, `payment_overdue`, `meeting_scheduled`, `document_needed`, `approval_needed`, `inactive_client`, `file_uploaded`, `form_submitted` |
+| `template_key` | Template sent for the event |
+| `enabled` | Whether the trigger is active |
 
-Public routes must not accept arbitrary:
+Seed defaults map every event to a sensible template. Admins can override per
+event in the dashboard; disabling a row disables the event. When a business
+event fires, the engine detects the customer's language, auto-fills their
+data, and sends the matching template.
 
-- Recipient
-- Subject
-- Sender
-- Body
-- Reply-to
+---
 
-Only the approved send functions may construct emails.
+## 12. Schedules
 
-This prevents open-relay behavior.
+`email_schedules` holds scheduled template sends:
 
-## 14. Notifications
+| Column | Purpose |
+| --- | --- |
+| `template_key` / `recipient_email` / `recipient_name` | Target |
+| `language` | Template language |
+| `send_at` | When to send |
+| `status` | `pending` `sent` `failed` `cancelled` |
+| `data` | Auto-fill context JSON |
+| `error_message` | Failure detail |
 
-### Contact acknowledgement
+A scheduler worker marks due schedules as sent; the admin dashboard can create
+and cancel schedules.
 
-Sent to the visitor after a successful contact form submission.
+---
 
-### New-lead notification
+## 13. Admin Dashboard
 
-Sent to the admin email (`site_settings.contact_email`) after a contact-form lead.
+The **Communication** section in the CMS (`/admin/communication`) is built for
+non-technical admins:
 
-### Acquisition notification
+- **Templates** — grouped by auto/manual + category, editable in a simple
+  form (name, subject, body per language), previewable in all 4 languages.
+- **Send** — composer with template picker, language picker, "Reply as:",
+  auto-filled name/email preview, and subject/body overrides.
+- **Logs** — searchable send history with status and errors.
+- **Schedules** — upcoming/past scheduled sends.
+- **Triggers** — event → template mapping table.
 
-Sent to the admin email after an acquisition enquiry.
+Workflow: open a conversation → suggested template in the right language →
+"Use template" → preview with name/email filled → choose "Reply as:" → Send.
 
-### Chat escalation
+Legacy `/admin/email` routes redirect to the new Communication section.
 
-Sent to the admin email when a visitor requests human support.
+---
 
-### Admin invitation
+## 14. Security & Abuse Prevention
 
-Sent when inviting a new admin user.
+- SMTP credentials are server-only (never `NEXT_PUBLIC_`, never in the
+  browser bundle).
+- Public routes never accept arbitrary recipient/subject/body/from — replies
+  always target the stored customer email of the thread.
+- All mutations validate with Zod and enforce admin authorization server-side.
+- RLS stays enabled; admin tables are admin-only.
+- Secrets are never logged; `error_message` holds safe failure text.
 
-## 15. Retry Behavior
+---
 
-The system does not retry automatically.
+## 15. Testing
 
-Failed sends remain visible in `email_events` with status `failed` and an error message.
-
-This avoids duplicate sends and keeps the flow predictable.
-
-Controlled retry can be added later if justified.
-
-## 16. Multilingual Behavior
-
-Supported languages: `en`, `de`, `fr`, `es`. English is the fallback.
-
-### Email template library
-
-The Email Inbox ships with a multilingual template library (`email_templates`, migrations `00061` + `00065`) covering the categories Stratifit needs. The complete version-1 library contains **39 templates — 23 auto-replies and 16 manual templates**:
-
-- **Auto-replies (23)** — instant replies to inbound email and form leads: contact/lead thank-yous, per-section auto-replies (contact, brand design, web development, AI & automation, acquisition, support), a generic fallback, plus lifecycle notifications (project started, milestone reached, project delayed, problem detected, revision requested, approval needed, meeting reminder, inactive client follow-up), billing notifications (invoice sent, payment received, payment failed, payment overdue), and an enquiry/service-request confirmation.
-- **Lifecycle (manual)** — proposal, contract, onboarding, project kickoff, weekly update, design delivery, development update, testing update, launch announcement, project complete.
-- **Follow-ups** — conversation resolved follow-up, feedback request.
-- **Billing (manual)** — invoice ready, payment reminder, overdue notice, refund confirmation.
-- **Custom** — support response, generic proposal/contract templates.
-
-Each template stores `subject_translations` and `body_translations` as `{ en, de, fr, es }` JSONB, plus a category, trigger event (`on_lead`, `on_inbound_email`, `on_thread_resolved`, `manual`), an on/off switch, and display order. Content supports `{{placeholder}}` keys (`name`, `section_name`, `company`, `project_name`, `project_stage`, `amount`, `due_date`, `invoice_number`, `payment_status`, `issue_description`, `meeting_date`, `admin_name`, `customer_email`); unknown keys render empty.
-
-Admin management lives under **Admin → Communication → Email Templates** (`/admin/email/templates`, category-filtered editor). Each editor card includes a **live preview** (branded email shell with sample data injected into placeholders, dark/light toggle, per-language rendering) and a **Duplicate** action that copies a template with a unique key and starts it disabled until reviewed.
-
-### Automatic sends
-
-- **Auto-reply** — when an inbound email or form lead arrives, the section's linked template is sent **in the customer's language** (detected from the message; `Content-Language` header wins, then stop-word scoring, English fallback). If no template is linked, the section's inline multilingual fields are used.
-- **Send when resolved** — when an admin resolves a conversation, an optional per-section template is sent to the customer in the thread's language.
-- **Lead acknowledgement** — form submissions get the language-matched acknowledgement template as their reply, recorded in the thread.
-
-Admin management lives under **Admin → Communication → Email Templates** (`/admin/email/templates`, category-filtered editor) and per-section links on **Email Sections**.
-
-## 17. Error Handling
-
-- Public users never see provider errors
-- Form success does not depend on email success
-- Email failures are logged with safe context
-- Missing configuration skips email without failing the business operation
-
-## 18. Security
-
-- Resend keys remain server-side
-- Webhook signatures are verified
-- Service-role access is used only for event logging
-- No secrets are logged
-- No arbitrary email construction from public input
-
-## 19. Testing
-
-Cover at minimum:
-
-- Template validation
-- Idempotency (no duplicate sends)
-- Webhook signature verification
-- Event status mapping
-- Send failure logging
-- Missing-configuration behavior
-
-## 20. Related Documentation
-
-```text
-docs/PROJECT.md
-docs/ARCHITECTURE.md
-docs/DATABASE.md
-docs/CMS.md
-AGENTS.md
-```
+- `src/features/email-inbox/reply.test.ts` — admin reply path end-to-end
+  (mocked Supabase + sender): subject derivation, threading headers, outbound
+  record, failure propagation.
+- `src/features/email-inbox/inbound.test.ts` — inbound processing with mocked
+  Supabase.
+- `src/features/email-inbox/language.test.ts` — language detection.
+- Baseline: `npm run lint`, `npx tsc --noEmit`, `npm run build`, `npm test`.

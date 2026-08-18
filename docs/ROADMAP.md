@@ -67,7 +67,7 @@ Version 1 should deliver:
 - AI FAQ
 - Human takeover
 - Conversation inbox
-- Resend email system
+- Communication Engine email system
 - Vercel deployment
 - Documentation
 - Testing and review
@@ -134,7 +134,7 @@ Phase 8 — CMS editors and visual preview
 Phase 9 — Leads and public forms
 Phase 10 — Chat and AI FAQ
 Phase 11 — Human takeover and conversation inbox
-Phase 12 — Resend email system
+Phase 12 — Communication Engine email system
 Phase 13 — SEO, accessibility, performance, and analytics
 Phase 14 — Testing, hardening, and production launch
 Phase 15 — Post-launch operations
@@ -172,7 +172,7 @@ AGENTS.md
 - Confirm languages
 - Confirm brand colors
 - Confirm Satoshi and Inter roles
-- Confirm Supabase and Resend
+- Confirm Supabase and SMTP (AWS SES)
 - Confirm AI provider abstraction
 - Confirm OpenSpec workflow
 - Remove contradictory old documentation
@@ -204,7 +204,7 @@ Prepare a clean, stable Next.js project.
 - Add React Hook Form
 - Add GSAP and `@gsap/react`
 - Add Supabase packages
-- Add Resend package when needed
+- Add nodemailer when needed
 - Create environment-variable example
 - Create server-only boundaries
 - Create feature-folder conventions
@@ -668,40 +668,41 @@ Allow the Stratifit team to manage conversations directly.
 
 ---
 
-## 18. Phase 12 — Resend Email System
+## 18. Phase 12 — Communication Engine (replaces Resend email system)
 
 ### Objective
 
-Add reliable transactional and operational communication.
+Add reliable transactional and operational communication — multilingual
+(en/de/fr/es), non-technical friendly, fully integrated with CRM and
+automation.
 
 ### Tasks
 
-- Verify sender domain
-- Configure Resend
-- Build server-only email client
-- Build typed templates
-- Build contact acknowledgement
-- Build new-lead notification
-- Build acquisition notification
-- Build chat escalation notification
-- Build offline chat reply
-- Build admin invitation
-- Add plain-text fallbacks
-- Add multilingual templates
-- Add email-event logging
-- Add idempotency
-- Add webhook route
-- Verify webhook signatures
-- Add CMS email activity
+- ✅ **Delivered (2026-08-18):** Communication Engine rebuild
+  (`openspec/changes/2026-08-18-communication-engine`) — Nodemailer over
+  AWS SES SMTP replacing Resend; 39 multilingual templates (23 auto + 16
+  manual) stored in `email_templates` and CMS-editable; language detection
+  with automatic template selection; `{{placeholder}}` auto-fill;
+  `email_logs` idempotent logging; `email_schedules`; `automation_triggers`;
+  reply-as address selection; `/admin/communication` dashboard (templates,
+  composer, logs, schedules, triggers); inbound webhook and delivery webhook
+  re-pointed at the engine
 - Email Inbox (✅ implemented — `openspec/changes/archive/2026-08-18-email-inbox`)
-- Email template library (✅ implemented — multilingual auto-replies, lifecycle, follow-up and billing templates; `openspec/changes/archive/2026-08-18-email-templates`)
-- Add controlled retry
+- Email template library (✅ implemented — multilingual auto-replies,
+  lifecycle, follow-up and billing templates;
+  `openspec/changes/archive/2026-08-18-email-templates`)
 - ✅ **Delivered:** Email Inbox (OpenSpec `2026-08-18-email-inbox`) — inbound
-  email via Resend `email.received` webhook → `/api/email/inbound`, admin
-  inbox `/admin/email/inbox` + thread replies, section management
-  `/admin/email/sections` (routing addresses, form-source mapping,
-  per-section auto-reply on/off), unified form→thread integration, admin
-  auth gate in the proxy
+  email → `/api/email/inbound`, admin inbox `/admin/email/inbox` + thread
+  replies, section management `/admin/email/sections` (routing addresses,
+  form-source mapping, per-section auto-reply on/off), unified form→thread
+  integration, admin auth gate in the proxy
+
+### Environment follow-up
+
+- Configure AWS SES SMTP credentials in Vercel and verify the sender domain
+- Point SES inbound (receiving rule) at `/api/email/inbound`
+- Point SES delivery notifications at `/api/webhooks/email` and set
+  `COMMUNICATION_WEBHOOK_SECRET`
 
 ### Completion criteria
 
@@ -820,7 +821,7 @@ Verify the complete system before production.
 - Configure production environment
 - Configure Vercel
 - Configure production Supabase project
-- Configure Resend production settings
+- Configure AWS SES SMTP production settings
 - Verify domain and DNS
 - Apply production migrations
 - Apply approved production seed defaults
@@ -965,7 +966,7 @@ Chat persistence
 → Human takeover
 → Offline email follow-up
 
-Resend event logging
+Communication Engine logging
 → CMS email activity
 ```
 
@@ -1072,7 +1073,7 @@ Version 1 includes:
 - AI FAQ
 - Conversation inbox
 - Human takeover
-- Resend transactional email
+- SMTP transactional email
 - SEO
 - Accessibility
 - Vercel deployment
@@ -1262,7 +1263,7 @@ The Stratifit platform should be built in a controlled sequence:
 10. Leads
 11. AI chat
 12. Human takeover
-13. Resend email
+13. Communication Engine email
 14. SEO, accessibility, and performance
 15. Testing and launch
 16. Post-launch improvement

@@ -138,6 +138,18 @@ ON CONFLICT (slug) DO UPDATE SET
 -- Existing links are replaced by the new structure (approved change).
 -- =============================================================================
 
+-- The stable group IDs below are referenced by the link seed; create them
+-- here so fresh database resets work (seed.sql runs after migrations).
+INSERT INTO public.footer_groups (id, title_translations, display_order, is_visible)
+VALUES
+  ('20000000-0000-4000-8000-000000000001', '{"en": "Platform", "de": "Plattform", "fr": "Plateforme", "es": "Plataforma"}'::jsonb, 1, true),
+  ('20000000-0000-4000-8000-000000000002', '{"en": "Company", "de": "Unternehmen", "fr": "Entreprise", "es": "Empresa"}'::jsonb, 2, true),
+  ('20000000-0000-4000-8000-000000000003', '{"en": "Legal", "de": "Rechtliches", "fr": "Mentions légales", "es": "Legal"}'::jsonb, 3, true)
+ON CONFLICT (id) DO UPDATE SET
+  title_translations = EXCLUDED.title_translations,
+  display_order = EXCLUDED.display_order,
+  is_visible = EXCLUDED.is_visible;
+
 UPDATE public.footer_groups
 SET title_translations = '{"en": "Platform", "de": "Plattform", "fr": "Plateforme", "es": "Plataforma"}'::jsonb
 WHERE id = '20000000-0000-4000-8000-000000000001';

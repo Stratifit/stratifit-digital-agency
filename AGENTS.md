@@ -103,7 +103,7 @@ The approved stack is:
 - Supabase CLI
 - Zod
 - React Hook Form
-- Resend
+- Nodemailer + AWS SES SMTP (Communication Engine)
 - Vercel
 - npm
 - OpenSpec
@@ -830,7 +830,9 @@ Human takeover must be explicit.
 
 ## 30. Email System Rules
 
-Resend calls must be server-side.
+All email goes through the Communication Engine
+(`src/features/communication/`) — Nodemailer over AWS SES SMTP. SMTP calls
+must be server-side; credentials are never exposed to the browser.
 
 Use:
 
@@ -881,7 +883,7 @@ Validate uploads.
 Never expose:
 
 - Supabase service-role key
-- Resend API key
+- SMTP (AWS SES) credentials
 - AI provider key
 - Webhook secret
 - Private database records
@@ -1265,7 +1267,7 @@ Stratifit is a premium multilingual digital agency platform consisting of:
 - AI FAQ
 - Conversation inbox
 - Human takeover
-- Resend email system
+- Multilingual Communication Engine (SMTP email)
 - Vercel deployment
 
 The project is dark-mode-first.

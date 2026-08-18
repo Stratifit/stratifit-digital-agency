@@ -1,25 +1,13 @@
 import "server-only";
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/service-role";
-import { getEmailFrom, getResendClient } from "@/features/email/client";
-import { sendEmail } from "@/features/email/send";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
-import {
-  inboundWebhookSchema,
-  receivedEmailSchema,
-  type InboundWebhookPayload,
-  type ReceivedEmail,
-} from "./schemas";
+import { getDefaultFrom } from "@/features/communication/sender";
+import { parseSenderHeader } from "@/features/communication/auto-fill";
+import { sendTemplateEmail } from "./template-sends";
 import { detectEmailLanguage } from "./language";
+import { receivedEmailSchema, type ReceivedEmail } from "./schemas";
 import { selectSectionForLanguage } from "./routing";
-import {
-  fetchRfcMessageId,
-  recordOutboundMessage,
-  sendTemplateEmail,
-} from "./template-sends";
 
-type ServiceRoleClient = ReturnType<
-  typeof createSupabaseServiceRoleClient
->;
+type ServiceRoleClient = ReturnType<typeof createSupabaseServiceRoleClient>;
 
 const THREAD_MATCH_WINDOW_DAYS = 30;
 
@@ -58,10 +46,12 @@ async function resolveSection(
 /** Extract RFC 5322 message-ids from a raw In-Reply-To / References header. */
 function extractMessageIds(rawHeader: string | null | undefined): string[] {
   if (!rawHeader) return [];
-  return rawHeader
-    .match(/<[^<>]+>/g)
-    ?.map((id) => id.trim())
-    .filter(Boolean) ?? [];
+  return (
+    rawHeader
+      .match(/<[^<>]+>/g)
+      ?.map((id) => id.replace(/^<|>$/g, "").trim())
+      .filter(Boolean) ?? []
+  );
 }
 
 function normalizeSubject(subject: string): string {
@@ -70,22 +60,6 @@ function normalizeSubject(subject: string): string {
     .replace(/^(re|fw|fwd|aw|antw)\s*:\s*/gi, "")
     .replace(/\s+/g, " ")
     .trim();
-}
-
-/** Parse `"Name" <name@example.com>` / `Name <name@example.com>` / bare. */
-function parseFromHeader(from: string): {
-  name: string | null;
-  email: string;
-} {
-  const match = from.match(/^(?:"?([^"<]*)"?\s*<([^>]+)>|([^@\s]+@[^@\s]+))$/);
-  if (!match) {
-    return { name: null, email: from.trim() };
-  }
-  if (match[3]) {
-    return { name: null, email: match[3] };
-  }
-  const name = (match[1] ?? "").trim();
-  return { name: name.length > 0 ? name : null, email: match[2].trim() };
 }
 
 /**
@@ -174,8 +148,6 @@ async function sendInlineAutoReply(input: {
   section: {
     id: string;
     slug: string;
-    name_translations: Record<string, string> | null;
-    from_address: string | null;
     auto_reply_subject_translations: Record<string, string> | null;
     auto_reply_body_translations: Record<string, string> | null;
   };
@@ -183,28 +155,16 @@ async function sendInlineAutoReply(input: {
   inboundMessage: {
     id: string;
     rfcMessageId?: string;
-    subject: string;
     references?: string;
   };
 }): Promise<void> {
-  const subject = resolveTranslation(
-    input.section.auto_reply_subject_translations,
-    "en"
-  );
-  const body = resolveTranslation(
-    input.section.auto_reply_body_translations,
-    "en"
-  );
+  const subject = input.section.auto_reply_subject_translations?.en ?? "";
+  const body = input.section.auto_reply_body_translations?.en ?? "";
 
   if (!subject || !body) return;
 
-  const from = input.section.from_address || getEmailFrom();
+  const from = getDefaultFrom();
   if (!from) return;
-
-  const sectionName = resolveTranslation(
-    input.section.name_translations,
-    "en"
-  );
 
   const inReplyTo = input.inboundMessage.rfcMessageId
     ? `<${input.inboundMessage.rfcMessageId}>`
@@ -218,88 +178,46 @@ async function sendInlineAutoReply(input: {
     .map((id) => `<${id}>`)
     .join(" ");
 
-  const result = await sendEmail({
-    templateKey: "email_inbox_auto_reply",
-    to: input.thread.customer_email,
-    from,
-    data: {
-      customer_name: input.thread.customer_name,
-      section_name: sectionName,
-      subject,
-      body,
+  await sendTemplateEmail({
+    // Inline auto-reply fields are single-language (English), rendered as an
+    // on-the-fly template so the pipeline (render → send → log → thread) stays
+    // identical for every send.
+    template: {
+      subject_translations: { en: subject },
+      body_translations: { en: body },
     },
+    language: "en",
+    toEmail: input.thread.customer_email,
+    fromAddress: from,
+    context: { name: input.thread.customer_name },
     headers: {
       ...(inReplyTo ? { "In-Reply-To": inReplyTo } : {}),
       ...(references ? { References: references } : {}),
     },
-    relatedType: "email_thread",
-    relatedId: input.thread.id,
-    idempotencyKey: `email_inbox_auto_reply:${input.thread.id}:${input.inboundMessage.id}`,
-  });
-
-  const rfcMessageId = result.messageId
-    ? await fetchRfcMessageId(result.messageId)
-    : undefined;
-
-  await recordOutboundMessage({
     threadId: input.thread.id,
-    fromEmail: from,
-    toEmail: input.thread.customer_email,
-    subject,
-    textContent: body,
-    providerMessageId: result.messageId,
-    rfcMessageId,
-    inReplyTo: inReplyTo
-      ? inReplyTo.replace(/^<|>$/g, "")
-      : undefined,
+    inReplyTo: inReplyTo ? inReplyTo.replace(/^<|>$/g, "") : undefined,
     references: references || undefined,
-    status: result.ok ? "sent" : "failed",
-    errorMessage: result.error,
+    idempotencyKey: `inline_auto_reply:${input.thread.id}:${input.inboundMessage.id}`,
   });
 }
 
 /**
- * Process an `email.received` webhook: verify → fetch full email → resolve
- * section + thread → persist → auto-reply. Idempotent by the Resend email id.
+ * Process an inbound email delivered to the app (JSON envelope from the
+ * `/api/email/inbound` webhook adapter): resolve section + thread, persist
+ * the message, and send the language-matched auto-reply through the
+ * Communication Engine. Idempotent by the provider message id.
  */
 export async function processInboundEmail(
-  payload: InboundWebhookPayload
+  rawEmail: ReceivedEmail
 ): Promise<{ ok: boolean; duplicate?: boolean }> {
-  const parsed = inboundWebhookSchema.safeParse(payload);
-  if (!parsed.success) {
-    console.error("Invalid inbound webhook payload:", parsed.error.message);
+  const parsedEmail = receivedEmailSchema.safeParse(rawEmail);
+  if (!parsedEmail.success) {
+    console.error("Invalid received email shape:", parsedEmail.error.message);
     return { ok: false };
   }
 
-  const emailId = parsed.data.data?.email_id ?? parsed.data.data?.id;
-  if (!emailId) {
-    return { ok: true };
-  }
-
-  const client = getResendClient();
-  if (!client) {
-    console.warn("Resend not configured; skipping inbound email.");
-    return { ok: true };
-  }
-
-  let rawEmail: ReceivedEmail;
-  try {
-    const { data, error } = await client.emails.receiving.get(emailId);
-    if (error) {
-      console.error("Resend received-email fetch error:", error.message);
-      return { ok: true };
-    }
-    const parsedEmail = receivedEmailSchema.safeParse(data);
-    if (!parsedEmail.success) {
-      console.error("Invalid received email shape:", parsedEmail.error.message);
-      return { ok: true };
-    }
-    rawEmail = parsedEmail.data;
-  } catch (error) {
-    console.error("Resend received-email fetch threw:", error);
-    return { ok: true };
-  }
-
+  const email = parsedEmail.data;
+  const emailId = email.id;
   const supabase = createSupabaseServiceRoleClient();
 
   // Idempotency: this email was already processed (webhook retry).
@@ -315,14 +233,14 @@ export async function processInboundEmail(
   // Detect the customer's language first so it can steer both the section
   // routing and the language of the automatic reply.
   const language = detectEmailLanguage({
-    headers: rawEmail.headers,
-    subject: rawEmail.subject,
-    text: rawEmail.text,
+    headers: email.headers,
+    subject: email.subject,
+    text: email.text,
   });
 
   const section = await resolveSection(
     supabase,
-    [...rawEmail.to, ...(rawEmail.received_for ?? [])],
+    [...email.to, ...(email.received_for ?? [])],
     language
   );
   if (!section) {
@@ -330,13 +248,13 @@ export async function processInboundEmail(
     return { ok: true };
   }
 
-  const { name, email: customerEmail } = parseFromHeader(rawEmail.from);
-  const rfcMessageId = rawEmail.message_id || undefined;
+  const { name, email: customerEmail } = parseSenderHeader(email.from);
+  const rfcMessageId = email.message_id || undefined;
   const existingThread = await resolveThread(
     supabase,
-    rawEmail,
+    email,
     customerEmail,
-    rawEmail.subject
+    email.subject
   );
 
   let threadId: string;
@@ -350,11 +268,11 @@ export async function processInboundEmail(
         section_id: section.id,
         customer_email: customerEmail.toLowerCase(),
         customer_name: name,
-        subject: rawEmail.subject,
+        subject: email.subject,
         status: "needs_reply",
         source: "inbound_email",
         language,
-        last_inbound_at: rawEmail.created_at ?? new Date().toISOString(),
+        last_inbound_at: email.created_at ?? new Date().toISOString(),
       })
       .select("id")
       .single();
@@ -366,24 +284,24 @@ export async function processInboundEmail(
     threadId = threadInsert.data.id;
   }
 
-  const headers = rawEmail.headers ?? {};
+  const headers = email.headers ?? {};
   const messageInsert = await supabase.from("email_messages").insert({
     thread_id: threadId,
     direction: "inbound",
     from_email: customerEmail,
-    to_email: rawEmail.to[0] ?? "",
-    subject: rawEmail.subject,
-    text_content: rawEmail.text ?? "",
-    html_content: rawEmail.html ?? null,
+    to_email: email.to[0] ?? "",
+    subject: email.subject,
+    text_content: email.text ?? "",
+    html_content: email.html ?? null,
     provider_message_id: emailId,
     in_reply_to: headers["in-reply-to"] ?? null,
     references: headers["references"] ?? null,
     headers: {
       ...(rfcMessageId ? { message_id: rfcMessageId } : {}),
-      received_at: rawEmail.created_at ?? null,
+      received_at: email.created_at ?? null,
     },
     status: "received",
-    sent_at: rawEmail.created_at ?? null,
+    sent_at: email.created_at ?? null,
   });
 
   if (messageInsert.error) {
@@ -395,8 +313,8 @@ export async function processInboundEmail(
     .from("email_threads")
     .update({
       status: "needs_reply",
-      last_inbound_at: rawEmail.created_at ?? new Date().toISOString(),
-      last_message_at: rawEmail.created_at ?? new Date().toISOString(),
+      last_inbound_at: email.created_at ?? new Date().toISOString(),
+      last_message_at: email.created_at ?? new Date().toISOString(),
       customer_name: name ?? undefined,
       language,
     })
@@ -419,10 +337,7 @@ export async function processInboundEmail(
         .eq("id", threadId)
         .single();
       if (thread && thread.source === "inbound_email") {
-        const sectionName = resolveTranslation(
-          sectionFull.name_translations as Record<string, string> | null,
-          "en"
-        );
+        const sectionName = (sectionFull.name_translations as Record<string, string> | null)?.en ?? "";
         const template = sectionFull.email_templates as unknown as {
           subject_translations: Record<string, string> | null;
           body_translations: Record<string, string> | null;
@@ -445,11 +360,13 @@ export async function processInboundEmail(
             },
             language: thread.language ?? language,
             toEmail: thread.customer_email,
-            customerName: thread.customer_name,
-            sectionName,
-            fromAddress: sectionFull.from_address,
+            fromAddress: sectionFull.from_address ?? undefined,
+            context: {
+              name: thread.customer_name,
+              section_name: sectionName,
+            },
             threadId: thread.id,
-            inReplyTo,
+            inReplyTo: inReplyTo ? inReplyTo.replace(/^<|>$/g, "") : undefined,
             references: references || undefined,
             idempotencyKey: `email_inbox_template:${thread.id}:${emailId}`,
           });
@@ -459,11 +376,6 @@ export async function processInboundEmail(
             section: {
               id: section.id,
               slug: section.slug,
-              name_translations: sectionFull.name_translations as Record<
-                string,
-                string
-              > | null,
-              from_address: sectionFull.from_address,
               auto_reply_subject_translations:
                 sectionFull.auto_reply_subject_translations as Record<
                   string,
@@ -483,7 +395,6 @@ export async function processInboundEmail(
             inboundMessage: {
               id: emailId,
               rfcMessageId,
-              subject: rawEmail.subject,
               references: headers["references"] ?? undefined,
             },
           });

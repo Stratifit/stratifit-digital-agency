@@ -1396,7 +1396,7 @@ Non-essential tracking must follow consent requirements.
 The frontend must not expose:
 
 - Service-role keys
-- Resend API keys
+- SMTP (AWS SES) credentials
 - AI API keys
 - Private conversation data
 - Internal notes

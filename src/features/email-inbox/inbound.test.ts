@@ -1,15 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { processInboundEmail } from "./inbound";
-import type { InboundWebhookPayload } from "./schemas";
+import type { ReceivedEmail } from "./schemas";
 
 // ---------------------------------------------------------------------------
 // Shared mock state (vi.hoisted so the hoisted vi.mock factories can read it).
 // ---------------------------------------------------------------------------
 const mocks = vi.hoisted(() => ({
-  resendReceivingGet: vi.fn(),
-  resendEmailsGet: vi.fn(),
-  getEmailFrom: vi.fn(),
-  sendEmail: vi.fn(),
+  sendTemplateEmail: vi.fn(),
+  getDefaultFrom: vi.fn(),
   supabaseCalls: [] as { table: string; payload?: unknown }[],
   supabaseQueues: {} as Record<
     string,
@@ -19,21 +17,17 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock("server-only", () => ({}));
 
-// Resend client — the external HTTP dependency under test.
-vi.mock("@/features/email/client", () => ({
-  getResendClient: () => ({
-    emails: {
-      receiving: { get: mocks.resendReceivingGet },
-      get: mocks.resendEmailsGet,
-    },
-  }),
-  getEmailFrom: () => mocks.getEmailFrom() as string,
+// The outbound send is the boundary we record (the SMTP send itself is
+// exercised inside the engine's sender otherwise).
+vi.mock("@/features/communication/send-template", () => ({
+  sendTemplateEmail: mocks.sendTemplateEmail,
+  recordOutboundMessage: vi.fn(),
+  recordEmailLog: vi.fn(),
 }));
 
-// The actual outbound send is the boundary we record (Resend HTTP would be
-// exercised through client.emails.send otherwise).
-vi.mock("@/features/email/send", () => ({
-  sendEmail: mocks.sendEmail,
+vi.mock("@/features/communication/sender", () => ({
+  getDefaultFrom: () => mocks.getDefaultFrom() as string,
+  getReplyAsAddresses: () => ["contact@stratifit.com"],
 }));
 
 // Service-role Supabase client — a queue-backed chainable fake that records
@@ -64,6 +58,10 @@ vi.mock("@/lib/supabase/service-role", () => {
         payload = value;
         return builder;
       },
+      upsert: (value: unknown) => {
+        payload = value;
+        return builder;
+      },
       single: () => Promise.resolve(consume()),
       maybeSingle: () => Promise.resolve(consume()),
       then: (onFulfilled: (value: unknown) => unknown) =>
@@ -80,7 +78,7 @@ vi.mock("@/lib/supabase/service-role", () => {
   };
 });
 
-const RECEIVED_EMAIL = {
+const RECEIVED_EMAIL: ReceivedEmail = {
   id: "email-123",
   message_id: "abc@example.com",
   from: "Anna <kunde@example.com>",
@@ -145,20 +143,6 @@ const THREAD = {
   language: "de",
 };
 
-function payload(): InboundWebhookPayload {
-  return {
-    type: "email.received",
-    data: {
-      email_id: "email-123",
-      from: "Anna <kunde@example.com>",
-      to: ["support@stratifit.com"],
-      subject: "Anfrage",
-      received_for: ["support@stratifit.com"],
-      created_at: "2026-08-18T10:00:00Z",
-    },
-  };
-}
-
 function callsFor(table: string): Record<string, unknown>[] {
   return mocks.supabaseCalls
     .filter((call) => call.table === table && call.payload)
@@ -168,13 +152,10 @@ function callsFor(table: string): Record<string, unknown>[] {
 beforeEach(() => {
   mocks.supabaseCalls.length = 0;
   mocks.supabaseQueues = {};
-  mocks.sendEmail.mockReset().mockResolvedValue({ ok: true, messageId: "msg-1" });
-  mocks.getEmailFrom.mockReset().mockReturnValue("hello@stratifit.com");
-  mocks.resendReceivingGet.mockReset().mockResolvedValue({
-    data: RECEIVED_EMAIL,
-    error: null,
-  });
-  mocks.resendEmailsGet.mockReset();
+  mocks.sendTemplateEmail
+    .mockReset()
+    .mockResolvedValue({ sent: true, messageId: "msg-1" });
+  mocks.getDefaultFrom.mockReset().mockReturnValue("hello@stratifit.com");
 });
 
 afterEach(() => {
@@ -187,7 +168,6 @@ describe("processInboundEmail", () => {
       email_messages: [
         { data: null, error: null }, // idempotency lookup
         { error: null }, // inbound message insert
-        { error: null }, // outbound auto-reply insert
       ],
       email_inbox_sections: [
         { data: SECTIONS, error: null }, // routing lookup
@@ -199,11 +179,10 @@ describe("processInboundEmail", () => {
         { error: null }, // thread update after message insert
         { data: { status: "needs_reply" }, error: null }, // reopen check
         { data: THREAD, error: null }, // auto-reply thread fetch
-        { error: null }, // thread update after outbound message
       ],
     };
 
-    const result = await processInboundEmail(payload());
+    const result = await processInboundEmail(RECEIVED_EMAIL);
 
     expect(result).toEqual({ ok: true });
 
@@ -219,7 +198,7 @@ describe("processInboundEmail", () => {
       customer_name: "Anna",
     });
 
-    // The inbound message is persisted with the Resend provider id.
+    // The inbound message is persisted with the provider id.
     const messageInserts = callsFor("email_messages");
     expect(messageInserts[0]).toMatchObject({
       direction: "inbound",
@@ -229,39 +208,34 @@ describe("processInboundEmail", () => {
     });
     expect(messageInserts[0].text_content).toContain("Hallo");
 
-    // The auto-reply went out in German through the real template renderer.
-    expect(mocks.sendEmail).toHaveBeenCalledTimes(1);
-    const sendInput = mocks.sendEmail.mock.calls[0][0] as {
-      templateKey: string;
-      to: string;
-      from?: string;
-      data: { subject: string; body: string };
-      headers?: Record<string, string>;
+    // The auto-reply went out in German through the engine.
+    expect(mocks.sendTemplateEmail).toHaveBeenCalledTimes(1);
+    const sendInput = mocks.sendTemplateEmail.mock.calls[0][0] as {
+      template: {
+        subject_translations: Record<string, string>;
+        body_translations: Record<string, string>;
+      };
+      language: string;
+      toEmail: string;
+      fromAddress?: string;
+      threadId?: string;
+      inReplyTo?: string;
+      references?: string;
       idempotencyKey?: string;
     };
     expect(sendInput).toMatchObject({
-      templateKey: "email_inbox_template",
-      to: "kunde@example.com",
-      from: "support@stratifit.com",
-      data: {
-        subject: "Vielen Dank Anna",
-        body: "Hallo Anna, wir haben Ihre Anfrage erhalten.",
-      },
+      language: "de",
+      toEmail: "kunde@example.com",
+      fromAddress: "support@stratifit.com",
+      threadId: "thread-1",
       idempotencyKey: "email_inbox_template:thread-1:email-123",
     });
-    expect(sendInput.headers).toEqual({
-      "In-Reply-To": "<abc@example.com>",
-      References: "<abc@example.com>",
-    });
-
-    // The outbound auto-reply is recorded on the thread.
-    expect(messageInserts[1]).toMatchObject({
-      direction: "outbound",
-      status: "sent",
-      provider_message_id: "msg-1",
-      from_email: "support@stratifit.com",
-      to_email: "kunde@example.com",
-    });
+    expect(sendInput.template.subject_translations.de).toBe("Vielen Dank {{name}}");
+    expect(sendInput.template.body_translations.de).toBe(
+      "Hallo {{name}}, wir haben Ihre Anfrage erhalten."
+    );
+    expect(sendInput.inReplyTo).toBe("abc@example.com");
+    expect(sendInput.references).toBe("<abc@example.com>");
   });
 
   it("returns duplicate=true and does nothing when the email was already processed", async () => {
@@ -269,10 +243,10 @@ describe("processInboundEmail", () => {
       email_messages: [{ data: { id: "existing" }, error: null }],
     };
 
-    const result = await processInboundEmail(payload());
+    const result = await processInboundEmail(RECEIVED_EMAIL);
 
     expect(result).toEqual({ ok: true, duplicate: true });
-    expect(mocks.sendEmail).not.toHaveBeenCalled();
+    expect(mocks.sendTemplateEmail).not.toHaveBeenCalled();
     expect(callsFor("email_threads")).toHaveLength(0);
   });
 });

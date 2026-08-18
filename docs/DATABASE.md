@@ -21,7 +21,7 @@ It specifies:
 - Storage metadata
 - Lead and conversation data
 - AI chatbot knowledge
-- Resend email logging
+- Communication Engine email logging
 - Indexes
 - Constraints
 - Triggers
@@ -1158,28 +1158,29 @@ Suggested columns:
 
 ---
 
-## 17. Email Tables
+## 17. Email Tables (Communication Engine)
 
-## 17.1 `email_events`
+## 17.1 `email_logs`
 
-Tracks operational Resend email events.
+Tracks every email sent through the Communication Engine (replaces the
+Resend-era `email_events`, which was dropped in migration 00066).
 
-Suggested columns:
+Columns:
 
 | Column | Type |
 |---|---|
 | `id` | `uuid` |
-| `template_key` | `text` |
+| `template_key` | `text` nullable |
 | `recipient_email` | `text` |
 | `sender_email` | `text` |
-| `provider` | `text` |
-| `provider_message_id` | `text` nullable |
+| `subject` | `text` nullable |
+| `language` | `text` (`en`/`de`/`fr`/`es`) |
 | `status` | `text` |
+| `provider_message_id` | `text` nullable |
+| `error_message` | `text` nullable |
 | `related_type` | `text` nullable |
 | `related_id` | `uuid` nullable |
 | `idempotency_key` | `text` nullable unique |
-| `error_code` | `text` nullable |
-| `error_message` | `text` nullable |
 | `metadata` | `jsonb` |
 | `created_at` | `timestamptz` |
 | `sent_at` | `timestamptz` nullable |
@@ -1197,6 +1198,24 @@ complained
 ```
 
 Do not log complete sensitive message bodies unless required.
+
+### 17.2 `email_templates`
+
+The multilingual (en/de/fr/es) template library — 23 auto-replies + 16 manual
+`template_type` templates with `key`, `category`, `name_translations`,
+`subject_translations`, `body_translations`, `description`, `trigger_event`,
+`is_enabled`, `display_order`. Seeded in migration 00066; CMS-editable.
+
+### 17.3 `email_schedules`
+
+Scheduled template sends: `template_key`, `recipient_email`, `recipient_name`,
+`language`, `send_at`, `status` (`pending`/`sent`/`failed`/`cancelled`),
+`data` (auto-fill context), `error_message`.
+
+### 17.4 `automation_triggers`
+
+Maps business `event_type` to a `template_key` (`enabled` flag). Seeded with
+defaults in migration 00066; admin-configurable.
 
 ---
 
@@ -1773,7 +1792,7 @@ Each environment should have separate:
 - Supabase project where feasible
 - Environment variables
 - Storage
-- Resend configuration
+- SMTP (AWS SES) configuration
 - AI configuration
 
 Never use production private data for casual development.
@@ -1976,7 +1995,7 @@ The Stratifit database is a purpose-built Supabase PostgreSQL schema for:
 - AI chat conversations
 - Human takeover
 - Chatbot knowledge
-- Resend email events
+- Communication Engine email logs
 - Admin access
 
 It uses dedicated tables, JSONB translation fields, strict RLS, controlled migrations, manual SQL seeds, and generated TypeScript types.

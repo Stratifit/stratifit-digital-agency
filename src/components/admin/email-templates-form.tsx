@@ -11,7 +11,7 @@ import {
   updateEmailTemplate,
   duplicateEmailTemplate,
   deleteEmailTemplate,
-} from "@/features/email-inbox/template-mutations";
+} from "@/features/communication/mutations";
 import { Copy } from "lucide-react";
 import { EmailTemplatePreview } from "./email-template-preview";
 import {
@@ -46,9 +46,10 @@ const TRIGGER_LABELS: Record<string, string> = {
 
 const EMPTY_TRANSLATIONS = { en: "", de: "", fr: "", es: "" };
 
-function emptyValues(): EmailTemplateInput {
+function emptyValues(type: "auto" | "manual"): EmailTemplateInput {
   return {
     key: "",
+    template_type: type,
     category: "custom",
     name_translations: { ...EMPTY_TRANSLATIONS },
     subject_translations: { ...EMPTY_TRANSLATIONS },
@@ -70,6 +71,7 @@ function fromRecord(template: EmailTemplateRecord): EmailTemplateInput {
   return {
     id: template.id,
     key: template.key,
+    template_type: template.template_type,
     category: template.category,
     name_translations: tr(template.name_translations),
     subject_translations: tr(template.subject_translations),
@@ -222,7 +224,7 @@ function TemplateEditorCard({
       <div className="p-5">
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(320px,400px)] lg:items-start">
           <div className="space-y-5">
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-4">
           <div className="space-y-2">
             <Label htmlFor={`key-${initial.key || "new"}`}>Key</Label>
             <Input
@@ -233,6 +235,17 @@ function TemplateEditorCard({
             {fieldError("key") ? (
               <p className="text-xs text-error">{fieldError("key")}</p>
             ) : null}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor={`type-${initial.key || "new"}`}>Type</Label>
+            <select
+              id={`type-${initial.key || "new"}`}
+              className="h-11 w-full cursor-pointer rounded-input border border-field-border bg-field-bg px-3.5 text-sm font-medium text-field-text transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover focus-visible:border-primary focus-visible:outline-none"
+              {...register("template_type")}
+            >
+              <option value="auto">Auto-reply</option>
+              <option value="manual">Manual</option>
+            </select>
           </div>
           <div className="space-y-2">
             <Label htmlFor={`category-${initial.key || "new"}`}>Category</Label>
@@ -397,26 +410,55 @@ function TemplateEditorCard({
   );
 }
 
+const TYPE_LABELS: Record<string, string> = {
+  auto: "Auto-replies",
+  manual: "Manual",
+};
+
 export function EmailTemplatesManager({
   templates,
   activeCategory,
+  activeType,
 }: {
   templates: EmailTemplateRecord[];
   activeCategory?: string;
+  activeType?: string;
 }) {
   const router = useRouter();
   const [showNew, setShowNew] = React.useState(false);
+  const newType = activeType === "auto" ? "auto" : "manual";
 
-  function selectCategory(category: string) {
+  function selectFilters(type: string, category: string) {
     const params = new URLSearchParams();
+    if (type !== "all") params.set("type", type);
     if (category !== "all") params.set("category", category);
-    router.push(`/admin/email/templates?${params.toString()}`);
+    router.push(`/admin/communication/templates?${params.toString()}`);
   }
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-1.5">
+          {(["all", "auto", "manual"] as const).map((type) => {
+            const active =
+              (type === "all" && !activeType) || type === activeType;
+            return (
+              <button
+                key={type}
+                type="button"
+                onClick={() => selectFilters(type, activeCategory ?? "all")}
+                className={cn(
+                  "rounded-button px-3 py-1.5 text-xs font-medium transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                  active
+                    ? "bg-primary text-text-inverse"
+                    : "text-text-muted hover:bg-surface-hover hover:text-text-secondary"
+                )}
+              >
+                {type === "all" ? "All types" : TYPE_LABELS[type]}
+              </button>
+            );
+          })}
+          <span className="mx-1 hidden h-5 w-px bg-border sm:block" aria-hidden="true" />
           {(["all", ...TEMPLATE_CATEGORIES] as const).map((category) => {
             const active =
               (category === "all" && !activeCategory) ||
@@ -425,7 +467,7 @@ export function EmailTemplatesManager({
               <button
                 key={category}
                 type="button"
-                onClick={() => selectCategory(category)}
+                onClick={() => selectFilters(activeType ?? "all", category)}
                 className={cn(
                   "rounded-button px-3 py-1.5 text-xs font-medium transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
                   active
@@ -433,7 +475,7 @@ export function EmailTemplatesManager({
                     : "text-text-muted hover:bg-surface-hover hover:text-text-secondary"
                 )}
               >
-                {category === "all" ? "All" : CATEGORY_LABELS[category] ?? category}
+                {category === "all" ? "All categories" : CATEGORY_LABELS[category] ?? category}
               </button>
             );
           })}
@@ -470,7 +512,7 @@ export function EmailTemplatesManager({
 
       {showNew ? (
         <TemplateEditorCard
-          initial={emptyValues()}
+          initial={emptyValues(newType)}
           isNew
           onDone={() => setShowNew(false)}
         />

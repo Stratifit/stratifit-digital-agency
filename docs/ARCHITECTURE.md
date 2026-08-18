@@ -11,7 +11,7 @@
 
 This document defines the technical architecture of the Stratifit Digital Agency Platform.
 
-It explains how the public website, custom CMS, Supabase backend, multilingual content system, AI chat system, Resend email system, and deployment workflow work together.
+It explains how the public website, custom CMS, Supabase backend, multilingual content system, AI chat system, Communication Engine (Nodemailer + AWS SES SMTP), and deployment workflow work together.
 
 This document must guide:
 
@@ -77,7 +77,7 @@ Public Visitor
                ├── Reads published data from Supabase
                ├── Writes approved public submissions
                ├── Calls AI provider securely
-               └── Sends email through Resend
+               └── Sends email through AWS SES SMTP
 
 Administrator
     │
@@ -138,7 +138,7 @@ Supabase provides:
 
 ### 4.3 Email provider
 
-Resend provides:
+The Communication Engine (Nodemailer over AWS SES SMTP) provides:
 
 - Transactional email
 - Lead notifications
@@ -146,6 +146,7 @@ Resend provides:
 - Conversation follow-up
 - Admin notifications
 - Delivery status handling
+- Multilingual auto-replies (en/de/fr/es)
 
 ### 4.4 AI provider
 
@@ -328,7 +329,7 @@ The admin application must be protected.
 The following must run only on the server:
 
 - Supabase service-role operations
-- Resend API calls
+- SMTP (AWS SES) calls
 - AI provider calls
 - Sensitive admin mutations
 - Secure webhook handling
@@ -1096,22 +1097,23 @@ Lead records should be linkable to conversations and contact submissions.
 
 ---
 
-## 23. Email Architecture
+## 23. Email Architecture (Communication Engine)
 
-Resend calls must run on the server.
+All email leaves the app through `src/features/communication/sender.ts`
+(Nodemailer over AWS SES SMTP) — server-only, never in the browser bundle.
 
 ### 23.1 Email flow
 
 ```text
-Trigger
+Trigger (event, schedule, admin, inbound email)
     │
-    ├── Validate recipient
-    ├── Select approved template
-    ├── Generate content
-    ├── Create idempotency key
-    ├── Send through Resend
-    ├── Store delivery record
-    └── Handle success or failure
+    ├── Detect language (en/de/fr/es)
+    ├── Select multilingual template (email_templates)
+    ├── Auto-fill {{placeholders}} (name, email, project, …)
+    ├── Render subject + body for the language
+    ├── Send through AWS SES SMTP (reply-as supported)
+    ├── Log to email_logs (idempotency key)
+    └── Handle success or failure (failures surface in UI)
 ```
 
 ### 23.2 Email templates
@@ -1517,8 +1519,11 @@ Typical variables:
 NEXT_PUBLIC_SUPABASE_URL
 NEXT_PUBLIC_SUPABASE_ANON_KEY
 SUPABASE_SERVICE_ROLE_KEY
-RESEND_API_KEY
-RESEND_FROM_EMAIL
+SMTP_HOST
+SMTP_PORT
+SMTP_USER
+SMTP_PASS
+COMMUNICATION_FROM_EMAIL
 AI_API_KEY
 AI_BASE_URL
 AI_MODEL
@@ -1652,7 +1657,7 @@ Deployment stack:
 - GitHub
 - Vercel
 - Supabase
-- Resend
+- AWS SES SMTP (Communication Engine)
 - Approved AI provider
 
 Workflow:
@@ -1683,7 +1688,7 @@ Initial observability may include:
 
 - Vercel logs
 - Supabase logs
-- Resend delivery records
+- Communication Engine delivery records (email_logs)
 - Application error logging
 - Basic analytics
 - Core Web Vitals
@@ -1749,7 +1754,7 @@ Initial approved decisions:
 11. Use Zod for runtime validation
 12. Use React Hook Form for CMS forms
 13. Use GSAP for advanced motion
-14. Use Resend for email
+14. Use AWS SES SMTP for email (Nodemailer)
 15. Use a replaceable AI provider layer
 16. Use manual SQL migrations and seeds
 17. Do not require Docker
@@ -1819,7 +1824,7 @@ The initial architecture is successfully implemented when:
 - CMS mutations validate input
 - Chat calls run securely on the server
 - Human takeover stops automatic AI replies
-- Resend calls run securely on the server
+- SMTP (AWS SES) calls run securely on the server
 - Media uploads are controlled
 - Production builds pass
 - Deployment works on Vercel
@@ -1873,6 +1878,6 @@ The Section Registry connects approved database content to approved React compon
 
 The AI chat system runs through secure server-side routes and supports human takeover.
 
-Resend handles transactional and operational email.
+The Communication Engine (Nodemailer over AWS SES SMTP) handles transactional and operational email, with multilingual templates and automatic language detection.
 
 The architecture is designed for the current agency platform first, with controlled room for future growth.

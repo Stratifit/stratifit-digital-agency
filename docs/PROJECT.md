@@ -36,7 +36,7 @@ The platform includes:
 6. An AI chatbot and AI FAQ assistant
 7. A shared customer-conversation inbox
 8. Lead and contact management
-9. Email notifications and follow-up through Resend
+9. Email notifications and follow-up through the Communication Engine
 
 The current goal is not to build a general-purpose commercial page builder. The immediate goal is to create an exceptional Stratifit agency platform that can later provide a foundation for additional products and client systems.
 
@@ -677,9 +677,11 @@ When an administrator takes control, the AI must not continue responding automat
 
 ---
 
-## 13. Email System
+## 13. Email System (Communication Engine)
 
-Resend will be used for transactional and operational email.
+The Communication Engine (Nodemailer over AWS SES SMTP) is used for
+transactional and operational email, with multilingual templates (en/de/fr/es)
+and automatic language detection.
 
 Possible email events include:
 
@@ -696,7 +698,7 @@ Possible email events include:
 
 Supabase remains the source of truth for conversations and message history.
 
-Resend is responsible for delivering email notifications and follow-up messages.
+The Communication Engine is responsible for delivering email notifications and follow-up messages.
 
 The email system should include:
 
@@ -813,7 +815,7 @@ A full CRM is not required in the initial version.
 * AI FAQ assistant
 * Supabase conversation storage
 * Human takeover
-* Resend email API
+* SMTP (AWS SES) sending
 
 The exact AI provider and model may change without requiring a major architecture rewrite.
 
@@ -835,7 +837,7 @@ The exact AI provider and model may change without requiring a major architectur
 
 * Vercel
 * Supabase cloud
-* Resend
+* AWS SES SMTP
 * Environment variables
 * GitHub-based deployment workflow
 
@@ -1204,7 +1206,7 @@ Version 1 includes:
 * Admin conversation inbox
 * Human takeover
 * Lead management
-* Resend email integration
+* Communication Engine email integration
 * Vercel deployment
 * Project documentation
 * OpenSpec development workflow
@@ -1441,7 +1443,7 @@ OpenSpec should contain feature-specific proposals, requirements, designs, and i
 
 Stratifit version 1 is:
 
-> A premium multilingual digital agency website powered by Supabase, supported by a custom visual CMS, an AI customer-support chatbot, an AI FAQ assistant, a shared admin conversation inbox, lead management, and Resend-powered email communication.
+> A premium multilingual digital agency website powered by Supabase, supported by a custom visual CMS, an AI customer-support chatbot, an AI FAQ assistant, a shared admin conversation inbox, lead management, and a multilingual Communication Engine for email.
 
 The platform must first succeed as Stratifit’s own professional website and internal operating system.
 

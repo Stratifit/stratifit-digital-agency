@@ -1183,7 +1183,7 @@ failed
 bounced
 ```
 
-The exact statuses depend on implemented Resend events.
+The exact statuses depend on implemented SES delivery events.
 
 ---
 

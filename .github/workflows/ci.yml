@@ -36,7 +36,7 @@ jobs:
       - name: Production build (matches Vercel's Turbopack build on Linux)
         run: npm run build
         env:
-          # Public routes are dynamic, so the build does not require Supabase/Resend/AI env vars.
+          # Public routes are dynamic, so the build does not require Supabase/SMTP/AI env vars.
           NEXT_PUBLIC_SUPABASE_URL: ""
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ""
           SUPABASE_SERVICE_ROLE_KEY: ""

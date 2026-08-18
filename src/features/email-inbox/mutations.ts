@@ -3,12 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { getEmailFrom, getResendClient } from "@/features/email/client";
-import { sendEmail } from "@/features/email/send";
+import { getDefaultFrom } from "@/features/communication/sender";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { recordAuditLog } from "@/lib/audit";
 import type { ActionResult } from "@/types/action-result";
-import { recordOutboundMessage, sendTemplateEmail } from "./template-sends";
+import { sendTemplateEmail } from "./template-sends";
 import {
   emailReplySchema,
   emailSectionSchema,
@@ -36,10 +35,18 @@ async function requireAdmin() {
   return supabase;
 }
 
+/**
+ * Extract RFC 5322 message-ids from a raw In-Reply-To / References header,
+ * stripped of angle brackets (the stored `headers->>message_id` and the
+ * `references`/`in_reply_to` columns are unbracketed ids).
+ */
 function extractMessageIds(rawHeader: string | null | undefined): string[] {
   if (!rawHeader) return [];
   return (
-    rawHeader.match(/<[^<>]+>/g)?.map((id) => id.trim()).filter(Boolean) ?? []
+    rawHeader
+      .match(/<[^<>]+>/g)
+      ?.map((id) => id.replace(/^<|>$/g, "").trim())
+      .filter(Boolean) ?? []
   );
 }
 
@@ -79,9 +86,10 @@ async function getThreadingContext(threadId: string) {
 }
 
 /**
- * Send an admin reply to the thread's customer via Resend and record the
- * outbound message. Reply recipient is always the stored customer email
- * (open-relay prevention). Returns `{ success, data: { messageId } }`.
+ * Send an admin reply to the thread's customer via the Communication
+ * Engine and record the outbound message. Reply recipient is always the
+ * stored customer email (open-relay prevention). Returns
+ * `{ success, data: { messageId } }`.
  */
 export async function sendEmailReply(
   input: EmailReplyInput
@@ -116,7 +124,7 @@ export async function sendEmailReply(
     .eq("id", thread.section_id)
     .single();
 
-  const from = section?.from_address || getEmailFrom();
+  const from = parsed.data.from_address?.trim() || section?.from_address || getDefaultFrom();
   if (!from) {
     return { success: false, error: "Sending is not configured." };
   }
@@ -130,49 +138,32 @@ export async function sendEmailReply(
       ? thread.subject
       : `Re: ${thread.subject}`;
 
-  const result = await sendEmail({
-    templateKey: "email_inbox_reply",
-    to: thread.customer_email,
-    from,
-    data: { subject, body: parsed.data.body },
+  // The reply is a free-form admin message — rendered as an on-the-fly
+  // template so the whole pipeline (render → SMTP send → log → thread) stays
+  // identical for every send.
+  const result = await sendTemplateEmail({
+    template: {
+      subject_translations: { en: subject },
+      body_translations: { en: parsed.data.body },
+    },
+    language: "en",
+    toEmail: thread.customer_email,
+    fromAddress: from,
     headers: {
       ...(threading.inReplyTo ? { "In-Reply-To": threading.inReplyTo } : {}),
       ...(threading.references ? { References: threading.references } : {}),
     },
+    threadId: thread.id,
+    inReplyTo: threading.inReplyTo
+      ? threading.inReplyTo.replace(/^<|>$/g, "")
+      : undefined,
+    references: threading.references,
+    idempotencyKey: `email_inbox_reply:${thread.id}:${outboundKey}`,
     relatedType: "email_thread",
     relatedId: thread.id,
-    idempotencyKey: `email_inbox_reply:${thread.id}:${outboundKey}`,
   });
 
-  // Fetch the RFC message-id so the customer's reply threads back reliably.
-  let rfcMessageId: string | undefined;
-  if (result.messageId) {
-    const client = getResendClient();
-    try {
-      const { data, error } = await client!.emails.get(result.messageId);
-      if (!error && data?.message_id) {
-        rfcMessageId = data.message_id;
-      }
-    } catch {
-      // Best-effort; subject fallback matching still applies.
-    }
-  }
-
-  await recordOutboundMessage({
-    threadId: thread.id,
-    fromEmail: from,
-    toEmail: thread.customer_email,
-    subject,
-    textContent: parsed.data.body,
-    providerMessageId: result.messageId,
-    rfcMessageId,
-    inReplyTo: threading.inReplyTo,
-    references: threading.references,
-    status: result.ok ? "sent" : "failed",
-    errorMessage: result.error,
-  });
-
-  if (!result.ok) {
+  if (!result.sent) {
     return { success: false, error: "Reply could not be sent." };
   }
 
@@ -232,9 +223,11 @@ async function maybeSendResolvedEmail(threadId: string): Promise<void> {
       },
       language: thread.language ?? "en",
       toEmail: thread.customer_email,
-      customerName: thread.customer_name,
-      sectionName: resolveTranslation(section.name_translations, "en"),
-      fromAddress: section.from_address,
+      context: {
+        name: thread.customer_name,
+        section_name: resolveTranslation(section.name_translations, "en"),
+      },
+      fromAddress: section.from_address ?? undefined,
       threadId: thread.id,
       idempotencyKey: `email_inbox_template:resolved:${thread.id}`,
       updateThreadStatus: false,

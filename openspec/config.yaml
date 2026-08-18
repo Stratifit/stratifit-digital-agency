@@ -9,7 +9,7 @@ context: |
     - Supabase backend
     - AI chatbot and AI FAQ
     - Human takeover and conversation inbox
-    - Resend transactional email
+    - Multilingual Communication Engine (SMTP email)
     - Vercel deployment
 
   Primary stack:
@@ -31,7 +31,7 @@ context: |
     - Supabase Row Level Security
     - Zod
     - React Hook Form
-    - Resend
+    - Nodemailer + AWS SES SMTP
     - Vercel
     - npm
 

@@ -155,10 +155,14 @@ export const NAV_SECTIONS: NavSection[] = [
     items: [
       { href: "/admin/leads", label: "Leads", icon: "leads" },
       { href: "/admin/email/inbox", label: "Email Inbox", icon: "email" },
-      { href: "/admin/email/templates", label: "Email Templates", icon: "email" },
+      { href: "/admin/communication", label: "Communication", icon: "email" },
+      { href: "/admin/communication/templates", label: "Templates", icon: "email" },
+      { href: "/admin/communication/send", label: "Send Email", icon: "email" },
+      { href: "/admin/communication/schedules", label: "Schedules", icon: "email" },
+      { href: "/admin/communication/triggers", label: "Triggers", icon: "email" },
+      { href: "/admin/communication/logs", label: "Email Logs", icon: "email" },
       { href: "/admin/email/sections", label: "Email Sections", icon: "sections" },
       { href: "/admin/conversations", label: "Conversations", icon: "conversations" },
-      { href: "/admin/email", label: "Email Activity", icon: "email" },
     ],
   },
   {

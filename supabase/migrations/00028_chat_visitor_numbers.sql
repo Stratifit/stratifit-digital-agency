@@ -20,10 +20,13 @@ SET visitor_number = numbered.rn
 FROM numbered
 WHERE v.id = numbered.id;
 
--- Position the sequence after the highest backfilled number.
+-- Position the sequence after the highest backfilled number. `false` sets the
+-- next value to exactly max+1 (or 1 on an empty table); setval(..., 0) is
+-- invalid for a sequence with START 1 and broke fresh database resets.
 SELECT setval(
   'public.chat_visitor_number_seq',
-  (SELECT COALESCE(MAX(visitor_number), 0) FROM public.chat_visitors)
+  (SELECT COALESCE(MAX(visitor_number), 0) + 1 FROM public.chat_visitors),
+  false
 );
 
 -- Auto-assign on insert (BEFORE trigger so every new visitor gets a number).

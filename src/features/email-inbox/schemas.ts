@@ -86,6 +86,12 @@ export const emailReplySchema = z.object({
     .trim()
     .min(1, "Reply cannot be empty.")
     .max(10_000, "Reply is too long."),
+  /** Optional reply-as (from) address; defaults to the section's address. */
+  from_address: z
+    .string()
+    .trim()
+    .email("Enter a valid email address.")
+    .optional(),
 });
 
 export type EmailReplyInput = z.infer<typeof emailReplySchema>;

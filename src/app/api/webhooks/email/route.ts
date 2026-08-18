@@ -1,112 +1,68 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/service-role";
-import type { Database } from "@/types/database.types";
-import type { EmailEventStatus } from "@/features/email/types";
+import type { EmailLogStatus } from "@/features/communication/types";
 
 export const dynamic = "force-dynamic";
 
-const EVENT_STATUS_MAP: Record<string, EmailEventStatus> = {
-  "email.sent": "sent",
-  "email.delivered": "delivered",
-  "email.failed": "failed",
-  "email.bounced": "bounced",
-  "email.complained": "complained",
+const EVENT_STATUS_MAP: Record<string, EmailLogStatus> = {
+  sent: "sent",
+  delivered: "delivered",
+  failed: "failed",
+  bounced: "bounced",
+  complained: "complained",
 };
 
-interface ResendWebhookPayload {
-  type?: string;
-  data?: {
-    id?: string;
-    email_id?: string;
-    created_at?: string;
-    [key: string]: unknown;
-  };
-}
-
 /**
- * Resend's event data types are concrete interfaces without an index
- * signature, so they cannot be directly asserted to a `[key: string]: unknown`
- * shape. Normalizing through `unknown` keeps the webhook handler type-safe
- * without a scattered double cast.
+ * Delivery webhook for the Communication Engine. SES bounce / complaint /
+ * delivery notifications arrive via SNS → this route updates `email_logs`
+ * by the provider message id:
+ *
+ *   { "messageId": "…", "eventType": "delivered"|"bounced"|"complained"|"failed", "timestamp": "…" }
+ *
+ * When `COMMUNICATION_WEBHOOK_SECRET` is set, the request must carry it in
+ * the `x-communication-secret` header.
  */
-function normalizeWebhookData(
-  value: unknown
-): ResendWebhookPayload["data"] {
-  if (typeof value !== "object" || value === null) return undefined;
-  return value as Record<string, unknown>;
-}
-
 export async function POST(request: Request) {
-  const secret = process.env.RESEND_WEBHOOK_SIGNING_SECRET;
-
-  if (!secret) {
-    return NextResponse.json(
-      { error: "Webhook secret is not configured." },
-      { status: 500 }
-    );
+  const secret = process.env.COMMUNICATION_WEBHOOK_SECRET;
+  if (secret) {
+    const provided = request.headers.get("x-communication-secret");
+    if (provided !== secret) {
+      return NextResponse.json({ error: "Invalid secret." }, { status: 401 });
+    }
   }
 
-  const body = await request.text();
-
-  let payload: ResendWebhookPayload;
+  let payload: Record<string, unknown>;
   try {
-    const client = new Resend(process.env.RESEND_API_KEY ?? "unused");
-    const verified = client.webhooks.verify({
-      payload: body,
-      webhookSecret: secret,
-      headers: {
-        id: request.headers.get("svix-id") ?? "",
-        timestamp: request.headers.get("svix-timestamp") ?? "",
-        signature: request.headers.get("svix-signature") ?? "",
-      },
-    });
-    payload = {
-      type:
-        typeof verified.type === "string" ? verified.type : undefined,
-      data: normalizeWebhookData(verified.data),
-    };
+    payload = (await request.json()) as Record<string, unknown>;
   } catch {
-    return NextResponse.json({ error: "Invalid signature." }, { status: 400 });
+    return NextResponse.json({ error: "Invalid JSON." }, { status: 400 });
   }
 
-  const eventType = payload.type ?? "";
-  const status = EVENT_STATUS_MAP[eventType];
+  const status = EVENT_STATUS_MAP[String(payload.eventType ?? "")];
+  const messageId =
+    typeof payload.messageId === "string" ? payload.messageId : null;
 
-  if (!status) {
-    return NextResponse.json({ received: true });
-  }
-
-  const messageId = payload.data?.email_id ?? payload.data?.id;
-
-  if (!messageId) {
+  if (!status || !messageId) {
     return NextResponse.json({ received: true });
   }
 
   const supabase = createSupabaseServiceRoleClient();
-  const updates: Database["public"]["Tables"]["email_events"]["Update"] = {
-    status,
-    metadata: {
-      ...(typeof payload.data === "object" && payload.data
-        ? payload.data
-        : {}),
-      webhook_type: eventType,
-    },
-  };
-
-  if (eventType === "email.delivered" && payload.data?.created_at) {
-    updates.delivered_at = payload.data.created_at;
-  }
-
   const { error } = await supabase
-    .from("email_events")
-    .update(updates)
+    .from("email_logs")
+    .update({
+      status,
+      delivered_at: status === "delivered" ? new Date().toISOString() : null,
+      metadata: {
+        ...payload,
+        webhook_type: status,
+      },
+    })
     .eq("provider_message_id", messageId);
 
   if (error) {
-    console.error("Email webhook update error:", error.message);
+    console.error("Email delivery webhook update error:", error.message);
     return NextResponse.json(
-      { error: "Could not update email event." },
+      { error: "Could not update the email log." },
       { status: 500 }
     );
   }

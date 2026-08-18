@@ -3,7 +3,7 @@
 import { headers } from "next/headers";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { ActionResult } from "@/types/action-result";
-import { sendLeadEmails } from "@/features/email/lead-notifications";
+import { sendLeadEmails } from "@/features/communication/lead-notifications";
 import { syncLeadToEmailThread } from "@/features/email-inbox/forms";
 import {
   getSectionTemplateForSource,
@@ -103,9 +103,11 @@ async function recordLead(values: LeadRecord): Promise<ActionResult> {
         template: sectionInfo.autoReplyTemplate,
         language: values.preferred_locale,
         toEmail: values.email,
-        customerName: values.name,
-        sectionName: sectionInfo.sectionName,
-        fromAddress: sectionInfo.fromAddress,
+        context: {
+          name: values.name,
+          section_name: sectionInfo.sectionName,
+        },
+        fromAddress: sectionInfo.fromAddress ?? undefined,
         idempotencyKey: `email_inbox_template:lead:${leadId}`,
       });
       templateSent = sent;

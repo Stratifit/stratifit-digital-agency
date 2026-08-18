@@ -368,6 +368,44 @@ export type Database = {
         }
         Relationships: []
       }
+      automation_triggers: {
+        Row: {
+          created_at: string
+          display_order: number
+          enabled: boolean
+          event_type: string
+          id: string
+          template_key: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          enabled?: boolean
+          event_type: string
+          id?: string
+          template_key: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          enabled?: boolean
+          event_type?: string
+          id?: string
+          template_key?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "automation_triggers_template_key_fkey"
+            columns: ["template_key"]
+            isOneToOne: false
+            referencedRelation: "email_templates"
+            referencedColumns: ["key"]
+          },
+        ]
+      }
       chat_assignments: {
         Row: {
           assigned_at: string
@@ -864,63 +902,6 @@ export type Database = {
         }
         Relationships: []
       }
-      email_events: {
-        Row: {
-          created_at: string
-          delivered_at: string | null
-          error_code: string | null
-          error_message: string | null
-          id: string
-          idempotency_key: string | null
-          metadata: Json
-          provider: string
-          provider_message_id: string | null
-          recipient_email: string
-          related_id: string | null
-          related_type: string | null
-          sender_email: string
-          sent_at: string | null
-          status: string
-          template_key: string
-        }
-        Insert: {
-          created_at?: string
-          delivered_at?: string | null
-          error_code?: string | null
-          error_message?: string | null
-          id?: string
-          idempotency_key?: string | null
-          metadata?: Json
-          provider?: string
-          provider_message_id?: string | null
-          recipient_email: string
-          related_id?: string | null
-          related_type?: string | null
-          sender_email: string
-          sent_at?: string | null
-          status?: string
-          template_key: string
-        }
-        Update: {
-          created_at?: string
-          delivered_at?: string | null
-          error_code?: string | null
-          error_message?: string | null
-          id?: string
-          idempotency_key?: string | null
-          metadata?: Json
-          provider?: string
-          provider_message_id?: string | null
-          recipient_email?: string
-          related_id?: string | null
-          related_type?: string | null
-          sender_email?: string
-          sent_at?: string | null
-          status?: string
-          template_key?: string
-        }
-        Relationships: []
-      }
       email_inbox_sections: {
         Row: {
           auto_reply_body_translations: Json
@@ -996,6 +977,63 @@ export type Database = {
           },
         ]
       }
+      email_logs: {
+        Row: {
+          created_at: string
+          delivered_at: string | null
+          error_message: string | null
+          id: string
+          idempotency_key: string | null
+          language: string
+          metadata: Json
+          provider_message_id: string | null
+          recipient_email: string
+          related_id: string | null
+          related_type: string | null
+          sender_email: string
+          sent_at: string | null
+          status: string
+          subject: string | null
+          template_key: string | null
+        }
+        Insert: {
+          created_at?: string
+          delivered_at?: string | null
+          error_message?: string | null
+          id?: string
+          idempotency_key?: string | null
+          language?: string
+          metadata?: Json
+          provider_message_id?: string | null
+          recipient_email: string
+          related_id?: string | null
+          related_type?: string | null
+          sender_email: string
+          sent_at?: string | null
+          status?: string
+          subject?: string | null
+          template_key?: string | null
+        }
+        Update: {
+          created_at?: string
+          delivered_at?: string | null
+          error_message?: string | null
+          id?: string
+          idempotency_key?: string | null
+          language?: string
+          metadata?: Json
+          provider_message_id?: string | null
+          recipient_email?: string
+          related_id?: string | null
+          related_type?: string | null
+          sender_email?: string
+          sent_at?: string | null
+          status?: string
+          subject?: string | null
+          template_key?: string | null
+        }
+        Relationships: []
+      }
       email_messages: {
         Row: {
           attachments: Json
@@ -1064,6 +1102,48 @@ export type Database = {
           },
         ]
       }
+      email_schedules: {
+        Row: {
+          created_at: string
+          data: Json
+          error_message: string | null
+          id: string
+          language: string
+          recipient_email: string
+          recipient_name: string | null
+          send_at: string
+          sent_at: string | null
+          status: string
+          template_key: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json
+          error_message?: string | null
+          id?: string
+          language?: string
+          recipient_email: string
+          recipient_name?: string | null
+          send_at: string
+          sent_at?: string | null
+          status?: string
+          template_key: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          error_message?: string | null
+          id?: string
+          language?: string
+          recipient_email?: string
+          recipient_name?: string | null
+          send_at?: string
+          sent_at?: string | null
+          status?: string
+          template_key?: string
+        }
+        Relationships: []
+      }
       email_templates: {
         Row: {
           body_translations: Json
@@ -1076,6 +1156,7 @@ export type Database = {
           key: string
           name_translations: Json
           subject_translations: Json
+          template_type: string
           trigger_event: string | null
           updated_at: string
         }
@@ -1090,6 +1171,7 @@ export type Database = {
           key: string
           name_translations?: Json
           subject_translations?: Json
+          template_type?: string
           trigger_event?: string | null
           updated_at?: string
         }
@@ -1104,6 +1186,7 @@ export type Database = {
           key?: string
           name_translations?: Json
           subject_translations?: Json
+          template_type?: string
           trigger_event?: string | null
           updated_at?: string
         }
