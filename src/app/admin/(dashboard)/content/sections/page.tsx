@@ -1,4 +1,5 @@
 import { getAdminSectionSettings } from "@/features/section-settings/queries";
+import { SECTION_HEADER_FALLBACKS } from "@/lib/i18n/section-fallbacks";
 import { getAdminHero } from "@/features/hero/admin-queries";
 import {
   SectionsManager,
@@ -64,10 +65,16 @@ export default async function AdminSectionsPage() {
 
   for (const s of settingsSections) {
     const setting = settingsByKey.get(s.key);
-    const eyebrow = tr(setting?.eyebrow_translations);
-    const title = tr(setting?.title_translations);
-    const highlight = tr(setting?.highlight_translations);
-    const description = tr(setting?.description_translations);
+    // Fall back to the canonical section copy when the DB row is missing (for
+    // example before migration 00057 has been applied) so the card previews
+    // the content the public site renders instead of a blank "—".
+    const fallback = SECTION_HEADER_FALLBACKS[s.key];
+    const eyebrow = tr(setting?.eyebrow_translations ?? fallback?.eyebrow);
+    const title = tr(setting?.title_translations ?? fallback?.title);
+    const highlight = tr(setting?.highlight_translations ?? fallback?.highlight);
+    const description = tr(
+      setting?.description_translations ?? fallback?.description
+    );
     rows.push({
       key: s.key,
       label: s.label,

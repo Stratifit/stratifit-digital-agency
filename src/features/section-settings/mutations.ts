@@ -6,20 +6,10 @@ import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { recordAuditLog } from "@/lib/audit";
 import { sectionSettingsSchema, type SectionSettingsFormValues } from "./schemas";
-
-const SECTION_SETTINGS_KEYS = [
-  "services",
-  "process",
-  "why-choose-us",
-  "insights",
-  "portfolio",
-  "testimonials",
-  "pricing",
-  "faq",
-  "contact",
-  "acquisition-cta",
-  "tech-stack",
-] as const;
+import {
+  isEditableSectionKey,
+  SECTION_KEY_META,
+} from "./defaults";
 
 /** Normalizes an optional CTA label back to null when every locale is empty. */
 function ctaLabelToJson(
@@ -57,11 +47,7 @@ export async function updateSectionSettings(
 ): Promise<ActionResult> {
   const supabase = await requireAdmin();
 
-  if (
-    !SECTION_SETTINGS_KEYS.includes(
-      sectionKey as (typeof SECTION_SETTINGS_KEYS)[number]
-    )
-  ) {
+  if (!isEditableSectionKey(sectionKey)) {
     return { success: false, error: "Unknown section." };
   }
 
@@ -75,31 +61,40 @@ export async function updateSectionSettings(
     };
   }
 
+  // Upsert so saving also creates a row when it is missing (for example the
+  // tech-stack row before migration 00057 has been applied). Label and
+  // display order come from the shared metadata; they are not form-editable.
+  const meta = SECTION_KEY_META[sectionKey];
   const { error } = await supabase
     .from("section_settings")
-    .update({
-      eyebrow_translations: parsed.data.eyebrow_translations,
-      title_translations: parsed.data.title_translations,
-      highlight_translations: parsed.data.highlight_translations,
-      description_translations: parsed.data.description_translations,
-      cta_label_translations: ctaLabelToJson(
-        parsed.data.cta_label_translations
-      ),
-      cta_url: parsed.data.cta_url?.trim() || null,
-      stats: parsed.data.stats ?? [],
-      review_summary: parsed.data.review_summary
-        ? {
-            ...parsed.data.review_summary,
-            googleReviewsUrl: parsed.data.review_summary.googleReviewsUrl.trim(),
-          }
-        : {},
-      tech_stack: parsed.data.tech_stack ?? [],
-      seo_title_translations: parsed.data.seo_title_translations ?? {},
-      seo_description_translations:
-        parsed.data.seo_description_translations ?? {},
-      is_visible: parsed.data.is_visible,
-    })
-    .eq("section_key", sectionKey);
+    .upsert(
+      {
+        section_key: sectionKey,
+        label: meta.label,
+        display_order: meta.displayOrder,
+        eyebrow_translations: parsed.data.eyebrow_translations,
+        title_translations: parsed.data.title_translations,
+        highlight_translations: parsed.data.highlight_translations,
+        description_translations: parsed.data.description_translations,
+        cta_label_translations: ctaLabelToJson(
+          parsed.data.cta_label_translations
+        ),
+        cta_url: parsed.data.cta_url?.trim() || null,
+        stats: parsed.data.stats ?? [],
+        review_summary: parsed.data.review_summary
+          ? {
+              ...parsed.data.review_summary,
+              googleReviewsUrl: parsed.data.review_summary.googleReviewsUrl.trim(),
+            }
+          : {},
+        tech_stack: parsed.data.tech_stack ?? [],
+        seo_title_translations: parsed.data.seo_title_translations ?? {},
+        seo_description_translations:
+          parsed.data.seo_description_translations ?? {},
+        is_visible: parsed.data.is_visible,
+      },
+      { onConflict: "section_key" }
+    );
 
   if (error) {
     return { success: false, error: "Failed to save section settings." };
@@ -137,13 +132,22 @@ export async function toggleSectionVisibility(
       target_table: "hero",
       metadata: { sectionKey },
     });
-  } else if (
-    SECTION_SETTINGS_KEYS.includes(sectionKey as (typeof SECTION_SETTINGS_KEYS)[number])
-  ) {
+  } else if (isEditableSectionKey(sectionKey)) {
+    const meta = SECTION_KEY_META[sectionKey];
+    // Upsert so pausing/resuming a section whose row is missing (pending
+    // migration) creates it with the shared label/display order instead of
+    // silently doing nothing.
     const { error } = await supabase
       .from("section_settings")
-      .update({ is_visible: visible })
-      .eq("section_key", sectionKey);
+      .upsert(
+        {
+          section_key: sectionKey,
+          label: meta.label,
+          display_order: meta.displayOrder,
+          is_visible: visible,
+        },
+        { onConflict: "section_key" }
+      );
     if (error) return { success: false, error: "Failed to update section." };
     await recordAuditLog({
       action: visible ? "section.resume" : "section.pause",
