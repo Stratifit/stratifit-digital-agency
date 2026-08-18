@@ -123,7 +123,7 @@ export async function TechStackSection() {
           <SectionHeader
             settings={headerSettings}
             locale={locale}
-            className="mb-0 md:mb-0"
+            className="mb-0 md:mb-0 pb-4"
           />
 
           <Reveal className="marquee-pause relative overflow-hidden py-4">
