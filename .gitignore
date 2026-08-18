@@ -48,3 +48,6 @@ supabase/.temp/
 # editor / office lock files
 *.af~lock~
 *.~lock.*
+
+# Freebuff local tool state
+.freebuff/

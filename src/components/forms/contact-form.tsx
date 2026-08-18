@@ -291,14 +291,14 @@ export function ContactForm({
           hideClose
           className="max-w-md border-card-border bg-card-dark p-6 sm:p-8"
         >
-          <div className="py-6 text-center sm:py-8">
+          <div className="py-8 text-center">
             <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-full border border-primary/20 bg-primary/10">
               <Mail className="size-6 text-primary" aria-hidden="true" />
             </div>
-            <h3 className="font-display text-2xl font-bold tracking-tight text-text-primary">
+            <h3 className="mb-3 font-display text-2xl font-bold tracking-tight text-text-primary">
               {t(locale, "thankYou")}
             </h3>
-            <p className="mt-3 text-sm text-text-muted">
+            <p className="text-sm text-text-muted">
               {t(locale, "messageReceived")}
             </p>
             <button
