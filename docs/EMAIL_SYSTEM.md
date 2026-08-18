@@ -259,7 +259,10 @@ first (see §16), then the section is resolved by routing address **preferring
 a section whose `language` matches the detected language**. A section with
 no language (`null`) is language-agnostic and matches any language, so
 existing sections keep their current behaviour until an admin opts a section
-into a specific language.
+into a specific language. The default seed ships German, French, and Spanish
+variants of the contact section (`contact-de`, `contact-fr`, `contact-es`) so
+language routing is active out of the box, with English served by the
+language-agnostic `contact` section.
 
 Admin reply flow (outgoing):
 
