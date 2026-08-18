@@ -76,9 +76,10 @@ function TechIcon({ name }: { name: string }) {
 /**
  * Tech stack section shown between the hero and Services on the homepage.
  * Uses the standard section header (same size/position as the other sections)
- * above two auto-scrolling marquee rows of technologies (one forward, one
- * reverse, pausing only for reduced-motion users). Content (heading +
- * technologies) is CMS-editable via Sections → Tech Stack.
+ * above auto-scrolling marquee rows of technologies: a single line on
+ * desktop/tablet, two rows (forward + reverse) on mobile — pausing only for
+ * reduced-motion users. Content (heading + technologies) is CMS-editable via
+ * Sections → Tech Stack.
  */
 export async function TechStackSection() {
   const locale = await getLocale();
@@ -124,8 +125,10 @@ export async function TechStackSection() {
           />
 
           <div>
+            {/* Mobile: two marquee rows (first half forward, second half
+                reverse), hidden from sm up. */}
             {rows.map((row, rowIndex) => (
-              <div key={rowIndex} className="overflow-hidden">
+              <div key={rowIndex} className="overflow-hidden sm:hidden">
                 <div
                   className={cn(
                     "flex w-max gap-10 whitespace-nowrap py-2",
@@ -134,7 +137,7 @@ export async function TechStackSection() {
                 >
                   {[...row, ...row].map((tech, index) => (
                     <span
-                      key={`${rowIndex}-${tech.name}-${index}`}
+                      key={`m-${rowIndex}-${tech.name}-${index}`}
                       className="flex items-center gap-2 text-lg font-medium text-text-secondary sm:text-xl"
                     >
                       <span className="shrink-0 text-text-subtle">
@@ -146,6 +149,23 @@ export async function TechStackSection() {
                 </div>
               </div>
             ))}
+
+            {/* Desktop: a single auto-scrolling line with all items. */}
+            <div className="hidden overflow-hidden sm:block">
+              <div className="marquee-scroll flex w-max gap-10 whitespace-nowrap py-2">
+                {[...items, ...items].map((tech, index) => (
+                  <span
+                    key={`d-${tech.name}-${index}`}
+                    className="flex items-center gap-2 text-lg font-medium text-text-secondary sm:text-xl"
+                  >
+                    <span className="shrink-0 text-text-subtle">
+                      <TechIcon name={tech.icon} />
+                    </span>
+                    {tech.name}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
         </Container>
       </Section>
