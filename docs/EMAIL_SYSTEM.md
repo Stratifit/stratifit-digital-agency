@@ -288,8 +288,10 @@ Threading:
 Form integration:
 
 - `submitLead` creates-or-joins a thread in the section mapped to the form
-  source (`contact_form` → Contact) via the service-role client; thread
-  failures never fail the lead submission
+  source (`contact_form` → Contact) via the service-role client, preferring a
+  language-specific section when one matches the visitor's language (falling
+  back to the language-agnostic default); thread failures never fail the lead
+  submission
 - Form threads do not trigger auto-reply (forms already acknowledge)
 
 ## 13. Public Routes and Abuse Prevention

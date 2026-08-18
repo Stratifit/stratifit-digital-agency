@@ -472,6 +472,8 @@ function SectionEditorCard({
             Website form submissions with this source land in this section (e.g.{" "}
             <code className="rounded-sm bg-surface px-1">contact_form</code>,{" "}
             <code className="rounded-sm bg-surface px-1">acquisition_form</code>).
+            Set a routing language to capture submissions in that language;
+            leave it “Any language” for the default section.
           </p>
         </div>
 

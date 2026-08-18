@@ -8,6 +8,7 @@ import {
   type RenderableTemplate,
   type TemplateRenderContext,
 } from "./language";
+import { pickSectionByLanguage } from "./routing";
 
 export interface SectionTemplateInfo {
   sectionId: string;
@@ -21,17 +22,21 @@ export interface SectionTemplateInfo {
  * template (service-role: the lead flow runs with the anon session client).
  */
 export async function getSectionTemplateForSource(
-  source: string
+  source: string,
+  language?: string | null
 ): Promise<SectionTemplateInfo | null> {
   const supabase = createSupabaseServiceRoleClient();
-  const { data: section } = await supabase
+  const { data: sections } = await supabase
     .from("email_inbox_sections")
     .select(
-      "id, name_translations, from_address, auto_reply_template_id, email_templates(subject_translations, body_translations)"
+      "id, name_translations, from_address, auto_reply_template_id, language, email_templates(subject_translations, body_translations)"
     )
-    .eq("form_source_key", source)
-    .maybeSingle();
+    .eq("form_source_key", source);
 
+  if (!sections || sections.length === 0) return null;
+
+  // Prefer the language-specific section, then the language-agnostic default.
+  const section = pickSectionByLanguage(sections, language);
   if (!section) return null;
 
   const related = section.email_templates as unknown as

@@ -1,5 +1,6 @@
 import "server-only";
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/service-role";
+import { pickSectionByLanguage } from "./routing";
 
 /**
  * After a successful website form submission, create-or-join a thread in the
@@ -23,12 +24,18 @@ export async function syncLeadToEmailThread(input: {
   try {
     const supabase = createSupabaseServiceRoleClient();
 
-    const { data: section } = await supabase
+    const { data: sections } = await supabase
       .from("email_inbox_sections")
-      .select("id, slug, from_address, routing_addresses")
-      .eq("form_source_key", input.source)
-      .maybeSingle();
+      .select("id, slug, from_address, routing_addresses, language")
+      .eq("form_source_key", input.source);
 
+    if (!sections || sections.length === 0) {
+      return;
+    }
+
+    // Route to the section matching the visitor's language, falling back to
+    // the language-agnostic (default) section for that form source.
+    const section = pickSectionByLanguage(sections, input.language);
     if (!section) {
       return;
     }

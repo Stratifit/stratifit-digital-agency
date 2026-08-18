@@ -59,3 +59,26 @@ export function selectSectionForLanguage(
     fallbacks.find((s) => s.language === null) ?? fallbacks[0];
   return otherAgnostic ? { id: otherAgnostic.id, slug: otherAgnostic.slug } : null;
 }
+
+export interface LanguageTaggedSection {
+  language: string | null;
+}
+
+/**
+ * From a list already scoped to a single form source (or other shared key),
+ * pick the section whose language matches the visitor's language, falling back
+ * to the language-agnostic (null) section and then the first entry. Pure and
+ * dependency-free so it can be unit tested directly.
+ */
+export function pickSectionByLanguage<T extends LanguageTaggedSection>(
+  sections: readonly T[],
+  language?: string | null
+): T | undefined {
+  if (language) {
+    const match = sections.find((section) => section.language === language);
+    if (match) return match;
+  }
+  return (
+    sections.find((section) => section.language === null) ?? sections[0]
+  );
+}

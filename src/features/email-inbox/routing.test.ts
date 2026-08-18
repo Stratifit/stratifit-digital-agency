@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  pickSectionByLanguage,
   selectSectionForLanguage,
   type SectionRoutingCandidate,
 } from "./routing";
@@ -105,5 +106,45 @@ describe("selectSectionForLanguage", () => {
     expect(
       selectSectionForLanguage(sections, ["unknown@x.com"], "es")
     ).toEqual({ id: "other-agnostic", slug: "other" });
+  });
+});
+
+describe("pickSectionByLanguage", () => {
+  const sections = [
+    { id: "agnostic", language: null },
+    { id: "de", language: "de" },
+    { id: "fr", language: "fr" },
+  ];
+
+  it("picks the matching-language section", () => {
+    expect(pickSectionByLanguage(sections, "de")).toEqual({
+      id: "de",
+      language: "de",
+    });
+  });
+
+  it("falls back to the language-agnostic section when no language matches", () => {
+    expect(pickSectionByLanguage(sections, "es")).toEqual({
+      id: "agnostic",
+      language: null,
+    });
+  });
+
+  it("falls back to the language-agnostic section when no language is given", () => {
+    expect(pickSectionByLanguage(sections, undefined)).toEqual({
+      id: "agnostic",
+      language: null,
+    });
+  });
+
+  it("falls back to the first section when there is no agnostic section", () => {
+    expect(pickSectionByLanguage([{ id: "de", language: "de" }], "fr")).toEqual({
+      id: "de",
+      language: "de",
+    });
+  });
+
+  it("returns undefined for an empty list", () => {
+    expect(pickSectionByLanguage([], "de")).toBeUndefined();
   });
 });

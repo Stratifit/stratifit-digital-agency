@@ -94,7 +94,10 @@ async function recordLead(values: LeadRecord): Promise<ActionResult> {
   // English acknowledgement is sent. Best-effort — never fails the lead.
   let templateSent = false;
   try {
-    const sectionInfo = await getSectionTemplateForSource(values.source);
+    const sectionInfo = await getSectionTemplateForSource(
+      values.source,
+      values.preferred_locale
+    );
     if (sectionInfo?.autoReplyTemplate) {
       const { sent } = await sendTemplateEmail({
         template: sectionInfo.autoReplyTemplate,
