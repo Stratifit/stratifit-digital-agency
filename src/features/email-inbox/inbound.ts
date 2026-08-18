@@ -9,6 +9,12 @@ import {
   type InboundWebhookPayload,
   type ReceivedEmail,
 } from "./schemas";
+import { detectEmailLanguage } from "./language";
+import {
+  fetchRfcMessageId,
+  recordOutboundMessage,
+  sendTemplateEmail,
+} from "./template-sends";
 
 type ServiceRoleClient = ReturnType<
   typeof createSupabaseServiceRoleClient
@@ -167,74 +173,8 @@ async function reopenThreadIfNeeded(
   }
 }
 
-/** Record an outbound auto-reply / admin reply message in the thread. */
-export async function recordOutboundMessage(input: {
-  threadId: string;
-  fromEmail: string;
-  toEmail: string;
-  subject: string;
-  textContent: string;
-  htmlContent?: string;
-  providerMessageId?: string;
-  rfcMessageId?: string;
-  inReplyTo?: string;
-  references?: string;
-  status: "sent" | "failed";
-  errorMessage?: string;
-}): Promise<void> {
-  const supabase = createSupabaseServiceRoleClient();
-  await supabase.from("email_messages").insert({
-    thread_id: input.threadId,
-    direction: "outbound",
-    from_email: input.fromEmail,
-    to_email: input.toEmail,
-    subject: input.subject,
-    text_content: input.textContent,
-    html_content: input.htmlContent ?? null,
-    provider_message_id: input.providerMessageId ?? null,
-    in_reply_to: input.inReplyTo ?? null,
-    references: input.references ?? null,
-    headers: input.rfcMessageId
-      ? { message_id: input.rfcMessageId }
-      : {},
-    status: input.status,
-    error_message: input.errorMessage ?? null,
-    sent_at: input.status === "sent" ? new Date().toISOString() : null,
-  });
-
-  await supabase
-    .from("email_threads")
-    .update({
-      status: "waiting_on_customer",
-      last_outbound_at: new Date().toISOString(),
-      last_message_at: new Date().toISOString(),
-    })
-    .eq("id", input.threadId);
-}
-
-/**
- * After a successful Resend send, fetch the RFC message-id so future
- * customer replies can thread back reliably. Best-effort: on failure the
- * fallback (customer email + subject) matching still applies.
- */
-async function fetchRfcMessageId(
-  providerMessageId: string
-): Promise<string | undefined> {
-  const client = getResendClient();
-  if (!client) return undefined;
-  try {
-    const { data, error } = await client.emails.get(providerMessageId);
-    if (!error && data?.message_id) {
-      return data.message_id;
-    }
-  } catch {
-    // Best-effort only.
-  }
-  return undefined;
-}
-
-/** Send the section's auto-reply (threading headers + idempotency). */
-async function sendAutoReply(input: {
+/** Send the section's inline auto-reply (fallback when no template is set). */
+async function sendInlineAutoReply(input: {
   section: {
     id: string;
     slug: string;
@@ -394,6 +334,13 @@ export async function processInboundEmail(
     rawEmail.subject
   );
 
+  // Detect the customer's language so automatic replies match it.
+  const language = detectEmailLanguage({
+    headers: rawEmail.headers,
+    subject: rawEmail.subject,
+    text: rawEmail.text,
+  });
+
   let threadId: string;
   if (existingThread) {
     threadId = existingThread.id;
@@ -408,6 +355,7 @@ export async function processInboundEmail(
         subject: rawEmail.subject,
         status: "needs_reply",
         source: "inbound_email",
+        language,
         last_inbound_at: rawEmail.created_at ?? new Date().toISOString(),
       })
       .select("id")
@@ -452,6 +400,7 @@ export async function processInboundEmail(
       last_inbound_at: rawEmail.created_at ?? new Date().toISOString(),
       last_message_at: rawEmail.created_at ?? new Date().toISOString(),
       customer_name: name ?? undefined,
+      language,
     })
     .eq("id", threadId);
   await reopenThreadIfNeeded(supabase, threadId);
@@ -461,49 +410,86 @@ export async function processInboundEmail(
     const { data: sectionFull } = await supabase
       .from("email_inbox_sections")
       .select(
-        "name_translations, from_address, auto_reply_enabled, auto_reply_subject_translations, auto_reply_body_translations"
+        "name_translations, from_address, auto_reply_enabled, auto_reply_template_id, auto_reply_subject_translations, auto_reply_body_translations, email_templates(subject_translations, body_translations)"
       )
       .eq("id", section.id)
       .single();
     if (sectionFull?.auto_reply_enabled) {
       const { data: thread } = await supabase
         .from("email_threads")
-        .select("id, customer_email, customer_name, source")
+        .select("id, customer_email, customer_name, source, language")
         .eq("id", threadId)
         .single();
       if (thread && thread.source === "inbound_email") {
-        await sendAutoReply({
-          section: {
-            id: section.id,
-            slug: section.slug,
-            name_translations: sectionFull.name_translations as Record<
-              string,
-              string
-            > | null,
-            from_address: sectionFull.from_address,
-            auto_reply_subject_translations:
-              sectionFull.auto_reply_subject_translations as Record<
+        const sectionName = resolveTranslation(
+          sectionFull.name_translations as Record<string, string> | null,
+          "en"
+        );
+        const template = sectionFull.email_templates as unknown as {
+          subject_translations: Record<string, string> | null;
+          body_translations: Record<string, string> | null;
+        } | null;
+
+        const inReplyTo = rfcMessageId ? `<${rfcMessageId}>` : undefined;
+        const references = [
+          ...extractMessageIds(headers["references"]),
+          ...(rfcMessageId ? [rfcMessageId] : []),
+        ]
+          .map((id) => `<${id}>`)
+          .join(" ");
+
+        if (template) {
+          // Template-driven auto-reply in the customer's language.
+          await sendTemplateEmail({
+            template: {
+              subject_translations: template.subject_translations,
+              body_translations: template.body_translations,
+            },
+            language: thread.language ?? language,
+            toEmail: thread.customer_email,
+            customerName: thread.customer_name,
+            sectionName,
+            fromAddress: sectionFull.from_address,
+            threadId: thread.id,
+            inReplyTo,
+            references: references || undefined,
+            idempotencyKey: `email_inbox_template:${thread.id}:${emailId}`,
+          });
+        } else {
+          // Fallback: inline auto-reply fields (English, as before).
+          await sendInlineAutoReply({
+            section: {
+              id: section.id,
+              slug: section.slug,
+              name_translations: sectionFull.name_translations as Record<
                 string,
                 string
               > | null,
-            auto_reply_body_translations:
-              sectionFull.auto_reply_body_translations as Record<
-                string,
-                string
-              > | null,
-          },
-          thread: {
-            id: thread.id,
-            customer_email: thread.customer_email,
-            customer_name: thread.customer_name,
-          },
-          inboundMessage: {
-            id: emailId,
-            rfcMessageId,
-            subject: rawEmail.subject,
-            references: headers["references"] ?? undefined,
-          },
-        });
+              from_address: sectionFull.from_address,
+              auto_reply_subject_translations:
+                sectionFull.auto_reply_subject_translations as Record<
+                  string,
+                  string
+                > | null,
+              auto_reply_body_translations:
+                sectionFull.auto_reply_body_translations as Record<
+                  string,
+                  string
+                > | null,
+            },
+            thread: {
+              id: thread.id,
+              customer_email: thread.customer_email,
+              customer_name: thread.customer_name,
+            },
+            inboundMessage: {
+              id: emailId,
+              rfcMessageId,
+              subject: rawEmail.subject,
+              references: headers["references"] ?? undefined,
+            },
+          });
+        }
       }
     }
   }

@@ -693,6 +693,8 @@ Add reliable transactional and operational communication.
 - Add webhook route
 - Verify webhook signatures
 - Add CMS email activity
+- Email Inbox (✅ implemented — `openspec/changes/archive/2026-08-18-email-inbox`)
+- Email template library (✅ implemented — multilingual auto-replies, lifecycle, follow-up and billing templates; `openspec/changes/archive/2026-08-18-email-templates`)
 - Add controlled retry
 - ✅ **Delivered:** Email Inbox (OpenSpec `2026-08-18-email-inbox`) — inbound
   email via Resend `email.received` webhook → `/api/email/inbound`, admin

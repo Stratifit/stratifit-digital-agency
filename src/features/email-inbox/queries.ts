@@ -13,6 +13,9 @@ export interface EmailInboxSectionRecord {
   auto_reply_enabled: boolean;
   auto_reply_subject_translations: Record<string, string> | null;
   auto_reply_body_translations: Record<string, string> | null;
+  auto_reply_template_id: string | null;
+  resolved_template_id: string | null;
+  resolved_email_enabled: boolean;
   display_order: number;
 }
 
@@ -24,7 +27,7 @@ export async function getEmailSectionsForAdmin(): Promise<
   const { data, error } = await supabase
     .from("email_inbox_sections")
     .select(
-      "id, slug, name_translations, enabled, routing_addresses, form_source_key, from_address, auto_reply_enabled, auto_reply_subject_translations, auto_reply_body_translations, display_order"
+      "id, slug, name_translations, enabled, routing_addresses, form_source_key, from_address, auto_reply_enabled, auto_reply_subject_translations, auto_reply_body_translations, auto_reply_template_id, resolved_template_id, resolved_email_enabled, display_order"
     )
     .order("display_order", { ascending: true });
 
@@ -45,6 +48,9 @@ export async function getEmailSectionsForAdmin(): Promise<
       row.auto_reply_subject_translations as Record<string, string> | null,
     auto_reply_body_translations:
       row.auto_reply_body_translations as Record<string, string> | null,
+    auto_reply_template_id: row.auto_reply_template_id ?? null,
+    resolved_template_id: row.resolved_template_id ?? null,
+    resolved_email_enabled: row.resolved_email_enabled,
     display_order: row.display_order,
   }));
 }

@@ -15,6 +15,7 @@ import {
   type EmailSectionInput,
 } from "@/features/email-inbox/schemas";
 import type { EmailInboxSectionRecord } from "@/features/email-inbox/queries";
+import type { EmailTemplateRecord } from "@/features/email-inbox/template-queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -36,6 +37,9 @@ function emptyValues(): EmailSectionInput {
     auto_reply_enabled: false,
     auto_reply_subject_translations: { ...EMPTY_TRANSLATIONS },
     auto_reply_body_translations: { ...EMPTY_TRANSLATIONS },
+    auto_reply_template_id: null,
+    resolved_template_id: null,
+    resolved_email_enabled: false,
     display_order: 10,
   };
 }
@@ -60,17 +64,22 @@ function fromRecord(section: EmailInboxSectionRecord): EmailSectionInput {
       section.auto_reply_subject_translations
     ),
     auto_reply_body_translations: tr(section.auto_reply_body_translations),
+    auto_reply_template_id: section.auto_reply_template_id ?? null,
+    resolved_template_id: section.resolved_template_id ?? null,
+    resolved_email_enabled: section.resolved_email_enabled,
     display_order: section.display_order,
   };
 }
 
 function SectionEditorCard({
   initial,
+  templates,
   isNew,
   isProtected,
   onDone,
 }: {
   initial: EmailSectionInput;
+  templates: EmailTemplateRecord[];
   isNew: boolean;
   isProtected: boolean;
   onDone: () => void;
@@ -93,6 +102,13 @@ function SectionEditorCard({
 
   const enabled = watch("enabled");
   const autoReplyEnabled = watch("auto_reply_enabled");
+  const autoReplyTemplateId = watch("auto_reply_template_id");
+  const resolvedEmailEnabled = watch("resolved_email_enabled");
+
+  const templateOptions = templates.map((t) => ({
+    id: t.id,
+    label: `${t.name_translations?.en || t.key} (${t.key})`,
+  }));
 
   const fieldError = (path: string) => {
     const parts = path.split(".");
@@ -180,6 +196,152 @@ function SectionEditorCard({
       </div>
 
       <div className="space-y-5 p-5">
+        {/* Automatic reply — template first, inline fields as fallback */}
+        <div
+          className={cn(
+            "rounded-card border border-border bg-background p-4",
+            (autoReplyEnabled || autoReplyTemplateId) && "border-primary/30"
+          )}
+        >
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-sm font-medium text-text-primary">
+                Automatic reply
+              </p>
+              <p className="mt-0.5 text-xs text-text-muted">
+                Send an instant reply when an email lands in this section — in
+                the customer&apos;s language. Form enquiries use this template too
+                (as the acknowledgement).
+              </p>
+            </div>
+            <Switch
+              checked={autoReplyEnabled}
+              onCheckedChange={(next) => setValue("auto_reply_enabled", next)}
+              aria-label="Automatic reply enabled"
+            />
+          </div>
+
+          {autoReplyEnabled ? (
+            <div className="mt-4 space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor={`auto-template-${initial.slug}`}>
+                  Reply template
+                </Label>
+                <select
+                  id={`auto-template-${initial.slug}`}
+                  className="h-11 w-full cursor-pointer rounded-input border border-field-border bg-field-bg px-3.5 text-sm font-medium text-field-text transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover focus-visible:border-primary focus-visible:outline-none"
+                  value={autoReplyTemplateId ?? ""}
+                  onChange={(e) =>
+                    setValue(
+                      "auto_reply_template_id",
+                      e.target.value || null
+                    )
+                  }
+                >
+                  <option value="">— Inline fields below —</option>
+                  {templateOptions.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-xs text-text-muted">
+                  Choose a design from the template library (en/de/fr/es). When
+                  set, it replaces the inline fields below.
+                </p>
+              </div>
+
+              {!autoReplyTemplateId ? (
+                <>
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-medium text-text-muted">
+                      Inline fields (fallback)
+                    </p>
+                    <LocaleTabs value={locale} onChange={setLocale} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor={`auto-subject-${initial.slug}-${locale}`}>
+                      Auto-reply subject ({locale})
+                    </Label>
+                    <Input
+                      id={`auto-subject-${initial.slug}-${locale}`}
+                      placeholder="Thank you for contacting Stratifit"
+                      {...register(`auto_reply_subject_translations.${locale}`)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor={`auto-body-${initial.slug}-${locale}`}>
+                      Auto-reply message ({locale})
+                    </Label>
+                    <Textarea
+                      id={`auto-body-${initial.slug}-${locale}`}
+                      rows={4}
+                      placeholder="Thanks for reaching out. We typically reply within 24 hours."
+                      {...register(`auto_reply_body_translations.${locale}`)}
+                    />
+                    <p className="text-xs text-text-muted">
+                      {`"Hi {name},"`} is prepended automatically.
+                    </p>
+                  </div>
+                </>
+              ) : null}
+            </div>
+          ) : null}
+        </div>
+
+        {/* Automatic send when a conversation is finished */}
+        <div
+          className={cn(
+            "rounded-card border border-border bg-background p-4",
+            resolvedEmailEnabled && "border-primary/30"
+          )}
+        >
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-sm font-medium text-text-primary">
+                Send when resolved
+              </p>
+              <p className="mt-0.5 text-xs text-text-muted">
+                Automatically send a template when an admin marks a
+                conversation in this section as resolved.
+              </p>
+            </div>
+            <Switch
+              checked={resolvedEmailEnabled}
+              onCheckedChange={(next) =>
+                setValue("resolved_email_enabled", next)
+              }
+              aria-label="Send when resolved enabled"
+            />
+          </div>
+
+          {resolvedEmailEnabled ? (
+            <div className="mt-4 space-y-2">
+              <Label htmlFor={`resolved-template-${initial.slug}`}>
+                Resolved template
+              </Label>
+              <select
+                id={`resolved-template-${initial.slug}`}
+                className="h-11 w-full cursor-pointer rounded-input border border-field-border bg-field-bg px-3.5 text-sm font-medium text-field-text transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover focus-visible:border-primary focus-visible:outline-none"
+                value={watch("resolved_template_id") ?? ""}
+                onChange={(e) =>
+                  setValue("resolved_template_id", e.target.value || null)
+                }
+              >
+                <option value="">— Choose a template —</option>
+                {templateOptions.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-text-muted">
+                Sent in the customer&apos;s language (e.g. follow-up or thank-you).
+              </p>
+            </div>
+          ) : null}
+        </div>
+
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="text-xs font-medium text-text-muted">Language</p>
           <LocaleTabs value={locale} onChange={setLocale} />
@@ -276,63 +438,6 @@ function SectionEditorCard({
           </p>
         </div>
 
-        <div
-          className={cn(
-            "rounded-card border border-border bg-background p-4",
-            autoReplyEnabled && "border-primary/30"
-          )}
-        >
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <p className="text-sm font-medium text-text-primary">
-                Automatic reply
-              </p>
-              <p className="mt-0.5 text-xs text-text-muted">
-                Send an instant acknowledgment when an email lands in this
-                section. Form enquiries are not auto-replied.
-              </p>
-            </div>
-            <Switch
-              checked={autoReplyEnabled}
-              onCheckedChange={(next) => setValue("auto_reply_enabled", next)}
-              aria-label="Automatic reply enabled"
-            />
-          </div>
-
-          {autoReplyEnabled ? (
-            <div className="mt-4 space-y-4">
-              <div className="flex items-center justify-between">
-                <p className="text-xs font-medium text-text-muted">Language</p>
-                <LocaleTabs value={locale} onChange={setLocale} />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor={`auto-subject-${initial.slug}-${locale}`}>
-                  Auto-reply subject ({locale})
-                </Label>
-                <Input
-                  id={`auto-subject-${initial.slug}-${locale}`}
-                  placeholder="Thank you for contacting Stratifit"
-                  {...register(`auto_reply_subject_translations.${locale}`)}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor={`auto-body-${initial.slug}-${locale}`}>
-                  Auto-reply message ({locale})
-                </Label>
-                <Textarea
-                  id={`auto-body-${initial.slug}-${locale}`}
-                  rows={4}
-                  placeholder="Thanks for reaching out. We typically reply within 24 hours."
-                  {...register(`auto_reply_body_translations.${locale}`)}
-                />
-                <p className="text-xs text-text-muted">
-                  {`"Hi {name},"`} is prepended automatically.
-                </p>
-              </div>
-            </div>
-          ) : null}
-        </div>
-
         {serverError ? (
           <p
             role="alert"
@@ -366,8 +471,10 @@ function SectionEditorCard({
 
 export function EmailSectionsManager({
   sections,
+  templates,
 }: {
   sections: EmailInboxSectionRecord[];
+  templates: EmailTemplateRecord[];
 }) {
   const [showNew, setShowNew] = React.useState(false);
 
@@ -378,6 +485,7 @@ export function EmailSectionsManager({
           <SectionEditorCard
             key={section.id}
             initial={fromRecord(section)}
+            templates={templates}
             isNew={false}
             isProtected={section.slug === "other"}
             onDone={() => undefined}
@@ -388,6 +496,7 @@ export function EmailSectionsManager({
       {showNew ? (
         <SectionEditorCard
           initial={emptyValues()}
+          templates={templates}
           isNew
           isProtected={false}
           onDone={() => setShowNew(false)}

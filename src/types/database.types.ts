@@ -926,6 +926,7 @@ export type Database = {
           auto_reply_body_translations: Json
           auto_reply_enabled: boolean
           auto_reply_subject_translations: Json
+          auto_reply_template_id: string | null
           created_at: string
           display_order: number
           enabled: boolean
@@ -933,6 +934,8 @@ export type Database = {
           from_address: string | null
           id: string
           name_translations: Json
+          resolved_email_enabled: boolean
+          resolved_template_id: string | null
           routing_addresses: string[]
           slug: string
           updated_at: string
@@ -941,6 +944,7 @@ export type Database = {
           auto_reply_body_translations?: Json
           auto_reply_enabled?: boolean
           auto_reply_subject_translations?: Json
+          auto_reply_template_id?: string | null
           created_at?: string
           display_order?: number
           enabled?: boolean
@@ -948,6 +952,8 @@ export type Database = {
           from_address?: string | null
           id?: string
           name_translations?: Json
+          resolved_email_enabled?: boolean
+          resolved_template_id?: string | null
           routing_addresses?: string[]
           slug: string
           updated_at?: string
@@ -956,6 +962,7 @@ export type Database = {
           auto_reply_body_translations?: Json
           auto_reply_enabled?: boolean
           auto_reply_subject_translations?: Json
+          auto_reply_template_id?: string | null
           created_at?: string
           display_order?: number
           enabled?: boolean
@@ -963,11 +970,28 @@ export type Database = {
           from_address?: string | null
           id?: string
           name_translations?: Json
+          resolved_email_enabled?: boolean
+          resolved_template_id?: string | null
           routing_addresses?: string[]
           slug?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "email_inbox_sections_auto_reply_template_id_fkey"
+            columns: ["auto_reply_template_id"]
+            isOneToOne: false
+            referencedRelation: "email_templates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "email_inbox_sections_resolved_template_id_fkey"
+            columns: ["resolved_template_id"]
+            isOneToOne: false
+            referencedRelation: "email_templates"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       email_messages: {
         Row: {
@@ -1037,6 +1061,51 @@ export type Database = {
           },
         ]
       }
+      email_templates: {
+        Row: {
+          body_translations: Json
+          category: string
+          created_at: string
+          description: string | null
+          display_order: number
+          id: string
+          is_enabled: boolean
+          key: string
+          name_translations: Json
+          subject_translations: Json
+          trigger_event: string | null
+          updated_at: string
+        }
+        Insert: {
+          body_translations?: Json
+          category?: string
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          is_enabled?: boolean
+          key: string
+          name_translations?: Json
+          subject_translations?: Json
+          trigger_event?: string | null
+          updated_at?: string
+        }
+        Update: {
+          body_translations?: Json
+          category?: string
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          is_enabled?: boolean
+          key?: string
+          name_translations?: Json
+          subject_translations?: Json
+          trigger_event?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       email_threads: {
         Row: {
           assigned_to: string | null
@@ -1044,6 +1113,7 @@ export type Database = {
           customer_email: string
           customer_name: string | null
           id: string
+          language: string
           last_inbound_at: string | null
           last_message_at: string
           last_outbound_at: string | null
@@ -1060,6 +1130,7 @@ export type Database = {
           customer_email: string
           customer_name?: string | null
           id?: string
+          language?: string
           last_inbound_at?: string | null
           last_message_at?: string
           last_outbound_at?: string | null
@@ -1076,6 +1147,7 @@ export type Database = {
           customer_email?: string
           customer_name?: string | null
           id?: string
+          language?: string
           last_inbound_at?: string | null
           last_message_at?: string
           last_outbound_at?: string | null

@@ -5,9 +5,10 @@ import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getEmailFrom, getResendClient } from "@/features/email/client";
 import { sendEmail } from "@/features/email/send";
+import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { recordAuditLog } from "@/lib/audit";
 import type { ActionResult } from "@/types/action-result";
-import { recordOutboundMessage } from "./inbound";
+import { recordOutboundMessage, sendTemplateEmail } from "./template-sends";
 import { emailReplySchema, emailSectionSchema, type EmailReplyInput, type EmailSectionInput } from "./schemas";
 
 async function requireAdmin() {
@@ -177,6 +178,66 @@ export async function sendEmailReply(
   return { success: true, data: { messageId: result.messageId } };
 }
 
+/**
+ * When a conversation is resolved, optionally send the section's
+ * `on_thread_resolved` template in the thread's language (opt-in per
+ * section). Never fails the resolve action.
+ */
+async function maybeSendResolvedEmail(threadId: string): Promise<void> {
+  try {
+    const supabase = await createSupabaseServerClient();
+    const { data: thread } = await supabase
+      .from("email_threads")
+      .select(
+        "id, customer_email, customer_name, language, section_id, email_inbox_sections(from_address, resolved_email_enabled, resolved_template_id, name_translations)"
+      )
+      .eq("id", threadId)
+      .single();
+
+    if (!thread) return;
+
+    const section = thread.email_inbox_sections as unknown as {
+      from_address: string | null;
+      resolved_email_enabled: boolean;
+      resolved_template_id: string | null;
+      name_translations: Record<string, string> | null;
+    } | null;
+
+    if (!section?.resolved_email_enabled || !section.resolved_template_id) {
+      return;
+    }
+
+    const { data: template } = await supabase
+      .from("email_templates")
+      .select("subject_translations, body_translations")
+      .eq("id", section.resolved_template_id)
+      .single();
+    if (!template) return;
+
+    await sendTemplateEmail({
+      template: {
+        subject_translations:
+          template.subject_translations as Record<string, string> | null,
+        body_translations:
+          template.body_translations as Record<string, string> | null,
+      },
+      language: thread.language ?? "en",
+      toEmail: thread.customer_email,
+      customerName: thread.customer_name,
+      sectionName: resolveTranslation(section.name_translations, "en"),
+      fromAddress: section.from_address,
+      threadId: thread.id,
+      idempotencyKey: `email_inbox_template:resolved:${thread.id}`,
+      updateThreadStatus: false,
+    });
+  } catch (error) {
+    console.error(
+      "Resolved-template send error:",
+      error instanceof Error ? error.message : error
+    );
+  }
+}
+
 async function updateThreadStatus(
   threadId: string,
   status: "resolved" | "archived"
@@ -190,6 +251,11 @@ async function updateThreadStatus(
 
   if (error) {
     return { success: false, error: "Could not update the thread." };
+  }
+
+  if (status === "resolved") {
+    // Automatic send when a section is finished (opt-in per section).
+    await maybeSendResolvedEmail(threadId);
   }
 
   await recordAuditLog({
@@ -268,6 +334,9 @@ export async function createEmailSection(
     auto_reply_subject_translations:
       parsed.data.auto_reply_subject_translations,
     auto_reply_body_translations: parsed.data.auto_reply_body_translations,
+    auto_reply_template_id: parsed.data.auto_reply_template_id || null,
+    resolved_template_id: parsed.data.resolved_template_id || null,
+    resolved_email_enabled: parsed.data.resolved_email_enabled,
     display_order: parsed.data.display_order,
   });
 
@@ -330,6 +399,9 @@ export async function updateEmailSection(
       auto_reply_subject_translations:
         parsed.data.auto_reply_subject_translations,
       auto_reply_body_translations: parsed.data.auto_reply_body_translations,
+      auto_reply_template_id: parsed.data.auto_reply_template_id || null,
+      resolved_template_id: parsed.data.resolved_template_id || null,
+      resolved_email_enabled: parsed.data.resolved_email_enabled,
       display_order: parsed.data.display_order,
     })
     .eq("id", parsed.data.id);

@@ -18,8 +18,13 @@ const validSection = {
   auto_reply_enabled: false,
   auto_reply_subject_translations: tr("Thank you for contacting Stratifit"),
   auto_reply_body_translations: tr("We typically reply within 24 hours."),
+  auto_reply_template_id: null,
+  resolved_template_id: null,
+  resolved_email_enabled: false,
   display_order: 6,
 };
+
+const TEMPLATE_ID = "11111111-1111-4111-8111-111111111111";
 
 describe("inboundWebhookSchema", () => {
   it("accepts an email.received payload with an email_id", () => {
@@ -143,6 +148,20 @@ describe("emailSectionSchema", () => {
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data.form_source_key).toBeNull();
+    }
+  });
+
+  it("accepts linked auto-reply and resolved templates", () => {
+    const result = emailSectionSchema.safeParse({
+      ...validSection,
+      auto_reply_template_id: TEMPLATE_ID,
+      resolved_template_id: TEMPLATE_ID,
+      resolved_email_enabled: true,
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.auto_reply_template_id).toBe(TEMPLATE_ID);
+      expect(result.data.resolved_template_id).toBe(TEMPLATE_ID);
     }
   });
 });

@@ -221,6 +221,13 @@ function renderBody<TKey extends EmailTemplateKey>(
         bodyLines: d.body.split(/\n+/).filter(Boolean),
       };
     }
+    case "email_inbox_template": {
+      const d = data as EmailTemplateDataMap["email_inbox_template"];
+      return {
+        title: d.subject,
+        bodyLines: d.body.split(/\n+/).filter(Boolean),
+      };
+    }
   }
 }
 

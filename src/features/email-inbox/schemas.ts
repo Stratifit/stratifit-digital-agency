@@ -108,6 +108,11 @@ export const emailSectionSchema = z.object({
   auto_reply_enabled: z.boolean(),
   auto_reply_subject_translations: translations(),
   auto_reply_body_translations: translations(),
+  /** Template-library auto-reply (takes precedence over the inline fields). */
+  auto_reply_template_id: z.string().uuid().optional().nullable(),
+  /** Optional automatic follow-up when a conversation is resolved. */
+  resolved_template_id: z.string().uuid().optional().nullable(),
+  resolved_email_enabled: z.boolean(),
   display_order: z.number().int().min(0),
 });
 

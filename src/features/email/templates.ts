@@ -47,6 +47,14 @@ const emailInboxReplyDataSchema = z.object({
   body: z.string().min(1),
 });
 
+// Rendered template-library email: subject/body are produced by
+// renderEmailTemplate() from the admin-managed multilingual template, so no
+// greeting is prepended — the body is the complete email.
+const emailInboxTemplateDataSchema = z.object({
+  subject: z.string().min(1),
+  body: z.string().min(1),
+});
+
 export const emailTemplateDataSchemas = {
   contact_acknowledgement: contactAcknowledgmentDataSchema,
   lead_notification: leadNotificationDataSchema,
@@ -54,6 +62,7 @@ export const emailTemplateDataSchemas = {
   admin_invitation: adminInvitationDataSchema,
   email_inbox_auto_reply: emailInboxAutoReplyDataSchema,
   email_inbox_reply: emailInboxReplyDataSchema,
+  email_inbox_template: emailInboxTemplateDataSchema,
 } as const;
 
 export type EmailTemplateData<TKey extends EmailTemplateKey> = z.input<
@@ -91,5 +100,7 @@ export function buildEmailSubject<TKey extends EmailTemplateKey>(
       );
     case "email_inbox_reply":
       return (data as EmailTemplateDataMap["email_inbox_reply"]).subject;
+    case "email_inbox_template":
+      return (data as EmailTemplateDataMap["email_inbox_template"]).subject;
   }
 }

@@ -329,11 +329,26 @@ Controlled retry can be added later if justified.
 
 ## 16. Multilingual Behavior
 
-Templates are currently English copy.
+Supported languages: `en`, `de`, `fr`, `es`. English is the fallback.
 
-A `locale` field is stored in template data and event metadata to support future multilingual templates.
+### Email template library
 
-Supported languages: `en`, `de`, `fr`, `es`.
+The Email Inbox ships with a multilingual template library (`email_templates`, migration `00061`) covering the categories Stratifit needs:
+
+- **Auto-replies** — instant replies to inbound email and form leads (`auto_reply`, `lead_auto_thanks`)
+- **Lifecycle** — onboarding, project kickoff, milestone updates, project delivered, invoice received, payment received, payment reminder
+- **Follow-ups** — conversation resolved follow-up, churn prevention
+- **Billing** — payment reminders, overdue notices, receipts
+
+Each template stores `subject_translations` and `body_translations` as `{ en, de, fr, es }` JSONB, plus a category, trigger event (`on_lead`, `on_inbound_email`, `on_thread_resolved`, `manual`), an on/off switch, and display order. Content supports `{{placeholder}}` keys (`name`, `section_name`, `company`, `amount`, `due_date`, `invoice_number`); unknown keys render empty.
+
+### Automatic sends
+
+- **Auto-reply** — when an inbound email or form lead arrives, the section's linked template is sent **in the customer's language** (detected from the message; `Content-Language` header wins, then stop-word scoring, English fallback). If no template is linked, the section's inline multilingual fields are used.
+- **Send when resolved** — when an admin resolves a conversation, an optional per-section template is sent to the customer in the thread's language.
+- **Lead acknowledgement** — form submissions get the language-matched acknowledgement template as their reply, recorded in the thread.
+
+Admin management lives under **Admin → Communication → Email Templates** (`/admin/email/templates`, category-filtered editor) and per-section links on **Email Sections**.
 
 ## 17. Error Handling
 

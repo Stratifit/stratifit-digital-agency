@@ -17,6 +17,8 @@ export async function syncLeadToEmailThread(input: {
   email: string;
   message: string;
   source: string;
+  /** Visitor language (preferred_locale), used for automatic emails. */
+  language?: string;
 }): Promise<void> {
   try {
     const supabase = createSupabaseServiceRoleClient();
@@ -67,6 +69,7 @@ export async function syncLeadToEmailThread(input: {
           status: "needs_reply",
           source: input.source,
           lead_id: input.leadId,
+          language: input.language ?? "en",
           last_inbound_at: new Date().toISOString(),
         })
         .select("id")
@@ -100,6 +103,7 @@ export async function syncLeadToEmailThread(input: {
         last_inbound_at: now,
         last_message_at: now,
         customer_name: input.name ?? undefined,
+        language: input.language ?? undefined,
       })
       .eq("id", threadId);
   } catch (error) {

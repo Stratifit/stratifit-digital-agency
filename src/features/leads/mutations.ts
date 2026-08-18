@@ -5,6 +5,10 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { ActionResult } from "@/types/action-result";
 import { sendLeadEmails } from "@/features/email/lead-notifications";
 import { syncLeadToEmailThread } from "@/features/email-inbox/forms";
+import {
+  getSectionTemplateForSource,
+  sendTemplateEmail,
+} from "@/features/email-inbox/template-sends";
 import { leadSchema, type LeadFormValues } from "./schemas";
 
 const RATE_WINDOW_MS = 10 * 60 * 1000;
@@ -85,16 +89,44 @@ async function recordLead(values: LeadRecord): Promise<ActionResult> {
     return { success: false, error: "Something went wrong. Please try again." };
   }
 
-  await sendLeadEmails({
-    leadId,
-    name: values.name,
-    email: values.email,
-    company: values.company,
-    requestedServiceIds: values.requested_service_ids,
-    budgetRange: values.budget_range,
-    message: values.message,
-    locale: values.preferred_locale,
-  });
+  // Language-matched acknowledgement from the email template library when
+  // the mapped section has an auto-reply template; otherwise the built-in
+  // English acknowledgement is sent. Best-effort — never fails the lead.
+  let templateSent = false;
+  try {
+    const sectionInfo = await getSectionTemplateForSource(values.source);
+    if (sectionInfo?.autoReplyTemplate) {
+      const { sent } = await sendTemplateEmail({
+        template: sectionInfo.autoReplyTemplate,
+        language: values.preferred_locale,
+        toEmail: values.email,
+        customerName: values.name,
+        sectionName: sectionInfo.sectionName,
+        fromAddress: sectionInfo.fromAddress,
+        idempotencyKey: `email_inbox_template:lead:${leadId}`,
+      });
+      templateSent = sent;
+    }
+  } catch (error) {
+    console.error(
+      "Template acknowledgement error:",
+      error instanceof Error ? error.message : error
+    );
+  }
+
+  await sendLeadEmails(
+    {
+      leadId,
+      name: values.name,
+      email: values.email,
+      company: values.company,
+      requestedServiceIds: values.requested_service_ids,
+      budgetRange: values.budget_range,
+      message: values.message,
+      locale: values.preferred_locale,
+    },
+    { skipAcknowledgement: templateSent }
+  );
 
   // Unified inbox: mirror the enquiry as a conversation in the mapped
   // section. Best-effort — never fails the lead submission.
@@ -104,6 +136,7 @@ async function recordLead(values: LeadRecord): Promise<ActionResult> {
     email: values.email,
     message: values.message,
     source: values.source,
+    language: values.preferred_locale,
   });
 
   return { success: true };

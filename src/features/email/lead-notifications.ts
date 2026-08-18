@@ -38,13 +38,18 @@ async function resolveServiceNames(serviceIds?: string[]): Promise<string | null
   return names.length > 0 ? names.join(", ") : null;
 }
 
-export async function sendLeadEmails(input: LeadNotificationInput) {
+export async function sendLeadEmails(
+  input: LeadNotificationInput,
+  options?: { skipAcknowledgement?: boolean }
+) {
   const siteSettings = await getPublicSiteSettings();
   const adminEmail = siteSettings?.contact_email ?? null;
   const serviceNames = await resolveServiceNames(input.requestedServiceIds);
   const tasks: Promise<unknown>[] = [];
 
-  if (input.email) {
+  // The visitor acknowledgement is skipped when a language-matched template
+  // from the email template library was already sent instead.
+  if (input.email && !options?.skipAcknowledgement) {
     tasks.push(
       sendEmail({
         templateKey: "contact_acknowledgement",
