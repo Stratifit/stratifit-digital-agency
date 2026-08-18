@@ -118,27 +118,42 @@ const TRUSTED_BY_LOGOS: { name: string; icon: React.ReactNode }[] = [
       />
     ),
   },
+  {
+    name: "ORBIT",
+    icon: (
+      <path d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
+    ),
+  },
+  {
+    name: "NEXUS",
+    icon: (
+      <path
+        fillRule="evenodd"
+        d="M19.902 4.098a3.75 3.75 0 0 0-5.304 0l-4.5 4.5a3.75 3.75 0 0 0 1.035 6.037.75.75 0 0 1-.646 1.353 5.25 5.25 0 0 1-1.449-8.45l4.5-4.5a5.25 5.25 0 1 1 7.424 7.424l-1.757 1.757a.75.75 0 1 1-1.06-1.06l1.757-1.757a3.75 3.75 0 0 0 0-5.304Zm-7.389 4.267a.75.75 0 0 1 1-.353 5.25 5.25 0 0 1 1.449 8.45l-4.5 4.5a5.25 5.25 0 1 1-7.424-7.424l1.757-1.757a.75.75 0 1 1 1.06 1.06l-1.757 1.757a3.75 3.75 0 0 0 5.304 5.304l4.5-4.5a3.75 3.75 0 0 0-1.035-6.037.75.75 0 0 1-.354-1Z"
+        clipRule="evenodd"
+      />
+    ),
+  },
 ];
 
 function TrustedByStrip() {
   return (
-    <div className="w-full lg:mx-auto lg:max-w-3xl">
+    <div className="w-full pb-6 lg:mx-auto lg:max-w-3xl">
       {/* Mobile-only centered label with side rules */}
-      <div className="flex items-center gap-3 opacity-70 sm:hidden">
+      <div className="flex items-center gap-3 opacity-90 sm:hidden">
         <span className="h-px flex-1 bg-white/10" />
-        <span className="shrink-0 whitespace-nowrap text-[10px] font-bold uppercase tracking-widest text-white">
+        <span className="shrink-0 whitespace-nowrap text-[11px] font-bold uppercase tracking-widest text-white">
           Trusted by Growing Companies
         </span>
         <span className="h-px flex-1 bg-white/10" />
       </div>
-      <div className="flex shrink-0 items-center justify-between gap-2 whitespace-nowrap px-4 opacity-70 sm:gap-6 sm:px-0 md:gap-8 lg:justify-start">
-        <span className="hidden shrink-0 text-[10px] font-bold uppercase tracking-widest text-white sm:inline sm:text-xs md:text-sm">
-          Trusted by Growing Companies
-        </span>
+
+      {/* Mobile: 3 logos per row, 2 rows (6 total) */}
+      <div className="grid grid-cols-3 items-center justify-items-center gap-x-4 gap-y-4 px-4 opacity-90 sm:hidden">
         {TRUSTED_BY_LOGOS.map((logo) => (
           <span
             key={logo.name}
-            className="flex shrink-0 items-center gap-1 whitespace-nowrap font-display text-[10px] font-black tracking-[0.15em] sm:gap-2 sm:text-sm sm:tracking-[0.3em]"
+            className="flex items-center gap-1.5 whitespace-nowrap font-display text-sm font-black tracking-[0.15em]"
           >
             <svg
               stroke="currentColor"
@@ -146,7 +161,35 @@ function TrustedByStrip() {
               strokeWidth={0}
               viewBox="0 0 24 24"
               aria-hidden="true"
-              className="shrink-0 text-sm text-gray-300 sm:text-lg"
+              className="shrink-0 text-xl text-gray-300"
+              height="1em"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {logo.icon}
+            </svg>
+            <span className="text-gray-100">{logo.name}</span>
+          </span>
+        ))}
+      </div>
+
+      {/* Desktop / tablet: label + all 6 logos on one row */}
+      <div className="hidden shrink-0 items-center justify-between gap-8 whitespace-nowrap opacity-90 sm:flex lg:justify-start">
+        <span className="shrink-0 text-xs font-bold uppercase tracking-widest text-white md:text-sm">
+          Trusted by Growing Companies
+        </span>
+        {TRUSTED_BY_LOGOS.map((logo) => (
+          <span
+            key={logo.name}
+            className="flex shrink-0 items-center gap-2 whitespace-nowrap font-display text-base font-black tracking-[0.3em]"
+          >
+            <svg
+              stroke="currentColor"
+              fill="currentColor"
+              strokeWidth={0}
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              className="shrink-0 text-xl text-gray-300"
               height="1em"
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
