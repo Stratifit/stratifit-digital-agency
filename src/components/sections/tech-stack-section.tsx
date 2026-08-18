@@ -1,12 +1,12 @@
 import {
   getPublicSectionSetting,
   getPublicSectionSettingIncludingHidden,
-  type PublicSectionSettings,
 } from "@/features/section-settings/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
+import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { SECTION_HEADER_FALLBACKS } from "@/lib/i18n/section-fallbacks";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
-import { SectionHeader } from "@/components/ui/section-header";
 import { Reveal } from "@/components/ui/reveal";
 
 interface TechStackItem {
@@ -26,17 +26,24 @@ const DEFAULT_TECH_STACK: TechStackItem[] = [
   { name: "TypeScript", icon: "code" },
 ];
 
-/** Header translations mirrored from the seed; empty fields make SectionHeader
- *  fall back to the shared SECTION_HEADER_FALLBACKS map. */
-const FALLBACK_HEADER_SETTINGS: PublicSectionSettings = {
-  section_key: "tech-stack",
-  label: "Tech Stack",
-  eyebrow_translations: {},
-  title_translations: {},
-  highlight_translations: {},
-  description_translations: {},
-  is_visible: true,
-};
+/** Renders a heading keeping the word "Tech" in amber while the rest keeps the
+ *  normal text color — the original hero marquee look. */
+function TechHighlight({ text }: { text: string }) {
+  const parts = text.split(/\b(Tech)\b/i);
+  return (
+    <>
+      {parts.map((part, index) =>
+        /^Tech$/i.test(part) ? (
+          <span key={index} className="text-primary">
+            {part}
+          </span>
+        ) : (
+          <span key={index}>{part}</span>
+        )
+      )}
+    </>
+  );
+}
 
 function TechIcon({ name }: { name: string }) {
   const svgProps = {
@@ -86,8 +93,9 @@ function TechIcon({ name }: { name: string }) {
 
 /**
  * Tech stack marquee section shown between the hero and Services on the
- * homepage. Content (heading + technologies) is CMS-editable via
- * Sections → Tech Stack in the admin.
+ * homepage. Keeps the original compact design: small centered heading with the
+ * word "Tech" in amber, a one-line description, and the scrolling marquee.
+ * Content (heading + technologies) is CMS-editable via Sections → Tech Stack.
  */
 export async function TechStackSection() {
   const locale = await getLocale();
@@ -112,18 +120,45 @@ export async function TechStackSection() {
       ? (dbItems as TechStackItem[])
       : DEFAULT_TECH_STACK;
 
-  const headerSettings: PublicSectionSettings =
-    settings ?? FALLBACK_HEADER_SETTINGS;
+  // Resolve the heading/description with the shared fallbacks so the section
+  // never renders an empty header (the database remains the source of truth).
+  const fallback = SECTION_HEADER_FALLBACKS["tech-stack"];
+  const resolveField = (
+    translations: Record<string, string> | null | undefined,
+    fallbackField: { en: string; de: string; fr: string; es: string }
+  ) =>
+    resolveTranslation(translations, locale) ||
+    fallbackField[locale as keyof typeof fallbackField] ||
+    fallbackField.en ||
+    "";
+
+  const title = resolveField(settings?.title_translations, fallback.title);
+  const highlight = resolveField(
+    settings?.highlight_translations,
+    fallback.highlight
+  );
+  const description = resolveField(
+    settings?.description_translations,
+    fallback.description
+  );
+  const heading = `${title} ${highlight}`.trim().replace(/\s+/g, " ");
 
   return (
     <>
       <Section>
         <Container>
-          <SectionHeader
-            settings={headerSettings}
-            locale={locale}
-            align="center"
-          />
+          <Reveal>
+            {heading ? (
+              <h2 className="mb-1.5 text-center text-xl font-bold tracking-tight text-text-primary sm:text-2xl">
+                <TechHighlight text={heading} />
+              </h2>
+            ) : null}
+            {description ? (
+              <p className="mx-auto mb-0 max-w-2xl px-4 text-center text-xs font-medium leading-snug text-text-secondary sm:text-sm">
+                {description}
+              </p>
+            ) : null}
+          </Reveal>
 
           <Reveal className="marquee-pause relative overflow-hidden py-4">
             <div className="marquee-scroll flex w-max gap-10 whitespace-nowrap sm:gap-12">
