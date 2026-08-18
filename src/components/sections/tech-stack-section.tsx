@@ -3,28 +3,17 @@ import {
   getPublicSectionSettingIncludingHidden,
   type PublicSectionSettings,
 } from "@/features/section-settings/queries";
+import { DEFAULT_TECH_STACK } from "@/features/section-settings/defaults";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
-import { Reveal } from "@/components/ui/reveal";
+import { cn } from "@/lib/cn";
 
 interface TechStackItem {
   name: string;
   icon: string;
 }
-
-/** Built-in fallback matching migration 00057's seed. Used only while the
- *  migration isn't applied (no section_settings.tech_stack column/row), so the
- *  section still renders. The database is the source of truth once applied. */
-const DEFAULT_TECH_STACK: TechStackItem[] = [
-  { name: "Tailwind CSS", icon: "brush" },
-  { name: "Framer Motion", icon: "zap" },
-  { name: "GSAP", icon: "zap" },
-  { name: "Next.js", icon: "code" },
-  { name: "React", icon: "atom" },
-  { name: "TypeScript", icon: "code" },
-];
 
 /** Header translations mirrored from the seed; empty fields make SectionHeader
  *  fall back to the shared SECTION_HEADER_FALLBACKS map. */
@@ -46,7 +35,7 @@ function TechIcon({ name }: { name: string }) {
     strokeWidth: 2,
     strokeLinecap: "round" as const,
     strokeLinejoin: "round" as const,
-    className: "size-5",
+    className: "size-6",
     "aria-hidden": true,
   };
 
@@ -87,8 +76,9 @@ function TechIcon({ name }: { name: string }) {
 /**
  * Tech stack section shown between the hero and Services on the homepage.
  * Uses the standard section header (same size/position as the other sections)
- * above two swipeable rows of technologies. Content (heading + technologies)
- * is CMS-editable via Sections → Tech Stack.
+ * above two auto-scrolling marquee rows of technologies (one forward, one
+ * reverse, pausing only for reduced-motion users). Content (heading +
+ * technologies) is CMS-editable via Sections → Tech Stack.
  */
 export async function TechStackSection() {
   const locale = await getLocale();
@@ -113,8 +103,9 @@ export async function TechStackSection() {
       ? (dbItems as TechStackItem[])
       : DEFAULT_TECH_STACK;
 
-  // Two rows of swipeable strips (3 icons each with the default seed) — each
-  // icon appears exactly once, no duplication; rows scroll left/right by hand.
+  // Two marquee rows (first half / second half). Each row duplicates its items
+  // so the CSS translateX(-50%) loop is seamless; row 0 scrolls forward, row 1
+  // in reverse — the same treatment as the service-page Toolkit marquee.
   const midpoint = Math.ceil(items.length / 2);
   const rows = [items.slice(0, midpoint), items.slice(midpoint)];
 
@@ -131,28 +122,30 @@ export async function TechStackSection() {
             className="mb-0 md:mb-0 pb-4"
           />
 
-          <Reveal className="space-y-4 py-4">
+          <div>
             {rows.map((row, rowIndex) => (
-              <div
-                key={rowIndex}
-                className="flex touch-pan-x overscroll-x-contain gap-6 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:gap-8"
-              >
-                {row.map((tech, index) => (
-                  <div
-                    key={`${tech.name}-${index}`}
-                    className="group flex shrink-0 cursor-pointer flex-row items-center justify-center gap-2.5 text-text-muted transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-text-secondary"
-                  >
-                    <span className="text-text-subtle transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:scale-110">
-                      <TechIcon name={tech.icon} />
-                    </span>
-                    <span className="text-base font-semibold tracking-wide sm:text-lg">
+              <div key={rowIndex} className="overflow-hidden py-4 md:py-6">
+                <div
+                  className={cn(
+                    "flex w-max gap-10 whitespace-nowrap",
+                    rowIndex === 0 ? "marquee-scroll" : "marquee-scroll-reverse"
+                  )}
+                >
+                  {[...row, ...row].map((tech, index) => (
+                    <span
+                      key={`${rowIndex}-${tech.name}-${index}`}
+                      className="flex items-center gap-2 text-lg font-medium text-text-secondary sm:text-xl"
+                    >
+                      <span className="shrink-0 text-text-subtle">
+                        <TechIcon name={tech.icon} />
+                      </span>
                       {tech.name}
                     </span>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             ))}
-          </Reveal>
+          </div>
         </Container>
       </Section>
       <div aria-hidden="true" className="h-px w-full bg-white/5" />
