@@ -112,16 +112,16 @@ export function ReviewSummaryBand({
     <div className="flex items-stretch divide-x divide-primary/15 overflow-hidden rounded-card border border-primary/25 bg-card-dark">
       {/* Client satisfaction — rating and stars on one line, description under */}
       <div className="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 px-2 py-3 text-center sm:px-4">
-        <div className="flex items-center gap-1.5">
-          <span className="font-display text-2xl font-bold leading-none tracking-tight text-text-primary sm:text-3xl">
+        <div className="flex items-center gap-1">
+          <span className="font-display text-lg font-bold leading-none tracking-tight text-text-primary sm:text-2xl">
             {rating}
-            <span className="text-lg font-medium text-text-subtle sm:text-xl">
+            <span className="text-sm font-medium text-text-subtle sm:text-lg">
               {" / 5"}
             </span>
           </span>
           <Stars
             label={tWithNumber(locale, "starsOutOfFive", Number(rating))}
-            className="size-4 sm:size-5"
+            className="size-3 sm:size-4"
           />
         </div>
         <p className="min-w-0 max-w-full truncate text-[10px] leading-tight text-text-muted sm:text-[11px]">

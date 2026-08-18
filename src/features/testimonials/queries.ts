@@ -12,6 +12,20 @@ export interface PublicTestimonial {
 const TESTIMONIAL_BASE_SELECT =
   "quote_translations, person_name, person_role_translations, company_name, is_verified";
 
+/**
+ * Seeded reviewers that migration 00056 marks as Google-sourced. When a
+ * database hasn't applied that migration (no `source` column), the fallback
+ * query mirrors the seed so some cards still show the Google icon. Once the
+ * migration is applied, the database column is the source of truth and this
+ * name-based mapping is ignored.
+ */
+const GOOGLE_SOURCE_NAMES = new Set([
+  "Marcus Weber",
+  "Daniel Okafor",
+  "Emma Lindqvist",
+  "James Carter",
+]);
+
 export async function getPublicTestimonials(
   limit = 3
 ): Promise<PublicTestimonial[]> {
@@ -39,7 +53,9 @@ export async function getPublicTestimonials(
     if (legacyError) return [];
     return (legacyData ?? []).map((row) => ({
       ...row,
-      source: "website" as const,
+      source: GOOGLE_SOURCE_NAMES.has(row.person_name)
+        ? ("google" as const)
+        : ("website" as const),
     })) as PublicTestimonial[];
   }
 
