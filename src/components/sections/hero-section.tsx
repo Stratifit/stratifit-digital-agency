@@ -140,10 +140,10 @@ function TrustedByStrip() {
   return (
     <div className="w-full pb-6 lg:mx-auto lg:max-w-3xl">
       {/* Mobile-only centered label with side rules */}
-      <div className="flex items-center gap-3 opacity-90 sm:hidden">
+      <div className="flex items-center gap-3 pb-[18px] opacity-90 sm:hidden">
         <span className="h-px flex-1 bg-white/10" />
         <span className="shrink-0 whitespace-nowrap text-[11px] font-bold uppercase tracking-widest text-white">
-          Trusted by Growing Companies
+          Trusted by <span className="text-primary">Growing</span> Companies
         </span>
         <span className="h-px flex-1 bg-white/10" />
       </div>
@@ -176,7 +176,7 @@ function TrustedByStrip() {
       {/* Desktop / tablet: label + all 6 logos on one row */}
       <div className="hidden shrink-0 items-center justify-between gap-8 whitespace-nowrap opacity-90 sm:flex lg:justify-start">
         <span className="shrink-0 text-xs font-bold uppercase tracking-widest text-white md:text-sm">
-          Trusted by Growing Companies
+          Trusted by <span className="text-primary">Growing</span> Companies
         </span>
         {TRUSTED_BY_LOGOS.map((logo) => (
           <span
