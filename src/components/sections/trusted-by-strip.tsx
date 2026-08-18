@@ -171,39 +171,46 @@ export function TrustedByStrip({ items }: { items: TrustedByItem[] }) {
         ) : null}
       </div>
 
-      {/* Desktop / tablet: label + all logos on one row */}
-      <div className="hidden shrink-0 items-center justify-between gap-8 whitespace-nowrap opacity-90 sm:flex lg:justify-start">
-        <span className="shrink-0 text-xs font-bold uppercase tracking-widest text-white md:text-sm">
-          Trusted by <span className="text-primary">Growing</span> Companies
-        </span>
-        {items.map((item) => (
-          <span
-            key={item.name}
-            className="flex shrink-0 items-center gap-2 whitespace-nowrap font-display text-base font-black tracking-[0.3em]"
-          >
-            {item.image_url ? (
-              <>
-                <TrustedLogoImage item={item} className="h-6" />
-                <span className="text-gray-100">{item.name}</span>
-              </>
-            ) : (
-              <>
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  aria-hidden="true"
-                  className="shrink-0 text-xl text-gray-300"
-                  height="1em"
-                  width="1em"
-                >
-                  {TRUSTED_BY_ICON_PATHS[item.icon] ??
-                    TRUSTED_BY_ICON_PATHS.pulse}
-                </svg>
-                <span className="text-gray-100">{item.name}</span>
-              </>
-            )}
+      {/* Desktop / tablet: same centered title + logos with the label
+          centered under each icon (matches the mobile design language) */}
+      <div className="hidden sm:block">
+        <div className="flex items-center gap-3 pb-6 opacity-90">
+          <span className="h-px flex-1 bg-white/10" />
+          <span className="shrink-0 whitespace-nowrap text-xs font-bold uppercase tracking-widest text-white md:text-sm">
+            Trusted by <span className="text-primary">Growing</span> Companies
           </span>
-        ))}
+          <span className="h-px flex-1 bg-white/10" />
+        </div>
+        <div className="flex flex-wrap items-start justify-center gap-x-10 gap-y-6">
+          {items.map((item) => (
+            <span
+              key={item.name}
+              className="flex flex-col items-center gap-2"
+            >
+              {item.image_url ? (
+                <TrustedLogoImage
+                  item={item}
+                  className="h-10 w-auto max-w-[160px]"
+                />
+              ) : (
+                <span className="shrink-0 text-text-subtle">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    className="size-7 md:size-8"
+                  >
+                    {TRUSTED_BY_ICON_PATHS[item.icon] ??
+                      TRUSTED_BY_ICON_PATHS.pulse}
+                  </svg>
+                </span>
+              )}
+              <span className="text-center text-sm font-medium tracking-wide text-text-secondary md:text-base">
+                {item.name}
+              </span>
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );
