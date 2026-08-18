@@ -9,7 +9,13 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { recordAuditLog } from "@/lib/audit";
 import type { ActionResult } from "@/types/action-result";
 import { recordOutboundMessage, sendTemplateEmail } from "./template-sends";
-import { emailReplySchema, emailSectionSchema, type EmailReplyInput, type EmailSectionInput } from "./schemas";
+import {
+  emailReplySchema,
+  emailSectionSchema,
+  type EmailReplyInput,
+  type EmailSectionInput,
+  type ThreadStatus,
+} from "./schemas";
 
 async function requireAdmin() {
   const supabase = await createSupabaseServerClient();
@@ -303,6 +309,88 @@ export async function reopenEmailThread(
   revalidatePath("/admin/email/inbox");
   revalidatePath(`/admin/email/inbox/${threadId}`);
   return { success: true };
+}
+
+// ---------------------------------------------------------------------------
+// Bulk delete
+// ---------------------------------------------------------------------------
+
+const MAX_BULK_DELETE = 1000;
+
+/**
+ * Delete selected threads (admin only). Messages cascade, and archived/
+ * resolved threads are deleted just like any other. Returns the count of
+ * rows actually deleted.
+ */
+export async function deleteEmailThreads(
+  ids: string[]
+): Promise<ActionResult<{ deleted: number }>> {
+  await requireAdmin();
+
+  const uniqueIds = [
+    ...new Set(ids.filter((id) => typeof id === "string" && id.length > 0)),
+  ];
+  if (uniqueIds.length === 0) {
+    return { success: true, data: { deleted: 0 } };
+  }
+  if (uniqueIds.length > MAX_BULK_DELETE) {
+    return { success: false, error: "Too many threads selected." };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const { count, error } = await supabase
+    .from("email_threads")
+    .delete({ count: "exact" })
+    .in("id", uniqueIds);
+
+  if (error) {
+    return { success: false, error: "Could not delete the threads." };
+  }
+
+  await recordAuditLog({
+    action: "bulk_delete_threads",
+    target_table: "email_threads",
+    target_id: uniqueIds.join(","),
+  });
+  revalidatePath("/admin/email/inbox");
+  return { success: true, data: { deleted: count ?? uniqueIds.length } };
+}
+
+/**
+ * Delete every thread matching the current inbox filter (admin only).
+ * `status` omitted → all non-archived threads in the section.
+ */
+export async function deleteAllEmailThreads(input: {
+  sectionId?: string;
+  status?: ThreadStatus;
+}): Promise<ActionResult<{ deleted: number }>> {
+  await requireAdmin();
+
+  const supabase = await createSupabaseServerClient();
+  let query = supabase.from("email_threads").delete({ count: "exact" });
+
+  if (input.sectionId) {
+    query = query.eq("section_id", input.sectionId);
+  }
+  if (input.status) {
+    query = query.eq("status", input.status);
+  } else {
+    query = query.neq("status", "archived");
+  }
+
+  const { count, error } = await query;
+
+  if (error) {
+    return { success: false, error: "Could not delete the conversations." };
+  }
+
+  await recordAuditLog({
+    action: "delete_all_threads",
+    target_table: "email_threads",
+    target_id: input.sectionId ?? "all",
+  });
+  revalidatePath("/admin/email/inbox");
+  return { success: true, data: { deleted: count ?? 0 } };
 }
 
 // ---------------------------------------------------------------------------

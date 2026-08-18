@@ -8,6 +8,10 @@ import type {
   EmailInboxSectionSummary,
   EmailThreadSummary,
 } from "@/features/email-inbox/queries";
+import {
+  deleteAllEmailThreads,
+  deleteEmailThreads,
+} from "@/features/email-inbox/mutations";
 import type { ThreadStatus } from "@/features/email-inbox/schemas";
 import { Badge } from "@/components/ui/badge";
 
@@ -51,13 +55,91 @@ export function EmailInboxView({
   threads: EmailThreadSummary[];
 }) {
   const router = useRouter();
+  const [selected, setSelected] = React.useState<Set<string>>(new Set());
+  const [busy, setBusy] = React.useState(false);
+  const [actionError, setActionError] = React.useState<string | null>(null);
+  const [actionMessage, setActionMessage] = React.useState<string | null>(null);
+
+  const activeSection = sections.find((section) => section.slug === activeSlug);
 
   function go(slug: string, status?: ThreadStatus) {
+    setSelected(new Set());
     const params = new URLSearchParams();
     if (slug) params.set("section", slug);
     if (status) params.set("status", status);
     router.push(`/admin/email/inbox?${params.toString()}`);
   }
+
+  function toggle(id: string) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function toggleAll() {
+    setSelected((prev) => {
+      if (prev.size === threads.length && threads.length > 0) return new Set();
+      return new Set(threads.map((thread) => thread.id));
+    });
+  }
+
+  async function handleDeleteSelected() {
+    const ids = [...selected];
+    if (ids.length === 0) return;
+    if (!window.confirm(`Delete ${ids.length} conversation${ids.length === 1 ? "" : "s"}? Messages are removed permanently.`)) {
+      return;
+    }
+    setBusy(true);
+    setActionError(null);
+    setActionMessage(null);
+    const result = await deleteEmailThreads(ids);
+    setBusy(false);
+    if (!result.success) {
+      setActionError(result.error ?? "Could not delete the conversations.");
+      return;
+    }
+    setSelected(new Set());
+    setActionMessage(
+      `Deleted ${result.data?.deleted ?? ids.length} conversation${(result.data?.deleted ?? ids.length) === 1 ? "" : "s"}.`
+    );
+    router.refresh();
+  }
+
+  async function handleDeleteAll() {
+    if (!activeSection) return;
+    const scope = activeStatus
+      ? `every "${activeStatus.replace(/_/g, " ")}" conversation`
+      : "every conversation (except archived)";
+    if (
+      !window.confirm(
+        `This permanently deletes ${scope} in the "${activeSection.name}" section. This cannot be undone. Continue?`
+      )
+    ) {
+      return;
+    }
+    setBusy(true);
+    setActionError(null);
+    setActionMessage(null);
+    const result = await deleteAllEmailThreads({
+      sectionId: activeSection.id,
+      status: activeStatus,
+    });
+    setBusy(false);
+    if (!result.success) {
+      setActionError(result.error ?? "Could not delete the conversations.");
+      return;
+    }
+    setSelected(new Set());
+    setActionMessage(
+      `Deleted ${result.data?.deleted ?? 0} conversation${(result.data?.deleted ?? 0) === 1 ? "" : "s"}.`
+    );
+    router.refresh();
+  }
+
+  const allSelected = threads.length > 0 && selected.size === threads.length;
 
   return (
     <div className="space-y-4">
@@ -126,7 +208,28 @@ export function EmailInboxView({
             </button>
           );
         })}
+        <div className="ml-auto flex items-center gap-2">
+          <button
+            type="button"
+            disabled={busy}
+            onClick={handleDeleteAll}
+            className="rounded-button border border-error/30 bg-error/5 px-3 py-1.5 text-xs font-medium text-error transition-colors hover:bg-error/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-error disabled:opacity-50"
+          >
+            Delete all{activeStatus ? ` (${activeStatus.replace(/_/g, " ")})` : ""}
+          </button>
+        </div>
       </div>
+
+      {actionError ? (
+        <p role="alert" className="rounded-card bg-error-soft px-3 py-2 text-sm text-error">
+          {actionError}
+        </p>
+      ) : null}
+      {actionMessage ? (
+        <p role="status" className="rounded-card bg-success-soft px-3 py-2 text-sm text-success">
+          {actionMessage}
+        </p>
+      ) : null}
 
       {/* Thread list */}
       {threads.length === 0 ? (
@@ -137,49 +240,98 @@ export function EmailInboxView({
           </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-card border border-card-border bg-card-dark shadow-sm">
-          <ul className="divide-y divide-border">
-            {threads.map((thread) => (
-              <li key={thread.id}>
-                <Link
-                  href={`/admin/email/inbox/${thread.id}`}
-                  className="flex items-center justify-between gap-4 px-5 py-4 transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-surface-hover focus-visible:outline-none focus-visible:bg-surface-hover"
+        <>
+          {/* Selection toolbar */}
+          <div className="flex items-center justify-between gap-3 rounded-card border border-card-border bg-card-dark px-4 py-3 shadow-sm">
+            <label className="flex cursor-pointer items-center gap-2.5 text-sm text-text-secondary">
+              <input
+                type="checkbox"
+                checked={allSelected}
+                onChange={toggleAll}
+                className="size-4 cursor-pointer rounded-sm border-border bg-field-bg accent-primary"
+                aria-label="Select all conversations"
+              />
+              {selected.size > 0 ? (
+                <span>
+                  <strong className="text-text-primary">{selected.size}</strong> selected
+                </span>
+              ) : (
+                <span>Select all ({threads.length})</span>
+              )}
+            </label>
+            {selected.size > 0 ? (
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setSelected(new Set())}
+                  className="text-xs text-text-muted transition-colors hover:text-text-secondary"
                 >
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="truncate text-sm font-medium text-text-primary">
-                        {thread.customer_name || thread.customer_email}
+                  Clear
+                </button>
+                <button
+                  type="button"
+                  disabled={busy}
+                  onClick={handleDeleteSelected}
+                  className="rounded-button border border-error/30 bg-error/5 px-3 py-1.5 text-xs font-medium text-error transition-colors hover:bg-error/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-error disabled:opacity-50"
+                >
+                  Delete selected ({selected.size})
+                </button>
+              </div>
+            ) : null}
+          </div>
+
+          <div className="overflow-hidden rounded-card border border-card-border bg-card-dark shadow-sm">
+            <ul className="divide-y divide-border">
+              {threads.map((thread) => (
+                <li key={thread.id} className="flex items-center gap-3 px-5">
+                  <input
+                    type="checkbox"
+                    checked={selected.has(thread.id)}
+                    onChange={() => toggle(thread.id)}
+                    onClick={(e) => e.stopPropagation()}
+                    className="size-4 shrink-0 cursor-pointer rounded-sm border-border bg-field-bg accent-primary"
+                    aria-label={`Select conversation with ${thread.customer_name || thread.customer_email}`}
+                  />
+                  <Link
+                    href={`/admin/email/inbox/${thread.id}`}
+                    className="flex min-w-0 flex-1 items-center justify-between gap-4 py-4 transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-surface-hover focus-visible:outline-none focus-visible:bg-surface-hover"
+                  >
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="truncate text-sm font-medium text-text-primary">
+                          {thread.customer_name || thread.customer_email}
+                        </p>
+                        <Badge variant={STATUS_VARIANT[thread.status] ?? "neutral"}>
+                          {thread.status.replace(/_/g, " ")}
+                        </Badge>
+                      </div>
+                      <p className="mt-0.5 truncate text-sm text-text-secondary">
+                        {thread.subject}
                       </p>
-                      <Badge variant={STATUS_VARIANT[thread.status] ?? "neutral"}>
-                        {thread.status.replace(/_/g, " ")}
-                      </Badge>
+                      <p className="mt-0.5 truncate text-xs text-text-muted">
+                        {thread.customer_email}
+                      </p>
                     </div>
-                    <p className="mt-0.5 truncate text-sm text-text-secondary">
-                      {thread.subject}
-                    </p>
-                    <p className="mt-0.5 truncate text-xs text-text-muted">
-                      {thread.customer_email}
-                    </p>
-                  </div>
-                  <div className="shrink-0 text-right">
-                    <p className="text-xs text-text-muted">
-                      {formatTime(thread.last_message_at)}
-                    </p>
-                    {thread.source === "inbound_email" ? (
-                      <p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-text-subtle">
-                        Email
+                    <div className="shrink-0 text-right">
+                      <p className="text-xs text-text-muted">
+                        {formatTime(thread.last_message_at)}
                       </p>
-                    ) : (
-                      <p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-primary/80">
-                        Form
-                      </p>
-                    )}
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+                      {thread.source === "inbound_email" ? (
+                        <p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-text-subtle">
+                          Email
+                        </p>
+                      ) : (
+                        <p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-primary/80">
+                          Form
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
       )}
     </div>
   );

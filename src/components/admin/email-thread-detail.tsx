@@ -11,6 +11,7 @@ import {
   resolveEmailThread,
   archiveEmailThread,
   reopenEmailThread,
+  deleteEmailThreads,
 } from "@/features/email-inbox/mutations";
 import { emailReplySchema } from "@/features/email-inbox/schemas";
 import type { EmailThreadDetail } from "@/features/email-inbox/queries";
@@ -140,6 +141,24 @@ export function EmailThreadDetailView({
               Archive
             </button>
           ) : null}
+          <button
+            type="button"
+            disabled={busy}
+            onClick={async () => {
+              if (
+                !window.confirm(
+                  "Delete this conversation permanently? All messages are removed. This cannot be undone."
+                )
+              ) {
+                return;
+              }
+              await runAction(() => deleteEmailThreads([thread.id]));
+              router.push(`/admin/email/inbox?section=${thread.section_slug}`);
+            }}
+            className="rounded-button border border-error/30 bg-error/5 px-3 py-1.5 text-xs font-medium text-error transition-colors hover:bg-error/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-error disabled:opacity-50"
+          >
+            Delete
+          </button>
         </div>
       </div>
 
