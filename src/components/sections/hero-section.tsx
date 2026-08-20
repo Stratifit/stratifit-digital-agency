@@ -48,12 +48,6 @@ const FALLBACK_STATS: HeroMetric[] = [
  * a blank headline/description (the database remains the source of truth).
  */
 const FALLBACK_HERO = {
-  eyebrow: {
-    en: "Premium Digital Agency",
-    de: "Premium-Digitalagentur",
-    fr: "Agence Digitale Premium",
-    es: "Agencia Digital Premium",
-  },
   title: {
     en: "We Build Websites, Brands & Systems",
     de: "Wir bauen Websites, Marken & Systeme",
@@ -100,9 +94,6 @@ export async function HeroSection() {
     return null;
   }
 
-  const eyebrow =
-    resolveTranslation(hero.eyebrow_translations, locale) ||
-    resolveTranslation(FALLBACK_HERO.eyebrow, locale);
   const title =
     resolveTranslation(hero.title_translations, locale) ||
     resolveTranslation(FALLBACK_HERO.title, locale);
@@ -135,16 +126,6 @@ export async function HeroSection() {
     >
       <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center px-4 text-center lg:px-8">
         <HeroEntrance>
-        {eyebrow ? (
-          <div
-            data-hero
-            className="mb-[31px] inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-3 py-1.5 text-xs font-medium tracking-wide text-primary"
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-            {eyebrow}
-          </div>
-        ) : null}
-
         <h1
           data-hero
           className="flex flex-col items-center justify-center font-display text-[1.75rem] font-black leading-[1.15] tracking-tight text-text-primary sm:text-5xl md:text-6xl lg:text-5xl"
