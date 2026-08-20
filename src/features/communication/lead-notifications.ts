@@ -113,7 +113,15 @@ export async function sendLeadEmails(
         to: adminEmail,
         from,
         subject,
-        html: renderEmailHtml({ subject, body: lines, language: "en" }),
+        html: renderEmailHtml({
+          subject,
+          body: lines,
+          language: "en",
+          contact: {
+            email: siteSettings?.contact_email ?? null,
+            phone: siteSettings?.contact_phone ?? null,
+          },
+        }),
         text: renderEmailText(subject, lines),
       });
       await recordEmailLog({

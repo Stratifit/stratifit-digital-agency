@@ -64,6 +64,7 @@ function EmailShell({
 }) {
   const light = theme === "light";
   const paragraphs = body.split(/\n+/).filter(Boolean);
+  const year = new Date().getFullYear();
 
   return (
     <div
@@ -76,84 +77,77 @@ function EmailShell({
       <div className="p-4 sm:p-5">
         <div
           className={cn(
-            "mx-auto max-w-[480px] rounded-lg border p-5 shadow-sm sm:p-6",
-            light
-              ? "border-border bg-white"
-              : "border-card-border bg-card-dark"
+            "mx-auto max-w-[480px] overflow-hidden rounded-lg border shadow-sm",
+            light ? "border-border bg-white" : "border-card-border bg-card-dark"
           )}
         >
-          {/* Header */}
-          <div
-            className={cn(
-              "flex items-center justify-between border-b pb-4",
-              light ? "border-border" : "border-white/10"
-            )}
-          >
-            <span className="text-base font-bold tracking-tight text-primary">
+          {/* Brand header (dark in both themes, matching the sent email) */}
+          <div className="flex items-center justify-between gap-3 bg-[#080B10] px-5 py-4">
+            <span className="text-base font-extrabold tracking-tight text-white">
               Stratifit
             </span>
-            <span
-              className={cn(
-                "text-[10px] font-semibold uppercase tracking-wider",
-                light ? "text-text-muted" : "text-text-muted"
-              )}
-            >
-              Digital Agency
+            <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-primary">
+              Fit for Digital Excellence
             </span>
           </div>
+          {/* Amber accent bar */}
+          <div className="h-0.5 bg-primary" aria-hidden="true" />
 
-          {/* Subject */}
-          <div className="pt-5">
-            <p
-              className={cn(
-                "text-sm font-medium",
-                light ? "text-text-secondary" : "text-text-muted"
-              )}
-            >
-              Subject
+          {/* Body */}
+          <div className="p-5 sm:p-6">
+            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-text-muted">
+              Stratifit Digital Agency
             </p>
             <h2
               className={cn(
-                "mt-1 text-lg font-bold leading-snug",
-                light ? "text-text-primary" : "text-white"
+                "mt-1.5 text-xl font-bold leading-snug",
+                light ? "text-[#080B10]" : "text-white"
               )}
             >
               {subject || "—"}
             </h2>
-          </div>
 
-          {/* Body */}
-          <div className="mt-4 space-y-3">
-            {paragraphs.length > 0 ? (
-              paragraphs.map((line, index) => (
-                <p
-                  key={index}
-                  className={cn(
-                    "text-sm leading-relaxed",
-                    light ? "text-text-secondary" : "text-[#B8C0CC]"
-                  )}
-                >
-                  {line}
+            <div className="mt-4 space-y-3">
+              {paragraphs.length > 0 ? (
+                paragraphs.map((line, index) => (
+                  <p
+                    key={index}
+                    className={cn(
+                      "text-sm leading-relaxed",
+                      light ? "text-text-secondary" : "text-[#B8C0CC]"
+                    )}
+                  >
+                    {line}
+                  </p>
+                ))
+              ) : (
+                <p className="text-sm text-text-muted">
+                  Body preview appears here as you type…
                 </p>
-              ))
-            ) : (
-              <p className={cn("text-sm", light ? "text-text-muted" : "text-text-muted")}>
-                Body preview appears here as you type…
+              )}
+            </div>
+
+            {/* Sign-off */}
+            <div className="mt-5">
+              <p className="text-xs leading-relaxed text-text-muted">
+                Questions? Simply reply to this email.
               </p>
-            )}
+              <p className="mt-1 text-sm font-semibold text-text-primary">
+                The Stratifit Team
+              </p>
+            </div>
           </div>
 
-          {/* Footer */}
-          <div
-            className={cn(
-              "mt-6 border-t pt-4",
-              light ? "border-border" : "border-white/10"
-            )}
-          >
-            <p className="text-xs leading-relaxed text-text-muted">
+          {/* Footer (dark in both themes, matching the sent email) */}
+          <div className="bg-[#080B10] px-5 py-4 text-center">
+            <p className="text-[10px] leading-relaxed text-text-muted">
               This is an automated message from Stratifit Digital Agency.
-              <br />
-              Sent by {SAMPLE_VALUES.admin_name} · stratifit.com
+            </p>
+            <p className="mt-1.5 text-[10px] text-text-muted">
+              hello@stratifit.com · +49 152 1743 6830 · www.stratifit.com
+            </p>
+            <p className="mt-1.5 text-[10px] text-text-muted">
+              © {year} Stratifit Digital Agency. All rights reserved.
             </p>
           </div>
         </div>

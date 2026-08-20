@@ -6,47 +6,48 @@ import type { SupportedLanguage } from "../types";
  * because they are brand chrome — the CMS edits template subject/body only.
  */
 export interface EmailPartials {
-  brandIntro: string;
+  /** Small uppercase label above the subject (brand eyebrow). */
+  eyebrow: string;
+  /** Brand mark shown next to the wordmark in the dark header. */
+  tagline: string;
+  /** Sign-off prompt above the signature at the end of the body. */
+  questionsNote: string;
   footerNote: string;
+  /** Copyright line without the "© year" prefix (added by the renderer). */
   legalDisclaimer: string;
-  socialLabel: string;
 }
 
 export const EMAIL_PARTIALS: Record<SupportedLanguage, EmailPartials> = {
   en: {
-    brandIntro:
-      "Stratifit Digital Agency — premium websites, brand design, and AI automation.",
+    eyebrow: "Stratifit Digital Agency",
+    tagline: "Fit for Digital Excellence",
+    questionsNote: "Questions? Simply reply to this email.",
     footerNote:
       "This is an automated message from Stratifit Digital Agency. Reply to this email and it lands directly in our inbox.",
-    legalDisclaimer:
-      "© Stratifit Digital Agency. All rights reserved.",
-    socialLabel: "Follow us",
+    legalDisclaimer: "Stratifit Digital Agency. All rights reserved.",
   },
   de: {
-    brandIntro:
-      "Stratifit Digital Agency — Premium-Websites, Brand Design und KI-Automatisierung.",
+    eyebrow: "Stratifit Digitalagentur",
+    tagline: "Fit für digitale Exzellenz",
+    questionsNote: "Fragen? Antworten Sie einfach auf diese E-Mail.",
     footerNote:
       "Dies ist eine automatische Nachricht von Stratifit Digital Agency. Antworten Sie auf diese E-Mail — sie landet direkt in unserem Posteingang.",
-    legalDisclaimer:
-      "© Stratifit Digital Agency. Alle Rechte vorbehalten.",
-    socialLabel: "Folgen Sie uns",
+    legalDisclaimer: "Stratifit Digital Agency. Alle Rechte vorbehalten.",
   },
   fr: {
-    brandIntro:
-      "Stratifit Digital Agency — sites web premium, design de marque et automatisation IA.",
+    eyebrow: "Agence digitale Stratifit",
+    tagline: "Conçu pour l'excellence digitale",
+    questionsNote: "Des questions ? Répondez simplement à cet e-mail.",
     footerNote:
       "Ceci est un message automatique de Stratifit Digital Agency. Répondez à cet e-mail et il arrivera directement dans notre boîte de réception.",
-    legalDisclaimer:
-      "© Stratifit Digital Agency. Tous droits réservés.",
-    socialLabel: "Suivez-nous",
+    legalDisclaimer: "Stratifit Digital Agency. Tous droits réservés.",
   },
   es: {
-    brandIntro:
-      "Stratifit Digital Agency — sitios web premium, diseño de marca y automatización con IA.",
+    eyebrow: "Agencia digital Stratifit",
+    tagline: "Hecho para la excelencia digital",
+    questionsNote: "¿Preguntas? Simplemente responde a este correo.",
     footerNote:
       "Este es un mensaje automático de Stratifit Digital Agency. Responde a este correo y llegará directamente a nuestra bandeja de entrada.",
-    legalDisclaimer:
-      "© Stratifit Digital Agency. Todos los derechos reservados.",
-    socialLabel: "Síguenos",
+    legalDisclaimer: "Stratifit Digital Agency. Todos los derechos reservados.",
   },
 };
