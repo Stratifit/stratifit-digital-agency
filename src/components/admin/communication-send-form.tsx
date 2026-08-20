@@ -11,10 +11,12 @@ import { pickTranslation } from "@/features/communication/language";
 import { autoFill, AUTO_FILL_KEYS } from "@/features/communication/auto-fill";
 import { TEMPLATE_TYPES } from "@/features/communication/types";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { LocaleTabs, type EditorLocale } from "@/components/admin/locale-tabs";
+import { Mail } from "lucide-react";
 
 type SendValues = z.infer<typeof sendManualEmailSchema>;
 
@@ -43,6 +45,7 @@ export function CommunicationSendForm({
 }) {
   const [actionError, setActionError] = React.useState<string | null>(null);
   const [sent, setSent] = React.useState(false);
+  const [sentTo, setSentTo] = React.useState<string>("");
 
   const {
     register,
@@ -95,6 +98,7 @@ export function CommunicationSendForm({
     const result = await sendManualEmail(values);
     if (result.success) {
       setSent(true);
+      setSentTo(values.to_email);
       reset({
         template_key: values.template_key,
         language: values.language,
@@ -258,14 +262,6 @@ export function CommunicationSendForm({
               {actionError}
             </p>
           ) : null}
-          {sent ? (
-            <p
-              role="status"
-              className="rounded-card bg-success-soft px-3 py-2 text-sm text-success"
-            >
-              Email sent successfully.
-            </p>
-          ) : null}
 
           <div className="flex justify-end">
             <Button type="submit" loading={isSubmitting}>
@@ -304,6 +300,41 @@ export function CommunicationSendForm({
           </div>
         </div>
       </div>
+
+      {/* Sent confirmation — black card with the amber mail badge,
+          mirroring the public contact form's thank-you popup. */}
+      <Dialog
+        open={sent}
+        onOpenChange={(open) => {
+          if (!open) setSent(false);
+        }}
+      >
+        <DialogContent
+          overlayClassName="bg-black/80"
+          hideClose
+          className="max-w-md border-card-border bg-card-dark p-6 sm:p-8"
+        >
+          <div className="py-8 text-center">
+            <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-full border border-primary/20 bg-primary/10">
+              <Mail className="size-6 text-primary" aria-hidden="true" />
+            </div>
+            <h3 className="mb-3 font-display text-2xl font-bold tracking-tight text-text-primary">
+              Email sent!
+            </h3>
+            <p className="text-sm text-text-muted">
+              Your email to {sentTo || "the recipient"} was sent successfully
+              through the Stratifit mail system.
+            </p>
+            <button
+              type="button"
+              onClick={() => setSent(false)}
+              className="mt-6 inline-flex items-center justify-center rounded-button border border-card-border bg-transparent px-5 py-2.5 text-sm font-medium text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/30 hover:text-text-primary focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
+            >
+              Send another email
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </form>
   );
 }
