@@ -202,25 +202,41 @@ export function ConversationDetail({ conversation }: { conversation: DetailData 
         {conversation.messages.length === 0 ? (
           <p className="text-sm text-text-muted">No messages yet.</p>
         ) : (
-          conversation.messages.map((m) => (
-            <div
-              key={m.id}
-              className={`max-w-[85%] rounded-md px-3 py-2 text-sm ${
-                m.sender_type === "visitor"
-                  ? "bg-primary text-text-inverse"
-                  : m.is_internal
-                    ? "bg-surface-hover text-text-muted italic"
-                    : m.sender_type === "admin"
-                      ? "bg-secondary text-white"
-                      : "bg-surface text-text-primary"
-              }`}
-            >
-              <p className="mb-1 text-xs text-text-muted">
-                {m.sender_type} · {new Date(m.created_at).toLocaleTimeString()}
-              </p>
-              {m.content}
-            </div>
-          ))
+          <div className="flex flex-col gap-2.5">
+            {conversation.messages.map((m) => {
+              const fromVisitor = m.sender_type === "visitor";
+              const isInternal = m.is_internal;
+              return (
+                <div
+                  key={m.id}
+                  className={`flex w-full ${fromVisitor ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap break-words ${
+                      fromVisitor
+                        ? "rounded-br-md bg-primary text-text-inverse"
+                        : isInternal
+                          ? "rounded-bl-md border border-dashed border-border bg-surface-hover italic text-text-muted"
+                          : m.sender_type === "admin"
+                            ? "rounded-bl-md bg-secondary text-white"
+                            : "rounded-bl-md bg-surface text-text-primary"
+                    }`}
+                  >
+                    <p
+                      className={`mb-1 text-[10px] font-medium uppercase tracking-wider ${
+                        fromVisitor
+                          ? "text-text-inverse/60"
+                          : "text-text-muted"
+                      }`}
+                    >
+                      {m.sender_type} · {new Date(m.created_at).toLocaleTimeString()}
+                    </p>
+                    {m.content}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         )}
       </div>
 
