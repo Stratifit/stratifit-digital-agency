@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
     seoTitleTranslations: page?.seo_title_translations,
     seoDescriptionTranslations: page?.seo_description_translations,
     locale,
-    fallbackTitle: "Imprint — Stratifit",
+    fallbackTitle: "Imprint Stratifit",
     fallbackDescription: "Imprint and legal information for Stratifit.",
   });
   return pageMetadata({ title, description, path: "/imprint" });
@@ -23,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
 const FALLBACK_EYEBROW = "Legal";
 const FALLBACK_TITLE = "Imprint";
 const FALLBACK_DESCRIPTION =
-  "Legal notice / Impressum — company information for Stratifit in accordance with applicable law.";
+  "Legal notice / Impressum, company information for Stratifit in accordance with applicable law.";
 const FALLBACK_SUBTITLE = "Legal notice / Impressum";
 
 export default async function ImprintPage() {

@@ -30,7 +30,7 @@ export async function generateMetadata({
     seoTitleTranslations: insight.seo_title_translations,
     seoDescriptionTranslations: insight.seo_description_translations,
     locale,
-    fallbackTitle: `${resolveTranslation(insight.title_translations, locale)} — Stratifit`,
+    fallbackTitle: `${resolveTranslation(insight.title_translations, locale)} Stratifit`,
     fallbackDescription: resolveTranslation(insight.excerpt_translations, locale),
   });
   return {

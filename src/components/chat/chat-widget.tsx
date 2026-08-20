@@ -1241,7 +1241,7 @@ export function ChatWidget({
   const hasHiddenMessages = !fullyRevealed;
   const firstVisitorGroupId =
     messageGroups.find((group) => group[0].sender === "visitor")?.[0].id ?? null;
-  const welcomeParts = t(locale, "chatWelcome").split(" — ");
+  const welcomeParts = t(locale, "chatWelcome").split(", ");
   const welcomeBody = welcomeParts[1]
     ? welcomeParts[1].charAt(0).toUpperCase() + welcomeParts[1].slice(1)
     : null;

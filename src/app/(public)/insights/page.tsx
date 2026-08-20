@@ -8,7 +8,7 @@ export async function generateMetadata(): Promise<Metadata> {
     seoTitleTranslations: setting?.seo_title_translations,
     seoDescriptionTranslations: setting?.seo_description_translations,
     locale,
-    fallbackTitle: "Insights — Stratifit",
+    fallbackTitle: "Insights Stratifit",
     fallbackDescription:
       "Insights and expertise from the Stratifit team on design, development, AI, and growth.",
   });

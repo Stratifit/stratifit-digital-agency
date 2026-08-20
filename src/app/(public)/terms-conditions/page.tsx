@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
     seoTitleTranslations: page?.seo_title_translations,
     seoDescriptionTranslations: page?.seo_description_translations,
     locale,
-    fallbackTitle: "Terms of Service — Stratifit",
+    fallbackTitle: "Terms of Service Stratifit",
     fallbackDescription: "Terms and conditions for using the Stratifit website.",
   });
   return pageMetadata({ title, description, path: "/terms-conditions" });

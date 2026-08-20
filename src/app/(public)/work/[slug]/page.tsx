@@ -30,7 +30,7 @@ export async function generateMetadata({
     seoTitleTranslations: project.seo_title_translations,
     seoDescriptionTranslations: project.seo_description_translations,
     locale,
-    fallbackTitle: `${resolveTranslation(project.title_translations, locale)} — Stratifit`,
+    fallbackTitle: `${resolveTranslation(project.title_translations, locale)} Stratifit`,
     fallbackDescription: resolveTranslation(
       project.summary_translations,
       locale
@@ -564,7 +564,7 @@ export default async function WorkDetailPage({
                 >
                   <Image
                     src={url}
-                    alt={`${projectTitle} — ${t(locale, "workVisual")} ${index + 1}`}
+                    alt={`${projectTitle} ${t(locale, "workVisual")} ${index + 1}`}
                     width={1600}
                     height={1000}
                     loading="lazy"

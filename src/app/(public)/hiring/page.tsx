@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
     seoTitleTranslations: page?.seo_title_translations,
     seoDescriptionTranslations: page?.seo_description_translations,
     locale,
-    fallbackTitle: "We're Hiring — Stratifit",
+    fallbackTitle: "We're Hiring Stratifit",
     fallbackDescription:
       "Open roles at Stratifit. We hire strategists, designers, engineers, and marketers on a rolling basis.",
   });

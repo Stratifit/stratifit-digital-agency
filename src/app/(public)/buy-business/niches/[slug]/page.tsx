@@ -51,7 +51,7 @@ export async function generateMetadata({
   const meta =
     (await getPublicAcquisitionNiche(slug)) ?? getFallbackAcquisitionNiche(slug);
   return pageMetadata({
-    title: `${meta ? `${nicheLabel(meta, locale)} ${t(locale, "businesses")}` : t(locale, "businesses")} — Stratifit`,
+    title: `${meta ? `${nicheLabel(meta, locale)} ${t(locale, "businesses")}` : t(locale, "businesses")} Stratifit`,
     description:
       resolveTranslation(meta?.description_translations ?? null, locale) ||
       "Browse curated, turnkey businesses for acquisition across high-demand niches.",
@@ -109,7 +109,7 @@ export default async function NicheDetailPage({
           <Reveal immediate variant="revealUp">
             <p className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-primary">
               <span aria-hidden="true" className="h-px w-6 bg-primary/40" />
-              {t(locale, "acquisition")} — {label}
+              {t(locale, "acquisition")} {label}
             </p>
             <h1 className="mb-4 font-display text-4xl font-black leading-tight tracking-tight text-text-primary sm:text-5xl md:text-6xl md:leading-none lg:text-7xl">
               {label}{" "}

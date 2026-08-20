@@ -536,25 +536,25 @@ export const COOKIE_FALLBACK_BLOCKS: DetailPageBlock[] = [
     items: [
       {
         text_translations: tr(
-          "Essential functionality — keeping the website secure and usable",
-          "Grundfunktionen – Sicherheit und Nutzbarkeit der Website gewährleisten",
-          "Fonctionnalités essentielles — maintenir le site sécurisé et utilisable",
+          "Essential functionality, keeping the website secure and usable",
+          "Grundfunktionen, Sicherheit und Nutzbarkeit der Website gewährleisten",
+          "Fonctionnalités essentielles, maintenir le site sécurisé et utilisable",
           "Funcionalidad esencial: mantener el sitio seguro y utilizable"
         ),
       },
       {
         text_translations: tr(
-          "Analytics — understanding how visitors use the site",
-          "Analyse – verstehen, wie Besucher die Website nutzen",
-          "Analyse — comprendre comment les visiteurs utilisent le site",
+          "Analytics, understanding how visitors use the site",
+          "Analyse, verstehen, wie Besucher die Website nutzen",
+          "Analyse, comprendre comment les visiteurs utilisent le site",
           "Análisis: comprender cómo usan el sitio los visitantes"
         ),
       },
       {
         text_translations: tr(
-          "Preferences — remembering your language and display settings",
-          "Präferenzen – Sprache und Anzeigeeinstellungen speichern",
-          "Préférences — mémoriser votre langue et vos paramètres d'affichage",
+          "Preferences, remembering your language and display settings",
+          "Präferenzen, Sprache und Anzeigeeinstellungen speichern",
+          "Préférences, mémoriser votre langue et vos paramètres d'affichage",
           "Preferencias: recordar su idioma y configuración de visualización"
         ),
       },
@@ -830,7 +830,7 @@ export const CAREERS_FALLBACK_BLOCKS: DetailPageBlock[] = [
     type: "paragraph",
     text_translations: tr(
       "Send your portfolio or CV through the contact page and we will get back to you within a few days.",
-      "Senden Sie Ihr Portfolio oder Ihren Lebenslauf über die Kontaktseite – wir melden uns innerhalb weniger Tage.",
+      "Senden Sie Ihr Portfolio oder Ihren Lebenslauf über die Kontaktseite, wir melden uns innerhalb weniger Tage.",
       "Envoyez votre portfolio ou CV via la page contact et nous vous répondrons sous quelques jours.",
       "Envíe su portafolio o CV a través de la página de contacto y le responderemos en unos días."
     ),
@@ -855,10 +855,10 @@ export const HIRING_FALLBACK_BLOCKS: DetailPageBlock[] = [
   {
     type: "paragraph",
     text_translations: tr(
-      "We grow one role at a time and only hire people we would be proud to work alongside. If you care deeply about your craft — strategy, design, engineering, or growth — we want to hear from you.",
-      "Wir bauen unser Team Rolle für Rolle auf und stellen nur Menschen ein, mit denen wir gerne zusammenarbeiten. Wenn Ihnen Ihr Handwerk wichtig ist – Strategie, Design, Engineering oder Growth – möchten wir von Ihnen hören.",
-      "Nous grandissons un poste à la fois et n'embauchons que des personnes avec lesquelles nous serions fiers de travailler. Si votre métier vous passionne — stratégie, design, ingénierie ou croissance — nous voulons vous connaître.",
-      "Crecemos un rol a la vez y solo contratamos personas con las que nos enorgullecería trabajar. Si te apasiona tu oficio —estrategia, diseño, ingeniería o crecimiento— queremos saber de ti."
+      "We grow one role at a time and only hire people we would be proud to work alongside. If you care deeply about your craft, strategy, design, engineering, or growth, we want to hear from you.",
+      "Wir bauen unser Team Rolle für Rolle auf und stellen nur Menschen ein, mit denen wir gerne zusammenarbeiten. Wenn Ihnen Ihr Handwerk wichtig ist, Strategie, Design, Engineering oder Growth, möchten wir von Ihnen hören.",
+      "Nous grandissons un poste à la fois et n'embauchons que des personnes avec lesquelles nous serions fiers de travailler. Si votre métier vous passionne, stratégie, design, ingénierie ou croissance, nous voulons vous connaître.",
+      "Crecemos un rol a la vez y solo contratamos personas con las que nos enorgullecería trabajar. Si te apasiona tu oficio, estrategia, diseño, ingeniería o crecimiento, queremos saber de ti."
     ),
   },
   {
@@ -923,41 +923,41 @@ export const HIRING_FALLBACK_BLOCKS: DetailPageBlock[] = [
     items: [
       {
         text_translations: tr(
-          "Apply — send your portfolio or CV through the contact page or by email",
-          "Bewerbung – senden Sie Ihr Portfolio oder Ihren Lebenslauf über die Kontaktseite oder per E-Mail",
-          "Postulez — envoyez votre portfolio ou CV via la page contact ou par e-mail",
+          "Apply, send your portfolio or CV through the contact page or by email",
+          "Bewerbung, senden Sie Ihr Portfolio oder Ihren Lebenslauf über die Kontaktseite oder per E-Mail",
+          "Postulez, envoyez votre portfolio ou CV via la page contact ou par e-mail",
           "Postúlate: envía tu portafolio o CV a través de la página de contacto o por correo"
         ),
       },
       {
         text_translations: tr(
-          "Intro call — a short conversation about your experience and goals",
-          "Erstgespräch – ein kurzes Gespräch über Ihre Erfahrung und Ziele",
-          "Entretien découverte — une brève conversation sur votre expérience et vos objectifs",
+          "Intro call, a short conversation about your experience and goals",
+          "Erstgespräch, ein kurzes Gespräch über Ihre Erfahrung und Ziele",
+          "Entretien découverte, une brève conversation sur votre expérience et vos objectifs",
           "Llamada inicial: una breve conversación sobre tu experiencia y objetivos"
         ),
       },
       {
         text_translations: tr(
-          "Deep dive — a portfolio or technical review with the team",
-          "Fachgespräch – Portfolio- oder technische Überprüfung mit dem Team",
-          "Entretien approfondi — revue de portfolio ou technique avec l'équipe",
+          "Deep dive, a portfolio or technical review with the team",
+          "Fachgespräch, Portfolio- oder technische Überprüfung mit dem Team",
+          "Entretien approfondi, revue de portfolio ou technique avec l'équipe",
           "Análisis profundo: revisión de portafolio o técnica con el equipo"
         ),
       },
       {
         text_translations: tr(
-          "Team interview — meet the people you would work with",
-          "Team-Interview – lernen Sie die Menschen kennen, mit denen Sie arbeiten würden",
-          "Entretien d'équipe — rencontrez les personnes avec lesquelles vous travailleriez",
+          "Team interview, meet the people you would work with",
+          "Team-Interview, lernen Sie die Menschen kennen, mit denen Sie arbeiten würden",
+          "Entretien d'équipe, rencontrez les personnes avec lesquelles vous travailleriez",
           "Entrevista de equipo: conoce a las personas con las que trabajarías"
         ),
       },
       {
         text_translations: tr(
-          "Offer — a fair, transparent offer with clear next steps",
-          "Angebot – ein faires, transparentes Angebot mit klaren nächsten Schritten",
-          "Offre — une offre juste et transparente avec des prochaines étapes claires",
+          "Offer, a fair, transparent offer with clear next steps",
+          "Angebot, ein faires, transparentes Angebot mit klaren nächsten Schritten",
+          "Offre, une offre juste et transparente avec des prochaines étapes claires",
           "Oferta: una oferta justa y transparente con próximos pasos claros"
         ),
       },

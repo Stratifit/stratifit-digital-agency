@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
     seoTitleTranslations: page?.seo_title_translations,
     seoDescriptionTranslations: page?.seo_description_translations,
     locale,
-    fallbackTitle: "Careers — Stratifit",
+    fallbackTitle: "Careers Stratifit",
     fallbackDescription:
       "Join the Stratifit team. We hire strategists, designers, engineers, and marketers.",
   });
@@ -24,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
 const FALLBACK_EYEBROW = "Careers";
 const FALLBACK_TITLE = "Careers";
 const FALLBACK_DESCRIPTION =
-  "Join the Stratifit team — strategists, designers, engineers, and marketers obsessed with craft.";
+  "Join the Stratifit team, strategists, designers, engineers, and marketers obsessed with craft.";
 const FALLBACK_SUBTITLE = "Join the Stratifit team";
 
 export default async function CareersPage() {

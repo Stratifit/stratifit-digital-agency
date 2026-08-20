@@ -192,9 +192,9 @@ export const FALLBACK_ACQUISITION_NICHES: PublicAcquisitionNiche[] = [
       es: "¿Por qué una agencia?",
     },
     why_description_translations: {
-      en: "Agencies combine recurring client revenue with a skilled team and established systems. Acquiring one gives you an operating business with pipelines, retainers, and a track record — without the years of client-building.",
-      de: "Agenturen verbinden wiederkehrenden Kundenumsatz mit einem qualifizierten Team und etablierten Systemen. Eine Übernahme verschafft Ihnen ein operatives Geschäft mit Pipeline, Retainern und einer Erfolgsbilanz — ohne jahrelangen Kundenaufbau.",
-      fr: "Les agences combinent des revenus récurrents, une équipe qualifiée et des systèmes éprouvés. En acquérir une, c'est reprendre une entreprise opérationnelle avec un pipeline, des contrats de retenue et un historique — sans des années de prospection.",
+      en: "Agencies combine recurring client revenue with a skilled team and established systems. Acquiring one gives you an operating business with pipelines, retainers, and a track record, without the years of client-building.",
+      de: "Agenturen verbinden wiederkehrenden Kundenumsatz mit einem qualifizierten Team und etablierten Systemen. Eine Übernahme verschafft Ihnen ein operatives Geschäft mit Pipeline, Retainern und einer Erfolgsbilanz, ohne jahrelangen Kundenaufbau.",
+      fr: "Les agences combinent des revenus récurrents, une équipe qualifiée et des systèmes éprouvés. En acquérir une, c'est reprendre une entreprise opérationnelle avec un pipeline, des contrats de retenue et un historique, sans des années de prospection.",
       es: "Las agencias combinan ingresos recurrentes de clientes con un equipo cualificado y sistemas consolidados. Adquirir una le da un negocio en funcionamiento con pipeline, contratos de retención y trayectoria, sin años de captación de clientes.",
     },
     stats: [
@@ -271,9 +271,9 @@ export const FALLBACK_ACQUISITION_NICHES: PublicAcquisitionNiche[] = [
       es: "¿Por qué herramientas IA?",
     },
     why_description_translations: {
-      en: "AI tool businesses sit at the intersection of high growth and proven demand. These are production applications with paying users, working infrastructure, and a fast-moving market — prime assets for operators who can scale.",
-      de: "KI-Tool-Unternehmen liegen an der Schnittstelle von hohem Wachstum und bewährter Nachfrage. Es handelt sich um produktive Anwendungen mit zahlenden Nutzern, funktionierender Infrastruktur und einem sich schnell bewegenden Markt — erstklassige Assets für skalierende Betreiber.",
-      fr: "Les outils IA se situent à l'intersection de la forte croissance et d'une demande prouvée. Ce sont des applications en production avec des utilisateurs payants, une infrastructure fonctionnelle et un marché en évolution rapide — des actifs de premier choix pour des opérateurs capables de scaler.",
+      en: "AI tool businesses sit at the intersection of high growth and proven demand. These are production applications with paying users, working infrastructure, and a fast-moving market, prime assets for operators who can scale.",
+      de: "KI-Tool-Unternehmen liegen an der Schnittstelle von hohem Wachstum und bewährter Nachfrage. Es handelt sich um produktive Anwendungen mit zahlenden Nutzern, funktionierender Infrastruktur und einem sich schnell bewegenden Markt, erstklassige Assets für skalierende Betreiber.",
+      fr: "Les outils IA se situent à l'intersection de la forte croissance et d'une demande prouvée. Ce sont des applications en production avec des utilisateurs payants, une infrastructure fonctionnelle et un marché en évolution rapide, des actifs de premier choix pour des opérateurs capables de scaler.",
       es: "Las herramientas de IA se sitúan en la intersección del alto crecimiento y la demanda probada. Son aplicaciones en producción con usuarios de pago, infraestructura funcional y un mercado en rápida evolución: activos de primera para operadores que pueden escalar.",
     },
     stats: [
@@ -350,9 +350,9 @@ export const FALLBACK_ACQUISITION_NICHES: PublicAcquisitionNiche[] = [
       es: "¿Por qué una marca personal?",
     },
     why_description_translations: {
-      en: "Personal brands are attention assets. With a loyal audience and multiple revenue streams — sponsorships, products, community — they compound in value and transfer cleanly to a new owner who keeps the voice.",
-      de: "Persönliche Marken sind Aufmerksamkeits-Assets. Mit einer loyalen Community und mehreren Einnahmequellen — Sponsoring, Produkte, Community — steigern sie ihren Wert und gehen sauber auf einen neuen Eigentümer über, der die Stimme beibehält.",
-      fr: "Les marques personnelles sont des actifs d'attention. Avec une audience fidèle et plusieurs sources de revenus — sponsoring, produits, communauté — elles gagnent de la valeur et se transfèrent proprement à un nouveau propriétaire qui conserve la voix.",
+      en: "Personal brands are attention assets. With a loyal audience and multiple revenue streams, sponsorships, products, community, they compound in value and transfer cleanly to a new owner who keeps the voice.",
+      de: "Persönliche Marken sind Aufmerksamkeits-Assets. Mit einer loyalen Community und mehreren Einnahmequellen, Sponsoring, Produkte, Community, steigern sie ihren Wert und gehen sauber auf einen neuen Eigentümer über, der die Stimme beibehält.",
+      fr: "Les marques personnelles sont des actifs d'attention. Avec une audience fidèle et plusieurs sources de revenus, sponsoring, produits, communauté, elles gagnent de la valeur et se transfèrent proprement à un nouveau propriétaire qui conserve la voix.",
       es: "Las marcas personales son activos de atención. Con una audiencia leal y múltiples fuentes de ingresos (patrocinios, productos, comunidad), aumentan de valor y se transfieren limpiamente a un nuevo propietario que mantiene la voz.",
     },
     stats: [

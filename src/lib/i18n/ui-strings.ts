@@ -338,7 +338,7 @@ const en: UiStrings = {
   chatPricing: "Pricing",
   chatSupport: "Support",
   chatWelcome:
-    "Welcome to Stratifit — your digital agency for growth. What's your name? It helps me personalize your chat. Email is optional and only used for follow-ups.",
+    "Welcome to Stratifit, your digital agency for growth. What's your name? It helps me personalize your chat. Email is optional and only used for follow-ups.",
   chatDataSafe: "Your data is safe",
   chatReadMore: "Read more",
   chatPrivacyNote:
@@ -352,7 +352,7 @@ const en: UiStrings = {
   chatYesReadMore:
     "Your email is stored securely and used only for business follow-ups. We never share your details and never send marketing emails.",
   chatLaterReply:
-    "Welcome to Stratifit — your digital agency for growth. What would you like to know?",
+    "Welcome to Stratifit, your digital agency for growth. What would you like to know?",
   chatYourNamePlaceholder: "Your name...",
   chatYourEmailPlaceholder: "you@company.com",
   chatEditName: "Edit name",
@@ -365,7 +365,7 @@ const en: UiStrings = {
   chatTellMeMore: "Tell me more about {service}.",
   chatPricingTitle: "Pricing & Packages",
   chatPricingBody:
-    "Packages for every stage — from landing pages to full platforms. Tell us about your project for a tailored quote.",
+    "Packages for every stage, from landing pages to full platforms. Tell us about your project for a tailored quote.",
   chatAskAboutPricing: "Ask about pricing",
   chatPricingQuestion: "I'd like to know more about pricing.",
   chatServicesQuestion: "I'd like to know more about your services.",
@@ -373,7 +373,7 @@ const en: UiStrings = {
   chatFaqTitle: "Common Questions",
   chatFaqMoreQuestions: "Have more questions?",
   faqHelpCardTitle: "Still have more questions?",
-  faqHelpCardSubtitle: "Chat with our FAQ AI bot — instant answers, 24/7.",
+  faqHelpCardSubtitle: "Chat with our FAQ AI bot, instant answers, 24/7.",
   faqAskMoreQuestions: "Ask More Questions",
   faqBotSuggestionsTitle: "Suggested questions",
   faqBotWelcomeFallback:
@@ -451,7 +451,7 @@ const en: UiStrings = {
   servicesToolsTech: "Tools & Technologies",
   servicesCaseStudies: "Case Studies",
   servicesSelectedWorkDesc:
-    "Real outcomes from real projects — measured by the metrics that matter to your business.",
+    "Real outcomes from real projects, measured by the metrics that matter to your business.",
   servicesReadyWhenYouAre: "Ready When You Are",
   servicesStartProject: "Start Your Project",
   ctaStartService: "Start Your {value} Project",
@@ -469,7 +469,7 @@ const en: UiStrings = {
   testimonialsEyebrow: "Testimonials",
   testimonialsTitle: "What Our Clients",
   testimonialsDescription:
-    "Don't take our word for it — hear from the brands we've helped scale.",
+    "Don't take our word for it, hear from the brands we've helped scale.",
   insightsEyebrow: "Knowledge",
   insightsTitleFallback: "Insights &",
   insightsHighlightFallback: "Expertise",
@@ -541,7 +541,7 @@ const de: UiStrings = {
   avgAskingPrice: "Ø-Kaufpreis {value}",
   available: "Verfügbare",
   vettedListingsDescription:
-    "Geprüfte, schlüsselfertige Listings – bereit für neue Eigentümer.",
+    "Geprüfte, schlüsselfertige Listings, bereit für neue Eigentümer.",
   notFindingWhatYouNeed: "Finden Sie nicht, was Sie suchen?",
   newListingsComingSoon: "Neue {value}-Listings in Kürze",
   activelyVettingDescription:
@@ -587,7 +587,7 @@ const de: UiStrings = {
   chatPricing: "Preise",
   chatSupport: "Support",
   chatWelcome:
-    "Willkommen bei Stratifit — Ihre Digitalagentur für Wachstum. Wie heißen Sie? So kann ich den Chat personalisieren. Die E-Mail ist optional und wird nur für Follow-ups verwendet.",
+    "Willkommen bei Stratifit, Ihre Digitalagentur für Wachstum. Wie heißen Sie? So kann ich den Chat personalisieren. Die E-Mail ist optional und wird nur für Follow-ups verwendet.",
   chatDataSafe: "Ihre Daten sind sicher",
   chatReadMore: "Mehr erfahren",
   chatPrivacyNote:
@@ -601,7 +601,7 @@ const de: UiStrings = {
   chatYesReadMore:
     "Ihre E-Mail wird sicher gespeichert und nur für geschäftliche Follow-ups verwendet. Wir geben Ihre Daten niemals weiter und senden keine Werbung.",
   chatLaterReply:
-    "Willkommen bei Stratifit — Ihre Digitalagentur für Wachstum. Was möchten Sie wissen?",
+    "Willkommen bei Stratifit, Ihre Digitalagentur für Wachstum. Was möchten Sie wissen?",
   chatYourNamePlaceholder: "Ihr Name...",
   chatYourEmailPlaceholder: "sie@firma.com",
   chatEditName: "Namen bearbeiten",
@@ -614,7 +614,7 @@ const de: UiStrings = {
   chatTellMeMore: "Erzähl mir mehr über {service}.",
   chatPricingTitle: "Preise & Pakete",
   chatPricingBody:
-    "Pakete für jede Phase – von Landingpages bis zu vollständigen Plattformen. Teilen Sie uns Ihr Projekt für ein individuelles Angebot mit.",
+    "Pakete für jede Phase, von Landingpages bis zu vollständigen Plattformen. Teilen Sie uns Ihr Projekt für ein individuelles Angebot mit.",
   chatAskAboutPricing: "Nach Preisen fragen",
   chatPricingQuestion: "Ich möchte mehr über die Preise wissen.",
   chatServicesQuestion: "Ich möchte mehr über Ihre Leistungen erfahren.",
@@ -622,7 +622,7 @@ const de: UiStrings = {
   chatFaqTitle: "Häufige Fragen",
   chatFaqMoreQuestions: "Haben Sie weitere Fragen?",
   faqHelpCardTitle: "Haben Sie noch mehr Fragen?",
-  faqHelpCardSubtitle: "Chatten Sie mit unserem FAQ-KI-Bot – sofortige Antworten, rund um die Uhr.",
+  faqHelpCardSubtitle: "Chatten Sie mit unserem FAQ-KI-Bot, sofortige Antworten, rund um die Uhr.",
   faqAskMoreQuestions: "Weitere Fragen stellen",
   faqBotSuggestionsTitle: "Vorgeschlagene Fragen",
   faqBotWelcomeFallback:
@@ -667,7 +667,7 @@ const de: UiStrings = {
   workOurProcess: "Unser Prozess",
   workResults: "Ergebnisse",
   workSameRigor:
-    "Dasselbe Vorgehen — angewendet auf Ihre Ziele und Kennzahlen.",
+    "Dasselbe Vorgehen, angewendet auf Ihre Ziele und Kennzahlen.",
   workSelected: "Ausgewählte",
   workServices: "Leistungen",
   workSimilar: "Ähnliche",
@@ -700,7 +700,7 @@ const de: UiStrings = {
   servicesToolsTech: "Tools & Technologien",
   servicesCaseStudies: "Fallstudien",
   servicesSelectedWorkDesc:
-    "Echte Ergebnisse aus echten Projekten — gemessen an den Kennzahlen, die für Ihr Unternehmen zählen.",
+    "Echte Ergebnisse aus echten Projekten, gemessen an den Kennzahlen, die für Ihr Unternehmen zählen.",
   servicesReadyWhenYouAre: "Bereit, wenn Sie es sind",
   servicesStartProject: "Projekt starten",
   ctaStartService: "{value}-Projekt starten",
@@ -718,7 +718,7 @@ const de: UiStrings = {
   testimonialsEyebrow: "Referenzen",
   testimonialsTitle: "Was unsere Kunden",
   testimonialsDescription:
-    "Verlassen Sie sich nicht nur auf unser Wort — hören Sie von den Marken, die wir beim Wachstum begleitet haben.",
+    "Verlassen Sie sich nicht nur auf unser Wort, hören Sie von den Marken, die wir beim Wachstum begleitet haben.",
   insightsEyebrow: "Wissen",
   insightsTitleFallback: "Einblicke &",
   insightsHighlightFallback: "Expertise",
@@ -836,7 +836,7 @@ const fr: UiStrings = {
   chatPricing: "Tarifs",
   chatSupport: "Support",
   chatWelcome:
-    "Bienvenue chez Stratifit — votre agence digitale pour la croissance. Quel est votre prénom ? Cela m'aide à personnaliser le chat. L'e-mail est facultatif et sert uniquement aux relances.",
+    "Bienvenue chez Stratifit, votre agence digitale pour la croissance. Quel est votre prénom ? Cela m'aide à personnaliser le chat. L'e-mail est facultatif et sert uniquement aux relances.",
   chatDataSafe: "Vos données sont en sécurité",
   chatReadMore: "En savoir plus",
   chatPrivacyNote:
@@ -850,7 +850,7 @@ const fr: UiStrings = {
   chatYesReadMore:
     "Votre e-mail est stocké en toute sécurité et utilisé uniquement pour les relances professionnelles. Nous ne partageons jamais vos données et n'envoyons jamais de publicité.",
   chatLaterReply:
-    "Bienvenue chez Stratifit — votre agence digitale pour la croissance. Que souhaitez-vous savoir ?",
+    "Bienvenue chez Stratifit, votre agence digitale pour la croissance. Que souhaitez-vous savoir ?",
   chatYourNamePlaceholder: "Votre prénom...",
   chatYourEmailPlaceholder: "vous@entreprise.com",
   chatEditName: "Modifier le nom",
@@ -863,7 +863,7 @@ const fr: UiStrings = {
   chatTellMeMore: "Parlez-moi davantage de {service}.",
   chatPricingTitle: "Tarifs & formules",
   chatPricingBody:
-    "Des formules pour chaque étape – des landing pages aux plateformes complètes. Parlez-nous de votre projet pour un devis personnalisé.",
+    "Des formules pour chaque étape, des landing pages aux plateformes complètes. Parlez-nous de votre projet pour un devis personnalisé.",
   chatAskAboutPricing: "Demander les tarifs",
   chatPricingQuestion: "J'aimerais en savoir plus sur les tarifs.",
   chatServicesQuestion: "J'aimerais en savoir plus sur vos services.",
@@ -871,7 +871,7 @@ const fr: UiStrings = {
   chatFaqTitle: "Questions fréquentes",
   chatFaqMoreQuestions: "D'autres questions ?",
   faqHelpCardTitle: "Encore des questions ?",
-  faqHelpCardSubtitle: "Discutez avec notre bot IA FAQ – réponses instantanées, 24h/24.",
+  faqHelpCardSubtitle: "Discutez avec notre bot IA FAQ, réponses instantanées, 24h/24.",
   faqAskMoreQuestions: "Poser d'autres questions",
   faqBotSuggestionsTitle: "Questions suggérées",
   faqBotWelcomeFallback:
@@ -916,7 +916,7 @@ const fr: UiStrings = {
   workOurProcess: "Notre processus",
   workResults: "Résultats",
   workSameRigor:
-    "La même méthode — appliquée à vos objectifs et vos indicateurs.",
+    "La même méthode, appliquée à vos objectifs et vos indicateurs.",
   workSelected: "Visuels",
   workServices: "Services",
   workSimilar: "Études de cas",
@@ -949,7 +949,7 @@ const fr: UiStrings = {
   servicesToolsTech: "Outils & technologies",
   servicesCaseStudies: "Études de cas",
   servicesSelectedWorkDesc:
-    "De vrais résultats issus de vrais projets — mesurés par les indicateurs qui comptent pour votre entreprise.",
+    "De vrais résultats issus de vrais projets, mesurés par les indicateurs qui comptent pour votre entreprise.",
   servicesReadyWhenYouAre: "Prêt quand vous l'êtes",
   servicesStartProject: "Démarrer votre projet",
   ctaStartService: "Démarrer votre projet {value}",
@@ -967,7 +967,7 @@ const fr: UiStrings = {
   testimonialsEyebrow: "Témoignages",
   testimonialsTitle: "Ce que disent nos",
   testimonialsDescription:
-    "Ne nous croyez pas sur parole — écoutez les marques que nous avons aidées à grandir.",
+    "Ne nous croyez pas sur parole, écoutez les marques que nous avons aidées à grandir.",
   insightsEyebrow: "Savoir",
   insightsTitleFallback: "Connaissances &",
   insightsHighlightFallback: "Expertise",
@@ -1085,7 +1085,7 @@ const es: UiStrings = {
   chatPricing: "Precios",
   chatSupport: "Soporte",
   chatWelcome:
-    "Bienvenido a Stratifit — tu agencia digital para el crecimiento. ¿Cómo te llamas? Me ayuda a personalizar el chat. El correo es opcional y solo se usa para seguimiento.",
+    "Bienvenido a Stratifit, tu agencia digital para el crecimiento. ¿Cómo te llamas? Me ayuda a personalizar el chat. El correo es opcional y solo se usa para seguimiento.",
   chatDataSafe: "Tus datos están seguros",
   chatReadMore: "Leer más",
   chatPrivacyNote:
@@ -1099,7 +1099,7 @@ const es: UiStrings = {
   chatYesReadMore:
     "Tu correo se almacena de forma segura y solo se usa para seguimientos comerciales. Nunca compartimos tus datos ni enviamos publicidad.",
   chatLaterReply:
-    "Bienvenido a Stratifit — tu agencia digital para el crecimiento. ¿Qué te gustaría saber?",
+    "Bienvenido a Stratifit, tu agencia digital para el crecimiento. ¿Qué te gustaría saber?",
   chatYourNamePlaceholder: "Tu nombre...",
   chatYourEmailPlaceholder: "usted@empresa.com",
   chatEditName: "Editar nombre",
@@ -1165,7 +1165,7 @@ const es: UiStrings = {
   workOurProcess: "Nuestro proceso",
   workResults: "Resultados",
   workSameRigor:
-    "El mismo plan de juego — aplicado a tus objetivos y tus métricas.",
+    "El mismo plan de juego, aplicado a tus objetivos y tus métricas.",
   workSelected: "Visuales",
   workServices: "Servicios",
   workSimilar: "Estudios de caso",

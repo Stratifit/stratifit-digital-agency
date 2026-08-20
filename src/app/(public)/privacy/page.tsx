@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
     seoTitleTranslations: page?.seo_title_translations,
     seoDescriptionTranslations: page?.seo_description_translations,
     locale,
-    fallbackTitle: "Privacy Policy — Stratifit",
+    fallbackTitle: "Privacy Policy Stratifit",
     fallbackDescription: "How Stratifit collects, uses, and protects personal data.",
   });
   return pageMetadata({ title, description, path: "/privacy" });

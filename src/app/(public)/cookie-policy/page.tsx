@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
     seoTitleTranslations: page?.seo_title_translations,
     seoDescriptionTranslations: page?.seo_description_translations,
     locale,
-    fallbackTitle: "Cookie Policy — Stratifit",
+    fallbackTitle: "Cookie Policy Stratifit",
     fallbackDescription: "How Stratifit uses cookies.",
   });
   return pageMetadata({ title, description, path: "/cookie-policy" });

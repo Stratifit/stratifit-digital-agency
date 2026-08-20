@@ -59,7 +59,7 @@ export async function generateMetadata({
     page.hero_highlight_translations
       ? ` ${resolveTranslation(page.hero_highlight_translations, locale)}`
       : ""
-  } — Stratifit`;
+  } Stratifit`;
   const fallbackDescription = resolveTranslation(
     page.hero_description_translations,
     locale

@@ -31,7 +31,7 @@ export const EMAIL_PARTIALS: Record<SupportedLanguage, EmailPartials> = {
     tagline: "Fit für digitale Exzellenz",
     questionsNote: "Fragen? Antworten Sie einfach auf diese E-Mail.",
     footerNote:
-      "Dies ist eine automatische Nachricht von Stratifit Digital Agency. Antworten Sie auf diese E-Mail — sie landet direkt in unserem Posteingang.",
+      "Dies ist eine automatische Nachricht von Stratifit Digital Agency. Antworten Sie auf diese E-Mail, sie landet direkt in unserem Posteingang.",
     legalDisclaimer: "Stratifit Digital Agency. Alle Rechte vorbehalten.",
   },
   fr: {
