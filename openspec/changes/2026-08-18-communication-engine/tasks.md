@@ -48,3 +48,11 @@
 - [ ] Point SES inbound (receiving rule) at `/api/email/inbound`
 - [ ] Point SES delivery notifications (SNS → HTTPS) at `/api/webhooks/email`
       and set `COMMUNICATION_WEBHOOK_SECRET`
+
+## Added after approval
+- [x] Schedule processor (`processDueSchedules`) + `/api/email/schedules/process`
+      cron route (Vercel cron in `vercel.json`, `COMMUNICATION_CRON_SECRET`)
+- [x] Wire `automation_triggers` into flows: `lead_created` drives the lead
+      acknowledgement template; `inbound_email` fires for the `other` inbox
+      section (no per-section auto-reply)
+- [x] Auto-fill keys extended: `phone`, `service_name`, `lead_id`, `date`

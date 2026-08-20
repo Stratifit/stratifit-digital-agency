@@ -13,6 +13,10 @@ export interface AutoFillContext {
   meeting_date?: string | null;
   admin_name?: string | null;
   customer_email?: string | null;
+  phone?: string | null;
+  service_name?: string | null;
+  lead_id?: string | null;
+  date?: string | null;
 }
 
 export const AUTO_FILL_KEYS = [
@@ -29,6 +33,10 @@ export const AUTO_FILL_KEYS = [
   "meeting_date",
   "admin_name",
   "customer_email",
+  "phone",
+  "service_name",
+  "lead_id",
+  "date",
 ] as const;
 
 const KNOWN_KEYS = new Set<string>(AUTO_FILL_KEYS);
@@ -67,17 +75,25 @@ export function parseSenderHeader(from: string): {
 export function buildContextFromContact(input: {
   name?: string | null;
   email?: string | null;
+  phone?: string | null;
   company?: string | null;
   projectName?: string | null;
   projectStage?: string | null;
+  serviceName?: string | null;
   sectionName?: string | null;
+  leadId?: string | null;
+  date?: string | null;
 }): AutoFillContext {
   return {
     name: input.name ?? null,
     customer_email: input.email ?? null,
+    phone: input.phone ?? null,
     company: input.company ?? null,
     project_name: input.projectName ?? null,
     project_stage: input.projectStage ?? null,
+    service_name: input.serviceName ?? null,
     section_name: input.sectionName ?? null,
+    lead_id: input.leadId ?? null,
+    date: input.date ?? null,
   };
 }

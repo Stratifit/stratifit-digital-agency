@@ -3,6 +3,7 @@ import { createSupabaseServiceRoleClient } from "@/lib/supabase/service-role";
 import { getDefaultFrom } from "@/features/communication/sender";
 import { parseSenderHeader } from "@/features/communication/auto-fill";
 import { sendTemplateEmail } from "./template-sends";
+import { resolveTriggerTemplateKey } from "@/features/communication/triggers";
 import { detectEmailLanguage } from "./language";
 import { receivedEmailSchema, type ReceivedEmail } from "./schemas";
 import { selectSectionForLanguage } from "./routing";
@@ -322,6 +323,9 @@ export async function processInboundEmail(
   await reopenThreadIfNeeded(supabase, threadId);
 
   // Auto-reply (only for inbound-email threads; form threads ack differently).
+  // The "other" section skips per-section auto-replies; the `inbound_email`
+  // automation trigger (default `email_received`) covers that case so generic
+  // enquiries still get a language-matched acknowledgement.
   if (section.slug !== "other") {
     const { data: sectionFull } = await supabase
       .from("email_inbox_sections")
@@ -399,6 +403,38 @@ export async function processInboundEmail(
             },
           });
         }
+      }
+    }
+  } else {
+    // "other" section: no per-section auto-reply, so the `inbound_email`
+    // automation trigger (admin-configurable, default `email_received`)
+    // provides the acknowledgement. Skipped when the trigger is disabled.
+    const triggerTemplateKey = await resolveTriggerTemplateKey("inbound_email");
+    if (triggerTemplateKey) {
+      const { data: thread } = await supabase
+        .from("email_threads")
+        .select("id, customer_email, customer_name, language")
+        .eq("id", threadId)
+        .single();
+      if (thread) {
+        const inReplyTo = rfcMessageId ? `<${rfcMessageId}>` : undefined;
+        const references = [
+          ...extractMessageIds(headers["references"]),
+          ...(rfcMessageId ? [rfcMessageId] : []),
+        ]
+          .map((id) => `<${id}>`)
+          .join(" ");
+
+        await sendTemplateEmail({
+          templateKey: triggerTemplateKey,
+          language: thread.language ?? language,
+          toEmail: thread.customer_email,
+          context: { name: thread.customer_name },
+          threadId: thread.id,
+          inReplyTo: inReplyTo ? inReplyTo.replace(/^<|>$/g, "") : undefined,
+          references: references || undefined,
+          idempotencyKey: `inbound_email_trigger:${thread.id}:${emailId}`,
+        });
       }
     }
   }

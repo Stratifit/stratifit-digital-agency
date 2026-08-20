@@ -124,6 +124,7 @@ async function recordLead(values: LeadRecord): Promise<ActionResult> {
       leadId,
       name: values.name,
       email: values.email,
+      phone: values.phone,
       company: values.company,
       requestedServiceIds: values.requested_service_ids,
       budgetRange: values.budget_range,

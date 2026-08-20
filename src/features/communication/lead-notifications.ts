@@ -2,6 +2,7 @@ import "server-only";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getPublicSiteSettings } from "@/features/site-settings/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolveTriggerTemplateKey } from "./triggers";
 import { renderEmailHtml, renderEmailText } from "./renderer";
 import { getDefaultFrom, sendEmail } from "./sender";
 import { recordEmailLog, sendTemplateEmail } from "./send-template";
@@ -11,6 +12,7 @@ export interface LeadNotificationInput {
   leadId: string;
   name?: string | null;
   email?: string | null;
+  phone?: string | null;
   company?: string | null;
   requestedServiceIds?: string[];
   budgetRange?: string | null;
@@ -68,16 +70,28 @@ export async function sendLeadEmails(
   const serviceNames = await resolveServiceNames(input.requestedServiceIds);
   const language = toLanguage(input.locale);
 
-  // Visitor acknowledgement from the multilingual template library.
+  // Visitor acknowledgement from the multilingual template library. The
+  // template key comes from the `lead_created` automation trigger (admin-
+  // configurable, seeded to `form_submission`). When the trigger row is
+  // missing, the seed default is used; when the admin disables it, the
+  // automatic acknowledgement is suppressed.
   if (input.email && !options?.skipAcknowledgement) {
+    const templateKey = await resolveTriggerTemplateKey("lead_created");
+    if (!templateKey) {
+      return;
+    }
     const result = await sendTemplateEmail({
-      templateKey: "form_submission",
+      templateKey,
       language,
       toEmail: input.email,
       context: {
         name: input.name ?? null,
         customer_email: input.email,
+        phone: input.phone ?? null,
         company: input.company ?? null,
+        service_name: serviceNames ?? null,
+        lead_id: input.leadId,
+        date: new Date().toISOString().slice(0, 10),
       },
       idempotencyKey: `communication:lead:${input.leadId}`,
       relatedType: "lead",

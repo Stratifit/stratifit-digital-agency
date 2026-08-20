@@ -76,6 +76,7 @@ Module layout (`src/features/communication/`):
 | `sender.ts` | Nodemailer + AWS SES SMTP transport |
 | `send-template.ts` | Orchestration: load → render → send → log → thread |
 | `triggers.ts` | Event → template mapping (admin-configurable) |
+| `process-schedules.ts` | Due-schedule processor (cron worker) |
 | `lead-notifications.ts` | Lead acknowledgement + admin notification |
 | `queries.ts` / `mutations.ts` | Admin data access and server actions |
 | `templates/partials.ts` | Header/footer/signature/brand-intro partials |
@@ -102,6 +103,7 @@ SMTP_PASS
 COMMUNICATION_FROM_EMAIL   # default sender (must be SES-verified)
 COMMUNICATION_REPLY_AS     # optional comma-separated reply-as addresses
 COMMUNICATION_WEBHOOK_SECRET  # optional delivery-webhook secret
+COMMUNICATION_CRON_SECRET  # optional bearer secret for the schedule-processor route
 ```
 
 Behavior:
@@ -174,7 +176,9 @@ keys, then to the first available key. Detection and selection are automatic:
 | --- | --- |
 | `{{name}}` | customer name |
 | `{{customer_email}}` | customer email |
+| `{{phone}}` | customer phone |
 | `{{section_name}}` | inbox section / service name |
+| `{{service_name}}` | requested service name |
 | `{{company}}` | customer company |
 | `{{project_name}}` / `{{project_stage}}` | CRM project data |
 | `{{amount}}` / `{{due_date}}` / `{{invoice_number}}` | billing data |
@@ -182,6 +186,8 @@ keys, then to the first available key. Detection and selection are automatic:
 | `{{issue_description}}` | support context |
 | `{{meeting_date}}` | scheduled meeting |
 | `{{admin_name}}` | signed-in admin |
+| `{{lead_id}}` | lead identifier |
+| `{{date}}` | send date (YYYY-MM-DD; defaults to today) |
 
 Inbound messages populate name/email automatically (sender-header parsing);
 manual replies pre-fill from the conversation so the admin only reviews before
@@ -247,6 +253,9 @@ Processing (`src/features/email-inbox/inbound.ts`):
 7. Send the language-matched auto-reply:
    - section `auto_reply_template_id` template when configured (customer's
      language), else the inline section auto-reply fields (English).
+   - For the `other` section (no per-section auto-reply), the `inbound_email`
+     automation trigger template (default `email_received`) provides the
+     acknowledgement when the trigger is enabled.
    - Threading headers (`In-Reply-To`, `References`) are included so replies
      stay in the same thread.
 
@@ -267,6 +276,19 @@ event in the dashboard; disabling a row disables the event. When a business
 event fires, the engine detects the customer's language, auto-fills their
 data, and sends the matching template.
 
+Wired flows (as of the current implementation):
+
+- `lead_created` → drives the lead acknowledgement template sent to the
+  visitor (falls back to `form_submission` when the trigger is disabled or
+  no row exists).
+- `inbound_email` → fires for inbound email routed to the `other` inbox
+  section (which has no per-section auto-reply), defaulting to
+  `email_received`.
+
+The remaining events (`payment_failed`, `project_started`, `milestone_reached`,
+…) are configured and ready — they fire when their business flow is wired to
+`resolveTriggerTemplateKey` in a future step.
+
 ---
 
 ## 12. Schedules
@@ -282,8 +304,27 @@ data, and sends the matching template.
 | `data` | Auto-fill context JSON |
 | `error_message` | Failure detail |
 
-A scheduler worker marks due schedules as sent; the admin dashboard can create
-and cancel schedules.
+Due schedules are sent by `processDueSchedules()`
+(`src/features/communication/process-schedules.ts`):
+
+1. Selects `pending` schedules with `send_at <= now` (batch of 50).
+2. Sends each through the standard pipeline (load template → auto-fill with
+   the row's `data` + recipient name → render → SMTP → log).
+3. Marks the row `sent` (with `sent_at`) or `failed` (with `error_message`).
+4. Idempotent per row (`idempotency_key = schedule:<id>`) — overlapping runs
+   never double-send.
+
+Triggered by the Vercel Cron entry in `vercel.json` (daily at 00:00 UTC;
+Hobby plans are limited to once per day — Pro+ can tighten the expression):
+
+```text
+GET /api/email/schedules/process
+```
+
+The route accepts Vercel cron invocations (`x-vercel-cron-schedule` header)
+or `Authorization: Bearer $COMMUNICATION_CRON_SECRET`.
+
+The admin dashboard can create and cancel schedules.
 
 ---
 
@@ -327,4 +368,8 @@ Legacy `/admin/email` routes redirect to the new Communication section.
 - `src/features/email-inbox/inbound.test.ts` — inbound processing with mocked
   Supabase.
 - `src/features/email-inbox/language.test.ts` — language detection.
+- `src/features/communication/auto-fill.test.ts` — placeholder replacement
+  and context building (including the customer/lead/date keys).
+- `src/features/communication/process-schedules.test.ts` — due-schedule
+  processing: send, mark sent, failure marking, idempotency.
 - Baseline: `npm run lint`, `npx tsc --noEmit`, `npm run build`, `npm test`.
