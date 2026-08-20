@@ -92,6 +92,24 @@ export interface SendEmailResult {
 }
 
 /**
+ * SES SMTP replies "250 OK <ses-message-id>" after DATA. Nodemailer only
+ * captures a Message-ID header (or generates one), so the real SES message
+ * id — which SES delivery notifications report — would be lost. Parse it
+ * from the SMTP response so `email_logs.provider_message_id` matches SNS
+ * delivery/bounce events. Falls back to nodemailer's messageId.
+ */
+function extractProviderMessageId(info: {
+  messageId?: string;
+  response?: string;
+}): string | undefined {
+  const match = (info.response ?? "").match(/^250\s+OK\s+(\S+)/im);
+  if (match?.[1]) {
+    return match[1].replace(/^<|>$/g, "");
+  }
+  return info.messageId;
+}
+
+/**
  * Send one email via AWS SES SMTP. Never throws — returns the outcome so
  * callers can log it without try/catch.
  */
@@ -117,7 +135,7 @@ export async function sendEmail(
       text: input.text,
       ...(input.headers ? { headers: input.headers } : {}),
     });
-    return { ok: true, messageId: info.messageId };
+    return { ok: true, messageId: extractProviderMessageId(info) };
   } catch (error) {
     console.error("SMTP send error:", error);
     return {
