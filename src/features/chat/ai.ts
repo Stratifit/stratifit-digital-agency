@@ -10,6 +10,8 @@ export interface ChatRequest {
   locale: string;
   knowledge: KnowledgeEntry[];
   history?: ChatMessageHistory[];
+  /** Configured response style (professional | friendly | concise). */
+  style?: string;
 }
 
 export interface ChatResponse {

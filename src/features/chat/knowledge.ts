@@ -11,6 +11,7 @@ export interface KnowledgeEntry {
 
 export interface ChatbotSettings {
   is_enabled: boolean;
+  response_style: string;
   welcome_message_translations: Record<string, string> | null;
   offline_message_translations: Record<string, string> | null;
   escalation_message_translations: Record<string, string> | null;
@@ -24,7 +25,7 @@ export async function getChatbotSettings(): Promise<ChatbotSettings | null> {
   const { data, error } = await supabase
     .from("chatbot_settings")
     .select(
-      "is_enabled, welcome_message_translations, offline_message_translations, escalation_message_translations, fallback_message_translations, lead_capture_mode, human_support_enabled"
+      "is_enabled, response_style, welcome_message_translations, offline_message_translations, escalation_message_translations, fallback_message_translations, lead_capture_mode, human_support_enabled"
     )
     .single();
   if (error) return null;

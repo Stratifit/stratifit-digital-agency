@@ -170,6 +170,7 @@ export async function sendVisitorMessage(
     locale: parsed.data.locale,
     knowledge,
     history,
+    style: settings.response_style,
   });
 
   const escalated = ai.escalated;

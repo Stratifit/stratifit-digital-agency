@@ -39,6 +39,12 @@ function getTransporter(): Transporter | null {
       port: config.port,
       secure: config.port === 465,
       auth: { user: config.user, pass: config.pass },
+      // Fail fast instead of hanging on a slow or unreachable SMTP server.
+      // Nodemailer defaults can wait minutes; these cap the wait so a bad
+      // host surfaces as a clear failure in seconds.
+      connectionTimeout: 15_000,
+      greetingTimeout: 15_000,
+      socketTimeout: 30_000,
     });
   }
   return cachedTransporter;
