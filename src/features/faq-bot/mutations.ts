@@ -34,7 +34,13 @@ const RATE_LIMIT_MAX = 10;
 export async function sendFaqBotMessage(
   input: z.infer<typeof faqBotMessageSchema>
 ): Promise<
-  ActionResult<{ conversation_id: string; ai_reply?: string; escalated: boolean; mode: string }>
+  ActionResult<{
+    conversation_id: string;
+    ai_reply?: string;
+    escalated: boolean;
+    escalation_message?: string;
+    mode: string;
+  }>
 > {
   const parsed = faqBotMessageSchema.safeParse(input);
   if (!parsed.success) {
@@ -140,15 +146,16 @@ export async function sendFaqBotMessage(
   }
 
   // Escalate when the AI cannot answer safely — the admin inbox picks it up
-  if (escalated) {
-    const fallback =
-      settings.faq_bot_fallback_translations?.[parsed.data.locale] ??
+  const fallback = escalated
+    ? settings.faq_bot_fallback_translations?.[parsed.data.locale] ??
       settings.faq_bot_fallback_translations?.en ??
-      t(parsed.data.locale, "faqBotFallbackFallback");
+      t(parsed.data.locale, "faqBotFallbackFallback")
+    : undefined;
+  if (escalated) {
     await supabase.from("chat_messages").insert({
       conversation_id: conversation.id,
       sender_type: "ai",
-      content: fallback,
+      content: fallback!,
       content_format: "text",
     });
     await supabase
@@ -173,6 +180,7 @@ export async function sendFaqBotMessage(
       conversation_id: conversation.id,
       ai_reply: ai.content || undefined,
       escalated,
+      escalation_message: fallback,
       mode: conversation.mode,
     },
   };

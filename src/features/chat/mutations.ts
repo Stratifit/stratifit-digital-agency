@@ -26,7 +26,13 @@ const RATE_LIMIT_MAX = 10;
 export async function sendVisitorMessage(
   input: z.infer<typeof messageSchema>
 ): Promise<
-  ActionResult<{ conversation_id: string; ai_reply?: string; escalated: boolean; mode: string }>
+  ActionResult<{
+    conversation_id: string;
+    ai_reply?: string;
+    escalated: boolean;
+    escalation_message?: string;
+    mode: string;
+  }>
 > {
   const parsed = messageSchema.safeParse(input);
   if (!parsed.success) {
@@ -178,15 +184,16 @@ export async function sendVisitorMessage(
   }
 
   // Escalate if AI cannot answer safely
-  if (escalated) {
-    const escalationMessage =
-      settings.escalation_message_translations?.[parsed.data.locale] ??
+  const escalationMessage = escalated
+    ? settings.escalation_message_translations?.[parsed.data.locale] ??
       settings.escalation_message_translations?.en ??
-      "Let me connect you with a team member.";
+      "Let me connect you with a team member."
+    : undefined;
+  if (escalated) {
     await supabase.from("chat_messages").insert({
       conversation_id: conversation.id,
       sender_type: "ai",
-      content: escalationMessage,
+      content: escalationMessage!,
       content_format: "text",
     });
     await supabase
@@ -211,6 +218,7 @@ export async function sendVisitorMessage(
       conversation_id: conversation.id,
       ai_reply: ai.content || undefined,
       escalated,
+      escalation_message: escalationMessage,
       mode: conversation.mode,
     },
   };

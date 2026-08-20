@@ -38,6 +38,8 @@ interface WidgetMessage {
   answered?: boolean;
   /** Optional expandable text for the Read-more toggle on AI replies. */
   readMore?: string;
+  /** True for a locally-appended copy that the server has not confirmed yet. */
+  optimistic?: boolean;
 }
 
 const TOKEN_KEY = "stratifit-chat-token";
@@ -548,10 +550,11 @@ function toWidgetMessages(rows: ChatStoredMessage[]): WidgetMessage[] {
 
 /**
  * Merges freshly-stored server messages into the live list while the chat is
- * open. Skips anything already shown (by id) and any optimistic local copy of
- * the same message (same sender + content within a ~2.5s window — e.g. the
- * visitor's own send or the AI reply the widget already appended locally), so
- * admin replies and system messages arrive without duplicating in-flight ones.
+ * open. Anything already shown (by id) is skipped. A stored row that matches an
+ * optimistic local copy (same sender + content) replaces it in place, so the
+ * visitor's own send, the AI reply, or the escalation bubble never duplicate —
+ * regardless of clock skew or how long the server took to store the message.
+ * Rows with no matching copy (admin replies, system messages) are appended.
  */
 function mergeStoredMessages(
   current: WidgetMessage[],
@@ -559,7 +562,7 @@ function mergeStoredMessages(
 ): WidgetMessage[] {
   if (incoming.length === 0) return current;
   const byId = new Set(current.map((m) => m.id));
-  const additions: WidgetMessage[] = [];
+  const next = [...current];
   for (const row of incoming) {
     if (byId.has(row.id)) continue;
     const sender =
@@ -568,15 +571,26 @@ function mergeStoredMessages(
         : row.sender_type === "system"
           ? "system"
           : "ai";
-    const createdAt = new Date(row.created_at).getTime();
-    const isOptimisticDuplicate = current.some(
+    // The escalation is stored as an `ai` message but shown as a `system`
+    // bubble in the widget — match the optimistic copy on content only.
+    const optimisticIdx = next.findIndex(
       (m) =>
-        m.sender === sender &&
+        m.optimistic &&
         m.content === row.content &&
-        Math.abs(new Date(m.created_at).getTime() - createdAt) < 2500
+        (m.sender === sender || (m.sender === "system" && sender === "ai"))
     );
-    if (isOptimisticDuplicate) continue;
-    additions.push({
+    if (optimisticIdx >= 0) {
+      next[optimisticIdx] = {
+        id: row.id,
+        sender: next[optimisticIdx].sender,
+        content: row.content,
+        created_at: row.created_at,
+        optimistic: false,
+      };
+      byId.add(row.id);
+      continue;
+    }
+    next.push({
       id: row.id,
       sender,
       content: row.content,
@@ -584,8 +598,7 @@ function mergeStoredMessages(
     });
     byId.add(row.id);
   }
-  if (additions.length === 0) return current;
-  return [...current, ...additions];
+  return next;
 }
 
 /** Groups consecutive messages from the same sender into clusters. */
@@ -1018,6 +1031,7 @@ export function ChatWidget({
         sender: "visitor",
         content: trimmed,
         created_at: new Date().toISOString(),
+        optimistic: true,
       },
     ]);
     // Collapse the window back to the newest exchanges.
@@ -1041,26 +1055,41 @@ export function ChatWidget({
     }
 
     if (result.data?.ai_reply) {
-      setMessages((m) => [
-        ...m,
-        {
-          id: crypto.randomUUID(),
-          sender: "ai",
-          content: result.data!.ai_reply!,
-          created_at: new Date().toISOString(),
-        },
-      ]);
+      const aiReply = result.data.ai_reply;
+      setMessages((m) =>
+        m.some((x) => x.sender === "ai" && x.content === aiReply)
+          ? m // a poll already delivered the stored copy — do not append a second one
+          : [
+              ...m,
+              {
+                id: crypto.randomUUID(),
+                sender: "ai",
+                content: aiReply,
+                created_at: new Date().toISOString(),
+                optimistic: true,
+              },
+            ]
+      );
     }
     if (result.data?.escalated) {
-      setMessages((m) => [
-        ...m,
-        {
-          id: crypto.randomUUID(),
-          sender: "system",
-          content: t(lang, "chatEscalated"),
-          created_at: new Date().toISOString(),
-        },
-      ]);
+      // Use the exact text the server stored so the optimistic bubble matches
+      // the stored row and the poll replaces it instead of adding a second one.
+      const escalationMessage =
+        result.data.escalation_message ?? t(lang, "chatEscalated");
+      setMessages((m) =>
+        m.some((x) => x.content === escalationMessage)
+          ? m
+          : [
+              ...m,
+              {
+                id: crypto.randomUUID(),
+                sender: "system",
+                content: escalationMessage,
+                created_at: new Date().toISOString(),
+                optimistic: true,
+              },
+            ]
+      );
     }
   }
 
