@@ -443,6 +443,7 @@ export type Database = {
       }
       chat_conversations: {
         Row: {
+          admin_typing_at: string | null
           archived_at: string | null
           assigned_to: string | null
           bot_type: string
@@ -459,6 +460,7 @@ export type Database = {
           visitor_id: string
         }
         Insert: {
+          admin_typing_at?: string | null
           archived_at?: string | null
           assigned_to?: string | null
           bot_type?: string
@@ -475,6 +477,7 @@ export type Database = {
           visitor_id: string
         }
         Update: {
+          admin_typing_at?: string | null
           archived_at?: string | null
           assigned_to?: string | null
           bot_type?: string

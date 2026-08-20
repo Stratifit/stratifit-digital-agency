@@ -4,6 +4,7 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import {
   adminReply,
+  setAdminTyping,
   takeOverConversation,
   returnToAi,
   resolveConversation,
@@ -48,10 +49,47 @@ export function ConversationDetail({ conversation }: { conversation: DetailData 
     setBusy(null);
   }
 
+  // Live typing indicator for the visitor widget: throttled "typing" signal
+  // while the admin types a non-internal reply, auto-cleared a few seconds
+  // after they stop, and cleared on blur/send so the visitor never sees a
+  // stale indicator.
+  const typingTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
+  const lastTypingSentRef = React.useRef(0);
+
+  function signalTyping() {
+    if (isInternal) return;
+    const now = Date.now();
+    if (now - lastTypingSentRef.current > 1500) {
+      lastTypingSentRef.current = now;
+      void setAdminTyping(conversation.id, true);
+    }
+    if (typingTimerRef.current) clearTimeout(typingTimerRef.current);
+    typingTimerRef.current = setTimeout(() => {
+      lastTypingSentRef.current = 0;
+      void setAdminTyping(conversation.id, false);
+    }, 3000);
+  }
+
+  function clearTyping() {
+    if (typingTimerRef.current) clearTimeout(typingTimerRef.current);
+    lastTypingSentRef.current = 0;
+    void setAdminTyping(conversation.id, false);
+  }
+
+  React.useEffect(() => {
+    return () => {
+      if (typingTimerRef.current) clearTimeout(typingTimerRef.current);
+      void setAdminTyping(conversation.id, false);
+    };
+  }, [conversation.id]);
+
   async function handleReply(e: React.FormEvent) {
     e.preventDefault();
     const content = reply.trim();
     if (!content) return;
+    clearTyping();
     setBusy("reply");
     await adminReply(conversation.id, { content, is_internal: isInternal });
     setReply("");
@@ -189,7 +227,11 @@ export function ConversationDetail({ conversation }: { conversation: DetailData 
       <form onSubmit={handleReply} className="space-y-3">
         <Textarea
           value={reply}
-          onChange={(e) => setReply(e.target.value)}
+          onChange={(e) => {
+            setReply(e.target.value);
+            signalTyping();
+          }}
+          onBlur={clearTyping}
           placeholder="Reply as the Stratifit team…"
           className="min-h-[100px]"
         />

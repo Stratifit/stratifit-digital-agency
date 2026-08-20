@@ -259,6 +259,7 @@ interface ChatConversationRow {
   id: string;
   mode: string;
   status: string;
+  admin_typing_at: string | null;
 }
 
 export async function resolveChatContext(
@@ -293,7 +294,7 @@ export async function resolveChatContext(
 
   let { data: conversation } = await supabase
     .from("chat_conversations")
-    .select("id, mode, status")
+    .select("id, mode, status, admin_typing_at")
     .eq("visitor_id", visitor.id)
     .eq("bot_type", botType)
     .in("status", ["open", "waiting_for_admin", "waiting_for_visitor"])
@@ -311,7 +312,7 @@ export async function resolveChatContext(
         bot_type: botType,
         source_page: sourcePage,
       })
-      .select("id, mode, status")
+      .select("id, mode, status, admin_typing_at")
       .single();
     conversation = created;
     if (conversation) {
@@ -370,6 +371,7 @@ export async function getVisitorChatState(input: {
   ActionResult<{
     conversation_id: string;
     mode: string;
+    admin_typing_at: string | null;
     visitor: ChatVisitorState;
     messages: ChatStoredMessage[];
   }>
@@ -387,6 +389,7 @@ export async function getVisitorChatState(input: {
     data: {
       conversation_id: conversation.id,
       mode: conversation.mode,
+      admin_typing_at: conversation.admin_typing_at ?? null,
       visitor: visitorStateFromMeta(readJsonObject(visitor.metadata)),
       messages,
     },

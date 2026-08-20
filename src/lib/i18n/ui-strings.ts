@@ -118,6 +118,7 @@ export type UiStringKey =
   | "chatEditName"
   | "chatTyping"
   | "chatTypingStatus"
+  | "chatAdminTyping"
   | "chatShowEarlier"
   | "chatAskAbout"
   | "chatLearnMore"
@@ -358,6 +359,7 @@ const en: UiStrings = {
   chatEditName: "Edit name",
   chatTyping: "Stratifit AI is typing…",
   chatTypingStatus: "Typing…",
+  chatAdminTyping: "Stratifit team is typing…",
   chatShowEarlier: "Earlier messages",
   chatAskAbout: "Ask about this",
   chatLearnMore: "Learn more",
@@ -607,6 +609,7 @@ const de: UiStrings = {
   chatEditName: "Namen bearbeiten",
   chatTyping: "Stratifit AI schreibt…",
   chatTypingStatus: "Schreibt…",
+  chatAdminTyping: "Das Stratifit-Team schreibt…",
   chatShowEarlier: "Frühere Nachrichten",
   chatAskAbout: "Danach fragen",
   chatLearnMore: "Mehr erfahren",
@@ -856,6 +859,7 @@ const fr: UiStrings = {
   chatEditName: "Modifier le nom",
   chatTyping: "Stratifit AI écrit…",
   chatTypingStatus: "Écrit…",
+  chatAdminTyping: "L'équipe Stratifit écrit…",
   chatShowEarlier: "Messages précédents",
   chatAskAbout: "Demander",
   chatLearnMore: "En savoir plus",
@@ -1105,6 +1109,7 @@ const es: UiStrings = {
   chatEditName: "Editar nombre",
   chatTyping: "Stratifit AI está escribiendo…",
   chatTypingStatus: "Escribiendo…",
+  chatAdminTyping: "El equipo de Stratifit está escribiendo…",
   chatShowEarlier: "Mensajes anteriores",
   chatAskAbout: "Preguntar",
   chatLearnMore: "Saber más",

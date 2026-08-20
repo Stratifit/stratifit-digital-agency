@@ -187,6 +187,7 @@ export async function getFaqBotChatState(input: {
   ActionResult<{
     conversation_id: string;
     mode: string;
+    admin_typing_at: string | null;
     messages: ChatStoredMessage[];
   }>
 > {
@@ -205,6 +206,7 @@ export async function getFaqBotChatState(input: {
     data: {
       conversation_id: conversation.id,
       mode: conversation.mode,
+      admin_typing_at: conversation.admin_typing_at ?? null,
       messages,
     },
   };

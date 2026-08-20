@@ -546,6 +546,48 @@ function toWidgetMessages(rows: ChatStoredMessage[]): WidgetMessage[] {
   }));
 }
 
+/**
+ * Merges freshly-stored server messages into the live list while the chat is
+ * open. Skips anything already shown (by id) and any optimistic local copy of
+ * the same message (same sender + content within a ~2.5s window — e.g. the
+ * visitor's own send or the AI reply the widget already appended locally), so
+ * admin replies and system messages arrive without duplicating in-flight ones.
+ */
+function mergeStoredMessages(
+  current: WidgetMessage[],
+  incoming: ChatStoredMessage[]
+): WidgetMessage[] {
+  if (incoming.length === 0) return current;
+  const byId = new Set(current.map((m) => m.id));
+  const additions: WidgetMessage[] = [];
+  for (const row of incoming) {
+    if (byId.has(row.id)) continue;
+    const sender =
+      row.sender_type === "visitor"
+        ? "visitor"
+        : row.sender_type === "system"
+          ? "system"
+          : "ai";
+    const createdAt = new Date(row.created_at).getTime();
+    const isOptimisticDuplicate = current.some(
+      (m) =>
+        m.sender === sender &&
+        m.content === row.content &&
+        Math.abs(new Date(m.created_at).getTime() - createdAt) < 2500
+    );
+    if (isOptimisticDuplicate) continue;
+    additions.push({
+      id: row.id,
+      sender,
+      content: row.content,
+      created_at: row.created_at,
+    });
+    byId.add(row.id);
+  }
+  if (additions.length === 0) return current;
+  return [...current, ...additions];
+}
+
 /** Groups consecutive messages from the same sender into clusters. */
 function groupMessages(messages: WidgetMessage[]): WidgetMessage[][] {
   const groups: WidgetMessage[][] = [];
@@ -697,6 +739,8 @@ export function ChatWidget({
   });
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  /** True while an admin is typing a reply in the conversation inbox. */
+  const [adminTyping, setAdminTyping] = React.useState(false);
   const [visitor, setVisitor] = React.useState<ChatVisitorState>({
     name: "",
     email: "",
@@ -879,6 +923,44 @@ export function ChatWidget({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
+
+  // Live updates while the widget is open: admin replies (and typing) are
+  // stored in tables that are admin-only under RLS, so an anonymous visitor
+  // cannot subscribe to realtime. Poll the trusted server action instead —
+  // every 2.5s while open — and merge any newly stored admin/system messages
+  // into the visible list. This is what makes a human reply appear at once
+  // instead of only after closing and reopening the chat.
+  React.useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    const timer: ReturnType<typeof setInterval> | undefined = setInterval(
+      poll,
+      2500
+    );
+
+    async function poll() {
+      const result = await getVisitorChatState({
+        visitor_token: getToken(),
+        locale: lang,
+        source_page:
+          typeof window !== "undefined" ? window.location.pathname : "/",
+      });
+      if (cancelled || !result.success || !result.data) return;
+      const data = result.data;
+      const typingAt = data.admin_typing_at
+        ? new Date(data.admin_typing_at).getTime()
+        : 0;
+      // Fresh typing signal (admin set it within the last ~4s).
+      setAdminTyping(Boolean(typingAt) && Date.now() - typingAt < 4000);
+      setMessages((prev) => mergeStoredMessages(prev, data.messages));
+    }
+
+    poll();
+    return () => {
+      cancelled = true;
+      clearInterval(timer);
+    };
+  }, [open, lang]);
 
   // Keep the newest send/reply pinned to the bottom of the messages area so
   // the current reply is always visible without scrolling down. Pins before
@@ -1704,6 +1786,19 @@ export function ChatWidget({
                   <span className="chat-typing-dot size-1.5 rounded-full bg-text-muted" />
                   <span className="chat-typing-dot size-1.5 rounded-full bg-text-muted [animation-delay:150ms]" />
                   <span className="chat-typing-dot size-1.5 rounded-full bg-text-muted [animation-delay:300ms]" />
+                </div>
+              </div>
+            ) : null}
+            {!loading && adminTyping ? (
+              <div className="chat-msg-in mt-4 flex justify-start">
+                <div
+                  role="status"
+                  aria-label={t(locale, "chatAdminTyping")}
+                  className="flex items-center gap-1.5 rounded-2xl rounded-bl-md border border-primary/25 bg-primary/10 px-4 py-3.5"
+                >
+                  <span className="chat-typing-dot size-1.5 rounded-full bg-primary" />
+                  <span className="chat-typing-dot size-1.5 rounded-full bg-primary [animation-delay:150ms]" />
+                  <span className="chat-typing-dot size-1.5 rounded-full bg-primary [animation-delay:300ms]" />
                 </div>
               </div>
             ) : null}

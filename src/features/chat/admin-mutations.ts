@@ -72,6 +72,28 @@ export async function adminReply(
   return { success: true };
 }
 
+/**
+ * Marks whether an admin is currently typing a reply in the conversation
+ * inbox. The visitor chat widget polls this column and shows a typing
+ * indicator while the value is fresh. Best-effort: failures are ignored so
+ * the reply flow is never blocked by a transient typing update.
+ */
+export async function setAdminTyping(
+  conversationId: string,
+  typing: boolean
+): Promise<{ success: boolean }> {
+  try {
+    const { supabase } = await requireAdminUserId();
+    await supabase
+      .from("chat_conversations")
+      .update({ admin_typing_at: typing ? new Date().toISOString() : null })
+      .eq("id", conversationId);
+  } catch {
+    // Best-effort — never fail the admin UI over a typing indicator.
+  }
+  return { success: true };
+}
+
 export async function takeOverConversation(
   conversationId: string
 ): Promise<{ success: boolean; error?: string }> {

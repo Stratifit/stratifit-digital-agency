@@ -124,6 +124,47 @@ function toBotMessages(rows: ChatStoredMessage[]): FaqBotMessage[] {
   }));
 }
 
+/**
+ * Merges freshly-stored server messages into the live FAQ-bot list while it
+ * is open, skipping anything already shown (by id) and any optimistic local
+ * copy (same sender + content within ~2.5s), so admin replies appear at once
+ * without duplicating in-flight messages.
+ */
+function mergeBotMessages(
+  current: FaqBotMessage[],
+  incoming: ChatStoredMessage[]
+): FaqBotMessage[] {
+  if (incoming.length === 0) return current;
+  const byId = new Set(current.map((m) => m.id));
+  const additions: FaqBotMessage[] = [];
+  for (const row of incoming) {
+    if (byId.has(row.id)) continue;
+    const sender =
+      row.sender_type === "visitor"
+        ? "visitor"
+        : row.sender_type === "system"
+          ? "system"
+          : "ai";
+    const createdAt = new Date(row.created_at).getTime();
+    const isOptimisticDuplicate = current.some(
+      (m) =>
+        m.sender === sender &&
+        m.content === row.content &&
+        Math.abs(new Date(m.created_at).getTime() - createdAt) < 2500
+    );
+    if (isOptimisticDuplicate) continue;
+    additions.push({
+      id: row.id,
+      sender,
+      content: row.content,
+      created_at: row.created_at,
+    });
+    byId.add(row.id);
+  }
+  if (additions.length === 0) return current;
+  return [...current, ...additions];
+}
+
 /** Locale-aware time label; shows the date too when not today. */
 function formatMessageTime(iso: string, locale: string): string {
   const date = new Date(iso);
@@ -160,6 +201,8 @@ export function FaqChatBot({
   const [input, setInput] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  /** True while an admin is typing a reply in the conversation inbox. */
+  const [adminTyping, setAdminTyping] = React.useState(false);
   const [lang, setLang] = React.useState<string>(() => getDefaultLang(serverLocale));
   const [langOpen, setLangOpen] = React.useState(false);
   const langRef = React.useRef<HTMLDivElement>(null);
@@ -254,6 +297,42 @@ export function FaqChatBot({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
+
+  // Live updates while the bot is open: admin replies (and typing) live in
+  // admin-only RLS tables, so an anonymous visitor cannot subscribe to
+  // realtime. Poll the trusted server action every 2.5s while open and merge
+  // any newly stored admin/system messages so a human reply shows at once.
+  React.useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    const timer: ReturnType<typeof setInterval> | undefined = setInterval(
+      poll,
+      2500
+    );
+
+    async function poll() {
+      const result = await getFaqBotChatState({
+        visitor_token: getToken(),
+        locale: lang,
+        source_page:
+          typeof window !== "undefined" ? window.location.pathname : "/",
+      });
+      if (cancelled || !result.success || !result.data) return;
+      const data = result.data;
+      const typingAt = data.admin_typing_at
+        ? new Date(data.admin_typing_at).getTime()
+        : 0;
+      // Fresh typing signal (admin set it within the last ~4s).
+      setAdminTyping(Boolean(typingAt) && Date.now() - typingAt < 4000);
+      setMessages((prev) => mergeBotMessages(prev, data.messages));
+    }
+
+    poll();
+    return () => {
+      cancelled = true;
+      clearInterval(timer);
+    };
+  }, [open, lang]);
 
   // Pin the message tail to the bottom when messages change.
   React.useLayoutEffect(() => {
@@ -596,6 +675,27 @@ export function FaqChatBot({
                       <span className="size-1.5 animate-bounce rounded-full bg-text-muted [animation-delay:-0.3s]" />
                       <span className="size-1.5 animate-bounce rounded-full bg-text-muted [animation-delay:-0.15s]" />
                       <span className="size-1.5 animate-bounce rounded-full bg-text-muted" />
+                    </span>
+                  </div>
+                </div>
+              ) : null}
+
+              {/* Admin typing indicator — live from the conversation inbox */}
+              {!loading && adminTyping ? (
+                <div className="flex items-start gap-2.5">
+                  <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary/25 to-primary/10 text-primary ring-1 ring-primary/20">
+                    <ChatIcon className="size-3.5" />
+                  </span>
+                  <div
+                    role="status"
+                    aria-label={t(locale, "chatAdminTyping")}
+                    className="rounded-2xl rounded-tl-sm border border-primary/25 bg-primary/10 px-3.5 py-3"
+                  >
+                    <span className="sr-only">{t(locale, "chatAdminTyping")}</span>
+                    <span className="flex items-center gap-1">
+                      <span className="size-1.5 animate-bounce rounded-full bg-primary [animation-delay:-0.3s]" />
+                      <span className="size-1.5 animate-bounce rounded-full bg-primary [animation-delay:-0.15s]" />
+                      <span className="size-1.5 animate-bounce rounded-full bg-primary" />
                     </span>
                   </div>
                 </div>
