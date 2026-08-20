@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { AdminPageHeader } from "@/components/admin/page-header";
+import { EmailConfigStatus } from "@/components/admin/email-config-status";
 import { getEmailLogs, getEmailSchedules } from "@/features/communication/queries";
 import { getEmailTemplatesForAdmin } from "@/features/communication/queries";
+import { getEmailConfigStatus } from "@/features/communication/sender";
 
 export const metadata = {
   title: "Communication",
@@ -13,6 +15,8 @@ export default async function AdminCommunicationPage() {
     getEmailLogs(5),
     getEmailSchedules(),
   ]);
+
+  const configStatus = getEmailConfigStatus();
 
   const autoCount = templates.filter((t) => t.template_type === "auto").length;
   const manualCount = templates.filter((t) => t.template_type === "manual").length;
@@ -63,6 +67,7 @@ export default async function AdminCommunicationPage() {
         title="Communication"
         description="One place for every customer email: multilingual templates, automatic replies, manual sends, schedules, and automation triggers."
       />
+      <EmailConfigStatus status={configStatus} />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map((card) => (
           <Link

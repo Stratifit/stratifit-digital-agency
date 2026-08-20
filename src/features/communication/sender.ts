@@ -120,3 +120,38 @@ export async function sendEmail(
     };
   }
 }
+
+/**
+ * Structured status of the email configuration for the admin dashboard.
+ * Reports exactly which server-side SMTP variables are set and which are
+ * missing, so the UI can show an actionable setup checklist instead of a
+ * bare "not configured" error.
+ */
+export function getEmailConfigStatus(): {
+  configured: boolean;
+  smtp: { host: boolean; port: boolean; user: boolean; pass: boolean };
+  fromEmail: boolean;
+  replyAs: string[];
+  missing: string[];
+} {
+  const host = Boolean(process.env.SMTP_HOST);
+  const port = Boolean(process.env.SMTP_PORT);
+  const user = Boolean(process.env.SMTP_USER);
+  const pass = Boolean(process.env.SMTP_PASS);
+  const fromEmail = Boolean(process.env.COMMUNICATION_FROM_EMAIL);
+
+  const missing: string[] = [];
+  if (!host) missing.push("SMTP_HOST");
+  if (!port) missing.push("SMTP_PORT");
+  if (!user) missing.push("SMTP_USER");
+  if (!pass) missing.push("SMTP_PASS");
+  if (!fromEmail) missing.push("COMMUNICATION_FROM_EMAIL");
+
+  return {
+    configured: missing.length === 0,
+    smtp: { host, port, user, pass },
+    fromEmail,
+    replyAs: getReplyAsAddresses(),
+    missing,
+  };
+}
