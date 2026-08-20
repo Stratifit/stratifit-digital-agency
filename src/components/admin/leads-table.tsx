@@ -190,7 +190,7 @@ export function LeadsTable({ leads }: { leads: AdminLeadRow[] }) {
                   <td className="px-4 py-3.5">
                     <Badge variant={STATUS_VARIANT[l.status] ?? "neutral"}>{l.status}</Badge>
                   </td>
-                  <td className="px-4 py-3.5 text-text-secondary">
+                  <td className="px-4 py-3.5 text-text-secondary" suppressHydrationWarning>
                     {new Date(l.created_at).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-3.5 text-right">

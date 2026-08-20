@@ -366,7 +366,7 @@ export function EmailInboxView({
                       </p>
                     </div>
                     <div className="shrink-0 text-right">
-                      <p className="text-xs text-text-muted">
+                      <p className="text-xs text-text-muted" suppressHydrationWarning>
                         {formatTime(thread.last_message_at)}
                       </p>
                       {thread.source === "inbound_email" ? (

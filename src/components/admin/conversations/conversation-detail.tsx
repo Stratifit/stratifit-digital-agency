@@ -133,13 +133,13 @@ export function ConversationDetail({ conversation }: { conversation: DetailData 
           </div>
           <div>
             <dt className="inline text-text-muted">Started · </dt>
-            <dd className="inline text-text-primary">
+            <dd className="inline text-text-primary" suppressHydrationWarning>
               {new Date(conversation.visitor.first_seen_at).toLocaleString()}
             </dd>
           </div>
           <div>
             <dt className="inline text-text-muted">Last activity · </dt>
-            <dd className="inline text-text-primary">
+            <dd className="inline text-text-primary" suppressHydrationWarning>
               {new Date(conversation.visitor.last_seen_at).toLocaleString()}
             </dd>
           </div>
@@ -223,6 +223,7 @@ export function ConversationDetail({ conversation }: { conversation: DetailData 
                     }`}
                   >
                     <p
+                      suppressHydrationWarning
                       className={`mb-1 text-[10px] font-medium uppercase tracking-wider ${
                         fromVisitor
                           ? "text-text-inverse/60"

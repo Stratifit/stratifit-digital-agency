@@ -285,7 +285,7 @@ export function EmailThreadDetailView({
                     {inbound ? "Inbound" : "Sent"}
                   </Badge>
                 </div>
-                <p className="text-xs text-text-muted">
+                <p className="text-xs text-text-muted" suppressHydrationWarning>
                   {formatDateTime(message.created_at)}
                 </p>
               </div>
