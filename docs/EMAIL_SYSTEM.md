@@ -113,6 +113,29 @@ Behavior:
 - Admins choose "Reply as:" from the configured `COMMUNICATION_REPLY_AS`
   list (defaults to contact/sales/info/support@stratifit.com).
 
+### 4.1 SMTP endpoint requirement (important)
+
+`SMTP_HOST` must be the **AWS SES SMTP endpoint**:
+
+```text
+email-smtp.<region>.amazonaws.com        # standard
+email-smtp-fips.<region>.amazonaws.com   # FIPS
+```
+
+with SMTP credentials created in the SES console (Identities → SMTP
+settings → Create SMTP credentials). Do **not** point `SMTP_HOST` at an AWS
+Mail Manager ingress endpoint (`*.mail-manager-smtp.amazonaws.com`, SMTP
+usernames prefixed `inp-`). Mail Manager ingress endpoints are **inbound-only**:
+they accept outbound mail with `250 OK` and silently drop it (ruleset default),
+so `email_logs` stays "Sent" forever and nothing is delivered. The admin
+Communication dashboard detects this configuration (`smtp-config.ts`,
+`EmailConfigStatus`) and shows a red warning banner.
+
+Real SES SMTP credentials never authenticate against Mail Manager hosts, and
+Mail Manager ingress credentials (`inp-…`) fail with `EAUTH` on every real
+`email-smtp.<region>.amazonaws.com` endpoint — a quick way to tell the two
+apart.
+
 ---
 
 ## 5. Multilingual Templates
@@ -224,12 +247,26 @@ SES delivery/bounce/complaint notifications (via SNS → HTTPS endpoint) POST to
 POST /api/webhooks/email
 ```
 
-Payload: `{ "messageId": "…", "eventType": "delivered"|"bounced"|"complained"|"failed", … }`
+The route (`src/features/communication/webhook.ts`) accepts two payload
+shapes:
 
-- Updates `email_logs` by `provider_message_id`.
+1. **Real SES/SNS envelopes** — `SubscriptionConfirmation` (auto-confirmed
+   with the `SubscribeURL`) and `Notification` with a nested JSON `Message`
+   containing SES event records (`eventType` values `Delivery`, `Bounce`,
+   `Complaint`, `Reject`, …) and `mail.messageId` / `mail.commonHeaders`.
+2. **Legacy flat payload** — `{ "messageId": "…", "eventType":
+   "delivered"|"bounced"|"complained"|"failed", … }`.
+
+- Updates `email_logs` by `provider_message_id` (the SES message id parsed
+  from the SMTP `250 OK <id>` response — see `sender.ts`).
 - When `COMMUNICATION_WEBHOOK_SECRET` is set, requests must carry it in the
   `x-communication-secret` header.
 - Unknown events are acknowledged without error (safe to retry).
+
+To wire it in the AWS console: SES → Configuration sets → create one → Add
+SNS destination → new topic → subscribe the **HTTPS** endpoint
+`https://<domain>/api/webhooks/email` (use the exact host that serves the
+site; SNS does not follow redirects).
 
 ---
 

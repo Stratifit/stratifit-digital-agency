@@ -1,5 +1,6 @@
 import "server-only";
 import nodemailer, { type Transporter } from "nodemailer";
+import { getSmtpHostWarning } from "./smtp-config";
 
 /**
  * Sender: Nodemailer over AWS SES SMTP. All email leaves the app through
@@ -157,6 +158,8 @@ export function getEmailConfigStatus(): {
   fromEmail: boolean;
   replyAs: string[];
   missing: string[];
+  /** Non-null when SMTP_HOST looks wrong (e.g. a Mail Manager ingress endpoint). */
+  warning: string | null;
 } {
   const host = Boolean(process.env.SMTP_HOST);
   const port = Boolean(process.env.SMTP_PORT);
@@ -177,5 +180,9 @@ export function getEmailConfigStatus(): {
     fromEmail,
     replyAs: getReplyAsAddresses(),
     missing,
+    warning: getSmtpHostWarning(
+      process.env.SMTP_HOST ?? "",
+      process.env.SMTP_USER ?? ""
+    ),
   };
 }
