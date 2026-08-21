@@ -114,6 +114,18 @@ export interface EmailMessageRecord {
   error_message: string | null;
   sent_at: string | null;
   created_at: string;
+  attachments: EmailAttachmentRecord[];
+}
+
+export interface EmailAttachmentRecord {
+  id: string;
+  name: string;
+  mime_type: string | null;
+  size_bytes: number;
+  storage_path: string;
+  content_id: string | null;
+  width: number | null;
+  height: number | null;
 }
 
 const SECTION_SELECT =
@@ -254,6 +266,57 @@ export async function getEmailThreads(
   return data as unknown as EmailThreadSummary[];
 }
 
+/**
+ * Paginated threads for a section, newest first (same filters as
+ * `getEmailThreads` plus `page`/`pageSize`), with the exact total so UIs can
+ * render pagination controls.
+ */
+export async function getEmailThreadsPage(
+  sectionId: string,
+  status?: ThreadStatus,
+  language?: string,
+  options: { page?: number; pageSize?: number } = {}
+): Promise<{
+  threads: EmailThreadSummary[];
+  total: number;
+  page: number;
+  pageSize: number;
+}> {
+  const supabase = await createSupabaseServerClient();
+  const page = Math.max(1, options.page ?? 1);
+  const pageSize = Math.min(100, Math.max(1, options.pageSize ?? 25));
+
+  let query = supabase
+    .from("email_threads")
+    .select(THREAD_SELECT, { count: "exact" })
+    .eq("section_id", sectionId)
+    .order("last_message_at", { ascending: false });
+
+  if (status) {
+    query = query.eq("status", status);
+  } else {
+    query = query.neq("status", "archived");
+  }
+
+  if (language) {
+    query = query.eq("language", language);
+  }
+
+  query = query.range((page - 1) * pageSize, page * pageSize - 1);
+
+  const { data, count, error } = await query;
+  if (error || !data) {
+    return { threads: [], total: 0, page, pageSize };
+  }
+
+  return {
+    threads: data as unknown as EmailThreadSummary[],
+    total: count ?? 0,
+    page,
+    pageSize,
+  };
+}
+
 /** A single thread with its full message history (newest last). */
 export async function getEmailThreadDetail(
   threadId: string
@@ -284,6 +347,34 @@ export async function getEmailThreadDetail(
     return null;
   }
 
+  // Attachments for every message in the thread, grouped by message id.
+  const messageIds = (messages as unknown as { id: string }[]).map(
+    (message) => message.id
+  );
+  const attachmentsByMessage = new Map<string, EmailAttachmentRecord[]>();
+  if (messageIds.length > 0) {
+    const { data: attachments } = await supabase
+      .from("email_attachments")
+      .select(
+        "id, message_id, name, mime_type, size_bytes, storage_path, content_id, width, height"
+      )
+      .in("message_id", messageIds);
+    for (const attachment of attachments ?? []) {
+      const list = attachmentsByMessage.get(attachment.message_id) ?? [];
+      list.push({
+        id: attachment.id,
+        name: attachment.name,
+        mime_type: attachment.mime_type,
+        size_bytes: attachment.size_bytes,
+        storage_path: attachment.storage_path,
+        content_id: attachment.content_id,
+        width: attachment.width,
+        height: attachment.height,
+      });
+      attachmentsByMessage.set(attachment.message_id, list);
+    }
+  }
+
   const raw = thread as unknown as Record<string, unknown> & {
     email_inbox_sections: unknown;
   };
@@ -311,6 +402,9 @@ export async function getEmailThreadDetail(
     section_name: section
       ? resolveTranslation(section.name_translations, "en")
       : "Other",
-    messages: messages as unknown as EmailMessageRecord[],
+    messages: (messages as unknown as EmailMessageRecord[]).map((message) => ({
+      ...message,
+      attachments: attachmentsByMessage.get(message.id) ?? [],
+    })),
   };
 }

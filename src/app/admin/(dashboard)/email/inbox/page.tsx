@@ -3,7 +3,7 @@ import { AdminPageHeader } from "@/components/admin/page-header";
 import { EmailInboxView } from "@/components/admin/email-inbox-view";
 import {
   getEmailSectionsWithCounts,
-  getEmailThreads,
+  getEmailThreadsPage,
 } from "@/features/email-inbox/queries";
 import { THREAD_STATUSES, type ThreadStatus } from "@/features/email-inbox/schemas";
 import {
@@ -20,8 +20,11 @@ interface PageProps {
     section?: string;
     status?: string;
     language?: string;
+    page?: string;
   }>;
 }
+
+const PAGE_SIZE = 25;
 
 function isValidStatus(value: string | undefined): value is ThreadStatus {
   return !!value && (THREAD_STATUSES as readonly string[]).includes(value);
@@ -44,10 +47,16 @@ export default async function AdminEmailInboxPage({
     ? params.language
     : undefined;
   const activeSection = sections.find((s) => s.slug === activeSlug);
+  const page = Math.max(1, Number(params.page ?? "1") || 1);
 
-  const threads = activeSection
-    ? await getEmailThreads(activeSection.id, activeStatus, activeLanguage)
-    : [];
+  const { threads, total } = activeSection
+    ? await getEmailThreadsPage(activeSection.id, activeStatus, activeLanguage, {
+        page,
+        pageSize: PAGE_SIZE,
+      })
+    : { threads: [], total: 0 };
+
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   return (
     <div className="space-y-6">
@@ -62,6 +71,9 @@ export default async function AdminEmailInboxPage({
           activeStatus={activeStatus}
           activeLanguage={activeLanguage}
           threads={threads}
+          total={total}
+          page={Math.min(page, totalPages)}
+          pageSize={PAGE_SIZE}
         />
       </Suspense>
     </div>

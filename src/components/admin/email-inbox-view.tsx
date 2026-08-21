@@ -12,6 +12,7 @@ import {
   deleteAllEmailThreads,
   deleteEmailThreads,
 } from "@/features/email-inbox/mutations";
+import { syncImapInboxAction } from "@/features/email-imap/actions";
 import type { ThreadStatus } from "@/features/email-inbox/schemas";
 import {
   EMAIL_LANGUAGE_LABELS,
@@ -67,20 +68,30 @@ export function EmailInboxView({
   activeStatus,
   activeLanguage,
   threads,
+  total,
+  page,
+  pageSize,
 }: {
   sections: EmailInboxSectionSummary[];
   activeSlug: string;
   activeStatus?: ThreadStatus;
   activeLanguage?: EmailLanguage;
   threads: EmailThreadSummary[];
+  total: number;
+  page: number;
+  pageSize: number;
 }) {
   const router = useRouter();
   const [selected, setSelected] = React.useState<Set<string>>(new Set());
   const [busy, setBusy] = React.useState(false);
   const [actionError, setActionError] = React.useState<string | null>(null);
   const [actionMessage, setActionMessage] = React.useState<string | null>(null);
+  const [syncBusy, setSyncBusy] = React.useState(false);
+  const [syncMessage, setSyncMessage] = React.useState<string | null>(null);
+  const [syncError, setSyncError] = React.useState<string | null>(null);
 
   const activeSection = sections.find((section) => section.slug === activeSlug);
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
   function go(slug: string, status?: ThreadStatus, language?: string) {
     setSelected(new Set());
@@ -89,6 +100,38 @@ export function EmailInboxView({
     if (status) params.set("status", status);
     if (language) params.set("language", language);
     router.push(`/admin/email/inbox?${params.toString()}`);
+  }
+
+  function goPage(nextPage: number) {
+    if (nextPage < 1 || nextPage > totalPages) return;
+    const params = new URLSearchParams();
+    params.set("section", activeSlug);
+    if (activeStatus) params.set("status", activeStatus);
+    if (activeLanguage) params.set("language", activeLanguage);
+    if (nextPage > 1) params.set("page", String(nextPage));
+    router.push(`/admin/email/inbox?${params.toString()}`);
+  }
+
+  async function handleSyncImap() {
+    setSyncBusy(true);
+    setSyncError(null);
+    setSyncMessage(null);
+    try {
+      const result = await syncImapInboxAction();
+      if (!result.success) {
+        setSyncError(result.error ?? "IMAP sync failed.");
+        return;
+      }
+      const summary = result.data?.summary;
+      setSyncMessage(
+        summary
+          ? `IMAP sync complete: ${summary.inserted} new message${summary.inserted === 1 ? "" : "s"}, ${summary.duplicates} duplicate${summary.duplicates === 1 ? "" : "s"}, ${summary.failed} failed.`
+          : "IMAP sync complete."
+      );
+      router.refresh();
+    } finally {
+      setSyncBusy(false);
+    }
   }
 
   function toggle(id: string) {
@@ -258,6 +301,18 @@ export function EmailInboxView({
         <div className="ml-auto flex items-center gap-2">
           <button
             type="button"
+            disabled={syncBusy}
+            onClick={handleSyncImap}
+            className="inline-flex items-center gap-1.5 rounded-button border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-50"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="size-3.5">
+              <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+              <path d="M21 3v6h-6" />
+            </svg>
+            {syncBusy ? "Syncing…" : "Sync IMAP inbox"}
+          </button>
+          <button
+            type="button"
             disabled={busy}
             onClick={handleDeleteAll}
             className="rounded-button border border-error/30 bg-error/5 px-3 py-1.5 text-xs font-medium text-error transition-colors hover:bg-error/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-error disabled:opacity-50"
@@ -266,6 +321,17 @@ export function EmailInboxView({
           </button>
         </div>
       </div>
+
+      {syncError ? (
+        <p role="alert" className="rounded-card bg-error-soft px-3 py-2 text-sm text-error">
+          {syncError}
+        </p>
+      ) : null}
+      {syncMessage ? (
+        <p role="status" className="rounded-card bg-success-soft px-3 py-2 text-sm text-success">
+          {syncMessage}
+        </p>
+      ) : null}
 
       {actionError ? (
         <p role="alert" className="rounded-card bg-error-soft px-3 py-2 text-sm text-error">
@@ -369,7 +435,11 @@ export function EmailInboxView({
                       <p className="text-xs text-text-muted" suppressHydrationWarning>
                         {formatTime(thread.last_message_at)}
                       </p>
-                      {thread.source === "inbound_email" ? (
+                      {thread.source === "imap" ? (
+                        <p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-primary/80">
+                          IMAP
+                        </p>
+                      ) : thread.source === "inbound_email" ? (
                         <p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-text-subtle">
                           Email
                         </p>
@@ -383,6 +453,31 @@ export function EmailInboxView({
                 </li>
               ))}
             </ul>
+          </div>
+
+          {/* Pagination */}
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-card border border-card-border bg-card-dark px-4 py-3 shadow-sm">
+            <p className="text-xs text-text-muted">
+              {total} conversation{total === 1 ? "" : "s"} · page {page} of {totalPages}
+            </p>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                disabled={page <= 1}
+                onClick={() => goPage(page - 1)}
+                className="rounded-button border border-card-border bg-surface px-3 py-1.5 text-xs font-medium text-text-secondary transition-colors hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                Previous
+              </button>
+              <button
+                type="button"
+                disabled={page >= totalPages}
+                onClick={() => goPage(page + 1)}
+                className="rounded-button border border-card-border bg-surface px-3 py-1.5 text-xs font-medium text-text-secondary transition-colors hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                Next
+              </button>
+            </div>
           </div>
         </>
       )}

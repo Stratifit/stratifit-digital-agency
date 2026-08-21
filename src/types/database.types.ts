@@ -928,6 +928,56 @@ export type Database = {
         }
         Relationships: []
       }
+      email_attachments: {
+        Row: {
+          content_id: string | null
+          created_at: string
+          height: number | null
+          id: string
+          message_id: string
+          mime_type: string | null
+          name: string
+          size_bytes: number
+          storage_bucket: string
+          storage_path: string
+          width: number | null
+        }
+        Insert: {
+          content_id?: string | null
+          created_at?: string
+          height?: number | null
+          id?: string
+          message_id: string
+          mime_type?: string | null
+          name: string
+          size_bytes?: number
+          storage_bucket: string
+          storage_path: string
+          width?: number | null
+        }
+        Update: {
+          content_id?: string | null
+          created_at?: string
+          height?: number | null
+          id?: string
+          message_id?: string
+          mime_type?: string | null
+          name?: string
+          size_bytes?: number
+          storage_bucket?: string
+          storage_path?: string
+          width?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_attachments_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "email_messages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       email_inbox_sections: {
         Row: {
           auto_reply_body_translations: Json

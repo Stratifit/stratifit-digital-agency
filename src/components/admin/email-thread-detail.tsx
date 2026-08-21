@@ -76,6 +76,12 @@ function formatDateTime(value: string): string {
   });
 }
 
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
 export function EmailThreadDetailView({
   thread,
   templates = [],
@@ -204,7 +210,11 @@ export function EmailThreadDetailView({
             ] ?? thread.language}
           </Badge>
           <span className="text-xs text-text-muted">
-            {thread.source === "inbound_email" ? "Email conversation" : "Form enquiry"}
+            {thread.source === "imap"
+              ? "IMAP conversation"
+              : thread.source === "inbound_email"
+                ? "Email conversation"
+                : "Form enquiry"}
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -293,6 +303,36 @@ export function EmailThreadDetailView({
               <div className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-text-secondary">
                 {message.text_content || "(no text content)"}
               </div>
+              {message.attachments && message.attachments.length > 0 ? (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {message.attachments.map((attachment) => (
+                    <a
+                      key={attachment.id}
+                      href={`/api/inbox/attachments/${attachment.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex max-w-full items-center gap-1.5 rounded-button border border-card-border bg-surface px-2.5 py-1.5 text-xs font-medium text-text-secondary transition-colors hover:border-primary/30 hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                        className="size-3.5 shrink-0 text-primary"
+                      >
+                        <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                      </svg>
+                      <span className="truncate">{attachment.name}</span>
+                      <span className="shrink-0 text-[10px] text-text-muted">
+                        {formatBytes(attachment.size_bytes)}
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              ) : null}
               {message.status === "failed" ? (
                 <p className="mt-2 text-xs text-error">
                   Delivery failed{message.error_message ? `: ${message.error_message}` : ""}
