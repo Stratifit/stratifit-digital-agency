@@ -20,6 +20,22 @@ export interface ImapFetchSummary {
   newThreads: number;
 }
 
+/** imapflow errors carry the server's tagged response text (e.g. NO
+ * [AUTHENTICATIONFAILED] ...); surface it so auth failures are actionable. */
+function imapErrorDetail(error: unknown): string {
+  if (error instanceof Error) {
+    const err = error as Error & {
+      responseStatus?: string;
+      responseText?: string;
+    };
+    const parts = [error.message];
+    if (err.responseStatus) parts.push(err.responseStatus);
+    if (err.responseText) parts.push(err.responseText);
+    return parts.join(" — ");
+  }
+  return String(error);
+}
+
 function envelopeName(value: unknown): string | null {
   if (Array.isArray(value)) {
     return value[0]?.name ?? null;
@@ -90,9 +106,7 @@ export async function runImapFetch(): Promise<ImapFetchSummary> {
   try {
     await client.connect();
   } catch (error) {
-    summary.error = `IMAP connection failed: ${
-      error instanceof Error ? error.message : "unknown error"
-    }`;
+    summary.error = `IMAP connection failed: ${imapErrorDetail(error)}`;
     return summary;
   }
 
@@ -185,9 +199,7 @@ export async function runImapFetch(): Promise<ImapFetchSummary> {
       lock.release();
     }
   } catch (error) {
-    summary.error = `IMAP fetch failed: ${
-      error instanceof Error ? error.message : "unknown error"
-    }`;
+    summary.error = `IMAP fetch failed: ${imapErrorDetail(error)}`;
   } finally {
     try {
       await client.logout();
