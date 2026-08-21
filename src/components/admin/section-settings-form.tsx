@@ -14,6 +14,10 @@ import {
   type SectionSettingsFormValues,
 } from "@/features/section-settings/schemas";
 import { updateSectionSettings } from "@/features/section-settings/mutations";
+import {
+  mergeHighlightIntoTitle,
+  splitTitleHighlight,
+} from "@/features/section-settings/title-highlight";
 import type { AdminSectionSettings } from "@/features/section-settings/queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -289,11 +293,40 @@ function hasReviewSummaryData(
   );
 }
 
+const LOCALE_KEYS = ["en", "de", "fr", "es"] as const;
+
+/** Splits every locale's raw title (with `<…>` markers) back into clean
+ *  title + highlight translations for persistence. */
+function splitTitleTranslations(values: SectionSettingsFormValues): {
+  title_translations: Record<string, string>;
+  highlight_translations: Record<string, string>;
+} {
+  const title_translations: Record<string, string> = {};
+  const highlight_translations: Record<string, string> = {};
+  for (const key of LOCALE_KEYS) {
+    const parsed = splitTitleHighlight(values.title_translations[key] ?? "");
+    title_translations[key] = parsed.title;
+    highlight_translations[key] = parsed.highlight;
+  }
+  return { title_translations, highlight_translations };
+}
+
 function toFormValues(settings: AdminSectionSettings): SectionSettingsFormValues {
   const reviewSummary = settings.review_summary;
+  // The stored highlight is folded into the title as a trailing `<…>` marker
+  // so the whole heading is edited in a single field.
+  const rawTitles = Object.fromEntries(
+    LOCALE_KEYS.map((key) => [
+      key,
+      mergeHighlightIntoTitle(
+        settings.title_translations?.[key],
+        settings.highlight_translations?.[key]
+      ),
+    ])
+  ) as SectionSettingsFormValues["title_translations"];
   return {
     eyebrow_translations: translations(settings.eyebrow_translations),
-    title_translations: translations(settings.title_translations),
+    title_translations: rawTitles,
     highlight_translations: translations(settings.highlight_translations),
     description_translations: translations(settings.description_translations),
     cta_label_translations: translations(settings.cta_label_translations),
@@ -363,21 +396,33 @@ export function SectionSettingsForm({
   const techFields = useFieldArray({ control, name: "tech_stack" });
   const eyebrowTranslations = useWatch({ control, name: "eyebrow_translations" });
   const titleTranslations = useWatch({ control, name: "title_translations" });
-  const highlightTranslations = useWatch({
-    control,
-    name: "highlight_translations",
-  });
   const descriptionTranslations = useWatch({
     control,
     name: "description_translations",
   });
 
+  // The raw titles contain `<…>` amber markers — strip them for the preview
+  // and feed the extracted span as the highlight, mirroring the public render.
+  const parsedPreview = Object.fromEntries(
+    LOCALE_KEYS.map((key) => [
+      key,
+      splitTitleHighlight(titleTranslations?.[key] ?? ""),
+    ])
+  );
+
   const previewSettings: PublicSectionSettings = {
     section_key: settings.section_key,
     label: settings.label,
     eyebrow_translations: eyebrowTranslations,
-    title_translations: titleTranslations,
-    highlight_translations: highlightTranslations,
+    title_translations: Object.fromEntries(
+      Object.entries(parsedPreview).map(([key, parsed]) => [key, parsed.title])
+    ),
+    highlight_translations: Object.fromEntries(
+      Object.entries(parsedPreview).map(([key, parsed]) => [
+        key,
+        parsed.highlight,
+      ])
+    ),
     description_translations: descriptionTranslations,
     is_visible: isVisible,
   };
@@ -385,7 +430,15 @@ export function SectionSettingsForm({
   async function onSubmit(values: SectionSettingsFormValues) {
     setServerError(null);
     setSaved(false);
-    const result = await updateSectionSettings(settings.section_key, values);
+    const { title_translations, highlight_translations } =
+      splitTitleTranslations(values);
+    const result = await updateSectionSettings(settings.section_key, {
+      ...values,
+      title_translations:
+        title_translations as SectionSettingsFormValues["title_translations"],
+      highlight_translations:
+        highlight_translations as SectionSettingsFormValues["highlight_translations"],
+    });
     if (result.success) {
       setSaved(true);
     } else {
@@ -557,37 +610,28 @@ export function SectionSettingsForm({
       >
         {activeSection === "header" ? (
           <div className="space-y-4">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor={`eyebrow-${locale}`}>Eyebrow label</Label>
-                <Input
-                  key={locale}
-                  id={`eyebrow-${locale}`}
-                  placeholder="Process"
-                  {...register(`eyebrow_translations.${locale}`)}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor={`highlight-${locale}`}>Amber highlight</Label>
-                <Input
-                  key={locale}
-                  id={`highlight-${locale}`}
-                  placeholder="Work"
-                  {...register(`highlight_translations.${locale}`)}
-                />
-                <p className="text-xs text-text-muted">
-                  Shown in amber right after the title. Leave empty to skip.
-                </p>
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor={`eyebrow-${locale}`}>Eyebrow label</Label>
+              <Input
+                key={locale}
+                id={`eyebrow-${locale}`}
+                placeholder="Process"
+                {...register(`eyebrow_translations.${locale}`)}
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor={`title-${locale}`}>Title</Label>
               <Input
                 key={locale}
                 id={`title-${locale}`}
-                placeholder="How We"
+                placeholder="Our Core <Services>"
                 {...register(`title_translations.${locale}`)}
               />
+              <p className="text-xs text-text-muted">
+                Wrap the part that should appear in amber in angle brackets,
+                e.g. <code className="text-text-secondary">Our Core &lt;Services&gt;</code>.
+                Without brackets the whole title renders in the normal color.
+              </p>
               {errors.title_translations?.en?.message ? (
                 <p className="mt-1 text-xs text-error">
                   {errors.title_translations.en.message}
