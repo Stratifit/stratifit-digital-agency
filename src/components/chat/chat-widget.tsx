@@ -1979,7 +1979,7 @@ export function ChatWidget({
           type="button"
           aria-label={t(locale, "chatOpen")}
           onClick={() => setOpen(true)}
-          className="fixed bottom-4 right-4 z-50 flex size-14 items-center justify-center rounded-[10px] border border-primary/50 bg-primary/10 text-primary shadow-amber transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/70 hover:bg-primary/15 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:bottom-6 lg:right-6"
+          className="fixed bottom-4 right-4 z-50 hidden size-14 items-center justify-center rounded-[10px] border border-primary/50 bg-primary/10 text-primary shadow-amber transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/70 hover:bg-primary/15 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:bottom-6 lg:right-6 lg:flex"
         >
           <ChatIcon className="size-6" />
         </button>
