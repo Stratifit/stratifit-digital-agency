@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import { AdminPageHeader } from "@/components/admin/page-header";
 import { EmailInboxView } from "@/components/admin/email-inbox-view";
+import { ImapStatusPanel } from "@/components/admin/imap-status-panel";
+import { getImapStatus } from "@/features/email-imap/status";
 import {
   getEmailSectionsWithCounts,
   getEmailThreadsPage,
@@ -64,6 +66,15 @@ export default async function AdminEmailInboxPage({
         title="Email Inbox"
         description="Customer emails, form enquiries, and reply-by-email conversations — grouped by section."
       />
+      <Suspense
+        fallback={
+          <div className="rounded-card border border-card-border bg-card-dark p-4 text-sm text-text-muted shadow-sm">
+            Checking IMAP connection…
+          </div>
+        }
+      >
+        <ImapStatusPanel status={await getImapStatus()} />
+      </Suspense>
       <Suspense fallback={<div className="text-sm text-text-muted">Loading…</div>}>
         <EmailInboxView
           sections={sections}

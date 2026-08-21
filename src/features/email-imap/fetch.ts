@@ -42,11 +42,20 @@ function envelopeAddress(value: unknown): string {
  * admin sync button) can report what happened.
  */
 export async function runImapFetch(): Promise<ImapFetchSummary> {
-  const { config, missing } = resolveImapConfig(process.env);
+  const { config, missing, placeholders } = resolveImapConfig(process.env);
   if (!config) {
+    const problems: string[] = [];
+    if (missing.length > 0) {
+      problems.push(`missing ${missing.join(", ")}`);
+    }
+    if (placeholders.length > 0) {
+      problems.push(
+        `${placeholders.join(", ")} still set to placeholder values (create a Zoho app password and set the real values)`
+      );
+    }
     return {
       ok: false,
-      error: `IMAP not configured. Missing: ${missing.join(", ")}.`,
+      error: `IMAP not configured — ${problems.join("; ")}.`,
       scanned: 0,
       inserted: 0,
       duplicates: 0,

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { resolveImapConfig } from "./config";
+import { isPlaceholderValue, resolveImapConfig } from "./config";
 
 describe("resolveImapConfig", () => {
   it("resolves a full config with defaults", () => {
@@ -37,6 +37,36 @@ describe("resolveImapConfig", () => {
     const result = resolveImapConfig({});
     expect(result.config).toBeNull();
     expect(result.missing).toEqual(["IMAP_HOST", "IMAP_USER", "IMAP_PASS"]);
+    expect(result.placeholders).toEqual([]);
+  });
+
+  it("treats placeholder values as not configured", () => {
+    const result = resolveImapConfig({
+      IMAP_HOST: "imap.zoho.eu",
+      IMAP_USER: "your-zoho-email@stratifit.com",
+      IMAP_PASS: "your-zoho-app-password",
+    });
+    expect(result.config).toBeNull();
+    expect(result.placeholders).toEqual(["IMAP_USER", "IMAP_PASS"]);
+  });
+
+  it("does not flag real-looking addresses", () => {
+    const result = resolveImapConfig({
+      IMAP_HOST: "imap.zoho.eu",
+      IMAP_USER: "inbox@stratifit.com",
+      IMAP_PASS: "aB3dE9fG1hJ2kL4mN",
+    });
+    expect(result.config).not.toBeNull();
+    expect(result.placeholders).toEqual([]);
+  });
+
+  it("isPlaceholderValue matches common placeholder patterns", () => {
+    expect(isPlaceholderValue("your-zoho-app-password")).toBe(true);
+    expect(isPlaceholderValue("your-zoho-email@stratifit.com")).toBe(true);
+    expect(isPlaceholderValue("changeme")).toBe(true);
+    expect(isPlaceholderValue("name@example.com")).toBe(true);
+    expect(isPlaceholderValue("inbox@stratifit.com")).toBe(false);
+    expect(isPlaceholderValue("aB3dE9fG1hJ2kL4mN")).toBe(false);
   });
 
   it("clamps the sync window to 1..90 days", () => {

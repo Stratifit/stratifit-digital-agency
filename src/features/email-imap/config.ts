@@ -19,6 +19,24 @@ export interface ImapConfig {
 export interface ImapConfigResult {
   config: ImapConfig | null;
   missing: string[];
+  placeholders: string[];
+}
+
+/**
+ * Detect placeholder values (from .env.example or pasted without editing) so
+ * the sync path reports "not configured" instead of failing authentication
+ * with a confusing error.
+ */
+export function isPlaceholderValue(value: string): boolean {
+  const lower = value.toLowerCase();
+  return (
+    lower.startsWith("your-") ||
+    lower.includes("placeholder") ||
+    lower === "changeme" ||
+    lower === "xxx" ||
+    lower.endsWith("@example.com") ||
+    lower.endsWith("@yourdomain.com")
+  );
 }
 
 export function resolveImapConfig(
@@ -29,12 +47,22 @@ export function resolveImapConfig(
   const pass = env.IMAP_PASS?.trim() || null;
 
   const missing: string[] = [];
-  if (!host) missing.push("IMAP_HOST");
-  if (!user) missing.push("IMAP_USER");
-  if (!pass) missing.push("IMAP_PASS");
+  const placeholders: string[] = [];
 
-  if (!host || !user || !pass) {
-    return { config: null, missing };
+  for (const [key, value] of [
+    ["IMAP_HOST", host],
+    ["IMAP_USER", user],
+    ["IMAP_PASS", pass],
+  ] as const) {
+    if (!value) {
+      missing.push(key);
+    } else if (isPlaceholderValue(value)) {
+      placeholders.push(key);
+    }
+  }
+
+  if (!host || !user || !pass || placeholders.length > 0) {
+    return { config: null, missing, placeholders };
   }
 
   const rawPort = Number(env.IMAP_PORT ?? "993");
@@ -56,5 +84,6 @@ export function resolveImapConfig(
       secure: true,
     },
     missing,
+    placeholders,
   };
 }
