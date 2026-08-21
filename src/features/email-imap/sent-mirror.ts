@@ -124,9 +124,15 @@ async function resolveSentFolder(
 export async function mirrorSentToZoho(
   input: MirrorSentToZohoInput
 ): Promise<MirrorSentResult> {
-  const { config } = resolveImapConfig(process.env);
+  const { config, missing, placeholders } = resolveImapConfig(process.env);
   if (!config) {
-    return { mirrored: false, skipped: "IMAP not configured." };
+    const problems = [...missing, ...placeholders];
+    return {
+      mirrored: false,
+      skipped: problems.length > 0
+        ? `IMAP not configured (${problems.join(", ")}) — set the Zoho mailbox and app password to enable the Sent copy.`
+        : "IMAP not configured.",
+    };
   }
   if (!config.mirrorSent) {
     return {
