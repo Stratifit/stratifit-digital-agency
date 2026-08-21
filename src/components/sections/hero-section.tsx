@@ -156,7 +156,7 @@ export async function HeroSection() {
               <ContactAwareLink
                 href={hero.primary_cta_url}
                 size="medium"
-                className="group !h-12 w-full !font-semibold sm:w-[370px] sm:flex-none"
+                className="group !h-12 w-full !text-base !font-bold sm:w-[370px] sm:flex-none"
               >
                 {primaryLabel}
                 <svg
@@ -178,7 +178,7 @@ export async function HeroSection() {
                 href={hero.secondary_cta_url}
                 variant="tertiary"
                 size="medium"
-                className="group !h-12 w-full !rounded-[6px] sm:w-[370px] sm:flex-none"
+                className="group !h-12 w-full !text-base !font-semibold !rounded-[6px] sm:w-[370px] sm:flex-none"
               >
                 <svg
                   viewBox="0 0 24 24"
