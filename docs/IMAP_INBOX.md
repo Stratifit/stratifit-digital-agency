@@ -118,8 +118,11 @@ sweep.
 | `/api/inbox/attachments/[id]` | GET | admin session | Download attachment bytes |
 
 All routes run on the Node.js runtime (imapflow needs node:net/tls). The fetch
-route is on the Vercel cron (`vercel.json`, hourly — Hobby plans limit crons to
-once per day; the dashboard "Sync IMAP inbox" button runs it on demand).
+route is on the Vercel cron (`vercel.json`, daily at 05:30 UTC — Hobby plans
+limit crons to once per day, and a more frequent expression fails the whole
+deployment). For fast reply visibility, the inbox page also auto-syncs in the
+background when an admin opens it (throttled to once per 2 minutes), and the
+"Sync IMAP inbox" button runs a sweep on demand.
 
 ---
 

@@ -52,6 +52,12 @@ const LANGUAGE_OPTIONS = SUPPORTED_EMAIL_LANGUAGES.map((code) => ({
   label: EMAIL_LANGUAGE_LABELS[code],
 }));
 
+// Hobby plans can only run the IMAP cron once per day, so the inbox also
+// auto-syncs when an admin opens it (throttled to keep it cheap) — replies
+// appear within seconds instead of waiting for the daily run.
+let lastAutoSyncAt = 0;
+const AUTO_SYNC_INTERVAL_MS = 2 * 60 * 1000;
+
 function formatTime(value: string | null): string {
   if (!value) return "";
   const date = new Date(value);
@@ -92,6 +98,29 @@ export function EmailInboxView({
 
   const activeSection = sections.find((section) => section.slug === activeSlug);
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
+
+  // Silent background sync on first view (throttled). Refreshes only when
+  // new messages arrived, so the list stays current without any user action.
+  React.useEffect(() => {
+    const now = Date.now();
+    if (now - lastAutoSyncAt < AUTO_SYNC_INTERVAL_MS) return;
+    lastAutoSyncAt = now;
+    let cancelled = false;
+    syncImapInboxAction()
+      .then((result) => {
+        if (cancelled || !result.success) return;
+        const summary = result.data?.summary;
+        if (summary && (summary.inserted > 0 || summary.newThreads > 0)) {
+          router.refresh();
+        }
+      })
+      .catch(() => {
+        // Silent — the manual Sync button surfaces real errors.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [router]);
 
   function go(slug: string, status?: ThreadStatus, language?: string) {
     setSelected(new Set());
