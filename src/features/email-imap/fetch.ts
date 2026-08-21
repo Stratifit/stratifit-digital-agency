@@ -85,7 +85,7 @@ export async function runImapFetch(): Promise<ImapFetchSummary> {
 
   const summary: ImapFetchSummary = {
     ok: false,
-    mailbox: config.mailbox,
+    mailbox: config.mailboxes.join(", "),
     scanned: 0,
     inserted: 0,
     duplicates: 0,
@@ -111,92 +111,112 @@ export async function runImapFetch(): Promise<ImapFetchSummary> {
   }
 
   try {
-    const lock = await client.getMailboxLock(config.mailbox);
-    try {
-      const messages = client.fetch(
-        { since },
-        {
-          source: true,
-          envelope: true,
-          internalDate: true,
-          flags: true,
-          uid: true,
-        }
-      );
-
-      for await (const message of messages) {
-        summary.scanned += 1;
-        const uid = message.uid;
-        try {
-          const sourceBuffer = Buffer.isBuffer(message.source)
-            ? message.source
-            : message.source
-              ? Buffer.from(message.source)
-              : Buffer.alloc(0);
-          const parsed = await simpleParser(sourceBuffer);
-          const imapDate = message.internalDate
-            ? new Date(message.internalDate)
-            : null;
-          const date =
-            parsed.date instanceof Date && !Number.isNaN(parsed.date.getTime())
-              ? parsed.date
-              : imapDate && !Number.isNaN(imapDate.getTime())
-                ? imapDate
-                : new Date();
-
-          const rfcMessageId =
-            parsed.messageId?.trim() || `imap:${config.user}:${uid}`;
-
-          const attachments: StoredAttachment[] = (
-            parsed.attachments ?? []
-          )
-            .filter((attachment) => attachment.filename)
-            .map((attachment) => ({
-              content: attachment.content,
-              name: attachment.filename as string,
-              mimeType: attachment.contentType ?? null,
-              size: attachment.size ?? attachment.content.length,
-              contentId: attachment.contentId ?? null,
-            }));
-
-          const from = Array.isArray(parsed.from) ? parsed.from[0] : parsed.from;
-          const to = Array.isArray(parsed.to) ? parsed.to[0] : parsed.to;
-
-          const stored = await storeImapMessage(supabase, {
-            rfcMessageId,
-            fromName: envelopeName(from?.value) ?? from?.value?.[0]?.name ?? null,
-            fromEmail: envelopeAddress(from?.value) || from?.text || "",
-            toEmail: envelopeAddress(to?.value) || "",
-            subject: parsed.subject ?? "(no subject)",
-            text: parsed.text || "",
-            html: typeof parsed.html === "string" ? parsed.html : null,
-            inReplyTo: normalizeInReplyTo(parsed.inReplyTo),
-            references: (normalizeReferences(parsed.references).length > 0
-              ? normalizeReferences(parsed.references).join(" ")
-              : null) as string | null,
-            date,
-            attachments,
-          });
-
-          if (stored.status === "inserted") {
-            summary.inserted += 1;
-            if (stored.createdThread) summary.newThreads += 1;
-            // Only mark seen after it is safely stored (retries re-fetch it).
-            await client.messageFlagsAdd(uid, ["\\Seen"], { uid: true });
-          } else {
-            summary.duplicates += 1;
-          }
-        } catch (error) {
-          summary.failed += 1;
-          console.error(
-            "IMAP message processing failed:",
-            error instanceof Error ? error.message : error
-          );
-        }
+    // Sweep every configured folder (INBOX plus e.g. Junk) on the same
+    // account, so replies that get spam-filtered still reach the dashboard.
+    for (const mailboxName of config.mailboxes) {
+      let lock;
+      try {
+        lock = await client.getMailboxLock(mailboxName);
+      } catch (error) {
+        console.error(
+          `IMAP mailbox "${mailboxName}" unavailable:`,
+          error instanceof Error ? error.message : error
+        );
+        continue;
       }
-      summary.ok = true;
-    } finally {
-      lock.release();
+      try {
+        const messages = client.fetch(
+          { since },
+          {
+            source: true,
+            envelope: true,
+            internalDate: true,
+            flags: true,
+            uid: true,
+          }
+        );
+
+        for await (const message of messages) {
+          summary.scanned += 1;
+          const uid = message.uid;
+          try {
+            const sourceBuffer = Buffer.isBuffer(message.source)
+              ? message.source
+              : message.source
+                ? Buffer.from(message.source)
+                : Buffer.alloc(0);
+            const parsed = await simpleParser(sourceBuffer);
+            const imapDate = message.internalDate
+              ? new Date(message.internalDate)
+              : null;
+            const date =
+              parsed.date instanceof Date &&
+              !Number.isNaN(parsed.date.getTime())
+                ? parsed.date
+                : imapDate && !Number.isNaN(imapDate.getTime())
+                  ? imapDate
+                  : new Date();
+
+            const rfcMessageId =
+              parsed.messageId?.trim() || `imap:${config.user}:${uid}`;
+
+            const attachments: StoredAttachment[] = (
+              parsed.attachments ?? []
+            )
+              .filter((attachment) => attachment.filename)
+              .map((attachment) => ({
+                content: attachment.content,
+                name: attachment.filename as string,
+                mimeType: attachment.contentType ?? null,
+                size: attachment.size ?? attachment.content.length,
+                contentId: attachment.contentId ?? null,
+              }));
+
+            const from = Array.isArray(parsed.from)
+              ? parsed.from[0]
+              : parsed.from;
+            const to = Array.isArray(parsed.to) ? parsed.to[0] : parsed.to;
+
+            const stored = await storeImapMessage(supabase, {
+              rfcMessageId,
+              fromName:
+                envelopeName(from?.value) ??
+                from?.value?.[0]?.name ??
+                null,
+              fromEmail: envelopeAddress(from?.value) || from?.text || "",
+              toEmail: envelopeAddress(to?.value) || "",
+              subject: parsed.subject ?? "(no subject)",
+              text: parsed.text || "",
+              html: typeof parsed.html === "string" ? parsed.html : null,
+              inReplyTo: normalizeInReplyTo(parsed.inReplyTo),
+              references:
+                normalizeReferences(parsed.references).length > 0
+                  ? normalizeReferences(parsed.references).join(" ")
+                  : null,
+              date,
+              attachments,
+            });
+
+            if (stored.status === "inserted") {
+              summary.inserted += 1;
+              if (stored.createdThread) summary.newThreads += 1;
+              // Only mark seen after it is safely stored (retries re-fetch it).
+              await client.messageFlagsAdd(uid, ["\\Seen"], { uid: true });
+            } else {
+              summary.duplicates += 1;
+            }
+          } catch (error) {
+            summary.failed += 1;
+            console.error(
+              "IMAP message processing failed:",
+              error instanceof Error ? error.message : error
+            );
+          }
+        }
+        summary.ok = true;
+      } finally {
+        lock.release();
+      }
     }
   } catch (error) {
     summary.error = `IMAP fetch failed: ${imapErrorDetail(error)}`;

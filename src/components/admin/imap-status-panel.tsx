@@ -101,6 +101,18 @@ export function ImapStatusPanel({ status }: { status: ImapStatus }) {
             </>
           )}
         </StatusRow>
+        <StatusRow label="Mailboxes swept">
+          <span className="text-text-secondary">
+            {status.mailboxes.join(", ")}
+          </span>
+        </StatusRow>
+        <StatusRow label="Reply-as addresses">
+          <span className="max-w-[420px] truncate text-xs text-text-muted">
+            {status.senderAddresses.length > 0
+              ? status.senderAddresses.join(", ")
+              : "none configured"}
+          </span>
+        </StatusRow>
         <StatusRow label="Last inbound email">
           <span className="text-text-secondary">
             {formatTime(status.lastImapMessageAt)}
@@ -112,6 +124,22 @@ export function ImapStatusPanel({ status }: { status: ImapStatus }) {
           </span>
         </StatusRow>
       </div>
+
+      {status.senderAddresses.length > 0 ? (
+        <div className="mt-3 rounded-card bg-surface px-3 py-2.5 text-xs leading-relaxed text-text-muted">
+          <p>
+            <span className="font-semibold text-text-secondary">
+              Receiving replies:{" "}
+            </span>
+            every reply-as address must exist in Zoho as a mailbox or an alias
+            of the synced account ({" "}
+            <code className="rounded-sm bg-surface-hover px-1 py-0.5">IMAP_USER</code>
+            ). Replies sent to an address that is not a Zoho mailbox or alias
+            of that account will not arrive in this inbox. Set them up under
+            Zoho Mail → Settings → Mail Accounts → Aliases.
+          </p>
+        </div>
+      ) : null}
 
       {!status.configured ? (
         <div className="mt-3 rounded-card bg-warning-soft px-3 py-2.5 text-xs leading-relaxed text-text-secondary">

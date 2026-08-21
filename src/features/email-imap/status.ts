@@ -2,6 +2,7 @@ import "server-only";
 import * as tls from "node:tls";
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/service-role";
 import { resolveImapConfig } from "./config";
+import { getSenderAddresses } from "@/features/communication/sender-addresses";
 
 export interface ImapStatus {
   configured: boolean;
@@ -14,6 +15,10 @@ export interface ImapStatus {
   reachabilityError?: string;
   imapThreads: number;
   lastImapMessageAt: string | null;
+  /** Mailboxes swept per run (INBOX plus any extras like Junk). */
+  mailboxes: string[];
+  /** Enabled reply-as addresses that must exist in Zoho to receive replies. */
+  senderAddresses: string[];
 }
 
 /**
@@ -81,6 +86,7 @@ export async function getImapStatus(): Promise<ImapStatus> {
   }
 
   const supabase = createSupabaseServiceRoleClient();
+  const senderAddresses = await getSenderAddresses();
   const { count: imapThreads } = await supabase
     .from("email_threads")
     .select("id", { count: "exact", head: true })
@@ -105,5 +111,7 @@ export async function getImapStatus(): Promise<ImapStatus> {
     reachabilityError: config ? reachability.error : undefined,
     imapThreads: imapThreads ?? 0,
     lastImapMessageAt: lastMessage?.sent_at ?? null,
+    mailboxes: config?.mailboxes ?? ["INBOX"],
+    senderAddresses,
   };
 }

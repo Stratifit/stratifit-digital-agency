@@ -55,12 +55,33 @@ IMAP_PORT=993
 IMAP_USER=your-zoho-email@stratifit.com   # mailbox login
 IMAP_PASS=your-zoho-app-password          # Zoho app password, NOT the login password
 IMAP_MAILBOX=INBOX
+IMAP_MAILBOXES=INBOX, Junk                # folders swept per run (Junk catches filtered replies)
 IMAP_SYNC_SINCE_DAYS=7                    # fetch window (clamped 1–90)
 IMAP_SYNC_SECRET=…                        # bearer secret for POST /api/inbox/fetch
 ```
 
 Zoho Mail requires an **app password**: Zoho Mail → Profile → App Passwords
 (IMAP access must be enabled for the account). All values are server-only.
+
+### 3.1 Receiving replies on every reply-as address
+
+The IMAP worker authenticates as a **single Zoho account** (`IMAP_USER`) and
+sweeps the folders in `IMAP_MAILBOXES`. For a customer reply to be received
+it must land in that account's mailbox, which means:
+
+1. **Enable IMAP** for the account (Zoho Mail → Settings → Mail Accounts →
+   POP/IMAP → enable IMAP Access) — the sync fails with
+   "You are yet to enable IMAP for your account" until this is on.
+2. **Every reply-as address must exist in Zoho** as the account itself or as
+   an **alias** of it: Zoho Mail → Settings → Mail Accounts → Aliases (or the
+   admin console for org accounts). Replies sent to an address that is not a
+   mailbox/alias of `IMAP_USER` are silently lost.
+3. The sender list managed at `/admin/communication/addresses` (hello@,
+   info@, sales@, support@, contact@, …) is exactly the set of addresses that
+   must be covered. The dashboard IMAP status panel lists them and flags
+   missing coverage.
+4. `IMAP_MAILBOXES=INBOX, Junk` keeps spam-filtered replies visible in the
+   dashboard too.
 
 ---
 
