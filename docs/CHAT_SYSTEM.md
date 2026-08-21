@@ -578,6 +578,24 @@ Escalation may occur when:
 - AI provider fails repeatedly
 - The visitor appears ready to buy
 
+### 20.1 Admin presence gating (implementation)
+
+A human handoff is only offered when an admin is **actually online**.
+
+- The admin dashboard (`AdminShell`) pings `chat_admin_presence` every
+  30 seconds while it is open (`pingAdminPresence` server action).
+- `isAnyAdminOnline()` (`src/features/chat/admin-presence.ts`) treats an
+  admin as online when `last_seen_at` is within a 3-minute freshness
+  window (`isWithinOnlineWindow`).
+- In `sendVisitorMessage` and `sendFaqBotMessage`, when the AI cannot
+  answer safely the bot escalates to `waiting_for_admin` **only if** an
+  admin is online. Otherwise the bot stays in AI mode and replies with the
+  configured graceful fallback message — the visitor is never told a team
+  member was notified when nobody is there.
+- The fallback messages no longer claim a team member was notified; the
+  escalation message (shown only when an admin is online) keeps the
+  "team member has been notified" wording.
+
 ---
 
 ## 21. Human Takeover

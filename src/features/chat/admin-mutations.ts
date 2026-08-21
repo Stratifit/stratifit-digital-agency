@@ -73,6 +73,26 @@ export async function adminReply(
 }
 
 /**
+ * Heartbeat from the admin dashboard. Upserts the current admin's presence
+ * row so the chatbot knows a human is online and can hand off conversations
+ * instead of promising a team member who is not there. Called periodically
+ * by the admin shell while the dashboard is open. Best-effort: failures are
+ * ignored so the admin UI is never blocked by a presence ping.
+ */
+export async function pingAdminPresence(): Promise<{ success: boolean }> {
+  try {
+    const { supabase, userId } = await requireAdminUserId();
+    await supabase.from("chat_admin_presence").upsert(
+      { user_id: userId, last_seen_at: new Date().toISOString() },
+      { onConflict: "user_id" }
+    );
+  } catch {
+    // Best-effort — never fail the admin UI over a presence ping.
+  }
+  return { success: true };
+}
+
+/**
  * Marks whether an admin is currently typing a reply in the conversation
  * inbox. The visitor chat widget polls this column and shows a typing
  * indicator while the value is fresh. Best-effort: failures are ignored so

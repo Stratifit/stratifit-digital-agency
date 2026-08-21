@@ -3,9 +3,12 @@
 import * as React from "react";
 import { cn } from "@/lib/cn";
 import type { CurrentAdmin } from "@/actions/auth";
+import { pingAdminPresence } from "@/features/chat/admin-mutations";
 import { Sidebar } from "./sidebar";
 import { Topbar } from "./topbar";
 import { BottomNav } from "./bottom-nav";
+
+const PRESENCE_PING_MS = 30_000;
 
 export function AdminShell({
   admin,
@@ -17,6 +20,26 @@ export function AdminShell({
   const [collapsed, setCollapsed] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
+
+  // Presence heartbeat: while the admin dashboard is open, ping the
+  // chat_admin_presence row so the chatbot knows a human is online and can
+  // hand off escalated conversations. The visitor-side window is 3 minutes,
+  // so a 30s ping keeps the row fresh without hammering the database.
+  React.useEffect(() => {
+    let cancelled = false;
+    const ping = () => {
+      if (cancelled) return;
+      pingAdminPresence().catch(() => {
+        // Best-effort — presence is advisory, never block the dashboard.
+      });
+    };
+    ping();
+    const id = window.setInterval(ping, PRESENCE_PING_MS);
+    return () => {
+      cancelled = true;
+      window.clearInterval(id);
+    };
+  }, []);
 
   function handleNavigate() {
     setMobileOpen(false);

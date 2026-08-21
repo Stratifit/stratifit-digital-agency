@@ -11,6 +11,7 @@ import { isValidDisplayName } from "@/lib/validate-display-name";
 import type { Json } from "@/types/database.types";
 import { getChatbotSettings, getApprovedKnowledge } from "./knowledge";
 import { getChatProvider } from "./ai";
+import { isAnyAdminOnline } from "./admin-presence";
 
 const messageSchema = z.object({
   visitor_token: z.string().min(16),
@@ -184,17 +185,22 @@ export async function sendVisitorMessage(
     });
   }
 
-  // Escalate if AI cannot answer safely
-  const escalationMessage = escalated
-    ? settings.escalation_message_translations?.[parsed.data.locale] ??
+  // A human handoff is only possible when human support is enabled AND an
+  // admin is actually online (dashboard presence heartbeat). Otherwise the
+  // bot stays in AI mode and replies with the fallback message, so the
+  // visitor is never told a team member will join when nobody is there.
+  const humanOnline =
+    settings.human_support_enabled && (await isAnyAdminOnline());
+
+  if (escalated && humanOnline) {
+    const escalationMessage =
+      settings.escalation_message_translations?.[parsed.data.locale] ??
       settings.escalation_message_translations?.en ??
-      "Let me connect you with a team member."
-    : undefined;
-  if (escalated) {
+      "Let me connect you with a team member.";
     await supabase.from("chat_messages").insert({
       conversation_id: conversation.id,
       sender_type: "ai",
-      content: escalationMessage!,
+      content: escalationMessage,
       content_format: "text",
     });
     await supabase
@@ -204,22 +210,45 @@ export async function sendVisitorMessage(
     await supabase.from("conversation_events").insert({
       conversation_id: conversation.id,
       event_type: "escalated",
-      metadata: { reason: "ai_uncertain" },
+      metadata: { reason: "ai_uncertain", admin_online: true },
     });
-  } else {
-    await supabase
-      .from("chat_conversations")
-      .update({ last_message_at: new Date().toISOString() })
-      .eq("id", conversation.id);
+    return {
+      success: true,
+      data: {
+        conversation_id: conversation.id,
+        escalated: true,
+        escalation_message: escalationMessage,
+        mode: conversation.mode,
+      },
+    };
   }
+
+  // Bot stays in charge: store the graceful fallback as the AI reply when the
+  // model could not answer, otherwise persist the model's own reply.
+  const reply = escalated
+    ? (settings.fallback_message_translations?.[parsed.data.locale] ??
+      settings.fallback_message_translations?.en ??
+      "I could not find a clear answer to that. You can ask me about our services, pricing, or process, or leave your email and our team will get back to you.")
+    : ai.content;
+  if (reply) {
+    await supabase.from("chat_messages").insert({
+      conversation_id: conversation.id,
+      sender_type: "ai",
+      content: reply,
+      content_format: "text",
+    });
+  }
+  await supabase
+    .from("chat_conversations")
+    .update({ last_message_at: new Date().toISOString() })
+    .eq("id", conversation.id);
 
   return {
     success: true,
     data: {
       conversation_id: conversation.id,
-      ai_reply: ai.content || undefined,
-      escalated,
-      escalation_message: escalationMessage,
+      ai_reply: reply || undefined,
+      escalated: false,
       mode: conversation.mode,
     },
   };
