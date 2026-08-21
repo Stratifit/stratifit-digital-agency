@@ -43,41 +43,51 @@ function contentTokens(text: string): Set<string> {
 }
 
 /**
+ * Deterministic knowledge matcher shared by the local fallback provider and
+ * the remote provider's error path (rate limits, timeouts, provider outages).
+ * Answers ONLY when the question clearly overlaps approved content;
+ * otherwise escalates. Never invents facts.
+ */
+export function matchKnowledge(input: ChatRequest): ChatResponse {
+  const queryTokens = contentTokens(input.message);
+
+  let best: KnowledgeEntry | null = null;
+  let bestScore = 0;
+
+  for (const entry of input.knowledge) {
+    const primary = contentTokens(`${entry.question ?? ""} ${entry.title ?? ""}`);
+    const secondary = contentTokens(`${entry.answer ?? ""} ${entry.content ?? ""}`);
+
+    let score = 0;
+    for (const token of queryTokens) {
+      if (primary.has(token)) score += 2;
+      else if (secondary.has(token)) score += 1;
+    }
+
+    if (score > bestScore) {
+      bestScore = score;
+      best = entry;
+    }
+  }
+
+  if (best && bestScore >= 4) {
+    const answer = best.answer ?? best.content ?? "";
+    if (answer.trim()) {
+      return { content: answer, escalated: false };
+    }
+  }
+
+  return { content: "", escalated: true };
+}
+
+/**
  * Knowledge-based fallback provider. Answers ONLY when the question clearly
  * overlaps approved content; otherwise escalates. Never invents facts.
- * Replace with a real model provider once AI_API_KEY is configured.
+ * Used when no AI_API_KEY is configured.
  */
 export class KnowledgeChatProvider implements ChatProvider {
   async generateResponse(input: ChatRequest): Promise<ChatResponse> {
-    const queryTokens = contentTokens(input.message);
-
-    let best: KnowledgeEntry | null = null;
-    let bestScore = 0;
-
-    for (const entry of input.knowledge) {
-      const primary = contentTokens(`${entry.question ?? ""} ${entry.title ?? ""}`);
-      const secondary = contentTokens(`${entry.answer ?? ""} ${entry.content ?? ""}`);
-
-      let score = 0;
-      for (const token of queryTokens) {
-        if (primary.has(token)) score += 2;
-        else if (secondary.has(token)) score += 1;
-      }
-
-      if (score > bestScore) {
-        bestScore = score;
-        best = entry;
-      }
-    }
-
-    if (best && bestScore >= 4) {
-      const answer = best.answer ?? best.content ?? "";
-      if (answer.trim()) {
-        return { content: answer, escalated: false };
-      }
-    }
-
-    return { content: "", escalated: true };
+    return matchKnowledge(input);
   }
 }
 

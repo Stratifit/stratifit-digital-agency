@@ -1,4 +1,9 @@
-import type { ChatProvider, ChatRequest, ChatResponse } from "./ai";
+import {
+  matchKnowledge,
+  type ChatProvider,
+  type ChatRequest,
+  type ChatResponse,
+} from "./ai";
 
 const STYLE_GUIDE: Record<string, string> = {
   professional:
@@ -12,9 +17,9 @@ const STYLE_GUIDE: Record<string, string> = {
 /**
  * Custom reply behavior. The system prompt gives the assistant a Stratifit
  * persona, keeps it grounded in approved knowledge, applies the configured
- * response style, and forces an explicit ESCALATE marker when the question
- * is not covered — so the app can hand the visitor to a human instead of
- * letting the model invent facts.
+ * response style, and forces an explicit ESCALATE marker only when the
+ * question is genuinely outside the knowledge base — so the app can hand
+ * the visitor to a human instead of letting the model invent facts.
  */
 export function buildSystemPrompt(
   knowledge: ChatRequest["knowledge"],
@@ -27,12 +32,12 @@ export function buildSystemPrompt(
 
   return [
     "You are the Stratifit support assistant, an expert on Stratifit's digital agency services.",
-    `You respond in the visitor's language. The visitor's locale is: ${locale}.`,
+    `ALWAYS respond in the visitor's language. The visitor's locale is: ${locale}. Translate your answer into that language even if the knowledge below is in English.`,
     style ? STYLE_GUIDE[style] ?? "" : "",
-    "Answer ONLY from the approved knowledge below.",
-    "Keep answers concise (2-5 sentences). Ask one clarifying question when the request is vague.",
-    "Never invent prices, discounts, timelines, availability, testimonials, results, guarantees, or human approvals.",
-    "If the knowledge does not cover the question, reply with the exact word: ESCALATE",
+    "Answer ONLY from the approved knowledge below. Do not invent prices, discounts, timelines, availability, testimonials, results, guarantees, or human approvals.",
+    "Keep answers concise (2-5 sentences). When the question is vague, ask one clarifying question before answering.",
+    "Be helpful: if a question is close to the knowledge, answer with what the knowledge supports and offer the relevant next step (e.g. contact form, pricing page).",
+    "Reply with the exact word ESCALATE only when the question is clearly outside Stratifit's business (unrelated topics, personal advice, confidential data) or when the knowledge genuinely does not cover it.",
     `Approved knowledge:\n${knowledgeText}`,
   ]
     .filter(Boolean)
@@ -51,6 +56,11 @@ export function normalizeBaseUrl(raw?: string): string {
  * Remote provider used when AI_API_KEY is configured. Calls a compatible
  * OpenAI-style chat completions endpoint (e.g. Groq). The response must stay
  * grounded in the approved knowledge provided in the system prompt.
+ *
+ * When the provider itself fails (network error, timeout, rate limit 429,
+ * 5xx), fall back to the deterministic local knowledge matcher instead of
+ * escalating, so visitors still get an answer from the knowledge base.
+ * A clean ESCALATE from the model still escalates (question out of scope).
  */
 export class RemoteChatProvider implements ChatProvider {
   async generateResponse(input: ChatRequest): Promise<ChatResponse> {
@@ -59,7 +69,7 @@ export class RemoteChatProvider implements ChatProvider {
     const model = process.env.AI_MODEL ?? "gpt-4o-mini";
 
     if (!apiKey) {
-      return { content: "", escalated: true };
+      return matchKnowledge(input);
     }
 
     const messages: { role: "system" | "user" | "assistant"; content: string }[] = [
@@ -95,19 +105,19 @@ export class RemoteChatProvider implements ChatProvider {
         "Chat AI provider error:",
         error instanceof Error ? error.message : error
       );
-      return { content: "", escalated: true };
+      return matchKnowledge(input);
     }
 
     if (!res.ok) {
       console.error(`Chat AI provider HTTP ${res.status}`);
-      return { content: "", escalated: true };
+      return matchKnowledge(input);
     }
 
     let body: { choices?: { message?: { content?: string } }[] };
     try {
       body = (await res.json()) as { choices?: { message?: { content?: string } }[] };
     } catch {
-      return { content: "", escalated: true };
+      return matchKnowledge(input);
     }
 
     const content = body.choices?.[0]?.message?.content?.trim() ?? "";
