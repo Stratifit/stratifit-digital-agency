@@ -6,6 +6,7 @@ import {
   useWatch,
   useFieldArray,
   type UseFormRegister,
+  type FieldErrors,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -51,8 +52,10 @@ type SectionKey = "header" | "cta" | "stats" | "review" | "tech" | "seo";
 
 function ReviewSummaryEditor({
   register,
+  errors,
 }: {
   register: UseFormRegister<SectionSettingsFormValues>;
+  errors?: FieldErrors<SectionSettingsFormValues>["review_summary"];
 }) {
   const fieldPrefix = "review_summary";
   return (
@@ -63,8 +66,12 @@ function ReviewSummaryEditor({
           <Input
             id={`${fieldPrefix}.rating`}
             placeholder="4.9"
+            aria-invalid={Boolean(errors?.rating)}
             {...register(`${fieldPrefix}.rating`)}
           />
+          {errors?.rating ? (
+            <p className="text-xs text-error">{errors.rating.message}</p>
+          ) : null}
         </div>
         <div className="space-y-2">
           <Label htmlFor={`${fieldPrefix}.verifiedReviews`}>
@@ -85,8 +92,12 @@ function ReviewSummaryEditor({
           <Input
             id={`${fieldPrefix}.googleRating`}
             placeholder="4.9"
+            aria-invalid={Boolean(errors?.googleRating)}
             {...register(`${fieldPrefix}.googleRating`)}
           />
+          {errors?.googleRating ? (
+            <p className="text-xs text-error">{errors.googleRating.message}</p>
+          ) : null}
         </div>
         <div className="space-y-2">
           <Label htmlFor={`${fieldPrefix}.googleReviews`}>
@@ -123,11 +134,13 @@ function ReviewSummaryEditor({
 function TechStackEditor({
   register,
   fields,
+  fieldErrors,
   onAppend,
   onRemove,
 }: {
   register: UseFormRegister<SectionSettingsFormValues>;
   fields: { id: string }[];
+  fieldErrors?: FieldErrors<SectionSettingsFormValues>["tech_stack"];
   onAppend: () => void;
   onRemove: (index: number) => void;
 }) {
@@ -143,8 +156,14 @@ function TechStackEditor({
                 <Input
                   id={`${fieldPrefix}-${index}-name`}
                   placeholder="Next.js"
+                  aria-invalid={Boolean(fieldErrors?.[index]?.name)}
                   {...register(`${fieldPrefix}.${index}.name`)}
                 />
+                {fieldErrors?.[index]?.name ? (
+                  <p className="text-xs text-error">
+                    {fieldErrors[index]?.name?.message}
+                  </p>
+                ) : null}
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor={`${fieldPrefix}-${index}-icon`}>
@@ -193,9 +212,11 @@ function TechStackEditor({
 function StatsEditor({
   register,
   locale,
+  errors,
 }: {
   register: UseFormRegister<SectionSettingsFormValues>;
   locale: EditorLocale;
+  errors?: FieldErrors<SectionSettingsFormValues>["stats"];
 }) {
   const fieldPrefix = "stats";
   return (
@@ -214,6 +235,7 @@ function StatsEditor({
               <Input
                 id={`${fieldPrefix}.${index}.value`}
                 placeholder="50+"
+                aria-invalid={Boolean(errors?.[index]?.value)}
                 {...register(`${fieldPrefix}.${index}.value`)}
               />
             </div>
@@ -254,7 +276,21 @@ function translations(
   };
 }
 
+function hasReviewSummaryData(
+  summary: AdminSectionSettings["review_summary"]
+): boolean {
+  if (!summary) return false;
+  return (
+    Boolean(summary.rating?.trim()) ||
+    Boolean(summary.googleRating?.trim()) ||
+    Boolean(summary.googleReviewsUrl?.trim()) ||
+    (summary.verifiedReviews ?? 0) > 0 ||
+    (summary.googleReviews ?? 0) > 0
+  );
+}
+
 function toFormValues(settings: AdminSectionSettings): SectionSettingsFormValues {
+  const reviewSummary = settings.review_summary;
   return {
     eyebrow_translations: translations(settings.eyebrow_translations),
     title_translations: translations(settings.title_translations),
@@ -268,13 +304,16 @@ function toFormValues(settings: AdminSectionSettings): SectionSettingsFormValues
           label_translations: translations(stat.label_translations),
         }))
       : [],
-    review_summary: settings.review_summary
+    // An empty stored band ({}) must stay undefined in the form — mapping it
+    // to empty strings would fail validation and silently block saving for
+    // every section that doesn't use the review summary.
+    review_summary: hasReviewSummaryData(reviewSummary)
       ? {
-          rating: settings.review_summary.rating ?? "",
-          verifiedReviews: settings.review_summary.verifiedReviews ?? 0,
-          googleRating: settings.review_summary.googleRating ?? "",
-          googleReviews: settings.review_summary.googleReviews ?? 0,
-          googleReviewsUrl: settings.review_summary.googleReviewsUrl ?? "",
+          rating: reviewSummary?.rating ?? "",
+          verifiedReviews: reviewSummary?.verifiedReviews ?? 0,
+          googleRating: reviewSummary?.googleRating ?? "",
+          googleReviews: reviewSummary?.googleReviews ?? 0,
+          googleReviewsUrl: reviewSummary?.googleReviewsUrl ?? "",
         }
       : undefined,
     tech_stack: Array.isArray(settings.tech_stack)
@@ -354,6 +393,11 @@ export function SectionSettingsForm({
     }
   }
 
+  function onInvalid() {
+    setSaved(false);
+    setServerError("Please check the form for errors.");
+  }
+
   const sectionOptions: EditorSectionOption<SectionKey>[] = [
     {
       key: "header",
@@ -405,7 +449,10 @@ export function SectionSettingsForm({
   ];
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+    <form
+      onSubmit={handleSubmit(onSubmit, onInvalid)}
+      className="space-y-8"
+    >
       {/* Visibility toggle */}
       <div className="flex items-center justify-between rounded-card border border-card-border bg-card-dark px-4 py-3.5 shadow-sm">
         <div>
@@ -585,17 +632,21 @@ export function SectionSettingsForm({
         ) : null}
 
         {activeSection === "stats" ? (
-          <StatsEditor register={register} locale={locale} />
+          <StatsEditor register={register} locale={locale} errors={errors.stats} />
         ) : null}
 
         {activeSection === "review" ? (
-          <ReviewSummaryEditor register={register} />
+          <ReviewSummaryEditor
+            register={register}
+            errors={errors.review_summary}
+          />
         ) : null}
 
         {activeSection === "tech" ? (
           <TechStackEditor
             register={register}
             fields={techFields.fields}
+            fieldErrors={errors.tech_stack}
             onAppend={() => techFields.append({ name: "", icon: "" })}
             onRemove={(index) => techFields.remove(index)}
           />

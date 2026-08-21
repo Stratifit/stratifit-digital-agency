@@ -80,7 +80,10 @@ export async function updateSectionSettings(
           parsed.data.cta_label_translations
         ),
         cta_url: parsed.data.cta_url?.trim() || null,
-        stats: parsed.data.stats ?? [],
+        // Empty value = intentionally hidden row; don't persist blanks.
+        stats: (parsed.data.stats ?? []).filter(
+          (stat) => stat.value.trim().length > 0
+        ),
         review_summary: parsed.data.review_summary
           ? {
               ...parsed.data.review_summary,

@@ -10,8 +10,9 @@ const translations = () =>
     es: z.string(),
   });
 
+/** Empty value = hidden row (the editor invites leaving rows blank). */
 const statsItem = z.object({
-  value: z.string().min(1, "Value is required"),
+  value: z.string(),
   label_translations: translations(),
 });
 
@@ -21,16 +22,42 @@ const techStackItem = z.object({
 });
 
 /**
- * Review summary band shown on /testimonials: client rating, verified review
- * count, Google rating/count, and the Google reviews link.
+ * Review summary band shown on /testimonials. Untouched (all-empty) data is
+ * valid so sections that don't use the band never fail validation; once any
+ * field is filled, the two ratings become required.
  */
-const reviewSummary = z.object({
-  rating: z.string().min(1, "Rating is required"),
-  verifiedReviews: z.number().int().min(0),
-  googleRating: z.string().min(1, "Rating is required"),
-  googleReviews: z.number().int().min(0),
-  googleReviewsUrl: z.string(),
-});
+const reviewSummary = z
+  .object({
+    rating: z.string(),
+    verifiedReviews: z.number().int().min(0),
+    googleRating: z.string(),
+    googleReviews: z.number().int().min(0),
+    googleReviewsUrl: z.string(),
+  })
+  .superRefine((summary, ctx) => {
+    const touched =
+      [summary.rating, summary.googleRating, summary.googleReviewsUrl].some(
+        (value) => value.trim().length > 0
+      ) ||
+      summary.verifiedReviews > 0 ||
+      summary.googleReviews > 0;
+    if (!touched) return;
+
+    if (summary.rating.trim().length === 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["rating"],
+        message: "Rating is required",
+      });
+    }
+    if (summary.googleRating.trim().length === 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["googleRating"],
+        message: "Rating is required",
+      });
+    }
+  });
 
 export const sectionSettingsSchema = z.object({
   eyebrow_translations: translations(),
