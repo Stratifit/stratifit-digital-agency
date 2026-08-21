@@ -16,7 +16,7 @@ describe("resolveImapConfig", () => {
       user: "inbox@stratifit.com",
       pass: "app-password",
       mailbox: "INBOX",
-      mailboxes: ["INBOX"],
+      mailboxes: ["INBOX", "Junk"],
       sinceDays: 7,
       secure: true,
     });
@@ -45,13 +45,14 @@ describe("resolveImapConfig", () => {
     expect(result.config?.mailbox).toBe("INBOX");
   });
 
-  it("defaults to INBOX when no mailbox is configured", () => {
+  it("defaults to INBOX and Junk when no mailbox is configured", () => {
     const result = resolveImapConfig({
       IMAP_HOST: "imap.zoho.eu",
       IMAP_USER: "u",
       IMAP_PASS: "p",
     });
-    expect(result.config?.mailboxes).toEqual(["INBOX"]);
+    expect(result.config?.mailboxes).toEqual(["INBOX", "Junk"]);
+    expect(result.config?.mailbox).toBe("INBOX");
   });
 
   it("reports missing keys and returns no config", () => {

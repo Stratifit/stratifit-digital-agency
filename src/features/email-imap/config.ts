@@ -3,8 +3,8 @@
  *
  * Canonical names:
  *   IMAP_HOST, IMAP_PORT, IMAP_USER, IMAP_PASS
- *   IMAP_MAILBOXES       — comma-separated folders to sweep (default INBOX;
- *                          add Junk so spam-filtered replies still arrive)
+ *   IMAP_MAILBOXES       — comma-separated folders to sweep (default
+ *                          INBOX,Junk so spam-filtered replies still arrive)
  *   IMAP_SYNC_SINCE_DAYS — how far back each fetch scans (default 7)
  *   IMAP_SYNC_SECRET     — bearer secret for POST /api/inbox/fetch
  */
@@ -84,7 +84,10 @@ export function resolveImapConfig(
         .split(",")
         .map((name) => name.trim())
         .filter(Boolean)
-    : [env.IMAP_MAILBOX?.trim() || "INBOX"];
+    : (env.IMAP_MAILBOX?.trim() || "INBOX,Junk")
+        .split(",")
+        .map((name) => name.trim())
+        .filter(Boolean);
   if (mailboxList.length === 0) mailboxList.push("INBOX");
 
   return {
