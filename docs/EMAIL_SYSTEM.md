@@ -136,6 +136,15 @@ Mail Manager ingress credentials (`inp-…`) fail with `EAUTH` on every real
 `email-smtp.<region>.amazonaws.com` endpoint — a quick way to tell the two
 apart.
 
+Since the fix in `sender.ts` (`getSendBlockError`), `sendEmail` **refuses to
+send at all** when the configured relay is a Mail Manager ingress endpoint: it
+returns `{ ok: false, error }` with an actionable message instead of logging a
+fake "Sent". The admin Communication dashboard also has a **"Test SMTP
+connection"** probe (`SmtpConnectionProbe`) that connects to the configured
+host live, shows the relay's greeting banner, classifies it (SES SMTP vs Mail
+Manager ingress vs unknown), and verifies the credentials — so the exact relay
+in use is visible without sending anything.
+
 ---
 
 ## 5. Multilingual Templates

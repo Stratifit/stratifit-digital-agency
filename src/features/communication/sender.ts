@@ -1,6 +1,8 @@
 import "server-only";
 import nodemailer, { type Transporter } from "nodemailer";
-import { getSmtpHostWarning } from "./smtp-config";
+import { getSendBlockError, getSmtpHostWarning } from "./smtp-config";
+
+export { getSendBlockError };
 
 /**
  * Sender: Nodemailer over AWS SES SMTP. All email leaves the app through
@@ -117,6 +119,7 @@ function extractProviderMessageId(info: {
 export async function sendEmail(
   input: SendEmailInput
 ): Promise<SendEmailResult> {
+  const config = getSmtpConfig();
   const transporter = getTransporter();
   const from = input.from || getDefaultFrom();
 
@@ -125,6 +128,18 @@ export async function sendEmail(
       "Communication sender: SMTP or from-address not configured; not sending."
     );
     return { ok: false, error: "Email sending is not configured." };
+  }
+
+  // Refuse to send into an inbound-only relay: Mail Manager ingress accepts
+  // mail with 250 OK then drops it, which previously logged "Sent" for mail
+  // that never left the gateway.
+  const blockError = getSendBlockError(
+    config?.host ?? "",
+    config?.user ?? ""
+  );
+  if (blockError) {
+    console.error("Communication sender blocked:", blockError);
+    return { ok: false, error: blockError };
   }
 
   try {

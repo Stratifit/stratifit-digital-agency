@@ -48,3 +48,25 @@ export function getSmtpHostWarning(host: string, user: string): string | null {
   }
   return null;
 }
+
+/**
+ * Refuse to send through a Mail Manager ingress relay. Those endpoints only
+ * receive inbound mail: they accept outbound messages with `250 OK` and then
+ * silently drop them, so logs would say "Sent" forever while nothing is ever
+ * delivered. Failing loudly here turns that silent loss into a visible,
+ * actionable error. Returns null when the relay is allowed.
+ */
+export function getSendBlockError(host: string, user: string): string | null {
+  const kind = classifySmtpHost(host);
+  const isMailManager =
+    kind === "mail-manager" || user.trim().toLowerCase().startsWith("inp-");
+  if (isMailManager) {
+    return (
+      "SMTP relay is an AWS Mail Manager ingress endpoint, which only receives " +
+      "inbound mail and silently drops outbound messages. Update SMTP_HOST to " +
+      "email-smtp.<region>.amazonaws.com and use real SES SMTP credentials " +
+      "(AWS SES console > SMTP settings > Create SMTP credentials)."
+    );
+  }
+  return null;
+}

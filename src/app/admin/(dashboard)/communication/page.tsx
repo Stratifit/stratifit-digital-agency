@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AdminPageHeader } from "@/components/admin/page-header";
 import { EmailConfigStatus } from "@/components/admin/email-config-status";
+import { SmtpConnectionProbe } from "@/components/admin/smtp-connection-probe";
 import { getEmailLogs, getEmailSchedules } from "@/features/communication/queries";
 import { getEmailTemplatesForAdmin } from "@/features/communication/queries";
 import { getEmailConfigStatus } from "@/features/communication/sender";
@@ -68,6 +69,7 @@ export default async function AdminCommunicationPage() {
         description="One place for every customer email: multilingual templates, automatic replies, manual sends, schedules, and automation triggers."
       />
       <EmailConfigStatus status={configStatus} />
+      <SmtpConnectionProbe />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map((card) => (
           <Link
