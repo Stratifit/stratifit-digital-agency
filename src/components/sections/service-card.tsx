@@ -78,7 +78,7 @@ export function ServiceCardCta({
   );
 }
 
-export function CheckIcon() {
+function CheckIcon() {
   return (
     <svg
       viewBox="0 0 24 24"

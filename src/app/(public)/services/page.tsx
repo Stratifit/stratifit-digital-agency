@@ -10,7 +10,7 @@ import { t } from "@/lib/i18n/ui-strings";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
-import { ServicesAccordion } from "@/components/sections/services-accordion";
+import { ServiceCard, ServiceCardCta } from "@/components/sections/service-card";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
@@ -33,6 +33,7 @@ export default async function ServicesPage() {
     getPublicServicePages(),
     getPublicSectionSetting("services"),
   ]);
+  const pageSlugs = new Set(servicePages.map((page) => page.slug));
 
   const eyebrow =
     resolveTranslation(settings?.eyebrow_translations ?? null, locale) ||
@@ -68,12 +69,21 @@ export default async function ServicesPage() {
 
       <Section>
         <Container>
-          <Reveal>
-            <ServicesAccordion
-              services={services}
-              locale={locale}
-              detailSlugs={servicePages.map((page) => page.slug)}
-            />
+          <Reveal stagger variant="card" className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+            {services.map((service) => (
+              <ServiceCard
+                key={service.slug}
+                service={service}
+                locale={locale}
+                cta={
+                  <ServiceCardCta
+                    service={service}
+                    locale={locale}
+                    hasDetailPage={pageSlugs.has(service.slug)}
+                  />
+                }
+              />
+            ))}
           </Reveal>
         </Container>
       </Section>

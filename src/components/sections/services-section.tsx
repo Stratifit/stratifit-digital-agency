@@ -6,7 +6,7 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Reveal } from "@/components/ui/reveal";
-import { ServicesAccordion } from "./services-accordion";
+import { ServiceCard, ServiceCardCta } from "./service-card";
 
 export async function ServicesSection() {
   const locale = await getLocale();
@@ -20,18 +20,29 @@ export async function ServicesSection() {
     return null;
   }
 
+  const pageSlugs = new Set(servicePages.map((p) => p.slug));
+
   return (
     <>
     <Section>
       <Container>
         <SectionHeader settings={settings} locale={locale} />
 
-        <Reveal>
-          <ServicesAccordion
-            services={services}
-            locale={locale}
-            detailSlugs={servicePages.map((page) => page.slug)}
-          />
+        <Reveal stagger variant="card" className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          {services.map((service) => (
+            <ServiceCard
+              key={service.slug}
+              service={service}
+              locale={locale}
+              cta={
+                <ServiceCardCta
+                  service={service}
+                  locale={locale}
+                  hasDetailPage={pageSlugs.has(service.slug)}
+                />
+              }
+            />
+          ))}
         </Reveal>
 
       </Container>
