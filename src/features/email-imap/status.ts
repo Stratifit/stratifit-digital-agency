@@ -19,6 +19,12 @@ export interface ImapStatus {
   mailboxes: string[];
   /** Enabled reply-as addresses that must exist in Zoho to receive replies. */
   senderAddresses: string[];
+  /** IMAP folder that holds sent mail (default "Sent"). */
+  sentFolder: string;
+  /** Import Zoho-sent mail into the dashboard (IMAP_SYNC_SENT). */
+  syncSent: boolean;
+  /** Mirror dashboard sends into the Zoho Sent folder (IMAP_SENT_MIRROR). */
+  mirrorSent: boolean;
 }
 
 /**
@@ -113,5 +119,8 @@ export async function getImapStatus(): Promise<ImapStatus> {
     lastImapMessageAt: lastMessage?.sent_at ?? null,
     mailboxes: config?.mailboxes ?? ["INBOX"],
     senderAddresses,
+    sentFolder: config?.sentFolder ?? "Sent",
+    syncSent: config?.syncSent ?? false,
+    mirrorSent: config?.mirrorSent ?? false,
   };
 }

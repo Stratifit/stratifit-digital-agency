@@ -19,7 +19,35 @@ describe("resolveImapConfig", () => {
       mailboxes: ["INBOX", "Junk"],
       sinceDays: 7,
       secure: true,
+      sentFolder: "Sent",
+      syncSent: false,
+      mirrorSent: false,
     });
+  });
+
+  it("defaults the sent folder to Sent and the sync flags to off", () => {
+    const result = resolveImapConfig({
+      IMAP_HOST: "imap.zoho.eu",
+      IMAP_USER: "u",
+      IMAP_PASS: "p",
+    });
+    expect(result.config?.sentFolder).toBe("Sent");
+    expect(result.config?.syncSent).toBe(false);
+    expect(result.config?.mirrorSent).toBe(false);
+  });
+
+  it("honors IMAP_SENT_FOLDER, IMAP_SYNC_SENT and IMAP_SENT_MIRROR", () => {
+    const result = resolveImapConfig({
+      IMAP_HOST: "imap.zoho.eu",
+      IMAP_USER: "u",
+      IMAP_PASS: "p",
+      IMAP_SENT_FOLDER: "Sent Items",
+      IMAP_SYNC_SENT: "1",
+      IMAP_SENT_MIRROR: "true",
+    });
+    expect(result.config?.sentFolder).toBe("Sent Items");
+    expect(result.config?.syncSent).toBe(true);
+    expect(result.config?.mirrorSent).toBe(true);
   });
 
   it("honors overrides for mailbox and sync window", () => {

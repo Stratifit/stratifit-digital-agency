@@ -61,8 +61,8 @@ export function ImapStatusPanel({ status }: { status: ImapStatus }) {
           </h3>
           <p className="mt-0.5 text-xs text-text-muted">
             Pulls inbound replies from the Zoho mailbox into these
-            conversations. Runs hourly via cron, or on demand with the Sync
-            button.
+            conversations, and syncs the Zoho Sent folder both ways. Runs
+            daily via cron, or on demand with the Sync button.
           </p>
         </div>
         <Badge variant={configVariant}>{configLabel}</Badge>
@@ -104,7 +104,25 @@ export function ImapStatusPanel({ status }: { status: ImapStatus }) {
         <StatusRow label="Mailboxes swept">
           <span className="text-text-secondary">
             {status.mailboxes.join(", ")}
+            {status.syncSent ? `, ${status.sentFolder}` : ""}
           </span>
+        </StatusRow>
+        <StatusRow label="Zoho Sent sync">
+          {status.configured ? (
+            <>
+              <Badge variant={status.syncSent ? "success" : "warning"}>
+                {status.syncSent ? "Import on" : "Import off"}
+              </Badge>
+              <Badge variant={status.mirrorSent ? "success" : "warning"}>
+                {status.mirrorSent ? "Mirror on" : "Mirror off"}
+              </Badge>
+              <span className="text-xs text-text-muted">
+                IMAP_SYNC_SENT / IMAP_SENT_MIRROR
+              </span>
+            </>
+          ) : (
+            <span className="text-text-secondary">disabled (IMAP off)</span>
+          )}
         </StatusRow>
         <StatusRow label="Reply-as addresses">
           <span className="max-w-[420px] truncate text-xs text-text-muted">
@@ -137,6 +155,29 @@ export function ImapStatusPanel({ status }: { status: ImapStatus }) {
             ). Replies sent to an address that is not a Zoho mailbox or alias
             of that account will not arrive in this inbox. Set them up under
             Zoho Mail → Settings → Mail Accounts → Aliases.
+          </p>
+        </div>
+      ) : null}
+
+      {status.configured && (!status.syncSent || !status.mirrorSent) ? (
+        <div className="mt-3 rounded-card bg-surface px-3 py-2.5 text-xs leading-relaxed text-text-muted">
+          <p>
+            <span className="font-semibold text-text-secondary">
+              Sent-folder sync:{" "}
+            </span>
+            enable{" "}
+            <code className="rounded-sm bg-surface-hover px-1 py-0.5">
+              IMAP_SYNC_SENT=1
+            </code>{" "}
+            to import mail sent from Zoho into these conversations, and{" "}
+            <code className="rounded-sm bg-surface-hover px-1 py-0.5">
+              IMAP_SENT_MIRROR=1
+            </code>{" "}
+            to show dashboard sends in Zoho&apos;s Sent folder (folder:{" "}
+            <code className="rounded-sm bg-surface-hover px-1 py-0.5">
+              {status.sentFolder}
+            </code>
+            ).
           </p>
         </div>
       ) : null}

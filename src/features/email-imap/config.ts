@@ -4,9 +4,12 @@
  * Canonical names:
  *   IMAP_HOST, IMAP_PORT, IMAP_USER, IMAP_PASS
  *   IMAP_MAILBOXES       — comma-separated folders to sweep (default
- *                          INBOX,Junk so spam-filtered replies still arrive)
+ *                          INBOX, Junk so spam-filtered replies still arrive)
  *   IMAP_SYNC_SINCE_DAYS — how far back each fetch scans (default 7)
  *   IMAP_SYNC_SECRET     — bearer secret for POST /api/inbox/fetch
+ *   IMAP_SENT_FOLDER     — folder that holds sent mail (default Sent)
+ *   IMAP_SYNC_SENT       — import Zoho-sent mail into the dashboard
+ *   IMAP_SENT_MIRROR     — mirror dashboard sends into the Zoho Sent folder
  */
 export interface ImapConfig {
   host: string;
@@ -14,10 +17,16 @@ export interface ImapConfig {
   user: string;
   pass: string;
   mailbox: string;
-  /** Every folder swept per run (INBOX plus any extras like Junk). */
+  /** Every folder swept per-run (INBOX plus any extras like Junk). */
   mailboxes: string[];
   sinceDays: number;
   secure: boolean;
+  /** IMAP folder that holds sent mail (default "Sent"). */
+  sentFolder: string;
+  /** Sweep `sentFolder` and import Zoho-sent mail as outbound messages. */
+  syncSent: boolean;
+  /** APPEND a copy of dashboard sends into `sentFolder`. */
+  mirrorSent: boolean;
 }
 
 export interface ImapConfigResult {
@@ -90,6 +99,11 @@ export function resolveImapConfig(
         .filter(Boolean);
   if (mailboxList.length === 0) mailboxList.push("INBOX");
 
+  const isEnabled = (value: string | undefined): boolean => {
+    const v = value?.trim().toLowerCase();
+    return v === "1" || v === "true" || v === "yes" || v === "on";
+  };
+
   return {
     config: {
       host,
@@ -101,6 +115,9 @@ export function resolveImapConfig(
       sinceDays,
       // Zoho IMAP is TLS on 993; never fall back to plaintext.
       secure: true,
+      sentFolder: env.IMAP_SENT_FOLDER?.trim() || "Sent",
+      syncSent: isEnabled(env.IMAP_SYNC_SENT),
+      mirrorSent: isEnabled(env.IMAP_SENT_MIRROR),
     },
     missing,
     placeholders,

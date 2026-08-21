@@ -687,6 +687,13 @@ automation.
   reply-as address selection; `/admin/communication` dashboard (templates,
   composer, logs, schedules, triggers); inbound webhook and delivery webhook
   re-pointed at the engine
+- ✅ **Delivered (2026-08-21):** Zoho Sent two-way sync
+  (`openspec/changes/2026-08-21-zoho-sent-sync`) — dashboard sends mirrored
+  into the Zoho Mail Sent folder (IMAP APPEND, best-effort, gated on
+  `IMAP_SENT_MIRROR`); Zoho-sent mail imported into conversation threads as
+  outbound messages (Sent-folder sweep via `IMAP_SYNC_SENT`); RFC Message-ID
+  captured on outbound sends and stored in `headers.message_id` for dedupe;
+  status panel shows both flags
 - Email Inbox (✅ implemented — `openspec/changes/archive/2026-08-18-email-inbox`)
 - Email template library (✅ implemented — multilingual auto-replies,
   lifecycle, follow-up and billing templates;

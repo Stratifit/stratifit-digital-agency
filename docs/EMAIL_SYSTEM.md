@@ -112,6 +112,9 @@ COMMUNICATION_WEBHOOK_SECRET  # optional delivery-webhook secret
 COMMUNICATION_CRON_SECRET  # optional bearer secret for the schedule-processor route
 ZOHO_MAIL_DOMAIN       # inbound domain (Zoho Mail EU) — informational
 ZOHO_DKIM_KEY          # TXT value for zoho._domainkey — informational
+IMAP_SENT_FOLDER       # folder that holds sent mail (default "Sent")
+IMAP_SYNC_SENT         # import Zoho-sent mail into the dashboard (1/true)
+IMAP_SENT_MIRROR       # mirror dashboard sends into the Zoho Sent folder (1/true)
 ```
 
 Behavior:
@@ -282,6 +285,38 @@ Reply flow:
 SPF includes both `amazonses.com` (outbound) and `zoho.eu` (inbound/internal),
 so neither provider's sends are rejected by the other's policy. DMARC
 `p=quarantine` protects the domain from spoofing in both directions.
+
+### 5c. Two-Way Sent-Folder Sync with Zoho Mail
+
+The dashboard conversation inbox and the Zoho Mail **Sent** section stay in
+sync in both directions (implementation: `src/features/email-imap/`, spec
+`openspec/changes/2026-08-21-zoho-sent-sync/`):
+
+**Dashboard → Zoho Sent (mirror).** Every successful conversation send through
+`sendTemplateEmail` is mirrored into the Zoho **Sent** folder over IMAP
+(`APPEND`) by `email-imap/sent-mirror.ts`, best-effort:
+
+- Gated on IMAP being configured, `IMAP_SENT_MIRROR=1`, and the send carrying
+  an RFC Message-ID from a `from` address that belongs to the synced Zoho
+  mailbox (`IMAP_USER` or a configured sender address/alias).
+- The copy preserves the original Message-ID, subject, from/to, In-Reply-To /
+  References, and HTML/text content, so it threads in Zoho exactly like the
+  original.
+- Failures only log a warning — the SES send, `email_logs`, and the send
+  outcome are never affected.
+
+**Zoho → Dashboard (sweep).** When `IMAP_SYNC_SENT=1`, the IMAP fetch worker
+(see `docs/IMAP_INBOX.md`) additionally sweeps `IMAP_SENT_FOLDER` (default
+`Sent`). Messages sent by the Zoho mailbox are imported as `outbound`
+messages on the matching conversation thread (threading headers first,
+recipient + subject fallback, else a new `imap` thread), the thread moves to
+`waiting_on_customer`, and the message is deduplicated by RFC message-id —
+which also absorbs the mirrored copies so a dashboard send never gets
+recorded twice.
+
+This keeps AWS SES as the outbound provider (delivery webhooks and
+`email_logs` status tracking are unchanged) while both UIs see the same sent
+mail.
 
 ---
 

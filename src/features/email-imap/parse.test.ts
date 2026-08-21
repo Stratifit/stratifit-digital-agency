@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   extractMessageIds,
+  isFromSelf,
   normalizeInReplyTo,
   normalizeReferences,
   normalizeSubject,
@@ -98,6 +99,30 @@ describe("resolveThreadId", () => {
         candidateThreads: candidates,
       })
     ).toBeNull();
+  });
+});
+
+describe("isFromSelf", () => {
+  const aliases = ["info@stratifit.com", "Sales@Stratifit.com"];
+
+  it("matches the imap user and aliases case-insensitively", () => {
+    expect(isFromSelf("inbox@stratifit.com", "inbox@stratifit.com", [])).toBe(
+      true
+    );
+    expect(isFromSelf("INFO@stratifit.com", "inbox@stratifit.com", aliases)).toBe(
+      true
+    );
+    expect(isFromSelf("sales@stratifit.com", "inbox@stratifit.com", aliases)).toBe(
+      true
+    );
+  });
+
+  it("rejects foreign senders and empty values", () => {
+    expect(isFromSelf("client@example.com", "inbox@stratifit.com", aliases)).toBe(
+      false
+    );
+    expect(isFromSelf("", "inbox@stratifit.com", aliases)).toBe(false);
+    expect(isFromSelf("  ", "inbox@stratifit.com", aliases)).toBe(false);
   });
 });
 

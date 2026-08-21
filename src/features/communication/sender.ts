@@ -94,11 +94,20 @@ export interface SendEmailInput {
   text: string;
   from?: string;
   headers?: Record<string, string>;
+  /**
+   * RFC 5322 Message-ID to use for this send. When provided, Nodemailer uses
+   * it as the Message-ID header so the wire message, the stored outbound
+   * record, and any Zoho Sent mirror copy all share one id (dedupe-safe).
+   */
+  messageId?: string;
 }
 
 export interface SendEmailResult {
   ok: boolean;
+  /** SES provider message id (parsed from the SMTP 250 OK) — webhook key. */
   messageId?: string;
+  /** The RFC 5322 Message-ID carried in the message headers. */
+  rfcMessageId?: string;
   error?: string;
 }
 
@@ -157,9 +166,14 @@ export async function sendEmail(
       subject: input.subject,
       html: input.html,
       text: input.text,
+      ...(input.messageId ? { messageId: input.messageId } : {}),
       ...(input.headers ? { headers: input.headers } : {}),
     });
-    return { ok: true, messageId: extractProviderMessageId(info) };
+    return {
+      ok: true,
+      messageId: extractProviderMessageId(info),
+      rfcMessageId: input.messageId || info.messageId,
+    };
   } catch (error) {
     console.error("SMTP send error:", error);
     return {

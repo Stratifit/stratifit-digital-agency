@@ -40,6 +40,24 @@ export function normalizeInReplyTo(
   return null;
 }
 
+/**
+ * Whether a message was sent by the synced Zoho mailbox (the IMAP user) or
+ * one of its aliases / sender addresses. Used by the Sent-folder sweep to
+ * distinguish self-sent mail (→ outbound) from anything else (→ skip).
+ */
+export function isFromSelf(
+  fromEmail: string,
+  imapUser: string,
+  aliases: string[]
+): boolean {
+  const normalized = fromEmail.trim().toLowerCase();
+  if (!normalized) return false;
+  const candidates = [imapUser, ...aliases]
+    .map((address) => address.trim().toLowerCase())
+    .filter(Boolean);
+  return candidates.includes(normalized);
+}
+
 /** Normalize References (string, array, or absent) into an array of ids. */
 export function normalizeReferences(
   value: string | string[] | undefined | null

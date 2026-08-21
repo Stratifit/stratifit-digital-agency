@@ -1,4 +1,5 @@
 import "server-only";
+import { randomUUID } from "node:crypto";
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/service-role";
 import type { AutoFillContext } from "./auto-fill";
 import { renderEmailHtml, renderEmailText, renderTemplateContent } from "./renderer";
@@ -16,6 +17,13 @@ function normalizeLanguage(language: string): SupportedLanguage {
   return (SUPPORTED_LANGUAGES as readonly string[]).includes(language)
     ? (language as SupportedLanguage)
     : "en";
+}
+
+/** A stable RFC 5322 Message-ID for the send, scoped to the sender domain. */
+function buildRfcMessageId(from: string): string {
+  const at = from.lastIndexOf("@");
+  const domain = at >= 0 ? from.slice(at + 1).trim() : "stratifit.com";
+  return `<${randomUUID()}@${domain}>`;
 }
 
 /** Record a send in email_logs (idempotent by idempotency_key when given). */
@@ -64,6 +72,8 @@ export async function recordOutboundMessage(input: {
   subject: string;
   textContent: string;
   providerMessageId?: string;
+  /** RFC 5322 Message-ID — stored in headers.message_id for thread dedupe. */
+  rfcMessageId?: string;
   inReplyTo?: string;
   references?: string;
   status: "sent" | "failed";
@@ -82,7 +92,7 @@ export async function recordOutboundMessage(input: {
     provider_message_id: input.providerMessageId ?? null,
     in_reply_to: input.inReplyTo ?? null,
     references: input.references ?? null,
-    headers: {},
+    headers: input.rfcMessageId ? { message_id: input.rfcMessageId } : {},
     status: input.status,
     error_message: input.errorMessage ?? null,
     sent_at: input.status === "sent" ? new Date().toISOString() : null,
@@ -115,6 +125,8 @@ export interface SendTemplateInput {
   subjectOverride?: string;
   bodyOverride?: string;
   headers?: Record<string, string>;
+  /** Explicit RFC 5322 Message-ID; generated from the sender domain when absent. */
+  messageId?: string;
   threadId?: string;
   inReplyTo?: string;
   references?: string;
@@ -178,12 +190,16 @@ export async function sendTemplateEmail(
   }
 
   const language = normalizeLanguage(input.language);
+  const html = await renderEmailHtml({ subject, body, language });
+  const text = renderEmailText(subject, body);
+  const rfcMessageId = input.messageId || buildRfcMessageId(from);
   const result = await sendEmail({
     to: input.toEmail,
     from,
     subject,
-    html: await renderEmailHtml({ subject, body, language }),
-    text: renderEmailText(subject, body),
+    html,
+    text,
+    messageId: rfcMessageId,
     headers: input.headers,
   });
 
@@ -209,12 +225,34 @@ export async function sendTemplateEmail(
       subject,
       textContent: body,
       providerMessageId: result.messageId,
+      rfcMessageId: result.rfcMessageId || rfcMessageId,
       inReplyTo: input.inReplyTo,
       references: input.references,
       status: result.ok ? "sent" : "failed",
       errorMessage: result.error,
       updateThreadStatus: input.updateThreadStatus,
     });
+  }
+
+  // Best-effort mirror into the Zoho Sent folder (dashboard → Zoho Sent).
+  // Failures are logged only — they never change the send outcome.
+  if (result.ok) {
+    const { mirrorSentToZoho } = await import(
+      "@/features/email-imap/sent-mirror"
+    );
+    const mirror = await mirrorSentToZoho({
+      from,
+      to: input.toEmail,
+      subject,
+      html,
+      text,
+      messageId: rfcMessageId,
+      inReplyTo: input.inReplyTo,
+      references: input.references,
+    });
+    if (!mirror.mirrored && mirror.error) {
+      console.warn("Zoho Sent mirror skipped:", mirror.error);
+    }
   }
 
   if (!result.ok) {
