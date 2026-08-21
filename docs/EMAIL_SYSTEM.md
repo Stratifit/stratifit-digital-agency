@@ -107,7 +107,7 @@ SES_SMTP_PORT          # default 587
 SES_SMTP_USER          # SES SMTP username (console > SMTP settings)
 SES_SMTP_PASS          # SES SMTP password
 COMMUNICATION_FROM_EMAIL   # default sender (must be SES-verified)
-COMMUNICATION_REPLY_AS     # optional comma-separated reply-as addresses
+COMMUNICATION_REPLY_AS     # fallback reply-as addresses (DB table wins)
 COMMUNICATION_WEBHOOK_SECRET  # optional delivery-webhook secret
 COMMUNICATION_CRON_SECRET  # optional bearer secret for the schedule-processor route
 ZOHO_MAIL_DOMAIN       # inbound domain (Zoho Mail EU) — informational
@@ -118,8 +118,15 @@ Behavior:
 
 - When SMTP or the from-address is not configured, `sendEmail` returns
   `{ ok: false, error }` — it never silently succeeds.
-- Admins choose "Reply as:" from the configured `COMMUNICATION_REPLY_AS`
-  list (defaults to contact/sales/info/support@stratifit.com).
+- Admins choose "Reply as:" from the **Sender Addresses** table
+  (`email_sender_addresses`, managed at `/admin/communication/addresses`).
+  The table is seeded with contact/hello/info/sales/support@stratifit.com.
+  `COMMUNICATION_REPLY_AS` is only a fallback when the table is empty, and
+  the built-in defaults cover the same addresses when both are empty.
+- The sender address is set per send: the Send Email composer and the inbox
+  reply composer both expose a "Reply as" picker fed by the table.
+- Every address at the verified SES domain works as a sender, so new
+  addresses can be added from the dashboard without touching env vars.
 
 ### 4.1 SMTP endpoint requirement (important)
 

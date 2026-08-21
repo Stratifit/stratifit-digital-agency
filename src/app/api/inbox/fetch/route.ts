@@ -3,7 +3,9 @@ import { runImapFetch } from "@/features/email-imap/fetch";
 import { getAdminSupabase } from "@/features/email-imap/route-auth";
 
 export const runtime = "nodejs";
-export const maxDuration = 300;
+// 60s keeps the route deployable on Vercel Hobby (limit 60s); a 300s value
+// fails the whole deployment, which silently left this route off production.
+export const maxDuration = 60;
 
 /**
  * POST /api/inbox/fetch — run one IMAP inbox sweep.

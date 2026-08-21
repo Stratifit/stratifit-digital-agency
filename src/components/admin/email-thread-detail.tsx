@@ -85,9 +85,11 @@ function formatBytes(bytes: number): string {
 export function EmailThreadDetailView({
   thread,
   templates = [],
+  replyAsAddresses = [],
 }: {
   thread: EmailThreadDetail;
   templates?: EmailTemplateRecord[];
+  replyAsAddresses?: string[];
 }) {
   const router = useRouter();
   const [actionError, setActionError] = React.useState<string | null>(null);
@@ -116,14 +118,25 @@ export function EmailThreadDetailView({
     formState: { errors, isSubmitting },
   } = useForm<z.input<typeof emailReplySchema>, unknown, ReplyValues>({
     resolver: zodResolver(emailReplySchema),
-    defaultValues: { thread_id: thread.id, subject: "", body: "" },
+    defaultValues: {
+      thread_id: thread.id,
+      subject: "",
+      body: "",
+      // Default to the first sender address (usually the section default).
+      from_address: replyAsAddresses[0] ?? "",
+    },
   });
 
   async function onSubmit(values: ReplyValues) {
     setActionError(null);
     const result = await sendEmailReply(values);
     if (result.success) {
-      reset({ thread_id: thread.id, subject: "", body: "" });
+      reset({
+        thread_id: thread.id,
+        subject: "",
+        body: "",
+        from_address: replyAsAddresses[0] ?? "",
+      });
       router.refresh();
     } else {
       setActionError(result.error ?? "Reply could not be sent.");
@@ -395,6 +408,25 @@ export function EmailThreadDetailView({
               in automatically; other variables stay as{" "}
               <code className="rounded-sm bg-surface px-1">{"{{placeholders}}"}</code>{" "}
               for you to replace.
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="reply-from">Reply as</Label>
+            <select
+              id="reply-from"
+              className="h-11 w-full cursor-pointer rounded-input border border-field-border bg-field-bg px-3.5 text-sm font-medium text-field-text transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover focus-visible:border-primary focus-visible:outline-none"
+              {...register("from_address")}
+            >
+              {replyAsAddresses.map((address) => (
+                <option key={address} value={address}>
+                  {address}
+                </option>
+              ))}
+            </select>
+            <p className="text-xs text-text-muted">
+              The address the customer sees and replies to. Manage these under{" "}
+              Communication → Sender Addresses.
             </p>
           </div>
 

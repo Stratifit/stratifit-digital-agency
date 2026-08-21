@@ -158,6 +158,7 @@ export const NAV_SECTIONS: NavSection[] = [
       { href: "/admin/communication", label: "Communication", icon: "email" },
       { href: "/admin/communication/templates", label: "Templates", icon: "email" },
       { href: "/admin/communication/send", label: "Send Email", icon: "email" },
+      { href: "/admin/communication/addresses", label: "Sender Addresses", icon: "email" },
       { href: "/admin/communication/schedules", label: "Schedules", icon: "email" },
       { href: "/admin/communication/triggers", label: "Triggers", icon: "email" },
       { href: "/admin/communication/logs", label: "Email Logs", icon: "email" },

@@ -2,7 +2,8 @@ import { AdminPageHeader } from "@/components/admin/page-header";
 import { EmailConfigStatus } from "@/components/admin/email-config-status";
 import { CommunicationSendForm } from "@/components/admin/communication-send-form";
 import { getEnabledEmailTemplates } from "@/features/communication/queries";
-import { getEmailConfigStatus, getReplyAsAddresses } from "@/features/communication/sender";
+import { getEmailConfigStatus } from "@/features/communication/sender";
+import { getSenderAddresses } from "@/features/communication/sender-addresses";
 
 export const metadata = {
   title: "Communication — Send Email",
@@ -10,7 +11,7 @@ export const metadata = {
 
 export default async function AdminCommunicationSendPage() {
   const templates = await getEnabledEmailTemplates();
-  const replyAsAddresses = getReplyAsAddresses();
+  const replyAsAddresses = await getSenderAddresses();
   const configStatus = getEmailConfigStatus();
 
   return (

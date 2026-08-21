@@ -1110,6 +1110,36 @@ export type Database = {
         }
         Relationships: []
       }
+      email_sender_addresses: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          is_default: boolean
+          is_enabled: boolean
+          label: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          is_default?: boolean
+          is_enabled?: boolean
+          label?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          is_default?: boolean
+          is_enabled?: boolean
+          label?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       email_messages: {
         Row: {
           attachments: Json
