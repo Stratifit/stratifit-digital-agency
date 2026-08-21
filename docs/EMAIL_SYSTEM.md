@@ -179,6 +179,7 @@ registered elsewhere):
 | MX | `@` (20) | `mx2.zoho.eu` | Inbound mail → Zoho Mail EU (backup) |
 | MX | `@` (50) | `mx3.zoho.eu` | Inbound mail → Zoho Mail EU (backup) |
 | MX | `bounce` (10) | `feedback-smtp.eu-north-1.amazonses.com` | SES custom MAIL FROM (optional) |
+| TXT | `bounce` | `v=spf1 include:amazonses.com ~all` | SPF for the SES MAIL FROM domain (AWS requires it) |
 | TXT | `@` | `v=spf1 include:amazonses.com include:zoho.eu -all` | SPF — authorizes SES + Zoho senders |
 | TXT | `zoho._domainkey` | `<ZOHO_DKIM_KEY>` from the Zoho admin console | DKIM — signs Zoho-sent mail |
 | TXT | `_dmarc` | `v=DMARC1; p=quarantine; rua=mailto:postmaster@stratifit.com; ruf=mailto:postmaster@stratifit.com; fo=1` | DMARC policy |
