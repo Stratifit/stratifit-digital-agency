@@ -1,6 +1,10 @@
 import "server-only";
 import nodemailer, { type Transporter } from "nodemailer";
-import { getSendBlockError, getSmtpHostWarning } from "./smtp-config";
+import {
+  getSendBlockError,
+  getSmtpHostWarning,
+  resolveSmtpEnv,
+} from "./smtp-config";
 
 export { getSendBlockError };
 
@@ -8,7 +12,8 @@ export { getSendBlockError };
  * Sender: Nodemailer over AWS SES SMTP. All email leaves the app through
  * this module. SMTP credentials come from environment variables:
  *
- *   SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS
+ *   SES_SMTP_HOST, SES_SMTP_PORT, SES_SMTP_USER, SES_SMTP_PASS
+ *     (canonical names; legacy SMTP_* names are still accepted as a fallback)
  *   COMMUNICATION_FROM_EMAIL   — default "from" address
  *   COMMUNICATION_REPLY_AS     — comma-separated reply-as addresses
  *
@@ -23,14 +28,16 @@ export function getSmtpConfig(): {
   user: string;
   pass: string;
 } | null {
-  const host = process.env.SMTP_HOST;
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
-  if (!host || !user || !pass) {
+  const resolved = resolveSmtpEnv(process.env);
+  if (!resolved.host || !resolved.user || !resolved.pass) {
     return null;
   }
-  const port = Number(process.env.SMTP_PORT ?? "587");
-  return { host, port, user, pass };
+  return {
+    host: resolved.host,
+    port: resolved.port,
+    user: resolved.user,
+    pass: resolved.pass,
+  };
 }
 
 function getTransporter(): Transporter | null {
@@ -173,20 +180,17 @@ export function getEmailConfigStatus(): {
   fromEmail: boolean;
   replyAs: string[];
   missing: string[];
-  /** Non-null when SMTP_HOST looks wrong (e.g. a Mail Manager ingress endpoint). */
+  /** Non-null when the SMTP host looks wrong (e.g. a Mail Manager ingress endpoint). */
   warning: string | null;
 } {
-  const host = Boolean(process.env.SMTP_HOST);
-  const port = Boolean(process.env.SMTP_PORT);
-  const user = Boolean(process.env.SMTP_USER);
-  const pass = Boolean(process.env.SMTP_PASS);
+  const resolved = resolveSmtpEnv(process.env);
+  const host = Boolean(resolved.host);
+  const port = Boolean(resolved.port);
+  const user = Boolean(resolved.user);
+  const pass = Boolean(resolved.pass);
   const fromEmail = Boolean(process.env.COMMUNICATION_FROM_EMAIL);
 
-  const missing: string[] = [];
-  if (!host) missing.push("SMTP_HOST");
-  if (!port) missing.push("SMTP_PORT");
-  if (!user) missing.push("SMTP_USER");
-  if (!pass) missing.push("SMTP_PASS");
+  const missing = [...resolved.missing];
   if (!fromEmail) missing.push("COMMUNICATION_FROM_EMAIL");
 
   return {
@@ -195,9 +199,6 @@ export function getEmailConfigStatus(): {
     fromEmail,
     replyAs: getReplyAsAddresses(),
     missing,
-    warning: getSmtpHostWarning(
-      process.env.SMTP_HOST ?? "",
-      process.env.SMTP_USER ?? ""
-    ),
+    warning: getSmtpHostWarning(resolved.host ?? "", resolved.user ?? ""),
   };
 }

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AdminPageHeader } from "@/components/admin/page-header";
+import { DnsCheckPanel } from "@/components/admin/dns-check-panel";
 import { EmailConfigStatus } from "@/components/admin/email-config-status";
 import { SmtpConnectionProbe } from "@/components/admin/smtp-connection-probe";
 import { getEmailLogs, getEmailSchedules } from "@/features/communication/queries";
@@ -70,6 +71,7 @@ export default async function AdminCommunicationPage() {
       />
       <EmailConfigStatus status={configStatus} />
       <SmtpConnectionProbe />
+      <DnsCheckPanel />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map((card) => (
           <Link

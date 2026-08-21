@@ -13,6 +13,39 @@
 
 export type SmtpHostKind = "ses" | "mail-manager" | "other";
 
+/**
+ * Resolved SMTP configuration from environment variables.
+ *
+ * Canonical names are `SES_SMTP_*` (AWS SES SMTP); the legacy `SMTP_*` names
+ * are still accepted as a fallback so existing deployments keep working.
+ */
+export interface ResolvedSmtpEnv {
+  host: string | null;
+  port: number;
+  user: string | null;
+  pass: string | null;
+  /** Canonical names that are missing and need to be configured. */
+  missing: string[];
+}
+
+/**
+ * Pure resolver (testable): reads SES_* names first, falls back to the legacy
+ * SMTP_* names, and reports which canonical keys are missing.
+ */
+export function resolveSmtpEnv(
+  env: Record<string, string | undefined>
+): ResolvedSmtpEnv {
+  const host = env.SES_SMTP_HOST || env.SMTP_HOST || null;
+  const user = env.SES_SMTP_USER || env.SMTP_USER || null;
+  const pass = env.SES_SMTP_PASS || env.SMTP_PASS || null;
+  const port = Number(env.SES_SMTP_PORT || env.SMTP_PORT || "587");
+  const missing: string[] = [];
+  if (!host) missing.push("SES_SMTP_HOST");
+  if (!user) missing.push("SES_SMTP_USER");
+  if (!pass) missing.push("SES_SMTP_PASS");
+  return { host, port, user, pass, missing };
+}
+
 export function classifySmtpHost(host: string): SmtpHostKind {
   const h = host.trim().toLowerCase();
   if (!h) return "other";

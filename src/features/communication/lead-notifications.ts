@@ -127,7 +127,7 @@ export async function sendLeadEmails(
         to: adminEmail,
         from,
         subject,
-        html: renderEmailHtml({
+        html: await renderEmailHtml({
           subject,
           body: lines,
           language: "en",

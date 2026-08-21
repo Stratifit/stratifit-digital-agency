@@ -58,7 +58,7 @@ Admin dashboard / trigger / schedule / webhook
 sendTemplateEmail (send-template.ts)
   1. Load template (key or inline object)
   2. Render subject + body with {{placeholders}} auto-filled
-  3. Wrap in branded HTML shell (renderer.ts)
+  3. Render branded React Email shell via @react-email/render (renderer.ts)
   4. Send via Nodemailer → AWS SES SMTP (sender.ts)
   5. Log to email_logs (idempotent by idempotency_key)
   6. Optionally record outbound message on a conversation thread
@@ -72,8 +72,12 @@ Module layout (`src/features/communication/`):
 | `schemas.ts` | Zod validation for template/log/schedule/trigger input |
 | `language.ts` | Language detection (stop words) + translation picking |
 | `auto-fill.ts` | `{{placeholder}}` replacement + sender-header parsing |
-| `renderer.ts` | HTML/text rendering with shared partials |
+| `renderer.ts` | HTML/text rendering (React Email via `@react-email/render`) |
+| `templates/stratifit-email.tsx` | Branded React Email template component |
 | `sender.ts` | Nodemailer + AWS SES SMTP transport |
+| `smtp-config.ts` | SMTP host classification + `SES_SMTP_*` env resolution |
+| `smtp-test.ts` | Live relay probe (banner + credentials, no send) |
+| `dns-verify.ts` | Live DNS check (MX / SPF / DKIM / DMARC) |
 | `send-template.ts` | Orchestration: load → render → send → log → thread |
 | `triggers.ts` | Event → template mapping (admin-configurable) |
 | `process-schedules.ts` | Due-schedule processor (cron worker) |
@@ -93,17 +97,21 @@ All email leaves the app through `sender.ts`:
 - Nodemailer transport over AWS SES SMTP (587/TLS, or 465/SSL)
 - Credentials from environment variables (server-only)
 
-Required environment variables:
+Required environment variables (canonical `SES_SMTP_*` names; the legacy
+`SMTP_*` names are still accepted as a fallback so existing deployments keep
+working):
 
 ```text
-SMTP_HOST
-SMTP_PORT          # default 587
-SMTP_USER
-SMTP_PASS
+SES_SMTP_HOST          # e.g. email-smtp.eu-north-1.amazonaws.com
+SES_SMTP_PORT          # default 587
+SES_SMTP_USER          # SES SMTP username (console > SMTP settings)
+SES_SMTP_PASS          # SES SMTP password
 COMMUNICATION_FROM_EMAIL   # default sender (must be SES-verified)
 COMMUNICATION_REPLY_AS     # optional comma-separated reply-as addresses
 COMMUNICATION_WEBHOOK_SECRET  # optional delivery-webhook secret
 COMMUNICATION_CRON_SECRET  # optional bearer secret for the schedule-processor route
+ZOHO_MAIL_DOMAIN       # inbound domain (Zoho Mail EU) — informational
+ZOHO_DKIM_KEY          # TXT value for zoho._domainkey — informational
 ```
 
 Behavior:
@@ -136,6 +144,42 @@ Mail Manager ingress credentials (`inp-…`) fail with `EAUTH` on every real
 `email-smtp.<region>.amazonaws.com` endpoint — a quick way to tell the two
 apart.
 
+### 4.2 Region
+
+The Stratifit production setup targets the **eu-north-1 (Stockholm)** SES
+region:
+
+```text
+SES_SMTP_HOST=email-smtp.eu-north-1.amazonaws.com
+SES_SMTP_PORT=587
+```
+
+SMTP credentials must be created in the same region's SES console, and the
+sender identity (`COMMUNICATION_FROM_EMAIL`) must be verified there (domain or
+address). The SES MAIL FROM bounce MX also lives in eu-north-1
+(`feedback-smtp.eu-north-1.amazonses.com`).
+
+### 4.3 DNS records (domain authentication)
+
+The Stratifit setup combines **AWS SES** (outbound sending) with **Zoho Mail
+EU** (inbound mailbox that receives customer replies). The following records
+must be published for `stratifit.com` (Vercel DNS unless the domain is
+registered elsewhere):
+
+| Type | Name | Value | Purpose |
+| --- | --- | --- | --- |
+| MX | `@` (10) | `mx.zoho.eu` | Inbound mail → Zoho Mail EU |
+| MX | `@` (20) | `mx2.zoho.eu` | Inbound mail → Zoho Mail EU (backup) |
+| MX | `@` (50) | `mx3.zoho.eu` | Inbound mail → Zoho Mail EU (backup) |
+| MX | `bounce` (10) | `feedback-smtp.eu-north-1.amazonses.com` | SES custom MAIL FROM (optional) |
+| TXT | `@` | `v=spf1 include:amazonses.com include:zoho.eu -all` | SPF — authorizes SES + Zoho senders |
+| TXT | `zoho._domainkey` | `<ZOHO_DKIM_KEY>` from the Zoho admin console | DKIM — signs Zoho-sent mail |
+| TXT | `_dmarc` | `v=DMARC1; p=quarantine; rua=mailto:postmaster@stratifit.com; ruf=mailto:postmaster@stratifit.com; fo=1` | DMARC policy |
+
+Wait up to 24h for propagation. The admin dashboard has a **"Run DNS check"**
+panel (`DnsCheckPanel`) that resolves these records live and reports what is
+published, missing, or misconfigured.
+
 Since the fix in `sender.ts` (`getSendBlockError`), `sendEmail` **refuses to
 send at all** when the configured relay is a Mail Manager ingress endpoint: it
 returns `{ ok: false, error }` with an actionable message instead of logging a
@@ -144,6 +188,31 @@ connection"** probe (`SmtpConnectionProbe`) that connects to the configured
 host live, shows the relay's greeting banner, classifies it (SES SMTP vs Mail
 Manager ingress vs unknown), and verifies the credentials — so the exact relay
 in use is visible without sending anything.
+
+---
+
+## 4b. Template Rendering: React Email + Resend Renderer
+
+The HTML shell of every email is a **React Email** template
+(`src/features/communication/templates/stratifit-email.tsx`) rendered with
+`render()` from **`@react-email/render`** — the Resend renderer — which
+produces inline-styled, email-client-safe markup. The layout (dark brand
+header, amber accent bar, body, sign-off, footer) is defined once in the
+component; the subject and body remain CMS-editable in `email_templates`.
+
+```ts
+import { render } from "@react-email/render";
+import { StratifitEmail } from "./templates/stratifit-email";
+
+const html = await render(
+  StratifitEmail({ subject, body, language, adminName, contact }),
+  { pretty: true }
+);
+```
+
+`render()` is async (streams via `react-dom/server`); `renderEmailHtml` in
+`renderer.ts` returns a `Promise<string>`. The rendered HTML is then sent
+through Nodemailer over SES SMTP — no third-party sending API is involved.
 
 ---
 
@@ -180,6 +249,31 @@ Manual templates (16): proposal, contract, onboarding welcome, kickoff
 meeting, weekly update, design delivery, development update, testing phase,
 launch announcement, invoice, payment reminder, overdue payment, refund, bug
 report response, feature request response, general support response.
+
+---
+
+## 5b. Inbound Replies via Zoho Mail EU
+
+Outbound emails are sent from a Stratifit address (e.g. `contact@stratifit.com`
+— a verified SES identity). When customers hit **Reply**, the reply is
+addressed to that sender address and delivered by the domain's MX records to
+the **Zoho Mail EU** mailbox (`mx.zoho.eu` / `mx2.zoho.eu` / `mx3.zoho.eu`).
+
+Reply flow:
+
+1. Stratifit sends via SES SMTP with `From: contact@stratifit.com`.
+2. The customer replies → MX routes the message to Zoho Mail EU.
+3. The reply lands in the Zoho mailbox (subject unchanged, threading
+   preserved).
+4. The app ingests the reply (the existing inbound pipeline
+   `POST /api/email/inbound`, or Zoho Mail API / IMAP polling for fully
+   automatic threading) and attaches it to the conversation thread.
+5. The admin answers from the dashboard; the answer is sent back through SES
+   SMTP, and the loop continues.
+
+SPF includes both `amazonses.com` (outbound) and `zoho.eu` (inbound/internal),
+so neither provider's sends are rejected by the other's policy. DMARC
+`p=quarantine` protects the domain from spoofing in both directions.
 
 ---
 
@@ -406,6 +500,33 @@ Legacy `/admin/email` routes redirect to the new Communication section.
 
 ---
 
+## 14b. Validation Checklist
+
+Use the admin Communication dashboard (`/admin/communication`) to verify each
+layer:
+
+1. **Env vars** — `EmailConfigStatus` shows exactly which keys are set
+   (`SES_SMTP_HOST/PORT/USER/PASS`, `COMMUNICATION_FROM_EMAIL`) and lists any
+   missing ones.
+2. **Relay** — "Test SMTP connection" probes the live host: banner reveals
+   real SES SMTP vs a Mail Manager ingress gateway (which silently drops
+   outbound mail), and verifies the credentials authenticate.
+3. **DNS** — "Run DNS check" resolves MX (Zoho), SPF, DKIM and DMARC and
+   flags missing/misconfigured records.
+4. **Sender identity** — `COMMUNICATION_FROM_EMAIL` must be a verified SES
+   identity (domain or address) in the configured region, and the SES account
+   must be out of sandbox for delivery to arbitrary recipients.
+5. **Webhook** — SES configuration set → SNS → HTTPS
+   `https://www.stratifit.com/api/webhooks/email` so `email_logs` statuses
+   become `delivered`/`bounced` instead of staying `sent`.
+
+A mail is fully working when: the relay probe says "AWS SES SMTP + Credentials
+OK", the DNS panel says "All required records OK", a test send logs
+`delivered` (via the webhook), and the customer's reply lands in the Zoho
+mailbox.
+
+---
+
 ## 15. Testing
 
 - `src/features/email-inbox/reply.test.ts` — admin reply path end-to-end
@@ -418,4 +539,10 @@ Legacy `/admin/email` routes redirect to the new Communication section.
   and context building (including the customer/lead/date keys).
 - `src/features/communication/process-schedules.test.ts` — due-schedule
   processing: send, mark sent, failure marking, idempotency.
+- `src/features/communication/renderer.test.ts` — React Email template via
+  `@react-email/render`: branding, escaping, localized partials, signature.
+- `src/features/communication/dns-verify.test.ts` — MX/SPF/DKIM/DMARC record
+  classification.
+- `src/features/communication/smtp-config.test.ts` — host classification +
+  `SES_SMTP_*` env resolution.
 - Baseline: `npm run lint`, `npx tsc --noEmit`, `npm run build`, `npm test`.

@@ -182,7 +182,7 @@ export async function sendTemplateEmail(
     to: input.toEmail,
     from,
     subject,
-    html: renderEmailHtml({ subject, body, language }),
+    html: await renderEmailHtml({ subject, body, language }),
     text: renderEmailText(subject, body),
     headers: input.headers,
   });
