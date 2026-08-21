@@ -91,6 +91,8 @@ export async function updateService(
       ...((existing?.cta_label_translations as Record<string, string> | null) ?? {}),
       ...parsed.data.cta_label_translations,
     },
+    // Lists are edited as complete per-locale sets — write them wholesale.
+    deliverables_translations: parsed.data.deliverables_translations,
     seo_title_translations: parsed.data.seo_title_translations ?? {},
     seo_description_translations: parsed.data.seo_description_translations ?? {},
   };

@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, useWatch, type Control, type Path } from "react-hook-form";import { zodResolver } from "@hookform/resolvers/zod";
 import { serviceSchema, type ServiceFormValues } from "@/features/services/schemas";
 import { createService, updateService } from "@/features/services/mutations";
 import type { ActionResult } from "@/types/action-result";
@@ -20,7 +19,7 @@ import {
   type EditorLocale,
 } from "@/components/admin/locale-tabs";
 
-type SectionKey = "details" | "seo" | "publishing";
+type SectionKey = "details" | "deliverables" | "seo" | "publishing";
 
 interface ServiceFormProps {
   slug?: string;
@@ -39,6 +38,8 @@ export function ServiceForm({ slug, initial }: ServiceFormProps) {
   const {
     register,
     handleSubmit,
+    control,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<ServiceFormValues>({
     resolver: zodResolver(serviceSchema),
@@ -69,6 +70,12 @@ export function ServiceForm({ slug, initial }: ServiceFormProps) {
           errors.short_description_translations?.en ||
           errors.slug
       ),
+    },
+    {
+      key: "deliverables",
+      label: "Key Deliverables",
+      description: "Checklist shown on the service card.",
+      hasError: false,
     },
     {
       key: "seo",
@@ -167,6 +174,17 @@ export function ServiceForm({ slug, initial }: ServiceFormProps) {
           </div>
         ) : null}
 
+        {activeSection === "deliverables" ? (
+          <DeliverablesList
+            key={locale}
+            locale={locale}
+            control={control}
+            onChange={(items) =>
+              setValue(`deliverables_translations.${locale}`, items)
+            }
+          />
+        ) : null}
+
         {activeSection === "seo" ? (
           <div className="space-y-4">
             <div className="space-y-2">
@@ -245,5 +263,62 @@ export function ServiceForm({ slug, initial }: ServiceFormProps) {
         </Button>
       </div>
     </form>
+  );
+}
+
+function DeliverablesList({
+  locale,
+  control,
+  onChange,
+}: {
+  locale: EditorLocale;
+  control: Control<ServiceFormValues>;
+  onChange: (items: string[]) => void;
+}) {
+  const fieldName = `deliverables_translations.${locale}` as Path<ServiceFormValues>;
+  const items = (useWatch({ control, name: fieldName }) ?? []) as string[];
+
+  return (
+    <div className="space-y-4">
+      <p className="text-xs text-text-muted">
+        Shown as a checklist on the service card (first four entries). The card
+        falls back to English when a locale has no entries.
+      </p>
+      <div className="space-y-3">
+        {items.map((item, index) => (
+          <div key={index} className="flex items-center gap-2">
+            <Input
+              value={item}
+              placeholder="Brand Strategy"
+              aria-label={`Deliverable ${index + 1}`}
+              onChange={(event) => {
+                const next = [...items];
+                next[index] = event.target.value;
+                onChange(next);
+              }}
+            />
+            <Button
+              type="button"
+              size="small"
+              variant="destructive"
+              onClick={() => onChange(items.filter((_, i) => i !== index))}
+            >
+              Remove
+            </Button>
+          </div>
+        ))}
+        {items.length === 0 ? (
+          <p className="text-xs text-text-muted">No deliverables yet.</p>
+        ) : null}
+      </div>
+      <Button
+        type="button"
+        size="small"
+        variant="secondary"
+        onClick={() => onChange([...items, ""])}
+      >
+        Add deliverable
+      </Button>
+    </div>
   );
 }

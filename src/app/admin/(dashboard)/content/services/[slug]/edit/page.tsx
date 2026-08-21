@@ -17,6 +17,25 @@ function translations(
   };
 }
 
+function stringList(v: unknown): string[] {
+  return Array.isArray(v) ? v.map((item) => String(item)) : [];
+}
+
+function stringLists(v: unknown): {
+  en: string[];
+  de: string[];
+  fr: string[];
+  es: string[];
+} {
+  const record = (v as Record<string, unknown> | null | undefined) ?? {};
+  return {
+    en: stringList(record.en),
+    de: stringList(record.de),
+    fr: stringList(record.fr),
+    es: stringList(record.es),
+  };
+}
+
 function toFormValues(data: Record<string, unknown>): ServiceFormValues {
   return {
     slug: String(data.slug ?? ""),
@@ -25,6 +44,7 @@ function toFormValues(data: Record<string, unknown>): ServiceFormValues {
       data.short_description_translations
     ),
     icon_name: (data.icon_name as string | null) ?? "",
+    deliverables_translations: stringLists(data.deliverables_translations),
     cta_label_translations: translations(data.cta_label_translations),
     cta_url: (data.cta_url as string | null) ?? "",
     cta_style: (data.cta_style as "full" | "compact" | null) ?? "full",

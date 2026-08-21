@@ -11,6 +11,14 @@ const translations = () =>
 const englishRequired = (message: string) =>
   translations().refine((t) => t.en.trim().length > 0, message);
 
+/** Per-locale list of key deliverables shown on the service card. */
+const localeStringLists = z.object({
+  en: z.array(z.string()),
+  de: z.array(z.string()),
+  fr: z.array(z.string()),
+  es: z.array(z.string()),
+});
+
 export const serviceSchema = z.object({
   slug: z
     .string()
@@ -21,6 +29,7 @@ export const serviceSchema = z.object({
     "English short description is required"
   ),
   icon_name: z.string(),
+  deliverables_translations: localeStringLists,
   cta_label_translations: translations(),
   cta_url: z.string(),
   cta_style: z.enum(["full", "compact"]),
@@ -42,6 +51,12 @@ export function emptyServiceForm(): ServiceFormValues {
     title_translations: { ...EMPTY_TRANSLATIONS },
     short_description_translations: { ...EMPTY_TRANSLATIONS },
     icon_name: "",
+    deliverables_translations: {
+      en: [],
+      de: [],
+      fr: [],
+      es: [],
+    },
     cta_label_translations: { ...EMPTY_TRANSLATIONS },
     cta_url: "",
     cta_style: "full",
