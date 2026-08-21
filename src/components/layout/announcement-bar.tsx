@@ -28,13 +28,7 @@ export async function AnnouncementBar() {
     return null;
   }
 
-  const linkLabel = resolveTranslation(announcement.link_label_translations, locale);
-
   return (
-    <AnnouncementBarView
-      slides={slides}
-      linkUrl={announcement.link_url ?? undefined}
-      linkLabel={linkLabel || undefined}
-    />
+    <AnnouncementBarView slides={slides} linkUrl={announcement.link_url ?? undefined} />
   );
 }

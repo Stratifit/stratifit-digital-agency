@@ -80,14 +80,13 @@ ON CONFLICT (singleton_key) DO UPDATE SET
 INSERT INTO public.announcement_bar (singleton_key, message_translations, slides, link_label_translations, link_url, is_enabled, variant)
 VALUES (
   true,
-  '{"en": "We are now offering AI-powered business automation. Learn more.", "de": "Wir bieten jetzt KI-gestützte Geschäftsautomatisierung an. Erfahren Sie mehr.", "fr": "Nous proposons désormais l automatisation d entreprises par l IA. En savoir plus.", "es": "Ahora ofrecemos automatización empresarial con IA. Más información."}'::jsonb,
+  '{"en": "Elevate your digital presence.", "de": "Stärken Sie Ihren digitalen Auftritt.", "fr": "Renforcez votre présence numérique.", "es": "Impulse su presencia digital."}'::jsonb,
   '[
-    {"en": "We are now offering AI-powered business automation.", "de": "Wir bieten jetzt KI-gestützte Geschäftsautomatisierung an.", "fr": "Nous proposons désormais l automatisation d entreprises par l IA.", "es": "Ahora ofrecemos automatización empresarial con IA."},
-    {"en": "New: multilingual websites in four languages.", "de": "Neu: mehrsprachige Websites in vier Sprachen.", "fr": "Nouveau : sites web multilingues en quatre langues.", "es": "Nuevo: sitios web multilingües en cuatro idiomas."},
-    {"en": "Book a free strategy call today.", "de": "Buchen Sie noch heute ein kostenloses Strategiegespräch.", "fr": "Réservez un appel stratégie gratuit dès aujourd hui.", "es": "Reserva una llamada estratégica gratuita hoy."}
+    {"en": "Elevate your digital presence.", "de": "Stärken Sie Ihren digitalen Auftritt.", "fr": "Renforcez votre présence numérique.", "es": "Impulse su presencia digital."},
+    {"en": "Now accepting new projects.", "de": "Wir nehmen neue Projekte an.", "fr": "Nous acceptons de nouveaux projets.", "es": "Aceptamos nuevos proyectos."}
   ]'::jsonb,
   '{"en": "Learn More", "de": "Mehr erfahren", "fr": "En savoir plus", "es": "Más información"}'::jsonb,
-  '/acquisition',
+  '/contact',
   true,
   'primary'
 )

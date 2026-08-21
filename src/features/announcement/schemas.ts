@@ -8,7 +8,7 @@ const translations = () =>
     es: z.string(),
   });
 
-// The public bar renders the slides carousel (see src/components/layout/announcement-bar.tsx),
+// The public bar renders all slides together (see src/components/layout/announcement-bar.tsx),
 // falling back to message_translations only when no slides exist. The editor therefore
 // manages slides; message_translations is kept in sync with the first slide on save.
 const slideSchema = translations().refine(
