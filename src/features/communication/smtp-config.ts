@@ -103,3 +103,13 @@ export function getSendBlockError(host: string, user: string): string | null {
   }
   return null;
 }
+
+/**
+ * The From header shows the Stratifit brand name next to the sender address
+ * (e.g. `Stratifit <support@stratifit.com>`). Bare addresses are wrapped;
+ * already-formatted senders pass through unchanged.
+ */
+export function formatFromAddress(from: string): string {
+  if (from.includes("<")) return from;
+  return `Stratifit <${from}>`;
+}

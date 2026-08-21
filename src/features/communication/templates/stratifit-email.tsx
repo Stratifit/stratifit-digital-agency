@@ -4,6 +4,7 @@ import {
   Container,
   Heading,
   Html,
+  Img,
   Link,
   Preview,
   Row,
@@ -41,6 +42,8 @@ export interface StratifitEmailProps {
     phone?: string | null;
     website?: string | null;
   };
+  /** Absolute URL of the light Stratifit logo (rendered in the header). */
+  logoUrl?: string;
 }
 
 function telHref(phone: string): string {
@@ -66,6 +69,7 @@ export function StratifitEmail({
   language,
   adminName,
   contact,
+  logoUrl = "https://www.stratifit.com/stratifit-main-logo.png",
 }: StratifitEmailProps) {
   const p = EMAIL_PARTIALS[language] ?? EMAIL_PARTIALS.en;
   const signatureName = adminName?.trim() || "The Stratifit Team";
@@ -106,22 +110,17 @@ export function StratifitEmail({
             margin: "32px auto",
           }}
         >
-          {/* Brand header */}
+          {/* Brand header — light logo + tagline on the dark brand bar */}
           <Section style={{ backgroundColor: INK, padding: "26px 34px" }}>
             <Row>
               <Column style={{ verticalAlign: "middle" }}>
-                <Text
-                  style={{
-                    margin: 0,
-                    fontFamily: "Inter,Arial,sans-serif",
-                    fontSize: "20px",
-                    fontWeight: 800,
-                    letterSpacing: "0.02em",
-                    color: "#FFFFFF",
-                  }}
-                >
-                  Stratifit
-                </Text>
+                <Img
+                  src={logoUrl}
+                  alt="Stratifit"
+                  width={168}
+                  height={24}
+                  style={{ display: "block", width: "168px", height: "auto" }}
+                />
               </Column>
               <Column align="right" style={{ verticalAlign: "middle" }}>
                 <Text

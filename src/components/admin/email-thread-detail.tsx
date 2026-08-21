@@ -122,8 +122,9 @@ export function EmailThreadDetailView({
       thread_id: thread.id,
       subject: "",
       body: "",
-      // Default to the first sender address (usually the section default).
-      from_address: replyAsAddresses[0] ?? "",
+      // Best reply email: the section's sender (the address the customer
+      // wrote to), falling back to the first configured sender address.
+      from_address: thread.section_from_address ?? replyAsAddresses[0] ?? "",
     },
   });
 
@@ -135,7 +136,7 @@ export function EmailThreadDetailView({
         thread_id: thread.id,
         subject: "",
         body: "",
-        from_address: replyAsAddresses[0] ?? "",
+        from_address: thread.section_from_address ?? replyAsAddresses[0] ?? "",
       });
       router.refresh();
     } else {

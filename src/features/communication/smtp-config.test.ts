@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   classifySmtpHost,
+  formatFromAddress,
   getSmtpHostWarning,
   resolveSmtpEnv,
 } from "./smtp-config";
@@ -113,5 +114,19 @@ describe("resolveSmtpEnv", () => {
     });
     expect(resolved.missing).toEqual([]);
     expect(resolved.host).toContain("amazonaws.com");
+  });
+});
+
+describe("formatFromAddress", () => {
+  it("wraps a bare address with the Stratifit name", () => {
+    expect(formatFromAddress("hello@stratifit.com")).toBe(
+      "Stratifit <hello@stratifit.com>"
+    );
+  });
+
+  it("leaves an already-formatted sender unchanged", () => {
+    expect(formatFromAddress("Stratifit <support@stratifit.com>")).toBe(
+      "Stratifit <support@stratifit.com>"
+    );
   });
 });

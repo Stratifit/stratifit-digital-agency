@@ -1,12 +1,13 @@
 import "server-only";
 import nodemailer, { type Transporter } from "nodemailer";
 import {
+  formatFromAddress,
   getSendBlockError,
   getSmtpHostWarning,
   resolveSmtpEnv,
 } from "./smtp-config";
 
-export { getSendBlockError };
+export { formatFromAddress, getSendBlockError };
 
 /**
  * Sender: Nodemailer over AWS SES SMTP. All email leaves the app through
@@ -151,7 +152,7 @@ export async function sendEmail(
 
   try {
     const info = await transporter.sendMail({
-      from,
+      from: formatFromAddress(from),
       to: input.to,
       subject: input.subject,
       html: input.html,

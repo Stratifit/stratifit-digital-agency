@@ -97,6 +97,8 @@ export interface EmailThreadSummary {
 export interface EmailThreadDetail extends EmailThreadSummary {
   section_slug: string;
   section_name: string;
+  /** Best reply-as address for this conversation (the section's sender). */
+  section_from_address: string | null;
   messages: EmailMessageRecord[];
 }
 
@@ -326,7 +328,7 @@ export async function getEmailThreadDetail(
   const { data: thread, error } = await supabase
     .from("email_threads")
     .select(
-      `${THREAD_SELECT}, email_inbox_sections(slug, name_translations)`
+      `${THREAD_SELECT}, email_inbox_sections(slug, name_translations, from_address)`
     )
     .eq("id", threadId)
     .single();
@@ -381,6 +383,7 @@ export async function getEmailThreadDetail(
   const section = raw.email_inbox_sections as {
     slug: string;
     name_translations: Record<string, string> | null;
+    from_address: string | null;
   } | null;
 
   return {
@@ -402,6 +405,7 @@ export async function getEmailThreadDetail(
     section_name: section
       ? resolveTranslation(section.name_translations, "en")
       : "Other",
+    section_from_address: section?.from_address ?? null,
     messages: (messages as unknown as EmailMessageRecord[]).map((message) => ({
       ...message,
       attachments: attachmentsByMessage.get(message.id) ?? [],

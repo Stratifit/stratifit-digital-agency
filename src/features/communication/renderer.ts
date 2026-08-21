@@ -53,6 +53,12 @@ export function renderEmailText(subject: string, body: string): string {
  * `@react-email/render`. Content is escaped by React automatically, and the
  * layout matches the admin preview in the CMS.
  */
+/** Absolute URL of the light logo used in the email header. */
+export function getEmailLogoUrl(): string {
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "").replace(/\/$/, "");
+  return `${siteUrl || "https://www.stratifit.com"}/stratifit-main-logo.png`;
+}
+
 export async function renderEmailHtml(input: {
   subject: string;
   body: string;
@@ -72,6 +78,7 @@ export async function renderEmailHtml(input: {
       language: input.language,
       adminName: input.adminName,
       contact: input.contact,
+      logoUrl: getEmailLogoUrl(),
     }),
     { pretty: true }
   );

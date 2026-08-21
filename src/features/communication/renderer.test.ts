@@ -16,6 +16,22 @@ describe("StratifitEmail (React Email + Resend renderer)", () => {
     expect(html).toContain("hello@stratifit.com");
   });
 
+  it("renders the Stratifit logo in the header", async () => {
+    const html = await render(
+      StratifitEmail({
+        subject: "Test",
+        body: "Body",
+        language: "en",
+        logoUrl: "https://www.stratifit.com/stratifit-main-logo.png",
+      }),
+      { pretty: true }
+    );
+    expect(html).toContain(
+      "https://www.stratifit.com/stratifit-main-logo.png"
+    );
+    expect(html).toContain('alt="Stratifit"');
+  });
+
   it("escapes HTML in the subject and body", async () => {
     const html = await render(
       StratifitEmail({
