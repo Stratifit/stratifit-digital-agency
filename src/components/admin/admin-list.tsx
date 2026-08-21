@@ -15,6 +15,8 @@ interface AdminListProps<T> {
   rows: T[];
   rowKey: (row: T) => string;
   actions: (row: T) => React.ReactNode;
+  /** Optional panel rendered between the page header and the list. */
+  children?: React.ReactNode;
 }
 
 export function AdminList<T>({
@@ -26,6 +28,7 @@ export function AdminList<T>({
   rows,
   rowKey,
   actions,
+  children,
 }: AdminListProps<T>) {
   return (
     <div className="space-y-6">
@@ -40,6 +43,8 @@ export function AdminList<T>({
           ) : null
         }
       />
+
+      {children}
 
       {rows.length === 0 ? (
         <div className="rounded-card border border-card-border bg-card-dark p-10 text-center shadow-sm">
