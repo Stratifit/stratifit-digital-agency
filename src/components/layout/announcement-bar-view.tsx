@@ -60,41 +60,6 @@ export function AnnouncementBarView({ slides, linkUrl }: AnnouncementViewProps) 
           <span key={index} className="truncate whitespace-nowrap text-sm font-medium text-text-inverse">
             {message}
           </span>
-          {linkUrl ? (
-            <a
-              href={linkUrl}
-              aria-label={message}
-              className="flex shrink-0 items-center transition-opacity duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-inverse"
-            >
-              <span
-                className="top-banner__cta-icon flex size-7 shrink-0 items-center justify-center rounded-full bg-black text-primary"
-                aria-hidden="true"
-              >
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 22 22"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M6.41675 6.41663H15.5834V15.5833"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M6.41675 15.5833L15.5834 6.41663"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </span>
-            </a>
-          ) : null}
 
           {showDots ? (
             <div className="flex shrink-0 items-center gap-1.5" aria-label="Slides">
@@ -114,6 +79,42 @@ export function AnnouncementBarView({ slides, linkUrl }: AnnouncementViewProps) 
                 />
               ))}
             </div>
+          ) : null}
+
+          {linkUrl ? (
+            <a
+              href={linkUrl}
+              aria-label={message}
+              className="flex shrink-0 items-center transition-opacity duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-inverse"
+            >
+              <span
+                className="top-banner__cta-icon flex size-5 shrink-0 items-center justify-center rounded-full bg-black text-primary"
+                aria-hidden="true"
+              >
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 22 22"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M6.41675 6.41663H15.5834V15.5833"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M6.41675 15.5833L15.5834 6.41663"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+            </a>
           ) : null}
         </div>
         <button
