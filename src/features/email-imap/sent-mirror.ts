@@ -2,9 +2,7 @@ import "server-only";
 import { Readable } from "node:stream";
 import nodemailer from "nodemailer";
 import { ImapFlow } from "imapflow";
-import { getSenderAddresses } from "@/features/communication/sender-addresses";
 import { resolveImapConfig } from "./config";
-import { isFromSelf } from "./parse";
 
 export interface MirrorSentToZohoInput {
   from: string;
@@ -21,7 +19,7 @@ export interface MirrorSentToZohoInput {
 export interface MirrorSentResult {
   mirrored: boolean;
   folder?: string;
-  /** Design-level skip reason (config off, not from this mailbox, …). */
+  /** Design-level skip reason (config off, message-id missing, …). */
   skipped?: string;
   /** Operational failure (render or APPEND). */
   error?: string;
@@ -50,6 +48,64 @@ async function messageToBuffer(
   return Buffer.concat(chunks);
 }
 
+const SENT_FOLDER_NAMES = [
+  "sent",
+  "sent mail",
+  "sent messages",
+  "sent items",
+  "gesendet",
+  "gesendete elemente",
+  "envoyés",
+  "envoyes",
+  "éléments envoyés",
+  "elements envoyes",
+  "enviados",
+  "elementos enviados",
+  "inviati",
+  "elementi inviati",
+  "verzonden",
+  "utgående",
+  "skickade",
+  "wysłane",
+];
+
+/**
+ * Find the real Sent folder on the server. The configured
+ * `IMAP_SENT_FOLDER` wins when it exists; otherwise the RFC 6154
+ * `\Sent` special-use flag is used; finally common localized names.
+ * Falls back to the configured value so callers never throw.
+ */
+async function resolveSentFolder(
+  client: ImapFlow,
+  fallback: string
+): Promise<string> {
+  try {
+    const mailboxes = await client.list();
+    const configured = fallback.trim().toLowerCase();
+    // 1. The configured folder wins when it exists on the server.
+    for (const mailbox of mailboxes) {
+      const name = (mailbox.name ?? mailbox.path).toLowerCase();
+      if (name === configured || mailbox.path.toLowerCase() === configured) {
+        return mailbox.path;
+      }
+    }
+    // 2. RFC 6154 special-use flag (\Sent) — locale-independent.
+    for (const mailbox of mailboxes) {
+      if ((mailbox.specialUse ?? "").toUpperCase() === "\\SENT") {
+        return mailbox.path;
+      }
+    }
+    // 3. Common localized sent-folder names.
+    for (const mailbox of mailboxes) {
+      const name = (mailbox.name ?? mailbox.path).toLowerCase();
+      if (SENT_FOLDER_NAMES.includes(name)) return mailbox.path;
+    }
+  } catch {
+    // Fall through to the configured value.
+  }
+  return fallback;
+}
+
 /**
  * Mirror one successful dashboard send into the Zoho Mail Sent folder
  * (dashboard → Zoho Sent). Best-effort: every failure returns a result with
@@ -59,8 +115,11 @@ async function messageToBuffer(
  * - IMAP not configured (or placeholder values)
  * - `IMAP_SENT_MIRROR` not enabled
  * - no RFC message-id to attach to the copy
- * - `from` is not the synced Zoho mailbox (`IMAP_USER`) or an alias /
- *   configured sender address — a copy cannot belong to that mailbox's Sent.
+ *
+ * Every dashboard conversation send is mirrored regardless of the `from`
+ * address: the copy is appended to this mailbox's Sent folder, and the
+ * Sent-folder sweep only imports mailbox-owned sends, so foreign-address
+ * copies cannot ever create dashboard duplicates.
  */
 export async function mirrorSentToZoho(
   input: MirrorSentToZohoInput
@@ -79,14 +138,6 @@ export async function mirrorSentToZoho(
     return {
       mirrored: false,
       skipped: "No RFC message-id available for the mirror copy.",
-    };
-  }
-
-  const senderAddresses = await getSenderAddresses();
-  if (!isFromSelf(input.from, config.user, senderAddresses)) {
-    return {
-      mirrored: false,
-      skipped: `${input.from} is not the synced Zoho mailbox or one of its aliases.`,
     };
   }
 
@@ -133,8 +184,9 @@ export async function mirrorSentToZoho(
 
   try {
     await client.connect();
-    await client.append(config.sentFolder, raw, [], undefined);
-    return { mirrored: true, folder: config.sentFolder };
+    const folder = await resolveSentFolder(client, config.sentFolder);
+    await client.append(folder, raw, [], undefined);
+    return { mirrored: true, folder };
   } catch (error) {
     return {
       mirrored: false,

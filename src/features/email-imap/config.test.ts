@@ -20,34 +20,55 @@ describe("resolveImapConfig", () => {
       sinceDays: 7,
       secure: true,
       sentFolder: "Sent",
-      syncSent: false,
-      mirrorSent: false,
+      syncSent: true,
+      mirrorSent: true,
     });
   });
 
-  it("defaults the sent folder to Sent and the sync flags to off", () => {
+  it("defaults the sent folder to Sent and the sync flags to on", () => {
     const result = resolveImapConfig({
       IMAP_HOST: "imap.zoho.eu",
       IMAP_USER: "u",
       IMAP_PASS: "p",
     });
     expect(result.config?.sentFolder).toBe("Sent");
-    expect(result.config?.syncSent).toBe(false);
-    expect(result.config?.mirrorSent).toBe(false);
+    expect(result.config?.syncSent).toBe(true);
+    expect(result.config?.mirrorSent).toBe(true);
   });
 
-  it("honors IMAP_SENT_FOLDER, IMAP_SYNC_SENT and IMAP_SENT_MIRROR", () => {
+  it("honors IMAP_SENT_FOLDER and explicit flag overrides", () => {
     const result = resolveImapConfig({
       IMAP_HOST: "imap.zoho.eu",
       IMAP_USER: "u",
       IMAP_PASS: "p",
       IMAP_SENT_FOLDER: "Sent Items",
-      IMAP_SYNC_SENT: "1",
-      IMAP_SENT_MIRROR: "true",
+      IMAP_SYNC_SENT: "0",
+      IMAP_SENT_MIRROR: "false",
     });
     expect(result.config?.sentFolder).toBe("Sent Items");
-    expect(result.config?.syncSent).toBe(true);
-    expect(result.config?.mirrorSent).toBe(true);
+    expect(result.config?.syncSent).toBe(false);
+    expect(result.config?.mirrorSent).toBe(false);
+  });
+
+  it("accepts 1/true/yes/on and 0/false/no/off for the sent flags", () => {
+    const on = resolveImapConfig({
+      IMAP_HOST: "h",
+      IMAP_USER: "u",
+      IMAP_PASS: "p",
+      IMAP_SYNC_SENT: "yes",
+      IMAP_SENT_MIRROR: "on",
+    });
+    expect(on.config?.syncSent).toBe(true);
+    expect(on.config?.mirrorSent).toBe(true);
+    const off = resolveImapConfig({
+      IMAP_HOST: "h",
+      IMAP_USER: "u",
+      IMAP_PASS: "p",
+      IMAP_SYNC_SENT: "no",
+      IMAP_SENT_MIRROR: "off",
+    });
+    expect(off.config?.syncSent).toBe(false);
+    expect(off.config?.mirrorSent).toBe(false);
   });
 
   it("honors overrides for mailbox and sync window", () => {

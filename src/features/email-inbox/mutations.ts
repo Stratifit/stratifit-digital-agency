@@ -93,7 +93,7 @@ async function getThreadingContext(threadId: string) {
  */
 export async function sendEmailReply(
   input: EmailReplyInput
-): Promise<ActionResult<{ messageId?: string }>> {
+): Promise<ActionResult<{ messageId?: string; mirrorNote?: string }>> {
   const supabase = await requireAdmin();
 
   const parsed = emailReplySchema.safeParse(input);
@@ -175,7 +175,10 @@ export async function sendEmailReply(
   revalidatePath("/admin/email/inbox");
   revalidatePath(`/admin/email/inbox/${thread.id}`);
 
-  return { success: true, data: { messageId: result.messageId } };
+  return {
+    success: true,
+    data: { messageId: result.messageId, mirrorNote: result.mirrorNote },
+  };
 }
 
 /**

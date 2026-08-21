@@ -140,6 +140,8 @@ export interface SendTemplateResult {
   sent: boolean;
   messageId?: string;
   error?: string;
+  /** Human-readable Zoho Sent mirror outcome (mirrored / skipped / failed). */
+  mirrorNote?: string;
 }
 
 export async function sendTemplateEmail(
@@ -236,6 +238,7 @@ export async function sendTemplateEmail(
 
   // Best-effort mirror into the Zoho Sent folder (dashboard → Zoho Sent).
   // Failures are logged only — they never change the send outcome.
+  let mirrorNote: string | undefined;
   if (result.ok) {
     const { mirrorSentToZoho } = await import(
       "@/features/email-imap/sent-mirror"
@@ -250,13 +253,19 @@ export async function sendTemplateEmail(
       inReplyTo: input.inReplyTo,
       references: input.references,
     });
-    if (!mirror.mirrored && mirror.error) {
-      console.warn("Zoho Sent mirror skipped:", mirror.error);
+    if (mirror.mirrored) {
+      mirrorNote = `Copied to Zoho Sent (${mirror.folder}).`;
+    } else {
+      mirrorNote =
+        mirror.error ??
+        mirror.skipped ??
+        "Zoho Sent mirror skipped.";
+      console.warn("Zoho Sent mirror skipped:", mirrorNote);
     }
   }
 
   if (!result.ok) {
     return { sent: false, messageId: undefined, error: result.error };
   }
-  return { sent: true, messageId: result.messageId };
+  return { sent: true, messageId: result.messageId, mirrorNote };
 }

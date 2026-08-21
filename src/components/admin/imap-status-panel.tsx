@@ -165,15 +165,15 @@ export function ImapStatusPanel({ status }: { status: ImapStatus }) {
             <span className="font-semibold text-text-secondary">
               Sent-folder sync:{" "}
             </span>
-            enable{" "}
+            both directions are on by default. To disable, set{" "}
             <code className="rounded-sm bg-surface-hover px-1 py-0.5">
-              IMAP_SYNC_SENT=1
+              IMAP_SYNC_SENT=0
             </code>{" "}
-            to import mail sent from Zoho into these conversations, and{" "}
+            (import Zoho-sent mail) or{" "}
             <code className="rounded-sm bg-surface-hover px-1 py-0.5">
-              IMAP_SENT_MIRROR=1
+              IMAP_SENT_MIRROR=0
             </code>{" "}
-            to show dashboard sends in Zoho&apos;s Sent folder (folder:{" "}
+            (mirror dashboard sends into Zoho Sent, folder:{" "}
             <code className="rounded-sm bg-surface-hover px-1 py-0.5">
               {status.sentFolder}
             </code>

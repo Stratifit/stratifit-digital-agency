@@ -93,6 +93,7 @@ export function EmailThreadDetailView({
 }) {
   const router = useRouter();
   const [actionError, setActionError] = React.useState<string | null>(null);
+  const [replyNote, setReplyNote] = React.useState<string | null>(null);
   const [busy, setBusy] = React.useState(false);
 
   const groupedTemplates = React.useMemo(
@@ -130,8 +131,10 @@ export function EmailThreadDetailView({
 
   async function onSubmit(values: ReplyValues) {
     setActionError(null);
+    setReplyNote(null);
     const result = await sendEmailReply(values);
     if (result.success) {
+      setReplyNote(result.data?.mirrorNote ?? null);
       reset({
         thread_id: thread.id,
         subject: "",
@@ -285,6 +288,18 @@ export function EmailThreadDetailView({
       {actionError ? (
         <p role="alert" className="rounded-card bg-error-soft px-3 py-2 text-sm text-error">
           {actionError}
+        </p>
+      ) : null}
+
+      {replyNote ? (
+        <p
+          className={
+            replyNote.startsWith("Copied to Zoho Sent")
+              ? "rounded-card bg-surface px-3 py-2 text-xs text-text-secondary"
+              : "rounded-card bg-warning-soft px-3 py-2 text-xs text-text-secondary"
+          }
+        >
+          {replyNote}
         </p>
       ) : null}
 

@@ -46,6 +46,7 @@ export function CommunicationSendForm({
   const [actionError, setActionError] = React.useState<string | null>(null);
   const [sent, setSent] = React.useState(false);
   const [sentTo, setSentTo] = React.useState<string>("");
+  const [sentNote, setSentNote] = React.useState<string | null>(null);
 
   const {
     register,
@@ -99,6 +100,7 @@ export function CommunicationSendForm({
     if (result.success) {
       setSent(true);
       setSentTo(values.to_email);
+      setSentNote(result.data?.mirrorNote ?? null);
       reset({
         template_key: values.template_key,
         language: values.language,
@@ -325,6 +327,17 @@ export function CommunicationSendForm({
               Your email to {sentTo || "the recipient"} was sent successfully
               through the Stratifit mail system.
             </p>
+            {sentNote ? (
+              <p
+                className={
+                  sentNote.startsWith("Copied to Zoho Sent")
+                    ? "mt-3 text-xs text-text-secondary"
+                    : "mt-3 rounded-card bg-warning-soft px-3 py-2 text-xs text-text-secondary"
+                }
+              >
+                {sentNote}
+              </p>
+            ) : null}
             <button
               type="button"
               onClick={() => setSent(false)}

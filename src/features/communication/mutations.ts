@@ -287,7 +287,7 @@ export async function deleteEmailTemplate(
  */
 export async function sendManualEmail(
   input: SendManualEmailInput
-): Promise<ActionResult<{ messageId?: string }>> {
+): Promise<ActionResult<{ messageId?: string; mirrorNote?: string }>> {
   await requireAdmin();
   const parsed = sendManualEmailSchema.safeParse(input);
 
@@ -329,7 +329,10 @@ export async function sendManualEmail(
     target_id: parsed.data.template_key,
   });
   revalidatePath("/admin/communication/logs");
-  return { success: true, data: { messageId: result.messageId } };
+  return {
+    success: true,
+    data: { messageId: result.messageId, mirrorNote: result.mirrorNote },
+  };
 }
 
 // ---------------------------------------------------------------------------

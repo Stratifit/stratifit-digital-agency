@@ -41,13 +41,20 @@ Two directions, one IMAP account (`IMAP_USER`), no provider change.
 
 - Resolves `resolveImapConfig(process.env)`.
 - No-ops (returns `mirrored: false` + reason) when IMAP is unconfigured,
-  `IMAP_SENT_MIRROR` is off, no RFC message-id exists, or the `from` address
-  is not the `IMAP_USER` mailbox nor one of the configured sender addresses.
+  `IMAP_SENT_MIRROR` is off, or no RFC message-id exists. There is no
+  from-address gate — every conversation send is mirrored; the Sent sweep
+  only imports mailbox-owned sends, so foreign-address copies can never
+  create dashboard duplicates.
 - Renders the RFC 5322 source with **Nodemailer streamTransport** (same
   from/to/subject/html/text/headers/Message-ID) — no new dependency.
-- `ImapFlow` connect → `client.append(IMAP_SENT_FOLDER, raw, [], date)`.
-- Never throws to the caller; returns `{ mirrored, skipped?, error? }`.
-- The send path logs mirror failures as warnings only.
+- Locates the Sent folder robustly: configured `IMAP_SENT_FOLDER` when it
+  exists on the server, then the RFC 6154 `\Sent` special-use flag (imapflow
+  also maps localized names), then common localized sent-folder names, then
+  the configured value.
+- `ImapFlow` connect → `client.append(folder, raw, [], date)`.
+- Never throws to the caller; returns `{ mirrored, folder?, skipped?, error? }`.
+- The send path logs the outcome and returns a human-readable `mirrorNote`
+  that the composer and inbox reply UI display.
 
 ## Sent sweep (fetch.ts + store.ts)
 
@@ -78,11 +85,13 @@ Two directions, one IMAP account (`IMAP_USER`), no provider change.
 
 ```text
 IMAP_SENT_FOLDER=Sent      # folder that holds sent mail (default Sent)
-IMAP_SYNC_SENT=1           # import Zoho-sent mail into the dashboard
-IMAP_SENT_MIRROR=1         # mirror dashboard sends into Zoho Sent
+IMAP_SYNC_SENT=1           # import Zoho-sent mail into the dashboard (default ON)
+IMAP_SENT_MIRROR=1         # mirror dashboard sends into Zoho Sent (default ON)
 ```
 
-Defaults are off/`Sent` so existing deployments are unaffected.
+Both directions are ON by default once IMAP is configured; set the flag to
+`0`/`false` to disable. Defaults mean existing deployments gain the two-way
+sync without an extra env step.
 
 ## Admin surface
 

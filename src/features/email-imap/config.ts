@@ -99,9 +99,17 @@ export function resolveImapConfig(
         .filter(Boolean);
   if (mailboxList.length === 0) mailboxList.push("INBOX");
 
-  const isEnabled = (value: string | undefined): boolean => {
+  // Resolve a boolean flag with an explicit default. `1/true/yes/on` → true,
+  // `0/false/no/off` → false, unset → the default.
+  const resolveFlag = (
+    value: string | undefined,
+    defaultValue: boolean
+  ): boolean => {
     const v = value?.trim().toLowerCase();
-    return v === "1" || v === "true" || v === "yes" || v === "on";
+    if (!v) return defaultValue;
+    if (v === "1" || v === "true" || v === "yes" || v === "on") return true;
+    if (v === "0" || v === "false" || v === "no" || v === "off") return false;
+    return defaultValue;
   };
 
   return {
@@ -116,8 +124,12 @@ export function resolveImapConfig(
       // Zoho IMAP is TLS on 993; never fall back to plaintext.
       secure: true,
       sentFolder: env.IMAP_SENT_FOLDER?.trim() || "Sent",
-      syncSent: isEnabled(env.IMAP_SYNC_SENT),
-      mirrorSent: isEnabled(env.IMAP_SENT_MIRROR),
+      // Both directions of the Sent-folder sync are ON by default once IMAP
+      // is configured (the owner requires dashboard sends visible in Zoho
+      // Sent and Zoho-sent mail visible in the dashboard). Set the env flag
+      // to 0/false to disable either direction.
+      syncSent: resolveFlag(env.IMAP_SYNC_SENT, true),
+      mirrorSent: resolveFlag(env.IMAP_SENT_MIRROR, true),
     },
     missing,
     placeholders,

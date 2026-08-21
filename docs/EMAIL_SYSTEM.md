@@ -296,23 +296,29 @@ sync in both directions (implementation: `src/features/email-imap/`, spec
 `sendTemplateEmail` is mirrored into the Zoho **Sent** folder over IMAP
 (`APPEND`) by `email-imap/sent-mirror.ts`, best-effort:
 
-- Gated on IMAP being configured, `IMAP_SENT_MIRROR=1`, and the send carrying
-  an RFC Message-ID from a `from` address that belongs to the synced Zoho
-  mailbox (`IMAP_USER` or a configured sender address/alias).
+- Gated on IMAP being configured and the send carrying an RFC Message-ID
+  (`IMAP_SENT_MIRROR` is **on by default**; set `IMAP_SENT_MIRROR=0` to
+  disable). Every conversation send is mirrored regardless of the `from`
+  address; the Sent-folder sweep only imports mailbox-owned sends, so
+  foreign-address copies can never create dashboard duplicates.
+- The Sent folder is located robustly: the configured `IMAP_SENT_FOLDER` when
+  it exists, else the RFC 6154 `\Sent` special-use flag, else common localized
+  sent-folder names.
 - The copy preserves the original Message-ID, subject, from/to, In-Reply-To /
   References, and HTML/text content, so it threads in Zoho exactly like the
   original.
 - Failures only log a warning — the SES send, `email_logs`, and the send
-  outcome are never affected.
+  outcome are never affected. The outcome is surfaced in the admin UI (composer
+  and inbox reply) so operators can see why a copy did not appear.
 
-**Zoho → Dashboard (sweep).** When `IMAP_SYNC_SENT=1`, the IMAP fetch worker
-(see `docs/IMAP_INBOX.md`) additionally sweeps `IMAP_SENT_FOLDER` (default
-`Sent`). Messages sent by the Zoho mailbox are imported as `outbound`
-messages on the matching conversation thread (threading headers first,
-recipient + subject fallback, else a new `imap` thread), the thread moves to
-`waiting_on_customer`, and the message is deduplicated by RFC message-id —
-which also absorbs the mirrored copies so a dashboard send never gets
-recorded twice.
+**Zoho → Dashboard (sweep).** When `IMAP_SYNC_SENT` is enabled (on by
+default), the IMAP fetch worker (see `docs/IMAP_INBOX.md`) additionally sweeps
+`IMAP_SENT_FOLDER` (default `Sent`). Messages sent by the Zoho mailbox are
+imported as `outbound` messages on the matching conversation thread (threading
+headers first, recipient + subject fallback, else a new `imap` thread), the
+thread moves to `waiting_on_customer`, and the message is deduplicated by RFC
+message-id — which also absorbs the mirrored copies so a dashboard send never
+gets recorded twice.
 
 This keeps AWS SES as the outbound provider (delivery webhooks and
 `email_logs` status tracking are unchanged) while both UIs see the same sent

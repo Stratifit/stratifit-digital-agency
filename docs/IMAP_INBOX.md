@@ -74,13 +74,16 @@ IMAP_MAILBOX=INBOX
 IMAP_MAILBOXES=INBOX, Junk                # folders swept per run (Junk catches filtered replies)
 IMAP_SYNC_SINCE_DAYS=7                    # fetch window (clamped 1–90)
 IMAP_SENT_FOLDER=Sent                     # folder that holds sent mail
-IMAP_SYNC_SENT=1                          # import Zoho-sent mail into the dashboard
-IMAP_SENT_MIRROR=1                        # mirror dashboard sends into the Zoho Sent folder
+IMAP_SYNC_SENT=1                          # import Zoho-sent mail into the dashboard (default ON)
+IMAP_SENT_MIRROR=1                        # mirror dashboard sends into the Zoho Sent folder (default ON)
 IMAP_SYNC_SECRET=…                        # bearer secret for POST /api/inbox/fetch
 ```
 
 Zoho Mail requires an **app password**: Zoho Mail → Profile → App Passwords
 (IMAP access must be enabled for the account). All values are server-only.
+
+Both Sent-sync directions (`IMAP_SYNC_SENT`, `IMAP_SENT_MIRROR`) are **on by
+default** once IMAP is configured; set either to `0`/`false` to disable it.
 
 ### 3.1 Receiving replies on every reply-as address
 
@@ -147,14 +150,23 @@ sweep.
 **Dashboard → Zoho Sent** (`email-imap/sent-mirror.ts`, called from
 `sendTemplateEmail` after a successful send):
 
-- Gate: IMAP configured, `IMAP_SENT_MIRROR` on, an RFC Message-ID exists, and
-  the `from` address is the synced Zoho mailbox or one of its aliases /
-  configured sender addresses (otherwise it is skipped, never an error).
+- Gate: IMAP configured, `IMAP_SENT_MIRROR` on, and an RFC Message-ID exists.
+  Every conversation send is mirrored regardless of the `from` address — the
+  copy is appended to this mailbox's Sent folder, and the Sent-folder sweep
+  only imports mailbox-owned sends, so foreign-address copies can never create
+  dashboard duplicates.
+- The Sent folder is located robustly: the configured `IMAP_SENT_FOLDER` when
+  it exists on the server, else the RFC 6154 `\Sent` special-use flag (which
+  covers localized names), else common localized names, else the configured
+  value.
 - The RFC 5322 source is rendered locally with Nodemailer `streamTransport`
   (same from/to/subject/html/text/Message-ID/threading headers — nothing is
-  sent), then `APPEND`ed into `IMAP_SENT_FOLDER`.
+  sent), then `APPEND`ed into the resolved Sent folder.
 - Best-effort: a mirror failure only logs a warning; it never fails the email,
   never changes `email_logs`, and never changes the send outcome.
+- The outcome is returned to the caller and shown in the admin UI (composer
+  success dialog and inbox thread reply) so operators can see exactly why a
+  copy did not appear in Zoho Sent (e.g. "IMAP_SENT_MIRROR is not enabled.").
 - Because the copy keeps the same Message-ID as the dashboard's stored
   outbound record (`headers.message_id`), a later Sent-folder sweep recognizes
   it as a duplicate (no double records).
