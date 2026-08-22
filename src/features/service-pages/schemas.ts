@@ -7,12 +7,14 @@ export const translationMapSchema = z
 const statSchema = z.object({
   value: z.string(),
   label_translations: translationMapSchema,
+  description_translations: translationMapSchema.nullable().optional(),
 });
 
 const badgeSchema = z.object({
   value: z.string(),
   label_translations: translationMapSchema,
   hint_translations: translationMapSchema.nullable().optional(),
+  description_translations: translationMapSchema.nullable().optional(),
 });
 
 const stepSchema = z.object({
@@ -50,6 +52,7 @@ export const servicePageSchema = z.object({
   why_description_translations: translationMapSchema,
   why_badges: z.array(badgeSchema).default([]),
   capabilities_title_translations: translationMapSchema,
+  capabilities_description_translations: translationMapSchema,
   capabilities: z.array(capabilitySchema).default([]),
   deliverables_title_translations: translationMapSchema,
   deliverables: z.array(deliverableSchema).default([]),

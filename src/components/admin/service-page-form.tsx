@@ -250,6 +250,10 @@ export function ServicePageForm({
                   </div>
                 </div>
                 <TranslationInputs name={`hero_stats.${index}.label_translations`} register={register} />
+                <div className="space-y-2">
+                  <Label className="text-xs uppercase tracking-wider text-text-muted">Description</Label>
+                  <TranslationInputs name={`hero_stats.${index}.description_translations`} register={register} textarea />
+                </div>
                 <Button type="button" size="small" variant="destructive" onClick={() => stats.remove(index)}>
                   Remove
                 </Button>
@@ -287,6 +291,10 @@ export function ServicePageForm({
                   </div>
                 </div>
                 <TranslationInputs name={`why_badges.${index}.label_translations`} register={register} />
+                <div className="space-y-2">
+                  <Label className="text-xs uppercase tracking-wider text-text-muted">Description</Label>
+                  <TranslationInputs name={`why_badges.${index}.description_translations`} register={register} textarea />
+                </div>
                 <TranslationInputs name={`why_badges.${index}.hint_translations`} register={register} />
                 <Button type="button" size="small" variant="destructive" onClick={() => badges.remove(index)}>
                   Remove
@@ -304,6 +312,10 @@ export function ServicePageForm({
           <div className="space-y-2">
             <Label>Section Title</Label>
             <TranslationInputs name="capabilities_title_translations" register={register} />
+          </div>
+          <div className="space-y-2">
+            <Label>Section Description</Label>
+            <TranslationInputs name="capabilities_description_translations" register={register} textarea />
           </div>
           <div className="space-y-3">
             <div className="flex items-center justify-between">

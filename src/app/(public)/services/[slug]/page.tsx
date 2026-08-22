@@ -55,10 +55,12 @@ export async function generateMetadata({
     getPublicServiceBySlug(slug),
   ]);
   if (!page) return {};
+  const heroHighlightFallback = resolveTranslation(
+    page.hero_highlight_translations,
+    locale
+  );
   const fallbackTitle = `${resolveTranslation(page.hero_title_translations, locale)}${
-    page.hero_highlight_translations
-      ? ` ${resolveTranslation(page.hero_highlight_translations, locale)}`
-      : ""
+    heroHighlightFallback ? ` ${heroHighlightFallback}` : ""
   } Stratifit`;
   const fallbackDescription = resolveTranslation(
     page.hero_description_translations,
@@ -122,6 +124,11 @@ export default async function ServicePage({
     page.capabilities_title_translations,
     locale
   );
+  const capabilitiesDescription =
+    resolveTranslation(page.capabilities_description_translations, locale) ||
+    (service
+      ? resolveTranslation(service.short_description_translations, locale)
+      : null);
   const deliverablesTitle = resolveTranslation(
     page.deliverables_title_translations,
     locale
@@ -204,19 +211,48 @@ export default async function ServicePage({
             {stats.length > 0 ? (
               <Reveal variant="card">
                 <div className="grid grid-cols-3 gap-3 pt-3 pb-3 sm:gap-6 md:gap-6 md:pt-3 md:pb-0 lg:pt-3">
-                  {stats.map((stat, index) => (
-                    <div
-                      key={index}
-                      className="flex flex-col items-center px-2 text-center sm:px-4 lg:flex-row lg:justify-center lg:gap-1 lg:whitespace-nowrap"
-                    >
-                      <div className="mb-0.5 font-display text-2xl font-black leading-none text-primary sm:text-3xl lg:mb-0">
-                        <CountUp value={stat.value} />
+                  {stats.map((stat, index) => {
+                    const statTitle = resolveTranslation(
+                      stat.label_translations,
+                      locale
+                    );
+                    const statDescription = stat.description_translations
+                      ? resolveTranslation(stat.description_translations, locale)
+                      : null;
+                    const numeric = Boolean(stat.value.trim());
+                    return (
+                      <div
+                        key={index}
+                        className={
+                          numeric
+                            ? "flex flex-col items-center px-2 text-center sm:px-4 lg:flex-row lg:justify-center lg:gap-1 lg:whitespace-nowrap"
+                            : "flex flex-col items-center px-2 text-center sm:px-4"
+                        }
+                      >
+                        {numeric ? (
+                          <>
+                            <div className="mb-0.5 font-display text-2xl font-black leading-none text-primary sm:text-3xl lg:mb-0">
+                              <CountUp value={stat.value} />
+                            </div>
+                            <div className="text-[9px] font-bold uppercase tracking-wider text-text-subtle leading-tight sm:text-[10px] lg:text-sm">
+                              {statTitle}
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="font-display text-base font-bold leading-tight text-text-primary sm:text-lg">
+                              {statTitle}
+                            </div>
+                            {statDescription ? (
+                              <div className="mt-1 text-[10px] leading-tight text-text-muted sm:text-xs">
+                                {statDescription}
+                              </div>
+                            ) : null}
+                          </>
+                        )}
                       </div>
-                      <div className="text-[9px] font-bold uppercase tracking-wider text-text-subtle leading-tight sm:text-[10px] lg:text-sm">
-                        {resolveTranslation(stat.label_translations, locale)}
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </Reveal>
             ) : null}
@@ -249,24 +285,54 @@ export default async function ServicePage({
                 ) : null}
                 {badges.length > 0 ? (
                   <div className="relative z-10 grid grid-cols-3 gap-3 sm:gap-4">
-                    {badges.map((badge, index) => (
-                      <div
-                        key={index}
-                        className="flex flex-col items-center gap-1.5 rounded-card border border-card-border bg-[#1E1E1E] p-3 text-center transition-all duration-300 hover:border-primary/30 sm:p-4"
-                      >
-                        <span className="font-display text-lg font-black leading-none text-text-primary sm:text-xl">
-                          {badge.value}
-                        </span>
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-text-muted leading-tight sm:text-xs">
-                          {resolveTranslation(badge.label_translations, locale)}
-                        </span>
-                        {badge.hint_translations ? (
-                          <span className="hidden text-[9px] leading-tight text-text-subtle sm:block">
-                            {resolveTranslation(badge.hint_translations, locale)}
-                          </span>
-                        ) : null}
-                      </div>
-                    ))}
+                    {badges.map((badge, index) => {
+                      const badgeTitle = resolveTranslation(
+                        badge.label_translations,
+                        locale
+                      );
+                      const badgeDescription = badge.description_translations
+                        ? resolveTranslation(badge.description_translations, locale)
+                        : badge.hint_translations
+                          ? resolveTranslation(badge.hint_translations, locale)
+                          : null;
+                      const numeric = Boolean(badge.value.trim());
+                      return (
+                        <div
+                          key={index}
+                          className="flex flex-col items-center gap-1.5 rounded-card border border-card-border bg-[#1E1E1E] p-3 text-center transition-all duration-300 hover:border-primary/30 sm:p-4"
+                        >
+                          {numeric ? (
+                            <>
+                              <span className="font-display text-lg font-black leading-none text-text-primary sm:text-xl">
+                                {badge.value}
+                              </span>
+                              <span className="text-[10px] font-bold uppercase tracking-wider text-text-muted leading-tight sm:text-xs">
+                                {badgeTitle}
+                              </span>
+                              {badge.hint_translations ? (
+                                <span className="hidden text-[9px] leading-tight text-text-subtle sm:block">
+                                  {resolveTranslation(
+                                    badge.hint_translations,
+                                    locale
+                                  )}
+                                </span>
+                              ) : null}
+                            </>
+                          ) : (
+                            <>
+                              <span className="font-display text-sm font-bold leading-tight text-text-primary sm:text-base">
+                                {badgeTitle}
+                              </span>
+                              {badgeDescription ? (
+                                <span className="text-[10px] leading-tight text-text-muted sm:text-xs">
+                                  {badgeDescription}
+                                </span>
+                              ) : null}
+                            </>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 ) : null}
               </div>
@@ -285,16 +351,16 @@ export default async function ServicePage({
             <Reveal>
               <div className="mb-10 md:mb-16">
                 <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                  {serviceName}
+                  {t(locale, "servicesEyebrow")}
                 </p>
                 <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
                   {highlightLastWord(
                     capabilitiesTitle || t(locale, "servicesCapabilities")
                   )}
                 </h2>
-                {service?.short_description_translations ? (
+                {capabilitiesDescription ? (
                   <p className="mt-3 ml-1.5 max-w-2xl border-l-2 border-primary/50 pl-4 text-sm leading-relaxed text-text-muted sm:ml-2 sm:pl-6 sm:text-base md:text-lg">
-                    {resolveTranslation(service.short_description_translations, locale)}
+                    {capabilitiesDescription}
                   </p>
                 ) : null}
               </div>

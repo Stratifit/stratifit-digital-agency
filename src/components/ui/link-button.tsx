@@ -13,7 +13,10 @@ export interface LinkButtonProps
 }
 
 function isInternalHref(href: string): boolean {
-  return href.startsWith("/") && !href.startsWith("//");
+  return (
+    href.startsWith("#") ||
+    (href.startsWith("/") && !href.startsWith("//"))
+  );
 }
 
 /**

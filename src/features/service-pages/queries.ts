@@ -2,7 +2,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { PublicServicePage } from "./types";
 
 const PUBLIC_SELECT =
-  "id, slug, is_visible, hero_eyebrow_translations, hero_title_translations, hero_highlight_translations, hero_description_translations, hero_stats, why_title_translations, why_description_translations, why_badges, capabilities_title_translations, capabilities, deliverables_title_translations, deliverables, process_title_translations, process, toolkit_title_translations, toolkit, cta_title_translations, cta_subtitle_translations, cta_button_label_translations, updated_at";
+  "id, slug, is_visible, hero_eyebrow_translations, hero_title_translations, hero_highlight_translations, hero_description_translations, hero_stats, why_title_translations, why_description_translations, why_badges, capabilities_title_translations, capabilities_description_translations, capabilities, deliverables_title_translations, deliverables, process_title_translations, process, toolkit_title_translations, toolkit, cta_title_translations, cta_subtitle_translations, cta_button_label_translations, updated_at";
 
 export async function getPublicServicePage(
   slug: string

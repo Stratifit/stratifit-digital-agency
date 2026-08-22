@@ -2200,6 +2200,7 @@ export type Database = {
       service_pages: {
         Row: {
           capabilities: Json
+          capabilities_description_translations: Json
           capabilities_title_translations: Json
           created_at: string
           cta_button_label_translations: Json
@@ -2227,6 +2228,7 @@ export type Database = {
         }
         Insert: {
           capabilities?: Json
+          capabilities_description_translations?: Json
           capabilities_title_translations?: Json
           created_at?: string
           cta_button_label_translations?: Json
@@ -2254,6 +2256,7 @@ export type Database = {
         }
         Update: {
           capabilities?: Json
+          capabilities_description_translations?: Json
           capabilities_title_translations?: Json
           created_at?: string
           cta_button_label_translations?: Json

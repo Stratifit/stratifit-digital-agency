@@ -55,6 +55,7 @@ export async function saveServicePage(
       why_description_translations: parsed.data.why_description_translations,
       why_badges: parsed.data.why_badges,
       capabilities_title_translations: parsed.data.capabilities_title_translations,
+      capabilities_description_translations: parsed.data.capabilities_description_translations,
       capabilities: parsed.data.capabilities,
       deliverables_title_translations: parsed.data.deliverables_title_translations,
       deliverables: parsed.data.deliverables,

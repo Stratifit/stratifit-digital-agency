@@ -29,6 +29,8 @@ export default async function EditServicePage({
     why_description_translations: page.why_description_translations ?? {},
     why_badges: page.why_badges ?? [],
     capabilities_title_translations: page.capabilities_title_translations ?? {},
+    capabilities_description_translations:
+      page.capabilities_description_translations ?? {},
     capabilities: page.capabilities ?? [],
     deliverables_title_translations: page.deliverables_title_translations ?? {},
     deliverables: page.deliverables ?? [],

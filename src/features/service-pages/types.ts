@@ -3,12 +3,14 @@ export type TranslationMap = Record<string, string>;
 export interface ServicePageStat {
   value: string;
   label_translations: TranslationMap;
+  description_translations?: TranslationMap | null;
 }
 
 export interface ServicePageBadge {
   value: string;
   label_translations: TranslationMap;
   hint_translations?: TranslationMap | null;
+  description_translations?: TranslationMap | null;
 }
 
 export interface ServicePageStep {
@@ -48,6 +50,7 @@ export interface PublicServicePage {
   why_description_translations: TranslationMap | null;
   why_badges: ServicePageBadge[] | null;
   capabilities_title_translations: TranslationMap | null;
+  capabilities_description_translations: TranslationMap | null;
   capabilities: ServicePageCapability[] | null;
   deliverables_title_translations: TranslationMap | null;
   deliverables: ServicePageDeliverable[] | null;
