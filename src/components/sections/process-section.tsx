@@ -22,7 +22,7 @@ export async function ProcessSection() {
 
   return (
     <>
-    <Section>
+    <Section id="process" className="scroll-mt-24">
       <Container>
         <SectionHeader settings={settings} locale={locale} />
 

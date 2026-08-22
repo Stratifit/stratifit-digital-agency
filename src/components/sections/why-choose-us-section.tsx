@@ -28,7 +28,7 @@ export async function WhyChooseUsSection() {
 
   return (
     <>
-    <Section>
+    <Section id="why-choose-us" className="scroll-mt-24">
       <Container>
         <SectionHeader settings={settings} locale={locale} />
 

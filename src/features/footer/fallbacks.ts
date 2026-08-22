@@ -3,21 +3,20 @@ import type { PublicFooterGroup } from "@/features/footer/queries";
 /**
  * Canonical footer structure used as a render fallback and as the source of
  * truth for which links must always be present. Content mirrors the seed in
- * supabase/seed.sql + migration 00047 in all 4 languages.
+ * supabase/seed.sql + migration 00083 in all 4 languages.
  *
  * Database content wins for anything it already provides; the merge helper
- * below only appends links that are missing from the DB (e.g. Hiring under
- * Company and Imprint under Legal before migration 00047 is applied), so the
- * footer never silently drops a canonical link.
+ * below only appends links that are missing from the DB (matched by href), so
+ * the footer never silently drops a canonical link.
  */
 export const FALLBACK_FOOTER_GROUPS: PublicFooterGroup[] = [
   {
     id: "20000000-0000-4000-8000-000000000001",
     title_translations: {
-      en: "Platform",
-      de: "Plattform",
-      fr: "Plateforme",
-      es: "Plataforma",
+      en: "Explore",
+      de: "Entdecken",
+      fr: "Découvrir",
+      es: "Explorar",
     },
     display_order: 1,
     links: [
@@ -43,10 +42,10 @@ export const FALLBACK_FOOTER_GROUPS: PublicFooterGroup[] = [
       {
         id: "30000000-0000-4000-8000-000000000003",
         label_translations: {
-          en: "Work",
-          de: "Arbeiten",
-          fr: "Réalisations",
-          es: "Proyectos",
+          en: "Our Work",
+          de: "Unsere Projekte",
+          fr: "Nos réalisations",
+          es: "Nuestros proyectos",
         },
         href: "/work",
         is_external: false,
@@ -56,8 +55,8 @@ export const FALLBACK_FOOTER_GROUPS: PublicFooterGroup[] = [
         id: "30000000-0000-4000-8000-000000000004",
         label_translations: {
           en: "Insights",
-          de: "Einblicke",
-          fr: "Insights",
+          de: "Insights",
+          fr: "Perspectives",
           es: "Perspectivas",
         },
         href: "/insights",
@@ -67,12 +66,12 @@ export const FALLBACK_FOOTER_GROUPS: PublicFooterGroup[] = [
       {
         id: "30000000-0000-4000-8000-000000000011",
         label_translations: {
-          en: "Buy a Business",
-          de: "Unternehmen kaufen",
-          fr: "Acheter une entreprise",
-          es: "Comprar un negocio",
+          en: "Pricing",
+          de: "Preise",
+          fr: "Tarifs",
+          es: "Precios",
         },
-        href: "/buy-business",
+        href: "/#pricing",
         is_external: false,
         display_order: 5,
       },
@@ -90,10 +89,39 @@ export const FALLBACK_FOOTER_GROUPS: PublicFooterGroup[] = [
     links: [
       {
         id: "30000000-0000-4000-8000-000000000005",
-        label_translations: { en: "About", de: "Über uns", fr: "À propos", es: "Nosotros" },
+        label_translations: {
+          en: "About",
+          de: "Über uns",
+          fr: "À propos",
+          es: "Sobre nosotros",
+        },
         href: "/about",
         is_external: false,
         display_order: 1,
+      },
+      {
+        id: "30000000-0000-4000-8000-000000000012",
+        label_translations: {
+          en: "How We Work",
+          de: "So arbeiten wir",
+          fr: "Notre méthode",
+          es: "Cómo trabajamos",
+        },
+        href: "/#process",
+        is_external: false,
+        display_order: 2,
+      },
+      {
+        id: "30000000-0000-4000-8000-000000000014",
+        label_translations: {
+          en: "Why STRATIFIT",
+          de: "Warum STRATIFIT",
+          fr: "Pourquoi STRATIFIT",
+          es: "Por qué STRATIFIT",
+        },
+        href: "/#why-choose-us",
+        is_external: false,
+        display_order: 3,
       },
       {
         id: "30000000-0000-4000-8000-000000000006",
@@ -101,11 +129,11 @@ export const FALLBACK_FOOTER_GROUPS: PublicFooterGroup[] = [
           en: "Careers",
           de: "Karriere",
           fr: "Carrières",
-          es: "Carreras",
+          es: "Trabaja con nosotros",
         },
         href: "/careers",
         is_external: false,
-        display_order: 2,
+        display_order: 4,
       },
       {
         id: "30000000-0000-4000-8000-000000000007",
@@ -117,30 +145,6 @@ export const FALLBACK_FOOTER_GROUPS: PublicFooterGroup[] = [
         },
         href: "/contact",
         is_external: false,
-        display_order: 3,
-      },
-      {
-        id: "30000000-0000-4000-8000-000000000012",
-        label_translations: {
-          en: "Pricing",
-          de: "Preise",
-          fr: "Tarifs",
-          es: "Precios",
-        },
-        href: "/#pricing",
-        is_external: false,
-        display_order: 4,
-      },
-      {
-        id: "30000000-0000-4000-8000-000000000014",
-        label_translations: {
-          en: "Hiring",
-          de: "Karriere bei uns",
-          fr: "Recrutement",
-          es: "Contratación",
-        },
-        href: "/hiring",
-        is_external: false,
         display_order: 5,
       },
     ],
@@ -150,8 +154,8 @@ export const FALLBACK_FOOTER_GROUPS: PublicFooterGroup[] = [
     title_translations: {
       en: "Legal",
       de: "Rechtliches",
-      fr: "Mentions légales",
-      es: "Legal",
+      fr: "Informations légales",
+      es: "Información legal",
     },
     display_order: 3,
     links: [
@@ -170,10 +174,10 @@ export const FALLBACK_FOOTER_GROUPS: PublicFooterGroup[] = [
       {
         id: "30000000-0000-4000-8000-000000000009",
         label_translations: {
-          en: "Terms of Service",
-          de: "Nutzungsbedingungen",
-          fr: "Conditions d'utilisation",
-          es: "Términos del servicio",
+          en: "Terms & Conditions",
+          de: "Allgemeine Geschäftsbedingungen",
+          fr: "Conditions générales",
+          es: "Términos y condiciones",
         },
         href: "/terms-conditions",
         is_external: false,
@@ -184,7 +188,7 @@ export const FALLBACK_FOOTER_GROUPS: PublicFooterGroup[] = [
         label_translations: {
           en: "Cookie Policy",
           de: "Cookie-Richtlinie",
-          fr: "Politique de cookies",
+          fr: "Politique relative aux cookies",
           es: "Política de cookies",
         },
         href: "/cookie-policy",

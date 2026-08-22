@@ -59,7 +59,7 @@ INSERT INTO public.site_settings (singleton_key, site_name, site_description_tra
 VALUES (
   true,
   'Stratifit',
-  '{"en": "Premium digital agency specializing in brand design, website development, AI automation, and growth marketing.", "de": "Premium-Digitalagentur spezialisiert auf Branding, Webentwicklung, KI-Automatisierung und Growth Marketing.", "fr": "Agence digitale premium spécialisée en design de marque, développement web, automatisation IA et marketing de croissance.", "es": "Agencia digital premium especializada en diseño de marca, desarrollo web, automatización de IA y marketing de crecimiento."}'::jsonb,
+  '{"en": "We build high-performing websites, distinctive brands, and AI-powered systems that help businesses grow.", "de": "Wir entwickeln leistungsstarke Websites, unverwechselbare Marken und KI-gestützte Systeme, die Unternehmen wachsen lassen.", "fr": "Nous créons des sites web performants, des marques distinctives et des systèmes basés sur l''IA pour aider les entreprises à se développer.", "es": "Creamos sitios web de alto rendimiento, marcas distintivas y sistemas impulsados por IA que ayudan a las empresas a crecer."}'::jsonb,
   'hello@stratifit.com',
   'en',
   ARRAY['en', 'de', 'fr', 'es'],
@@ -225,9 +225,9 @@ ON CONFLICT (section_key) DO UPDATE SET
 
 INSERT INTO public.footer_groups (id, title_translations, display_order, is_visible)
 VALUES
-  ('20000000-0000-4000-8000-000000000001', '{"en": "Platform", "de": "Plattform", "fr": "Plateforme", "es": "Plataforma"}'::jsonb, 1, true),
+  ('20000000-0000-4000-8000-000000000001', '{"en": "Explore", "de": "Entdecken", "fr": "Découvrir", "es": "Explorar"}'::jsonb, 1, true),
   ('20000000-0000-4000-8000-000000000002', '{"en": "Company", "de": "Unternehmen", "fr": "Entreprise", "es": "Empresa"}'::jsonb, 2, true),
-  ('20000000-0000-4000-8000-000000000003', '{"en": "Legal", "de": "Rechtliches", "fr": "Mentions légales", "es": "Legal"}'::jsonb, 3, true)
+  ('20000000-0000-4000-8000-000000000003', '{"en": "Legal", "de": "Rechtliches", "fr": "Informations légales", "es": "Información legal"}'::jsonb, 3, true)
 ON CONFLICT (id) DO UPDATE SET
   title_translations = EXCLUDED.title_translations,
   display_order = EXCLUDED.display_order,
@@ -242,18 +242,18 @@ INSERT INTO public.footer_links (id, group_id, label_translations, href, is_exte
 VALUES
   ('30000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000001', '{"en": "Home", "de": "Startseite", "fr": "Accueil", "es": "Inicio"}'::jsonb, '/', false, 1, true),
   ('30000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000001', '{"en": "Services", "de": "Leistungen", "fr": "Services", "es": "Servicios"}'::jsonb, '/services', false, 2, true),
-  ('30000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000001', '{"en": "Work", "de": "Arbeiten", "fr": "Réalisations", "es": "Proyectos"}'::jsonb, '/work', false, 3, true),
-  ('30000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000001', '{"en": "Insights", "de": "Einblicke", "fr": "Insights", "es": "Perspectivas"}'::jsonb, '/insights', false, 4, true),
-  ('30000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000001', '{"en": "Buy a Business", "de": "Unternehmen kaufen", "fr": "Acheter une entreprise", "es": "Comprar un negocio"}'::jsonb, '/buy-business', false, 5, true),
-  ('30000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000002', '{"en": "About", "de": "Über uns", "fr": "À propos", "es": "Nosotros"}'::jsonb, '/about', false, 1, true),
-  ('30000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000002', '{"en": "Careers", "de": "Karriere", "fr": "Carrières", "es": "Carreras"}'::jsonb, '/careers', false, 2, true),
-  ('30000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000002', '{"en": "Contact", "de": "Kontakt", "fr": "Contact", "es": "Contacto"}'::jsonb, '/contact', false, 3, true),
-  ('30000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000002', '{"en": "Pricing", "de": "Preise", "fr": "Tarifs", "es": "Precios"}'::jsonb, '/#pricing', false, 4, true),
+  ('30000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000001', '{"en": "Our Work", "de": "Unsere Projekte", "fr": "Nos réalisations", "es": "Nuestros proyectos"}'::jsonb, '/work', false, 3, true),
+  ('30000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000001', '{"en": "Insights", "de": "Insights", "fr": "Perspectives", "es": "Perspectivas"}'::jsonb, '/insights', false, 4, true),
+  ('30000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000001', '{"en": "Pricing", "de": "Preise", "fr": "Tarifs", "es": "Precios"}'::jsonb, '/#pricing', false, 5, true),
+  ('30000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000002', '{"en": "About", "de": "Über uns", "fr": "À propos", "es": "Sobre nosotros"}'::jsonb, '/about', false, 1, true),
+  ('30000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000002', '{"en": "How We Work", "de": "So arbeiten wir", "fr": "Notre méthode", "es": "Cómo trabajamos"}'::jsonb, '/#process', false, 2, true),
+  ('30000000-0000-4000-8000-000000000014', '20000000-0000-4000-8000-000000000002', '{"en": "Why STRATIFIT", "de": "Warum STRATIFIT", "fr": "Pourquoi STRATIFIT", "es": "Por qué STRATIFIT"}'::jsonb, '/#why-choose-us', false, 3, true),
+  ('30000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000002', '{"en": "Careers", "de": "Karriere", "fr": "Carrières", "es": "Trabaja con nosotros"}'::jsonb, '/careers', false, 4, true),
+  ('30000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000002', '{"en": "Contact", "de": "Kontakt", "fr": "Contact", "es": "Contacto"}'::jsonb, '/contact', false, 5, true),
   ('30000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000003', '{"en": "Privacy Policy", "de": "Datenschutzerklärung", "fr": "Politique de confidentialité", "es": "Política de privacidad"}'::jsonb, '/privacy', false, 1, true),
-  ('30000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000003', '{"en": "Terms of Service", "de": "Nutzungsbedingungen", "fr": "Conditions d''utilisation", "es": "Términos del servicio"}'::jsonb, '/terms-conditions', false, 2, true),
-  ('30000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000003', '{"en": "Cookie Policy", "de": "Cookie-Richtlinie", "fr": "Politique de cookies", "es": "Política de cookies"}'::jsonb, '/cookie-policy', false, 3, true),
-  ('30000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000003', '{"en": "Imprint", "de": "Impressum", "fr": "Mentions légales", "es": "Aviso legal"}'::jsonb, '/imprint', false, 4, true),
-  ('30000000-0000-4000-8000-000000000014', '20000000-0000-4000-8000-000000000002', '{"en": "Hiring", "de": "Karriere bei uns", "fr": "Recrutement", "es": "Contratación"}'::jsonb, '/hiring', false, 5, true)
+  ('30000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000003', '{"en": "Terms & Conditions", "de": "Allgemeine Geschäftsbedingungen", "fr": "Conditions générales", "es": "Términos y condiciones"}'::jsonb, '/terms-conditions', false, 2, true),
+  ('30000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000003', '{"en": "Cookie Policy", "de": "Cookie-Richtlinie", "fr": "Politique relative aux cookies", "es": "Política de cookies"}'::jsonb, '/cookie-policy', false, 3, true),
+  ('30000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000003', '{"en": "Imprint", "de": "Impressum", "fr": "Mentions légales", "es": "Aviso legal"}'::jsonb, '/imprint', false, 4, true)
 ON CONFLICT (id) DO UPDATE SET
   group_id = EXCLUDED.group_id,
   label_translations = EXCLUDED.label_translations,
@@ -1304,7 +1304,7 @@ INSERT INTO public.site_settings (singleton_key, site_name, site_description_tra
 VALUES (
   true,
   'Stratifit',
-  '{"en": "Premium digital agency specializing in brand design, website development, AI automation, and growth marketing.", "de": "Premium-Digitalagentur spezialisiert auf Branding, Webentwicklung, KI-Automatisierung und Growth Marketing.", "fr": "Agence digitale premium spécialisée en design de marque, développement web, automatisation IA et marketing de croissance.", "es": "Agencia digital premium especializada en diseño de marca, desarrollo web, automatización de IA y marketing de crecimiento."}'::jsonb,
+  '{"en": "We build high-performing websites, distinctive brands, and AI-powered systems that help businesses grow.", "de": "Wir entwickeln leistungsstarke Websites, unverwechselbare Marken und KI-gestützte Systeme, die Unternehmen wachsen lassen.", "fr": "Nous créons des sites web performants, des marques distinctives et des systèmes basés sur l''IA pour aider les entreprises à se développer.", "es": "Creamos sitios web de alto rendimiento, marcas distintivas y sistemas impulsados por IA que ayudan a las empresas a crecer."}'::jsonb,
   'hello@stratifit.com',
   'en',
   ARRAY['en', 'de', 'fr', 'es'],
@@ -1470,9 +1470,9 @@ ON CONFLICT (section_key) DO UPDATE SET
 
 INSERT INTO public.footer_groups (id, title_translations, display_order, is_visible)
 VALUES
-  ('20000000-0000-4000-8000-000000000001', '{"en": "Platform", "de": "Plattform", "fr": "Plateforme", "es": "Plataforma"}'::jsonb, 1, true),
+  ('20000000-0000-4000-8000-000000000001', '{"en": "Explore", "de": "Entdecken", "fr": "Découvrir", "es": "Explorar"}'::jsonb, 1, true),
   ('20000000-0000-4000-8000-000000000002', '{"en": "Company", "de": "Unternehmen", "fr": "Entreprise", "es": "Empresa"}'::jsonb, 2, true),
-  ('20000000-0000-4000-8000-000000000003', '{"en": "Legal", "de": "Rechtliches", "fr": "Mentions légales", "es": "Legal"}'::jsonb, 3, true)
+  ('20000000-0000-4000-8000-000000000003', '{"en": "Legal", "de": "Rechtliches", "fr": "Informations légales", "es": "Información legal"}'::jsonb, 3, true)
 ON CONFLICT (id) DO UPDATE SET
   title_translations = EXCLUDED.title_translations,
   display_order = EXCLUDED.display_order,
@@ -1487,18 +1487,18 @@ INSERT INTO public.footer_links (id, group_id, label_translations, href, is_exte
 VALUES
   ('30000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000001', '{"en": "Home", "de": "Startseite", "fr": "Accueil", "es": "Inicio"}'::jsonb, '/', false, 1, true),
   ('30000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000001', '{"en": "Services", "de": "Leistungen", "fr": "Services", "es": "Servicios"}'::jsonb, '/services', false, 2, true),
-  ('30000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000001', '{"en": "Work", "de": "Arbeiten", "fr": "Réalisations", "es": "Proyectos"}'::jsonb, '/work', false, 3, true),
-  ('30000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000001', '{"en": "Insights", "de": "Einblicke", "fr": "Insights", "es": "Perspectivas"}'::jsonb, '/insights', false, 4, true),
-  ('30000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000001', '{"en": "Buy a Business", "de": "Unternehmen kaufen", "fr": "Acheter une entreprise", "es": "Comprar un negocio"}'::jsonb, '/buy-business', false, 5, true),
-  ('30000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000002', '{"en": "About", "de": "Über uns", "fr": "À propos", "es": "Nosotros"}'::jsonb, '/about', false, 1, true),
-  ('30000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000002', '{"en": "Careers", "de": "Karriere", "fr": "Carrières", "es": "Carreras"}'::jsonb, '/careers', false, 2, true),
-  ('30000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000002', '{"en": "Contact", "de": "Kontakt", "fr": "Contact", "es": "Contacto"}'::jsonb, '/contact', false, 3, true),
-  ('30000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000002', '{"en": "Pricing", "de": "Preise", "fr": "Tarifs", "es": "Precios"}'::jsonb, '/#pricing', false, 4, true),
+  ('30000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000001', '{"en": "Our Work", "de": "Unsere Projekte", "fr": "Nos réalisations", "es": "Nuestros proyectos"}'::jsonb, '/work', false, 3, true),
+  ('30000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000001', '{"en": "Insights", "de": "Insights", "fr": "Perspectives", "es": "Perspectivas"}'::jsonb, '/insights', false, 4, true),
+  ('30000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000001', '{"en": "Pricing", "de": "Preise", "fr": "Tarifs", "es": "Precios"}'::jsonb, '/#pricing', false, 5, true),
+  ('30000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000002', '{"en": "About", "de": "Über uns", "fr": "À propos", "es": "Sobre nosotros"}'::jsonb, '/about', false, 1, true),
+  ('30000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000002', '{"en": "How We Work", "de": "So arbeiten wir", "fr": "Notre méthode", "es": "Cómo trabajamos"}'::jsonb, '/#process', false, 2, true),
+  ('30000000-0000-4000-8000-000000000014', '20000000-0000-4000-8000-000000000002', '{"en": "Why STRATIFIT", "de": "Warum STRATIFIT", "fr": "Pourquoi STRATIFIT", "es": "Por qué STRATIFIT"}'::jsonb, '/#why-choose-us', false, 3, true),
+  ('30000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000002', '{"en": "Careers", "de": "Karriere", "fr": "Carrières", "es": "Trabaja con nosotros"}'::jsonb, '/careers', false, 4, true),
+  ('30000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000002', '{"en": "Contact", "de": "Kontakt", "fr": "Contact", "es": "Contacto"}'::jsonb, '/contact', false, 5, true),
   ('30000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000003', '{"en": "Privacy Policy", "de": "Datenschutzerklärung", "fr": "Politique de confidentialité", "es": "Política de privacidad"}'::jsonb, '/privacy', false, 1, true),
-  ('30000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000003', '{"en": "Terms of Service", "de": "Nutzungsbedingungen", "fr": "Conditions d''utilisation", "es": "Términos del servicio"}'::jsonb, '/terms-conditions', false, 2, true),
-  ('30000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000003', '{"en": "Cookie Policy", "de": "Cookie-Richtlinie", "fr": "Politique de cookies", "es": "Política de cookies"}'::jsonb, '/cookie-policy', false, 3, true),
-  ('30000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000003', '{"en": "Imprint", "de": "Impressum", "fr": "Mentions légales", "es": "Aviso legal"}'::jsonb, '/imprint', false, 4, true),
-  ('30000000-0000-4000-8000-000000000014', '20000000-0000-4000-8000-000000000002', '{"en": "Hiring", "de": "Karriere bei uns", "fr": "Recrutement", "es": "Contratación"}'::jsonb, '/hiring', false, 5, true)
+  ('30000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000003', '{"en": "Terms & Conditions", "de": "Allgemeine Geschäftsbedingungen", "fr": "Conditions générales", "es": "Términos y condiciones"}'::jsonb, '/terms-conditions', false, 2, true),
+  ('30000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000003', '{"en": "Cookie Policy", "de": "Cookie-Richtlinie", "fr": "Politique relative aux cookies", "es": "Política de cookies"}'::jsonb, '/cookie-policy', false, 3, true),
+  ('30000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000003', '{"en": "Imprint", "de": "Impressum", "fr": "Mentions légales", "es": "Aviso legal"}'::jsonb, '/imprint', false, 4, true)
 ON CONFLICT (id) DO UPDATE SET
   group_id = EXCLUDED.group_id,
   label_translations = EXCLUDED.label_translations,
