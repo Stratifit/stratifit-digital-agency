@@ -165,7 +165,7 @@ export default async function ServicePage({
             <div className="space-y-4 md:space-y-8 lg:mx-auto lg:max-w-4xl lg:text-center">
               <Reveal>
                 <h1 className="text-center font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl md:text-5xl lg:text-6xl md:leading-[0.95]">
-                  {pageTitle}
+                  {highlightLastWord(pageTitle)}
                   {highlight ? (
                     <>
                       <br />
