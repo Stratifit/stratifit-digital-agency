@@ -424,21 +424,19 @@ export default async function ServicePage({
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
               {deliverables.map((item, index) => (
                 <Reveal key={index} variant="card" className="h-full">
-                  <div className="group/card flex h-full flex-col items-center gap-3 rounded-card border border-card-border bg-[#1E1E1E] p-6 text-center shadow-lg transition-all duration-300 hover:border-primary/30 sm:p-8">
-                    <div className="flex size-12 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-primary/10 shadow-[0_0_15px_rgba(245,158,11,0.1)] transition-shadow group-hover/card:shadow-[0_0_25px_rgba(245,158,11,0.2)]">
+                  <div className="group/card flex h-full flex-col rounded-card border border-card-border bg-[#1E1E1E] p-6 shadow-lg transition-all duration-300 hover:border-primary/30 sm:p-8">
+                    <div className="mb-2 flex items-center gap-2">
                       <ServicePageIcon
                         name={item.icon ?? "folder"}
-                        className="size-6 text-primary transition-transform duration-300 group-hover/card:scale-110"
+                        className="size-5 shrink-0 text-primary"
                       />
-                    </div>
-                    <div>
-                      <h4 className="mb-1.5 text-sm font-bold text-text-primary">
+                      <h4 className="text-sm font-bold text-text-primary sm:text-base">
                         {resolveTranslation(item.title_translations, locale)}
                       </h4>
-                      <p className="text-[11px] leading-tight text-text-muted">
-                        {resolveTranslation(item.description_translations, locale)}
-                      </p>
                     </div>
+                    <p className="text-xs leading-relaxed text-text-muted sm:text-[13px]">
+                      {resolveTranslation(item.description_translations, locale)}
+                    </p>
                   </div>
                 </Reveal>
               ))}
