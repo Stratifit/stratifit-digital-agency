@@ -164,14 +164,6 @@ export default async function ServicePage({
           <div className="grid items-center gap-8 md:gap-16">
             <div className="space-y-4 md:space-y-8 lg:mx-auto lg:max-w-4xl lg:text-center">
               <Reveal>
-                <div className="flex items-center justify-center gap-2">
-                  <span className="size-2 shrink-0 animate-pulse rounded-full bg-primary" />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary sm:text-xs">
-                    {resolveTranslation(page.hero_eyebrow_translations, locale) || serviceName}
-                  </span>
-                </div>
-              </Reveal>
-              <Reveal>
                 <h1 className="text-center font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl md:text-5xl lg:text-6xl md:leading-[0.95]">
                   {pageTitle}
                   {highlight ? (
