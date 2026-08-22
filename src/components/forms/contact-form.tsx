@@ -13,7 +13,13 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { t, tWithNumber, translateValidation } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
 
-const BUDGET_RANGES = ["€1k–€3k", "€3k–€5k", "€5k–€10k", "€10k+"];
+const BUDGET_RANGE_KEYS = [
+  "budgetBelow7500",
+  "budget7500to15000",
+  "budget15000to30000",
+  "budget30000to60000",
+  "budgetAbove60000",
+] as const;
 
 // ============================================================================
 // Icon set
@@ -346,7 +352,7 @@ export function ContactForm({
           <input
             type="text"
             className={cn(fieldBase, "pl-11 pr-4")}
-            placeholder={t(locale, "yourName").replace(" *", "")}
+            placeholder={t(locale, "namePlaceholder")}
             {...register("name")}
           />
         </FieldShell>
@@ -508,17 +514,18 @@ export function ContactForm({
                 >
                   {t(locale, "notSureYet")}
                 </button>
-                {BUDGET_RANGES.map((range) => {
-                  const selected = budgetRange === range;
+                {BUDGET_RANGE_KEYS.map((key) => {
+                  const label = t(locale, key);
+                  const selected = budgetRange === label;
                   return (
                     <button
-                      key={range}
+                      key={key}
                       type="button"
                       role="option"
                       aria-selected={selected}
                       onClick={() => {
-                        setBudgetRange(range);
-                        setValue("budget_range", range);
+                        setBudgetRange(label);
+                        setValue("budget_range", label);
                         setBudgetOpen(false);
                       }}
                       className={cn(
@@ -528,7 +535,7 @@ export function ContactForm({
                           : "text-text-secondary"
                       )}
                     >
-                      {range}
+                      {label}
                       {selected ? (
                         <span className="text-primary">
                           <CheckIcon />

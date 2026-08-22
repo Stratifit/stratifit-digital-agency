@@ -184,13 +184,18 @@ export const SECTION_HEADER_FALLBACKS: Record<
   },
   contact: {
     eyebrow: { en: "Contact", de: "Kontakt", fr: "Contact", es: "Contacto" },
-    title: { en: "Let's Talk", de: "Sprechen wir", fr: "Parlons-en", es: "Hablemos" },
+    title: {
+      en: "Let's Talk",
+      de: "Sprechen wir über Ihr Projekt",
+      fr: "Parlons de votre projet",
+      es: "Hablemos de su proyecto",
+    },
     highlight: { en: "", de: "", fr: "", es: "" },
     description: {
-      en: "Ready to start your project? Fill out the form and we'll get back to you within 24 hours.",
-      de: "Bereit, Ihr Projekt zu starten? Füllen Sie das Formular aus, wir melden uns innerhalb von 24 Stunden.",
-      fr: "Prêt à lancer votre projet ? Remplissez le formulaire et nous vous répondrons sous 24 heures.",
-      es: "¿Listo para empezar su proyecto? Complete el formulario y le responderemos en 24 horas.",
+      en: "Ready to move your project forward? Tell us about your goals, challenges, and timeline. We'll respond within one business day.",
+      de: "Möchten Sie Ihr Projekt voranbringen? Erzählen Sie uns von Ihren Zielen, Herausforderungen und Ihrem Zeitrahmen. Wir antworten innerhalb eines Werktages.",
+      fr: "Vous souhaitez faire avancer votre projet ? Présentez-nous vos objectifs, vos défis et votre calendrier. Nous vous répondrons sous un jour ouvré.",
+      es: "¿Está listo para impulsar su proyecto? Cuéntenos sus objetivos, desafíos y plazos. Responderemos en un día laborable.",
     },
   },
 };
