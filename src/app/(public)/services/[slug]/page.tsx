@@ -165,7 +165,7 @@ export default async function ServicePage({
           <div className="grid items-center gap-8 md:gap-16">
             <div className="space-y-4 md:space-y-8 lg:mx-auto lg:max-w-4xl lg:text-center">
               <Reveal>
-                <h1 className="mx-auto text-center font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-5xl sm:leading-none md:text-6xl lg:text-6xl lg:leading-[0.95]">
+                <h1 className="mx-auto text-center font-display text-[1.75rem] font-black leading-[1.15] tracking-tight text-text-primary sm:text-5xl md:text-6xl lg:text-5xl">
                   {highlightLastWord(heroTitle)}
                 </h1>
               </Reveal>
