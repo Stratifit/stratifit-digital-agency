@@ -8,12 +8,13 @@ import type { PublicFooterGroup } from "./queries";
 const LOCALES = ["en", "de", "fr", "es"] as const;
 
 describe("FALLBACK_FOOTER_GROUPS", () => {
-  it("covers Platform, Company, and Legal with the canonical links", () => {
+  it("covers Explore, Company, and Legal with the canonical links", () => {
     const titles = FALLBACK_FOOTER_GROUPS.map((g) => g.title_translations?.en);
-    expect(titles).toEqual(["Platform", "Company", "Legal"]);
+    expect(titles).toEqual(["Explore", "Company", "Legal"]);
 
     const company = FALLBACK_FOOTER_GROUPS[1];
-    expect(company.links.map((l) => l.href)).toContain("/hiring");
+    expect(company.links.map((l) => l.href)).toContain("/#process");
+    expect(company.links.map((l) => l.href)).toContain("/#why-choose-us");
 
     const legal = FALLBACK_FOOTER_GROUPS[2];
     expect(legal.links.map((l) => l.href)).toContain("/imprint");
@@ -38,7 +39,7 @@ describe("mergeFooterGroups", () => {
     expect(mergeFooterGroups([])).toEqual(FALLBACK_FOOTER_GROUPS);
   });
 
-  it("appends missing canonical links (Hiring, Imprint) to DB groups", () => {
+  it("appends missing canonical links (How We Work, Why STRATIFIT, Imprint) to DB groups", () => {
     const dbGroups: PublicFooterGroup[] = [
       {
         id: "20000000-0000-4000-8000-000000000002",
@@ -47,7 +48,7 @@ describe("mergeFooterGroups", () => {
         links: [
           {
             id: "custom-about",
-            label_translations: { en: "About", de: "Über uns", fr: "À propos", es: "Nosotros" },
+            label_translations: { en: "About", de: "Über uns", fr: "À propos", es: "Sobre nosotros" },
             href: "/about",
             is_external: false,
             display_order: 1,
@@ -56,7 +57,7 @@ describe("mergeFooterGroups", () => {
       },
       {
         id: "20000000-0000-4000-8000-000000000003",
-        title_translations: { en: "Legal", de: "Rechtliches", fr: "Mentions légales", es: "Legal" },
+        title_translations: { en: "Legal", de: "Rechtliches", fr: "Informations légales", es: "Información legal" },
         display_order: 3,
         links: [],
       },
@@ -65,7 +66,8 @@ describe("mergeFooterGroups", () => {
     const merged = mergeFooterGroups(dbGroups);
 
     const company = merged.find((g) => g.id.endsWith("002"))!;
-    expect(company.links.map((l) => l.href)).toContain("/hiring");
+    expect(company.links.map((l) => l.href)).toContain("/#process");
+    expect(company.links.map((l) => l.href)).toContain("/#why-choose-us");
 
     const legal = merged.find((g) => g.id.endsWith("003"))!;
     expect(legal.links.map((l) => l.href)).toContain("/imprint");
@@ -83,19 +85,19 @@ describe("mergeFooterGroups", () => {
             label_translations: { en: "Hiring", de: "Karriere bei uns", fr: "Recrutement", es: "Contratación" },
             href: "/hiring",
             is_external: false,
-            display_order: 5,
+            display_order: 6,
           },
         ],
       },
     ];
 
     const merged = mergeFooterGroups(dbGroups);
-    // The DB link is kept as-is; the 4 remaining canonical Company links
-    // (About, Careers, Contact, Pricing) are appended without duplication,
+    // The DB link is kept as-is; the 5 canonical Company links (About, How We
+    // Work, Why STRATIFIT, Careers, Contact) are appended without duplication,
     // and everything is re-sorted by display_order.
-    expect(merged[0].links).toHaveLength(5);
-    expect(new Set(merged[0].links.map((l) => l.href)).size).toBe(5);
+    expect(merged[0].links).toHaveLength(6);
+    expect(new Set(merged[0].links.map((l) => l.href)).size).toBe(6);
     expect(merged[0].links[0].href).toBe("/about");
-    expect(merged[0].links[4].href).toBe("/hiring");
+    expect(merged[0].links[5].href).toBe("/hiring");
   });
 });
