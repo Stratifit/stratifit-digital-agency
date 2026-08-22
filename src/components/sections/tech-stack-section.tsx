@@ -68,15 +68,15 @@ export async function TechStackSection() {
           <SectionHeader
             settings={headerSettings}
             locale={locale}
-            className="mb-0 md:mb-0"
+            className="mb-8 md:mb-12"
             splitHighlightFirstWord
           />
 
-          <div className="grid grid-cols-4 items-center justify-center gap-1 md:grid-cols-6 md:gap-3 lg:grid-cols-12">
+          <div className="grid grid-cols-4 items-center justify-center gap-x-2 gap-y-5 md:grid-cols-6 md:gap-x-3 md:gap-y-6 lg:grid-cols-12">
             {items.map((tech) => (
               <div
                 key={tech.name}
-                className="tech-item flex flex-col items-center justify-center gap-1"
+                className="tech-item flex flex-col items-center justify-center gap-1.5"
               >
                 <span className="flex items-center justify-center text-text-muted">
                   {tech.image_url ? (
@@ -85,13 +85,13 @@ export async function TechStackSection() {
                       src={tech.image_url}
                       alt={tech.name}
                       loading="lazy"
-                      className="h-7 w-auto max-w-[72px] object-contain md:h-10 md:max-w-[96px]"
+                      className="h-8 w-auto max-w-[80px] object-contain md:h-10 md:max-w-[96px]"
                     />
                   ) : (
                     <TechLogo
                       name={tech.name}
                       fallbackIcon={tech.icon}
-                      className="size-7 md:size-10"
+                      className="size-8 md:size-10"
                     />
                   )}
                 </span>
