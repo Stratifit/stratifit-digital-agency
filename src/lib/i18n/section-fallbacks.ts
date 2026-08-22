@@ -66,19 +66,29 @@ export const SECTION_HEADER_FALLBACKS: Record<
     },
   },
   "why-choose-us": {
-    eyebrow: { en: "Why Us", de: "Warum wir", fr: "Pourquoi nous", es: "Por qué nosotros" },
+    eyebrow: {
+      en: "Why Us",
+      de: "Warum wir",
+      fr: "Pourquoi nous choisir",
+      es: "Por qué elegirnos",
+    },
     title: {
       en: "Not Just Another",
-      de: "Nicht nur eine weitere",
-      fr: "Pas juste une autre",
-      es: "No solo otra",
+      de: "Mehr als eine",
+      fr: "Pas une",
+      es: "No somos una",
     },
-    highlight: { en: "Agency", de: "Agentur", fr: "agence", es: "agencia" },
+    highlight: {
+      en: "Agency",
+      de: "Agentur",
+      fr: "agence comme les autres",
+      es: "agencia más",
+    },
     description: {
-      en: "We build digital assets that drive valuation and market authority, not just websites.",
-      de: "Wir bauen digitale Assets, die Bewertung und Marktautorität steigern, nicht nur Websites.",
-      fr: "Nous créons des actifs numériques qui augmentent la valorisation et l'autorité de marché, pas seulement des sites web.",
-      es: "Creamos activos digitales que impulsan la valoración y la autoridad de mercado, no solo sitios web.",
+      en: "We build strategic digital assets that strengthen your market position and create lasting business value.",
+      de: "Wir entwickeln strategische digitale Lösungen, die Ihre Marktposition stärken und nachhaltigen Unternehmenswert schaffen.",
+      fr: "Nous créons des actifs numériques stratégiques qui renforcent votre position sur le marché et génèrent une valeur durable pour votre entreprise.",
+      es: "Creamos activos digitales estratégicos que refuerzan su posición en el mercado y generan valor empresarial duradero.",
     },
   },
   insights: {
