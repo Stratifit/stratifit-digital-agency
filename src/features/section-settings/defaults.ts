@@ -45,16 +45,23 @@ export const SECTION_KEY_META: Record<
   "acquisition-cta": { label: "Acquisition — Final CTA", displayOrder: 57 },
 };
 
-/** Tech-stack marquee items mirrored from migration 00057's seed. Used to
- *  pre-fill the CMS editor and to render the section while the migration is
- *  pending. The database remains the source of truth once applied. */
+/** Tech-stack grid items reflecting the Stratifit approved technology stack
+ *  (AGENTS.md §4). Used to pre-fill the CMS editor and to render the section
+ *  while the migration is pending. The database remains the source of truth
+ *  once applied. */
 export const DEFAULT_TECH_STACK: { name: string; icon: string }[] = [
-  { name: "Tailwind CSS", icon: "brush" },
-  { name: "Framer Motion", icon: "zap" },
-  { name: "GSAP", icon: "zap" },
   { name: "Next.js", icon: "code" },
   { name: "React", icon: "atom" },
   { name: "TypeScript", icon: "code" },
+  { name: "Tailwind CSS", icon: "brush" },
+  { name: "Supabase", icon: "zap" },
+  { name: "GSAP", icon: "zap" },
+  { name: "shadcn/ui", icon: "brush" },
+  { name: "Lucide", icon: "code" },
+  { name: "Zod", icon: "zap" },
+  { name: "React Hook Form", icon: "code" },
+  { name: "Vercel", icon: "atom" },
+  { name: "Nodemailer", icon: "zap" },
 ];
 
 /**

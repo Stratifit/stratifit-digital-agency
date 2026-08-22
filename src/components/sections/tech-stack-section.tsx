@@ -29,10 +29,9 @@ const FALLBACK_HEADER_SETTINGS: PublicSectionSettings = {
 
 /**
  * Tech stack section shown between the hero and Services on the homepage.
- * Uses the standard section header above a static grid of technology cards
- * (4 columns on mobile, 6 on md+) — each card shows the brand logo plus the
- * name, mirroring the reference logo-wall layout. Content (heading +
- * technologies) is CMS-editable via Sections → Tech Stack.
+ * Uses the standard section header above a grid of technology cards (4 cols
+ * mobile, 6 on md, 12 on lg — 4×3 grid) with brand logo + name. Content
+ * (heading + technologies) is CMS-editable via Sections → Tech Stack.
  */
 export async function TechStackSection() {
   const locale = await getLocale();
@@ -71,20 +70,20 @@ export async function TechStackSection() {
             splitHighlightFirstWord
           />
 
-          <div className="grid grid-cols-4 items-stretch gap-2 sm:gap-3 md:grid-cols-6">
+          <div className="grid grid-cols-4 items-stretch gap-2 sm:gap-3 md:grid-cols-6 lg:grid-cols-12">
             {items.map((tech) => (
               <div
                 key={tech.name}
-                className="group flex flex-col items-center justify-center gap-1.5 rounded-card border border-card-border bg-card-dark p-3 shadow-sm transition-[border-color,transform,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-surface-hover focus-within:border-primary/40 md:p-5"
+                className="group flex flex-col items-center justify-center gap-1 rounded-card border border-card-border bg-card-dark p-2 shadow-sm transition-[border-color,transform,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-surface-hover focus-within:border-primary/40 md:p-3 lg:p-2"
               >
-                <span className="flex h-10 items-center justify-center text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:text-primary sm:h-12">
+                <span className="flex h-8 items-center justify-center text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:text-primary sm:h-9 lg:h-7">
                   <TechLogo
                     name={tech.name}
                     fallbackIcon={tech.icon}
-                    className="size-8 sm:size-9 md:size-11"
+                    className="size-6 sm:size-7 md:size-8 lg:size-6"
                   />
                 </span>
-                <span className="max-w-full truncate text-center text-[10px] font-medium leading-tight text-text-muted transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:text-text-secondary sm:text-xs">
+                <span className="max-w-full truncate text-center text-[9px] font-medium leading-tight text-text-muted transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:text-text-secondary sm:text-[10px] lg:text-[8px]">
                   {tech.name}
                 </span>
               </div>
