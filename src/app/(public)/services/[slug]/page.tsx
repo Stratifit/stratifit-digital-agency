@@ -295,7 +295,7 @@ export default async function ServicePage({
                         >
                           {numeric ? (
                             <>
-                              <span className="font-display text-lg font-black leading-none text-text-primary sm:text-xl">
+                              <span className="font-display text-lg font-black leading-none text-primary sm:text-xl">
                                 {badge.value}
                               </span>
                               <span className="text-[10px] font-bold uppercase tracking-wider text-text-muted leading-tight sm:text-xs">
