@@ -164,19 +164,18 @@ export default async function ServicePage({
           <div className="grid items-center gap-8 md:gap-16">
             <div className="space-y-4 md:space-y-8 lg:mx-auto lg:max-w-4xl lg:text-center">
               <Reveal>
-                <h1 className="text-center font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl md:text-5xl lg:text-6xl md:leading-[0.95]">
-                  {highlightLastWord(pageTitle)}
+                <h1 className="flex flex-col items-center justify-center font-display text-[1.75rem] font-black leading-[1.15] tracking-tight text-text-primary sm:text-5xl md:text-6xl lg:text-5xl">
+                  <span className="block">{pageTitle}</span>
                   {highlight ? (
-                    <>
-                      <br />
-                      <span className="text-primary">{highlight}</span>
-                    </>
+                    <span className="mt-1 block text-[#ffb300] lg:mt-2">
+                      {highlight}
+                    </span>
                   ) : null}
                 </h1>
               </Reveal>
               {heroDescription ? (
                 <Reveal>
-                  <p className="mx-auto max-w-xl text-center text-sm leading-relaxed text-text-secondary sm:text-base md:text-lg">
+                  <p className="mx-auto mt-[18px] max-w-2xl text-[0.8rem] font-medium leading-snug text-text-secondary [text-shadow:0_0_1px_currentColor] sm:text-base">
                     {heroDescription}
                   </p>
                 </Reveal>
