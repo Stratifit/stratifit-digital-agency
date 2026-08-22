@@ -164,7 +164,7 @@ export default async function ServicePage({
           <div className="grid items-center gap-8 md:gap-16">
             <div className="space-y-4 md:space-y-8 lg:mx-auto lg:max-w-4xl lg:text-center">
               <Reveal>
-                <h1 className="flex flex-col items-center justify-center font-display text-2xl font-black leading-[1.15] tracking-tight text-text-primary sm:text-5xl md:text-6xl lg:text-5xl">
+                <h1 className="flex flex-col items-center justify-center font-display text-3xl font-black leading-[1.15] tracking-tight text-text-primary sm:text-5xl md:text-6xl lg:text-5xl">
                   <span className="block">{pageTitle}</span>
                   {highlight ? (
                     <span className="mt-1 block text-[#ffb300] lg:mt-2">
