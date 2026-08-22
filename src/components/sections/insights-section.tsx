@@ -10,7 +10,7 @@ import { InsightsCarousel } from "./insights-carousel";
 export async function InsightsSection() {
   const locale = await getLocale();
   const [insights, categories, settings] = await Promise.all([
-    getPublicInsights(4),
+    getPublicInsights(100),
     getPublicInsightCategories(),
     getPublicSectionSetting("insights"),
   ]);
