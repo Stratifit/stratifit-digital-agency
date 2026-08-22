@@ -1110,36 +1110,6 @@ export type Database = {
         }
         Relationships: []
       }
-      email_sender_addresses: {
-        Row: {
-          created_at: string
-          email: string
-          id: string
-          is_default: boolean
-          is_enabled: boolean
-          label: string | null
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          id?: string
-          is_default?: boolean
-          is_enabled?: boolean
-          label?: string | null
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          id?: string
-          is_default?: boolean
-          is_enabled?: boolean
-          label?: string | null
-          updated_at?: string
-        }
-        Relationships: []
-      }
       email_messages: {
         Row: {
           attachments: Json
@@ -1247,6 +1217,36 @@ export type Database = {
           sent_at?: string | null
           status?: string
           template_key?: string
+        }
+        Relationships: []
+      }
+      email_sender_addresses: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          is_default: boolean
+          is_enabled: boolean
+          label: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          is_default?: boolean
+          is_enabled?: boolean
+          label?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          is_default?: boolean
+          is_enabled?: boolean
+          label?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -2139,6 +2139,7 @@ export type Database = {
           description_translations: Json
           display_order: number
           eyebrow_translations: Json
+          footnote_translations: Json
           highlight_translations: Json
           is_visible: boolean
           label: string
@@ -2158,6 +2159,7 @@ export type Database = {
           description_translations?: Json
           display_order?: number
           eyebrow_translations?: Json
+          footnote_translations?: Json
           highlight_translations?: Json
           is_visible?: boolean
           label: string
@@ -2177,6 +2179,7 @@ export type Database = {
           description_translations?: Json
           display_order?: number
           eyebrow_translations?: Json
+          footnote_translations?: Json
           highlight_translations?: Json
           is_visible?: boolean
           label?: string

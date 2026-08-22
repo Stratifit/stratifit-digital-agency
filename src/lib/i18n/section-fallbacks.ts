@@ -154,16 +154,16 @@ export const SECTION_HEADER_FALLBACKS: Record<
     eyebrow: { en: "Pricing", de: "Preise", fr: "Tarifs", es: "Precios" },
     title: {
       en: "Service",
-      de: "Service",
-      fr: "Forfaits de",
+      de: "Leistungs",
+      fr: "Offres de",
       es: "Paquetes de",
     },
-    highlight: { en: "Packages", de: "Pakete", fr: "services", es: "servicios" },
+    highlight: { en: "Packages", de: "pakete", fr: "services", es: "servicios" },
     description: {
-      en: "Transparent pricing for every stage of growth. Start where you are and scale with confidence.",
-      de: "Transparente Preise für jede Wachstumsphase. Starten Sie dort, wo Sie sind, und skalieren Sie mit Zuversicht.",
-      fr: "Des tarifs transparents pour chaque étape de croissance. Commencez là où vous êtes et développez-vous en confiance.",
-      es: "Precios transparentes para cada etapa de crecimiento. Empiece donde está y escale con confianza.",
+      en: "Clear starting prices for every stage of growth. Final scope, timeline, and investment are confirmed after discovery.",
+      de: "Klare Startpreise für jede Wachstumsphase. Leistungsumfang, Zeitrahmen und Investition werden nach der Analyse verbindlich festgelegt.",
+      fr: "Des tarifs de départ clairs pour chaque phase de croissance. Le périmètre, le calendrier et l’investissement définitifs sont confirmés après la phase de découverte.",
+      es: "Precios iniciales claros para cada etapa de crecimiento. El alcance, el plazo y la inversión definitivos se confirman después de la fase de descubrimiento.",
     },
   },
   faq: {

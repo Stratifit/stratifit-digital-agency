@@ -7,6 +7,8 @@ export interface PublicSectionSettings {
   title_translations: Record<string, string> | null;
   highlight_translations: Record<string, string> | null;
   description_translations: Record<string, string> | null;
+  /** Optional section-level disclaimer/footnote (pricing section). */
+  footnote_translations?: Record<string, string> | null;
   /** Optional closing call-to-action (only populated for CTA-capable sections). */
   cta_label_translations?: Record<string, string> | null;
   cta_url?: string | null;
@@ -37,11 +39,15 @@ export interface PublicSectionSettings {
 }
 
 const SELECT_FIELDS =
-  "section_key, label, eyebrow_translations, title_translations, highlight_translations, description_translations, cta_label_translations, cta_url, stats, review_summary, tech_stack, seo_title_translations, seo_description_translations, is_visible";
+  "section_key, label, eyebrow_translations, title_translations, highlight_translations, description_translations, footnote_translations, cta_label_translations, cta_url, stats, review_summary, tech_stack, seo_title_translations, seo_description_translations, is_visible";
 
-/** Same fields without `tech_stack`, for databases that haven't applied
- *  migration 00057 yet (the column doesn't exist there). */
+/** Same fields without `footnote_translations` and `tech_stack`, for databases
+ *  that haven't applied migration 00080 / 00057 yet (the columns don't exist
+ *  there). */
 const LEGACY_SELECT_FIELDS = SELECT_FIELDS.replace(
+  "footnote_translations, ",
+  ""
+).replace(
   "review_summary, tech_stack, seo_title_translations",
   "review_summary, seo_title_translations"
 );

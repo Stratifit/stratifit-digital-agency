@@ -1,6 +1,7 @@
 ﻿import { getPublicPricingPlans } from "@/features/pricing/queries";
 import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
+import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
@@ -26,6 +27,11 @@ export async function PricingSection() {
         <Reveal variant="card" className="mt-12" cardSelector="[data-plan-card]">
           <PricingPlans plans={plans} locale={locale} />
         </Reveal>
+        {settings?.footnote_translations ? (
+          <p className="mt-8 max-w-3xl text-center text-xs leading-relaxed text-text-subtle sm:text-sm">
+            {resolveTranslation(settings.footnote_translations, locale)}
+          </p>
+        ) : null}
       </Container>
     </Section>
     <div aria-hidden="true" className="h-px w-full bg-white/5" />

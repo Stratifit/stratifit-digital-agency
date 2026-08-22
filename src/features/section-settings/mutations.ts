@@ -76,6 +76,7 @@ export async function updateSectionSettings(
         title_translations: parsed.data.title_translations,
         highlight_translations: parsed.data.highlight_translations,
         description_translations: parsed.data.description_translations,
+        footnote_translations: parsed.data.footnote_translations ?? {},
         cta_label_translations: ctaLabelToJson(
           parsed.data.cta_label_translations
         ),

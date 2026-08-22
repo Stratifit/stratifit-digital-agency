@@ -70,6 +70,8 @@ export const sectionSettingsSchema = z.object({
   ),
   highlight_translations: translations(),
   description_translations: translations(),
+  /** Optional section-level disclaimer/footnote (pricing section). */
+  footnote_translations: translations().optional(),
   /** Optional closing call-to-action (CTA-capable sections only). */
   cta_label_translations: translations().optional(),
   cta_url: z.string().optional(),

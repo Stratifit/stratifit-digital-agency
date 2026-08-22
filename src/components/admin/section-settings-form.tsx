@@ -443,6 +443,7 @@ function toFormValues(settings: AdminSectionSettings): SectionSettingsFormValues
     title_translations: rawTitles,
     highlight_translations: translations(settings.highlight_translations),
     description_translations: translations(settings.description_translations),
+    footnote_translations: translations(settings.footnote_translations),
     cta_label_translations: translations(settings.cta_label_translations),
     cta_url: settings.cta_url ?? "",
     stats: Array.isArray(settings.stats)
@@ -762,6 +763,16 @@ export function SectionSettingsForm({
                 rows={3}
                 placeholder="A short sentence describing this section…"
                 {...register(`description_translations.${locale}`)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor={`footnote-${locale}`}>Footnote (optional)</Label>
+              <Textarea
+                key={locale}
+                id={`footnote-${locale}`}
+                rows={2}
+                placeholder="Small disclaimer shown under the section, e.g. net prices…"
+                {...register(`footnote_translations.${locale}`)}
               />
             </div>
           </div>
