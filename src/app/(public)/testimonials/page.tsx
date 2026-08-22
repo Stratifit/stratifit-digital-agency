@@ -10,6 +10,10 @@ import {
 import { t } from "@/lib/i18n/ui-strings";
 import { pageMetadata, resolveSeoMetadata } from "@/lib/seo";
 import { Reveal } from "@/components/ui/reveal";
+import {
+  ReviewSummaryBand,
+  REVIEW_SUMMARY_DEFAULTS,
+} from "@/components/sections/review-summary-band";
 import { TestimonialCard } from "@/components/sections/testimonial-card";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -81,7 +85,17 @@ export default async function TestimonialsPage() {
       {/* Testimonials grid */}
       <section className="pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <Reveal className="grid grid-cols-1 gap-8 pt-10 sm:grid-cols-2 lg:grid-cols-3">
+          <Reveal className="pt-6">
+            <ReviewSummaryBand
+              locale={locale}
+              {...settings?.review_summary}
+              googleReviewsUrl={
+                settings?.review_summary?.googleReviewsUrl ||
+                REVIEW_SUMMARY_DEFAULTS.googleReviewsUrl
+              }
+            />
+          </Reveal>
+          <Reveal className="grid grid-cols-1 gap-8 pt-6 sm:grid-cols-2 lg:grid-cols-3">
             {testimonials.map((testimonial, index) => (
               <TestimonialCard
                 key={index}

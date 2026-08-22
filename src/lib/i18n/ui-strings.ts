@@ -33,8 +33,11 @@ export type UiStringKey =
   | "viewAllTestimonials"
   | "viewAllStories"
   | "getStarted"
+  | "verifiedClientReviews"
   | "verifiedClient"
   | "verified"
+  | "reviewsCount"
+  | "seeAllReviewsOnGoogle"
   | "starsOutOfFive"
   | "viewCaseStudy"
   | "viewFullDetail"
@@ -268,8 +271,11 @@ const en: UiStrings = {
   viewAllTestimonials: "View All Testimonials",
   viewAllStories: "View All Testimonials",
   getStarted: "Get Started",
+  verifiedClientReviews: "{n} verified reviews",
   verifiedClient: "Verified client",
   verified: "Verified",
+  reviewsCount: "{n} reviews",
+  seeAllReviewsOnGoogle: "See all reviews on Google",
   starsOutOfFive: "{n} out of 5 stars",
   viewCaseStudy: "View Case Study",
   viewFullDetail: "View Full Detail",
@@ -522,8 +528,11 @@ const de: UiStrings = {
   viewAllTestimonials: "Alle Testimonials ansehen",
   viewAllStories: "Alle Kundenstimmen ansehen",
   getStarted: "Loslegen",
+  verifiedClientReviews: "{n} bestätigte Bewertungen",
   verifiedClient: "Verifizierter Kunde",
   verified: "Verifiziert",
+  reviewsCount: "{n} Bewertungen",
+  seeAllReviewsOnGoogle: "Alle Bewertungen auf Google ansehen",
   starsOutOfFive: "{n} von 5 Sternen",
   viewCaseStudy: "Fallstudie ansehen",
   viewFullDetail: "Alle Details ansehen",
@@ -777,8 +786,11 @@ const fr: UiStrings = {
   viewAllTestimonials: "Voir tous les témoignages",
   viewAllStories: "Voir tous les témoignages",
   getStarted: "Commencer",
+  verifiedClientReviews: "{n} avis vérifiés",
   verifiedClient: "Client vérifié",
   verified: "Vérifié",
+  reviewsCount: "{n} avis",
+  seeAllReviewsOnGoogle: "Voir tous les avis sur Google",
   starsOutOfFive: "{n} étoiles sur 5",
   viewCaseStudy: "Voir l'étude de cas",
   viewFullDetail: "Voir le détail complet",
@@ -1032,8 +1044,11 @@ const es: UiStrings = {
   viewAllTestimonials: "Ver todos los testimonios",
   viewAllStories: "Ver todos los testimonios",
   getStarted: "Empezar",
+  verifiedClientReviews: "{n} reseñas verificadas",
   verifiedClient: "Cliente verificado",
   verified: "Verificado",
+  reviewsCount: "{n} reseñas",
+  seeAllReviewsOnGoogle: "Ver todas las reseñas en Google",
   starsOutOfFive: "{n} de 5 estrellas",
   viewCaseStudy: "Ver estudio de caso",
   viewFullDetail: "Ver detalle completo",
