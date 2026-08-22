@@ -425,7 +425,7 @@ export default async function ServicePage({
                 </h2>
               </div>
             </Reveal>
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
               {deliverables.map((item, index) => (
                 <Reveal key={index} variant="card" className="h-full">
                   <div className="group/card flex h-full flex-col items-center gap-3 rounded-card border border-card-border bg-[#1E1E1E] p-6 text-center shadow-lg transition-all duration-300 hover:border-primary/30 sm:p-8">
