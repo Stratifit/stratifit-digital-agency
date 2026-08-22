@@ -135,19 +135,19 @@ export const SECTION_HEADER_FALLBACKS: Record<
     },
   },
   testimonials: {
-    eyebrow: { en: "Testimonials", de: "Referenzen", fr: "Témoignages", es: "Testimonios" },
+    eyebrow: { en: "Testimonials", de: "Kundenstimmen", fr: "Témoignages", es: "Testimonios" },
     title: {
       en: "What Our Clients",
-      de: "Was unsere Kunden",
+      de: "Das sagen unsere Kunden",
       fr: "Ce que disent nos clients",
       es: "Lo que dicen nuestros clientes",
     },
-    highlight: { en: "Say", de: "sagen", fr: "", es: "" },
+    highlight: { en: "Say", de: "", fr: "", es: "" },
     description: {
-      en: "Don't take our word for it, hear from the brands we've helped scale.",
-      de: "Verlassen Sie sich nicht nur auf unser Wort, hören Sie, was die Marken sagen, denen wir zum Wachstum verholfen haben.",
-      fr: "Ne nous croyez pas sur parole, écoutez les marques que nous avons aidées à se développer.",
-      es: "No confíe solo en nuestra palabra: escuche a las marcas que hemos ayudado a escalar.",
+      en: "Don't take our word for it — hear from the brands we've helped scale.",
+      de: "Erfahren Sie direkt von unseren Kunden, wie sie die Zusammenarbeit mit STRATIFIT erlebt haben.",
+      fr: "Découvrez directement l'expérience des clients qui ont travaillé avec STRATIFIT.",
+      es: "Conozca directamente la experiencia de los clientes que han trabajado con STRATIFIT.",
     },
   },
   pricing: {
