@@ -186,20 +186,39 @@ function ArrowIcon() {
 
 export function SectionsManager({ rows }: { rows: SectionManagerRow[] }) {
   const router = useRouter();
+  // Optimistic visibility per section key — the switch moves instantly and
+  // rolls back if the server action fails.
+  const [overrides, setOverrides] = React.useState<Record<string, boolean>>({});
   const [pendingKey, setPendingKey] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
 
   function handleToggle(row: SectionManagerRow, visible: boolean) {
     setError(null);
+    setOverrides((prev) => ({ ...prev, [row.key]: visible }));
     setPendingKey(row.key);
     startTransition(async () => {
-      const result = await toggleSectionVisibility(row.key, visible);
-      if (!result.success) {
-        setError(result.error);
+      let failure: string | null = null;
+      try {
+        const result = await toggleSectionVisibility(row.key, visible);
+        if (!result.success) {
+          failure = result.error;
+        } else {
+          await router.refresh();
+        }
+      } catch {
+        failure = "Could not update this section. Please try again.";
+      }
+      if (failure) {
+        setError(failure);
+        // Roll the optimistic switch back to the server value.
+        setOverrides((prev) => {
+          const next = { ...prev };
+          delete next[row.key];
+          return next;
+        });
       }
       setPendingKey(null);
-      router.refresh();
     });
   }
 
@@ -211,14 +230,20 @@ export function SectionsManager({ rows }: { rows: SectionManagerRow[] }) {
         </p>
       ) : null}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {rows.map((row) => (
-          <SectionCard
-            key={row.key}
-            row={row}
-            busy={isPending && pendingKey === row.key}
-            onToggle={(visible) => handleToggle(row, visible)}
-          />
-        ))}
+        {rows.map((rawRow) => {
+          const row: SectionManagerRow =
+            rawRow.key in overrides
+              ? { ...rawRow, isVisible: overrides[rawRow.key] }
+              : rawRow;
+          return (
+            <SectionCard
+              key={row.key}
+              row={row}
+              busy={pendingKey === row.key}
+              onToggle={(visible) => handleToggle(rawRow, visible)}
+            />
+          );
+        })}
       </div>
     </div>
   );
