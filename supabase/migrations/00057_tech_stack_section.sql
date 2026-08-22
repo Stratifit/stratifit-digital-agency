@@ -32,7 +32,7 @@ VALUES (
   '{"en": "Our", "de": "Unser", "fr": "Notre", "es": "Nuestro"}'::jsonb,
   '{"en": "Tech Stack", "de": "Tech-Stack", "fr": "stack technique", "es": "stack tecnológico"}'::jsonb,
   '{"en": "We build with trusted, modern technologies.", "de": "Wir bauen mit vertrauenswürdigen, modernen Technologien.", "fr": "Nous construisons avec des technologies modernes et éprouvées.", "es": "Construimos con tecnologías modernas y confiables."}'::jsonb,
-  '[{"name": "Tailwind CSS", "icon": "brush"}, {"name": "Framer Motion", "icon": "zap"}, {"name": "GSAP", "icon": "zap"}, {"name": "Next.js", "icon": "code"}, {"name": "React", "icon": "atom"}, {"name": "TypeScript", "icon": "code"}]'::jsonb,
+  '[{"name": "Next.js", "icon": "code"}, {"name": "React", "icon": "atom"}, {"name": "TypeScript", "icon": "code"}, {"name": "Tailwind CSS", "icon": "brush"}, {"name": "Supabase", "icon": "zap"}, {"name": "GSAP", "icon": "zap"}, {"name": "shadcn/ui", "icon": "brush"}, {"name": "Lucide", "icon": "code"}, {"name": "Zod", "icon": "zap"}, {"name": "React Hook Form", "icon": "code"}, {"name": "Vercel", "icon": "atom"}, {"name": "Nodemailer", "icon": "zap"}]'::jsonb,
   true,
   5
 )

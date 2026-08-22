@@ -70,20 +70,20 @@ export async function TechStackSection() {
             splitHighlightFirstWord
           />
 
-          <div className="grid grid-cols-4 items-stretch gap-2 sm:gap-3 md:grid-cols-6 lg:grid-cols-12">
+          <div className="grid grid-cols-4 items-center justify-center gap-1 md:grid-cols-6 md:gap-3 lg:grid-cols-12">
             {items.map((tech) => (
               <div
                 key={tech.name}
-                className="group flex flex-col items-center justify-center gap-1 rounded-card border border-card-border bg-card-dark p-2 shadow-sm transition-[border-color,transform,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-surface-hover focus-within:border-primary/40 md:p-3 lg:p-2"
+                className="tech-item flex flex-col items-center justify-center gap-1"
               >
-                <span className="flex h-8 items-center justify-center text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:text-primary sm:h-9 lg:h-7">
+                <span className="flex items-center justify-center text-text-muted">
                   <TechLogo
                     name={tech.name}
                     fallbackIcon={tech.icon}
-                    className="size-6 sm:size-7 md:size-8 lg:size-6"
+                    className="size-7 md:size-10"
                   />
                 </span>
-                <span className="max-w-full truncate text-center text-[9px] font-medium leading-tight text-text-muted transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:text-text-secondary sm:text-[10px] lg:text-[8px]">
+                <span className="max-w-full truncate text-center text-[10px] font-medium leading-tight text-text-muted sm:text-xs">
                   {tech.name}
                 </span>
               </div>
