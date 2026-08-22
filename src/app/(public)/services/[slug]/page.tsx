@@ -111,6 +111,7 @@ export default async function ServicePage({
   const pageTitle =
     resolveTranslation(page.hero_title_translations, locale) || serviceName;
   const highlight = resolveTranslation(page.hero_highlight_translations, locale);
+  const heroTitle = pageTitle + (highlight ? ` ${highlight}` : "");
   const heroDescription = resolveTranslation(
     page.hero_description_translations,
     locale
@@ -164,13 +165,8 @@ export default async function ServicePage({
           <div className="grid items-center gap-8 md:gap-16">
             <div className="space-y-4 md:space-y-8 lg:mx-auto lg:max-w-4xl lg:text-center">
               <Reveal>
-                <h1 className="flex flex-col items-center justify-center font-display text-[1.75rem] font-black leading-[1.15] tracking-tight text-text-primary sm:text-5xl md:text-6xl lg:text-5xl">
-                  <span className="block">{pageTitle}</span>
-                  {highlight ? (
-                    <span className="mt-1 block text-[#ffb300] lg:mt-2">
-                      {highlight}
-                    </span>
-                  ) : null}
+                <h1 className="text-center font-display text-[1.75rem] font-black leading-[1.15] tracking-tight text-text-primary sm:text-5xl md:text-6xl lg:text-5xl">
+                  {highlightLastWord(heroTitle)}
                 </h1>
               </Reveal>
               {heroDescription ? (
