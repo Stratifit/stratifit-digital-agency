@@ -16,7 +16,9 @@ export async function AcquisitionSection() {
 
   const businesses = data?.businesses ?? [];
 
-  if (businesses.length === 0) {
+  // Paused via the admin sections manager (is_visible = false) or no
+  // listings yet → render nothing.
+  if (!settings || businesses.length === 0) {
     return null;
   }
 

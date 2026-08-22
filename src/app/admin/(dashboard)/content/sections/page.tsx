@@ -91,13 +91,14 @@ export default async function AdminSectionsPage() {
     });
   }
 
-  // Acquisition — content-driven but has a dedicated editor
+  // Acquisition — content-driven but pausable via section_settings, with a
+  // dedicated editor for its content.
   rows.push({
     key: "acquisition",
     label: "Acquisition",
     description: "Buy-a-business marketplace",
-    status: "auto",
-    isVisible: true,
+    status: "live",
+    isVisible: settingsByKey.get("acquisition")?.is_visible ?? true,
     editHref: "/admin/content/acquisition",
     countLabel: "Listings managed in Buy a Business",
     preview: {
