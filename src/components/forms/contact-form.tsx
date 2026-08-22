@@ -13,13 +13,7 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { t, tWithNumber, translateValidation } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
 
-const BUDGET_RANGE_KEYS = [
-  "budgetBelow7500",
-  "budget7500to15000",
-  "budget15000to30000",
-  "budget30000to60000",
-  "budgetAbove60000",
-] as const;
+const BUDGET_RANGES = ["€1k–€3k", "€3k–€5k", "€5k–€10k", "€10k+"];
 
 // ============================================================================
 // Icon set
@@ -514,18 +508,17 @@ export function ContactForm({
                 >
                   {t(locale, "notSureYet")}
                 </button>
-                {BUDGET_RANGE_KEYS.map((key) => {
-                  const label = t(locale, key);
-                  const selected = budgetRange === label;
+                {BUDGET_RANGES.map((range) => {
+                  const selected = budgetRange === range;
                   return (
                     <button
-                      key={key}
+                      key={range}
                       type="button"
                       role="option"
                       aria-selected={selected}
                       onClick={() => {
-                        setBudgetRange(label);
-                        setValue("budget_range", label);
+                        setBudgetRange(range);
+                        setValue("budget_range", range);
                         setBudgetOpen(false);
                       }}
                       className={cn(
@@ -535,7 +528,7 @@ export function ContactForm({
                           : "text-text-secondary"
                       )}
                     >
-                      {label}
+                      {range}
                       {selected ? (
                         <span className="text-primary">
                           <CheckIcon />

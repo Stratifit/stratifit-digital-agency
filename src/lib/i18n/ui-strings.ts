@@ -159,11 +159,6 @@ export type UiStringKey =
   | "estimatedBudget"
   | "selectService"
   | "notSureYet"
-  | "budgetBelow7500"
-  | "budget7500to15000"
-  | "budget15000to30000"
-  | "budget30000to60000"
-  | "budgetAbove60000"
   | "trustNoSpam"
   | "trustNoSpamDesc"
   | "trustPrivate"
@@ -412,11 +407,6 @@ const en: UiStrings = {
   estimatedBudget: "Estimated budget",
   selectService: "Services",
   notSureYet: "Not sure yet",
-  budgetBelow7500: "Below €7,500",
-  budget7500to15000: "€7,500 to €15,000",
-  budget15000to30000: "€15,000 to €30,000",
-  budget30000to60000: "€30,000 to €60,000",
-  budgetAbove60000: "More than €60,000",
   trustNoSpam: "No spam",
   trustNoSpamDesc: "We respect your inbox.",
   trustPrivate: "100% private",
@@ -670,11 +660,6 @@ const de: UiStrings = {
   estimatedBudget: "Geschätztes Budget",
   selectService: "Leistungen",
   notSureYet: "Noch nicht sicher",
-  budgetBelow7500: "Unter 7.500 €",
-  budget7500to15000: "7.500 € bis 15.000 €",
-  budget15000to30000: "15.000 € bis 30.000 €",
-  budget30000to60000: "30.000 € bis 60.000 €",
-  budgetAbove60000: "Mehr als 60.000 €",
   trustNoSpam: "Kein Spam",
   trustNoSpamDesc: "Wir respektieren Ihren Posteingang.",
   trustPrivate: "100% privat",
@@ -928,11 +913,6 @@ const fr: UiStrings = {
   estimatedBudget: "Budget estimé",
   selectService: "Services",
   notSureYet: "Je ne sais pas encore",
-  budgetBelow7500: "Moins de 7 500 €",
-  budget7500to15000: "De 7 500 € à 15 000 €",
-  budget15000to30000: "De 15 000 € à 30 000 €",
-  budget30000to60000: "De 30 000 € à 60 000 €",
-  budgetAbove60000: "Plus de 60 000 €",
   trustNoSpam: "Pas de spam",
   trustNoSpamDesc: "Nous respectons votre boîte de réception.",
   trustPrivate: "100% privé",
@@ -1186,11 +1166,6 @@ const es: UiStrings = {
   estimatedBudget: "Presupuesto estimado",
   selectService: "Servicios",
   notSureYet: "Aún no lo sé",
-  budgetBelow7500: "Menos de 7.500 €",
-  budget7500to15000: "De 7.500 € a 15.000 €",
-  budget15000to30000: "De 15.000 € a 30.000 €",
-  budget30000to60000: "De 30.000 € a 60.000 €",
-  budgetAbove60000: "Más de 60.000 €",
   trustNoSpam: "Sin spam",
   trustNoSpamDesc: "Respetamos tu bandeja de entrada.",
   trustPrivate: "100% privado",
