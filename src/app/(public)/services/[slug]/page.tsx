@@ -162,7 +162,7 @@ export default async function ServicePage({
         </div>
         <Container className="relative z-10">
           <div className="grid items-center gap-8 md:gap-16">
-            <div className="space-y-4 md:space-y-8 lg:mx-auto lg:max-w-4xl lg:text-center">
+            <div className="space-y-4 text-center md:space-y-8 lg:mx-auto lg:max-w-4xl">
               <Reveal>
                 <h1 className="flex flex-col items-center justify-center font-display text-[1.75rem] font-black leading-[1.15] tracking-tight text-text-primary sm:text-5xl md:text-6xl lg:text-5xl">
                   <span className="block">{pageTitle}</span>
@@ -181,7 +181,7 @@ export default async function ServicePage({
                 </Reveal>
               ) : null}
               <Reveal>
-                <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 lg:justify-center">
+                <div className="flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4">
                   <ContactAwareLink href="/contact" size="large" className="w-full sm:w-auto">
                     {ctaButton || t(locale, "servicesStartProject")}
                   </ContactAwareLink>
