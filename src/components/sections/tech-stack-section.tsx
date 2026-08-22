@@ -13,6 +13,8 @@ import { TechLogo } from "./tech-logos";
 interface TechStackItem {
   name: string;
   icon: string;
+  media_id?: string | null;
+  image_url?: string | null;
 }
 
 /** Header translations mirrored from the seed; empty fields make SectionHeader
@@ -77,11 +79,21 @@ export async function TechStackSection() {
                 className="tech-item flex flex-col items-center justify-center gap-1"
               >
                 <span className="flex items-center justify-center text-text-muted">
-                  <TechLogo
-                    name={tech.name}
-                    fallbackIcon={tech.icon}
-                    className="size-7 md:size-10"
-                  />
+                  {tech.image_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element -- uploaded brand logo
+                    <img
+                      src={tech.image_url}
+                      alt={tech.name}
+                      loading="lazy"
+                      className="h-7 w-auto max-w-[72px] object-contain md:h-10 md:max-w-[96px]"
+                    />
+                  ) : (
+                    <TechLogo
+                      name={tech.name}
+                      fallbackIcon={tech.icon}
+                      className="size-7 md:size-10"
+                    />
+                  )}
                 </span>
                 <span className="max-w-full truncate text-center text-[10px] font-medium leading-tight text-text-muted sm:text-xs">
                   {tech.name}

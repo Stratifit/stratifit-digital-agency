@@ -6,6 +6,8 @@ import {
   useWatch,
   useFieldArray,
   type UseFormRegister,
+  type Control,
+  type UseFormSetValue,
   type FieldErrors,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +16,7 @@ import {
   type SectionSettingsFormValues,
 } from "@/features/section-settings/schemas";
 import { updateSectionSettings } from "@/features/section-settings/mutations";
+import { uploadMediaAsset } from "@/features/media/mutations";
 import {
   mergeHighlightIntoTitle,
   splitTitleHighlight,
@@ -135,14 +138,118 @@ function ReviewSummaryEditor({
   );
 }
 
+/**
+ * Per-technology logo image uploader. Uploads to the `logos` storage bucket
+ * and stores the media id + public URL on the tech_stack item. An uploaded
+ * image overrides the code-side brand icon on the public website.
+ */
+function TechLogoImageUpload({
+  control,
+  index,
+  setValue,
+}: {
+  control: Control<SectionSettingsFormValues>;
+  index: number;
+  setValue: UseFormSetValue<SectionSettingsFormValues>;
+}) {
+  const imageUrl = useWatch({
+    control,
+    name: `tech_stack.${index}.image_url`,
+  });
+  const [uploading, setUploading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setError(null);
+    try {
+      const formData = new FormData();
+      formData.set("file", file);
+      formData.set("bucket", "logos");
+      formData.set("alt_text", file.name);
+      const result = await uploadMediaAsset(formData);
+      if (result.success) {
+        setValue(`tech_stack.${index}.media_id`, result.data.id, {
+          shouldDirty: true,
+        });
+        setValue(`tech_stack.${index}.image_url`, result.data.url, {
+          shouldDirty: true,
+        });
+        if (inputRef.current) inputRef.current.value = "";
+      } else {
+        setError(result.error);
+      }
+    } catch {
+      setError("Upload failed. Please try again.");
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  function handleRemove() {
+    setValue(`tech_stack.${index}.media_id`, "", { shouldDirty: true });
+    setValue(`tech_stack.${index}.image_url`, "", { shouldDirty: true });
+    if (inputRef.current) inputRef.current.value = "";
+    setError(null);
+  }
+
+  return (
+    <div className="rounded-card border border-border bg-background p-3">
+      <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-text-subtle">
+        Logo image (optional)
+      </p>
+      {imageUrl ? (
+        <div className="flex items-center gap-2">
+          {/* eslint-disable-next-line @next/next/no-img-element -- admin preview of the uploaded logo */}
+          <img
+            src={imageUrl}
+            alt=""
+            className="h-8 w-auto max-w-[120px] rounded-sm border border-border bg-white object-contain p-1"
+          />
+          <button
+            type="button"
+            onClick={handleRemove}
+            className="text-xs text-text-muted transition-colors hover:text-error focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            Remove
+          </button>
+        </div>
+      ) : (
+        <div className="flex flex-wrap items-center gap-2">
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml,image/avif"
+            onChange={handleFile}
+            className="block w-full max-w-[180px] cursor-pointer rounded-input border border-card-border bg-card-dark text-[11px] text-text-secondary file:mr-2 file:cursor-pointer file:rounded-sm file:border-0 file:bg-primary file:px-2 file:py-1 file:text-[11px] file:font-medium file:text-text-inverse transition-[border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          />
+          {uploading ? (
+            <span className="text-[11px] text-text-muted">Uploading…</span>
+          ) : null}
+        </div>
+      )}
+      {error ? (
+        <p className="mt-1 text-xs text-error">{error}</p>
+      ) : null}
+    </div>
+  );
+}
+
 function TechStackEditor({
   register,
+  control,
+  setValue,
   fields,
   fieldErrors,
   onAppend,
   onRemove,
 }: {
   register: UseFormRegister<SectionSettingsFormValues>;
+  control: Control<SectionSettingsFormValues>;
+  setValue: UseFormSetValue<SectionSettingsFormValues>;
   fields: { id: string }[];
   fieldErrors?: FieldErrors<SectionSettingsFormValues>["tech_stack"];
   onAppend: () => void;
@@ -154,7 +261,7 @@ function TechStackEditor({
       <div className="space-y-3">
         {fields.map((field, index) => (
           <div key={field.id} className="flex items-start gap-3">
-            <div className="grid flex-1 gap-3 sm:grid-cols-2">
+            <div className="grid flex-1 gap-3 sm:grid-cols-[1fr_1fr]">
               <div className="space-y-1.5">
                 <Label htmlFor={`${fieldPrefix}-${index}-name`}>Name</Label>
                 <Input
@@ -182,11 +289,18 @@ function TechStackEditor({
                   One of: brush, zap, code, atom.
                 </p>
               </div>
+              <div className="!col-span-full">
+                <TechLogoImageUpload
+                  control={control}
+                  index={index}
+                  setValue={setValue}
+                />
+              </div>
             </div>
             <button
               type="button"
               onClick={() => onRemove(index)}
-              className="mt-6 text-xs text-text-muted transition-colors hover:text-error focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className="mt-6 shrink-0 text-xs text-text-muted transition-colors hover:text-error focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               Remove
             </button>
@@ -206,8 +320,8 @@ function TechStackEditor({
         + Add technology
       </button>
       <p className="text-xs text-text-muted">
-        Technologies shown in the scrolling marquee under this section&apos;s
-        heading.
+        Technologies shown in the logo grid under this section&apos;s heading.
+        Upload a logo image to override the code-side brand icon.
       </p>
     </div>
   );
@@ -353,6 +467,8 @@ function toFormValues(settings: AdminSectionSettings): SectionSettingsFormValues
       ? settings.tech_stack.map((item) => ({
           name: item.name ?? "",
           icon: item.icon ?? "",
+          media_id: item.media_id ?? "",
+          image_url: item.image_url ?? "",
         }))
       : [],
     seo_title_translations: translations(settings.seo_title_translations),
@@ -689,6 +805,8 @@ export function SectionSettingsForm({
         {activeSection === "tech" ? (
           <TechStackEditor
             register={register}
+            control={control}
+            setValue={setValue}
             fields={techFields.fields}
             fieldErrors={errors.tech_stack}
             onAppend={() => techFields.append({ name: "", icon: "" })}

@@ -19,6 +19,9 @@ const statsItem = z.object({
 const techStackItem = z.object({
   name: z.string().min(1, "Name is required"),
   icon: z.string(),
+  /** Optional uploaded logo image — overrides the code-side brand icon. */
+  media_id: z.string().optional(),
+  image_url: z.string().optional(),
 });
 
 /**

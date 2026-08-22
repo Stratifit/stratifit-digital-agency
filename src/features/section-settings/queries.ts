@@ -23,8 +23,13 @@ export interface PublicSectionSettings {
     googleReviews: number;
     googleReviewsUrl: string;
   } | null;
-  /** Optional tech-stack marquee items (tech-stack section). */
-  tech_stack?: { name: string; icon: string }[] | null;
+  /** Optional tech-stack items (tech-stack section). */
+  tech_stack?: {
+    name: string;
+    icon: string;
+    media_id?: string | null;
+    image_url?: string | null;
+  }[] | null;
   /** Optional page SEO metadata (title + description). */
   seo_title_translations?: Record<string, string> | null;
   seo_description_translations?: Record<string, string> | null;

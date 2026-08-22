@@ -49,7 +49,12 @@ export const SECTION_KEY_META: Record<
  *  (AGENTS.md §4). Used to pre-fill the CMS editor and to render the section
  *  while the migration is pending. The database remains the source of truth
  *  once applied. */
-export const DEFAULT_TECH_STACK: { name: string; icon: string }[] = [
+export const DEFAULT_TECH_STACK: {
+  name: string;
+  icon: string;
+  media_id?: string | null;
+  image_url?: string | null;
+}[] = [
   { name: "Next.js", icon: "code" },
   { name: "React", icon: "atom" },
   { name: "TypeScript", icon: "code" },
