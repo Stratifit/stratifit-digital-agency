@@ -22,6 +22,7 @@ export type UiStringKey =
   | "minRead"
   | "filterAll"
   | "goBack"
+  | "backToInsights"
   | "noInsightsInCategory"
   | "noInsightsYet"
   | "viewAll"
@@ -248,11 +249,12 @@ const en: UiStrings = {
   nameRequired: "Name is required",
   validEmail: "Enter a valid email address",
   messageMinLength: "Message must be at least 10 characters",
-  readInsight: "Read Insight",
+  readInsight: "Read Article",
   readArticle: "Read Article",
   minRead: "{n} min read",
   filterAll: "All",
   goBack: "Go back",
+  backToInsights: "Back to Insights",
   noInsightsInCategory: "No articles in this category yet.",
   noInsightsYet: "Articles will appear here soon.",
   viewAll: "View All",
@@ -472,9 +474,9 @@ const en: UiStrings = {
   testimonialsTitle: "What Our Clients",
   testimonialsDescription:
     "Don't take our word for it, hear from the brands we've helped scale.",
-  insightsEyebrow: "Knowledge",
-  insightsTitleFallback: "Insights &",
-  insightsHighlightFallback: "Expertise",
+  insightsEyebrow: "Insights",
+  insightsTitleFallback: "Ideas for Smarter",
+  insightsHighlightFallback: "Digital Growth",
   insightsDescriptionFallback:
     "Thought leadership, industry perspectives, and actionable strategies from our team of strategists, designers, and engineers.",
 };
@@ -497,15 +499,16 @@ const de: UiStrings = {
   nameRequired: "Name erforderlich",
   validEmail: "Geben Sie eine gültige E-Mail-Adresse ein",
   messageMinLength: "Die Nachricht muss mindestens 10 Zeichen enthalten",
-  readInsight: "Einblick lesen",
+  readInsight: "Artikel lesen",
   readArticle: "Artikel lesen",
   minRead: "{n} Min. Lesezeit",
   filterAll: "Alle",
   goBack: "Zurück",
+  backToInsights: "Zurück zu den Beiträgen",
   noInsightsInCategory: "Noch keine Artikel in dieser Kategorie.",
   noInsightsYet: "Artikel erscheinen hier bald.",
   viewAll: "Alle ansehen",
-  viewAllInsights: "Alle Einblicke ansehen",
+  viewAllInsights: "Alle Beiträge ansehen",
   viewAllProjects: "Alle Projekte ansehen",
   viewAllBusinesses: "Alle Unternehmen ansehen",
   viewAllTestimonials: "Alle Testimonials ansehen",
@@ -722,9 +725,9 @@ const de: UiStrings = {
   testimonialsTitle: "Was unsere Kunden",
   testimonialsDescription:
     "Verlassen Sie sich nicht nur auf unser Wort, hören Sie von den Marken, die wir beim Wachstum begleitet haben.",
-  insightsEyebrow: "Wissen",
-  insightsTitleFallback: "Einblicke &",
-  insightsHighlightFallback: "Expertise",
+  insightsEyebrow: "Einblicke",
+  insightsTitleFallback: "Impulse für intelligentes",
+  insightsHighlightFallback: "digitales Wachstum",
   insightsDescriptionFallback:
     "Thought Leadership, Branchenperspektiven und umsetzbare Strategien von unserem Team aus Strategen, Designern und Ingenieuren.",
 };
@@ -750,12 +753,13 @@ const fr: UiStrings = {
   readInsight: "Lire l'article",
   readArticle: "Lire l'article",
   minRead: "{n} min de lecture",
-  filterAll: "Tous",
+  filterAll: "Tout",
   goBack: "Retour",
+  backToInsights: "Retour aux analyses",
   noInsightsInCategory: "Aucun article dans cette catégorie pour le moment.",
   noInsightsYet: "Les articles apparaîtront bientôt ici.",
   viewAll: "Voir tout",
-  viewAllInsights: "Voir tous les articles",
+  viewAllInsights: "Voir toutes les analyses",
   viewAllProjects: "Voir tous les projets",
   viewAllBusinesses: "Voir toutes les entreprises",
   viewAllTestimonials: "Voir tous les témoignages",
@@ -972,9 +976,9 @@ const fr: UiStrings = {
   testimonialsTitle: "Ce que disent nos",
   testimonialsDescription:
     "Ne nous croyez pas sur parole, écoutez les marques que nous avons aidées à grandir.",
-  insightsEyebrow: "Savoir",
-  insightsTitleFallback: "Connaissances &",
-  insightsHighlightFallback: "Expertise",
+  insightsEyebrow: "Analyses",
+  insightsTitleFallback: "Des idées pour accélérer votre",
+  insightsHighlightFallback: "croissance numérique",
   insightsDescriptionFallback:
     "Leadership éclairé, perspectives sectorielles et stratégies concrètes de notre équipe de stratèges, designers et ingénieurs.",
 };
@@ -1000,8 +1004,9 @@ const es: UiStrings = {
   readInsight: "Leer artículo",
   readArticle: "Leer artículo",
   minRead: "{n} min de lectura",
-  filterAll: "Todos",
+  filterAll: "Todo",
   goBack: "Atrás",
+  backToInsights: "Volver a los artículos",
   noInsightsInCategory: "Aún no hay artículos en esta categoría.",
   noInsightsYet: "Los artículos aparecerán pronto aquí.",
   viewAll: "Ver todo",
@@ -1222,9 +1227,9 @@ const es: UiStrings = {
   testimonialsTitle: "Lo que dicen nuestros",
   testimonialsDescription:
     "No confíes solo en nuestra palabra: escucha a las marcas que hemos ayudado a crecer.",
-  insightsEyebrow: "Conocimiento",
-  insightsTitleFallback: "Conocimiento &",
-  insightsHighlightFallback: "Experiencia",
+  insightsEyebrow: "Perspectivas",
+  insightsTitleFallback: "Ideas para un crecimiento",
+  insightsHighlightFallback: "digital más inteligente",
   insightsDescriptionFallback:
     "Liderazgo de pensamiento, perspectivas del sector y estrategias accionables de nuestro equipo de estrategas, diseñadores e ingenieros.",
 };

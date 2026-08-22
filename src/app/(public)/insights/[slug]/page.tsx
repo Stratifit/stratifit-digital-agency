@@ -11,11 +11,53 @@ import {
   getInsightImage,
 } from "@/features/insights/display";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
-import { tWithNumber } from "@/lib/i18n/ui-strings";
+import { t, tWithNumber } from "@/lib/i18n/ui-strings";
 import { articleJsonLd, canonical, pageMetadata, resolveSeoMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import Image from "next/image";
+import Link from "next/link";
+
+/** Render `**bold**` inline markers as <strong>. */
+function renderInline(text: string) {
+  const parts = text.split(/(\*\*.+?\*\*)/g);
+  return parts.map((part, index) =>
+    part.startsWith("**") && part.endsWith("**") ? (
+      <strong key={index} className="font-semibold text-text-primary">
+        {part.slice(2, -2)}
+      </strong>
+    ) : (
+      part
+    )
+  );
+}
+
+/** Render the article body: `##`–`####` headings as section headings, other
+ *  blocks as paragraphs with inline bold support. */
+function renderContentBlocks(content: string) {
+  const blocks = content.split(/\n{2,}/).filter(Boolean);
+  return blocks.map((block, index) => {
+    const heading = block.match(/^#{2,4}\s+(.+)$/);
+    if (heading) {
+      return (
+        <h2
+          key={index}
+          className="font-display text-2xl font-bold tracking-tight text-text-primary md:text-3xl"
+        >
+          {heading[1]}
+        </h2>
+      );
+    }
+    return (
+      <p
+        key={index}
+        className="text-base leading-relaxed text-text-secondary md:text-lg"
+      >
+        {renderInline(block)}
+      </p>
+    );
+  });
+}
 
 export async function generateMetadata({
   params,
@@ -62,7 +104,6 @@ export default async function InsightDetailPage({
   const categories = await getPublicInsightCategories();
 
   const content = resolveTranslation(insight.content_translations, locale) || "";
-  const paragraphs = content.split(/\n\n+/).filter(Boolean);
   const insightTitle = resolveTranslation(insight.title_translations, locale);
   const insightExcerpt = resolveTranslation(insight.excerpt_translations, locale);
   const date = formatInsightDate(insight.published_at, locale);
@@ -136,19 +177,30 @@ export default async function InsightDetailPage({
       <section className="relative z-10 py-16 md:py-24">
         <Container className="max-w-3xl">
           <Reveal variant="fade">
+            <Link
+              href="/insights"
+              className="mb-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+                className="size-4"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M11.03 3.97a.75.75 0 0 1 0 1.06L4.81 11.25H21a.75.75 0 0 1 0 1.5H4.81l6.22 6.22a.75.75 0 1 1-1.06 1.06l-7.5-7.5a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 0 1 1.06 0Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              {t(locale, "backToInsights")}
+            </Link>
             <h1 className="mb-8 font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
               {insightTitle}
             </h1>
-            {paragraphs.length > 0 ? (
+            {content ? (
               <div className="space-y-6">
-                {paragraphs.map((paragraph, index) => (
-                  <p
-                    key={index}
-                    className="text-base leading-relaxed text-text-secondary md:text-lg"
-                  >
-                    {paragraph}
-                  </p>
-                ))}
+                {renderContentBlocks(content)}
               </div>
             ) : (
               <p className="text-base leading-relaxed text-text-secondary md:text-lg">

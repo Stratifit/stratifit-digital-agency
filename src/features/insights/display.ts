@@ -36,6 +36,12 @@ export const FALLBACK_IMAGES: Record<string, string> = {
 /** Category-level fallback for any slug not in the explicit map above. */
 const CATEGORY_FALLBACK_IMAGES: Record<string, string> = {
   strategy: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop",
+  "design-ux": "https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop",
+  "web-development": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop",
+  "ai-automation": "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop",
+  branding: "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop",
+  "growth-marketing": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop",
+  technology: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop",
   design: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop",
   tech: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop",
   growth: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop",

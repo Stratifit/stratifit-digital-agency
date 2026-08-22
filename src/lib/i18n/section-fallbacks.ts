@@ -92,14 +92,19 @@ export const SECTION_HEADER_FALLBACKS: Record<
     },
   },
   insights: {
-    eyebrow: { en: "Knowledge", de: "Wissen", fr: "Savoir", es: "Conocimiento" },
+    eyebrow: { en: "Insights", de: "Einblicke", fr: "Analyses", es: "Perspectivas" },
     title: {
-      en: "Insights &",
-      de: "Einblicke &",
-      fr: "Insights &",
-      es: "Perspectivas y",
+      en: "Ideas for Smarter",
+      de: "Impulse für intelligentes",
+      fr: "Des idées pour accélérer votre",
+      es: "Ideas para un crecimiento",
     },
-    highlight: { en: "Expertise", de: "Expertise", fr: "Expertise", es: "Expertise" },
+    highlight: {
+      en: "Digital Growth",
+      de: "digitales Wachstum",
+      fr: "croissance numérique",
+      es: "digital más inteligente",
+    },
     description: {
       en: "Thought leadership, industry perspectives, and actionable strategies from our team of strategists, designers, and engineers.",
       de: "Thought Leadership, Branchenperspektiven und umsetzbare Strategien von unserem Team aus Strategen, Designern und Ingenieuren.",
