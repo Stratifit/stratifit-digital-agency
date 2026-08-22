@@ -36,6 +36,8 @@ export const heroSchema = z.object({
   secondary_cta_url: z.string(),
   metrics: z.array(heroMetricSchema),
   trusted_by: z.array(heroTrustedByItemSchema),
+  /** Label above the trusted-by logo strip; amber word wrapped in <angle brackets>. */
+  trusted_by_label_translations: translations(),
   is_visible: z.boolean(),
 });
 

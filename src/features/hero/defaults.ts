@@ -15,6 +15,20 @@ export const DEFAULT_TRUSTED_BY: { name: string; icon: string }[] = [
   { name: "NEXUS", icon: "nexus" },
 ];
 
+/**
+ * Canonical label above the trusted-by strip, in all four languages. The
+ * amber word is wrapped in <angle brackets> (same inline-highlight pattern as
+ * the section-header title editor). Used as a render fallback; the database
+ * (`hero.trusted_by_label_translations`) is the source of truth once
+ * migration 00085 is applied.
+ */
+export const FALLBACK_TRUSTED_BY_LABEL: Record<string, string> = {
+  en: "Trusted by <Growing> Companies",
+  de: "Vertraut von <wachsenden> Unternehmen",
+  fr: "Apprécié par des <entreprises> en croissance",
+  es: "Con la confianza de <empresas> en crecimiento",
+};
+
 /** Allowed icon identifiers for trusted-by logo items. */
 export const TRUSTED_BY_ICON_KEYS = [
   "lumen",

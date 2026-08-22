@@ -11,6 +11,28 @@ interface TrustedByItem {
 }
 
 /**
+ * Renders the strip label with the amber word inline. The CMS stores the
+ * label with the amber word wrapped in <angle brackets>, e.g.
+ * "Trusted by <Growing> Companies" — the marker can sit anywhere in the
+ * string, not just at the end.
+ */
+function renderLabel(raw: string) {
+  const match = /<([^<>]*)>/.exec(raw);
+  if (!match) {
+    return raw;
+  }
+  const before = raw.slice(0, match.index);
+  const after = raw.slice(match.index + match[0].length);
+  return (
+    <>
+      {before}
+      <span className="text-primary">{match[1]}</span>
+      {after}
+    </>
+  );
+}
+
+/**
  * Trusted-by icon paths keyed by the icon identifier stored in
  * `hero.trusted_by` ({name, icon}). Icons are code-side (the CMS stores only
  * the identifier, never raw SVG).
@@ -101,7 +123,14 @@ function TrustedByLogo({ item }: { item: TrustedByItem }) {
  * there are more than 3 logos). Desktop/tablet: the label plus all logos on
  * one row, unchanged.
  */
-export function TrustedByStrip({ items }: { items: TrustedByItem[] }) {
+export function TrustedByStrip({
+  items,
+  label = "Trusted by <Growing> Companies",
+}: {
+  items: TrustedByItem[];
+  /** Full strip label; the amber word is wrapped in <angle brackets>. */
+  label?: string;
+}) {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const [active, setActive] = React.useState(0);
   const showDots = items.length > 3;
@@ -134,7 +163,7 @@ export function TrustedByStrip({ items }: { items: TrustedByItem[] }) {
         <div className="flex items-center gap-3 pb-4 opacity-90">
           <span className="h-px flex-1 bg-white/10" />
           <span className="shrink-0 whitespace-nowrap text-[11px] font-bold uppercase tracking-widest text-white">
-            Trusted by <span className="text-primary">Growing</span> Companies
+            {renderLabel(label)}
           </span>
           <span className="h-px flex-1 bg-white/10" />
         </div>
@@ -177,7 +206,7 @@ export function TrustedByStrip({ items }: { items: TrustedByItem[] }) {
         <div className="flex items-center gap-3 pb-6 opacity-90">
           <span className="h-px flex-1 bg-white/10" />
           <span className="shrink-0 whitespace-nowrap text-xs font-bold uppercase tracking-widest text-white md:text-sm">
-            Trusted by <span className="text-primary">Growing</span> Companies
+            {renderLabel(label)}
           </span>
           <span className="h-px flex-1 bg-white/10" />
         </div>

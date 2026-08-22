@@ -24,14 +24,18 @@ export interface AdminHero {
   secondary_cta_url: string | null;
   metrics: HeroMetric[] | null;
   trusted_by: HeroTrustedByItem[] | null;
+  trusted_by_label_translations: Record<string, string> | null;
 }
 
 const SELECT_FIELDS =
-  "is_visible, eyebrow_translations, title_translations, highlight_translations, description_translations, primary_cta_label_translations, primary_cta_url, secondary_cta_label_translations, secondary_cta_url, metrics, trusted_by";
+  "is_visible, eyebrow_translations, title_translations, highlight_translations, description_translations, primary_cta_label_translations, primary_cta_url, secondary_cta_label_translations, secondary_cta_url, metrics, trusted_by, trusted_by_label_translations";
 
-/** Same fields without `trusted_by`, for databases that haven't applied
- *  migration 00058 yet (the column doesn't exist there). */
-const LEGACY_SELECT_FIELDS = SELECT_FIELDS.replace(", trusted_by", "");
+/** Same fields without `trusted_by` / `trusted_by_label_translations`, for
+ *  databases that haven't applied migration 00058 / 00085 yet (the columns
+ *  don't exist there). */
+const LEGACY_SELECT_FIELDS = SELECT_FIELDS
+  .replace(", trusted_by_label_translations", "")
+  .replace(", trusted_by", "");
 
 export async function getAdminHero(): Promise<AdminHero | null> {
   const supabase = await createSupabaseServerClient();

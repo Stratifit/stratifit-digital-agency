@@ -161,6 +161,7 @@ function toFormValues(hero: AdminHero): HeroFormValues {
     // Pre-fill the canonical logos while migration 00058 is pending; an
     // explicitly cleared strip stays empty.
     trusted_by: hero.trusted_by ?? DEFAULT_TRUSTED_BY,
+    trusted_by_label_translations: tr(hero.trusted_by_label_translations),
     is_visible: hero.is_visible,
   };
 }
@@ -385,6 +386,24 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
             {trustedFields.fields.length === 0 ? (
               <p className="text-xs text-text-muted">No logos yet — add one above.</p>
             ) : null}
+
+            <div className="mt-4 space-y-2">
+              <Label htmlFor={`trusted-label-${locale}`}>Strip label</Label>
+              <Input
+                key={locale}
+                id={`trusted-label-${locale}`}
+                placeholder="Trusted by <Growing> Companies"
+                {...register(`trusted_by_label_translations.${locale}`)}
+              />
+              <p className="text-xs text-text-muted">
+                Text shown above the logos. Wrap the amber word in angle
+                brackets, e.g.{" "}
+                <code className="text-text-secondary">
+                  Trusted by &lt;Growing&gt; Companies
+                </code>
+                .
+              </p>
+            </div>
           </div>
         ) : null}
 

@@ -453,7 +453,7 @@ ON CONFLICT (slug) DO UPDATE SET
 -- Hero (Singleton)
 -- =============================================================================
 
-INSERT INTO public.hero (singleton_key, eyebrow_translations, title_translations, highlight_translations, description_translations, primary_cta_label_translations, primary_cta_url, secondary_cta_label_translations, secondary_cta_url, metrics, trusted_by, variant, is_visible)
+INSERT INTO public.hero (singleton_key, eyebrow_translations, title_translations, highlight_translations, description_translations, primary_cta_label_translations, primary_cta_url, secondary_cta_label_translations, secondary_cta_url, metrics, trusted_by, trusted_by_label_translations, variant, is_visible)
 VALUES (
   true,
   '{"en": "Premium Digital Agency", "de": "Premium-Digitalagentur", "fr": "Agence Digitale Premium", "es": "Agencia Digital Premium"}'::jsonb,
@@ -466,6 +466,7 @@ VALUES (
   '/work',
   '[{"value": "59+", "label_translations": {"en": "Projects Delivered", "de": "Gelieferte Projekte", "fr": "Projets livrés", "es": "Proyectos entregados"}}, {"value": "7+", "label_translations": {"en": "Years Experience", "de": "Jahre Erfahrung", "fr": "Années d''expérience", "es": "Años de experiencia"}}, {"value": "98%", "label_translations": {"en": "Client Satisfaction", "de": "Kundenzufriedenheit", "fr": "Satisfaction client", "es": "Satisfacción del cliente"}}]'::jsonb,
   '[{"name": "LUMEN", "icon": "lumen"}, {"name": "NOVUS", "icon": "novus"}, {"name": "PULSE", "icon": "pulse"}, {"name": "VERTEX", "icon": "vertex"}, {"name": "ORBIT", "icon": "orbit"}, {"name": "NEXUS", "icon": "nexus"}]'::jsonb,
+  '{"en": "Trusted by <Growing> Companies", "de": "Vertraut von <wachsenden> Unternehmen", "fr": "Apprécié par des <entreprises> en croissance", "es": "Con la confianza de <empresas> en crecimiento"}'::jsonb,
   'default',
   true
 )
@@ -479,7 +480,8 @@ ON CONFLICT (singleton_key) DO UPDATE SET
   secondary_cta_label_translations = EXCLUDED.secondary_cta_label_translations,
   secondary_cta_url = EXCLUDED.secondary_cta_url,
   metrics = EXCLUDED.metrics,
-  trusted_by = EXCLUDED.trusted_by;
+  trusted_by = EXCLUDED.trusted_by,
+  trusted_by_label_translations = EXCLUDED.trusted_by_label_translations;
 
 -- =============================================================================
 -- About Page (Singleton)
@@ -1698,7 +1700,7 @@ ON CONFLICT (slug) DO UPDATE SET
 -- Hero (Singleton)
 -- =============================================================================
 
-INSERT INTO public.hero (singleton_key, eyebrow_translations, title_translations, highlight_translations, description_translations, primary_cta_label_translations, primary_cta_url, secondary_cta_label_translations, secondary_cta_url, metrics, trusted_by, variant, is_visible)
+INSERT INTO public.hero (singleton_key, eyebrow_translations, title_translations, highlight_translations, description_translations, primary_cta_label_translations, primary_cta_url, secondary_cta_label_translations, secondary_cta_url, metrics, trusted_by, trusted_by_label_translations, variant, is_visible)
 VALUES (
   true,
   '{"en": "Premium Digital Agency", "de": "Premium-Digitalagentur", "fr": "Agence Digitale Premium", "es": "Agencia Digital Premium"}'::jsonb,
@@ -1711,6 +1713,7 @@ VALUES (
   '/work',
   '[{"value": "59+", "label_translations": {"en": "Projects Delivered", "de": "Gelieferte Projekte", "fr": "Projets livrés", "es": "Proyectos entregados"}}, {"value": "7+", "label_translations": {"en": "Years Experience", "de": "Jahre Erfahrung", "fr": "Années d''expérience", "es": "Años de experiencia"}}, {"value": "98%", "label_translations": {"en": "Client Satisfaction", "de": "Kundenzufriedenheit", "fr": "Satisfaction client", "es": "Satisfacción del cliente"}}]'::jsonb,
   '[{"name": "LUMEN", "icon": "lumen"}, {"name": "NOVUS", "icon": "novus"}, {"name": "PULSE", "icon": "pulse"}, {"name": "VERTEX", "icon": "vertex"}, {"name": "ORBIT", "icon": "orbit"}, {"name": "NEXUS", "icon": "nexus"}]'::jsonb,
+  '{"en": "Trusted by <Growing> Companies", "de": "Vertraut von <wachsenden> Unternehmen", "fr": "Apprécié par des <entreprises> en croissance", "es": "Con la confianza de <empresas> en crecimiento"}'::jsonb,
   'default',
   true
 )
@@ -1724,7 +1727,8 @@ ON CONFLICT (singleton_key) DO UPDATE SET
   secondary_cta_label_translations = EXCLUDED.secondary_cta_label_translations,
   secondary_cta_url = EXCLUDED.secondary_cta_url,
   metrics = EXCLUDED.metrics,
-  trusted_by = EXCLUDED.trusted_by;
+  trusted_by = EXCLUDED.trusted_by,
+  trusted_by_label_translations = EXCLUDED.trusted_by_label_translations;
 
 -- =============================================================================
 -- About Page (Singleton)

@@ -1,5 +1,8 @@
 import { getPublicHero } from "@/features/hero/queries";
-import { DEFAULT_TRUSTED_BY } from "@/features/hero/defaults";
+import {
+  DEFAULT_TRUSTED_BY,
+  FALLBACK_TRUSTED_BY_LABEL,
+} from "@/features/hero/defaults";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { ContactAwareLink } from "@/components/contact/contact-aware-link";
@@ -119,6 +122,10 @@ export async function HeroSection() {
   const trustedByItems =
     dbTrustedBy === null ? DEFAULT_TRUSTED_BY : dbTrustedBy;
 
+  const trustedByLabel =
+    resolveTranslation(hero.trusted_by_label_translations, locale) ||
+    resolveTranslation(FALLBACK_TRUSTED_BY_LABEL, locale);
+
   return (
     <>
     <section
@@ -220,7 +227,7 @@ export async function HeroSection() {
 
         {trustedByItems.length > 0 ? (
           <div data-hero className="mt-[30px] w-full">
-            <TrustedByStrip items={trustedByItems} />
+            <TrustedByStrip items={trustedByItems} label={trustedByLabel} />
           </div>
         ) : null}
         </HeroEntrance>
