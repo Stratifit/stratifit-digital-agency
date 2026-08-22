@@ -383,10 +383,10 @@ const en: UiStrings = {
   chatAskAboutServices: "Ask about services",
   chatFaqTitle: "Common Questions",
   chatFaqMoreQuestions: "Have more questions?",
-  faqHelpCardTitle: "Still have questions?",
+  faqHelpCardTitle: "Still have more questions?",
   faqHelpCardSubtitle:
-    "Get quick answers from our AI assistant at any time, or contact our team for guidance specific to your project.",
-  faqAskMoreQuestions: "Ask the Assistant",
+    "Chat with our FAQ AI bot, instant answers, 24/7.",
+  faqAskMoreQuestions: "Ask More Questions",
   faqBotSuggestionsTitle: "Suggested questions",
   faqBotWelcomeFallback:
     "👋 Hi! I'm the Stratifit FAQ assistant. Ask me anything about our services, pricing, or process.",
@@ -641,10 +641,10 @@ const de: UiStrings = {
   chatAskAboutServices: "Nach Leistungen fragen",
   chatFaqTitle: "Häufige Fragen",
   chatFaqMoreQuestions: "Haben Sie weitere Fragen?",
-  faqHelpCardTitle: "Haben Sie noch Fragen?",
+  faqHelpCardTitle: "Haben Sie noch mehr Fragen?",
   faqHelpCardSubtitle:
-    "Unser KI-Assistent beantwortet allgemeine Fragen jederzeit schnell. Für eine projektspezifische Beratung können Sie sich direkt an unser Team wenden.",
-  faqAskMoreQuestions: "Assistenten fragen",
+    "Chatten Sie mit unserem FAQ-KI-Bot, sofortige Antworten, rund um die Uhr.",
+  faqAskMoreQuestions: "Mehr Fragen stellen",
   faqBotSuggestionsTitle: "Vorgeschlagene Fragen",
   faqBotWelcomeFallback:
     "👋 Hallo! Ich bin der Stratifit-FAQ-Assistent. Fragen Sie mich alles zu unseren Leistungen, Preisen oder unserem Prozess.",
@@ -899,10 +899,10 @@ const fr: UiStrings = {
   chatAskAboutServices: "Demander des services",
   chatFaqTitle: "Questions fréquentes",
   chatFaqMoreQuestions: "D'autres questions ?",
-  faqHelpCardTitle: "Vous avez encore des questions ?",
+  faqHelpCardTitle: "Encore plus de questions ?",
   faqHelpCardSubtitle:
-    "Obtenez rapidement des réponses auprès de notre assistant IA ou contactez notre équipe pour bénéficier de conseils adaptés à votre projet.",
-  faqAskMoreQuestions: "Interroger l’assistant",
+    "Discutez avec notre bot FAQ IA, réponses instantanées, 24h/24 et 7j/7.",
+  faqAskMoreQuestions: "Poser plus de questions",
   faqBotSuggestionsTitle: "Questions suggérées",
   faqBotWelcomeFallback:
     "👋 Bonjour ! Je suis l'assistant FAQ Stratifit. Posez-moi toutes vos questions sur nos services, tarifs ou notre processus.",
@@ -1157,10 +1157,10 @@ const es: UiStrings = {
   chatAskAboutServices: "Preguntar por servicios",
   chatFaqTitle: "Preguntas frecuentes",
   chatFaqMoreQuestions: "¿Tiene más preguntas?",
-  faqHelpCardTitle: "¿Todavía tiene preguntas?",
+  faqHelpCardTitle: "¿Tiene más preguntas?",
   faqHelpCardSubtitle:
-    "Obtenga respuestas rápidas de nuestro asistente de IA en cualquier momento o contacte con nuestro equipo para recibir orientación específica sobre su proyecto.",
-  faqAskMoreQuestions: "Preguntar al asistente",
+    "Chatee con nuestro bot de IA de preguntas frecuentes, respuestas instantáneas, 24/7.",
+  faqAskMoreQuestions: "Hacer más preguntas",
   faqBotSuggestionsTitle: "Preguntas sugeridas",
   faqBotWelcomeFallback:
     "👋 ¡Hola! Soy el asistente de preguntas frecuentes de Stratifit. Pregúntame cualquier cosa sobre nuestros servicios, precios o proceso.",
