@@ -59,10 +59,10 @@ export const SECTION_HEADER_FALLBACKS: Record<
     title: { en: "How We", de: "Wie wir", fr: "Comment nous", es: "Cómo" },
     highlight: { en: "Work", de: "arbeiten", fr: "travaillons", es: "trabajamos" },
     description: {
-      en: "A proven framework that takes you from idea to scale, predictably and efficiently.",
-      de: "Ein bewährtes Rahmenwerk, das Sie von der Idee bis zur Skalierung führt, vorhersehbar und effizient.",
-      fr: "Un cadre éprouvé qui vous mène de l'idée à l'échelle, de manière prévisible et efficace.",
-      es: "Un marco probado que le lleva de la idea a la escala, de forma predecible y eficiente.",
+      en: "A proven framework that takes you from idea to scale with clarity, efficiency, and predictability.",
+      de: "Ein bewährter Prozess, der Sie klar, effizient und planbar von der Idee zur Skalierung führt.",
+      fr: "Une méthode éprouvée qui vous accompagne de l'idée à la croissance avec clarté, efficacité et maîtrise.",
+      es: "Un método probado que le lleva de la idea al crecimiento de forma clara, eficiente y predecible.",
     },
   },
   "why-choose-us": {
