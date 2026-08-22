@@ -167,7 +167,7 @@ export const SECTION_HEADER_FALLBACKS: Record<
     },
   },
   faq: {
-    eyebrow: { en: "Support", de: "Support", fr: "Support", es: "Soporte" },
+    eyebrow: { en: "Support", de: "Support", fr: "Assistance", es: "Ayuda" },
     title: {
       en: "Frequently Asked",
       de: "Häufig gestellte",
@@ -176,10 +176,10 @@ export const SECTION_HEADER_FALLBACKS: Record<
     },
     highlight: { en: "Questions", de: "Fragen", fr: "fréquentes", es: "frecuentes" },
     description: {
-      en: "Clear answers to the most common questions we hear from clients.",
-      de: "Klare Antworten auf die häufigsten Fragen, die wir von Kunden hören.",
-      fr: "Des réponses claires aux questions les plus courantes que nous recevons de nos clients.",
-      es: "Respuestas claras a las preguntas más comunes que recibimos de los clientes.",
+      en: "Clear answers to common questions about our process, pricing, technology, and ongoing support.",
+      de: "Klare Antworten auf häufige Fragen zu unserer Arbeitsweise, unseren Preisen, Technologien und Supportleistungen.",
+      fr: "Des réponses claires aux questions fréquentes concernant notre méthode, nos tarifs, nos technologies et notre accompagnement.",
+      es: "Respuestas claras a preguntas frecuentes sobre nuestro proceso, precios, tecnología y soporte continuo.",
     },
   },
   contact: {
