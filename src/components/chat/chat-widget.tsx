@@ -982,18 +982,29 @@ export function ChatWidget({
   // the tail mid-panel or below the fold. New messages follow smoothly, but
   // only when the tail is already in view, so reading earlier messages (by
   // scrolling up) is never interrupted.
+  const prevViewRef = React.useRef<ChatView>(view);
   React.useLayoutEffect(() => {
     if (!open) return;
     const el = messagesScrollRef.current;
     if (!el) return;
+    const viewChanged = prevViewRef.current !== view;
+    prevViewRef.current = view;
     const pin = (smooth: boolean) => {
       const isChat = view === "chat";
-      const tailVisible =
-        !isChat || el.scrollHeight - el.scrollTop - el.clientHeight < 80;
-      el.scrollTo({
-        top: isChat ? el.scrollHeight : 0,
-        behavior: smooth && isChat && tailVisible ? "smooth" : "auto",
-      });
+      if (isChat) {
+        const tailVisible =
+          el.scrollHeight - el.scrollTop - el.clientHeight < 80;
+        el.scrollTo({
+          top: el.scrollHeight,
+          behavior: smooth && tailVisible ? "smooth" : "auto",
+        });
+      } else if (viewChanged) {
+        // Only scroll to top when switching INTO a topic panel, not on
+        // every messages/loading/stage re-render (the poll updates
+        // messages every 2.5 s which would otherwise jump the panel
+        // back to the top mid-scroll).
+        el.scrollTo({ top: 0, behavior: "auto" });
+      }
     };
     pin(true);
     const id = requestAnimationFrame(() => pin(false));
