@@ -263,9 +263,11 @@ export default async function WorkDetailPage({
   const categoryBadge =
     serviceTitle || deliverables[0] || t(locale, "workCaseStudy");
   const servicesJoined = deliverables.join(" · ");
-  const launchYear = project.published_at
-    ? new Date(project.published_at).getFullYear().toString()
-    : "";
+  const launchYear = project.year
+    ? String(project.year)
+    : project.published_at
+      ? new Date(project.published_at).getFullYear().toString()
+      : "";
 
   const facts: FactCardProps[] = [];
   facts.push({

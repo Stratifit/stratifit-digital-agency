@@ -48,6 +48,8 @@ interface ContentFormProps {
   initial?: Record<string, unknown>;
   /** Published services for the portfolio category dropdown. */
   services?: AdminServiceOption[];
+  /** Visible testimonials for the portfolio case study section. */
+  testimonials?: { id: string; label: string }[];
 }
 
 type Locale = EditorLocale;
@@ -78,6 +80,119 @@ const TITLES: Record<ContentType, string> = {
 }
 
 type GalleryItem = { media_id?: string; image_url: string };
+
+type MetricItem = {
+  value: string;
+  label_translations: Record<string, string>;
+};
+
+function trArr(v: Record<string, string[]> | null | undefined) {
+  return {
+    en: v?.en ?? [],
+    de: v?.de ?? [],
+    fr: v?.fr ?? [],
+    es: v?.es ?? [],
+  };
+}
+
+const EMPTY_METRIC = (): MetricItem => ({
+  value: "",
+  label_translations: { en: "", de: "", fr: "", es: "" },
+});
+
+/**
+ * Repeatable result metrics — each row is a value (e.g. "12%") plus a label
+ * per locale (e.g. "Demo request rate"). Rendered on the public case study
+ * page as "Label <strong>value</strong>".
+ */
+function PortfolioMetricsEditor({
+  control,
+  setValue,
+  locale,
+}: {
+  control: Control<FieldValues>;
+  setValue: UseFormSetValue<FieldValues>;
+  locale: EditorLocale;
+}) {
+  const metrics = (useWatch({ control, name: "metrics" }) ?? []) as MetricItem[];
+
+  function patch(index: number, patch: { value?: string; label?: string }) {
+    const next = [...metrics];
+    while (next.length <= index) next.push(EMPTY_METRIC());
+    const current = { ...next[index], label_translations: { ...next[index].label_translations } };
+    if (patch.value !== undefined) current.value = patch.value;
+    if (patch.label !== undefined) {
+      current.label_translations[locale] = patch.label;
+    }
+    next[index] = current;
+    setValue("metrics", next);
+  }
+
+  function remove(index: number) {
+    setValue(
+      "metrics",
+      metrics.filter((_, i) => i !== index)
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      {metrics.map((metric, index) => (
+        <div
+          key={index}
+          className="rounded-card border border-white/5 bg-background p-3"
+        >
+          <div className="mb-2 flex items-center justify-between">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-subtle">
+              Metric {index + 1}
+            </p>
+            <button
+              type="button"
+              onClick={() => remove(index)}
+              className="text-xs text-text-muted transition-colors hover:text-error focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              Remove
+            </button>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-[140px_1fr]">
+            <div className="space-y-1.5">
+              <Label htmlFor={`metric-${index}-value`}>Value</Label>
+              <Input
+                id={`metric-${index}-value`}
+                placeholder="12%"
+                value={metric.value}
+                onChange={(e) => patch(index, { value: e.target.value })}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor={`metric-${index}-label-${locale}`}>
+                Label ({LOCALE_NAMES[locale]})
+              </Label>
+              <Input
+                key={locale}
+                id={`metric-${index}-label-${locale}`}
+                placeholder="Demo request rate"
+                value={metric.label_translations?.[locale] ?? ""}
+                onChange={(e) => patch(index, { label: e.target.value })}
+              />
+            </div>
+          </div>
+        </div>
+      ))}
+      <button
+        type="button"
+        onClick={() => setValue("metrics", [...metrics, EMPTY_METRIC()])}
+        className="rounded-button border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      >
+        + Add metric
+      </button>
+      <p className="text-xs text-text-muted">
+        Rendered on the case study page as &quot;Label value&quot;, e.g.
+        &quot;Demo request rate 12%&quot;. Leave a row empty to hide it.
+      </p>
+    </div>
+  );
+}
 
 /**
  * 6-slot image uploader for the work card grid. Uploads go to the
@@ -211,12 +326,20 @@ function PortfolioGalleryUploader({
   );
 }
 
-export function ContentForm({ type, id, initial, services = [] }: ContentFormProps) {
+type EditorSectionKey = "content" | "case-study" | "publishing";
+
+export function ContentForm({
+  type,
+  id,
+  initial,
+  services = [],
+  testimonials = [],
+}: ContentFormProps) {
   const router = useRouter();
   const schema = SCHEMAS[type];
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [locale, setLocale] = React.useState<Locale>("en");
-  const [activeSection, setActiveSection] = React.useState<"content" | "publishing">(
+  const [activeSection, setActiveSection] = React.useState<EditorSectionKey>(
     "content"
   );
   const isEdit = Boolean(id);
@@ -238,6 +361,21 @@ export function ContentForm({ type, id, initial, services = [] }: ContentFormPro
       d.client_name = initial.client_name ?? "";
       d.service_slug = initial.service_slug ?? "";
       d.gallery = initial.gallery ?? [];
+      d.deliverables_translations = trArr(
+        initial.deliverables_translations as Record<string, string[]> | null
+      );
+      d.challenge_translations = tr(
+        initial.challenge_translations as Record<string, string> | null
+      );
+      d.solution_translations = tr(
+        initial.solution_translations as Record<string, string> | null
+      );
+      d.results_translations = tr(
+        initial.results_translations as Record<string, string> | null
+      );
+      d.metrics = initial.metrics ?? [];
+      d.year = initial.year ? String(initial.year) : "";
+      d.testimonial_id = initial.testimonial_id ?? "";
       d.title_translations = tr(initial.title_translations as Record<string, string> | null);
       d.summary_translations = tr(initial.summary_translations as Record<string, string> | null);
       d.image_url = initial.image_url ?? "";
@@ -351,6 +489,16 @@ export function ContentForm({ type, id, initial, services = [] }: ContentFormPro
       <EditorSectionSwitcher
         options={[
           { key: "content", label: "Content", description: "The visible content and its translations." },
+          ...(type === "portfolio"
+            ? [
+                {
+                  key: "case-study" as const,
+                  label: "Case study",
+                  description:
+                    "Facts, challenge, solution, results, and gallery shown on the public case study page.",
+                },
+              ]
+            : []),
           { key: "publishing", label: "Publishing", description: "Slug, status, order, and visibility." },
         ]}
         value={activeSection}
@@ -649,6 +797,126 @@ export function ContentForm({ type, id, initial, services = [] }: ContentFormPro
           </div>
         ) : null}
 
+          </div>
+        ) : null}
+
+        {activeSection === "case-study" && type === "portfolio" ? (
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor={`deliverables-${locale}`}>
+                Services / deliverables ({LOCALE_NAMES[locale]})
+              </Label>
+              <Textarea
+                key={locale}
+                id={`deliverables-${locale}`}
+                rows={3}
+                placeholder={"One per line, e.g.\nConversion Design\nA/B Testing"}
+                value={
+                  (getValues(
+                    `deliverables_translations.${locale}`
+                  ) as string[] | undefined)?.join("\n") ?? ""
+                }
+                onChange={(e) =>
+                  setValue(
+                    `deliverables_translations.${locale}` as const,
+                    e.target.value.split("\n") as never
+                  )
+                }
+              />
+              <p className="text-xs text-text-muted">
+                One per line — shown on the Services fact card, joined with
+                dots.
+              </p>
+            </div>
+
+            <div className="grid gap-5 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor={`challenge-${locale}`}>
+                  Challenge ({LOCALE_NAMES[locale]})
+                </Label>
+                <Textarea
+                  key={locale}
+                  id={`challenge-${locale}`}
+                  rows={4}
+                  placeholder="The problem the client faced"
+                  {...register(`challenge_translations.${locale}`)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor={`solution-${locale}`}>
+                  Solution ({LOCALE_NAMES[locale]})
+                </Label>
+                <Textarea
+                  key={locale}
+                  id={`solution-${locale}`}
+                  rows={4}
+                  placeholder="What we did"
+                  {...register(`solution_translations.${locale}`)}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor={`results-${locale}`}>
+                Results summary ({LOCALE_NAMES[locale]})
+              </Label>
+              <Textarea
+                key={locale}
+                id={`results-${locale}`}
+                rows={3}
+                placeholder="A short paragraph summarizing the outcomes"
+                {...register(`results_translations.${locale}`)}
+              />
+            </div>
+
+            <div className="rounded-card border border-white/5 bg-background p-4">
+              <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-text-subtle">
+                Result metrics
+              </p>
+              <PortfolioMetricsEditor
+                control={control}
+                setValue={setValue}
+                locale={locale}
+              />
+            </div>
+
+            <div className="grid gap-5 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="year">Year</Label>
+                <Input
+                  id="year"
+                  placeholder="2026"
+                  inputMode="numeric"
+                  maxLength={4}
+                  {...register("year")}
+                />
+                {err("year") ? (
+                  <p className="text-sm text-error">{err("year")}</p>
+                ) : null}
+                <p className="text-xs text-text-muted">
+                  Shown on the Year fact card. Leave empty to use the publish
+                  date.
+                </p>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="testimonial_id">Client testimonial</Label>
+                <Select
+                  id="testimonial_id"
+                  defaultValue=""
+                  {...register("testimonial_id")}
+                >
+                  <option value="">No testimonial</option>
+                  {testimonials.map((t) => (
+                    <option key={t.id} value={t.id}>
+                      {t.label}
+                    </option>
+                  ))}
+                </Select>
+                <p className="text-xs text-text-muted">
+                  Shown as a quote block on the case study page.
+                </p>
+              </div>
+            </div>
           </div>
         ) : null}
 

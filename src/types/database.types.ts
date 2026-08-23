@@ -1941,6 +1941,7 @@ export type Database = {
           testimonial_id: string | null
           title_translations: Json
           updated_at: string
+          year: number | null
         }
         Insert: {
           approach_translations?: Json
@@ -1964,6 +1965,7 @@ export type Database = {
           testimonial_id?: string | null
           title_translations?: Json
           updated_at?: string
+          year?: number | null
         }
         Update: {
           approach_translations?: Json
@@ -1987,6 +1989,7 @@ export type Database = {
           testimonial_id?: string | null
           title_translations?: Json
           updated_at?: string
+          year?: number | null
         }
         Relationships: [
           {

@@ -17,6 +17,19 @@ const portfolioGalleryItem = z.object({
   image_url: z.string(),
 });
 
+const translationsArrays = () =>
+  z.object({
+    en: z.array(z.string()),
+    de: z.array(z.string()),
+    fr: z.array(z.string()),
+    es: z.array(z.string()),
+  });
+
+const portfolioMetricItem = z.object({
+  value: z.string(),
+  label_translations: translations(),
+});
+
 export const portfolioSchema = z.object({
   slug: z
     .string()
@@ -27,6 +40,16 @@ export const portfolioSchema = z.object({
   service_slug: z.string().optional(),
   /** Gallery images in display order (up to 6, matching the card grid). */
   gallery: z.array(portfolioGalleryItem).max(6).optional(),
+  /** Case study fields shown on the public /work/[slug] page. */
+  deliverables_translations: translationsArrays().optional(),
+  challenge_translations: translations().optional(),
+  solution_translations: translations().optional(),
+  results_translations: translations().optional(),
+  metrics: z.array(portfolioMetricItem).max(8).optional(),
+  year: z
+    .union([z.string().regex(/^\d{4}$/, "Enter a 4-digit year"), z.literal("")])
+    .optional(),
+  testimonial_id: z.string().optional(),
   title_translations: englishRequired("English title is required"),
   summary_translations: englishRequired("English summary is required"),
   image_url: z.string(),

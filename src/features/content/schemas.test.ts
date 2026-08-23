@@ -101,6 +101,68 @@ describe("portfolioSchema", () => {
     });
     expect(result.success).toBe(true);
   });
+
+  it("accepts full case study details", () => {
+    const result = portfolioSchema.safeParse({
+      slug: "vertex-saas-landing",
+      client_name: "Vertex SaaS",
+      deliverables_translations: {
+        en: ["Conversion Design", "A/B Testing"],
+        de: ["Conversion-Design", "A/B-Tests"],
+        fr: ["Design de conversion", "Tests A/B"],
+        es: ["Diseño de conversión", "Pruebas A/B"],
+      },
+      challenge_translations: fullTranslations,
+      solution_translations: fullTranslations,
+      results_translations: fullTranslations,
+      metrics: [
+        {
+          value: "12%",
+          label_translations: fullTranslations,
+        },
+        {
+          value: "12x",
+          label_translations: fullTranslations,
+        },
+      ],
+      year: "2026",
+      testimonial_id: "40000000-0000-4000-8000-000000000001",
+      title_translations: fullTranslations,
+      summary_translations: fullTranslations,
+      image_url: "https://example.com/cover.jpg",
+      status: "published",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("rejects an invalid year", () => {
+    const result = portfolioSchema.safeParse({
+      slug: "vertex-saas-landing",
+      client_name: "Vertex SaaS",
+      year: "last year",
+      title_translations: fullTranslations,
+      summary_translations: fullTranslations,
+      image_url: "",
+      status: "draft",
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.flatten().fieldErrors.year).toBeDefined();
+    }
+  });
+
+  it("accepts an empty year", () => {
+    const result = portfolioSchema.safeParse({
+      slug: "vertex-saas-landing",
+      client_name: "Vertex SaaS",
+      year: "",
+      title_translations: fullTranslations,
+      summary_translations: fullTranslations,
+      image_url: "",
+      status: "draft",
+    });
+    expect(result.success).toBe(true);
+  });
 });
 
 describe("insightSchema", () => {

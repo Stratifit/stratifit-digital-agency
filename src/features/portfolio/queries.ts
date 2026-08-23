@@ -243,6 +243,7 @@ export interface PublicPortfolioDetail {
   image_url: string | null;
   gallery_urls: string[];
   published_at: string | null;
+  year: number | null;
   service_slugs: string[];
   service_titles: Record<string, string> | null;
   seo_title_translations: Record<string, string> | null;
@@ -258,7 +259,7 @@ export async function getPublicPortfolioDetail(
   const { data, error } = await supabase
     .from("portfolio_projects")
     .select(
-      "id, slug, client_name, title_translations, summary_translations, challenge_translations, approach_translations, solution_translations, deliverables_translations, results_translations, metrics, featured_media_id, image_url, testimonial_id, seo_title_translations, seo_description_translations, published_at"
+      "id, slug, client_name, title_translations, summary_translations, challenge_translations, approach_translations, solution_translations, deliverables_translations, results_translations, metrics, featured_media_id, image_url, testimonial_id, seo_title_translations, seo_description_translations, published_at, year"
     )
     .eq("slug", slug)
     .eq("status", "published")
@@ -377,6 +378,7 @@ export async function getPublicPortfolioDetail(
     image_url: (data.image_url as string | null) ?? null,
     gallery_urls,
     published_at: data.published_at as string | null,
+    year: (data.year as number | null) ?? null,
     service_slugs,
     service_titles,
     seo_title_translations:

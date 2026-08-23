@@ -57,11 +57,39 @@ export async function savePortfolio(
       fieldErrors: parsed.error.flatten().fieldErrors,
     };
   }
+  const deliverables = (parsed.data.deliverables_translations ??
+    {}) as Record<string, string[]>;
+  const cleanedDeliverables = Object.fromEntries(
+    Object.entries(deliverables).map(([key, list]) => [
+      key,
+      (list ?? []).map((item) => item.trim()).filter(Boolean),
+    ])
+  );
+  const metrics = (parsed.data.metrics ?? [])
+    .map((m) => ({
+      value: m.value.trim(),
+      label_translations: m.label_translations,
+    }))
+    .filter(
+      (m) =>
+        m.value ||
+        Object.values(m.label_translations).some((label) => label.trim())
+    );
+
   const row = {
     slug: parsed.data.slug,
     client_name: parsed.data.client_name,
     title_translations: parsed.data.title_translations,
     summary_translations: parsed.data.summary_translations,
+    deliverables_translations: cleanedDeliverables,
+    challenge_translations: parsed.data.challenge_translations ?? {},
+    solution_translations: parsed.data.solution_translations ?? {},
+    results_translations: parsed.data.results_translations ?? {},
+    metrics,
+    year: parsed.data.year?.trim() ? Number(parsed.data.year) : null,
+    testimonial_id: parsed.data.testimonial_id?.trim()
+      ? parsed.data.testimonial_id
+      : null,
     image_url: parsed.data.image_url.trim() || null,
     seo_title_translations: parsed.data.seo_title_translations ?? {},
     seo_description_translations: parsed.data.seo_description_translations ?? {},

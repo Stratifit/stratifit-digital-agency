@@ -763,7 +763,13 @@ Suggested columns:
 | `is_featured` | `boolean` |
 | `status` | `text` |
 | `published_at` | `timestamptz` nullable |
+| `year` | `integer` nullable |
 | timestamps | standard |
+
+`year` (migration `20260823130000`) is the display year for the case study
+Year fact card, backfilled from `published_at`. It is edited via the
+portfolio project's Case study tab; the public page falls back to the
+`published_at` year when null.
 
 ## 11.2 `portfolio_service_links`
 

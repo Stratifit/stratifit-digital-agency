@@ -603,6 +603,21 @@ two places:
   the same six per-card slots across all published cards. Empty slots are
   skipped in both editors.
 
+Each portfolio project also has a **Case study** editor tab that drives the
+public `/work/[slug]` page in full:
+
+- **Services / deliverables** — one per line per language; rendered on the
+  Services fact card (joined with `·`) and as the category badge fallback.
+- **Challenge** and **Solution** — the problem and what we did, per language.
+- **Results summary** — a closing paragraph under the metrics.
+- **Result metrics** — repeatable `value` + per-language label rows (up to 8),
+  rendered as "Label value" with the value in amber.
+- **Year** — display year for the Year fact card; empty falls back to the
+  `published_at` year (`portfolio_projects.year`, migration
+  `20260823130000`).
+- **Client testimonial** — optional link to a visible testimonial
+  (`testimonial_id`) rendered as a quote block.
+
 ---
 
 ## 15. Insight Management
