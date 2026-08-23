@@ -886,6 +886,13 @@ insights-images
 general-media
 ```
 
+The `category` CHECK constraint allows
+`('general', 'image', 'video', 'document', 'icon', 'logo', 'banner',
+'portfolio', 'insight')`. The `portfolio-images` and `insights-images`
+buckets map to `portfolio` / `insight` (migration `20260823140000` added
+them — uploads to those buckets previously failed the check and were
+rolled back).
+
 Use exact approved naming consistently in SQL and code.
 
 ---
