@@ -789,7 +789,7 @@ Columns:
 - `is_featured`
 - timestamps
 
-Seeded gallery rows (27 rows across the 9 published case studies) ship in migration `00041` and `seed.sql` so work detail galleries render without a populated media library. Migration `20260823120000` (and its `seed.sql` mirror) extends every case study to six rows so the homepage/work cards can render a full 3×2 grid of small thumbnails. The Our Work section editor (Sections → Portfolio → Card images) manages these six per-card slots and persists them to `portfolio_media` on save; empty slots are dropped. Public read access is gated by the policies from migrations `00033`/`00034`.
+Seeded gallery rows (27 rows across the 9 published case studies) ship in migration `00041` and `seed.sql` so work detail galleries render without a populated media library. Migration `20260823120000` (and its `seed.sql` mirror) extends every case study to six rows; the homepage/work cards render a full cover image, except brand-design cards (`portfolio_service_links` → `brand-design`: Maison Lumière, Aura Cosmetics) which show the first four as a 2×2 thumbnail grid. The Our Work section editor (Sections → Portfolio → Card images) manages these six per-card slots and persists them to `portfolio_media` on save; empty slots are dropped. Public read access is gated by the policies from migrations `00033`/`00034`.
 
 ---
 

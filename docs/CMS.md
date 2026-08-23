@@ -588,11 +588,13 @@ Portfolio editors should support:
 - Draft preview
 - Related services
 
-Homepage work cards render a 3×2 grid of up to six small thumbnails instead of
-a single cover image. The Our Work section editor (Sections → Portfolio →
-Card images) manages these per-card images: each published card has six upload
-slots that persist to the `portfolio_media` gallery table on save (Supabase
-Storage via the shared media upload action). Empty slots are skipped.
+Homepage work cards show a full cover image, except brand-design cards which
+render a 2×2 grid of four small thumbnails (Maison Lumière, Aura Cosmetics —
+projects linked to the `brand-design` service). The Our Work section editor
+(Sections → Portfolio → Card images) manages these per-card images: each
+published card has six upload slots that persist to the `portfolio_media`
+gallery table on save (Supabase Storage via the shared media upload action).
+Empty slots are skipped.
 
 ---
 
