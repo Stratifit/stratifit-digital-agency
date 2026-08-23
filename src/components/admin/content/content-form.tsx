@@ -94,7 +94,8 @@ function PortfolioGalleryUploader({
   const gallery = (useWatch({ control, name: "gallery" }) ?? []) as GalleryItem[];
   const [uploadingIndex, setUploadingIndex] = React.useState<number | null>(null);
   const [uploadError, setUploadError] = React.useState<string | null>(null);
-  const inputRefs = React.useRef<Array<HTMLInputElement | null>>([]);
+  const addInputRefs = React.useRef<Array<HTMLInputElement | null>>([]);
+  const replaceInputRefs = React.useRef<Array<HTMLInputElement | null>>([]);
 
   async function handleFile(index: number, e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -112,7 +113,8 @@ function PortfolioGalleryUploader({
         while (next.length < 6) next.push({ image_url: "" });
         next[index] = { media_id: result.data.id, image_url: result.data.url };
         setValue("gallery", next);
-        if (inputRefs.current[index]) inputRefs.current[index]!.value = "";
+        if (addInputRefs.current[index]) addInputRefs.current[index]!.value = "";
+        if (replaceInputRefs.current[index]) replaceInputRefs.current[index]!.value = "";
       } else {
         setUploadError(result.error);
       }
@@ -157,12 +159,29 @@ function PortfolioGalleryUploader({
                   >
                     Remove
                   </button>
+                  <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-1 bg-gradient-to-t from-black/75 to-transparent px-1.5 pb-1.5 pt-5">
+                    <label className="cursor-pointer rounded-sm bg-black/70 px-1.5 py-0.5 text-[10px] font-medium text-white transition-colors hover:bg-primary hover:text-text-inverse focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                      Replace
+                      <input
+                        ref={(el) => {
+                          replaceInputRefs.current[index] = el;
+                        }}
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml,image/avif"
+                        onChange={(e) => handleFile(index, e)}
+                        className="sr-only"
+                      />
+                    </label>
+                    <span className="rounded-sm bg-black/70 px-1.5 py-0.5 text-[10px] font-medium text-white">
+                      {index + 1}
+                    </span>
+                  </div>
                 </>
               ) : (
                 <label className="flex h-full w-full cursor-pointer flex-col items-center justify-center gap-1 text-center transition-colors hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
                   <input
                     ref={(el) => {
-                      inputRefs.current[index] = el;
+                      addInputRefs.current[index] = el;
                     }}
                     type="file"
                     accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml,image/avif"
@@ -170,13 +189,15 @@ function PortfolioGalleryUploader({
                     className="sr-only"
                   />
                   <span className="text-[10px] font-medium text-text-muted">
-                    {uploadingIndex === index ? "Uploading…" : "Add image"}
+                    Add image
                   </span>
                 </label>
               )}
-              <span className="pointer-events-none absolute bottom-1.5 left-1.5 rounded-sm bg-black/70 px-1.5 py-0.5 text-[10px] font-medium text-white">
-                {index + 1}
-              </span>
+              {uploadingIndex === index ? (
+                <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/60 text-[10px] font-medium text-white">
+                  Uploading…
+                </span>
+              ) : null}
             </div>
           )
         )}

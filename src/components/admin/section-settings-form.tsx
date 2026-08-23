@@ -414,7 +414,8 @@ function PortfolioCardImageSlot({
   const imageUrl = value?.image_url;
   const [uploading, setUploading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const addInputRef = React.useRef<HTMLInputElement>(null);
+  const replaceInputRef = React.useRef<HTMLInputElement>(null);
 
   async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -434,7 +435,8 @@ function PortfolioCardImageSlot({
         setValue(`cards.${cardIndex}.images.${slotIndex}.image_url`, result.data.url, {
           shouldDirty: true,
         });
-        if (inputRef.current) inputRef.current.value = "";
+        if (addInputRef.current) addInputRef.current.value = "";
+        if (replaceInputRef.current) replaceInputRef.current.value = "";
       } else {
         setError(result.error);
       }
@@ -452,7 +454,8 @@ function PortfolioCardImageSlot({
     setValue(`cards.${cardIndex}.images.${slotIndex}.image_url`, "", {
       shouldDirty: true,
     });
-    if (inputRef.current) inputRef.current.value = "";
+    if (addInputRef.current) addInputRef.current.value = "";
+    if (replaceInputRef.current) replaceInputRef.current.value = "";
     setError(null);
   }
 
@@ -474,27 +477,47 @@ function PortfolioCardImageSlot({
           >
             Remove
           </button>
-        </>
-      ) : (
-        <div className="flex h-full w-full items-center justify-center">
-          {uploading ? (
-            <span className="text-[10px] text-text-muted">Uploading…</span>
-          ) : (
-            <label className="flex h-full w-full cursor-pointer items-center justify-center text-[10px] font-medium text-text-muted transition-colors hover:bg-surface-hover hover:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+          <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-1 bg-gradient-to-t from-black/75 to-transparent px-1.5 pb-1.5 pt-5">
+            <label className="cursor-pointer rounded-sm bg-black/80 px-1.5 py-0.5 text-[10px] font-medium text-white transition-colors hover:bg-primary hover:text-text-inverse focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+              Replace
               <input
-                ref={inputRef}
+                ref={replaceInputRef}
                 type="file"
                 accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml,image/avif"
                 onChange={handleFile}
                 className="sr-only"
               />
-              + Upload
             </label>
-          )}
+            <span className="rounded-sm bg-black/80 px-1.5 py-0.5 text-[10px] font-medium text-white">
+              {slotIndex + 1}
+            </span>
+          </div>
+        </>
+      ) : (
+        <div className="flex h-full w-full items-center justify-center">
+          <label className="flex h-full w-full cursor-pointer items-center justify-center text-[10px] font-medium text-text-muted transition-colors hover:bg-surface-hover hover:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+            <input
+              ref={addInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml,image/avif"
+              onChange={handleFile}
+              className="sr-only"
+            />
+              + Upload
+          </label>
         </div>
       )}
+      {uploading ? (
+        <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/60 text-[10px] font-medium text-white">
+          Uploading…
+        </span>
+      ) : null}
       {error ? (
-        <p className="absolute inset-x-0 bottom-0 truncate bg-black/80 px-1 text-[9px] text-error">
+        <p
+          className={`absolute inset-x-0 truncate bg-black/80 px-1 text-[9px] text-error ${
+            imageUrl ? "bottom-7" : "bottom-0"
+          }`}
+        >
           {error}
         </p>
       ) : null}
