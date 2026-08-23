@@ -166,36 +166,55 @@ export type UiStringKey =
   | "trustQuickResponse"
   | "trustQuickResponseDesc"
   | "workApplications"
+  | "workAudience"
   | "workBefore"
   | "workBrandIdentity"
+  | "workBrandInAction"
   | "workBrandInUse"
   | "workCaseStudy"
   | "workCaseStudies"
   | "workChallenge"
+  | "workClientPerspective"
   | "workConcept"
   | "workClient"
+  | "workCoreMessage"
   | "workGallery"
+  | "workHowWeBuilt"
   | "workIndustry"
   | "workMoreWork"
   | "workMoved"
   | "workNumbersThat"
+  | "workObjective"
+  | "workOurMethod"
   | "workOurProcess"
+  | "workOverview"
+  | "workPositioning"
+  | "workProcessIntro"
   | "workResults"
   | "workSameRigor"
   | "workSelected"
+  | "workSelectedWork"
   | "workServices"
   | "workSimilar"
   | "workSolution"
   | "workMark"
   | "workNewIdentity"
+  | "workStrategy"
+  | "workStrategyFoundation"
+  | "workValueProposition"
+  | "workViewCaseStudies"
   | "workWhyThisMark"
   | "workStartCta"
   | "workTheProblem"
   | "workVisual"
   | "workVisuals"
   | "workWantOutcome"
+  | "workWhatNeededToChange"
+  | "workWhatWasBroken"
   | "workWhatWeDid"
+  | "workWhoTheyAre"
   | "workYear"
+  | "workYourProjectNext"
   | "workWord"
   | "workEyebrowFallback"
   | "workTitleFallback"
@@ -422,37 +441,57 @@ const en: UiStrings = {
   trustQuickResponse: "Quick response",
   trustQuickResponseDesc: "We reply within 24h.",
   workApplications: "Applications",
+  workAudience: "Audience",
   workBefore: "Before",
   workBrandIdentity: "Brand Identity",
+  workBrandInAction: "Brand in Action",
   workBrandInUse: "The Brand in Use",
   workCaseStudy: "Case Study",
   workCaseStudies: "Case Studies",
   workChallenge: "Challenge",
+  workClientPerspective: "Client Perspective",
   workConcept: "The Concept",
   workClient: "Client",
+  workCoreMessage: "Core Message",
   workGallery: "Gallery",
+  workHowWeBuilt: "How we built this brand.",
   workIndustry: "Industry",
   workMoreWork: "More Work",
   workMoved: "Moved",
   workNumbersThat: "Numbers That",
+  workObjective: "Objective",
+  workOurMethod: "Our Method",
   workOurProcess: "Our Process",
+  workOverview: "Project Overview",
+  workPositioning: "Positioning",
+  workProcessIntro:
+    "The work unfolds as a clear timeline, with every step building on the one before it.",
   workResults: "Results",
   workSameRigor:
     "The same playbook, applied to your goals and your metrics.",
   workSelected: "Selected",
+  workSelectedWork: "Selected Work",
   workServices: "Services",
   workSimilar: "Similar",
+  workStrategy: "Strategy",
+  workStrategyFoundation: "Brand strategy foundation.",
   workMark: "The Mark",
   workNewIdentity: "New Identity",
   workSolution: "Solution",
   workStartCta: "Start your project with Stratifit",
-  workWhyThisMark: "Why This Mark",
-  workTheProblem: "The Problem",
+  workValueProposition: "Value Proposition",
+  workViewCaseStudies: "View case studies",
   workVisual: "visual",
   workVisuals: "Visuals",
   workWantOutcome: "Want an outcome like this?",
+  workWhatNeededToChange: "What needed to change",
+  workWhatWasBroken: "What was broken",
   workWhatWeDid: "What We Did",
+  workWhoTheyAre: "Who they are",
+  workWhyThisMark: "Why This Mark",
+  workTheProblem: "The Problem",
   workYear: "Year",
+  workYourProjectNext: "Your project could be next",
   workWord: "Work",
   workEyebrowFallback: "Portfolio",
   workTitleFallback: "Our",
@@ -683,37 +722,57 @@ const de: UiStrings = {
   trustQuickResponse: "Schnelle Antwort",
   trustQuickResponseDesc: "Wir antworten innerhalb von 24 Std.",
   workApplications: "Anwendungen",
+  workAudience: "Zielgruppe",
   workBefore: "Vorher",
   workBrandIdentity: "Markenidentität",
+  workBrandInAction: "Marke in Aktion",
   workBrandInUse: "Die Marke im Einsatz",
   workCaseStudy: "Fallstudie",
   workCaseStudies: "Fallstudien",
   workChallenge: "Herausforderung",
+  workClientPerspective: "Kundenperspektive",
   workConcept: "Das Konzept",
   workClient: "Kunde",
+  workCoreMessage: "Kernbotschaft",
   workGallery: "Galerie",
+  workHowWeBuilt: "So haben wir diese Marke aufgebaut.",
   workIndustry: "Branche",
   workMoreWork: "Weitere Arbeiten",
   workMoved: "bewegen",
   workNumbersThat: "Zahlen, die",
+  workObjective: "Ziel",
+  workOurMethod: "Unsere Methode",
   workOurProcess: "Unser Prozess",
+  workOverview: "Projektübersicht",
+  workPositioning: "Positionierung",
+  workProcessIntro:
+    "Die Arbeit entfaltet sich als klarer Zeitplan – jeder Schritt baut auf dem vorherigen auf.",
   workResults: "Ergebnisse",
   workSameRigor:
     "Dasselbe Vorgehen, angewendet auf Ihre Ziele und Kennzahlen.",
   workSelected: "Ausgewählte",
+  workSelectedWork: "Ausgewählte Arbeiten",
   workServices: "Leistungen",
   workSimilar: "Ähnliche",
+  workStrategy: "Strategie",
+  workStrategyFoundation: "Fundament der Markenstrategie.",
   workMark: "Das Zeichen",
   workNewIdentity: "Neue Identität",
   workSolution: "Lösung",
   workStartCta: "Starten Sie Ihr Projekt mit Stratifit",
-  workWhyThisMark: "Warum dieses Zeichen",
-  workTheProblem: "Das Problem",
+  workValueProposition: "Nutzenversprechen",
+  workViewCaseStudies: "Weitere Fallstudien ansehen",
   workVisual: "Visual",
   workVisuals: "Visuals",
   workWantOutcome: "Möchten Sie ein solches Ergebnis?",
+  workWhatNeededToChange: "Was sich ändern musste",
+  workWhatWasBroken: "Was nicht funktionierte",
   workWhatWeDid: "Was wir getan haben",
+  workWhoTheyAre: "Wer sie sind",
+  workWhyThisMark: "Warum dieses Zeichen",
+  workTheProblem: "Das Problem",
   workYear: "Jahr",
+  workYourProjectNext: "Ihr Projekt könnte das nächste sein",
   workWord: "Arbeiten",
   workEyebrowFallback: "Portfolio",
   workTitleFallback: "Unsere",
@@ -944,37 +1003,57 @@ const fr: UiStrings = {
   trustQuickResponse: "Réponse rapide",
   trustQuickResponseDesc: "Nous répondons sous 24h.",
   workApplications: "Applications",
+  workAudience: "Audience",
   workBefore: "Avant",
   workBrandIdentity: "Identité de marque",
+  workBrandInAction: "La marque en action",
   workBrandInUse: "La marque en usage",
   workCaseStudy: "Étude de cas",
   workCaseStudies: "similaires",
   workChallenge: "Défi",
+  workClientPerspective: "Point de vue du client",
   workConcept: "Le concept",
   workClient: "Client",
+  workCoreMessage: "Message clé",
   workGallery: "Galerie",
+  workHowWeBuilt: "Comment nous avons construit cette marque.",
   workIndustry: "Secteur",
   workMoreWork: "Autres projets",
   workMoved: "parlent",
   workNumbersThat: "Des chiffres qui",
+  workObjective: "Objectif",
+  workOurMethod: "Notre méthode",
   workOurProcess: "Notre processus",
+  workOverview: "Aperçu du projet",
+  workPositioning: "Positionnement",
+  workProcessIntro:
+    "Le travail se déroule selon un calendrier clair, chaque étape s'appuyant sur la précédente.",
   workResults: "Résultats",
   workSameRigor:
     "La même méthode, appliquée à vos objectifs et vos indicateurs.",
   workSelected: "Visuels",
+  workSelectedWork: "Travaux sélectionnés",
   workServices: "Services",
   workSimilar: "Études de cas",
+  workStrategy: "Stratégie",
+  workStrategyFoundation: "Fondement de la stratégie de marque.",
   workMark: "Le signe",
   workNewIdentity: "Nouvelle identité",
   workSolution: "Solution",
   workStartCta: "Lancez votre projet avec Stratifit",
-  workWhyThisMark: "Pourquoi ce signe",
-  workTheProblem: "Le problème",
+  workValueProposition: "Proposition de valeur",
+  workViewCaseStudies: "Voir d'autres études de cas",
   workVisual: "visuel",
   workVisuals: "sélectionnés",
   workWantOutcome: "Vous voulez un résultat similaire ?",
+  workWhatNeededToChange: "Ce qui devait changer",
+  workWhatWasBroken: "Ce qui était cassé",
   workWhatWeDid: "Ce que nous avons fait",
+  workWhoTheyAre: "Qui ils sont",
+  workWhyThisMark: "Pourquoi ce signe",
+  workTheProblem: "Le problème",
   workYear: "Année",
+  workYourProjectNext: "Votre projet pourrait être le prochain",
   workWord: "Projets",
   workEyebrowFallback: "Portfolio",
   workTitleFallback: "Nos",
@@ -1205,37 +1284,57 @@ const es: UiStrings = {
   trustQuickResponse: "Respuesta rápida",
   trustQuickResponseDesc: "Respondemos en 24h.",
   workApplications: "Aplicaciones",
+  workAudience: "Público",
   workBefore: "Antes",
   workBrandIdentity: "Identidad de marca",
+  workBrandInAction: "La marca en acción",
   workBrandInUse: "La marca en uso",
   workCaseStudy: "Estudio de caso",
   workCaseStudies: "similares",
   workChallenge: "Reto",
+  workClientPerspective: "Perspectiva del cliente",
   workConcept: "El concepto",
   workClient: "Cliente",
+  workCoreMessage: "Mensaje central",
   workGallery: "Galería",
+  workHowWeBuilt: "Así construimos esta marca.",
   workIndustry: "Sector",
   workMoreWork: "Más trabajos",
   workMoved: "hablan",
   workNumbersThat: "Números que",
+  workObjective: "Objetivo",
+  workOurMethod: "Nuestro método",
   workOurProcess: "Nuestro proceso",
+  workOverview: "Resumen del proyecto",
+  workPositioning: "Posicionamiento",
+  workProcessIntro:
+    "El trabajo se desarrolla como un cronograma claro, donde cada paso se apoya en el anterior.",
   workResults: "Resultados",
   workSameRigor:
     "El mismo plan de juego, aplicado a tus objetivos y tus métricas.",
   workSelected: "Visuales",
+  workSelectedWork: "Trabajos seleccionados",
   workServices: "Servicios",
   workSimilar: "Estudios de caso",
+  workStrategy: "Estrategia",
+  workStrategyFoundation: "Fundamento de la estrategia de marca.",
   workMark: "El símbolo",
   workNewIdentity: "Nueva identidad",
   workSolution: "Solución",
   workStartCta: "Comienza tu proyecto con Stratifit",
-  workWhyThisMark: "Por qué este símbolo",
-  workTheProblem: "El problema",
+  workValueProposition: "Propuesta de valor",
+  workViewCaseStudies: "Ver más casos de éxito",
   workVisual: "visual",
   workVisuals: "seleccionados",
   workWantOutcome: "¿Quieres un resultado así?",
+  workWhatNeededToChange: "Lo que debía cambiar",
+  workWhatWasBroken: "Lo que estaba roto",
   workWhatWeDid: "Lo que hicimos",
+  workWhoTheyAre: "Quiénes son",
+  workWhyThisMark: "Por qué este símbolo",
+  workTheProblem: "El problema",
   workYear: "Año",
+  workYourProjectNext: "Su proyecto podría ser el próximo",
   workWord: "Trabajo",
   workEyebrowFallback: "Portafolio",
   workTitleFallback: "Nuestro",
