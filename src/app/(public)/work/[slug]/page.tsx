@@ -52,108 +52,6 @@ export async function generateMetadata({
 /* Icons                                                               */
 /* ------------------------------------------------------------------ */
 
-function ArrowRightIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-      className="size-5"
-    >
-      <path
-        fillRule="evenodd"
-        d="M12.97 3.97a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06l6.22-6.22H3a.75.75 0 0 1 0-1.5h16.19l-6.22-6.22a.75.75 0 0 1 0-1.06Z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
-
-function UserIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-      className="size-5"
-    >
-      <path
-        fillRule="evenodd"
-        d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
-
-function BuildingIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-      className="size-5"
-    >
-      <path
-        fillRule="evenodd"
-        d="M3 2.25a.75.75 0 0 0 0 1.5v16.5h-.75a.75.75 0 0 0 0 1.5H15v-18a.75.75 0 0 0 0-1.5H3ZM6.75 19.5v-2.25a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-.75.75h-3a.75.75 0 0 1-.75-.75ZM6 6.75A.75.75 0 0 1 6.75 6h.75a.75.75 0 0 1 0 1.5h-.75A.75.75 0 0 1 6 6.75ZM6.75 9a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5h-.75ZM6 12.75a.75.75 0 0 1 .75-.75h.75a.75.75 0 0 1 0 1.5h-.75a.75.75 0 0 1-.75-.75ZM10.5 6a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5h-.75Zm-.75 3.75A.75.75 0 0 1 10.5 9h.75a.75.75 0 0 1 0 1.5h-.75a.75.75 0 0 1-.75-.75ZM10.5 12a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5h-.75ZM16.5 6.75v15h5.25a.75.75 0 0 0 0-1.5H21v-12a.75.75 0 0 0 0-1.5h-4.5Zm1.5 4.5a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75h-.008a.75.75 0 0 1-.75-.75v-.008Zm.75 2.25a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75v-.008a.75.75 0 0 0-.75-.75h-.008ZM18 17.25a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75h-.008a.75.75 0 0 1-.75-.75v-.008Z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
-
-function ClockIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-      className="size-5"
-    >
-      <path
-        fillRule="evenodd"
-        d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
-
-function GridIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-      className="size-5"
-    >
-      <path
-        fillRule="evenodd"
-        d="M3 6a3 3 0 0 1 3-3h2.25a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6Zm9.75 0a3 3 0 0 1 3-3H18a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3h-2.25a3 3 0 0 1-3-3V6ZM3 15.75a3 3 0 0 1 3-3h2.25a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-2.25Zm9.75 0a3 3 0 0 1 3-3H18a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3h-2.25a3 3 0 0 1-3-3v-2.25Z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-      className="size-5"
-    >
-      <path
-        fillRule="evenodd"
-        d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
-
 function StarIcon() {
   return (
     <svg
@@ -175,18 +73,6 @@ function StarIcon() {
 /* Shared bits                                                         */
 /* ------------------------------------------------------------------ */
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="mb-4 flex items-center gap-3">
-      <div className="h-px flex-1 bg-gradient-to-r from-primary/40 to-transparent" />
-      <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary">
-        {children}
-      </span>
-      <div className="h-px flex-1 bg-gradient-to-l from-primary/40 to-transparent" />
-    </div>
-  );
-}
-
 function initials(name: string): string {
   return name
     .split(" ")
@@ -196,24 +82,33 @@ function initials(name: string): string {
     .toUpperCase();
 }
 
-interface FactCardProps {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-}
-
-function FactCard({ icon, label, value }: FactCardProps) {
+/**
+ * Numbered section label — e.g. "01 — Challenge" — matching the editorial
+ * case-study layout (numbered story blocks from start to finish).
+ */
+function NumberedLabel({
+  index,
+  children,
+}: {
+  index: number;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="rounded-card border border-white/5 bg-card-dark p-5 md:p-6">
-      <div className="mb-3 text-primary">{icon}</div>
-      <div className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-text-subtle">
-        {label}
-      </div>
-      <div className="text-sm font-medium leading-snug text-text-primary md:text-base">
-        {value}
-      </div>
+    <div className="mb-5 flex items-center gap-3">
+      <span className="font-display text-sm font-black leading-none text-primary">
+        {String(index).padStart(2, "0")}
+      </span>
+      <span className="h-px w-10 bg-primary/40" />
+      <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary">
+        {children}
+      </span>
     </div>
   );
+}
+
+interface FactStripItem {
+  label: string;
+  value: string;
 }
 
 export default async function WorkDetailPage({
@@ -269,40 +164,31 @@ export default async function WorkDetailPage({
       ? new Date(project.published_at).getFullYear().toString()
       : "";
 
-  const facts: FactCardProps[] = [];
+  const facts: FactStripItem[] = [];
   facts.push({
-    icon: <UserIcon />,
     label: t(locale, "workClient"),
     value: project.client_name,
   });
   if (serviceTitle) {
     facts.push({
-      icon: <BuildingIcon />,
       label: t(locale, "workIndustry"),
       value: serviceTitle,
     });
   }
   if (launchYear) {
     facts.push({
-      icon: <ClockIcon />,
       label: t(locale, "workYear"),
       value: launchYear,
     });
   }
   if (servicesJoined) {
     facts.push({
-      icon: <GridIcon />,
       label: t(locale, "workServices"),
       value: servicesJoined,
     });
   }
 
-  const factColumns =
-    facts.length >= 4
-      ? "md:grid-cols-4"
-      : facts.length === 3
-        ? "md:grid-cols-3"
-        : "md:grid-cols-2";
+  const galleryCount = project.gallery_urls.length;
 
   return (
     <>
@@ -320,56 +206,85 @@ export default async function WorkDetailPage({
         }}
       />
 
-      {/* Hero */}
-      <section className="relative h-[60vh] overflow-hidden md:h-[70vh]">
-        {project.featured_media_url ? (
-          <Image
-            src={project.featured_media_url}
-            alt={projectTitle || project.client_name}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-        ) : (
-          <div className="h-full w-full bg-gradient-to-br from-surface-soft via-background-deep to-background" />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-black/70 to-black/10" />
-        <div className="absolute inset-x-0 bottom-0">
-          <div className="mx-auto max-w-5xl px-4 pb-10 sm:px-6 md:pb-16">
-            <Reveal immediate variant="revealUp" className="max-w-3xl">
-              <span className="mb-6 inline-block rounded bg-primary/90 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-text-inverse">
+      {/* Hero — editorial: kicker, statement, then a mosaic of the project's visuals */}
+      <section className="relative overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-[420px] overflow-hidden"
+        >
+          <div className="absolute left-1/2 top-0 h-[420px] w-[900px] -translate-x-1/2 rounded-full bg-primary/[0.05] blur-[140px]" />
+        </div>
+        <div className="relative mx-auto w-full max-w-7xl px-4 pt-14 pb-12 sm:px-6 md:pt-20 md:pb-16">
+          <Reveal immediate>
+            <div className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-2">
+              <span className="inline-block rounded bg-primary/90 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-text-inverse">
                 {categoryBadge}
               </span>
-              <h1 className="mb-4 font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-[0.95] lg:text-6xl xl:text-7xl">
-                {projectTitle}
-              </h1>
-              <p className="text-base leading-relaxed text-text-secondary sm:text-lg md:text-xl">
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-text-muted">
+                {t(locale, "workCaseStudy")}
+                {launchYear ? ` · ${launchYear}` : ""}
+              </span>
+            </div>
+            <h1 className="max-w-5xl font-display text-4xl font-black leading-[1.02] tracking-tight text-text-primary sm:text-5xl md:text-6xl lg:text-7xl">
+              {projectTitle}
+            </h1>
+            {projectSummary ? (
+              <p className="mt-6 max-w-2xl text-base leading-relaxed text-text-secondary sm:text-lg md:text-xl">
                 {projectSummary}
               </p>
+            ) : null}
+          </Reveal>
+
+          {galleryCount > 0 ? (
+            <Reveal className="mt-10 grid grid-cols-2 gap-3 sm:gap-4 md:mt-12 lg:grid-cols-4">
+              {project.gallery_urls.map((url, index) => {
+                const isFirst = index === 0;
+                const isLast = index === galleryCount - 1;
+                return (
+                  <div
+                    key={index}
+                    className={cn(
+                      "group overflow-hidden rounded-card border border-white/5 bg-surface-soft transition-colors duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:border-primary/30",
+                      isFirst && galleryCount > 1 && "col-span-2 aspect-[16/10]",
+                      isFirst && galleryCount === 1 && "col-span-2 aspect-[21/9] lg:col-span-4",
+                      !isFirst && !isLast && "aspect-square",
+                      isLast && galleryCount > 1 && "col-span-2 aspect-[16/9]"
+                    )}
+                  >
+                    <Image
+                      src={url}
+                      alt={`${projectTitle} ${t(locale, "workVisual")} ${index + 1}`}
+                      width={1600}
+                      height={1000}
+                      loading={index < 2 ? "eager" : "lazy"}
+                      className="h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-standard)] group-hover:scale-105"
+                    />
+                  </div>
+                );
+              })}
             </Reveal>
-          </div>
+          ) : null}
         </div>
       </section>
 
       <div aria-hidden="true" className="h-px w-full bg-white/5" />
 
-      {/* Fact bar */}
+      {/* Project facts */}
       <section className="py-12 md:py-16">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <Reveal
-            className={cn(
-              "grid grid-cols-2 gap-3 sm:gap-4",
-              factColumns
-            )}
-          >
-            {facts.map((fact) => (
-              <FactCard
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
+          <Reveal className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4 md:gap-0 md:divide-x md:divide-white/5">
+            {facts.map((fact, index) => (
+              <div
                 key={fact.label}
-                icon={fact.icon}
-                label={fact.label}
-                value={fact.value}
-              />
+                className={cn("md:px-8", index === 0 && "md:pl-0")}
+              >
+                <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-subtle">
+                  {fact.label}
+                </div>
+                <div className="mt-1.5 text-sm font-medium leading-snug text-text-primary md:text-base">
+                  {fact.value}
+                </div>
+              </div>
             ))}
           </Reveal>
         </div>
@@ -380,231 +295,262 @@ export default async function WorkDetailPage({
       {/* Challenge */}
       {challenge ? (
         <>
-        <section className="py-12 md:py-16">
-          <div className="mx-auto max-w-3xl px-4 sm:px-6">
-            <Reveal>
-              <SectionLabel>{t(locale, "workChallenge")}</SectionLabel>
-              <h2 className="mb-6 font-display text-2xl font-black tracking-tight leading-tight text-text-primary sm:text-3xl md:text-4xl">
-                {t(locale, "workTheProblem")}
-              </h2>
-              <p className="border-l-2 border-primary/30 pl-4 text-base leading-relaxed text-text-secondary sm:pl-6 md:text-lg">
-                {challenge}
-              </p>
-            </Reveal>
-          </div>
-        </section>
-        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+          <section className="py-14 md:py-20">
+            <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+              <Reveal className="grid items-start gap-8 md:grid-cols-2 md:gap-14">
+                <div>
+                  <NumberedLabel index={1}>{t(locale, "workChallenge")}</NumberedLabel>
+                  <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl">
+                    {t(locale, "workTheProblem")}
+                  </h2>
+                </div>
+                <p className="text-base leading-relaxed text-text-secondary md:text-lg">
+                  {challenge}
+                </p>
+              </Reveal>
+            </div>
+          </section>
+          <div aria-hidden="true" className="h-px w-full bg-white/5" />
         </>
       ) : null}
 
       {/* Solution */}
       {solution ? (
         <>
-        <section className="py-12 md:py-16">
-          <div className="mx-auto max-w-3xl px-4 sm:px-6">
-            <Reveal>
-              <SectionLabel>{t(locale, "workSolution")}</SectionLabel>
-              <h2 className="mb-6 font-display text-2xl font-black tracking-tight leading-tight text-text-primary sm:text-3xl md:text-4xl">
-                {t(locale, "workWhatWeDid")}
-              </h2>
-              <p className="border-l-2 border-primary/30 pl-4 text-base leading-relaxed text-text-secondary sm:pl-6 md:text-lg">
-                {solution}
-              </p>
-            </Reveal>
-          </div>
-        </section>
-        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+          <section className="py-14 md:py-20">
+            <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+              <Reveal className="grid items-start gap-8 md:grid-cols-2 md:gap-14">
+                <div>
+                  <NumberedLabel index={2}>{t(locale, "workSolution")}</NumberedLabel>
+                  <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl">
+                    {t(locale, "workWhatWeDid")}
+                  </h2>
+                </div>
+                <p className="text-base leading-relaxed text-text-secondary md:text-lg">
+                  {solution}
+                </p>
+              </Reveal>
+            </div>
+          </section>
+          <div aria-hidden="true" className="h-px w-full bg-white/5" />
         </>
       ) : null}
 
-      {/* Process */}
+      {/* Process — start to finish */}
       {steps.length > 0 ? (
         <>
-        <section className="py-12 md:py-16">
-          <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            <SectionLabel>{t(locale, "workOurProcess")}</SectionLabel>
-            <h2 className="mb-10 font-display text-2xl font-black tracking-tight leading-tight text-text-primary sm:text-3xl md:text-4xl">
-              {steps.map((step, index) => (
-                <span key={step.step_key}>
-                  {index > 0 ? <span className="text-primary/60"> → </span> : null}
-                  <span>{resolveTranslation(step.title_translations, locale)}</span>
-                </span>
-              ))}
-            </h2>
-            <Reveal className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
-              {steps.map((step, index) => (
-                <div
-                  key={step.step_key}
-                  className="relative rounded-card border border-white/5 bg-card-dark p-5 md:p-6"
-                >
-                  {index < steps.length - 1 ? (
-                    <div
-                      aria-hidden="true"
-                      className="absolute -right-3 top-1/2 z-10 hidden -translate-y-1/2 text-lg text-primary/30 md:block"
-                    >
-                      <ArrowRightIcon />
+          <section className="py-14 md:py-20">
+            <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+              <Reveal>
+                <NumberedLabel index={3}>{t(locale, "workOurProcess")}</NumberedLabel>
+                <h2 className="mb-10 max-w-4xl font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl">
+                  {steps.map((step, index) => (
+                    <span key={step.step_key}>
+                      {index > 0 ? (
+                        <span className="text-primary/60"> → </span>
+                      ) : null}
+                      <span>{resolveTranslation(step.title_translations, locale)}</span>
+                    </span>
+                  ))}
+                </h2>
+              </Reveal>
+              <Reveal className="divide-y divide-white/5 border-y border-white/5">
+                {steps.map((step, index) => (
+                  <div
+                    key={step.step_key}
+                    className="flex flex-col gap-3 py-6 sm:flex-row sm:items-start sm:gap-10"
+                  >
+                    <span className="w-12 shrink-0 font-display text-3xl font-black leading-none text-primary/25">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <div className="flex-1">
+                      <div className="mb-1.5 flex items-center gap-2.5">
+                        <ProcessIcon
+                          name={step.icon_name}
+                          className="size-5 shrink-0 text-primary"
+                        />
+                        <h3 className="font-display text-lg font-bold text-text-primary">
+                          {resolveTranslation(step.title_translations, locale)}
+                        </h3>
+                      </div>
+                      <p className="text-sm leading-relaxed text-text-muted md:text-base">
+                        {resolveTranslation(step.description_translations, locale)}
+                      </p>
                     </div>
-                  ) : null}
-                  <div className="mb-3 font-display text-xl font-black leading-none text-primary opacity-30 md:text-2xl">
-                    {step.number.toString().padStart(2, "0")}
                   </div>
-                  <ProcessIcon
-                    name={step.icon_name}
-                    className="mb-2 size-6 text-primary"
-                  />
-                  <h3 className="mb-1.5 text-sm font-bold text-text-primary md:text-base">
-                    {resolveTranslation(step.title_translations, locale)}
-                  </h3>
-                  <p className="text-xs leading-relaxed text-text-muted md:text-[13px]">
-                    {resolveTranslation(step.description_translations, locale)}
-                  </p>
-                </div>
-              ))}
-            </Reveal>
-          </div>
-        </section>
-        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+                ))}
+              </Reveal>
+            </div>
+          </section>
+          <div aria-hidden="true" className="h-px w-full bg-white/5" />
         </>
       ) : null}
 
       {/* Results */}
       {project.metrics.length > 0 || resultsText ? (
         <>
-        <section className="py-12 md:py-16">
-          <div className="mx-auto max-w-3xl px-4 sm:px-6">
-            <Reveal>
-              <SectionLabel>{t(locale, "workResults")}</SectionLabel>
-              <h2 className="mb-8 font-display text-2xl font-black tracking-tight leading-tight text-text-primary sm:text-3xl md:text-4xl">
-                {t(locale, "workNumbersThat")}{" "}
-                <span className="text-primary">{t(locale, "workMoved")}</span>
-              </h2>
-              <div className="grid gap-4">
-                {project.metrics.map((metric, index) => (
-                  <div
-                    key={index}
-                    className="flex items-start gap-3 rounded-card border border-white/5 bg-card-dark p-4"
-                  >
-                    <span className="mt-0.5 shrink-0 text-primary">
-                      <CheckIcon />
-                    </span>
-                    <span className="text-sm font-medium leading-relaxed text-text-secondary md:text-base">
-                      {resolveTranslation(metric.label_translations, locale)}{" "}
-                      <strong className="font-bold text-primary">{metric.value}</strong>
-                    </span>
-                  </div>
-                ))}
-                {resultsText ? (
-                  <p className="border-l-2 border-primary/30 pl-4 text-base leading-relaxed text-text-secondary sm:pl-6 md:text-lg">
+          <section className="py-14 md:py-20">
+            <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+              <Reveal>
+                <NumberedLabel index={4}>{t(locale, "workResults")}</NumberedLabel>
+                <h2 className="mb-10 font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl">
+                  {t(locale, "workNumbersThat")}{" "}
+                  <span className="text-primary">{t(locale, "workMoved")}</span>
+                </h2>
+              </Reveal>
+              {project.metrics.length > 0 ? (
+                <Reveal className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                  {project.metrics.map((metric, index) => (
+                    <div
+                      key={index}
+                      className="rounded-card border border-white/5 bg-card-dark p-6"
+                    >
+                      <div className="font-display text-3xl font-black tracking-tight text-primary md:text-4xl">
+                        {metric.value}
+                      </div>
+                      <div className="mt-2 text-[10px] font-bold uppercase tracking-[0.2em] text-text-subtle">
+                        {resolveTranslation(metric.label_translations, locale)}
+                      </div>
+                    </div>
+                  ))}
+                </Reveal>
+              ) : null}
+              {resultsText ? (
+                <Reveal>
+                  <p className="mt-8 max-w-3xl border-l-2 border-primary/30 pl-4 text-base leading-relaxed text-text-secondary sm:pl-6 md:text-lg">
                     {resultsText}
                   </p>
-                ) : null}
-              </div>
-            </Reveal>
-          </div>
-        </section>
-        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+                </Reveal>
+              ) : null}
+            </div>
+          </section>
+          <div aria-hidden="true" className="h-px w-full bg-white/5" />
         </>
       ) : null}
 
       {/* Testimonial */}
       {project.testimonial ? (
         <>
-        <section className="py-12 md:py-16">
-          <div className="mx-auto max-w-3xl px-4 sm:px-6">
-            <Reveal className="relative overflow-hidden rounded-card-lg border border-white/5 bg-card-dark p-8 text-center md:p-12">
-              <div className="mb-6 flex items-center justify-center gap-1">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <StarIcon key={i} />
-                ))}
-              </div>
-              <p className="mb-8 text-base font-medium italic leading-relaxed text-text-primary md:text-xl">
-                &ldquo;
-                {resolveTranslation(
-                  project.testimonial.quote_translations,
-                  locale
-                )}
-                &rdquo;
-              </p>
-              <div className="flex items-center justify-center gap-3">
-                <div className="flex size-10 items-center justify-center rounded-full border border-primary/30 bg-primary/10 font-display text-sm font-bold text-primary">
-                  {initials(project.testimonial.person_name)}
+          <section className="py-14 md:py-20">
+            <div className="mx-auto w-full max-w-3xl px-4 sm:px-6">
+              <Reveal className="relative overflow-hidden rounded-card-lg border border-white/5 bg-card-dark p-8 text-center md:p-12">
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent"
+                />
+                <div className="mb-6 flex items-center justify-center gap-1">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <StarIcon key={i} />
+                  ))}
                 </div>
-                <div className="text-left">
-                  <div className="text-sm font-bold text-text-primary">
-                    {project.testimonial.person_name}
+                <p className="mb-8 text-base font-medium italic leading-relaxed text-text-primary md:text-xl">
+                  &ldquo;
+                  {resolveTranslation(
+                    project.testimonial.quote_translations,
+                    locale
+                  )}
+                  &rdquo;
+                </p>
+                <div className="flex items-center justify-center gap-3">
+                  <div className="flex size-10 items-center justify-center rounded-full border border-primary/30 bg-primary/10 font-display text-sm font-bold text-primary">
+                    {initials(project.testimonial.person_name)}
                   </div>
-                  <div className="text-xs text-text-subtle">
-                    {resolveTranslation(
-                      project.testimonial.person_role_translations,
-                      locale
-                    ) || project.testimonial.company_name}
+                  <div className="text-left">
+                    <div className="text-sm font-bold text-text-primary">
+                      {project.testimonial.person_name}
+                    </div>
+                    <div className="text-xs text-text-subtle">
+                      {resolveTranslation(
+                        project.testimonial.person_role_translations,
+                        locale
+                      ) || project.testimonial.company_name}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+              </Reveal>
+            </div>
+          </section>
+          <div aria-hidden="true" className="h-px w-full bg-white/5" />
         </>
       ) : null}
 
-      {/* Gallery */}
-      {project.gallery_urls.length > 0 ? (
+      {/* Gallery — mosaic */}
+      {galleryCount > 0 ? (
         <>
-        <section className="py-12 md:py-16">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6">
-            <SectionLabel>{t(locale, "workGallery")}</SectionLabel>
-            <h2 className="mb-10 font-display text-2xl font-black tracking-tight leading-tight text-text-primary sm:text-3xl md:text-4xl">
-              {t(locale, "workSelected")}{" "}
-              <span className="text-primary">{t(locale, "workVisuals")}</span>
-            </h2>
-            <Reveal className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
-              {project.gallery_urls.map((url, index) => (
-                <div
-                  key={index}
-                  className="overflow-hidden rounded-card border border-white/5 transition-colors duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:border-primary/30"
-                >
-                  <Image
-                    src={url}
-                    alt={`${projectTitle} ${t(locale, "workVisual")} ${index + 1}`}
-                    width={1600}
-                    height={1000}
-                    loading="lazy"
-                    className="aspect-[4/3] w-full object-cover"
-                  />
-                </div>
-              ))}
-            </Reveal>
-          </div>
-        </section>
-        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+          <section className="py-14 md:py-20">
+            <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
+              <Reveal>
+                <NumberedLabel index={5}>{t(locale, "workGallery")}</NumberedLabel>
+                <h2 className="mb-10 font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl">
+                  {t(locale, "workSelected")}{" "}
+                  <span className="text-primary">{t(locale, "workVisuals")}</span>
+                </h2>
+              </Reveal>
+              <Reveal className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6 lg:grid-cols-4">
+                {project.gallery_urls.map((url, index) => {
+                  const isFirst = index === 0;
+                  const isLast = index === galleryCount - 1;
+                  return (
+                    <div
+                      key={index}
+                      className={cn(
+                        "group overflow-hidden rounded-card border border-white/5 bg-surface-soft transition-colors duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:border-primary/30",
+                        isFirst && galleryCount > 1 && "col-span-2 aspect-[16/10]",
+                        isFirst && galleryCount === 1 && "col-span-2 aspect-[21/9] lg:col-span-4",
+                        !isFirst && !isLast && "aspect-square",
+                        isLast && galleryCount > 1 && "col-span-2 aspect-[16/9]"
+                      )}
+                    >
+                      <Image
+                        src={url}
+                        alt={`${projectTitle} ${t(locale, "workVisual")} ${index + 1}`}
+                        width={1600}
+                        height={1000}
+                        loading="lazy"
+                        className="h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-standard)] group-hover:scale-105"
+                      />
+                    </div>
+                  );
+                })}
+              </Reveal>
+            </div>
+          </section>
+          <div aria-hidden="true" className="h-px w-full bg-white/5" />
         </>
       ) : null}
 
       {/* More work */}
       {relatedVisible.length > 0 ? (
         <>
-        <section className="pt-16 md:pt-20">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6">
-            <SectionLabel>{t(locale, "workMoreWork")}</SectionLabel>
-            <h2 className="mb-10 font-display text-2xl font-black tracking-tight leading-tight text-text-primary sm:text-3xl md:text-4xl">
-              {t(locale, "workSimilar")}{" "}
-              <span className="text-primary">{t(locale, "workCaseStudies")}</span>
-            </h2>
-            <RelatedProjects
-              projects={relatedVisible}
-              services={relatedServices}
-              locale={locale}
-            />
-          </div>
-        </section>
-        <div aria-hidden="true" className="h-px w-full bg-white/5" />
+          <section className="pt-16 md:pt-20">
+            <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
+              <Reveal>
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="h-px flex-1 bg-gradient-to-r from-primary/40 to-transparent" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary">
+                    {t(locale, "workMoreWork")}
+                  </span>
+                  <div className="h-px flex-1 bg-gradient-to-l from-primary/40 to-transparent" />
+                </div>
+                <h2 className="mb-10 font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl">
+                  {t(locale, "workSimilar")}{" "}
+                  <span className="text-primary">{t(locale, "workCaseStudies")}</span>
+                </h2>
+              </Reveal>
+              <RelatedProjects
+                projects={relatedVisible}
+                services={relatedServices}
+                locale={locale}
+              />
+            </div>
+          </section>
+          <div aria-hidden="true" className="h-px w-full bg-white/5" />
         </>
       ) : null}
 
       {/* Final CTA */}
       <section className="py-16 md:py-24">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6">
+        <div className="mx-auto w-full max-w-4xl px-4 sm:px-6">
           <Reveal>
             <CtaCard
               title={t(locale, "workWantOutcome")}
@@ -620,7 +566,6 @@ export default async function WorkDetailPage({
           </Reveal>
         </div>
       </section>
-
     </>
   );
 }
