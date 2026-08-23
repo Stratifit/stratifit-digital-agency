@@ -214,7 +214,7 @@ export function BrandCaseStudy({
       {/* ============================================================ */}
       {/* Hero — topline, editorial copy, generated hero board         */}
       {/* ============================================================ */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden border-b border-white/5">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 top-0 h-[420px] overflow-hidden"
@@ -253,59 +253,57 @@ export function BrandCaseStudy({
             </nav>
           </Reveal>
 
-          <div className="grid items-center gap-10 py-12 md:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
-            <div>
-              <Reveal>
-                <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
-                  {kickerParts.join(" · ")}
-                </p>
-                <h1 className="mt-5 font-display text-5xl font-black leading-[0.98] tracking-tight text-text-primary sm:text-6xl md:text-7xl">
-                  {projectTitle || wordmark}
-                </h1>
-                {projectSummary ? (
-                  <p className="mt-6 max-w-xl text-base leading-relaxed text-text-secondary sm:text-lg md:text-xl">
-                    {projectSummary}
-                  </p>
-                ) : null}
-              </Reveal>
-              {deliverables.length > 0 ? (
-                <Reveal className="mt-8">
-                  <ul
-                    className="flex flex-wrap gap-2"
-                    aria-label="Project services and timeline"
-                  >
-                    {deliverables.map((deliverable) => (
-                      <li
-                        key={deliverable}
-                        className="rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-text-secondary"
-                      >
-                        {deliverable}
-                      </li>
-                    ))}
-                  </ul>
-                </Reveal>
-              ) : null}
-            </div>
-
+          <div className="pb-10 pt-12 md:pb-14 md:pt-16 lg:pt-20">
             <Reveal>
-              <figure className="relative aspect-[4/3] overflow-hidden rounded-card-lg border border-white/10 shadow-[0_0_60px_-24px_rgba(245,158,11,0.35)]">
-                <BrandBoard
-                  variant="hero"
-                  wordmark={wordmark}
-                  label={serviceTitle || t(locale, "workBrandIdentity")}
-                  tagline={projectSummary}
-                  className="absolute inset-0"
-                />
-              </figure>
+              <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
+                {kickerParts.join(" · ")}
+              </p>
+              <h1 className="mt-5 max-w-4xl font-display text-5xl font-black leading-[0.98] tracking-tight text-text-primary sm:text-6xl md:text-7xl">
+                {projectTitle || wordmark}
+              </h1>
+              {projectSummary ? (
+                <p className="mt-6 max-w-2xl text-base leading-relaxed text-text-secondary sm:text-lg md:text-xl">
+                  {projectSummary}
+                </p>
+              ) : null}
             </Reveal>
+            {deliverables.length > 0 ? (
+              <Reveal className="mt-8">
+                <ul
+                  className="flex flex-wrap gap-2"
+                  aria-label="Project services and timeline"
+                >
+                  {deliverables.map((deliverable) => (
+                    <li
+                      key={deliverable}
+                      className="rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-text-secondary"
+                    >
+                      {deliverable}
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+            ) : null}
           </div>
+
+          <Reveal className="pb-12 md:pb-16">
+            <figure className="relative aspect-[16/7] overflow-hidden rounded-card-lg border border-white/10 md:aspect-[21/8]">
+              <BrandBoard
+                variant="hero"
+                wordmark={wordmark}
+                label={serviceTitle || t(locale, "workBrandIdentity")}
+                tagline={projectSummary}
+                className="absolute inset-0"
+              />
+            </figure>
+          </Reveal>
         </div>
       </section>
 
       {/* ============================================================ */}
       {/* 01 — Project overview                                         */}
       {/* ============================================================ */}
-      <section className="border-t border-white/5 py-16 md:py-24">
+      <section className="py-16 md:py-24">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-6 md:grid-cols-2 md:items-end">
             <div>
@@ -395,7 +393,7 @@ export function BrandCaseStudy({
       {/* ============================================================ */}
       {/* 02 — Strategy foundation (dark band)                          */}
       {/* ============================================================ */}
-      <section className="border-y border-white/5 bg-background-deep py-16 md:py-24">
+      <section className="border-t border-white/5 bg-background-deep py-16 md:py-24">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
             <div>
@@ -746,7 +744,7 @@ export function BrandCaseStudy({
       {/* More work                                                     */}
       {/* ============================================================ */}
       {relatedVisible.length > 0 ? (
-        <section className="border-t border-white/5 pt-16 md:pt-20">
+        <section className="pt-16 md:pt-20">
           <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
             <Reveal>
               <div className="mb-4 flex items-center gap-3">

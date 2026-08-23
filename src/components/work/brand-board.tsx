@@ -4,10 +4,10 @@ import { cn } from "@/lib/cn";
 /**
  * BrandBoard — generated SVG "brand board" visuals for the case-study page.
  *
- * These are vector compositions drawn from the approved Stratifit design
- * tokens (deep background, amber primary, indigo secondary) plus the client's
- * wordmark. Every section of the case study gets a cohesive, professional
- * visual even when no photograph has been uploaded yet.
+ * Vector compositions drawn from the approved Stratifit design tokens (deep
+ * background, amber primary, indigo secondary) plus the client's wordmark.
+ * Every section of the case study gets a cohesive, professional visual even
+ * when no photograph has been uploaded yet.
  *
  * The SVG is rendered with preserveAspectRatio="xMidYMid slice" so it fills
  * whatever frame the page gives it (hero, section figure, gallery tile).
@@ -66,53 +66,37 @@ const FONT_BODY = "Inter, system-ui, sans-serif";
 /* Shared primitives                                                   */
 /* ------------------------------------------------------------------ */
 
+/** Deep gradient + soft amber glow + faint grid + edge vignette. */
 function Backdrop({ uid }: { uid: string }) {
-  const gridLines = [
-    ...Array.from({ length: 7 }, (_, i) => 150 * (i + 1)),
-    ...Array.from({ length: 4 }, (_, i) => 150 * (i + 1)),
-  ];
   return (
     <>
       <defs>
         <linearGradient id={`${uid}-bg`} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor={C.deep} />
+          <stop offset="0.55" stopColor="#0B0E14" />
           <stop offset="1" stopColor={C.bg} />
         </linearGradient>
-        <radialGradient id={`${uid}-glow`} cx="0.5" cy="0.26" r="0.62">
-          <stop offset="0" stopColor={C.primary} stopOpacity="0.16" />
+        <radialGradient id={`${uid}-glow`} cx="0.5" cy="0.3" r="0.55">
+          <stop offset="0" stopColor={C.primary} stopOpacity="0.14" />
           <stop offset="1" stopColor={C.primary} stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id={`${uid}-vig`} cx="0.5" cy="0.5" r="0.75">
+          <stop offset="0.6" stopColor="#000000" stopOpacity="0" />
+          <stop offset="1" stopColor="#000000" stopOpacity="0.42" />
         </radialGradient>
       </defs>
       <rect width="1200" height="720" fill={`url(#${uid}-bg)`} />
       <rect width="1200" height="720" fill={`url(#${uid}-glow)`} />
-      <g stroke="rgba(255,255,255,0.035)" strokeWidth="1">
-        {gridLines.slice(0, 7).map((x, i) => (
+      <g stroke="rgba(255,255,255,0.028)" strokeWidth="1">
+        {Array.from({ length: 7 }, (_, i) => 150 * (i + 1)).map((x, i) => (
           <line key={`v${i}`} x1={x} y1="0" x2={x} y2="720" />
         ))}
-        {gridLines.slice(7).map((y, i) => (
+        {Array.from({ length: 4 }, (_, i) => 150 * (i + 1)).map((y, i) => (
           <line key={`h${i}`} x1="0" y1={y} x2="1200" y2={y} />
         ))}
       </g>
+      <rect width="1200" height="720" fill={`url(#${uid}-vig)`} />
     </>
-  );
-}
-
-/** Print-style crop marks in the four corners. */
-function CornerTicks() {
-  const t = 26;
-  const L = 16;
-  const paths = [
-    `M ${t} ${t + L} V ${t} H ${t + L}`,
-    `M ${1200 - t - L} ${t} H ${1200 - t} V ${t + L}`,
-    `M ${1200 - t} ${720 - t - L} V ${720 - t} H ${1200 - t - L}`,
-    `M ${t + L} ${720 - t} H ${t} V ${720 - t - L}`,
-  ];
-  return (
-    <g stroke="rgba(255,255,255,0.22)" strokeWidth="1.5" fill="none">
-      {paths.map((d, i) => (
-        <path key={i} d={d} />
-      ))}
-    </g>
   );
 }
 
@@ -122,7 +106,7 @@ function MarkGlyph({
   y,
   r,
   initial,
-  ring = "rgba(255,255,255,0.22)",
+  ring = "rgba(255,255,255,0.24)",
   letter = C.primary,
   check = C.primary,
 }: {
@@ -136,8 +120,8 @@ function MarkGlyph({
 }) {
   return (
     <g>
-      <circle cx={x} cy={y} r={r} fill="none" stroke={ring} strokeWidth={Math.max(2, r * 0.055)} />
-      <circle cx={x} cy={y} r={r * 0.62} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+      <circle cx={x} cy={y} r={r} fill="none" stroke={ring} strokeWidth={Math.max(2, r * 0.045)} />
+      <circle cx={x} cy={y} r={r * 0.66} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
       <text
         x={x}
         y={y + r * 0.03}
@@ -145,15 +129,15 @@ function MarkGlyph({
         dominantBaseline="central"
         fontFamily={FONT_DISPLAY}
         fontWeight={700}
-        fontSize={r * 1.02}
+        fontSize={r * 1.0}
         fill={letter}
       >
         {initial}
       </text>
       <path
-        d={`M ${x + r * 0.32} ${y + r * 0.6} l ${r * 0.2} ${r * 0.2} l ${r * 0.42} -${r * 0.5}`}
+        d={`M ${x + r * 0.34} ${y + r * 0.62} l ${r * 0.18} ${r * 0.18} l ${r * 0.4} -${r * 0.48}`}
         stroke={check}
-        strokeWidth={Math.max(2, r * 0.09)}
+        strokeWidth={Math.max(2, r * 0.075)}
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -170,7 +154,7 @@ function Wordmark({
   size,
   fill = C.white,
   anchor = "middle",
-  tracking = 0.045,
+  tracking = 0.06,
 }: {
   x: number;
   y: number;
@@ -231,24 +215,6 @@ function Caps({
   );
 }
 
-function Skeleton({
-  x,
-  y,
-  w,
-  h = 10,
-  fill = "rgba(255,255,255,0.08)",
-  rx = 5,
-}: {
-  x: number;
-  y: number;
-  w: number;
-  h?: number;
-  fill?: string;
-  rx?: number;
-}) {
-  return <rect x={x} y={y} width={w} height={h} rx={rx} fill={fill} />;
-}
-
 function PaletteDots({
   x,
   y,
@@ -270,7 +236,7 @@ function PaletteDots({
           cy={y}
           r={size / 2}
           fill={color}
-          stroke={color === C.white ? C.borderStrong : "rgba(255,255,255,0.14)"}
+          stroke={color === C.white ? C.borderStrong : "rgba(255,255,255,0.16)"}
           strokeWidth="1"
         />
       ))}
@@ -282,8 +248,8 @@ function Header({ index, text, wordmark }: { index: string; text: string; wordma
   return (
     <g>
       <Caps x={64} y={74} text={`${index} · ${text}`} size={15} fill={C.primary} tracking={5} />
-      <Wordmark x={1136} y={74} text={wordmark} size={24} anchor="end" tracking={0.06} />
-      <line x1="64" y1="104" x2="1136" y2="104" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
+      <Wordmark x={1136} y={74} text={wordmark} size={22} anchor="end" tracking={0.08} />
+      <line x1="64" y1="102" x2="1136" y2="102" stroke="rgba(255,255,255,0.07)" strokeWidth="1" />
     </g>
   );
 }
@@ -305,34 +271,35 @@ function HeroBoard({
   label?: string;
   tagline?: string;
 }) {
-  const short = tagline && tagline.length > 78 ? `${tagline.slice(0, 75)}…` : tagline;
+  const short =
+    tagline && tagline.length > 84
+      ? `${tagline.slice(0, 81).replace(/\s+\S*$/, "")}…`
+      : tagline;
   return (
     <g>
       <Backdrop uid={uid} />
-      <CornerTicks />
-      <Caps x={600} y={140} text={label ?? "Brand Identity"} size={19} fill={C.subtle} tracking={11} anchor="middle" />
-      <MarkGlyph x={600} y={300} r={122} initial={initial} />
-      <Wordmark x={600} y={486} text={wordmark} size={112} />
+      <Caps x={600} y={168} text={label ?? "Brand Identity"} size={18} fill={C.subtle} tracking={10} anchor="middle" />
+      <MarkGlyph x={600} y={330} r={104} initial={initial} />
+      <Wordmark x={600} y={492} text={wordmark} size={96} />
       <g>
-        <line x1="470" y1="560" x2="600" y2="560" stroke="rgba(255,255,255,0.18)" strokeWidth="1" />
-        <rect x="596" y="556" width="8" height="8" fill={C.primary} transform="rotate(45 600 560)" />
-        <line x1="600" y1="560" x2="730" y2="560" stroke="rgba(255,255,255,0.18)" strokeWidth="1" />
+        <line x1="500" y1="562" x2="600" y2="562" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
+        <rect x="596" y="558" width="8" height="8" fill={C.primary} transform="rotate(45 600 562)" />
+        <line x1="600" y1="562" x2="700" y2="562" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
       </g>
       {short ? (
         <text
           x={600}
-          y={610}
+          y={612}
           textAnchor="middle"
           dominantBaseline="central"
           fontFamily={FONT_BODY}
-          fontSize={22}
+          fontSize={21}
           fill={C.text2}
         >
           {short}
         </text>
       ) : null}
-      <PaletteDots x={80} y={668} />
-      <Caps x={1120} y={668} text="Case Study 01" fill={C.subtle} tracking={5} anchor="end" />
+      <PaletteDots x={80} y={664} size={14} gap={12} />
     </g>
   );
 }
@@ -346,38 +313,75 @@ function OverviewBoard({
   wordmark: string;
   initial: string;
 }) {
+  const rows = [
+    { label: "Strategy", note: "Positioning · message · tone" },
+    { label: "Identity", note: "Mark · color · type · pattern" },
+    { label: "Launch", note: "Digital · print · field" },
+  ];
   return (
     <g>
       <Backdrop uid={uid} />
-      <CornerTicks />
       <Header index="01" text="Project Context" wordmark={wordmark} />
       {/* Left — brand anchor card */}
-      <rect x="64" y="150" width="380" height="420" rx="18" fill={C.surface} stroke={C.border} strokeWidth="1" />
-      <Caps x={92} y={182} text="The Brand" size={13} fill={C.text2} tracking={4} />
-      <MarkGlyph x={254} y={285} r={72} initial={initial} />
-      <Wordmark x={254} y={420} text={wordmark} size={38} />
-      <Skeleton x={150} y={468} w={208} h={10} />
-      <Skeleton x={150} y={492} w={160} h={10} />
+      <rect x="64" y="140" width="380" height="440" rx="18" fill={C.surface} stroke={C.border} strokeWidth="1" />
+      <Caps x={92} y={172} text="The Brand" size={13} fill={C.text2} tracking={4} />
+      <MarkGlyph x={254} y={280} r={66} initial={initial} />
+      <Wordmark x={254} y={406} text={wordmark} size={34} />
+      <line x1="170" y1="452" x2="338" y2="452" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+      <Caps x={254} y={478} text="Brand System" size={12} fill={C.subtle} tracking={4} anchor="middle" />
       {/* Right — research rows */}
-      {[
-        { label: "Research", w: 400 },
-        { label: "Audience", w: 330 },
-        { label: "Market", w: 280 },
-      ].map((row, i) => {
-        const y = 172 + i * 132;
+      {rows.map((row, i) => {
+        const y = 156 + i * 148;
         return (
           <g key={row.label}>
-            <rect x={492} y={y} width="30" height="30" rx="8" fill={i === 2 ? "rgba(245,158,11,0.14)" : C.soft} stroke={i === 2 ? "rgba(245,158,11,0.4)" : C.border} strokeWidth="1" />
-            <Caps x={540} y={y + 15} text={row.label} size={13} fill={C.text2} tracking={4} />
-            <Skeleton x={540} y={y + 34} w={row.w} h={8} />
-            <Skeleton x={540} y={y + 52} w={row.w * 0.72} h={8} />
+            <rect
+              x={492}
+              y={y}
+              width="34"
+              height="34"
+              rx="9"
+              fill={i === 2 ? "rgba(245,158,11,0.12)" : C.soft}
+              stroke={i === 2 ? "rgba(245,158,11,0.45)" : C.border}
+              strokeWidth="1"
+            />
+            <text
+              x={509}
+              y={y + 17}
+              textAnchor="middle"
+              dominantBaseline="central"
+              fontFamily={FONT_DISPLAY}
+              fontWeight={900}
+              fontSize={16}
+              fill={i === 2 ? C.primary : C.text2}
+            >
+              {String(i + 1).padStart(2, "0")}
+            </text>
+            <Caps x={548} y={y + 13} text={row.label} size={14} fill={C.text2} tracking={4} />
+            <text
+              x={548}
+              y={y + 40}
+              dominantBaseline="central"
+              fontFamily={FONT_BODY}
+              fontSize={20}
+              fill={C.muted}
+            >
+              {row.note}
+            </text>
+            <line
+              x1="548"
+              y1={y + 66}
+              x2={i === 1 ? 920 : 1060}
+              y2={y + 66}
+              stroke="rgba(255,255,255,0.08)"
+              strokeWidth="1"
+            />
           </g>
         );
       })}
       {/* Bottom strip */}
-      <rect x="492" y="522" width="644" height="48" rx="12" fill={C.surface} stroke={C.border} strokeWidth="1" />
-      <PaletteDots x={520} y={546} size={14} gap={12} />
-      <Caps x={1108} y={546} text={wordmark} fill={C.text2} tracking={4} anchor="end" />
+      <rect x="492" y="522" width="644" height="58" rx="14" fill={C.surface} stroke={C.border} strokeWidth="1" />
+      <PaletteDots x={520} y={551} size={14} gap={12} />
+      <Caps x={1108} y={551} text={wordmark} fill={C.text2} tracking={4} anchor="end" />
     </g>
   );
 }
@@ -394,7 +398,6 @@ function PaletteBoard({ uid, wordmark }: { uid: string; wordmark: string }) {
   return (
     <g>
       <Backdrop uid={uid} />
-      <CornerTicks />
       <Header index="02" text="Color System" wordmark={wordmark} />
       {swatches.map((s, i) => {
         const x = 64 + i * step;
@@ -425,7 +428,6 @@ function TypeBoard({ uid, wordmark }: { uid: string; wordmark: string }) {
   return (
     <g>
       <Backdrop uid={uid} />
-      <CornerTicks />
       <Header index="03" text="Typography" wordmark={wordmark} />
       {/* Display specimen */}
       <text
@@ -435,35 +437,52 @@ function TypeBoard({ uid, wordmark }: { uid: string; wordmark: string }) {
         dominantBaseline="central"
         fontFamily={FONT_DISPLAY}
         fontWeight={700}
-        fontSize={330}
+        fontSize={320}
         fill={C.white}
       >
         Aa
       </text>
-      <Caps x={250} y={560} text="Satoshi · Display" size={15} fill={C.text2} tracking={5} anchor="middle" />
-      {/* Wordmark + body specimen */}
-      <Wordmark x={620} y={210} text={wordmark} size={78} anchor="start" tracking={0.03} />
-      <Skeleton x={620} y={268} w={430} h={11} />
-      <Skeleton x={620} y={296} w={330} h={11} />
-      <Skeleton x={620} y={324} w={382} h={11} />
-      <Caps x={620} y={410} text="Inter · Body & UI" size={14} fill={C.text2} tracking={5} />
+      <Caps x={250} y={556} text="Satoshi · Display" size={15} fill={C.text2} tracking={5} anchor="middle" />
+      {/* Wordmark + body sample */}
+      <Wordmark x={620} y={196} text={wordmark} size={72} anchor="start" tracking={0.04} />
       <text
         x={620}
-        y={470}
+        y={272}
         dominantBaseline="central"
         fontFamily={FONT_BODY}
-        fontSize={30}
+        fontSize={24}
         fill={C.text2}
       >
-        Aa Bb Cc Qq 123 — clear at every size.
+        Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm Nn
+      </text>
+      <text
+        x={620}
+        y={310}
+        dominantBaseline="central"
+        fontFamily={FONT_BODY}
+        fontSize={24}
+        fill={C.muted}
+      >
+        Oo Pp Qq Rr Ss Tt Uu Vv Ww Xx Yy Zz 0123456789
+      </text>
+      <Caps x={620} y={396} text="Inter · Body & UI" size={14} fill={C.text2} tracking={5} />
+      <text
+        x={620}
+        y={452}
+        dominantBaseline="central"
+        fontFamily={FONT_BODY}
+        fontSize={26}
+        fill={C.muted}
+      >
+        Clear, precise and human at every size.
       </text>
       {/* Letterform rail */}
-      <line x1="620" y1="520" x2="1136" y2="520" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
+      <line x1="620" y1="512" x2="1136" y2="512" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
       {["Aa", "Bb", "Cc", "Qq", "&", "01"].map((g, i) => (
         <text
           key={g}
           x={620 + i * 88}
-          y={566}
+          y={562}
           dominantBaseline="central"
           fontFamily={FONT_DISPLAY}
           fontWeight={700}
@@ -481,66 +500,69 @@ function MarkBoard({ uid, wordmark, initial }: { uid: string; wordmark: string; 
   return (
     <g>
       <Backdrop uid={uid} />
-      <CornerTicks />
       <Header index="04" text="Mark Construction" wordmark={wordmark} />
-      <Caps x={600} y={130} text="Grid · Proportion · Gesture" size={14} fill={C.text2} tracking={6} anchor="middle" />
+      <Caps x={600} y={138} text="Grid · Proportion · Gesture" size={14} fill={C.text2} tracking={6} anchor="middle" />
       {/* Construction guides */}
-      <g stroke="rgba(255,255,255,0.09)" strokeWidth="1" fill="none">
-        <line x1="330" y1="360" x2="870" y2="360" />
-        <line x1="600" y1="170" x2="600" y2="550" />
-        <line x1="402" y1="162" x2="798" y2="558" />
-        <line x1="798" y1="162" x2="402" y2="558" />
+      <g stroke="rgba(255,255,255,0.07)" strokeWidth="1" fill="none">
+        <line x1="380" y1="360" x2="820" y2="360" />
+        <line x1="600" y1="180" x2="600" y2="540" />
       </g>
-      <circle cx="600" cy="360" r="218" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
-      <circle cx="600" cy="360" r="172" fill="none" stroke="rgba(255,255,255,0.09)" strokeWidth="1" strokeDasharray="5 9" />
-      <circle cx="600" cy="360" r="140" fill="none" stroke="rgba(245,158,11,0.35)" strokeWidth="1" />
-      <MarkGlyph x={600} y={360} r={104} initial={initial} ring="rgba(245,158,11,0.55)" />
-      {/* Intersection markers */}
-      {[
-        [382, 142],
-        [818, 142],
-        [382, 578],
-        [818, 578],
-      ].map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y} r="5" fill={C.primary} />
-      ))}
-      <Caps x={64} y={620} text="01 · Geometry" size={13} fill={C.text2} tracking={4} />
-      <Caps x={1136} y={620} text="02 · Readable at a glance" size={13} fill={C.text2} tracking={4} anchor="end" />
+      <circle cx="600" cy="360" r="200" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+      <circle cx="600" cy="360" r="156" fill="none" stroke="rgba(245,158,11,0.4)" strokeWidth="1" strokeDasharray="4 10" />
+      <circle cx="600" cy="360" r="120" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
+      <MarkGlyph x={600} y={360} r={92} initial={initial} ring="rgba(245,158,11,0.6)" />
+      {/* Guide ticks at 45° */}
+      {[45, 135, 225, 315].map((deg) => {
+        const rad = (deg * Math.PI) / 180;
+        const x1 = 600 + 156 * Math.cos(rad);
+        const y1 = 360 + 156 * Math.sin(rad);
+        return (
+          <line
+            key={deg}
+            x1={x1}
+            y1={y1}
+            x2={x1 + 18 * Math.cos(rad)}
+            y2={y1 + 18 * Math.sin(rad)}
+            stroke="rgba(245,158,11,0.55)"
+            strokeWidth="2"
+          />
+        );
+      })}
+      <Caps x={64} y={612} text="01 · Geometry" size={13} fill={C.text2} tracking={4} />
+      <Caps x={1136} y={612} text="02 · Readable at a glance" size={13} fill={C.text2} tracking={4} anchor="end" />
     </g>
   );
 }
 
 function PatternBoard({ uid, wordmark, initial }: { uid: string; wordmark: string; initial: string }) {
-  const cols = [64, 248, 432, 616, 800, 984];
-  const rows = [140, 310, 480];
+  const cols = [64, 344, 624, 904];
+  const rows = [140, 390];
   return (
     <g>
       <Backdrop uid={uid} />
-      <CornerTicks />
       <Header index="05" text="Pattern" wordmark={wordmark} />
       {rows.map((y, r) =>
         cols.map((x, c) => {
-          const accent = r === 1 && c === 2;
-          const stroke = r === 1 && c === 4;
+          const accent = r === 0 && c === 2;
           return (
             <g key={`${r}-${c}`}>
               <rect
                 x={x}
                 y={y}
-                width="168"
-                height="150"
-                rx="12"
-                fill={accent ? C.primary : c % 2 === 0 ? C.surface : "rgba(17,24,39,0.55)"}
-                stroke={stroke ? "rgba(245,158,11,0.6)" : C.border}
-                strokeWidth={stroke ? 2 : 1}
+                width="260"
+                height="210"
+                rx="16"
+                fill={accent ? C.primary : c % 2 === 0 ? C.surface : "rgba(17,24,39,0.5)"}
+                stroke={C.border}
+                strokeWidth="1"
               />
               <MarkGlyph
-                x={x + 84}
-                y={y + 75}
-                r={36}
+                x={x + 130}
+                y={y + 105}
+                r={52}
                 initial={initial}
                 ring={accent ? "rgba(10,10,10,0.35)" : "rgba(255,255,255,0.14)"}
-                letter={accent ? "#0A0A0A" : r === 1 ? C.primary : "rgba(255,255,255,0.5)"}
+                letter={accent ? "#0A0A0A" : r === 0 ? C.primary : "rgba(255,255,255,0.55)"}
                 check={accent ? "#0A0A0A" : C.primary}
               />
             </g>
@@ -560,12 +582,11 @@ function ApplicationsBoard({ uid, wordmark, initial }: { uid: string; wordmark: 
     { x: 432, y: 380, label: "Signage" },
     { x: 800, y: 380, label: "Comms" },
   ];
-  const outline = "rgba(255,255,255,0.42)";
-  const sw = 3;
+  const outline = "rgba(255,255,255,0.5)";
+  const sw = 2.5;
   return (
     <g>
       <Backdrop uid={uid} />
-      <CornerTicks />
       <Header index="06" text="Applications" wordmark={wordmark} />
       {tiles.map((tile, i) => {
         const cx = tile.x + 176;
@@ -573,7 +594,7 @@ function ApplicationsBoard({ uid, wordmark, initial }: { uid: string; wordmark: 
         return (
           <g key={tile.label}>
             <rect x={tile.x} y={tile.y} width="352" height="200" rx="14" fill={C.surface} stroke={C.border} strokeWidth="1" />
-            <MarkGlyph x={tile.x + 312} y={tile.y + 42} r={20} initial={initial} ring="rgba(255,255,255,0.18)" letter={C.primary} />
+            <MarkGlyph x={tile.x + 312} y={tile.y + 42} r={20} initial={initial} ring="rgba(255,255,255,0.2)" letter={C.primary} />
             {/* Silhouette per touchpoint */}
             {i === 0 ? (
               <path
@@ -587,20 +608,20 @@ function ApplicationsBoard({ uid, wordmark, initial }: { uid: string; wordmark: 
             ) : null}
             {i === 1 ? (
               <g transform={`translate(${cx} ${cy - 8})`} fill="none" stroke={outline} strokeWidth={sw}>
-                <rect x="-72" y="-16" width="144" height="58" rx="10" />
-                <rect x="-42" y="-54" width="90" height="40" rx="9" />
-                <rect x="-30" y="-44" width="30" height="20" rx="5" stroke="rgba(255,255,255,0.25)" />
-                <rect x="8" y="-44" width="24" height="20" rx="5" stroke="rgba(255,255,255,0.25)" />
-                <circle cx="-38" cy="54" r="13" />
-                <circle cx="38" cy="54" r="13" />
+                <rect x="-72" y="-16" width="144" height="56" rx="10" />
+                <rect x="-42" y="-52" width="88" height="38" rx="9" />
+                <rect x="-30" y="-42" width="28" height="18" rx="5" stroke="rgba(255,255,255,0.28)" />
+                <rect x="6" y="-42" width="22" height="18" rx="5" stroke="rgba(255,255,255,0.28)" />
+                <circle cx="-38" cy="52" r="12" />
+                <circle cx="38" cy="52" r="12" />
               </g>
             ) : null}
             {i === 2 ? (
               <g transform={`translate(${cx} ${cy - 8})`} fill="none" stroke={outline} strokeWidth={sw}>
                 <rect x="-30" y="-58" width="60" height="116" rx="14" />
-                <rect x="-24" y="-50" width="48" height="84" rx="6" stroke="rgba(255,255,255,0.25)" />
-                <circle cx="0" cy="-42" r="2.5" fill="rgba(255,255,255,0.4)" stroke="none" />
-                <MarkGlyph x={0} y={8} r={14} initial={initial} ring="rgba(245,158,11,0.5)" letter={C.primary} />
+                <rect x="-23" y="-49" width="46" height="78" rx="6" stroke="rgba(255,255,255,0.28)" />
+                <circle cx="0" cy="-41" r="2.5" fill="rgba(255,255,255,0.45)" stroke="none" />
+                <MarkGlyph x={0} y={-6} r={13} initial={initial} ring="rgba(245,158,11,0.55)" letter={C.primary} />
               </g>
             ) : null}
             {i === 3 ? (
@@ -624,10 +645,10 @@ function ApplicationsBoard({ uid, wordmark, initial }: { uid: string; wordmark: 
             ) : null}
             {i === 4 ? (
               <g transform={`translate(${cx} ${cy - 8})`} fill="none" stroke={outline} strokeWidth={sw}>
-                <rect x="-5" y="22" width="10" height="58" />
-                <rect x="-64" y="-54" width="128" height="76" rx="8" />
-                <MarkGlyph x={-36} y={-16} r={18} initial={initial} ring="rgba(245,158,11,0.5)" letter={C.primary} />
-                <line x1="-8" y1="-34" x2="48" y2="-34" stroke="rgba(255,255,255,0.3)" strokeWidth={sw} />
+                <rect x="-5" y="20" width="10" height="58" />
+                <rect x="-64" y="-54" width="128" height="74" rx="8" />
+                <MarkGlyph x={-34} y={-17} r={18} initial={initial} ring="rgba(245,158,11,0.55)" letter={C.primary} />
+                <line x1="-8" y1="-34" x2="46" y2="-34" stroke="rgba(255,255,255,0.3)" strokeWidth={sw} />
               </g>
             ) : null}
             {i === 5 ? (
@@ -635,10 +656,10 @@ function ApplicationsBoard({ uid, wordmark, initial }: { uid: string; wordmark: 
                 <rect x="-70" y="-46" width="140" height="92" rx="12" />
                 <rect x="-52" y="-22" width="78" height="7" rx="3.5" fill="rgba(255,255,255,0.22)" stroke="none" />
                 <rect x="-52" y="-5" width="56" height="7" rx="3.5" fill="rgba(255,255,255,0.12)" stroke="none" />
-                <MarkGlyph x={40} y={12} r={16} initial={initial} ring="rgba(245,158,11,0.5)" letter={C.primary} />
+                <MarkGlyph x={40} y={12} r={16} initial={initial} ring="rgba(245,158,11,0.55)" letter={C.primary} />
               </g>
             ) : null}
-            <Caps x={tile.x + 20} y={tile.y + 168} text={tile.label} size={12} fill={C.text2} tracking={3} />
+            <Caps x={tile.x + 20} y={tile.y + 170} text={tile.label} size={12} fill={C.text2} tracking={3} />
           </g>
         );
       })}
@@ -660,35 +681,34 @@ function ResultsBoard({
   return (
     <g>
       <Backdrop uid={uid} />
-      <CornerTicks />
-      <MarkGlyph x={290} y={250} r={104} initial={initial} />
-      <Wordmark x={290} y={420} text={wordmark} size={58} />
-      <Caps x={290} y={474} text="Brand System" size={14} fill={C.text2} tracking={5} anchor="middle" />
+      <MarkGlyph x={290} y={240} r={92} initial={initial} />
+      <Wordmark x={290} y={392} text={wordmark} size={52} />
+      <Caps x={290} y={440} text="Brand System" size={14} fill={C.text2} tracking={5} anchor="middle" />
       {/* Metrics */}
       {(metrics ?? []).slice(0, 3).map((m, i) => {
-        const y = 160 + i * 122;
+        const y = 148 + i * 122;
         return (
           <g key={i}>
             <rect x={540} y={y} width="560" height="92" rx="16" fill={C.surface} stroke={C.border} strokeWidth="1" />
             <text
               x={580}
-              y={y + 40}
+              y={y + 38}
               dominantBaseline="central"
               fontFamily={FONT_DISPLAY}
               fontWeight={900}
-              fontSize={44}
+              fontSize={42}
               fill={C.primary}
             >
               {m.value}
             </text>
-            <Caps x={580} y={y + 68} text={m.label} size={13} fill={C.muted} tracking={3} />
-            <line x1="760" y1={y + 18} x2="760" y2={y + 74} stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
+            <Caps x={580} y={y + 66} text={m.label} size={13} fill={C.muted} tracking={3} />
+            <line x1="760" y1={y + 16} x2="760" y2={y + 76} stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
           </g>
         );
       })}
       <line x1="64" y1="600" x2="1136" y2="600" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
-      <PaletteDots x={64} y={652} size={14} gap={12} />
-      <Caps x={1136} y={652} text="One identity · Every touchpoint" size={13} fill={C.subtle} tracking={4} anchor="end" />
+      <PaletteDots x={64} y={648} size={14} gap={12} />
+      <Caps x={1136} y={648} text={wordmark} size={13} fill={C.subtle} tracking={4} anchor="end" />
     </g>
   );
 }
@@ -707,16 +727,15 @@ function CtaBoard({
   return (
     <g>
       <Backdrop uid={uid} />
-      <CornerTicks />
-      <MarkGlyph x={600} y={218} r={86} initial={initial} />
-      <Wordmark x={600} y={360} text={wordmark} size={84} />
+      <MarkGlyph x={600} y={230} r={80} initial={initial} />
+      <Wordmark x={600} y={372} text={wordmark} size={76} />
       {label ? (
-        <Caps x={600} y={420} text={label} size={14} fill={C.text2} tracking={6} anchor="middle" />
+        <Caps x={600} y={428} text={label} size={14} fill={C.text2} tracking={6} anchor="middle" />
       ) : null}
       <g>
-        <line x1="480" y1="466" x2="600" y2="466" stroke="rgba(255,255,255,0.18)" strokeWidth="1" />
-        <rect x="596" y="462" width="8" height="8" fill={C.primary} transform="rotate(45 600 466)" />
-        <line x1="600" y1="466" x2="720" y2="466" stroke="rgba(255,255,255,0.18)" strokeWidth="1" />
+        <line x1="500" y1="472" x2="600" y2="472" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
+        <rect x="596" y="468" width="8" height="8" fill={C.primary} transform="rotate(45 600 472)" />
+        <line x1="600" y1="472" x2="700" y2="472" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
       </g>
       <rect x="480" y="506" width="240" height="54" rx="27" fill={C.primary} />
       <text
