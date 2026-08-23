@@ -76,6 +76,13 @@ export async function savePortfolio(
         Object.values(m.label_translations).some((label) => label.trim())
     );
 
+  // Slot 1 of the card-image gallery is the cover — mirror it into the legacy
+  // image_url column so every reader of image_url (admin list, detail hero
+  // fallback) stays consistent with what the editor shows.
+  const firstGalleryImage = (parsed.data.gallery ?? []).find((item) =>
+    item.image_url.trim()
+  )?.image_url.trim();
+
   const row = {
     slug: parsed.data.slug,
     client_name: parsed.data.client_name,
@@ -91,7 +98,7 @@ export async function savePortfolio(
     testimonial_id: parsed.data.testimonial_id?.trim()
       ? parsed.data.testimonial_id
       : null,
-    image_url: parsed.data.image_url.trim() || null,
+    image_url: firstGalleryImage || parsed.data.image_url.trim() || null,
     seo_title_translations: parsed.data.seo_title_translations ?? {},
     seo_description_translations: parsed.data.seo_description_translations ?? {},
     status: parsed.data.status,

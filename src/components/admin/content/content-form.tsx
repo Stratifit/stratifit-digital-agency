@@ -322,6 +322,11 @@ function PortfolioGalleryUploader({
         Up to 6 images for the work card grid. The first image is the card
         cover; brand-design projects show a 2×2 grid of the first four.
       </p>
+      <p className="mt-1.5 rounded-sm border border-primary/20 bg-primary/5 px-3 py-2 text-xs text-text-muted">
+        Recommended size: <span className="font-semibold text-primary">1500 × 1000 px (3:2)</span> —
+        it fits the card grid and the case-study page without cutting out
+        important detail.
+      </p>
     </div>
   );
 }
@@ -549,6 +554,10 @@ export function ContentForm({
                 placeholder="https://images.unsplash.com/…"
                 {...register("image_url")}
               />
+              <p className="text-xs text-text-muted">
+                Used only when no card images are uploaded below. The first
+                card image always becomes the cover.
+              </p>
             </div>
           ) : null}
 

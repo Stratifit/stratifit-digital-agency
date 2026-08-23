@@ -549,8 +549,14 @@ function PortfolioCardsEditor({
           <p className="mb-1 font-display text-sm font-semibold text-text-primary">
             {card.client_name || card.slug}
           </p>
-          <p className="mb-4 text-xs text-text-muted">
+          <p className="mb-1 text-xs text-text-muted">
             Upload up to 6 images — rendered as the 3×2 grid on this card.
+            The first image is the card cover.
+          </p>
+          <p className="mb-4 rounded-sm border border-primary/20 bg-primary/5 px-2.5 py-1.5 text-[11px] text-text-muted">
+            Recommended size: <span className="font-semibold text-primary">1500 × 1000 px (3:2)</span> —
+            fits the grid and the case-study page without cutting out
+            important detail.
           </p>
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
             {Array.from({ length: 6 }).map((_, slotIndex) => (
