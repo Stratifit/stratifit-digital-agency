@@ -29,8 +29,8 @@ function ArrowIcon() {
 
 /**
  * Brand-design cards render a 2x2 thumbnail grid of the first four uploaded
- * images; every other card keeps its full cover image. Each tile uses
- * object-contain so every image always fits in full, never cropped.
+ * images; every other card keeps its full cover image. Tiles are uniform
+ * boxes (object-cover) so the card reads like the original collage layout.
  * Brand-design projects are linked to the `brand-design` service
  * (migration 00030: Maison Lumière, Aura Cosmetics).
  */
@@ -175,7 +175,7 @@ export function PortfolioGallery({
                             alt={`${title} — image ${index + 1}`}
                             fill
                             sizes="(max-width: 767px) 50vw, (max-width: 1023px) 25vw, 12.5vw"
-                            className="object-contain transition-transform duration-700 ease-[var(--ease-standard)] group-hover:scale-105"
+                            className="object-cover transition-transform duration-700 ease-[var(--ease-standard)] group-hover:scale-105"
                           />
                         </div>
                       ) : (
