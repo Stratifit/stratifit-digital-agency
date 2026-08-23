@@ -15,7 +15,7 @@ SET
   hero_highlight_translations = '{
     "en": "recognize and trust.",
     "de": "erkennt und der man vertraut.",
-    "fr": "on reconnaît et en qui l'\''on a confiance.",
+    "fr": "on reconnaît et en qui l''on a confiance.",
     "es": "reconozca y en la que confíen."
   }'::jsonb
 WHERE slug = 'brand-design';

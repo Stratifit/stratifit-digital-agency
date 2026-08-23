@@ -8,7 +8,7 @@ SET
   hero_title_translations = '{
     "en": "Build a brand people recognize and trust.",
     "de": "Eine Marke, die wiedererkannt wird und Vertrauen schafft.",
-    "fr": "Créez une marque que l'\''on reconnaît et qui inspire confiance.",
+    "fr": "Créez une marque que l''on reconnaît et qui inspire confiance.",
     "es": "Cree una marca que las personas reconozcan y en la que confíen."
   }'::jsonb,
   hero_highlight_translations = '{}'::jsonb
