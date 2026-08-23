@@ -114,59 +114,6 @@ function Wordmark({
   );
 }
 
-/**
- * A storying card: a "logo" image (or wordmark) shown plain and centered with a
- * labelled corner badge (Before / New Identity / Concept). Images are always
- * object-contain so the logo is never cropped.
- */
-function StoryLogoCard({
-  imageUrl,
-  badge,
-  imageAlt,
-  wordmark,
-  className,
-  light,
-}: {
-  imageUrl: string | null;
-  badge: string;
-  imageAlt: string;
-  wordmark: string;
-  className?: string;
-  light?: boolean;
-}) {
-  return (
-    <div
-      className={cn(
-        "relative overflow-hidden rounded-card-lg border p-6 sm:p-8",
-        light
-          ? "border-white/10 bg-white/[0.04]"
-          : "border-white/10 bg-card-dark",
-        className
-      )}
-    >
-      <span className="absolute right-4 top-4 z-10 rounded bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-text-inverse">
-        {badge}
-      </span>
-      {imageUrl ? (
-        <div className="flex h-64 items-center justify-center overflow-hidden rounded-card bg-surface-soft sm:h-72">
-          <Image
-            src={imageUrl}
-            alt={imageAlt}
-            width={1200}
-            height={900}
-            loading="lazy"
-            className="h-full w-full object-contain p-6"
-          />
-        </div>
-      ) : (
-        <div className="flex h-64 items-center justify-center rounded-card bg-surface-soft sm:h-72">
-          <Wordmark name={wordmark} className="text-4xl sm:text-5xl" />
-        </div>
-      )}
-    </div>
-  );
-}
-
 interface FactStripItem {
   label: string;
   value: string;
@@ -327,28 +274,36 @@ export function BrandCaseStudy({
       {challenge || challengeImage ? (
         <section className="py-14 md:py-20">
           <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
-            <div className="grid items-center gap-10 md:grid-cols-2 md:gap-14">
-              <Reveal>
+            <Reveal>
+              <div className="relative overflow-hidden rounded-card-lg border border-white/10 bg-card-dark p-6 sm:p-8">
                 <NumberedLabel index={1}>{t(locale, "workChallenge")}</NumberedLabel>
                 <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl">
                   {t(locale, "workTheProblem")}
                 </h2>
+                <span className="absolute right-4 top-4 z-10 rounded bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-text-inverse">
+                  {t(locale, "workBefore")}
+                </span>
+                <div className="mt-6 flex h-64 items-center justify-center overflow-hidden rounded-card bg-surface-soft sm:h-72">
+                  {challengeImage ? (
+                    <Image
+                      src={challengeImage}
+                      alt={`${wordmark} ${t(locale, "workBefore")}`}
+                      width={1200}
+                      height={900}
+                      loading="lazy"
+                      className="h-full w-full object-contain p-6"
+                    />
+                  ) : (
+                    <Wordmark name={wordmark} className="text-4xl sm:text-5xl" />
+                  )}
+                </div>
                 {challenge ? (
                   <p className="mt-6 text-base leading-relaxed text-text-secondary md:text-lg">
                     {challenge}
                   </p>
                 ) : null}
-              </Reveal>
-              <Reveal>
-                <StoryLogoCard
-                  imageUrl={challengeImage}
-                  badge={t(locale, "workBefore")}
-                  imageAlt={`${wordmark} ${t(locale, "workBefore")}`}
-                  wordmark={wordmark}
-                  light
-                />
-              </Reveal>
-            </div>
+              </div>
+            </Reveal>
           </div>
         </section>
       ) : null}
@@ -359,27 +314,36 @@ export function BrandCaseStudy({
       {solution || solutionImage ? (
         <section className="py-14 md:py-20">
           <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
-            <div className="grid items-center gap-10 md:grid-cols-2 md:gap-14">
-              <Reveal>
+            <Reveal>
+              <div className="relative overflow-hidden rounded-card-lg border border-white/10 bg-card-dark p-6 sm:p-8">
                 <NumberedLabel index={2}>{t(locale, "workSolution")}</NumberedLabel>
                 <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl">
                   {t(locale, "workWhatWeDid")}
                 </h2>
+                <span className="absolute right-4 top-4 z-10 rounded bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-text-inverse">
+                  {t(locale, "workNewIdentity")}
+                </span>
+                <div className="mt-6 flex h-64 items-center justify-center overflow-hidden rounded-card bg-surface-soft sm:h-72">
+                  {solutionImage ? (
+                    <Image
+                      src={solutionImage}
+                      alt={`${wordmark} ${t(locale, "workNewIdentity")}`}
+                      width={1200}
+                      height={900}
+                      loading="lazy"
+                      className="h-full w-full object-contain p-6"
+                    />
+                  ) : (
+                    <Wordmark name={wordmark} className="text-4xl sm:text-5xl" />
+                  )}
+                </div>
                 {solution ? (
                   <p className="mt-6 text-base leading-relaxed text-text-secondary md:text-lg">
                     {solution}
                   </p>
                 ) : null}
-              </Reveal>
-              <Reveal>
-                <StoryLogoCard
-                  imageUrl={solutionImage}
-                  badge={t(locale, "workNewIdentity")}
-                  imageAlt={`${wordmark} ${t(locale, "workNewIdentity")}`}
-                  wordmark={wordmark}
-                />
-              </Reveal>
-            </div>
+              </div>
+            </Reveal>
           </div>
         </section>
       ) : null}
@@ -390,27 +354,36 @@ export function BrandCaseStudy({
       {conceptText || conceptImage ? (
         <section className="py-14 md:py-20">
           <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
-            <div className="grid items-center gap-10 md:grid-cols-2 md:gap-14">
-              <Reveal>
+            <Reveal>
+              <div className="relative overflow-hidden rounded-card-lg border border-white/10 bg-card-dark p-6 sm:p-8">
                 <NumberedLabel index={3}>{t(locale, "workConcept")}</NumberedLabel>
                 <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl">
                   {t(locale, "workWhyThisMark")}
                 </h2>
+                <span className="absolute right-4 top-4 z-10 rounded bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-text-inverse">
+                  {t(locale, "workConcept")}
+                </span>
+                <div className="mt-6 flex h-64 items-center justify-center overflow-hidden rounded-card bg-surface-soft sm:h-72">
+                  {conceptImage ? (
+                    <Image
+                      src={conceptImage}
+                      alt={`${wordmark} ${t(locale, "workMark")}`}
+                      width={1200}
+                      height={900}
+                      loading="lazy"
+                      className="h-full w-full object-contain p-6"
+                    />
+                  ) : (
+                    <Wordmark name={wordmark} className="text-4xl sm:text-5xl" />
+                  )}
+                </div>
                 {conceptText ? (
                   <p className="mt-6 text-base leading-relaxed text-text-secondary md:text-lg">
                     {conceptText}
                   </p>
                 ) : null}
-              </Reveal>
-              <Reveal>
-                <StoryLogoCard
-                  imageUrl={conceptImage}
-                  badge={t(locale, "workConcept")}
-                  imageAlt={`${wordmark} ${t(locale, "workMark")}`}
-                  wordmark={wordmark}
-                />
-              </Reveal>
-            </div>
+              </div>
+            </Reveal>
           </div>
         </section>
       ) : null}
