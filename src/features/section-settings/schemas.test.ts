@@ -95,4 +95,31 @@ describe("sectionSettingsSchema", () => {
     });
     expect(result.success).toBe(false);
   });
+
+  it("accepts portfolio card images (optional field)", () => {
+    const result = sectionSettingsSchema.safeParse({
+      ...valid,
+      cards: [
+        {
+          slug: "vertex-saas-landing",
+          client_name: "Vertex",
+          images: [
+            { media_id: "", image_url: "https://example.com/a.jpg" },
+            { media_id: "abc", image_url: "" },
+            { media_id: "", image_url: "" },
+          ],
+        },
+      ],
+    });
+    expect(result.success).toBe(true);
+    expect(result.data?.cards?.[0]?.slug).toBe("vertex-saas-landing");
+  });
+
+  it("rejects cards without a slug", () => {
+    const result = sectionSettingsSchema.safeParse({
+      ...valid,
+      cards: [{ images: [{ image_url: "https://example.com/a.jpg" }] }],
+    });
+    expect(result.success).toBe(false);
+  });
 });

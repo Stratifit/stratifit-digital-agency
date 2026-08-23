@@ -49,6 +49,62 @@ export async function getAdminPortfolio(): Promise<AdminPortfolioRow[]> {
   return (data ?? []) as AdminPortfolioRow[];
 }
 
+export interface AdminPortfolioCardImage {
+  media_id: string | null;
+  image_url: string | null;
+}
+
+export interface AdminPortfolioCard {
+  slug: string;
+  client_name: string;
+  title_translations: Record<string, string> | null;
+  /** Gallery images in display order (up to 6). */
+  images: AdminPortfolioCardImage[];
+}
+
+/**
+ * Published portfolio projects with their gallery rows, used by the Our Work
+ * section editor to manage the 6-slot image grid shown on each homepage card.
+ * Matches the public query order so the editor mirrors what the site renders.
+ */
+export async function getAdminPortfolioCards(
+  limit = 8
+): Promise<AdminPortfolioCard[]> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("portfolio_projects")
+    .select("id, slug, client_name, title_translations")
+    .eq("status", "published")
+    .order("published_at", { ascending: false })
+    .limit(limit);
+  if (error || !data) return [];
+
+  const ids = data.map((p) => p.id as string);
+  const { data: galleryRows } = await supabase
+    .from("portfolio_media")
+    .select("portfolio_id, media_id, image_url")
+    .in("portfolio_id", ids)
+    .order("display_order", { ascending: true });
+
+  const imagesByProject = new Map<string, AdminPortfolioCardImage[]>();
+  for (const row of galleryRows ?? []) {
+    const pid = row.portfolio_id as string;
+    const list = imagesByProject.get(pid) ?? [];
+    list.push({
+      media_id: (row.media_id as string | null) ?? null,
+      image_url: (row.image_url as string | null) ?? null,
+    });
+    imagesByProject.set(pid, list);
+  }
+
+  return data.map((p) => ({
+    slug: p.slug as string,
+    client_name: p.client_name as string,
+    title_translations: p.title_translations as Record<string, string> | null,
+    images: imagesByProject.get(p.id as string) ?? [],
+  }));
+}
+
 export async function getAdminInsights(): Promise<AdminInsightRow[]> {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase

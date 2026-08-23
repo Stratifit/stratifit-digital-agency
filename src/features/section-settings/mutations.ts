@@ -104,6 +104,58 @@ export async function updateSectionSettings(
     return { success: false, error: "Failed to save section settings." };
   }
 
+  // Portfolio card images are managed from this section editor and persist to
+  // the portfolio_media gallery table (one row per image slot). Only the cards
+  // submitted by the form are touched; other projects keep their galleries.
+  if (sectionKey === "portfolio" && parsed.data.cards) {
+    // Every card submitted by the editor is reconciled (its gallery rows are
+    // replaced by the form's slots), so clearing all six slots also works.
+    const { data: projects } = await supabase
+      .from("portfolio_projects")
+      .select("id, slug")
+      .in(
+        "slug",
+        parsed.data.cards.map((card) => card.slug)
+      );
+    const idBySlug = new Map(
+      (projects ?? []).map((p) => [p.slug as string, p.id as string])
+    );
+
+    for (const card of parsed.data.cards) {
+      const portfolioId = idBySlug.get(card.slug);
+      if (!portfolioId) continue;
+      const images = (card.images ?? []).filter(
+        (img) =>
+          (img.image_url ?? "").trim().length > 0 ||
+          (img.media_id ?? "").trim().length > 0
+      );
+      const { error: deleteError } = await supabase
+        .from("portfolio_media")
+        .delete()
+        .eq("portfolio_id", portfolioId);
+      if (deleteError) {
+        return { success: false, error: "Failed to save card images." };
+      }
+      if (images.length > 0) {
+        const { error: insertError } = await supabase
+          .from("portfolio_media")
+          .insert(
+            images.map((img, index) => ({
+              portfolio_id: portfolioId,
+              media_id: (img.media_id ?? "").trim() || null,
+              image_url: (img.image_url ?? "").trim() || null,
+              caption_translations: {},
+              display_order: index + 1,
+              is_featured: index === 0,
+            }))
+          );
+        if (insertError) {
+          return { success: false, error: "Failed to save card images." };
+        }
+      }
+    }
+  }
+
   revalidatePath("/");
   revalidatePath("/work");
   revalidatePath("/services");

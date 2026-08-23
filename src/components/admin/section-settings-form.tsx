@@ -22,6 +22,7 @@ import {
   splitTitleHighlight,
 } from "@/features/section-settings/title-highlight";
 import type { AdminSectionSettings } from "@/features/section-settings/queries";
+import type { AdminPortfolioCard } from "@/features/content/admin-queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -55,7 +56,17 @@ const REVIEW_SUMMARY_SECTIONS = new Set(["testimonials"]);
 /** Sections whose editor also manages a tech-stack marquee. */
 const TECH_STACK_SECTIONS = new Set(["tech-stack"]);
 
-type SectionKey = "header" | "cta" | "stats" | "review" | "tech" | "seo";
+/** Sections whose editor also manages the 3x2 card image grids. */
+const CARDS_SECTIONS = new Set(["portfolio"]);
+
+type SectionKey =
+  | "header"
+  | "cta"
+  | "stats"
+  | "review"
+  | "tech"
+  | "cards"
+  | "seo";
 
 function ReviewSummaryEditor({
   register,
@@ -380,6 +391,165 @@ function StatsEditor({
   );
 }
 
+/**
+ * One 3x2 grid slot on a portfolio card. Uploads directly to the
+ * `portfolio-images` bucket (like the hero/tech logo uploaders) and stores
+ * the media id + public URL on the form; the section save persists the rows.
+ */
+function PortfolioCardImageSlot({
+  control,
+  cardIndex,
+  slotIndex,
+  setValue,
+}: {
+  control: Control<SectionSettingsFormValues>;
+  cardIndex: number;
+  slotIndex: number;
+  setValue: UseFormSetValue<SectionSettingsFormValues>;
+}) {
+  const value = useWatch({
+    control,
+    name: `cards.${cardIndex}.images.${slotIndex}`,
+  });
+  const imageUrl = value?.image_url;
+  const [uploading, setUploading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setError(null);
+    try {
+      const formData = new FormData();
+      formData.set("file", file);
+      formData.set("bucket", "portfolio-images");
+      formData.set("alt_text", file.name);
+      const result = await uploadMediaAsset(formData);
+      if (result.success) {
+        setValue(`cards.${cardIndex}.images.${slotIndex}.media_id`, result.data.id, {
+          shouldDirty: true,
+        });
+        setValue(`cards.${cardIndex}.images.${slotIndex}.image_url`, result.data.url, {
+          shouldDirty: true,
+        });
+        if (inputRef.current) inputRef.current.value = "";
+      } else {
+        setError(result.error);
+      }
+    } catch {
+      setError("Upload failed. Please try again.");
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  function handleRemove() {
+    setValue(`cards.${cardIndex}.images.${slotIndex}.media_id`, "", {
+      shouldDirty: true,
+    });
+    setValue(`cards.${cardIndex}.images.${slotIndex}.image_url`, "", {
+      shouldDirty: true,
+    });
+    if (inputRef.current) inputRef.current.value = "";
+    setError(null);
+  }
+
+  return (
+    <div className="relative aspect-square overflow-hidden rounded-md border border-border bg-background">
+      {imageUrl ? (
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element -- admin preview of the uploaded card image */}
+          <img
+            src={imageUrl}
+            alt=""
+            className="h-full w-full object-cover"
+          />
+          <button
+            type="button"
+            onClick={handleRemove}
+            aria-label={`Remove image ${slotIndex + 1}`}
+            className="absolute right-1 top-1 rounded-sm bg-black/80 px-1.5 py-0.5 text-[10px] font-medium text-white transition-colors hover:bg-error focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            Remove
+          </button>
+        </>
+      ) : (
+        <div className="flex h-full w-full items-center justify-center">
+          {uploading ? (
+            <span className="text-[10px] text-text-muted">Uploading…</span>
+          ) : (
+            <label className="flex h-full w-full cursor-pointer items-center justify-center text-[10px] font-medium text-text-muted transition-colors hover:bg-surface-hover hover:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+              <input
+                ref={inputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml,image/avif"
+                onChange={handleFile}
+                className="sr-only"
+              />
+              + Upload
+            </label>
+          )}
+        </div>
+      )}
+      {error ? (
+        <p className="absolute inset-x-0 bottom-0 truncate bg-black/80 px-1 text-[9px] text-error">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function PortfolioCardsEditor({
+  control,
+  setValue,
+}: {
+  control: Control<SectionSettingsFormValues>;
+  setValue: UseFormSetValue<SectionSettingsFormValues>;
+}) {
+  const cards = useWatch({ control, name: "cards" }) ?? [];
+
+  if (cards.length === 0) {
+    return (
+      <p className="text-xs text-text-muted">
+        No published work cards yet — publish portfolio projects first.
+      </p>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {cards.map((card, cardIndex) => (
+        <div key={card.slug} className="rounded-card border border-white/5 bg-background p-4">
+          <p className="mb-1 font-display text-sm font-semibold text-text-primary">
+            {card.client_name || card.slug}
+          </p>
+          <p className="mb-4 text-xs text-text-muted">
+            Upload up to 6 images — rendered as the 3×2 grid on this card.
+          </p>
+          <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
+            {Array.from({ length: 6 }).map((_, slotIndex) => (
+              <PortfolioCardImageSlot
+                key={slotIndex}
+                control={control}
+                cardIndex={cardIndex}
+                slotIndex={slotIndex}
+                setValue={setValue}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+      <p className="text-xs text-text-muted">
+        Images are uploaded to Supabase Storage and saved to the work card on
+        this section&apos;s save. Empty slots are skipped.
+      </p>
+    </div>
+  );
+}
+
 type LocaleRecord = { en: string; de: string; fr: string; es: string };
 
 function translations(
@@ -425,7 +595,10 @@ function splitTitleTranslations(values: SectionSettingsFormValues): {
   return { title_translations, highlight_translations };
 }
 
-function toFormValues(settings: AdminSectionSettings): SectionSettingsFormValues {
+function toFormValues(
+  settings: AdminSectionSettings,
+  cards?: AdminPortfolioCard[]
+): SectionSettingsFormValues {
   const reviewSummary = settings.review_summary;
   // The stored highlight is folded into the title as a trailing `<…>` marker
   // so the whole heading is edited in a single field.
@@ -472,6 +645,18 @@ function toFormValues(settings: AdminSectionSettings): SectionSettingsFormValues
           image_url: item.image_url ?? "",
         }))
       : [],
+    // Each card keeps a fixed array of six slots (empty strings = empty slot);
+    // the save drops empty slots before writing to portfolio_media.
+    cards: Array.isArray(cards)
+      ? cards.map((card) => ({
+          slug: card.slug,
+          client_name: card.client_name,
+          images: Array.from({ length: 6 }).map((_, index) => ({
+            media_id: card.images[index]?.media_id ?? "",
+            image_url: card.images[index]?.image_url ?? "",
+          })),
+        }))
+      : [],
     seo_title_translations: translations(settings.seo_title_translations),
     seo_description_translations: translations(
       settings.seo_description_translations
@@ -482,8 +667,10 @@ function toFormValues(settings: AdminSectionSettings): SectionSettingsFormValues
 
 export function SectionSettingsForm({
   settings,
+  cards,
 }: {
   settings: AdminSectionSettings;
+  cards?: AdminPortfolioCard[];
 }) {
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [saved, setSaved] = React.useState(false);
@@ -506,7 +693,7 @@ export function SectionSettingsForm({
     formState: { errors, isSubmitting },
   } = useForm<SectionSettingsFormValues>({
     resolver: zodResolver(sectionSettingsSchema),
-    defaultValues: toFormValues(settings),
+    defaultValues: toFormValues(settings, cards),
   });
 
   const isVisible = useWatch({ control, name: "is_visible" });
@@ -608,6 +795,16 @@ export function SectionSettingsForm({
             key: "tech" as const,
             label: "Tech stack",
             description: "Technologies shown in the scrolling marquee.",
+          },
+        ]
+      : []),
+    ...(CARDS_SECTIONS.has(settings.section_key)
+      ? [
+          {
+            key: "cards" as const,
+            label: "Card images",
+            description:
+              "The 3x2 image grid shown on each work card — up to 6 images per card.",
           },
         ]
       : []),
@@ -811,9 +1008,7 @@ export function SectionSettingsForm({
             register={register}
             errors={errors.review_summary}
           />
-        ) : null}
-
-        {activeSection === "tech" ? (
+        ) : null}        {activeSection === "tech" ? (
           <TechStackEditor
             register={register}
             control={control}
@@ -824,6 +1019,12 @@ export function SectionSettingsForm({
             onRemove={(index) => techFields.remove(index)}
           />
         ) : null}
+
+        {activeSection === "cards" ? (
+          <PortfolioCardsEditor control={control} setValue={setValue} />
+        ) : null}
+
+
 
         {activeSection === "seo" ? (
           <div className="space-y-4">

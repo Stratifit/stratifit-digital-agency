@@ -40,6 +40,12 @@ export interface PublicPortfolioProject {
   featured_media_url: string | null;
   image_url: string | null;
   service_slugs: string[];
+  /**
+   * Up to 6 images for the card grid (cover first, then gallery rows by
+   * display order). Rendered as a 3x2 grid of small thumbnails on the
+   * homepage and work galleries.
+   */
+  card_images: string[];
 }
 
 export async function getPublicPortfolioProjects(
@@ -110,12 +116,23 @@ export async function getPublicPortfolioProjects(
     (servicesResult.data ?? []).map((s) => [s.id, s.slug])
   );
 
+  // Gallery rows (cover + up to six card images) for the fetched projects.
+  const pageProjectIds = projects.map((p) => p.id as string);
+  const { data: galleryRows } = await supabase
+    .from("portfolio_media")
+    .select("portfolio_id, image_url, media_id")
+    .in("portfolio_id", pageProjectIds)
+    .order("display_order", { ascending: true });
+
   const mediaIds = [
-    ...new Set(
-      projects
+    ...new Set([
+      ...projects
         .map((p) => p.featured_media_id as string | null)
-        .filter(Boolean)
-    ),
+        .filter(Boolean),
+      ...(galleryRows ?? [])
+        .map((g) => g.media_id as string | null)
+        .filter(Boolean),
+    ]),
   ] as string[];
 
   let mediaResult: {
@@ -137,6 +154,20 @@ export async function getPublicPortfolioProjects(
     ])
   );
 
+  const galleryByProject = new Map<
+    string,
+    { image_url: string | null; media_id: string | null }[]
+  >();
+  for (const row of galleryRows ?? []) {
+    const pid = row.portfolio_id as string;
+    const list = galleryByProject.get(pid) ?? [];
+    list.push({
+      image_url: (row.image_url as string | null) ?? null,
+      media_id: (row.media_id as string | null) ?? null,
+    });
+    galleryByProject.set(pid, list);
+  }
+
   return projects.map((project) => {
     const projectId = project.id as string;
     const linkedServiceIds = (linkRows ?? [])
@@ -146,6 +177,27 @@ export async function getPublicPortfolioProjects(
     const metrics = normalizeMetrics(project.metrics ?? []);
 
     const directImageUrl = project.image_url as string | null;
+    const featuredMediaUrl = directImageUrl
+      ? directImageUrl
+      : mediaId
+        ? (mediaById.get(mediaId) ?? null)
+        : null;
+
+    // Cover first, then gallery rows by display order — deduped, capped at 6.
+    const cardImages: string[] = [];
+    const seen = new Set<string>();
+    const pushCardImage = (url: string | null | undefined) => {
+      if (!url || seen.has(url) || cardImages.length >= 6) return;
+      seen.add(url);
+      cardImages.push(url);
+    };
+    pushCardImage(featuredMediaUrl);
+    for (const gallery of galleryByProject.get(projectId) ?? []) {
+      pushCardImage(
+        gallery.image_url ??
+          (gallery.media_id ? mediaById.get(gallery.media_id) : null)
+      );
+    }
 
     return {
       slug: project.slug as string,
@@ -158,15 +210,12 @@ export async function getPublicPortfolioProjects(
         project.deliverables_translations as Record<string, string[]> | null,
       metrics,
       featured_media_id: mediaId,
-      featured_media_url: directImageUrl
-        ? directImageUrl
-        : mediaId
-          ? (mediaById.get(mediaId) ?? null)
-          : null,
+      featured_media_url: featuredMediaUrl,
       image_url: directImageUrl,
       service_slugs: linkedServiceIds
         .map((id) => serviceSlugById.get(id))
         .filter(Boolean) as string[],
+      card_images: cardImages,
     };
   });
 }

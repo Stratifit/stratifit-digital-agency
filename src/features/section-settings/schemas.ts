@@ -24,6 +24,23 @@ const techStackItem = z.object({
   image_url: z.string().optional(),
 });
 
+/** One image slot on a portfolio card (empty slots are dropped on save). */
+const portfolioCardImage = z.object({
+  media_id: z.string().optional(),
+  image_url: z.string().optional(),
+});
+
+/**
+ * Portfolio card images managed from the Our Work section editor. Each card
+ * (published portfolio project) carries up to six images rendered as the 3x2
+ * grid on the public website. Persisted to `portfolio_media` on save.
+ */
+const portfolioCard = z.object({
+  slug: z.string(),
+  client_name: z.string().optional(),
+  images: z.array(portfolioCardImage).optional(),
+});
+
 /**
  * Review summary band shown on /testimonials. Untouched (all-empty) data is
  * valid so sections that don't use the band never fail validation; once any
@@ -81,6 +98,8 @@ export const sectionSettingsSchema = z.object({
   review_summary: reviewSummary.optional(),
   /** Optional tech-stack marquee items (used by the tech-stack section). */
   tech_stack: z.array(techStackItem).optional(),
+  /** Optional portfolio card images (used by the portfolio section editor). */
+  cards: z.array(portfolioCard).optional(),
   /** Optional page SEO metadata (title + description, all locales). */
   seo_title_translations: translations().optional(),
   seo_description_translations: translations().optional(),

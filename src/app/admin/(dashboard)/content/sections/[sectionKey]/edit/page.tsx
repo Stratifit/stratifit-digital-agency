@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getAdminSectionSetting } from "@/features/section-settings/queries";
 import { getDefaultAdminSectionSetting } from "@/features/section-settings/defaults";
+import { getAdminPortfolioCards } from "@/features/content/admin-queries";
 import { SectionSettingsForm } from "@/components/admin/section-settings-form";
 import { AdminPageHeader } from "@/components/admin/page-header";
 import { FormCard } from "@/components/admin/form-card";
@@ -14,6 +15,11 @@ export default async function EditSectionSettingsPage({
   const existing = await getAdminSectionSetting(sectionKey);
   const settings = existing ?? getDefaultAdminSectionSetting(sectionKey);
   if (!settings) notFound();
+
+  // The portfolio (Our Work) editor also manages the 3x2 image grid shown on
+  // each work card, so it needs the published cards with their gallery rows.
+  const cards =
+    sectionKey === "portfolio" ? await getAdminPortfolioCards() : undefined;
 
   const isCreate = !existing;
 
@@ -29,7 +35,7 @@ export default async function EditSectionSettingsPage({
         }
       />
       <FormCard>
-        <SectionSettingsForm settings={settings} />
+        <SectionSettingsForm settings={settings} cards={cards} />
       </FormCard>
     </div>
   );
