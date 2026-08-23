@@ -271,11 +271,11 @@ export function BrandCaseStudy({
           </Reveal>
         </div>
 
-        {/* Amber bar — Brand Design left, Case Study · 2026 right */}
+        {/* Divider — Brand Design left, Case Study · 2026 right */}
         <Reveal immediate className="relative mt-8">
-          <div className="border-y border-primary/10 bg-primary/15">
-            <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
-              <span className="font-display text-base font-bold tracking-tight text-text-primary sm:text-lg">
+          <div className="border-y border-white/10">
+            <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-5 sm:px-6">
+              <span className="font-display text-base font-bold tracking-tight text-primary sm:text-lg">
                 {serviceTitle || t(locale, "workBrandIdentity")}
               </span>
               <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-text-secondary">
