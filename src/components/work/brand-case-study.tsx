@@ -256,13 +256,16 @@ export function BrandCaseStudy({
           <div className="absolute left-1/2 top-0 h-[320px] w-[900px] -translate-x-1/2 rounded-full bg-primary/[0.05] blur-[130px]" />
         </div>
 
-        {/* Brand label + icon, plain */}
+        {/* Brand label + icon, plain — icon on top, label beneath */}
         <div className="relative mx-auto w-full max-w-7xl px-4 pt-12 sm:px-6">
           <Reveal immediate>
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-4 py-2">
-              <DropletCheckIcon className="size-5" />
+            <div className="inline-flex flex-col items-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-5 py-6">
+              <DropletCheckIcon className="size-7" />
               <span className="text-sm font-semibold tracking-tight text-text-primary">
-                {wordmark} · {serviceTitle || t(locale, "workBrandIdentity")}
+                {wordmark}
+              </span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
+                {serviceTitle || t(locale, "workBrandIdentity")}
               </span>
             </div>
           </Reveal>
