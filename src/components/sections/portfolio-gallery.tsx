@@ -154,8 +154,8 @@ export function PortfolioGallery({
               className="group w-full shrink-0 snap-center overflow-hidden rounded-card border border-card-border bg-card-dark transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:border-primary/20 md:w-[calc((100%-2rem)/2)] lg:w-[calc((100%-6rem)/4)]"
             >
               {isBrandDesignCard(project) ? (
-                <div className="relative p-1.5">
-                  <div className="grid grid-cols-2 gap-1.5">
+                <div className="relative aspect-[4/3] overflow-hidden bg-surface-soft">
+                  <div className="grid h-full w-full grid-cols-2 grid-rows-2 gap-1.5 p-1.5">
                     {Array.from({ length: 4 }).map((_, index) => {
                       const src = project.card_images[index];
                       const title =
@@ -166,7 +166,7 @@ export function PortfolioGallery({
                       return src ? (
                         <div
                           key={index}
-                          className="relative aspect-square overflow-hidden rounded-sm bg-surface-soft"
+                          className="relative overflow-hidden rounded-sm bg-surface-soft"
                         >
                           <Image
                             src={src}
@@ -179,7 +179,7 @@ export function PortfolioGallery({
                       ) : (
                         <div
                           key={index}
-                          className="flex aspect-square items-center justify-center overflow-hidden rounded-sm bg-surface-soft"
+                          className="flex items-center justify-center overflow-hidden rounded-sm bg-surface-soft"
                         >
                           <span className="font-display text-lg font-black text-primary/25">
                             {(project.client_name || "S")
