@@ -107,10 +107,13 @@ export function PortfolioGallery({
   }
 
   function scrollByCard(direction: number) {
-    scrollRef.current?.scrollBy({
-      left: direction * 360,
-      behavior: "smooth",
-    });
+    const el = scrollRef.current;
+    if (!el) return;
+    // Cards are fluid (matching the services grid), so step by the first
+    // card's width plus the gap instead of a fixed pixel amount.
+    const card = el.querySelector<HTMLElement>("[data-project-card]");
+    const step = card ? card.offsetWidth + 32 : 360;
+    el.scrollBy({ left: direction * step, behavior: "smooth" });
   }
 
   function selectFilter(slug: string) {
@@ -148,7 +151,7 @@ export function PortfolioGallery({
             <article
               key={project.slug}
               data-project-card
-              className="group w-[300px] shrink-0 snap-center overflow-hidden rounded-card border border-card-border bg-card-dark transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:border-primary/20 sm:w-[340px] md:w-[380px]"
+              className="group w-full shrink-0 snap-center overflow-hidden rounded-card border border-card-border bg-card-dark transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] hover:border-primary/20 md:w-[calc((100%-2rem)/2)] lg:w-[calc((100%-6rem)/4)]"
             >
               {isBrandDesignCard(project) ? (
                 <div className="relative p-1.5">
@@ -169,7 +172,7 @@ export function PortfolioGallery({
                             src={src}
                             alt={`${title} — image ${index + 1}`}
                             fill
-                            sizes="(max-width: 768px) 50vw, 180px"
+                            sizes="(max-width: 767px) 50vw, (max-width: 1023px) 25vw, 12.5vw"
                             className="object-cover transition-transform duration-700 ease-[var(--ease-standard)] group-hover:scale-110"
                           />
                         </div>
@@ -205,7 +208,7 @@ export function PortfolioGallery({
                         ) || project.client_name
                       }
                       fill
-                      sizes="(max-width: 768px) 100vw, 380px"
+                      sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 25vw"
                       className="object-cover transition-transform duration-700 ease-[var(--ease-standard)] group-hover:scale-110"
                     />
                   ) : (
