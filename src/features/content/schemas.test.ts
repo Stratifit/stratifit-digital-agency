@@ -112,6 +112,7 @@ describe("portfolioSchema", () => {
         fr: ["Design de conversion", "Tests A/B"],
         es: ["Diseño de conversión", "Pruebas A/B"],
       },
+      brand_story_translations: fullTranslations,
       challenge_translations: fullTranslations,
       solution_translations: fullTranslations,
       results_translations: fullTranslations,

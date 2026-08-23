@@ -42,6 +42,8 @@ export const portfolioSchema = z.object({
   gallery: z.array(portfolioGalleryItem).max(6).optional(),
   /** Case study fields shown on the public /work/[slug] page. */
   deliverables_translations: translationsArrays().optional(),
+  /** Logo concept / monogram rationale for brand case studies ("Why This Mark"). */
+  brand_story_translations: translations().optional(),
   challenge_translations: translations().optional(),
   solution_translations: translations().optional(),
   results_translations: translations().optional(),

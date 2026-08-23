@@ -165,9 +165,13 @@ export type UiStringKey =
   | "trustPrivateDesc"
   | "trustQuickResponse"
   | "trustQuickResponseDesc"
+  | "workApplications"
+  | "workBrandIdentity"
+  | "workBrandInUse"
   | "workCaseStudy"
   | "workCaseStudies"
   | "workChallenge"
+  | "workConcept"
   | "workClient"
   | "workGallery"
   | "workIndustry"
@@ -181,6 +185,8 @@ export type UiStringKey =
   | "workServices"
   | "workSimilar"
   | "workSolution"
+  | "workMark"
+  | "workWhyThisMark"
   | "workStartCta"
   | "workTheProblem"
   | "workVisual"
@@ -413,9 +419,13 @@ const en: UiStrings = {
   trustPrivateDesc: "Your data stays secure.",
   trustQuickResponse: "Quick response",
   trustQuickResponseDesc: "We reply within 24h.",
+  workApplications: "Applications",
+  workBrandIdentity: "Brand Identity",
+  workBrandInUse: "The Brand in Use",
   workCaseStudy: "Case Study",
   workCaseStudies: "Case Studies",
   workChallenge: "Challenge",
+  workConcept: "The Concept",
   workClient: "Client",
   workGallery: "Gallery",
   workIndustry: "Industry",
@@ -429,8 +439,10 @@ const en: UiStrings = {
   workSelected: "Selected",
   workServices: "Services",
   workSimilar: "Similar",
+  workMark: "The Mark",
   workSolution: "Solution",
   workStartCta: "Start your project with Stratifit",
+  workWhyThisMark: "Why This Mark",
   workTheProblem: "The Problem",
   workVisual: "visual",
   workVisuals: "Visuals",
@@ -666,9 +678,13 @@ const de: UiStrings = {
   trustPrivateDesc: "Ihre Daten bleiben sicher.",
   trustQuickResponse: "Schnelle Antwort",
   trustQuickResponseDesc: "Wir antworten innerhalb von 24 Std.",
+  workApplications: "Anwendungen",
+  workBrandIdentity: "Markenidentität",
+  workBrandInUse: "Die Marke im Einsatz",
   workCaseStudy: "Fallstudie",
   workCaseStudies: "Fallstudien",
   workChallenge: "Herausforderung",
+  workConcept: "Das Konzept",
   workClient: "Kunde",
   workGallery: "Galerie",
   workIndustry: "Branche",
@@ -682,8 +698,10 @@ const de: UiStrings = {
   workSelected: "Ausgewählte",
   workServices: "Leistungen",
   workSimilar: "Ähnliche",
+  workMark: "Das Zeichen",
   workSolution: "Lösung",
   workStartCta: "Starten Sie Ihr Projekt mit Stratifit",
+  workWhyThisMark: "Warum dieses Zeichen",
   workTheProblem: "Das Problem",
   workVisual: "Visual",
   workVisuals: "Visuals",
@@ -919,9 +937,13 @@ const fr: UiStrings = {
   trustPrivateDesc: "Vos données restent sécurisées.",
   trustQuickResponse: "Réponse rapide",
   trustQuickResponseDesc: "Nous répondons sous 24h.",
+  workApplications: "Applications",
+  workBrandIdentity: "Identité de marque",
+  workBrandInUse: "La marque en usage",
   workCaseStudy: "Étude de cas",
   workCaseStudies: "similaires",
   workChallenge: "Défi",
+  workConcept: "Le concept",
   workClient: "Client",
   workGallery: "Galerie",
   workIndustry: "Secteur",
@@ -935,8 +957,10 @@ const fr: UiStrings = {
   workSelected: "Visuels",
   workServices: "Services",
   workSimilar: "Études de cas",
+  workMark: "Le signe",
   workSolution: "Solution",
   workStartCta: "Lancez votre projet avec Stratifit",
+  workWhyThisMark: "Pourquoi ce signe",
   workTheProblem: "Le problème",
   workVisual: "visuel",
   workVisuals: "sélectionnés",
@@ -1172,9 +1196,13 @@ const es: UiStrings = {
   trustPrivateDesc: "Tus datos están seguros.",
   trustQuickResponse: "Respuesta rápida",
   trustQuickResponseDesc: "Respondemos en 24h.",
+  workApplications: "Aplicaciones",
+  workBrandIdentity: "Identidad de marca",
+  workBrandInUse: "La marca en uso",
   workCaseStudy: "Estudio de caso",
   workCaseStudies: "similares",
   workChallenge: "Reto",
+  workConcept: "El concepto",
   workClient: "Cliente",
   workGallery: "Galería",
   workIndustry: "Sector",
@@ -1188,8 +1216,10 @@ const es: UiStrings = {
   workSelected: "Visuales",
   workServices: "Servicios",
   workSimilar: "Estudios de caso",
+  workMark: "El símbolo",
   workSolution: "Solución",
   workStartCta: "Comienza tu proyecto con Stratifit",
+  workWhyThisMark: "Por qué este símbolo",
   workTheProblem: "El problema",
   workVisual: "visual",
   workVisuals: "seleccionados",

@@ -82,6 +82,7 @@ export async function savePortfolio(
     title_translations: parsed.data.title_translations,
     summary_translations: parsed.data.summary_translations,
     deliverables_translations: cleanedDeliverables,
+    brand_story_translations: parsed.data.brand_story_translations ?? {},
     challenge_translations: parsed.data.challenge_translations ?? {},
     solution_translations: parsed.data.solution_translations ?? {},
     results_translations: parsed.data.results_translations ?? {},

@@ -607,9 +607,15 @@ Each portfolio project also has a **Case study** editor tab that drives the
 public `/work/[slug]` page in full:
 
 - **Services / deliverables** — one per line per language; rendered in the
-  Services fact (joined with `·`) and as the category badge fallback.
+  Services fact (joined with `·`), as the category badge fallback, and as
+  captions on the brand-in-use tiles of brand case studies.
+- **Logo story / concept** — the thinking behind the mark (monogram
+  rationale, e.g. why the icon is what it is), per language; rendered as the
+  "Why This Mark" section (01) on brand design case studies and stored in
+  `portfolio_projects.brand_story_translations` (migration
+  `20260823150000`). Empty falls back to the Solution text.
 - **Challenge** and **Solution** — the problem and what we did, per language,
-  rendered as numbered story sections (01 / 02).
+  rendered as numbered story sections (02 / 03 on brand case studies).
 - **Results summary** — a closing paragraph under the metric stats.
 - **Result metrics** — repeatable `value` + per-language label rows (up to 8),
   rendered as stat cards with the value in amber display type.
@@ -618,6 +624,13 @@ public `/work/[slug]` page in full:
   `20260823130000`).
 - **Client testimonial** — optional link to a visible testimonial
   (`testimonial_id`) rendered as a quote block.
+
+Projects linked to the **Brand Design** service render a dedicated brand-story
+layout on `/work/[slug]`: a lockup hero (primary logo panel, never cropped),
+the numbered concept → challenge → solution → process → results story, and a
+"The Brand in Use" gallery where every uploaded image is shown in full with
+its deliverable as the caption. All other categories keep the standard
+editorial case-study layout.
 
 ---
 

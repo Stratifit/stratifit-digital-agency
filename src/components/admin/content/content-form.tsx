@@ -364,6 +364,9 @@ export function ContentForm({
       d.deliverables_translations = trArr(
         initial.deliverables_translations as Record<string, string[]> | null
       );
+      d.brand_story_translations = tr(
+        initial.brand_story_translations as Record<string, string> | null
+      );
       d.challenge_translations = tr(
         initial.challenge_translations as Record<string, string> | null
       );
@@ -826,6 +829,25 @@ export function ContentForm({
               <p className="text-xs text-text-muted">
                 One per line — shown on the Services fact card, joined with
                 dots.
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor={`brand-story-${locale}`}>
+                Logo story / concept ({LOCALE_NAMES[locale]})
+              </Label>
+              <Textarea
+                key={locale}
+                id={`brand-story-${locale}`}
+                rows={4}
+                placeholder={
+                  "Why this mark — e.g. how the monogram was built and what it means"
+                }
+                {...register(`brand_story_translations.${locale}`)}
+              />
+              <p className="text-xs text-text-muted">
+                Shown as the “Why This Mark” section on brand design case
+                studies. Leave empty to use the Solution text instead.
               </p>
             </div>
 

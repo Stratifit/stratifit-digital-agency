@@ -1921,6 +1921,7 @@ export type Database = {
       portfolio_projects: {
         Row: {
           approach_translations: Json
+          brand_story_translations: Json | null
           challenge_translations: Json
           client_name: string
           created_at: string
@@ -1945,6 +1946,7 @@ export type Database = {
         }
         Insert: {
           approach_translations?: Json
+          brand_story_translations?: Json | null
           challenge_translations?: Json
           client_name: string
           created_at?: string
@@ -1969,6 +1971,7 @@ export type Database = {
         }
         Update: {
           approach_translations?: Json
+          brand_story_translations?: Json | null
           challenge_translations?: Json
           client_name?: string
           created_at?: string

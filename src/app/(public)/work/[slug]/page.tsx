@@ -16,6 +16,7 @@ import { CtaCard } from "@/components/sections/cta-card";
 import { Reveal } from "@/components/ui/reveal";
 import { ProcessIcon } from "@/components/ui/process-icon";
 import { RelatedProjects } from "@/components/work/related-projects";
+import { BrandCaseStudy } from "@/components/work/brand-case-study";
 
 export async function generateMetadata({
   params,
@@ -139,6 +140,10 @@ export default async function WorkDetailPage({
     .slice(0, 3);
   const relatedVisible = related.length > 0 ? related : relatedProjects.filter((p) => p.slug !== slug).slice(0, 3);
 
+  // Brand design projects get a dedicated brand-story layout that walks
+  // through the logo concept and shows the identity in use.
+  const isBrandProject = project.service_slugs.includes("brand-design");
+
   const deliverablesRaw =
     (project.deliverables_translations as Record<string, unknown> | null)?.[
       locale
@@ -206,6 +211,16 @@ export default async function WorkDetailPage({
         }}
       />
 
+      {isBrandProject ? (
+        <BrandCaseStudy
+          project={project}
+          steps={steps}
+          relatedVisible={relatedVisible}
+          relatedServices={relatedServices}
+          locale={locale}
+        />
+      ) : (
+        <>
       {/* Hero — editorial: kicker, statement, then a mosaic of the project's visuals */}
       <section className="relative overflow-hidden">
         <div
@@ -566,6 +581,8 @@ export default async function WorkDetailPage({
           </Reveal>
         </div>
       </section>
+        </>
+      )}
     </>
   );
 }
