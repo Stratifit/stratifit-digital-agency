@@ -166,6 +166,7 @@ export type UiStringKey =
   | "trustQuickResponse"
   | "trustQuickResponseDesc"
   | "workApplications"
+  | "workBefore"
   | "workBrandIdentity"
   | "workBrandInUse"
   | "workCaseStudy"
@@ -186,6 +187,7 @@ export type UiStringKey =
   | "workSimilar"
   | "workSolution"
   | "workMark"
+  | "workNewIdentity"
   | "workWhyThisMark"
   | "workStartCta"
   | "workTheProblem"
@@ -420,6 +422,7 @@ const en: UiStrings = {
   trustQuickResponse: "Quick response",
   trustQuickResponseDesc: "We reply within 24h.",
   workApplications: "Applications",
+  workBefore: "Before",
   workBrandIdentity: "Brand Identity",
   workBrandInUse: "The Brand in Use",
   workCaseStudy: "Case Study",
@@ -440,6 +443,7 @@ const en: UiStrings = {
   workServices: "Services",
   workSimilar: "Similar",
   workMark: "The Mark",
+  workNewIdentity: "New Identity",
   workSolution: "Solution",
   workStartCta: "Start your project with Stratifit",
   workWhyThisMark: "Why This Mark",
@@ -679,6 +683,7 @@ const de: UiStrings = {
   trustQuickResponse: "Schnelle Antwort",
   trustQuickResponseDesc: "Wir antworten innerhalb von 24 Std.",
   workApplications: "Anwendungen",
+  workBefore: "Vorher",
   workBrandIdentity: "Markenidentität",
   workBrandInUse: "Die Marke im Einsatz",
   workCaseStudy: "Fallstudie",
@@ -699,6 +704,7 @@ const de: UiStrings = {
   workServices: "Leistungen",
   workSimilar: "Ähnliche",
   workMark: "Das Zeichen",
+  workNewIdentity: "Neue Identität",
   workSolution: "Lösung",
   workStartCta: "Starten Sie Ihr Projekt mit Stratifit",
   workWhyThisMark: "Warum dieses Zeichen",
@@ -938,6 +944,7 @@ const fr: UiStrings = {
   trustQuickResponse: "Réponse rapide",
   trustQuickResponseDesc: "Nous répondons sous 24h.",
   workApplications: "Applications",
+  workBefore: "Avant",
   workBrandIdentity: "Identité de marque",
   workBrandInUse: "La marque en usage",
   workCaseStudy: "Étude de cas",
@@ -958,6 +965,7 @@ const fr: UiStrings = {
   workServices: "Services",
   workSimilar: "Études de cas",
   workMark: "Le signe",
+  workNewIdentity: "Nouvelle identité",
   workSolution: "Solution",
   workStartCta: "Lancez votre projet avec Stratifit",
   workWhyThisMark: "Pourquoi ce signe",
@@ -1197,6 +1205,7 @@ const es: UiStrings = {
   trustQuickResponse: "Respuesta rápida",
   trustQuickResponseDesc: "Respondemos en 24h.",
   workApplications: "Aplicaciones",
+  workBefore: "Antes",
   workBrandIdentity: "Identidad de marca",
   workBrandInUse: "La marca en uso",
   workCaseStudy: "Estudio de caso",
@@ -1217,6 +1226,7 @@ const es: UiStrings = {
   workServices: "Servicios",
   workSimilar: "Estudios de caso",
   workMark: "El símbolo",
+  workNewIdentity: "Nueva identidad",
   workSolution: "Solución",
   workStartCta: "Comienza tu proyecto con Stratifit",
   workWhyThisMark: "Por qué este símbolo",
