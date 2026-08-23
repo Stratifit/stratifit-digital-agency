@@ -28,9 +28,10 @@ function ArrowIcon() {
 }
 
 /**
- * Brand-design cards render a 2x2 thumbnail grid; every other card keeps its
- * full cover image. Brand-design projects are linked to the `brand-design`
- * service (migration 00030: Maison Lumière, Aura Cosmetics).
+ * Brand-design cards render a 3x2 thumbnail grid of all uploaded images;
+ * every other card keeps its full cover image. Brand-design projects are
+ * linked to the `brand-design` service (migration 00030: Maison Lumière,
+ * Aura Cosmetics).
  */
 function isBrandDesignCard(project: PublicPortfolioProject): boolean {
   return project.service_slugs.includes("brand-design");
@@ -155,8 +156,8 @@ export function PortfolioGallery({
             >
               {isBrandDesignCard(project) ? (
                 <div className="relative aspect-[4/3] overflow-hidden bg-surface-soft">
-                  <div className="grid h-full w-full grid-cols-2 grid-rows-2 gap-1.5 p-1.5">
-                    {Array.from({ length: 4 }).map((_, index) => {
+                  <div className="grid h-full w-full grid-cols-3 grid-rows-2 gap-1.5 p-1.5">
+                    {Array.from({ length: 6 }).map((_, index) => {
                       const src = project.card_images[index];
                       const title =
                         resolveTranslation(
@@ -172,8 +173,8 @@ export function PortfolioGallery({
                             src={src}
                             alt={`${title} — image ${index + 1}`}
                             fill
-                            sizes="(max-width: 767px) 50vw, (max-width: 1023px) 25vw, 12.5vw"
-                            className="object-cover transition-transform duration-700 ease-[var(--ease-standard)] group-hover:scale-110"
+                            sizes="(max-width: 767px) 33vw, (max-width: 1023px) 17vw, 8vw"
+                            className="object-contain transition-transform duration-700 ease-[var(--ease-standard)] group-hover:scale-105"
                           />
                         </div>
                       ) : (
@@ -209,7 +210,7 @@ export function PortfolioGallery({
                       }
                       fill
                       sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-700 ease-[var(--ease-standard)] group-hover:scale-110"
+                      className="object-contain transition-transform duration-700 ease-[var(--ease-standard)] group-hover:scale-105"
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/15 via-card-dark to-card-dark">

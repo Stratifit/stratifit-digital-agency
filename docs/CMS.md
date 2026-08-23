@@ -589,9 +589,10 @@ Portfolio editors should support:
 - Related services
 
 Homepage work cards show a full cover image, except brand-design cards which
-render a 2×2 grid of four small thumbnails (Maison Lumière, Aura Cosmetics —
-projects linked to the `brand-design` service). Card images can be managed in
-two places:
+render a 3×2 grid of up to six thumbnails — one per uploaded image (Maison
+Lumière, Aura Cosmetics — projects linked to the `brand-design` service).
+Card images are rendered with `object-contain` so every image always shows
+in full, never cropped. Card images can be managed in two places:
 
 - **Portfolio Projects → Edit project** (Content tab): a **Category** dropdown
   (published services; the selected service becomes the card badge via
