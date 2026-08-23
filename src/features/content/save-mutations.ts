@@ -71,6 +71,68 @@ export async function savePortfolio(
     ? await supabase.from("portfolio_projects").update(row).eq("slug", slug)
     : await supabase.from("portfolio_projects").insert(row);
   if (error) return { success: false, error: formatError(error) };
+
+  // Resolve the project id for the join rows (needed for both new and edit).
+  const { data: projectRow } = await supabase
+    .from("portfolio_projects")
+    .select("id")
+    .eq("slug", parsed.data.slug)
+    .single();
+  const projectId = projectRow?.id as string | undefined;
+  if (projectId) {
+    // Category: replace the service link with the selected service (if any).
+    const { error: linkClearError } = await supabase
+      .from("portfolio_service_links")
+      .delete()
+      .eq("portfolio_id", projectId);
+    if (linkClearError) {
+      return { success: false, error: "Failed to save the project category." };
+    }
+    const serviceSlug = parsed.data.service_slug?.trim();
+    if (serviceSlug) {
+      const { data: serviceRow } = await supabase
+        .from("services")
+        .select("id")
+        .eq("slug", serviceSlug)
+        .single();
+      if (serviceRow?.id) {
+        const { error: linkError } = await supabase
+          .from("portfolio_service_links")
+          .insert({ portfolio_id: projectId, service_id: serviceRow.id });
+        if (linkError) {
+          return { success: false, error: "Failed to save the project category." };
+        }
+      }
+    }
+
+    // Gallery: replace rows so ordering and removals stay consistent.
+    const { error: galleryClearError } = await supabase
+      .from("portfolio_media")
+      .delete()
+      .eq("portfolio_id", projectId);
+    if (galleryClearError) {
+      return { success: false, error: "Failed to save the project gallery." };
+    }
+    const galleryRows = (parsed.data.gallery ?? [])
+      .map((item, index) => ({
+        portfolio_id: projectId,
+        media_id: item.media_id?.trim() ? item.media_id : null,
+        image_url: item.image_url.trim() || null,
+        caption_translations: {},
+        display_order: index + 1,
+        is_featured: index === 0,
+      }))
+      .filter((g) => g.image_url);
+    if (galleryRows.length > 0) {
+      const { error: galleryError } = await supabase
+        .from("portfolio_media")
+        .insert(galleryRows);
+      if (galleryError) {
+        return { success: false, error: "Failed to save the project gallery." };
+      }
+    }
+  }
+
   await recordAuditLog({
     action: parsed.data.status === "published" ? "publish" : "save",
     target_table: "portfolio_projects",

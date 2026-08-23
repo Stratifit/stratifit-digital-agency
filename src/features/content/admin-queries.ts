@@ -6,6 +6,32 @@ export interface AdminPortfolioRow {
   client_name: string;
   title_translations: Record<string, string> | null;
   status: string;
+  /** Primary category label (first linked service, EN title or slug). */
+  category: string | null;
+}
+
+export interface AdminServiceOption {
+  slug: string;
+  label: string;
+}
+
+/** Published services for the portfolio category dropdown (EN label). */
+export async function getAdminServices(): Promise<AdminServiceOption[]> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("services")
+    .select("slug, title_translations")
+    .eq("status", "published")
+    .eq("is_visible", true)
+    .order("display_order", { ascending: true });
+  if (error) return [];
+  return (data ?? []).map((s) => ({
+    slug: s.slug as string,
+    label:
+      ((s.title_translations as Record<string, string> | null)?.en as
+        | string
+        | undefined) ?? (s.slug as string),
+  }));
 }
 
 export interface AdminInsightRow {
@@ -45,8 +71,51 @@ export async function getAdminPortfolio(): Promise<AdminPortfolioRow[]> {
     .from("portfolio_projects")
     .select("id, slug, client_name, title_translations, status")
     .order("created_at", { ascending: false });
-  if (error) return [];
-  return (data ?? []) as AdminPortfolioRow[];
+  if (error || !data) return [];
+
+  const { data: linkRows } = await supabase
+    .from("portfolio_service_links")
+    .select("portfolio_id, service_id");
+
+  const serviceIds = [
+    ...new Set((linkRows ?? []).map((l) => l.service_id)),
+  ] as string[];
+  const { data: servicesData } = serviceIds.length
+    ? await supabase
+        .from("services")
+        .select("id, slug, title_translations")
+        .in("id", serviceIds)
+    : { data: [] };
+  const servicesResult = servicesData ?? [];
+
+  const serviceByProject = new Map<string, string | null>();
+  const rows = data as (typeof data)[number][];
+  for (const row of rows) {
+    const pid = row.id as string;
+    const firstServiceId = (linkRows ?? []).find(
+      (l) => l.portfolio_id === pid
+    )?.service_id;
+    const service = firstServiceId
+      ? servicesResult.find((s) => s.id === firstServiceId)
+      : undefined;
+    serviceByProject.set(
+      pid,
+      service
+        ? (((service.title_translations as Record<string, string> | null)?.en as
+            | string
+            | undefined) ?? service.slug)
+        : null
+    );
+  }
+
+  return rows.map((row) => ({
+    id: row.id as string,
+    slug: row.slug as string,
+    client_name: row.client_name as string,
+    title_translations: row.title_translations as Record<string, string> | null,
+    status: row.status as string,
+    category: serviceByProject.get(row.id as string) ?? null,
+  }));
 }
 
 export interface AdminPortfolioCardImage {

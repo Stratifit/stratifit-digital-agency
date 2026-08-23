@@ -28,6 +28,7 @@ export default async function AdminPortfolioPage() {
         },
         { header: "Client", render: (r) => r.client_name },
         { header: "Slug", render: (r) => <code className="text-text-muted">{r.slug}</code> },
+        { header: "Category", render: (r) => r.category ?? "—" },
         {
           header: "Status",
           render: (r) => (

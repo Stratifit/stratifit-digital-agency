@@ -2,7 +2,13 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import {
+  useForm,
+  useWatch,
+  type Control,
+  type FieldValues,
+  type UseFormSetValue,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
@@ -31,6 +37,8 @@ import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { EditorSectionSwitcher } from "@/components/admin/editor-section-switcher";
 import { LocaleTabs, type EditorLocale } from "@/components/admin/locale-tabs";
+import { uploadMediaAsset } from "@/features/media/mutations";
+import type { AdminServiceOption } from "@/features/content/admin-queries";
 
 export type ContentType = "portfolio" | "insights" | "testimonials" | "pricing" | "faq";
 
@@ -38,6 +46,8 @@ interface ContentFormProps {
   type: ContentType;
   id?: string;
   initial?: Record<string, unknown>;
+  /** Published services for the portfolio category dropdown. */
+  services?: AdminServiceOption[];
 }
 
 type Locale = EditorLocale;
@@ -67,7 +77,120 @@ const TITLES: Record<ContentType, string> = {
   return { en: v?.en ?? "", de: v?.de ?? "", fr: v?.fr ?? "", es: v?.es ?? "" };
 }
 
-export function ContentForm({ type, id, initial }: ContentFormProps) {
+type GalleryItem = { media_id?: string; image_url: string };
+
+/**
+ * 6-slot image uploader for the work card grid. Uploads go to the
+ * `portfolio-images` storage bucket; filled slots show a thumbnail with a
+ * remove button, empty slots show a file picker.
+ */
+function PortfolioGalleryUploader({
+  control,
+  setValue,
+}: {
+  control: Control<FieldValues>;
+  setValue: UseFormSetValue<FieldValues>;
+}) {
+  const gallery = (useWatch({ control, name: "gallery" }) ?? []) as GalleryItem[];
+  const [uploadingIndex, setUploadingIndex] = React.useState<number | null>(null);
+  const [uploadError, setUploadError] = React.useState<string | null>(null);
+  const inputRefs = React.useRef<Array<HTMLInputElement | null>>([]);
+
+  async function handleFile(index: number, e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingIndex(index);
+    setUploadError(null);
+    try {
+      const formData = new FormData();
+      formData.set("file", file);
+      formData.set("bucket", "portfolio-images");
+      formData.set("alt_text", file.name);
+      const result = await uploadMediaAsset(formData);
+      if (result.success) {
+        const next = [...gallery];
+        while (next.length < 6) next.push({ image_url: "" });
+        next[index] = { media_id: result.data.id, image_url: result.data.url };
+        setValue("gallery", next);
+        if (inputRefs.current[index]) inputRefs.current[index]!.value = "";
+      } else {
+        setUploadError(result.error);
+      }
+    } catch {
+      // Server actions can reject despite uploadMediaAsset returning results
+      // (request body limits, network errors) — surface a message instead of
+      // leaving the spinner stuck.
+      setUploadError("Upload failed. Please try again.");
+    } finally {
+      setUploadingIndex(null);
+    }
+  }
+
+  function handleRemove(index: number) {
+    const next = [...gallery];
+    next[index] = { image_url: "" };
+    setValue("gallery", next);
+    setUploadError(null);
+  }
+
+  return (
+    <div>
+      <div className="grid grid-cols-3 gap-3">
+        {Array.from({ length: 6 }, (_, index) => gallery[index]).map(
+          (slot, index) => (
+            <div
+              key={index}
+              className="relative aspect-square overflow-hidden rounded-input border border-card-border bg-background"
+            >
+              {slot?.image_url ? (
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element -- admin thumbnail preview */}
+                  <img
+                    src={slot.image_url}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemove(index)}
+                    className="absolute right-1.5 top-1.5 rounded-sm bg-black/70 px-2 py-0.5 text-[10px] font-medium text-white transition-colors hover:bg-error focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  >
+                    Remove
+                  </button>
+                </>
+              ) : (
+                <label className="flex h-full w-full cursor-pointer flex-col items-center justify-center gap-1 text-center transition-colors hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                  <input
+                    ref={(el) => {
+                      inputRefs.current[index] = el;
+                    }}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml,image/avif"
+                    onChange={(e) => handleFile(index, e)}
+                    className="sr-only"
+                  />
+                  <span className="text-[10px] font-medium text-text-muted">
+                    {uploadingIndex === index ? "Uploading…" : "Add image"}
+                  </span>
+                </label>
+              )}
+              <span className="pointer-events-none absolute bottom-1.5 left-1.5 rounded-sm bg-black/70 px-1.5 py-0.5 text-[10px] font-medium text-white">
+                {index + 1}
+              </span>
+            </div>
+          )
+        )}
+      </div>
+      {uploadError ? <p className="mt-2 text-xs text-error">{uploadError}</p> : null}
+      <p className="mt-2 text-xs text-text-muted">
+        Up to 6 images for the work card grid. The first image is the card
+        cover; brand-design projects show a 2×2 grid of the first four.
+      </p>
+    </div>
+  );
+}
+
+export function ContentForm({ type, id, initial, services = [] }: ContentFormProps) {
   const router = useRouter();
   const schema = SCHEMAS[type];
   const [serverError, setServerError] = React.useState<string | null>(null);
@@ -92,6 +215,8 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
     }
     if (type === "portfolio") {
       d.client_name = initial.client_name ?? "";
+      d.service_slug = initial.service_slug ?? "";
+      d.gallery = initial.gallery ?? [];
       d.title_translations = tr(initial.title_translations as Record<string, string> | null);
       d.summary_translations = tr(initial.summary_translations as Record<string, string> | null);
       d.image_url = initial.image_url ?? "";
@@ -145,6 +270,7 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
     handleSubmit,
     getValues,
     setValue,
+    control,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(
@@ -223,6 +349,23 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
               <Label htmlFor="client_name">Client Name</Label>
               <Input id="client_name" placeholder="Client" {...register("client_name")} />
               {err("client_name") ? <p className="text-sm text-error">{err("client_name")}</p> : null}
+            </div>
+          ) : null}
+
+          {type === "portfolio" ? (
+            <div className="space-y-2">
+              <Label htmlFor="service_slug">Category</Label>
+              <Select id="service_slug" defaultValue="" {...register("service_slug")}>
+                <option value="">No category</option>
+                {services.map((s) => (
+                  <option key={s.slug} value={s.slug}>
+                    {s.label}
+                  </option>
+                ))}
+              </Select>
+              <p className="text-xs text-text-muted">
+                Shown as the badge on the work card.
+              </p>
             </div>
           ) : null}
 
@@ -396,6 +539,15 @@ export function ContentForm({ type, id, initial }: ContentFormProps) {
                 {trErr(type === "portfolio" ? "summary_translations" : "excerpt_translations", locale)}
               </p>
             ) : null}
+          </div>
+        ) : null}
+
+        {type === "portfolio" ? (
+          <div className="mt-5 rounded-card border border-white/5 bg-background p-4">
+            <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-text-subtle">
+              Card images
+            </p>
+            <PortfolioGalleryUploader control={control} setValue={setValue} />
           </div>
         ) : null}
 

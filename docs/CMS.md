@@ -590,11 +590,18 @@ Portfolio editors should support:
 
 Homepage work cards show a full cover image, except brand-design cards which
 render a 2×2 grid of four small thumbnails (Maison Lumière, Aura Cosmetics —
-projects linked to the `brand-design` service). The Our Work section editor
-(Sections → Portfolio → Card images) manages these per-card images: each
-published card has six upload slots that persist to the `portfolio_media`
-gallery table on save (Supabase Storage via the shared media upload action).
-Empty slots are skipped.
+projects linked to the `brand-design` service). Card images can be managed in
+two places:
+
+- **Portfolio Projects → Edit project** (Content tab): a **Category** dropdown
+  (published services; the selected service becomes the card badge via
+  `portfolio_service_links`) and a **Card images** section with six upload
+  slots. Uploads go to Supabase Storage (`portfolio-images` bucket via the
+  shared media upload action) and persist to `portfolio_media` on save; the
+  first image is the card cover.
+- **Sections → Portfolio → Card images** (Our Work section editor): manages
+  the same six per-card slots across all published cards. Empty slots are
+  skipped in both editors.
 
 ---
 
