@@ -15,6 +15,7 @@ import {
   BrandBoard,
   type BrandBoardVariant,
 } from "@/components/work/brand-board";
+import { BrandGuidelines } from "@/components/work/brand-guidelines";
 
 interface BrandStep {
   step_key: string;
@@ -684,7 +685,36 @@ export function BrandCaseStudy({
       ) : null}
 
       {/* ============================================================ */}
-      {/* 06 — Client perspective                                       */}
+      {/* 06 — Brand Guidelines — identity-system bento board          */}
+      {/* ============================================================ */}
+      <section className="border-t border-white/5 bg-background-deep py-16 md:py-24">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <SectionEyebrow index={6}>
+              {t(locale, "workBrandGuidelines")}
+            </SectionEyebrow>
+            <h2 className="mt-4 max-w-3xl font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl md:text-5xl">
+              {t(locale, "workIdentitySystem")}
+            </h2>
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-text-muted">
+              {t(locale, "workGuidelinesIntro")}
+            </p>
+          </Reveal>
+          <Reveal
+            stagger
+            className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+          >
+            <BrandGuidelines
+              wordmark={wordmark}
+              summary={projectSummary}
+              locale={locale}
+            />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/* 07 — Client perspective                                       */}
       {/* ============================================================ */}
       {project.testimonial ? (
         <section className="border-t border-white/5 py-16 md:py-24">
@@ -692,7 +722,7 @@ export function BrandCaseStudy({
             <div className="grid items-center gap-10 lg:grid-cols-[1fr_0.9fr] lg:gap-14">
               <div>
                 <Reveal>
-                  <SectionEyebrow index={6}>
+                  <SectionEyebrow index={7}>
                     {t(locale, "workClientPerspective")}
                   </SectionEyebrow>
                 </Reveal>

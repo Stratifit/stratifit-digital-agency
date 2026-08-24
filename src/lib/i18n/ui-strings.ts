@@ -171,6 +171,20 @@ export type UiStringKey =
   | "workBrandIdentity"
   | "workBrandInAction"
   | "workBrandInUse"
+  | "workBrandGuidelines"
+  | "workIdentitySystem"
+  | "workGuidelinesIntro"
+  | "workContents"
+  | "workPrimaryLogo"
+  | "workLogoSuite"
+  | "workLogoVariations"
+  | "workColourPalette"
+  | "workColourUsage"
+  | "workTypography"
+  | "workTypeHierarchy"
+  | "workHeading"
+  | "workBody"
+  | "workThankYou"
   | "workCaseStudy"
   | "workCaseStudies"
   | "workChallenge"
@@ -446,6 +460,21 @@ const en: UiStrings = {
   workBrandIdentity: "Brand Identity",
   workBrandInAction: "Brand in Action",
   workBrandInUse: "The Brand in Use",
+  workBrandGuidelines: "Brand Guidelines",
+  workIdentitySystem: "The identity system.",
+  workGuidelinesIntro:
+    "One coherent system — logo, colour, typography, and application — carried across every touchpoint.",
+  workContents: "Contents",
+  workPrimaryLogo: "Primary Logo",
+  workLogoSuite: "Logo Suite",
+  workLogoVariations: "Logo Variations",
+  workColourPalette: "Colour Palette",
+  workColourUsage: "Colour Usage",
+  workTypography: "Typography",
+  workTypeHierarchy: "Type Hierarchy",
+  workHeading: "Heading",
+  workBody: "Body",
+  workThankYou: "Thank You",
   workCaseStudy: "Case Study",
   workCaseStudies: "Case Studies",
   workChallenge: "Challenge",
@@ -727,6 +756,21 @@ const de: UiStrings = {
   workBrandIdentity: "Markenidentität",
   workBrandInAction: "Marke in Aktion",
   workBrandInUse: "Die Marke im Einsatz",
+  workBrandGuidelines: "Markenrichtlinien",
+  workIdentitySystem: "Das Identitätssystem.",
+  workGuidelinesIntro:
+    "Ein kohärentes System aus Logo, Farbe, Typografie und Anwendung — konsistent an jedem Berührungspunkt.",
+  workContents: "Inhalt",
+  workPrimaryLogo: "Primärlogo",
+  workLogoSuite: "Logo-Suite",
+  workLogoVariations: "Logo-Varianten",
+  workColourPalette: "Farbpalette",
+  workColourUsage: "Farbeinsatz",
+  workTypography: "Typografie",
+  workTypeHierarchy: "Typografische Hierarchie",
+  workHeading: "Überschrift",
+  workBody: "Fließtext",
+  workThankYou: "Vielen Dank",
   workCaseStudy: "Fallstudie",
   workCaseStudies: "Fallstudien",
   workChallenge: "Herausforderung",
@@ -1008,6 +1052,21 @@ const fr: UiStrings = {
   workBrandIdentity: "Identité de marque",
   workBrandInAction: "La marque en action",
   workBrandInUse: "La marque en usage",
+  workBrandGuidelines: "Charte graphique",
+  workIdentitySystem: "Le système d'identité.",
+  workGuidelinesIntro:
+    "Un système cohérent — logo, couleur, typographie et application — décliné sur chaque point de contact.",
+  workContents: "Sommaire",
+  workPrimaryLogo: "Logo principal",
+  workLogoSuite: "Suite de logos",
+  workLogoVariations: "Déclinaisons du logo",
+  workColourPalette: "Palette de couleurs",
+  workColourUsage: "Usage des couleurs",
+  workTypography: "Typographie",
+  workTypeHierarchy: "Hiérarchie typographique",
+  workHeading: "Titre",
+  workBody: "Texte courant",
+  workThankYou: "Merci",
   workCaseStudy: "Étude de cas",
   workCaseStudies: "similaires",
   workChallenge: "Défi",
@@ -1289,6 +1348,21 @@ const es: UiStrings = {
   workBrandIdentity: "Identidad de marca",
   workBrandInAction: "La marca en acción",
   workBrandInUse: "La marca en uso",
+  workBrandGuidelines: "Manual de marca",
+  workIdentitySystem: "El sistema de identidad.",
+  workGuidelinesIntro:
+    "Un sistema coherente — logotipo, color, tipografía y aplicación — presente en cada punto de contacto.",
+  workContents: "Contenido",
+  workPrimaryLogo: "Logotipo principal",
+  workLogoSuite: "Suite de logo",
+  workLogoVariations: "Variaciones del logo",
+  workColourPalette: "Paleta de colores",
+  workColourUsage: "Uso del color",
+  workTypography: "Tipografía",
+  workTypeHierarchy: "Jerarquía tipográfica",
+  workHeading: "Encabezado",
+  workBody: "Cuerpo",
+  workThankYou: "Gracias",
   workCaseStudy: "Estudio de caso",
   workCaseStudies: "similares",
   workChallenge: "Reto",
