@@ -13,6 +13,7 @@ import { RelatedProjects } from "@/components/work/related-projects";
 import { BrandBoard, type BrandBoardVariant } from "@/components/work/brand-board";
 import { ProcessCards, type ProcessStep } from "@/components/work/process-cards";
 import { BrandGuidelinesDocument } from "@/components/work/brand-guidelines-document";
+import { ProcessIcon } from "@/components/ui/process-icon";
 
 interface BrandStep {
   step_key: string;
@@ -34,19 +35,35 @@ function initials(name: string): string {
     .toUpperCase();
 }
 
+/** Icons for the cover meta cards — Client, Industry, Year (in order). */
+const META_ICONS = ["user", "briefcase", "calendar"];
+
+/** Icons rotated across the results metric cards. */
+const METRIC_ICONS = ["chart", "target", "trendingup", "sparkles"];
+
 /**
  * Numbered section label — e.g. "01 • Project Problem" — the amber eyebrow
- * that anchors every storytelling block of the case study.
+ * that anchors every storytelling block of the case study. Each section
+ * carries its own icon chip so the story blocks read like the sections of
+ * the guidelines document above them.
  */
 function SectionEyebrow({
   index,
+  icon,
   children,
 }: {
   index: number;
+  icon: string;
   children: React.ReactNode;
 }) {
   return (
-    <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-primary">
+    <p className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.3em] text-primary">
+      <span
+        className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-primary/25 bg-primary/10"
+        aria-hidden="true"
+      >
+        <ProcessIcon name={icon} className="size-4" />
+      </span>
       {String(index).padStart(2, "0")} • {children}
     </p>
   );
@@ -275,15 +292,29 @@ export function BrandCaseStudy({
 
             {metaItems.length > 0 ? (
               <Reveal className="mt-10">
-                <dl className="grid grid-cols-3 gap-6 border-t border-white/10 pt-8 sm:gap-8">
-                  {metaItems.map((item) => (
-                    <div key={item.label}>
-                      <dt className="text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
-                        {item.label}
-                      </dt>
-                      <dd className="mt-1.5 text-sm font-semibold leading-snug text-text-primary">
-                        {item.value}
-                      </dd>
+                <dl className="grid divide-y divide-white/10 overflow-hidden rounded-card-lg border border-white/10 bg-card-dark sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+                  {metaItems.map((item, index) => (
+                    <div
+                      key={item.label}
+                      className="flex items-center gap-4 p-5 sm:p-6"
+                    >
+                      <span
+                        className="flex size-11 shrink-0 items-center justify-center rounded-full border border-primary/25 bg-primary/10 text-primary"
+                        aria-hidden="true"
+                      >
+                        <ProcessIcon
+                          name={META_ICONS[index] ?? "user"}
+                          className="size-5"
+                        />
+                      </span>
+                      <div className="min-w-0">
+                        <dt className="text-[10px] font-bold uppercase tracking-[0.25em] text-primary">
+                          {item.label}
+                        </dt>
+                        <dd className="mt-1 truncate text-sm font-semibold leading-snug text-text-primary">
+                          {item.value}
+                        </dd>
+                      </div>
                     </div>
                   ))}
                 </dl>
@@ -299,7 +330,7 @@ export function BrandCaseStudy({
       <section className="py-14 md:py-20">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <SectionEyebrow index={nextIndex()}>
+            <SectionEyebrow index={nextIndex()} icon="layers">
               {t(locale, "workBrandGuidelines")}
             </SectionEyebrow>
             <h2 className="mt-5 max-w-3xl font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl">
@@ -326,7 +357,7 @@ export function BrandCaseStudy({
       <section className="py-14 md:py-20">
         <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <SectionEyebrow index={nextIndex()}>
+            <SectionEyebrow index={nextIndex()} icon="search">
               {t(locale, "workProjectProblem")}
             </SectionEyebrow>
             {problemHeading ? (
@@ -357,7 +388,7 @@ export function BrandCaseStudy({
       <section className="py-14 md:py-20">
         <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <SectionEyebrow index={nextIndex()}>
+            <SectionEyebrow index={nextIndex()} icon="lightbulb">
               {t(locale, "workOurSolution")}
             </SectionEyebrow>
             {solutionBody ? (
@@ -383,7 +414,7 @@ export function BrandCaseStudy({
       <section className="py-14 md:py-20">
         <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <SectionEyebrow index={nextIndex()}>
+            <SectionEyebrow index={nextIndex()} icon="rocket">
               {t(locale, "workConcept")}
             </SectionEyebrow>
             {conceptBody ? (
@@ -410,7 +441,7 @@ export function BrandCaseStudy({
         <section className="py-14 md:py-20">
           <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <SectionEyebrow index={nextIndex()}>
+              <SectionEyebrow index={nextIndex()} icon="map">
                 {t(locale, "workOurProcess")}
               </SectionEyebrow>
             </Reveal>
@@ -428,7 +459,7 @@ export function BrandCaseStudy({
         <section className="border-t border-white/5 py-14 md:py-20">
           <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <SectionEyebrow index={nextIndex()}>
+              <SectionEyebrow index={nextIndex()} icon="trendingup">
                 {t(locale, "workResults")}
               </SectionEyebrow>
               <h2 className="mt-5 max-w-3xl font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl">
@@ -443,12 +474,21 @@ export function BrandCaseStudy({
             </Reveal>
             {resolvedMetrics.length > 0 ? (
               <Reveal className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                {resolvedMetrics.map((metric) => (
+                {resolvedMetrics.map((metric, index) => (
                   <div
                     key={metric.label}
-                    className="rounded-card-lg border border-white/10 bg-card-dark p-6 sm:p-7"
+                    className="relative overflow-hidden rounded-card-lg border border-white/10 bg-card-dark p-6 sm:p-7"
                   >
-                    <div className="font-display text-3xl font-black tracking-tight text-primary md:text-4xl">
+                    <span
+                      className="absolute right-5 top-5 flex size-9 items-center justify-center rounded-full border border-primary/20 bg-primary/10 text-primary"
+                      aria-hidden="true"
+                    >
+                      <ProcessIcon
+                        name={METRIC_ICONS[index % METRIC_ICONS.length]}
+                        className="size-4"
+                      />
+                    </span>
+                    <div className="pr-10 font-display text-3xl font-black tracking-tight text-primary md:text-4xl">
                       {metric.value}
                     </div>
                     <div className="mt-2 text-[10px] font-bold uppercase tracking-[0.2em] text-text-subtle">
@@ -469,7 +509,7 @@ export function BrandCaseStudy({
         <section className="py-14 md:py-20">
           <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <SectionEyebrow index={nextIndex()}>
+              <SectionEyebrow index={nextIndex()} icon="image">
                 {t(locale, "workBrandInAction")}
               </SectionEyebrow>
               <h2 className="mt-5 max-w-3xl font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl">
@@ -513,7 +553,7 @@ export function BrandCaseStudy({
         <section className="border-t border-white/5 py-14 md:py-20">
           <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <SectionEyebrow index={nextIndex()}>
+              <SectionEyebrow index={nextIndex()} icon="quote">
                 {t(locale, "workClientPerspective")}
               </SectionEyebrow>
               <blockquote className="mt-6 font-display text-2xl font-bold leading-snug tracking-tight text-text-primary sm:text-3xl md:text-4xl">
@@ -556,6 +596,12 @@ export function BrandCaseStudy({
             <Reveal>
               <div className="mb-4 flex items-center gap-3">
                 <div className="h-px flex-1 bg-gradient-to-r from-primary/40 to-transparent" />
+                <span
+                  className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-primary/25 bg-primary/10"
+                  aria-hidden="true"
+                >
+                  <ProcessIcon name="sparkles" className="size-4" />
+                </span>
                 <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary">
                   {t(locale, "workMoreWork")}
                 </span>
@@ -590,7 +636,13 @@ export function BrandCaseStudy({
                     aria-hidden="true"
                     className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent"
                   />
-                  <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-primary">
+                  <p className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.3em] text-primary">
+                    <span
+                      className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-primary/25 bg-primary/10"
+                      aria-hidden="true"
+                    >
+                      <ProcessIcon name="rocket" className="size-4" />
+                    </span>
                     {t(locale, "workYourProjectNext")}
                   </p>
                   <h2 className="mt-4 font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl">
