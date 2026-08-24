@@ -9,13 +9,9 @@ import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { t, tWithValue } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
 import { Reveal } from "@/components/ui/reveal";
-import { ProcessIcon } from "@/components/ui/process-icon";
 import { RelatedProjects } from "@/components/work/related-projects";
-import {
-  BrandBoard,
-  type BrandBoardVariant,
-} from "@/components/work/brand-board";
-import { BrandGuidelines } from "@/components/work/brand-guidelines";
+import { BrandBoard, type BrandBoardVariant } from "@/components/work/brand-board";
+import { ProcessCards, type ProcessStep } from "@/components/work/process-cards";
 
 interface BrandStep {
   step_key: string;
@@ -38,8 +34,8 @@ function initials(name: string): string {
 }
 
 /**
- * Editorial section label — "01 · Project Overview" — matching the numbered
- * storytelling layout of the case study.
+ * Numbered section label — e.g. "01 • Project Problem" — the amber eyebrow
+ * that anchors every storytelling block of the case study.
  */
 function SectionEyebrow({
   index,
@@ -50,25 +46,33 @@ function SectionEyebrow({
 }) {
   return (
     <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-primary">
-      {String(index).padStart(2, "0")} · {children}
+      {String(index).padStart(2, "0")} • {children}
     </p>
   );
 }
 
-function CheckIcon({ className }: { className?: string }) {
+/** Amber check mark badge used in the case-study header. */
+function CheckBadge({ className }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
+    <span
+      className={cn(
+        "flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary",
+        className
+      )}
       aria-hidden="true"
-      className={cn("shrink-0 text-primary", className)}
     >
-      <path d="m5 13 4 4L19 7" />
-    </svg>
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#0A0A0A"
+        strokeWidth={3}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="size-4"
+      >
+        <path d="m5 13 4 4L19 7" />
+      </svg>
+    </span>
   );
 }
 
@@ -89,15 +93,36 @@ function ArrowIcon({ className }: { className?: string }) {
   );
 }
 
-/** Board variant used for each numbered process step (cycles after step 5). */
-const STEP_BOARDS: BrandBoardVariant[] = [
-  "overview",
-  "palette",
-  "mark",
-  "type",
-  "applications",
-  "pattern",
-];
+/**
+ * Visual + caption pair — the design's storytelling cards: a generated brand
+ * board in a rounded frame with a caption on the left and a status pill on
+ * the right ("Before", "New Identity", "Concept").
+ */
+function VisualBlock({
+  board,
+  wordmark,
+  caption,
+  badge,
+}: {
+  board: BrandBoardVariant;
+  wordmark: string;
+  caption: string;
+  badge: string;
+}) {
+  return (
+    <figure>
+      <div className="relative aspect-[4/3] overflow-hidden rounded-card-lg border border-white/10 bg-card-dark">
+        <BrandBoard variant={board} wordmark={wordmark} className="absolute inset-0" />
+      </div>
+      <figcaption className="mt-3 flex items-center justify-between gap-4">
+        <span className="text-xs font-medium text-text-muted">{caption}</span>
+        <span className="shrink-0 rounded-full border border-primary/40 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
+          {badge}
+        </span>
+      </figcaption>
+    </figure>
+  );
+}
 
 /* ------------------------------------------------------------------ */
 /* Brand case study                                                    */
@@ -144,122 +169,100 @@ export function BrandCaseStudy({
       : "";
 
   const wordmark = project.client_name || projectTitle || "Brand";
-  const kickerParts = [
-    serviceTitle || t(locale, "workBrandIdentity"),
-    deliverables[0],
-    launchYear,
-  ].filter(Boolean);
+  const clientName = project.client_name || wordmark;
+  const categoryLabel =
+    serviceTitle || deliverables[0] || t(locale, "workBrandIdentity");
+
+  // Story blocks — derived from the project's own content.
+  const problemHeading = challenge || brandStory || projectSummary;
+  const problemBody = brandStory || projectSummary;
+  const solutionBody = solution || approach || projectSummary;
+  const conceptBody = approach || brandStory || projectSummary;
+
+  const metaItems: { label: string; value: string }[] = [
+    { label: t(locale, "workClient"), value: clientName },
+  ];
+  if (categoryLabel) {
+    metaItems.push({ label: t(locale, "workIndustry"), value: categoryLabel });
+  }
+  if (launchYear) {
+    metaItems.push({ label: t(locale, "workYear"), value: launchYear });
+  }
 
   const gallery = project.gallery_urls;
-  const captionFor = (index: number) =>
+  const galleryCaption = (index: number) =>
     deliverables[index % deliverables.length] ??
-    `${t(locale, "workApplications")} ${String(index + 1).padStart(2, "0")}`;
-
-  const galleryTileDefs: { wide: boolean; board: BrandBoardVariant }[] = [
-    { wide: true, board: "applications" },
-    { wide: false, board: "palette" },
-    { wide: false, board: "type" },
-    { wide: true, board: "pattern" },
-    { wide: false, board: "mark" },
-    { wide: false, board: "overview" },
-  ];
-  const galleryTiles: {
-    wide: boolean;
-    board: BrandBoardVariant;
-    caption: string;
-    url: string | null;
-  }[] = galleryTileDefs.map((tile, index) => ({
-    ...tile,
-    caption: captionFor(index),
-    url: gallery.length ? gallery[index % gallery.length] : null,
-  }));
-
-  // Strategy card items — derived from the project's own content.
-  const strategyItems: { label: string; value: string }[] = [
-    {
-      label: t(locale, "workPositioning"),
-      value: `${wordmark} · ${serviceTitle || t(locale, "workBrandIdentity")}`,
-    },
-    { label: t(locale, "workAudience"), value: projectSummary },
-    {
-      label: t(locale, "workCoreMessage"),
-      value: brandStory || challenge || projectSummary,
-    },
-    {
-      label: t(locale, "workValueProposition"),
-      value: solution || resultsText || projectSummary,
-    },
-    ...(deliverables.length
-      ? [
-          {
-            label: t(locale, "servicesDeliverables"),
-            value: deliverables.join(" · "),
-          },
-        ]
-      : []),
-  ];
+    `${t(locale, "workBrandInAction")} ${String(index + 1).padStart(2, "0")}`;
 
   const resolvedMetrics = project.metrics.map((metric) => ({
     value: metric.value,
     label: resolveTranslation(metric.label_translations, locale),
   }));
 
-  const clientName = project.client_name || wordmark;
+  const processSteps: ProcessStep[] = steps.map((step) => ({
+    step_key: step.step_key,
+    icon_name: step.icon_name,
+    title: resolveTranslation(step.title_translations, locale),
+    description: resolveTranslation(step.description_translations, locale),
+  }));
+
   const ctaLabel = serviceTitle
     ? tWithValue(locale, "ctaStartService", serviceTitle)
     : t(locale, "workStartCta");
   const servicesJoined = deliverables.join(" · ");
 
+  // Numbered sections — the counter advances only for rendered sections so
+  // numbering stays sequential when a section is missing content.
+  let sectionIndex = 0;
+  const nextIndex = () => ++sectionIndex;
+
   return (
     <>
       {/* ============================================================ */}
-      {/* Hero — topline, editorial copy, generated hero board         */}
+      {/* Cover — header bar, category tag, title, metadata            */}
       {/* ============================================================ */}
       <section className="relative overflow-hidden border-b border-white/5">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-[420px] overflow-hidden"
+          className="pointer-events-none absolute inset-x-0 top-0 h-[360px] overflow-hidden"
         >
-          <div className="absolute left-1/2 top-0 h-[420px] w-[900px] -translate-x-1/2 rounded-full bg-primary/[0.06] blur-[140px]" />
+          <div className="absolute left-1/2 top-0 h-[360px] w-[900px] -translate-x-1/2 rounded-full bg-primary/[0.06] blur-[140px]" />
         </div>
 
         <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal immediate>
-            <nav
-              aria-label="Case study navigation"
-              className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 py-5"
-            >
+            <div className="flex items-center justify-between gap-4 border-b border-white/10 py-5">
               <Link
                 href="/work"
-                className="group inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-text-secondary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                aria-label={t(locale, "workSelectedWork")}
+                className="group inline-flex items-center gap-3 rounded-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                  className="size-4 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:-translate-x-0.5"
-                >
-                  <path d="M19 12H5m5 5-5-5 5-5" />
-                </svg>
-                {t(locale, "workSelectedWork")}
+                <CheckBadge />
+                <span className="font-display text-base font-black tracking-tight text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:text-primary">
+                  {wordmark}
+                </span>
               </Link>
-              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
-                {wordmark.toUpperCase()} · {t(locale, "workCaseStudy")} 01
-                {launchYear ? ` · ${launchYear}` : ""}
+              <span className="inline-flex shrink-0 items-center rounded-full border border-primary/40 bg-card-dark px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
+                {categoryLabel}
               </span>
-            </nav>
+            </div>
           </Reveal>
 
-          <div className="pb-10 pt-12 md:pb-14 md:pt-16 lg:pt-20">
+          <Reveal className="mt-6">
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-card-lg border border-primary/30 bg-card-dark px-4 py-3 sm:px-5">
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
+                {categoryLabel}
+              </span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-text-muted">
+                {t(locale, "workCaseStudy")}
+                {launchYear ? ` / ${launchYear}` : ""}
+              </span>
+            </div>
+          </Reveal>
+
+          <div className="pb-12 pt-10 md:pb-16 md:pt-14">
             <Reveal>
-              <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
-                {kickerParts.join(" · ")}
-              </p>
-              <h1 className="mt-5 max-w-4xl font-display text-5xl font-black leading-[0.98] tracking-tight text-text-primary sm:text-6xl md:text-7xl">
+              <h1 className="font-display text-5xl font-black leading-[0.95] tracking-tight text-text-primary sm:text-6xl md:text-7xl lg:text-8xl">
                 {projectTitle || wordmark}
               </h1>
               {projectSummary ? (
@@ -268,412 +271,203 @@ export function BrandCaseStudy({
                 </p>
               ) : null}
             </Reveal>
-            {deliverables.length > 0 ? (
-              <Reveal className="mt-8">
-                <ul
-                  className="flex flex-wrap gap-2"
-                  aria-label="Project services and timeline"
-                >
-                  {deliverables.map((deliverable) => (
-                    <li
-                      key={deliverable}
-                      className="rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-text-secondary"
-                    >
-                      {deliverable}
-                    </li>
-                  ))}
-                </ul>
-              </Reveal>
-            ) : null}
-          </div>
 
-          <Reveal className="pb-12 md:pb-16">
-            <figure className="relative aspect-[16/7] overflow-hidden rounded-card-lg border border-white/10 md:aspect-[21/8]">
-              <BrandBoard
-                variant="hero"
-                wordmark={wordmark}
-                label={serviceTitle || t(locale, "workBrandIdentity")}
-                tagline={projectSummary}
-                className="absolute inset-0"
-              />
-            </figure>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/* 01 — Project overview                                         */}
-      {/* ============================================================ */}
-      <section className="py-16 md:py-24">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-6 md:grid-cols-2 md:items-end">
-            <div>
-              <Reveal>
-                <SectionEyebrow index={1}>{t(locale, "workOverview")}</SectionEyebrow>
-              </Reveal>
-              <Reveal>
-                <h2 className="mt-4 max-w-2xl font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl md:text-5xl">
-                  {challenge || projectSummary || wordmark}
-                </h2>
-              </Reveal>
-            </div>
-            {approach ? (
-              <Reveal>
-                <p className="text-base leading-relaxed text-text-muted md:text-lg">
-                  {approach}
-                </p>
-              </Reveal>
-            ) : null}
-          </div>
-
-          <div className="mt-12 grid gap-4 md:grid-cols-3">
-            <Reveal className="h-full">
-              <article className="flex h-full flex-col rounded-card-lg border border-white/10 bg-card-dark p-6 sm:p-7">
-                <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
-                  {t(locale, "workClient")}
-                </span>
-                <h3 className="mt-2 font-display text-lg font-bold text-text-primary">
-                  {t(locale, "workWhoTheyAre")}
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-text-secondary">
-                  {clientName}
-                  {serviceTitle ? ` · ${serviceTitle}` : ""}
-                </p>
-              </article>
-            </Reveal>
-            <Reveal className="h-full">
-              <article className="flex h-full flex-col rounded-card-lg border border-white/10 bg-card-dark p-6 sm:p-7">
-                <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
-                  {t(locale, "workChallenge")}
-                </span>
-                <h3 className="mt-2 font-display text-lg font-bold text-text-primary">
-                  {t(locale, "workWhatWasBroken")}
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-text-secondary">
-                  {challenge || projectSummary}
-                </p>
-              </article>
-            </Reveal>
-            <Reveal className="h-full">
-              <article className="flex h-full flex-col rounded-card-lg border border-white/10 bg-card-dark p-6 sm:p-7">
-                <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
-                  {t(locale, "workObjective")}
-                </span>
-                <h3 className="mt-2 font-display text-lg font-bold text-text-primary">
-                  {t(locale, "workWhatNeededToChange")}
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-text-secondary">
-                  {solution || resultsText || projectSummary}
-                </p>
-              </article>
-            </Reveal>
-          </div>
-
-          <Reveal className="mt-12">
-            <figure className="relative overflow-hidden rounded-card-lg border border-white/10">
-              <div className="aspect-[16/7]">
-                <BrandBoard
-                  variant="overview"
-                  wordmark={wordmark}
-                  className="absolute inset-0"
-                />
-              </div>
-              <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-wrap items-center justify-between gap-2 border-t border-white/10 bg-gradient-to-t from-black/80 to-transparent px-6 py-4">
-                <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-text-muted">
-                  {t(locale, "workOverview")}
-                </span>
-                <span className="text-xs font-semibold text-text-primary">
-                  {wordmark} — {t(locale, "workBrandIdentity")}
-                </span>
-              </figcaption>
-            </figure>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/* 02 — Strategy foundation (dark band)                          */}
-      {/* ============================================================ */}
-      <section className="border-t border-white/5 bg-background-deep py-16 md:py-24">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
-            <div>
-              <Reveal>
-                <SectionEyebrow index={2}>{t(locale, "workStrategy")}</SectionEyebrow>
-              </Reveal>
-              <Reveal>
-                <h2 className="mt-4 font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl md:text-5xl">
-                  {t(locale, "workStrategyFoundation")}
-                </h2>
-              </Reveal>
-              {approach ? (
-                <Reveal>
-                  <p className="mt-5 text-base leading-relaxed text-text-secondary md:text-lg">
-                    {approach}
-                  </p>
-                </Reveal>
-              ) : null}
-              {brandStory ? (
-                <Reveal>
-                  <p className="mt-4 max-w-md text-sm leading-relaxed text-text-muted">
-                    {brandStory}
-                  </p>
-                </Reveal>
-              ) : null}
-            </div>
-
-            <Reveal>
-              <div className="overflow-hidden rounded-card-lg border border-white/10 bg-card-dark">
-                <div className="grid sm:grid-cols-[220px_1fr]">
-                  <div className="relative aspect-square sm:aspect-auto sm:min-h-[320px]">
-                    <BrandBoard
-                      variant="mark"
-                      wordmark={wordmark}
-                      className="absolute inset-0"
-                    />
-                  </div>
-                  <div className="divide-y divide-white/5 border-t border-white/5 sm:border-l sm:border-t-0">
-                    {strategyItems.map((item, index) => (
-                      <div key={item.label} className="flex gap-4 p-5 sm:p-6">
-                        <span className="shrink-0 font-display text-xs font-black leading-none text-primary/50">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                        <div>
-                          <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
-                            {item.label}
-                          </div>
-                          <p className="mt-1.5 text-sm font-medium leading-relaxed text-text-primary">
-                            {item.value}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/* Method bar — Our method: step → step → step                  */}
-      {/* ============================================================ */}
-      {steps.length > 0 ? (
-        <aside
-          aria-label={t(locale, "workOurMethod")}
-          className="border-b border-white/5 bg-card-dark/60"
-        >
-          <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center gap-x-3 gap-y-2 px-4 py-5 sm:px-6 lg:px-8">
-            <span className="mr-2 text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
-              {t(locale, "workOurMethod")}
-            </span>
-            {steps.map((step, index) => (
-              <span
-                key={step.step_key}
-                className="flex items-center gap-x-3 gap-y-2"
-              >
-                {index > 0 ? (
-                  <span className="text-primary" aria-hidden="true">
-                    →
-                  </span>
-                ) : null}
-                <strong className="text-xs font-bold uppercase tracking-[0.15em] text-text-primary">
-                  {resolveTranslation(step.title_translations, locale)}
-                </strong>
-              </span>
-            ))}
-          </div>
-        </aside>
-      ) : null}
-
-      {/* ============================================================ */}
-      {/* 03 — Process — numbered timeline with a board per step       */}
-      {/* ============================================================ */}
-      {steps.length > 0 ? (
-        <section className="py-16 md:py-24">
-          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-            <Reveal>
-              <SectionEyebrow index={3}>{t(locale, "workOurProcess")}</SectionEyebrow>
-              <h2 className="mt-4 max-w-3xl font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl md:text-5xl">
-                {t(locale, "workHowWeBuilt")}
-              </h2>
-              <p className="mt-4 max-w-2xl text-base leading-relaxed text-text-muted">
-                {t(locale, "workProcessIntro")}
-              </p>
-            </Reveal>
-
-            <div className="mt-14 space-y-16 md:space-y-20">
-              {steps.map((step, index) => {
-                const stepTitle = resolveTranslation(
-                  step.title_translations,
-                  locale
-                );
-                const stepDescription = resolveTranslation(
-                  step.description_translations,
-                  locale
-                );
-                const flipped = index % 2 === 1;
-                return (
-                  <article
-                    key={step.step_key}
-                    className="grid items-center gap-6 lg:grid-cols-2 lg:gap-14"
-                  >
-                    <div className={cn(flipped && "lg:order-2")}>
-                      <Reveal>
-                        <div className="flex items-baseline gap-4">
-                          <span className="font-display text-5xl font-black leading-none text-primary/20 md:text-6xl">
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
-                          <h3 className="font-display text-2xl font-black tracking-tight text-text-primary md:text-3xl">
-                            {stepTitle}
-                          </h3>
-                        </div>
-                        <p className="mt-4 max-w-lg text-base leading-relaxed text-text-secondary">
-                          {stepDescription}
-                        </p>
-                        <div className="mt-6 flex items-center gap-2">
-                          <ProcessIcon
-                            name={step.icon_name}
-                            className="size-4 text-primary"
-                          />
-                          <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
-                            {stepTitle}
-                          </span>
-                        </div>
-                      </Reveal>
+            {metaItems.length > 0 ? (
+              <Reveal className="mt-10">
+                <dl className="grid grid-cols-3 gap-6 border-t border-white/10 pt-8 sm:gap-8">
+                  {metaItems.map((item) => (
+                    <div key={item.label}>
+                      <dt className="text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
+                        {item.label}
+                      </dt>
+                      <dd className="mt-1.5 text-sm font-semibold leading-snug text-text-primary">
+                        {item.value}
+                      </dd>
                     </div>
-                    <Reveal className={cn(flipped && "lg:order-1")}>
-                      <figure className="relative aspect-[4/3] overflow-hidden rounded-card-lg border border-white/10">
-                        <BrandBoard
-                          variant={STEP_BOARDS[index % STEP_BOARDS.length]}
-                          wordmark={wordmark}
-                          label={stepTitle}
-                          className="absolute inset-0"
-                        />
-                      </figure>
-                    </Reveal>
-                  </article>
-                );
-              })}
-            </div>
+                  ))}
+                </dl>
+              </Reveal>
+            ) : null}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/* 01 — Project problem                                          */}
+      {/* ============================================================ */}
+      <section className="py-14 md:py-20">
+        <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <SectionEyebrow index={nextIndex()}>
+              {t(locale, "workProjectProblem")}
+            </SectionEyebrow>
+            {problemHeading ? (
+              <h2 className="mt-5 max-w-2xl font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl">
+                {problemHeading}
+              </h2>
+            ) : null}
+            {problemBody && problemBody !== problemHeading ? (
+              <p className="mt-5 max-w-2xl text-base leading-relaxed text-text-muted md:text-lg">
+                {problemBody}
+              </p>
+            ) : null}
+          </Reveal>
+          <Reveal className="mt-10">
+            <VisualBlock
+              board="before"
+              wordmark={wordmark}
+              caption={t(locale, "workProblemCaption")}
+              badge={t(locale, "workBefore")}
+            />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/* 02 — Our solution                                             */}
+      {/* ============================================================ */}
+      <section className="py-14 md:py-20">
+        <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <SectionEyebrow index={nextIndex()}>
+              {t(locale, "workOurSolution")}
+            </SectionEyebrow>
+            {solutionBody ? (
+              <p className="mt-5 max-w-2xl text-base leading-relaxed text-text-muted md:text-lg">
+                {solutionBody}
+              </p>
+            ) : null}
+          </Reveal>
+          <Reveal className="mt-10">
+            <VisualBlock
+              board="solution"
+              wordmark={wordmark}
+              caption={t(locale, "workSolutionCaption")}
+              badge={t(locale, "workNewIdentity")}
+            />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/* 03 — The concept                                              */}
+      {/* ============================================================ */}
+      <section className="py-14 md:py-20">
+        <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <SectionEyebrow index={nextIndex()}>
+              {t(locale, "workConcept")}
+            </SectionEyebrow>
+            {conceptBody ? (
+              <p className="mt-5 max-w-2xl text-base leading-relaxed text-text-muted md:text-lg">
+                {conceptBody}
+              </p>
+            ) : null}
+          </Reveal>
+          <Reveal className="mt-10">
+            <VisualBlock
+              board="concept"
+              wordmark={wordmark}
+              caption={t(locale, "workConceptCaption")}
+              badge={t(locale, "workConcept")}
+            />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/* 04 — Our process — tabs + card grid                          */}
+      {/* ============================================================ */}
+      {processSteps.length > 0 ? (
+        <section className="py-14 md:py-20">
+          <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
+            <Reveal>
+              <SectionEyebrow index={nextIndex()}>
+                {t(locale, "workOurProcess")}
+              </SectionEyebrow>
+            </Reveal>
+            <Reveal className="mt-10">
+              <ProcessCards steps={processSteps} />
+            </Reveal>
           </div>
         </section>
       ) : null}
 
       {/* ============================================================ */}
-      {/* 04 — Results (dark band)                                      */}
+      {/* 05 — Results                                                 */}
       {/* ============================================================ */}
       {project.metrics.length > 0 || resultsText ? (
-        <section className="border-y border-white/5 bg-background-deep py-16 md:py-24">
+        <section className="border-t border-white/5 py-14 md:py-20">
           <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
-              <div>
-                <Reveal>
-                  <SectionEyebrow index={4}>{t(locale, "workResults")}</SectionEyebrow>
-                </Reveal>
-                <Reveal>
-                  <h2 className="mt-4 font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl md:text-5xl">
-                    {t(locale, "workNumbersThat")}{" "}
-                    <em className="text-primary">{t(locale, "workMoved")}</em>
-                  </h2>
-                </Reveal>
-                {resultsText ? (
-                  <Reveal>
-                    <p className="mt-6 max-w-xl text-base leading-relaxed text-text-secondary md:text-lg">
-                      {resultsText}
-                    </p>
-                  </Reveal>
-                ) : null}
-                {deliverables.length > 0 ? (
-                  <Reveal>
-                    <ul className="mt-8 space-y-3">
-                      {deliverables.map((deliverable) => (
-                        <li
-                          key={deliverable}
-                          className="flex items-center gap-3 text-sm font-medium text-text-primary"
-                        >
-                          <CheckIcon className="size-4" />
-                          {deliverable}
-                        </li>
-                      ))}
-                    </ul>
-                  </Reveal>
-                ) : null}
-              </div>
-              <Reveal>
-                <figure className="relative overflow-hidden rounded-card-lg border border-white/10">
-                  <div className="aspect-[16/11]">
-                    <BrandBoard
-                      variant="results"
-                      wordmark={wordmark}
-                      metrics={resolvedMetrics}
-                      className="absolute inset-0"
-                    />
+            <Reveal>
+              <SectionEyebrow index={nextIndex()}>
+                {t(locale, "workResults")}
+              </SectionEyebrow>
+              <h2 className="mt-5 max-w-3xl font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl">
+                {t(locale, "workNumbersThat")}{" "}
+                <em className="text-primary">{t(locale, "workMoved")}</em>
+              </h2>
+              {resultsText ? (
+                <p className="mt-5 max-w-2xl text-base leading-relaxed text-text-muted md:text-lg">
+                  {resultsText}
+                </p>
+              ) : null}
+            </Reveal>
+            {resolvedMetrics.length > 0 ? (
+              <Reveal className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {resolvedMetrics.map((metric) => (
+                  <div
+                    key={metric.label}
+                    className="rounded-card-lg border border-white/10 bg-card-dark p-6 sm:p-7"
+                  >
+                    <div className="font-display text-3xl font-black tracking-tight text-primary md:text-4xl">
+                      {metric.value}
+                    </div>
+                    <div className="mt-2 text-[10px] font-bold uppercase tracking-[0.2em] text-text-subtle">
+                      {metric.label}
+                    </div>
                   </div>
-                </figure>
+                ))}
               </Reveal>
-            </div>
+            ) : null}
           </div>
         </section>
       ) : null}
 
       {/* ============================================================ */}
-      {/* 05 — Brand in Action — gallery grid                           */}
+      {/* 06 — Brand in action — gallery grid                          */}
       {/* ============================================================ */}
       {gallery.length > 0 || deliverables.length > 0 ? (
-        <section className="py-16 md:py-24">
+        <section className="py-14 md:py-20">
           <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <SectionEyebrow index={5}>{t(locale, "workBrandInAction")}</SectionEyebrow>
-              <h2 className="mt-4 max-w-3xl font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl md:text-5xl">
+              <SectionEyebrow index={nextIndex()}>
+                {t(locale, "workBrandInAction")}
+              </SectionEyebrow>
+              <h2 className="mt-5 max-w-3xl font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl">
                 {t(locale, "workBrandInUse")}
               </h2>
             </Reveal>
 
-            <div className="mt-12 grid gap-4 md:grid-cols-2">
-              {galleryTiles.map((tile, index) => (
-                <Reveal
-                  key={index}
-                  className={cn(tile.wide && "md:col-span-2")}
-                >
+            <div className="mt-10 grid gap-4 md:grid-cols-2">
+              {gallery.map((url, index) => (
+                <Reveal key={url} className={cn(gallery.length % 2 === 1 && index === 0 && "md:col-span-2")}>
                   <figure className="group relative overflow-hidden rounded-card-lg border border-white/10 bg-card-dark">
-                    <div
-                      className={cn(
-                        "relative w-full",
-                        tile.wide ? "aspect-[21/9]" : "aspect-[4/3]"
-                      )}
-                    >
-                      {tile.url ? (
-                        <Image
-                          src={tile.url}
-                          alt={`${wordmark} — ${tile.caption}`}
-                          fill
-                          sizes={
-                            tile.wide
-                              ? "100vw"
-                              : "(max-width: 768px) 100vw, 50vw"
-                          }
-                          className="object-cover transition-transform duration-700 ease-[var(--ease-standard)] group-hover:scale-[1.02]"
-                        />
-                      ) : (
-                        <BrandBoard
-                          variant={tile.board}
-                          wordmark={wordmark}
-                          label={tile.caption}
-                          className="absolute inset-0"
-                        />
-                      )}
+                    <div className="relative aspect-[4/3] w-full overflow-hidden">
+                      <Image
+                        src={url}
+                        alt={`${wordmark} — ${galleryCaption(index)}`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-cover transition-transform duration-700 ease-[var(--ease-standard)] group-hover:scale-[1.02]"
+                      />
                     </div>
                     <figcaption className="flex items-center justify-between gap-4 border-t border-white/10 px-5 py-4">
-                      <span className="font-display text-xs font-black leading-none text-primary/50">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
                       <span className="text-xs font-bold uppercase tracking-[0.18em] text-text-primary">
-                        {tile.caption}
+                        {galleryCaption(index)}
                       </span>
-                      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-subtle">
-                        {t(locale, "workBrandInAction")}
+                      <span className="font-display text-xs font-black text-primary/50">
+                        {String(index + 1).padStart(2, "0")}
                       </span>
                     </figcaption>
                   </figure>
@@ -685,87 +479,42 @@ export function BrandCaseStudy({
       ) : null}
 
       {/* ============================================================ */}
-      {/* 06 — Brand Guidelines — identity-system bento board          */}
-      {/* ============================================================ */}
-      <section className="border-t border-white/5 bg-background-deep py-16 md:py-24">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <SectionEyebrow index={6}>
-              {t(locale, "workBrandGuidelines")}
-            </SectionEyebrow>
-            <h2 className="mt-4 max-w-3xl font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl md:text-5xl">
-              {t(locale, "workIdentitySystem")}
-            </h2>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-text-muted">
-              {t(locale, "workGuidelinesIntro")}
-            </p>
-          </Reveal>
-          <Reveal
-            stagger
-            className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3"
-          >
-            <BrandGuidelines
-              wordmark={wordmark}
-              summary={projectSummary}
-              locale={locale}
-            />
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/* 07 — Client perspective                                       */}
+      {/* 07 — Client perspective                                      */}
       {/* ============================================================ */}
       {project.testimonial ? (
-        <section className="border-t border-white/5 py-16 md:py-24">
-          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid items-center gap-10 lg:grid-cols-[1fr_0.9fr] lg:gap-14">
-              <div>
-                <Reveal>
-                  <SectionEyebrow index={7}>
-                    {t(locale, "workClientPerspective")}
-                  </SectionEyebrow>
-                </Reveal>
-                <Reveal>
-                  <blockquote className="mt-6 font-display text-2xl font-bold leading-snug tracking-tight text-text-primary sm:text-3xl md:text-4xl">
-                    &ldquo;
-                    {resolveTranslation(
-                      project.testimonial.quote_translations,
-                      locale
-                    )}
-                    &rdquo;
-                  </blockquote>
-                </Reveal>
-                <Reveal>
-                  <div className="mt-8 flex items-center gap-3">
-                    <div className="flex size-11 items-center justify-center rounded-full border border-primary/30 bg-primary/10 font-display text-sm font-bold text-primary">
-                      {initials(project.testimonial.person_name)}
-                    </div>
-                    <div>
-                      <div className="text-sm font-bold text-text-primary">
-                        {project.testimonial.person_name}
-                      </div>
-                      <div className="text-xs text-text-subtle">
-                        {resolveTranslation(
-                          project.testimonial.person_role_translations,
-                          locale
-                        ) || project.testimonial.company_name}
-                      </div>
-                    </div>
+        <section className="border-t border-white/5 py-14 md:py-20">
+          <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
+            <Reveal>
+              <SectionEyebrow index={nextIndex()}>
+                {t(locale, "workClientPerspective")}
+              </SectionEyebrow>
+              <blockquote className="mt-6 font-display text-2xl font-bold leading-snug tracking-tight text-text-primary sm:text-3xl md:text-4xl">
+                &ldquo;
+                {resolveTranslation(
+                  project.testimonial.quote_translations,
+                  locale
+                )}
+                &rdquo;
+              </blockquote>
+            </Reveal>
+            <Reveal>
+              <div className="mt-8 flex items-center gap-3">
+                <div className="flex size-11 items-center justify-center rounded-full border border-primary/30 bg-primary/10 font-display text-sm font-bold text-primary">
+                  {initials(project.testimonial.person_name)}
+                </div>
+                <div>
+                  <div className="text-sm font-bold text-text-primary">
+                    {project.testimonial.person_name}
                   </div>
-                </Reveal>
+                  <div className="text-xs text-text-subtle">
+                    {resolveTranslation(
+                      project.testimonial.person_role_translations,
+                      locale
+                    ) || project.testimonial.company_name}
+                  </div>
+                </div>
               </div>
-              <Reveal>
-                <figure className="relative aspect-[4/3] overflow-hidden rounded-card-lg border border-white/10">
-                  <BrandBoard
-                    variant="pattern"
-                    wordmark={wordmark}
-                    label={t(locale, "workBrandInAction")}
-                    className="absolute inset-0"
-                  />
-                </figure>
-              </Reveal>
-            </div>
+            </Reveal>
           </div>
         </section>
       ) : null}
@@ -825,7 +574,7 @@ export function BrandCaseStudy({
                   <div className="mt-8 flex flex-wrap gap-4">
                     <Link
                       href="/contact"
-                      className="inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-button font-medium transition-[background-color,border-color,color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 border border-transparent bg-primary text-text-inverse hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-hover active:translate-y-0 active:border-primary/60 active:bg-primary-active shadow-amber h-[52px] px-6 text-base"
+                      className="inline-flex h-[52px] select-none items-center justify-center gap-2 whitespace-nowrap rounded-button border border-transparent bg-primary px-6 text-base font-medium text-text-inverse shadow-amber transition-[background-color,border-color,color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-hover focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 active:translate-y-0 active:border-primary/60 active:bg-primary-active"
                     >
                       {ctaLabel}
                       <ArrowIcon className="size-4" />
@@ -843,7 +592,7 @@ export function BrandCaseStudy({
                   <BrandBoard
                     variant="cta"
                     wordmark={wordmark}
-                    label={serviceTitle || t(locale, "workBrandIdentity")}
+                    label={categoryLabel}
                     className="absolute inset-0"
                   />
                 </div>

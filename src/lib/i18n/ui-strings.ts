@@ -176,6 +176,8 @@ export type UiStringKey =
   | "workGuidelinesIntro"
   | "workContents"
   | "workPrimaryLogo"
+  | "workProblemCaption"
+  | "workProjectProblem"
   | "workLogoSuite"
   | "workLogoVariations"
   | "workColourPalette"
@@ -190,6 +192,7 @@ export type UiStringKey =
   | "workChallenge"
   | "workClientPerspective"
   | "workConcept"
+  | "workConceptCaption"
   | "workClient"
   | "workCoreMessage"
   | "workGallery"
@@ -201,6 +204,7 @@ export type UiStringKey =
   | "workObjective"
   | "workOurMethod"
   | "workOurProcess"
+  | "workOurSolution"
   | "workOverview"
   | "workPositioning"
   | "workProcessIntro"
@@ -211,6 +215,7 @@ export type UiStringKey =
   | "workServices"
   | "workSimilar"
   | "workSolution"
+  | "workSolutionCaption"
   | "workMark"
   | "workNewIdentity"
   | "workStrategy"
@@ -466,6 +471,8 @@ const en: UiStrings = {
     "One coherent system — logo, colour, typography, and application — carried across every touchpoint.",
   workContents: "Contents",
   workPrimaryLogo: "Primary Logo",
+  workProblemCaption: "Fragmented look & weak contrast",
+  workProjectProblem: "Project Problem",
   workLogoSuite: "Logo Suite",
   workLogoVariations: "Logo Variations",
   workColourPalette: "Colour Palette",
@@ -480,6 +487,7 @@ const en: UiStrings = {
   workChallenge: "Challenge",
   workClientPerspective: "Client Perspective",
   workConcept: "The Concept",
+  workConceptCaption: "C + Q custom icon geometry",
   workClient: "Client",
   workCoreMessage: "Core Message",
   workGallery: "Gallery",
@@ -491,6 +499,7 @@ const en: UiStrings = {
   workObjective: "Objective",
   workOurMethod: "Our Method",
   workOurProcess: "Our Process",
+  workOurSolution: "Our Solution",
   workOverview: "Project Overview",
   workPositioning: "Positioning",
   workProcessIntro:
@@ -507,6 +516,7 @@ const en: UiStrings = {
   workMark: "The Mark",
   workNewIdentity: "New Identity",
   workSolution: "Solution",
+  workSolutionCaption: "Unified brand systems grid",
   workStartCta: "Start your project with Stratifit",
   workValueProposition: "Value Proposition",
   workViewCaseStudies: "View case studies",
@@ -762,6 +772,8 @@ const de: UiStrings = {
     "Ein kohärentes System aus Logo, Farbe, Typografie und Anwendung — konsistent an jedem Berührungspunkt.",
   workContents: "Inhalt",
   workPrimaryLogo: "Primärlogo",
+  workProblemCaption: "Fragmentierter Look & schwacher Kontrast",
+  workProjectProblem: "Projektproblem",
   workLogoSuite: "Logo-Suite",
   workLogoVariations: "Logo-Varianten",
   workColourPalette: "Farbpalette",
@@ -776,6 +788,7 @@ const de: UiStrings = {
   workChallenge: "Herausforderung",
   workClientPerspective: "Kundenperspektive",
   workConcept: "Das Konzept",
+  workConceptCaption: "C + Q individuelle Icon-Geometrie",
   workClient: "Kunde",
   workCoreMessage: "Kernbotschaft",
   workGallery: "Galerie",
@@ -787,6 +800,7 @@ const de: UiStrings = {
   workObjective: "Ziel",
   workOurMethod: "Unsere Methode",
   workOurProcess: "Unser Prozess",
+  workOurSolution: "Unsere Lösung",
   workOverview: "Projektübersicht",
   workPositioning: "Positionierung",
   workProcessIntro:
@@ -803,6 +817,7 @@ const de: UiStrings = {
   workMark: "Das Zeichen",
   workNewIdentity: "Neue Identität",
   workSolution: "Lösung",
+  workSolutionCaption: "Einheitliches Marken-Raster",
   workStartCta: "Starten Sie Ihr Projekt mit Stratifit",
   workValueProposition: "Nutzenversprechen",
   workViewCaseStudies: "Weitere Fallstudien ansehen",
@@ -1058,6 +1073,8 @@ const fr: UiStrings = {
     "Un système cohérent — logo, couleur, typographie et application — décliné sur chaque point de contact.",
   workContents: "Sommaire",
   workPrimaryLogo: "Logo principal",
+  workProblemCaption: "Image fragmentée & faible contraste",
+  workProjectProblem: "Problème du projet",
   workLogoSuite: "Suite de logos",
   workLogoVariations: "Déclinaisons du logo",
   workColourPalette: "Palette de couleurs",
@@ -1072,6 +1089,7 @@ const fr: UiStrings = {
   workChallenge: "Défi",
   workClientPerspective: "Point de vue du client",
   workConcept: "Le concept",
+  workConceptCaption: "Géométrie d'icône sur mesure C + Q",
   workClient: "Client",
   workCoreMessage: "Message clé",
   workGallery: "Galerie",
@@ -1083,6 +1101,7 @@ const fr: UiStrings = {
   workObjective: "Objectif",
   workOurMethod: "Notre méthode",
   workOurProcess: "Notre processus",
+  workOurSolution: "Notre solution",
   workOverview: "Aperçu du projet",
   workPositioning: "Positionnement",
   workProcessIntro:
@@ -1099,6 +1118,7 @@ const fr: UiStrings = {
   workMark: "Le signe",
   workNewIdentity: "Nouvelle identité",
   workSolution: "Solution",
+  workSolutionCaption: "Grille unifiée des systèmes de marque",
   workStartCta: "Lancez votre projet avec Stratifit",
   workValueProposition: "Proposition de valeur",
   workViewCaseStudies: "Voir d'autres études de cas",
@@ -1354,6 +1374,8 @@ const es: UiStrings = {
     "Un sistema coherente — logotipo, color, tipografía y aplicación — presente en cada punto de contacto.",
   workContents: "Contenido",
   workPrimaryLogo: "Logotipo principal",
+  workProblemCaption: "Aspecto fragmentado y contraste débil",
+  workProjectProblem: "El problema del proyecto",
   workLogoSuite: "Suite de logo",
   workLogoVariations: "Variaciones del logo",
   workColourPalette: "Paleta de colores",
@@ -1368,6 +1390,7 @@ const es: UiStrings = {
   workChallenge: "Reto",
   workClientPerspective: "Perspectiva del cliente",
   workConcept: "El concepto",
+  workConceptCaption: "Geometría de icono C + Q",
   workClient: "Cliente",
   workCoreMessage: "Mensaje central",
   workGallery: "Galería",
@@ -1379,6 +1402,7 @@ const es: UiStrings = {
   workObjective: "Objetivo",
   workOurMethod: "Nuestro método",
   workOurProcess: "Nuestro proceso",
+  workOurSolution: "Nuestra solución",
   workOverview: "Resumen del proyecto",
   workPositioning: "Posicionamiento",
   workProcessIntro:
@@ -1395,6 +1419,7 @@ const es: UiStrings = {
   workMark: "El símbolo",
   workNewIdentity: "Nueva identidad",
   workSolution: "Solución",
+  workSolutionCaption: "Cuadrícula de sistemas de marca unificada",
   workStartCta: "Comienza tu proyecto con Stratifit",
   workValueProposition: "Propuesta de valor",
   workViewCaseStudies: "Ver más casos de éxito",

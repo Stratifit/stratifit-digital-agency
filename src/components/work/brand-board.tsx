@@ -22,7 +22,10 @@ export type BrandBoardVariant =
   | "pattern"
   | "applications"
   | "results"
-  | "cta";
+  | "cta"
+  | "before"
+  | "solution"
+  | "concept";
 
 interface BrandBoardProps {
   variant: BrandBoardVariant;
@@ -667,6 +670,140 @@ function ApplicationsBoard({ uid, wordmark, initial }: { uid: string; wordmark: 
   );
 }
 
+/**
+ * BeforeBoard — the "fragmented past" visual: a faint, faded wordmark with a
+ * CONFIDENTIAL stamp, standing in for the old identity that the case study
+ * replaced.
+ */
+function BeforeBoard({ uid, wordmark }: { uid: string; wordmark: string }) {
+  const faded = (wordmark || "Brand").toLowerCase();
+  return (
+    <g>
+      <Backdrop uid={uid} />
+      <Caps x={600} y={150} text="Previous Identity" size={15} fill={C.subtle} tracking={8} anchor="middle" />
+      <text
+        x={600}
+        y={372}
+        textAnchor="middle"
+        dominantBaseline="central"
+        fontFamily={FONT_DISPLAY}
+        fontWeight={900}
+        fontSize={150}
+        letterSpacing={6}
+        fill="rgba(255,255,255,0.10)"
+      >
+        {faded}
+      </text>
+      <line x1="430" y1="452" x2="770" y2="452" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
+      <Caps x={600} y={492} text="Confidential" size={14} fill={C.primary} tracking={6} anchor="middle" />
+      <rect x="578" y="520" width="8" height="8" fill={C.primary} transform="rotate(45 582 524)" />
+      <rect x="614" y="520" width="8" height="8" fill={C.primary} transform="rotate(45 618 524)" />
+    </g>
+  );
+}
+
+/**
+ * SolutionBoard — the new mark: a solid amber seal with the initial, and the
+ * wordmark set beneath it. The anchor visual of the redesigned identity.
+ */
+function SolutionBoard({
+  uid,
+  wordmark,
+  initial,
+}: {
+  uid: string;
+  wordmark: string;
+  initial: string;
+}) {
+  return (
+    <g>
+      <Backdrop uid={uid} />
+      <circle cx={600} cy={320} r={150} fill={C.primary} />
+      <circle cx={600} cy={320} r={150} fill="none" stroke="rgba(10,10,10,0.25)" strokeWidth="2" />
+      <circle
+        cx={600}
+        cy={320}
+        r={122}
+        fill="none"
+        stroke="rgba(10,10,10,0.18)"
+        strokeWidth="1.5"
+        strokeDasharray="3 8"
+      />
+      <text
+        x={600}
+        y={322}
+        textAnchor="middle"
+        dominantBaseline="central"
+        fontFamily={FONT_DISPLAY}
+        fontWeight={900}
+        fontSize={150}
+        fill="#0A0A0A"
+      >
+        {initial}
+      </text>
+      <Wordmark x={600} y={532} text={wordmark} size={68} />
+      <Caps x={600} y={588} text="Brand System" size={13} fill={C.text2} tracking={6} anchor="middle" />
+    </g>
+  );
+}
+
+/**
+ * ConceptBoard — the mark's idea in one gesture: a circular construction with
+ * the C and Q glyphs flanking a continuous loop.
+ */
+function ConceptBoard({ uid, wordmark }: { uid: string; wordmark: string }) {
+  return (
+    <g>
+      <Backdrop uid={uid} />
+      <Caps x={600} y={140} text="Mark Geometry" size={15} fill={C.subtle} tracking={8} anchor="middle" />
+      <circle cx={600} cy={360} r={150} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="1" />
+      <circle
+        cx={600}
+        cy={360}
+        r={120}
+        fill="none"
+        stroke="rgba(245,158,11,0.35)"
+        strokeWidth="1.5"
+        strokeDasharray="4 10"
+      />
+      <text
+        x={430}
+        y={360}
+        textAnchor="middle"
+        dominantBaseline="central"
+        fontFamily={FONT_DISPLAY}
+        fontWeight={900}
+        fontSize={56}
+        fill={C.primary}
+        opacity={0.9}
+      >
+        C
+      </text>
+      <text
+        x={770}
+        y={360}
+        textAnchor="middle"
+        dominantBaseline="central"
+        fontFamily={FONT_DISPLAY}
+        fontWeight={900}
+        fontSize={56}
+        fill={C.primary}
+        opacity={0.9}
+      >
+        Q
+      </text>
+      {/* Continuous loop — the refresh gesture of the mark */}
+      <g transform="translate(504 264) scale(8)">
+        <path
+          d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
+          fill={C.primary}
+        />
+      </g>
+      <Caps x={600} y={610} text={`${wordmark} · C + Q`} size={13} fill={C.text2} tracking={5} anchor="middle" />
+    </g>
+  );
+}
+
 function ResultsBoard({
   uid,
   wordmark,
@@ -793,6 +930,12 @@ export function BrandBoard({
         <ApplicationsBoard uid={uid} wordmark={wordmark} initial={initial} />
       ) : variant === "results" ? (
         <ResultsBoard uid={uid} wordmark={wordmark} initial={initial} metrics={metrics} />
+      ) : variant === "before" ? (
+        <BeforeBoard uid={uid} wordmark={wordmark} />
+      ) : variant === "solution" ? (
+        <SolutionBoard uid={uid} wordmark={wordmark} initial={initial} />
+      ) : variant === "concept" ? (
+        <ConceptBoard uid={uid} wordmark={wordmark} />
       ) : (
         <CtaBoard uid={uid} wordmark={wordmark} initial={initial} label={label} />
       )}
