@@ -1,6 +1,11 @@
 import { cn } from "@/lib/cn";
 
-const ICONS: Record<string, { paths: string[] }> = {
+/**
+ * Icons used across process steps and the brand-guidelines document.
+ * `stroke` icons render as outline paths (fill="none"), everything else as
+ * filled paths — both accept currentColor.
+ */
+const ICONS: Record<string, { paths: string[]; stroke?: boolean }> = {
   search: {
     paths: [
       "M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z",
@@ -35,6 +40,46 @@ const ICONS: Record<string, { paths: string[] }> = {
       "M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941",
     ],
   },
+  /* ---- Brand-guidelines document icons ---- */
+  layers: {
+    paths: [
+      "m12 2.75 9 4.5-9 4.5-9-4.5 9-4.5Zm0 12.05 7.05-3.52 1.95.97-9 4.5-9-4.5 1.95-.97 7.05 3.52Zm0 4.9 7.05-3.52 1.95.97-9 4.5-9-4.5 1.95-.97 7.05 3.52Z",
+    ],
+  },
+  palette: {
+    paths: [
+      "M12 2.25c-5.385 0-9.75 4.113-9.75 9.188 0 3.052 1.6 4.812 3.375 4.812.966 0 1.628-.405 2.173-.918.55-.52 1.024-1.062 1.782-1.062.999 0 1.67.63 1.67 1.545 0 1.102-.903 1.998-1.894 2.685-.574.398-.82 1.083-.544 1.62.55.98 1.688 1.08 2.588 1.08 4.907 0 8.6-4.464 8.6-9.75C21.75 6.363 17.385 2.25 12 2.25Zm-5.25 8.25a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm1.5-3.75a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm3.75-1.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm4.5 3a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z",
+    ],
+  },
+  type: {
+    paths: [
+      "M12 3.4 4.9 20h3.3l1.15-2.95h5.3L15.8 20h3.3L12 3.4Zm-1.25 10.6L12 9.9l1.25 4.1h-2.5Z",
+    ],
+  },
+  grid: {
+    paths: [
+      "M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z",
+    ],
+    stroke: true,
+  },
+  layout: {
+    paths: [
+      "M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z",
+    ],
+    stroke: true,
+  },
+  spacing: {
+    paths: [
+      "M3.75 9h13.5m0 0-3-3m3 3-3 3M20.25 15H6.75m0 0 3 3m-3-3 3-3",
+    ],
+    stroke: true,
+  },
+  image: {
+    paths: [
+      "m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z",
+    ],
+    stroke: true,
+  },
 };
 
 export const PROCESS_ICON_OPTIONS = [
@@ -44,6 +89,13 @@ export const PROCESS_ICON_OPTIONS = [
   { value: "rocket", label: "Rocket" },
   { value: "map", label: "Map" },
   { value: "trendingup", label: "Trending up" },
+  { value: "layers", label: "Layers" },
+  { value: "palette", label: "Palette" },
+  { value: "type", label: "Typography" },
+  { value: "grid", label: "Grid" },
+  { value: "layout", label: "Layout" },
+  { value: "spacing", label: "Spacing" },
+  { value: "image", label: "Image" },
 ];
 
 export function ProcessIcon({
@@ -57,6 +109,25 @@ export function ProcessIcon({
     .toLowerCase()
     .replace(/[\s-]/g, "");
   const icon = ICONS[key] ?? ICONS.search;
+
+  if (icon.stroke) {
+    return (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.8}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={cn("size-7", className)}
+        aria-hidden="true"
+      >
+        {icon.paths.map((d, index) => (
+          <path key={index} d={d} />
+        ))}
+      </svg>
+    );
+  }
 
   return (
     <svg

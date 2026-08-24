@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   portfolioSchema,
+  brandGuidelinesSchema,
   insightSchema,
   testimonialSchema,
   pricingSchema,
@@ -287,6 +288,83 @@ describe("pricingSchema", () => {
       status: "draft",
     });
     expect(result.success).toBe(false);
+  });
+});
+
+describe("brandGuidelinesSchema", () => {
+  const guidelines = {
+    logo_media_id: "abc-123",
+    logo_url: "https://example.com/logo.png",
+    logo_caption_translations: fullTranslations,
+    variants: [
+      {
+        media_id: "v1",
+        image_url: "https://example.com/v1.png",
+        label_translations: { en: "Primary", de: "Primär", fr: "Principal", es: "Principal" },
+      },
+      {
+        media_id: "v2",
+        image_url: "https://example.com/v2.png",
+        label_translations: { en: "Reversed", de: "Invertiert", fr: "Inversé", es: "Invertido" },
+      },
+    ],
+    clearspace_translations: fullTranslations,
+    clearspace_min_size_translations: fullTranslations,
+    clearspace_url: "https://example.com/clearspace.png",
+    colors: [
+      {
+        name: "Primary",
+        hex: "#F59E0B",
+        usage_translations: { en: "Buttons", de: "Buttons", fr: "Boutons", es: "Botones" },
+      },
+    ],
+    primary_font: "Satoshi",
+    typography_translations: fullTranslations,
+    weights: [
+      { name: "Regular", weight: "400", sample: "Aa" },
+      { name: "Bold", weight: "700", sample: "Aa" },
+    ],
+    components: [
+      {
+        icon_name: "buttons",
+        title_translations: fullTranslations,
+        description_translations: fullTranslations,
+        media_id: "c1",
+        image_url: "https://example.com/buttons.png",
+      },
+    ],
+  };
+
+  it("accepts a complete guidelines document", () => {
+    const result = brandGuidelinesSchema.safeParse(guidelines);
+    expect(result.success).toBe(true);
+  });
+
+  it("accepts an empty document", () => {
+    const result = brandGuidelinesSchema.safeParse({});
+    expect(result.success).toBe(true);
+  });
+
+  it("rejects more than 12 colours", () => {
+    const colors = Array.from({ length: 13 }, (_, i) => ({
+      name: `Colour ${i}`,
+      hex: "#000000",
+    }));
+    const result = brandGuidelinesSchema.safeParse({ colors });
+    expect(result.success).toBe(false);
+  });
+
+  it("is embedded in the portfolio schema", () => {
+    const result = portfolioSchema.safeParse({
+      slug: "maison-lumiere-brand-system",
+      client_name: "Maison Lumière",
+      title_translations: fullTranslations,
+      summary_translations: fullTranslations,
+      image_url: "https://example.com/cover.jpg",
+      status: "published",
+      brand_guidelines: guidelines,
+    });
+    expect(result.success).toBe(true);
   });
 });
 

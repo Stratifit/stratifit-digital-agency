@@ -1,5 +1,9 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getMediaPublicUrl } from "@/lib/media";
+import {
+  normalizeBrandGuidelines,
+  type BrandGuidelines,
+} from "@/features/portfolio/brand-guidelines";
 
 export interface PublicPortfolioMetric {
   value: string;
@@ -239,6 +243,8 @@ export interface PublicPortfolioDetail {
   summary_translations: Record<string, string> | null;
   /** Logo concept / monogram rationale for brand case studies. */
   brand_story_translations: Record<string, string> | null;
+  /** Editable brand-guidelines document (normalized for rendering). */
+  brand_guidelines: BrandGuidelines;
   challenge_translations: Record<string, string> | null;
   approach_translations: Record<string, string> | null;
   solution_translations: Record<string, string> | null;
@@ -266,7 +272,7 @@ export async function getPublicPortfolioDetail(
   const { data, error } = await supabase
     .from("portfolio_projects")
     .select(
-      "id, slug, client_name, title_translations, summary_translations, brand_story_translations, challenge_translations, approach_translations, solution_translations, deliverables_translations, results_translations, metrics, featured_media_id, image_url, testimonial_id, seo_title_translations, seo_description_translations, published_at, year"
+      "id, slug, client_name, title_translations, summary_translations, brand_story_translations, brand_guidelines, challenge_translations, approach_translations, solution_translations, deliverables_translations, results_translations, metrics, featured_media_id, image_url, testimonial_id, seo_title_translations, seo_description_translations, published_at, year"
     )
     .eq("slug", slug)
     .eq("status", "published")
@@ -371,6 +377,7 @@ export async function getPublicPortfolioDetail(
       data.summary_translations as Record<string, string> | null,
     brand_story_translations:
       (data.brand_story_translations as Record<string, string> | null) ?? null,
+    brand_guidelines: normalizeBrandGuidelines(data.brand_guidelines),
     challenge_translations:
       data.challenge_translations as Record<string, string> | null,
     approach_translations:

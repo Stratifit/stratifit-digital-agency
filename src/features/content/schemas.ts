@@ -30,6 +30,70 @@ const portfolioMetricItem = z.object({
   label_translations: translations(),
 });
 
+/**
+ * Editable brand-guidelines document for brand-design case studies. Stored as
+ * one JSONB column (portfolio_projects.brand_guidelines) and edited from the
+ * admin "Brand guidelines" tab: logo, variants, clearspace rules, colour
+ * palette, typography weights, and UI components (icon + title + image).
+ */
+const brandGuidelineTranslations = () =>
+  z.object({
+    en: z.string().optional(),
+    de: z.string().optional(),
+    fr: z.string().optional(),
+    es: z.string().optional(),
+  });
+
+const brandGuidelineVariant = z.object({
+  /** Uploaded media asset id (empty when a direct URL is used). */
+  media_id: z.string().optional(),
+  image_url: z.string().optional(),
+  label_translations: brandGuidelineTranslations().optional(),
+});
+
+const brandGuidelineColor = z.object({
+  name: z.string().optional(),
+  hex: z.string().optional(),
+  usage_translations: brandGuidelineTranslations().optional(),
+});
+
+const brandGuidelineWeight = z.object({
+  name: z.string().optional(),
+  weight: z.string().optional(),
+  sample: z.string().optional(),
+});
+
+const brandGuidelineComponent = z.object({
+  /** Icon key — must match a registered guideline icon (see process-icon.tsx). */
+  icon_name: z.string().optional(),
+  title_translations: brandGuidelineTranslations().optional(),
+  description_translations: brandGuidelineTranslations().optional(),
+  media_id: z.string().optional(),
+  image_url: z.string().optional(),
+});
+
+export const brandGuidelinesSchema = z.object({
+  /** Primary logo lockup — shown as the document cover block. */
+  logo_media_id: z.string().optional(),
+  logo_url: z.string().optional(),
+  logo_caption_translations: brandGuidelineTranslations().optional(),
+  /** Logo variant tiles (2×2 grid on the public page). */
+  variants: z.array(brandGuidelineVariant).max(8).optional(),
+  /** Clearspace / minimum-size rules. */
+  clearspace_translations: brandGuidelineTranslations().optional(),
+  clearspace_min_size_translations: brandGuidelineTranslations().optional(),
+  clearspace_media_id: z.string().optional(),
+  clearspace_url: z.string().optional(),
+  /** Primary colour palette swatches. */
+  colors: z.array(brandGuidelineColor).max(12).optional(),
+  /** Typography — display font name + weight samples. */
+  primary_font: z.string().optional(),
+  typography_translations: brandGuidelineTranslations().optional(),
+  weights: z.array(brandGuidelineWeight).max(6).optional(),
+  /** Cards & UI components — each with an icon, copy, and optional image. */
+  components: z.array(brandGuidelineComponent).max(8).optional(),
+});
+
 export const portfolioSchema = z.object({
   slug: z
     .string()
@@ -44,6 +108,8 @@ export const portfolioSchema = z.object({
   deliverables_translations: translationsArrays().optional(),
   /** Logo concept / monogram rationale for brand case studies ("Why This Mark"). */
   brand_story_translations: translations().optional(),
+  /** Editable brand-guidelines document (logo, variants, colours, type, UI). */
+  brand_guidelines: brandGuidelinesSchema.optional(),
   challenge_translations: translations().optional(),
   solution_translations: translations().optional(),
   results_translations: translations().optional(),
@@ -119,6 +185,7 @@ export const faqSchema = z.object({
   status: z.enum(["draft", "published", "archived"]),
 });
 
+export type BrandGuidelinesFormValues = z.infer<typeof brandGuidelinesSchema>;
 export type PortfolioFormValues = z.infer<typeof portfolioSchema>;
 export type InsightFormValues = z.infer<typeof insightSchema>;
 export type TestimonialFormValues = z.infer<typeof testimonialSchema>;

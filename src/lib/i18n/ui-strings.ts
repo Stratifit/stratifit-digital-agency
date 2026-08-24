@@ -186,6 +186,15 @@ export type UiStringKey =
   | "workTypeHierarchy"
   | "workHeading"
   | "workBody"
+  | "workBold"
+  | "workClearspace"
+  | "workLogoVariants"
+  | "workMinimumSize"
+  | "workOurLogo"
+  | "workRegular"
+  | "workTypeface"
+  | "workUiComponents"
+  | "workVariant"
   | "workThankYou"
   | "workCaseStudy"
   | "workCaseStudies"
@@ -481,6 +490,15 @@ const en: UiStrings = {
   workTypeHierarchy: "Type Hierarchy",
   workHeading: "Heading",
   workBody: "Body",
+  workBold: "Bold",
+  workClearspace: "Clearspace",
+  workLogoVariants: "Logo Variants",
+  workMinimumSize: "Minimum Size",
+  workOurLogo: "Our Logo",
+  workRegular: "Regular",
+  workTypeface: "Primary Typeface",
+  workUiComponents: "Cards & UI Components",
+  workVariant: "Variant",
   workThankYou: "Thank You",
   workCaseStudy: "Case Study",
   workCaseStudies: "Case Studies",
@@ -782,6 +800,15 @@ const de: UiStrings = {
   workTypeHierarchy: "Typografische Hierarchie",
   workHeading: "Überschrift",
   workBody: "Fließtext",
+  workBold: "Fett",
+  workClearspace: "Schutzraum",
+  workLogoVariants: "Logo-Varianten",
+  workMinimumSize: "Mindestgröße",
+  workOurLogo: "Unser Logo",
+  workRegular: "Regular",
+  workTypeface: "Primäre Schriftart",
+  workUiComponents: "Karten & UI-Komponenten",
+  workVariant: "Variante",
   workThankYou: "Vielen Dank",
   workCaseStudy: "Fallstudie",
   workCaseStudies: "Fallstudien",
@@ -1083,6 +1110,15 @@ const fr: UiStrings = {
   workTypeHierarchy: "Hiérarchie typographique",
   workHeading: "Titre",
   workBody: "Texte courant",
+  workBold: "Gras",
+  workClearspace: "Zone de sécurité",
+  workLogoVariants: "Variantes du logo",
+  workMinimumSize: "Taille minimale",
+  workOurLogo: "Notre logo",
+  workRegular: "Regular",
+  workTypeface: "Police principale",
+  workUiComponents: "Cartes & composants d'interface",
+  workVariant: "Variante",
   workThankYou: "Merci",
   workCaseStudy: "Étude de cas",
   workCaseStudies: "similaires",
@@ -1384,6 +1420,15 @@ const es: UiStrings = {
   workTypeHierarchy: "Jerarquía tipográfica",
   workHeading: "Encabezado",
   workBody: "Cuerpo",
+  workBold: "Negrita",
+  workClearspace: "Espacio libre",
+  workLogoVariants: "Variantes del logotipo",
+  workMinimumSize: "Tamaño mínimo",
+  workOurLogo: "Nuestro logotipo",
+  workRegular: "Regular",
+  workTypeface: "Tipografía principal",
+  workUiComponents: "Tarjetas & componentes de interfaz",
+  workVariant: "Variante",
   workThankYou: "Gracias",
   workCaseStudy: "Estudio de caso",
   workCaseStudies: "similares",

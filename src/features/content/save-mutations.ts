@@ -17,6 +17,8 @@ import {
   type PricingFormValues,
   type FaqFormValues,
 } from "./schemas";
+import { normalizeBrandGuidelines } from "@/features/portfolio/brand-guidelines";
+import type { Json } from "@/types/database.types";
 
 async function requireAdmin() {
   const supabase = await createSupabaseServerClient();
@@ -76,6 +78,10 @@ export async function savePortfolio(
         Object.values(m.label_translations).some((label) => label.trim())
     );
 
+  // Brand guidelines: run the raw JSONB through the normalizer so empty rows
+  // (variants/colors/weights/components) never reach the database.
+  const brandGuidelines = normalizeBrandGuidelines(parsed.data.brand_guidelines);
+
   // Slot 1 of the card-image gallery is the cover — mirror it into the legacy
   // image_url column so every reader of image_url (admin list, detail hero
   // fallback) stays consistent with what the editor shows.
@@ -90,6 +96,7 @@ export async function savePortfolio(
     summary_translations: parsed.data.summary_translations,
     deliverables_translations: cleanedDeliverables,
     brand_story_translations: parsed.data.brand_story_translations ?? {},
+    brand_guidelines: brandGuidelines as unknown as Json,
     challenge_translations: parsed.data.challenge_translations ?? {},
     solution_translations: parsed.data.solution_translations ?? {},
     results_translations: parsed.data.results_translations ?? {},

@@ -12,6 +12,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { RelatedProjects } from "@/components/work/related-projects";
 import { BrandBoard, type BrandBoardVariant } from "@/components/work/brand-board";
 import { ProcessCards, type ProcessStep } from "@/components/work/process-cards";
+import { BrandGuidelinesDocument } from "@/components/work/brand-guidelines-document";
 
 interface BrandStep {
   step_key: string;
@@ -293,7 +294,34 @@ export function BrandCaseStudy({
       </section>
 
       {/* ============================================================ */}
-      {/* 01 — Project problem                                          */}
+      {/* 01 — Brand guidelines — the identity document                 */}
+      {/* ============================================================ */}
+      <section className="py-14 md:py-20">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <SectionEyebrow index={nextIndex()}>
+              {t(locale, "workBrandGuidelines")}
+            </SectionEyebrow>
+            <h2 className="mt-5 max-w-3xl font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl">
+              {t(locale, "workIdentitySystem")}
+            </h2>
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-text-muted md:text-lg">
+              {t(locale, "workGuidelinesIntro")}
+            </p>
+          </Reveal>
+          <Reveal className="mt-10">
+            <BrandGuidelinesDocument
+              guidelines={project.brand_guidelines}
+              wordmark={wordmark}
+              summary={projectSummary}
+              locale={locale}
+            />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/* 02 — Project problem                                          */}
       {/* ============================================================ */}
       <section className="py-14 md:py-20">
         <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">

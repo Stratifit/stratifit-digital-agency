@@ -625,11 +625,35 @@ public `/work/[slug]` page in full:
 - **Client testimonial** — optional link to a visible testimonial
   (`testimonial_id`) rendered as a quote block.
 
+Every portfolio project also has a **Brand guidelines** editor tab that
+fills the guidelines document on brand-design case studies
+(`portfolio_projects.brand_guidelines`, migration `20260824150000`):
+
+- **Primary logo** — the hero lockup image with an optional per-language
+  caption.
+- **Logo variants** — repeatable image tiles (shown as a 2×2 grid) with
+  per-language labels (Primary, Reversed, Monochrome…).
+- **Clearspace & minimum size** — two per-language rule texts plus an
+  optional diagram image.
+- **Primary colour palette** — repeatable swatch rows: name, hex (colour
+  picker + text), and per-language usage notes.
+- **Typography** — the primary typeface name, a per-language note, and
+  repeatable weight rows (name, weight value, sample text).
+- **Cards & UI components** — repeatable cards with an icon picker
+  (registered guideline icons), per-language title/description, and an
+  optional image (buttons, icons, spacing, cards, footer mock-ups…).
+
+Images upload to the `portfolio-images` bucket through the shared media
+action. Sections left empty fall back to generated brand boards and the
+approved design tokens on the public page, so a new brand project renders a
+complete document from the start.
+
 Projects linked to the **Brand Design** service render a dedicated brand-story
-layout on `/work/[slug]`: a lockup hero (primary logo panel, never cropped),
-the numbered concept → challenge → solution → process → results story, and a
-"The Brand in Use" gallery where every uploaded image is shown in full with
-its deliverable as the caption. All other categories keep the standard
+layout on `/work/[slug]`: a cover header, the guidelines document (contents
+tab bar with anchor navigation, then logo, variants, clearspace, colour
+palette, typography, and UI components), followed by the numbered story
+sections (problem → solution → concept → process → results), the client
+perspective, and the closing CTA. All other categories keep the standard
 editorial case-study layout.
 
 ---

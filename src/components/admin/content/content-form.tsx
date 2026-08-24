@@ -39,6 +39,8 @@ import { EditorSectionSwitcher } from "@/components/admin/editor-section-switche
 import { LocaleTabs, type EditorLocale } from "@/components/admin/locale-tabs";
 import { uploadMediaAsset } from "@/features/media/mutations";
 import type { AdminServiceOption } from "@/features/content/admin-queries";
+import { normalizeBrandGuidelines } from "@/features/portfolio/brand-guidelines";
+import { BrandGuidelinesEditor } from "@/components/admin/content/brand-guidelines-editor";
 
 export type ContentType = "portfolio" | "insights" | "testimonials" | "pricing" | "faq";
 
@@ -331,7 +333,11 @@ function PortfolioGalleryUploader({
   );
 }
 
-type EditorSectionKey = "content" | "case-study" | "publishing";
+type EditorSectionKey =
+  | "content"
+  | "case-study"
+  | "brand-guidelines"
+  | "publishing";
 
 export function ContentForm({
   type,
@@ -372,6 +378,7 @@ export function ContentForm({
       d.brand_story_translations = tr(
         initial.brand_story_translations as Record<string, string> | null
       );
+      d.brand_guidelines = normalizeBrandGuidelines(initial.brand_guidelines);
       d.challenge_translations = tr(
         initial.challenge_translations as Record<string, string> | null
       );
@@ -504,6 +511,12 @@ export function ContentForm({
                   label: "Case study",
                   description:
                     "Facts, challenge, solution, results, and gallery shown on the public case study page.",
+                },
+                {
+                  key: "brand-guidelines" as const,
+                  label: "Brand guidelines",
+                  description:
+                    "The editable guidelines document — logo, variants, clearspace, colours, typography, and UI components.",
                 },
               ]
             : []),
@@ -949,6 +962,14 @@ export function ContentForm({
               </div>
             </div>
           </div>
+        ) : null}
+
+        {activeSection === "brand-guidelines" && type === "portfolio" ? (
+          <BrandGuidelinesEditor
+            control={control}
+            setValue={setValue}
+            locale={locale}
+          />
         ) : null}
 
         {activeSection === "publishing" ? (
