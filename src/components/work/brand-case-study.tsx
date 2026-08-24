@@ -142,6 +142,36 @@ function VisualBlock({
   );
 }
 
+/**
+ * Vertical amber phase rail — the "DISCOVERY → LAUNCH" timeline from the
+ * Figma mock. Rendered beside the rollout cards on desktop; the breadcrumb
+ * row inside ProcessCards covers the same phases on small screens.
+ */
+function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
+  return (
+    <ol aria-label="Process timeline" className="relative hidden lg:block">
+      <div
+        aria-hidden="true"
+        className="absolute bottom-2 left-[4px] top-2 w-px bg-primary/30"
+      />
+      {steps.map((step, index) => (
+        <li
+          key={step.step_key}
+          className="relative flex items-center gap-4 pb-10 last:pb-0"
+        >
+          <span
+            aria-hidden="true"
+            className="relative z-10 size-2.5 shrink-0 rounded-full bg-primary shadow-[0_0_0_4px_rgba(245,158,11,0.15)]"
+          />
+          <span className="text-[11px] font-black uppercase tracking-[0.3em] text-primary">
+            {String(index + 1).padStart(2, "0")} — {step.title}
+          </span>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 /* ------------------------------------------------------------------ */
 /* Brand case study                                                    */
 /* ------------------------------------------------------------------ */
@@ -435,17 +465,18 @@ export function BrandCaseStudy({
       </section>
 
       {/* ============================================================ */}
-      {/* 04 — Our process — tabs + card grid                          */}
+      {/* 04 — Our process — timeline rail + rollout card grid         */}
       {/* ============================================================ */}
       {processSteps.length > 0 ? (
         <section className="py-14 md:py-20">
-          <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
             <Reveal>
               <SectionEyebrow index={nextIndex()} icon="map">
                 {t(locale, "workOurProcess")}
               </SectionEyebrow>
             </Reveal>
-            <Reveal className="mt-10">
+            <Reveal className="mt-10 grid gap-10 lg:grid-cols-[190px_1fr] lg:gap-14">
+              <ProcessTimeline steps={processSteps} />
               <ProcessCards steps={processSteps} />
             </Reveal>
           </div>
