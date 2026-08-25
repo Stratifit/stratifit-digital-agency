@@ -893,12 +893,9 @@ export function BrandCaseStudy({
         <section className="border-t border-white/5 py-14 md:py-20">
           <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <div className="flex items-center gap-3">
-                <SectionChip icon="trendingup" />
-                <h2 className="font-display text-2xl font-black uppercase tracking-tight text-text-primary sm:text-3xl md:text-4xl">
-                  {t(locale, "workImpactResults")}
-                </h2>
-              </div>
+              <h2 className="font-display text-2xl font-black uppercase tracking-tight text-text-primary sm:text-3xl md:text-4xl">
+                {t(locale, "workImpactResults")}
+              </h2>
               {resultsText ? (
                 <p className="mt-4 max-w-2xl text-base leading-relaxed text-text-muted">
                   {resultsText}
@@ -906,11 +903,11 @@ export function BrandCaseStudy({
               ) : null}
             </Reveal>
             {resolvedMetrics.length > 0 ? (
-              <Reveal className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <Reveal className="mt-10 grid grid-cols-2 gap-3 sm:gap-4">
                 {resolvedMetrics.map((metric) => (
                   <div
                     key={metric.label}
-                    className="rounded-card-lg border border-white/10 bg-card-dark px-6 py-10 text-center sm:py-12"
+                    className="rounded-card-lg border border-white/10 bg-card-dark px-4 py-8 text-center sm:px-6 sm:py-12"
                   >
                     <div className="font-display text-4xl font-black tracking-tight text-primary md:text-5xl">
                       {metric.value}
