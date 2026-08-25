@@ -262,7 +262,7 @@ function TouchpointCard({
 }) {
   return (
     <figure>
-      <div className="overflow-hidden rounded-card-lg border border-white/10 bg-card-dark">
+      <div className="overflow-hidden rounded-card border border-white/10 bg-card-dark">
         <div className="border-b border-white/10 px-5 py-3">
           <p className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
             <span
@@ -469,7 +469,7 @@ export function BrandCaseStudy({
 
           {metaItems.length > 0 ? (
             <Reveal className="pb-12 md:pb-16">
-              <dl className="grid grid-cols-3 divide-x divide-white/10 overflow-hidden rounded-card-lg border border-white/10 bg-card-dark">
+              <dl className="grid grid-cols-3 divide-x divide-white/10 overflow-hidden rounded-card border border-white/10 bg-card-dark">
                 {metaItems.map((item) => (
                   <div key={item.label} className="px-4 py-5 sm:px-6 sm:py-6">
                     <dt className="text-[9px] font-bold uppercase tracking-[0.2em] text-primary sm:text-[10px]">
@@ -508,7 +508,7 @@ export function BrandCaseStudy({
             </Reveal>
             <Reveal className="mt-10">
               <figure>
-                <div className="relative aspect-[4/3] overflow-hidden rounded-card-lg border border-white/10 bg-card-dark">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-card border border-white/10 bg-card-dark">
                   <BrandBoard
                     variant="before"
                     wordmark={wordmark}
@@ -582,7 +582,7 @@ export function BrandCaseStudy({
               {strategySubtitle || strategyTagline ? (
                 <Reveal className="mt-10">
                   <figure>
-                    <div className="relative aspect-[4/3] overflow-hidden rounded-card-lg border border-white/10 bg-card-dark sm:aspect-[16/7]">
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-card border border-white/10 bg-card-dark sm:aspect-[16/7]">
                       <BrandBoard
                         variant="before"
                         wordmark={clientName}
@@ -693,7 +693,7 @@ export function BrandCaseStudy({
             {/* Typography */}
             {typeface || typefaceDescription || subFonts.length > 0 ? (
               <Reveal>
-                <div className="rounded-card-lg border border-white/10 bg-card-dark p-6 sm:p-8">
+                <div className="rounded-card border border-white/10 bg-card-dark p-6 sm:p-8">
                   <p className="flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-text-primary">
                     <SectionChip icon="type" />
                     {t(locale, "workTypography")}
@@ -785,7 +785,7 @@ export function BrandCaseStudy({
                 </Reveal>
                 <Reveal className="mt-8">
                   <figure>
-                    <div className="relative aspect-[4/3] overflow-hidden rounded-card-lg border border-white/10 bg-card-dark sm:aspect-[16/9]">
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-card border border-white/10 bg-card-dark sm:aspect-[16/9]">
                       <BrandBoard
                         variant="applications"
                         wordmark={clientName}
@@ -900,7 +900,7 @@ export function BrandCaseStudy({
                 {resolvedMetrics.map((metric) => (
                   <div
                     key={metric.label}
-                    className="rounded-card-lg border border-white/10 bg-card-dark px-4 py-8 text-center sm:px-6 sm:py-12"
+                    className="rounded-card border border-white/10 bg-card-dark px-4 py-8 text-center sm:px-6 sm:py-12"
                   >
                     <div className="font-display text-4xl font-black tracking-tight text-primary md:text-5xl">
                       {metric.value}
@@ -922,7 +922,7 @@ export function BrandCaseStudy({
       <section className="py-16 md:py-24">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <div className="overflow-hidden rounded-card-lg border border-white/10 bg-card-dark">
+            <div className="overflow-hidden rounded-card border border-white/10 bg-card-dark">
               <div className="grid items-stretch lg:grid-cols-2">
                 <div className="relative flex flex-col justify-center p-8 sm:p-12 md:p-14">
                   <div
@@ -1001,7 +1001,7 @@ export function BrandCaseStudy({
             <div className="mt-10 grid gap-4 md:grid-cols-2">
               {gallery.map((url, index) => (
                 <Reveal key={url} className={cn(gallery.length % 2 === 1 && index === 0 && "md:col-span-2")}>
-                  <figure className="group relative overflow-hidden rounded-card-lg border border-white/10 bg-card-dark">
+                  <figure className="group relative overflow-hidden rounded-card border border-white/10 bg-card-dark">
                     <div className="relative aspect-[4/3] w-full overflow-hidden">
                       <Image
                         src={url}

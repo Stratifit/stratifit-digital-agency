@@ -65,7 +65,7 @@ export function ProcessCards({ steps }: { steps: ProcessStep[] }) {
             <article
               key={step.step_key}
               className={cn(
-                "relative rounded-card-lg border p-4 transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] sm:p-6",
+                "relative rounded-card border p-4 transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] sm:p-6",
                 highlight
                   ? "border-primary/30 bg-card-dark shadow-[0_4px_10px_rgba(245,158,11,0.15)]"
                   : "border-white/10 bg-card-dark",
