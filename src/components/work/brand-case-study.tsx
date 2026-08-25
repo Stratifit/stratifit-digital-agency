@@ -554,11 +554,7 @@ export function BrandCaseStudy({
       {hasStrategySection ? (
         <section className="border-t border-white/5 py-14 md:py-20">
           <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
-            <div className="relative pl-8 sm:pl-12">
-              <span
-                aria-hidden="true"
-                className="absolute bottom-0 left-0 top-0 w-px bg-gradient-to-b from-primary/50 via-primary/25 to-transparent"
-              />
+            <div>
 
               {/* Phase 01 — Discovery */}
               <Reveal>
