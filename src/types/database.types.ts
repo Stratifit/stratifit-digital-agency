@@ -1932,6 +1932,7 @@ export type Database = {
           id: string
           image_url: string | null
           is_featured: boolean
+          launch_translations: Json | null
           metrics: Json
           published_at: string | null
           results_translations: Json
@@ -1960,6 +1961,7 @@ export type Database = {
           id?: string
           image_url?: string | null
           is_featured?: boolean
+          launch_translations?: Json | null
           metrics?: Json
           published_at?: string | null
           results_translations?: Json
@@ -1988,6 +1990,7 @@ export type Database = {
           id?: string
           image_url?: string | null
           is_featured?: boolean
+          launch_translations?: Json | null
           metrics?: Json
           published_at?: string | null
           results_translations?: Json

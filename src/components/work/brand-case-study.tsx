@@ -3,6 +3,7 @@ import Link from "next/link";
 import type {
   PublicPortfolioBrandSystem,
   PublicPortfolioDetail,
+  PublicPortfolioLaunch,
   PublicPortfolioProject,
   PublicPortfolioStrategy,
 } from "@/features/portfolio/queries";
@@ -235,6 +236,38 @@ function TwoTone({ label, invert }: { label: string; invert?: boolean }) {
   );
 }
 
+/**
+ * Physical-touchpoint preview — the dark card with an uppercase label bar and
+ * the generated business-card mockup inside (used for the touchpoint slots of
+ * the rollout document).
+ */
+function TouchpointCard({
+  label,
+  wordmark,
+}: {
+  label: string;
+  wordmark: string;
+}) {
+  return (
+    <figure>
+      <div className="overflow-hidden rounded-card-lg border border-white/10 bg-card-dark">
+        <div className="border-b border-white/10 px-5 py-3">
+          <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
+            {label}
+          </p>
+        </div>
+        <div className="relative aspect-[4/3] sm:aspect-[16/9]">
+          <BrandBoard
+            variant="businesscard"
+            wordmark={wordmark}
+            className="absolute inset-0"
+          />
+        </div>
+      </div>
+    </figure>
+  );
+}
+
 /* ------------------------------------------------------------------ */
 /* Brand case study                                                    */
 /* ------------------------------------------------------------------ */
@@ -335,6 +368,21 @@ export function BrandCaseStudy({
       subFonts.length > 0 ||
       identityAssets ||
       visualApplications
+  );
+
+  // Launch & Activation phase document (per-project, per-locale).
+  const launch = project.launch_translations ?? null;
+  const launchValue = (field: keyof PublicPortfolioLaunch): string => {
+    const entry = launch?.[locale] ?? launch?.en;
+    const value = entry?.[field];
+    return typeof value === "string" ? value : "";
+  };
+  const launchHeadline = launchValue("headline");
+  const launchIntro = launchValue("intro");
+  const launchPhysical = launchValue("physical");
+  const launchGuidelines = launchValue("guidelines");
+  const hasLaunchSection = Boolean(
+    launchHeadline || launchIntro || launchPhysical || launchGuidelines
   );
 
   const metaItems: { label: string; value: string }[] = [
@@ -675,22 +723,10 @@ export function BrandCaseStudy({
                   </p>
                 </Reveal>
                 <Reveal className="mt-8">
-                  <figure>
-                    <div className="overflow-hidden rounded-card-lg border border-white/10 bg-card-dark">
-                      <div className="border-b border-white/10 px-5 py-3">
-                        <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
-                          {t(locale, "workPhysicalTouchpoint")}
-                        </p>
-                      </div>
-                      <div className="relative aspect-[4/3] sm:aspect-[16/9]">
-                        <BrandBoard
-                          variant="businesscard"
-                          wordmark={clientName}
-                          className="absolute inset-0"
-                        />
-                      </div>
-                    </div>
-                  </figure>
+                  <TouchpointCard
+                    label={t(locale, "workPhysicalTouchpoint")}
+                    wordmark={clientName}
+                  />
                 </Reveal>
               </>
             ) : null}
@@ -716,6 +752,78 @@ export function BrandCaseStudy({
                       />
                     </div>
                   </figure>
+                </Reveal>
+              </>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
+
+      {/* ============================================================ */}
+      {/* Launch & Activation — rollout, touchpoints, guidelines      */}
+      {/* ============================================================ */}
+      {hasLaunchSection ? (
+        <section className="border-t border-white/5 py-14 md:py-20">
+          <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
+            <Reveal>
+              <p className="text-[11px] font-black uppercase tracking-[0.3em] text-primary">
+                {t(locale, "workPhaseLaunch")}
+              </p>
+              {launchHeadline ? (
+                <h2 className="mt-3 whitespace-pre-line font-display text-3xl font-black uppercase leading-[1.05] tracking-tight text-text-primary sm:text-4xl md:text-5xl">
+                  {launchHeadline}
+                </h2>
+              ) : null}
+              {launchIntro ? (
+                <p className="mt-5 max-w-2xl text-base leading-relaxed text-text-muted">
+                  {launchIntro}
+                </p>
+              ) : null}
+            </Reveal>
+
+            {launchIntro ? (
+              <Reveal className="mt-8">
+                <TouchpointCard
+                  label={t(locale, "workPhysicalTouchpoint")}
+                  wordmark={clientName}
+                />
+              </Reveal>
+            ) : null}
+
+            {launchPhysical ? (
+              <>
+                <Reveal className="mt-14">
+                  <h3 className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
+                    {t(locale, "workPhysicalTouchpoints")}
+                  </h3>
+                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
+                    {launchPhysical}
+                  </p>
+                </Reveal>
+                <Reveal className="mt-8">
+                  <TouchpointCard
+                    label={t(locale, "workPhysicalTouchpoint")}
+                    wordmark={clientName}
+                  />
+                </Reveal>
+              </>
+            ) : null}
+
+            {launchGuidelines ? (
+              <>
+                <Reveal className="mt-14">
+                  <h3 className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
+                    {t(locale, "workBrandGuidelines")}
+                  </h3>
+                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
+                    {launchGuidelines}
+                  </p>
+                </Reveal>
+                <Reveal className="mt-8">
+                  <TouchpointCard
+                    label={t(locale, "workPhysicalTouchpoint")}
+                    wordmark={clientName}
+                  />
                 </Reveal>
               </>
             ) : null}

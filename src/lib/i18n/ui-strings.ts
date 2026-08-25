@@ -223,8 +223,10 @@ export type UiStringKey =
   | "workOverviewA"
   | "workOverviewB"
   | "workPhaseDiscovery"
+  | "workPhaseLaunch"
   | "workPhaseStrategy"
   | "workPhysicalTouchpoint"
+  | "workPhysicalTouchpoints"
   | "workProcessA"
   | "workProcessB"
   | "workPositioning"
@@ -503,6 +505,7 @@ const en: UiStrings = {
   workTypography: "Typography",
   workIdentityAssets: "Identity Assets",
   workPhysicalTouchpoint: "Physical Touchpoint",
+  workPhysicalTouchpoints: "Physical Touchpoints",
   workVisualApplications: "Visual Applications",
   workTypeHierarchy: "Type Hierarchy",
   workHeading: "Heading",
@@ -549,6 +552,7 @@ const en: UiStrings = {
   workIdentityDirection: "Identity Direction",
   workMessagingDirection: "Messaging Direction",
   workPhaseDiscovery: "Discovery",
+  workPhaseLaunch: "Launch",
   workPhaseStrategy: "Strategy",
   workResults: "Results",
   workSameRigor:
@@ -827,6 +831,7 @@ const de: UiStrings = {
   workTypography: "Typografie",
   workIdentityAssets: "Identitäts-Assets",
   workPhysicalTouchpoint: "Physischer Touchpoint",
+  workPhysicalTouchpoints: "Physische Touchpoints",
   workVisualApplications: "Visuelle Anwendungen",
   workTypeHierarchy: "Typografische Hierarchie",
   workHeading: "Überschrift",
@@ -873,6 +878,7 @@ const de: UiStrings = {
   workIdentityDirection: "Identitätsrichtung",
   workMessagingDirection: "Messaging-Richtung",
   workPhaseDiscovery: "Analyse",
+  workPhaseLaunch: "Launch",
   workPhaseStrategy: "Strategie",
   workResults: "Ergebnisse",
   workSameRigor:
@@ -1151,6 +1157,7 @@ const fr: UiStrings = {
   workTypography: "Typographie",
   workIdentityAssets: "Actifs d'identité",
   workPhysicalTouchpoint: "Point de contact physique",
+  workPhysicalTouchpoints: "Points de contact physiques",
   workVisualApplications: "Applications visuelles",
   workTypeHierarchy: "Hiérarchie typographique",
   workHeading: "Titre",
@@ -1197,6 +1204,7 @@ const fr: UiStrings = {
   workIdentityDirection: "Direction de l'identité",
   workMessagingDirection: "Direction du message",
   workPhaseDiscovery: "Découverte",
+  workPhaseLaunch: "Lancement",
   workPhaseStrategy: "Stratégie",
   workResults: "Résultats",
   workSameRigor:
@@ -1475,6 +1483,7 @@ const es: UiStrings = {
   workTypography: "Tipografía",
   workIdentityAssets: "Activos de identidad",
   workPhysicalTouchpoint: "Punto de contacto físico",
+  workPhysicalTouchpoints: "Puntos de contacto físicos",
   workVisualApplications: "Aplicaciones visuales",
   workTypeHierarchy: "Jerarquía tipográfica",
   workHeading: "Encabezado",
@@ -1521,6 +1530,7 @@ const es: UiStrings = {
   workIdentityDirection: "Dirección de identidad",
   workMessagingDirection: "Dirección del mensaje",
   workPhaseDiscovery: "Descubrimiento",
+  workPhaseLaunch: "Lanzamiento",
   workPhaseStrategy: "Estrategia",
   workResults: "Resultados",
   workSameRigor:

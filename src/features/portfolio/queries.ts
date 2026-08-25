@@ -126,6 +126,39 @@ export function normalizeBrandSystemTranslations(
   return out;
 }
 
+export interface PublicPortfolioLaunch {
+  headline: string;
+  intro: string;
+  physical: string;
+  guidelines: string;
+}
+
+/**
+ * Normalizes the per-locale Launch & Activation phase document
+ * (portfolio_projects.launch_translations JSONB) into safe string fields.
+ * Each locale holds one object; missing locales/fields become empty strings.
+ */
+export function normalizeLaunchTranslations(
+  raw: unknown
+): Record<string, PublicPortfolioLaunch> | null {
+  if (!raw || typeof raw !== "object") return null;
+  const out: Record<string, PublicPortfolioLaunch> = {};
+  for (const locale of ["en", "de", "fr", "es"] as const) {
+    const entry = (raw as Record<string, unknown>)[locale];
+    if (!entry || typeof entry !== "object") continue;
+    const data = entry as Record<string, unknown>;
+    const str = (key: string): string =>
+      typeof data[key] === "string" ? (data[key] as string) : "";
+    out[locale] = {
+      headline: str("headline"),
+      intro: str("intro"),
+      physical: str("physical"),
+      guidelines: str("guidelines"),
+    };
+  }
+  return out;
+}
+
 export interface PublicPortfolioProject {
   slug: string;
   client_name: string;
@@ -342,6 +375,8 @@ export interface PublicPortfolioDetail {
   strategy_translations: Record<string, PublicPortfolioStrategy> | null;
   /** Multilingual Identity & Assets phase document (type + applications). */
   brand_system_translations: Record<string, PublicPortfolioBrandSystem> | null;
+  /** Multilingual Launch & Activation phase document. */
+  launch_translations: Record<string, PublicPortfolioLaunch> | null;
   challenge_translations: Record<string, string> | null;
   approach_translations: Record<string, string> | null;
   solution_translations: Record<string, string> | null;
@@ -369,7 +404,7 @@ export async function getPublicPortfolioDetail(
   const { data, error } = await supabase
     .from("portfolio_projects")
     .select(
-      "id, slug, client_name, title_translations, summary_translations, brand_story_translations, brand_guidelines, strategy_translations, brand_system_translations, challenge_translations, approach_translations, solution_translations, deliverables_translations, results_translations, metrics, featured_media_id, image_url, testimonial_id, seo_title_translations, seo_description_translations, published_at, year"
+      "id, slug, client_name, title_translations, summary_translations, brand_story_translations, brand_guidelines, strategy_translations, brand_system_translations, launch_translations, challenge_translations, approach_translations, solution_translations, deliverables_translations, results_translations, metrics, featured_media_id, image_url, testimonial_id, seo_title_translations, seo_description_translations, published_at, year"
     )
     .eq("slug", slug)
     .eq("status", "published")
@@ -479,6 +514,7 @@ export async function getPublicPortfolioDetail(
     brand_system_translations: normalizeBrandSystemTranslations(
       data.brand_system_translations
     ),
+    launch_translations: normalizeLaunchTranslations(data.launch_translations),
     challenge_translations:
       data.challenge_translations as Record<string, string> | null,
     approach_translations:
