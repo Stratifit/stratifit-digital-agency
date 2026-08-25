@@ -445,14 +445,7 @@ export function BrandCaseStudy({
       {/* ============================================================ */}
       {/* Cover — brand lockup (monogram + wordmark) + metadata         */}
       {/* ============================================================ */}
-      <section className="relative overflow-hidden border-b border-white/5">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-[420px] overflow-hidden"
-        >
-          <div className="absolute left-1/2 top-0 h-[420px] w-[900px] -translate-x-1/2 rounded-full bg-primary/[0.06] blur-[140px]" />
-        </div>
-
+      <section className="relative overflow-hidden border-b border-white/5 bg-black">
         <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal immediate>
             <div className="flex flex-col items-center pb-12 pt-14 text-center md:pb-16 md:pt-20">
