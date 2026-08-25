@@ -632,7 +632,7 @@ VALUES
    true
   ),
   ('growth', 4,
-   '{"en": "Launch & Grow", "de": "Launch & Wachstum", "fr": "Lancement et croissance", "es": "Lanzamiento y crecimiento"}'::jsonb,
+   '{"en": "Launch", "de": "Launch", "fr": "Lancement", "es": "Lanzamiento"}'::jsonb,
    '{"en": "We launch, measure, and optimize continuously to improve performance and support sustainable growth.", "de": "Wir bringen Ihr Projekt an den Start, messen die Ergebnisse und optimieren kontinuierlich, um die Leistung zu steigern und nachhaltiges Wachstum zu fördern.", "fr": "Nous assurons le lancement, mesurons les résultats et optimisons en continu afin d'améliorer les performances et de soutenir une croissance durable.", "es": "Lanzamos el proyecto, medimos los resultados y optimizamos continuamente para mejorar el rendimiento e impulsar un crecimiento sostenible."}'::jsonb,
    'rocket',
    4,
@@ -1921,7 +1921,7 @@ VALUES
    true
   ),
   ('growth', 4,
-   '{"en": "Launch & Grow", "de": "Launch & Wachstum", "fr": "Lancement et croissance", "es": "Lanzamiento y crecimiento"}'::jsonb,
+   '{"en": "Launch", "de": "Launch", "fr": "Lancement", "es": "Lanzamiento"}'::jsonb,
    '{"en": "We launch, measure, and optimize continuously to improve performance and support sustainable growth.", "de": "Wir bringen Ihr Projekt an den Start, messen die Ergebnisse und optimieren kontinuierlich, um die Leistung zu steigern und nachhaltiges Wachstum zu fördern.", "fr": "Nous assurons le lancement, mesurons les résultats et optimisons en continu afin d'améliorer les performances et de soutenir une croissance durable.", "es": "Lanzamos el proyecto, medimos los resultados y optimizamos continuamente para mejorar el rendimiento e impulsar un crecimiento sostenible."}'::jsonb,
    'rocket',
    4,
