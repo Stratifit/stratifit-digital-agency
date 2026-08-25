@@ -493,13 +493,10 @@ export function BrandCaseStudy({
         <section className="py-14 md:py-20">
           <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <div className="flex items-center gap-3">
-                <SectionChip icon="briefcase" />
-                <SectionHeading
-                  a={t(locale, "workOverviewA")}
-                  b={t(locale, "workOverviewB")}
-                />
-              </div>
+              <SectionHeading
+                a={t(locale, "workOverviewA")}
+                b={t(locale, "workOverviewB")}
+              />
               {overviewBody ? (
                 <p className="mt-5 max-w-2xl border-l-2 border-primary pl-4 text-base leading-relaxed text-text-primary sm:pl-6 md:text-lg">
                   {overviewBody}
