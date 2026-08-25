@@ -211,7 +211,8 @@ export type UiStringKey =
   | "workCoreMessage"
   | "workGallery"
   | "workHowWeBuilt"
-  | "workImpactResults"
+  | "workImpactA"
+  | "workImpactB"
   | "workIndustry"
   | "workMoreWork"
   | "workMoved"
@@ -232,7 +233,9 @@ export type UiStringKey =
   | "workProcessB"
   | "workPositioning"
   | "workProcessIntro"
+  | "workProcessKicker"
   | "workResults"
+  | "workResultsKicker"
   | "workSameRigor"
   | "workSelected"
   | "workSelectedWork"
@@ -531,7 +534,10 @@ const en: UiStrings = {
   workCoreMessage: "Core Message",
   workGallery: "Gallery",
   workHowWeBuilt: "How we built this brand.",
-  workImpactResults: "Impact & Results",
+  workImpactA: "Impact &",
+  workImpactB: "Results",
+  workProcessKicker: "How We Work",
+  workResultsKicker: "Outcomes",
   workIndustry: "Industry",
   workMoreWork: "More Work",
   workMoved: "Moved",
@@ -858,7 +864,10 @@ const de: UiStrings = {
   workCoreMessage: "Kernbotschaft",
   workGallery: "Galerie",
   workHowWeBuilt: "So haben wir diese Marke aufgebaut.",
-  workImpactResults: "Impact & Ergebnisse",
+  workImpactA: "Impact &",
+  workImpactB: "Ergebnisse",
+  workProcessKicker: "So arbeiten wir",
+  workResultsKicker: "Ergebnisse",
   workIndustry: "Branche",
   workMoreWork: "Weitere Arbeiten",
   workMoved: "bewegen",
@@ -1185,7 +1194,10 @@ const fr: UiStrings = {
   workCoreMessage: "Message clé",
   workGallery: "Galerie",
   workHowWeBuilt: "Comment nous avons construit cette marque.",
-  workImpactResults: "Impact & Résultats",
+  workImpactA: "Impact &",
+  workImpactB: "Résultats",
+  workProcessKicker: "Notre méthode",
+  workResultsKicker: "Résultats",
   workIndustry: "Secteur",
   workMoreWork: "Autres projets",
   workMoved: "parlent",
@@ -1512,7 +1524,10 @@ const es: UiStrings = {
   workCoreMessage: "Mensaje central",
   workGallery: "Galería",
   workHowWeBuilt: "Así construimos esta marca.",
-  workImpactResults: "Impacto y resultados",
+  workImpactA: "Impacto y",
+  workImpactB: "resultados",
+  workProcessKicker: "Cómo trabajamos",
+  workResultsKicker: "Resultados",
   workIndustry: "Sector",
   workMoreWork: "Más trabajos",
   workMoved: "hablan",

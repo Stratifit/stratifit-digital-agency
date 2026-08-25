@@ -214,14 +214,38 @@ function BrandWordmark({ name }: { name: string }) {
 }
 
 /**
- * Section heading — the small-caps kicker from the rollout mock with the
- * second word accented amber (e.g. "PROJECT OVERVIEW", "OUR PROCESS").
+ * Section header — the homepage header anatomy: amber kicker, big two-tone
+ * display title, and a description with the left amber accent bar.
  */
-function SectionHeading({ a, b }: { a: string; b: string }) {
+function SectionHeader({
+  kicker,
+  titleA,
+  titleB,
+  description,
+  className,
+}: {
+  kicker: string;
+  titleA: string;
+  titleB: string;
+  description?: string;
+  // Margin override — matches the homepage SectionHeader wrapper so the
+  // case-study sections keep the same vertical rhythm as CMS sections.
+  className?: string;
+}) {
   return (
-    <h2 className="text-sm font-black uppercase tracking-[0.3em] text-text-primary sm:text-base">
-      {a} <span className="text-primary">{b}</span>
-    </h2>
+    <div className={className ? className : "mb-10 md:mb-16"}>
+      <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+        {kicker}
+      </p>
+      <h2 className="font-display font-black leading-tight tracking-tight text-text-primary text-3xl sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
+        {titleA} <span className="text-primary">{titleB}</span>
+      </h2>
+      {description ? (
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
+          {description}
+        </p>
+      ) : null}
+    </div>
   );
 }
 
@@ -493,17 +517,14 @@ export function BrandCaseStudy({
         <section className="py-14 md:py-20">
           <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <SectionHeading
-                a={t(locale, "workOverviewA")}
-                b={t(locale, "workOverviewB")}
+              <SectionHeader
+                kicker={t(locale, "workCaseStudy")}
+                titleA={t(locale, "workOverviewA")}
+                titleB={t(locale, "workOverviewB")}
+                description={overviewBody || undefined}
               />
-              {overviewBody ? (
-                <p className="mt-5 max-w-2xl border-l-2 border-primary pl-4 text-base leading-relaxed text-text-primary sm:pl-6 md:text-lg">
-                  {overviewBody}
-                </p>
-              ) : null}
             </Reveal>
-            <Reveal className="mt-10">
+            <Reveal>
               <figure>
                 <div className="relative aspect-[4/3] overflow-hidden rounded-card border border-white/10 bg-card-dark">
                   <BrandBoard
@@ -529,18 +550,14 @@ export function BrandCaseStudy({
         <section className="py-14 md:py-20">
           <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <div className="flex items-center gap-3">
-                <SectionChip icon="layers" />
-                <SectionHeading
-                  a={t(locale, "workProcessA")}
-                  b={t(locale, "workProcessB")}
-                />
-              </div>
-              <p className="mt-5 max-w-2xl border-l-2 border-primary pl-4 text-base leading-relaxed text-text-primary sm:pl-6 md:text-lg">
-                {t(locale, "workProcessIntro")}
-              </p>
+              <SectionHeader
+                kicker={t(locale, "workProcessKicker")}
+                titleA={t(locale, "workProcessA")}
+                titleB={t(locale, "workProcessB")}
+                description={t(locale, "workProcessIntro")}
+              />
             </Reveal>
-            <Reveal className="mt-10 grid gap-10 lg:grid-cols-[190px_1fr] lg:gap-14">
+            <Reveal className="grid gap-10 lg:grid-cols-[190px_1fr] lg:gap-14">
               <ProcessTimeline steps={processSteps} />
               <ProcessCards steps={processSteps} />
             </Reveal>
@@ -879,17 +896,15 @@ export function BrandCaseStudy({
         <section className="border-t border-white/5 py-14 md:py-20">
           <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <h2 className="font-display text-2xl font-black uppercase tracking-tight text-text-primary sm:text-3xl md:text-4xl">
-                {t(locale, "workImpactResults")}
-              </h2>
-              {resultsText ? (
-                <p className="mt-4 max-w-2xl text-base leading-relaxed text-text-muted">
-                  {resultsText}
-                </p>
-              ) : null}
+              <SectionHeader
+                kicker={t(locale, "workResultsKicker")}
+                titleA={t(locale, "workImpactA")}
+                titleB={t(locale, "workImpactB")}
+                description={resultsText || undefined}
+              />
             </Reveal>
             {resolvedMetrics.length > 0 ? (
-              <Reveal className="mt-10 grid grid-cols-2 gap-3 sm:gap-4">
+              <Reveal className="grid grid-cols-2 gap-3 sm:gap-4">
                 {resolvedMetrics.map((metric) => (
                   <div
                     key={metric.label}
