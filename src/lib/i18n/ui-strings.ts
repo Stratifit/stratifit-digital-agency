@@ -211,6 +211,7 @@ export type UiStringKey =
   | "workCoreMessage"
   | "workGallery"
   | "workHowWeBuilt"
+  | "workImpactResults"
   | "workIndustry"
   | "workMoreWork"
   | "workMoved"
@@ -530,6 +531,7 @@ const en: UiStrings = {
   workCoreMessage: "Core Message",
   workGallery: "Gallery",
   workHowWeBuilt: "How we built this brand.",
+  workImpactResults: "Impact & Results",
   workIndustry: "Industry",
   workMoreWork: "More Work",
   workMoved: "Moved",
@@ -856,6 +858,7 @@ const de: UiStrings = {
   workCoreMessage: "Kernbotschaft",
   workGallery: "Galerie",
   workHowWeBuilt: "So haben wir diese Marke aufgebaut.",
+  workImpactResults: "Impact & Ergebnisse",
   workIndustry: "Branche",
   workMoreWork: "Weitere Arbeiten",
   workMoved: "bewegen",
@@ -1182,6 +1185,7 @@ const fr: UiStrings = {
   workCoreMessage: "Message clé",
   workGallery: "Galerie",
   workHowWeBuilt: "Comment nous avons construit cette marque.",
+  workImpactResults: "Impact & Résultats",
   workIndustry: "Secteur",
   workMoreWork: "Autres projets",
   workMoved: "parlent",
@@ -1508,6 +1512,7 @@ const es: UiStrings = {
   workCoreMessage: "Mensaje central",
   workGallery: "Galería",
   workHowWeBuilt: "Así construimos esta marca.",
+  workImpactResults: "Impacto y resultados",
   workIndustry: "Sector",
   workMoreWork: "Más trabajos",
   workMoved: "hablan",

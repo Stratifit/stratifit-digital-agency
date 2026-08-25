@@ -37,9 +37,6 @@ function initials(name: string): string {
     .toUpperCase();
 }
 
-/** Icons rotated across the results metric cards. */
-const METRIC_ICONS = ["chart", "target", "trendingup", "sparkles"];
-
 /**
  * Numbered section label — e.g. "01 • Project Problem" — the amber eyebrow
  * that anchors every storytelling block of the case study. Each section
@@ -832,45 +829,32 @@ export function BrandCaseStudy({
       ) : null}
 
       {/* ============================================================ */}
-      {/* 05 — Results                                                 */}
+      {/* Impact & Results — 2x2 metric grid                          */}
       {/* ============================================================ */}
       {project.metrics.length > 0 || resultsText ? (
         <section className="border-t border-white/5 py-14 md:py-20">
-          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <SectionEyebrow index={nextIndex()} icon="trendingup">
-                {t(locale, "workResults")}
-              </SectionEyebrow>
-              <h2 className="mt-5 max-w-3xl font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl">
-                {t(locale, "workNumbersThat")}{" "}
-                <em className="text-primary">{t(locale, "workMoved")}</em>
+              <h2 className="font-display text-2xl font-black uppercase tracking-tight text-text-primary sm:text-3xl md:text-4xl">
+                {t(locale, "workImpactResults")}
               </h2>
               {resultsText ? (
-                <p className="mt-5 max-w-2xl text-base leading-relaxed text-text-muted md:text-lg">
+                <p className="mt-4 max-w-2xl text-base leading-relaxed text-text-muted">
                   {resultsText}
                 </p>
               ) : null}
             </Reveal>
             {resolvedMetrics.length > 0 ? (
-              <Reveal className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                {resolvedMetrics.map((metric, index) => (
+              <Reveal className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {resolvedMetrics.map((metric) => (
                   <div
                     key={metric.label}
-                    className="relative overflow-hidden rounded-card-lg border border-white/10 bg-card-dark p-6 sm:p-7"
+                    className="rounded-card-lg border border-white/10 bg-card-dark px-6 py-10 text-center sm:py-12"
                   >
-                    <span
-                      className="absolute right-5 top-5 flex size-9 items-center justify-center rounded-full border border-primary/20 bg-primary/10 text-primary"
-                      aria-hidden="true"
-                    >
-                      <ProcessIcon
-                        name={METRIC_ICONS[index % METRIC_ICONS.length]}
-                        className="size-4"
-                      />
-                    </span>
-                    <div className="pr-10 font-display text-3xl font-black tracking-tight text-primary md:text-4xl">
+                    <div className="font-display text-4xl font-black tracking-tight text-primary md:text-5xl">
                       {metric.value}
                     </div>
-                    <div className="mt-2 text-[10px] font-bold uppercase tracking-[0.2em] text-text-subtle">
+                    <div className="mx-auto mt-3 max-w-[220px] text-[10px] font-bold uppercase leading-relaxed tracking-[0.2em] text-text-secondary">
                       {metric.label}
                     </div>
                   </div>
@@ -880,6 +864,73 @@ export function BrandCaseStudy({
           </div>
         </section>
       ) : null}
+
+      {/* ============================================================ */}
+      {/* Final CTA                                                     */}
+      {/* ============================================================ */}
+      <section className="py-16 md:py-24">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <div className="overflow-hidden rounded-card-lg border border-white/10 bg-card-dark">
+              <div className="grid items-stretch lg:grid-cols-2">
+                <div className="relative flex flex-col justify-center p-8 sm:p-12 md:p-14">
+                  <div
+                    aria-hidden="true"
+                    className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent"
+                  />
+                  <p className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.3em] text-primary">
+                    <span
+                      className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-primary/25 bg-primary/10"
+                      aria-hidden="true"
+                    >
+                      <ProcessIcon name="rocket" className="size-4" />
+                    </span>
+                    {t(locale, "workYourProjectNext")}
+                  </p>
+                  <h2 className="mt-4 font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl">
+                    {t(locale, "workWantOutcome")}
+                  </h2>
+                  <p className="mt-4 max-w-md text-base leading-relaxed text-text-muted">
+                    {t(locale, "workSameRigor")}
+                  </p>
+                  <div className="mt-8 flex flex-wrap gap-4">
+                    <Link
+                      href="/contact"
+                      className="inline-flex h-[52px] select-none items-center justify-center gap-2 whitespace-nowrap rounded-button border border-transparent bg-primary px-6 text-base font-medium text-text-inverse shadow-amber transition-[background-color,border-color,color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-hover focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 active:translate-y-0 active:border-primary/60 active:bg-primary-active"
+                    >
+                      {ctaLabel}
+                      <ArrowIcon className="size-4" />
+                    </Link>
+                    <Link
+                      href="/work"
+                      className="inline-flex h-[52px] items-center justify-center gap-2 rounded-button border border-card-border bg-card-dark px-6 text-base font-medium text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/30 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
+                    >
+                      {t(locale, "workViewCaseStudies")}
+                      <ArrowIcon className="size-4" />
+                    </Link>
+                  </div>
+                </div>
+                <div className="relative min-h-[320px] border-t border-white/10 lg:border-l lg:border-t-0">
+                  <BrandBoard
+                    variant="cta"
+                    wordmark={wordmark}
+                    label={categoryLabel}
+                    className="absolute inset-0"
+                  />
+                </div>
+              </div>
+            </div>
+          </Reveal>
+          {servicesJoined ? (
+            <Reveal>
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-3 px-1 text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
+                <span>STRATIFIT</span>
+                <span>{servicesJoined}</span>
+              </div>
+            </Reveal>
+          ) : null}
+        </div>
+      </section>
 
       {/* ============================================================ */}
       {/* 06 — Brand in action — gallery grid                          */}
@@ -1002,72 +1053,6 @@ export function BrandCaseStudy({
         </section>
       ) : null}
 
-      {/* ============================================================ */}
-      {/* Final CTA                                                     */}
-      {/* ============================================================ */}
-      <section className="py-16 md:py-24">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <div className="overflow-hidden rounded-card-lg border border-white/10 bg-card-dark">
-              <div className="grid items-stretch lg:grid-cols-2">
-                <div className="relative flex flex-col justify-center p-8 sm:p-12 md:p-14">
-                  <div
-                    aria-hidden="true"
-                    className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent"
-                  />
-                  <p className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.3em] text-primary">
-                    <span
-                      className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-primary/25 bg-primary/10"
-                      aria-hidden="true"
-                    >
-                      <ProcessIcon name="rocket" className="size-4" />
-                    </span>
-                    {t(locale, "workYourProjectNext")}
-                  </p>
-                  <h2 className="mt-4 font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl">
-                    {t(locale, "workWantOutcome")}
-                  </h2>
-                  <p className="mt-4 max-w-md text-base leading-relaxed text-text-muted">
-                    {t(locale, "workSameRigor")}
-                  </p>
-                  <div className="mt-8 flex flex-wrap gap-4">
-                    <Link
-                      href="/contact"
-                      className="inline-flex h-[52px] select-none items-center justify-center gap-2 whitespace-nowrap rounded-button border border-transparent bg-primary px-6 text-base font-medium text-text-inverse shadow-amber transition-[background-color,border-color,color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-hover focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 active:translate-y-0 active:border-primary/60 active:bg-primary-active"
-                    >
-                      {ctaLabel}
-                      <ArrowIcon className="size-4" />
-                    </Link>
-                    <Link
-                      href="/work"
-                      className="inline-flex h-[52px] items-center justify-center gap-2 rounded-button border border-card-border bg-card-dark px-6 text-base font-medium text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/30 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
-                    >
-                      {t(locale, "workViewCaseStudies")}
-                      <ArrowIcon className="size-4" />
-                    </Link>
-                  </div>
-                </div>
-                <div className="relative min-h-[320px] border-t border-white/10 lg:border-l lg:border-t-0">
-                  <BrandBoard
-                    variant="cta"
-                    wordmark={wordmark}
-                    label={categoryLabel}
-                    className="absolute inset-0"
-                  />
-                </div>
-              </div>
-            </div>
-          </Reveal>
-          {servicesJoined ? (
-            <Reveal>
-              <div className="mt-6 flex flex-wrap items-center justify-between gap-3 px-1 text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
-                <span>STRATIFIT</span>
-                <span>{servicesJoined}</span>
-              </div>
-            </Reveal>
-          ) : null}
-        </div>
-      </section>
     </>
   );
 }
