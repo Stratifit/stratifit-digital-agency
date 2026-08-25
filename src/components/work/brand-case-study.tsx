@@ -697,14 +697,27 @@ export function BrandCaseStudy({
 
             {/* Visual applications */}
             {visualApplications ? (
-              <Reveal className="mt-14">
-                <h3 className="font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
-                  {t(locale, "workVisualApplications")}
-                </h3>
-                <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
-                  {visualApplications}
-                </p>
-              </Reveal>
+              <>
+                <Reveal className="mt-14">
+                  <h3 className="font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
+                    {t(locale, "workVisualApplications")}
+                  </h3>
+                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
+                    {visualApplications}
+                  </p>
+                </Reveal>
+                <Reveal className="mt-8">
+                  <figure>
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-card-lg border border-white/10 bg-card-dark sm:aspect-[16/9]">
+                      <BrandBoard
+                        variant="applications"
+                        wordmark={clientName}
+                        className="absolute inset-0"
+                      />
+                    </div>
+                  </figure>
+                </Reveal>
+              </>
             ) : null}
           </div>
         </section>
