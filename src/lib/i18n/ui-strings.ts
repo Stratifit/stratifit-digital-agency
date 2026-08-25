@@ -215,6 +215,10 @@ export type UiStringKey =
   | "workOurProcess"
   | "workOurSolution"
   | "workOverview"
+  | "workOverviewA"
+  | "workOverviewB"
+  | "workProcessA"
+  | "workProcessB"
   | "workPositioning"
   | "workProcessIntro"
   | "workResults"
@@ -519,9 +523,13 @@ const en: UiStrings = {
   workOurProcess: "Our Process",
   workOurSolution: "Our Solution",
   workOverview: "Project Overview",
+  workOverviewA: "Project",
+  workOverviewB: "Overview",
+  workProcessA: "Our",
+  workProcessB: "Process",
   workPositioning: "Positioning",
   workProcessIntro:
-    "The work unfolds as a clear timeline, with every step building on the one before it.",
+    "A refined process that creates clarity and transforms it into real-world impact.",
   workResults: "Results",
   workSameRigor:
     "The same playbook, applied to your goals and your metrics.",
@@ -829,9 +837,13 @@ const de: UiStrings = {
   workOurProcess: "Unser Prozess",
   workOurSolution: "Unsere Lösung",
   workOverview: "Projektübersicht",
+  workOverviewA: "Projekt",
+  workOverviewB: "Übersicht",
+  workProcessA: "Unser",
+  workProcessB: "Prozess",
   workPositioning: "Positionierung",
   workProcessIntro:
-    "Die Arbeit entfaltet sich als klarer Zeitplan – jeder Schritt baut auf dem vorherigen auf.",
+    "Ein durchdachter Prozess, der Klarheit schafft und sie in echte Wirkung verwandelt.",
   workResults: "Ergebnisse",
   workSameRigor:
     "Dasselbe Vorgehen, angewendet auf Ihre Ziele und Kennzahlen.",
@@ -1139,9 +1151,13 @@ const fr: UiStrings = {
   workOurProcess: "Notre processus",
   workOurSolution: "Notre solution",
   workOverview: "Aperçu du projet",
+  workOverviewA: "Aperçu",
+  workOverviewB: "du projet",
+  workProcessA: "Notre",
+  workProcessB: "processus",
   workPositioning: "Positionnement",
   workProcessIntro:
-    "Le travail se déroule selon un calendrier clair, chaque étape s'appuyant sur la précédente.",
+    "Un processus raffiné qui crée de la clarté et la transforme en impact concret.",
   workResults: "Résultats",
   workSameRigor:
     "La même méthode, appliquée à vos objectifs et vos indicateurs.",
@@ -1449,9 +1465,13 @@ const es: UiStrings = {
   workOurProcess: "Nuestro proceso",
   workOurSolution: "Nuestra solución",
   workOverview: "Resumen del proyecto",
+  workOverviewA: "Resumen",
+  workOverviewB: "del proyecto",
+  workProcessA: "Nuestro",
+  workProcessB: "proceso",
   workPositioning: "Posicionamiento",
   workProcessIntro:
-    "El trabajo se desarrolla como un cronograma claro, donde cada paso se apoya en el anterior.",
+    "Un proceso refinado que crea claridad y la convierte en un impacto real.",
   workResults: "Resultados",
   workSameRigor:
     "El mismo plan de juego, aplicado a tus objetivos y tus métricas.",

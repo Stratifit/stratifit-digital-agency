@@ -10,9 +10,8 @@ import { t, tWithValue } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
 import { Reveal } from "@/components/ui/reveal";
 import { RelatedProjects } from "@/components/work/related-projects";
-import { BrandBoard, type BrandBoardVariant } from "@/components/work/brand-board";
+import { BrandBoard } from "@/components/work/brand-board";
 import { ProcessCards, type ProcessStep } from "@/components/work/process-cards";
-import { BrandGuidelinesDocument } from "@/components/work/brand-guidelines-document";
 import { ProcessIcon } from "@/components/ui/process-icon";
 
 interface BrandStep {
@@ -34,9 +33,6 @@ function initials(name: string): string {
     .join("")
     .toUpperCase();
 }
-
-/** Icons for the cover meta cards — Client, Industry, Year (in order). */
-const META_ICONS = ["user", "briefcase", "calendar"];
 
 /** Icons rotated across the results metric cards. */
 const METRIC_ICONS = ["chart", "target", "trendingup", "sparkles"];
@@ -69,31 +65,6 @@ function SectionEyebrow({
   );
 }
 
-/** Amber check mark badge used in the case-study header. */
-function CheckBadge({ className }: { className?: string }) {
-  return (
-    <span
-      className={cn(
-        "flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary",
-        className
-      )}
-      aria-hidden="true"
-    >
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="#0A0A0A"
-        strokeWidth={3}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="size-4"
-      >
-        <path d="m5 13 4 4L19 7" />
-      </svg>
-    </span>
-  );
-}
-
 function ArrowIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -108,37 +79,6 @@ function ArrowIcon({ className }: { className?: string }) {
     >
       <path d="M5 12h14m-5-5 5 5-5 5" />
     </svg>
-  );
-}
-
-/**
- * Visual + caption pair — the design's storytelling cards: a generated brand
- * board in a rounded frame with a caption on the left and a status pill on
- * the right ("Before", "New Identity", "Concept").
- */
-function VisualBlock({
-  board,
-  wordmark,
-  caption,
-  badge,
-}: {
-  board: BrandBoardVariant;
-  wordmark: string;
-  caption: string;
-  badge: string;
-}) {
-  return (
-    <figure>
-      <div className="relative aspect-[4/3] overflow-hidden rounded-card-lg border border-white/10 bg-card-dark">
-        <BrandBoard variant={board} wordmark={wordmark} className="absolute inset-0" />
-      </div>
-      <figcaption className="mt-3 flex items-center justify-between gap-4">
-        <span className="text-xs font-medium text-text-muted">{caption}</span>
-        <span className="shrink-0 rounded-full border border-primary/40 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
-          {badge}
-        </span>
-      </figcaption>
-    </figure>
   );
 }
 
@@ -173,6 +113,104 @@ function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Brand lockup + section headings (Figma rollout mock)                */
+/* ------------------------------------------------------------------ */
+
+/** Client brand green used in the CLENQO case-study artwork. */
+const BRAND_GREEN = "#22C55E";
+
+/**
+ * Circular monogram — the client's mark from the rollout mock: a green ring
+ * holding the brand letter, closed by a gold check.
+ */
+function HeroMonogram({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 120 120" aria-hidden="true" className={className}>
+      <circle
+        cx="60"
+        cy="60"
+        r="52"
+        fill="none"
+        stroke={BRAND_GREEN}
+        strokeWidth="5"
+      />
+      <circle
+        cx="60"
+        cy="60"
+        r="38"
+        fill="none"
+        stroke="rgba(255,255,255,0.07)"
+        strokeWidth="1.5"
+      />
+      <text
+        x="60"
+        y="62"
+        textAnchor="middle"
+        dominantBaseline="central"
+        fontFamily="Satoshi, Inter, system-ui, sans-serif"
+        fontWeight={700}
+        fontSize={54}
+        fill={BRAND_GREEN}
+      >
+        Q
+      </text>
+      <path
+        d="M 72 76 l 7.5 7.5 l 17 -19"
+        stroke="#F59E0B"
+        strokeWidth="6"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/**
+ * Wordmark lockup — the brand name in the client green with a small gold
+ * check drawn inside the Q (the check that closes the mark).
+ */
+function BrandWordmark({ name }: { name: string }) {
+  return (
+    <span className="inline-flex items-baseline">
+      {name.split("").map((ch, index) =>
+        ch.toLowerCase() === "q" ? (
+          <span key={index} className="relative inline-block">
+            {ch}
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#F59E0B"
+              strokeWidth={4}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              className="absolute left-1/2 top-[42%] size-[0.34em] -translate-x-1/2 -translate-y-1/2"
+            >
+              <path d="m5 13 4 4L19 7" />
+            </svg>
+          </span>
+        ) : (
+          <span key={index}>{ch}</span>
+        )
+      )}
+    </span>
+  );
+}
+
+/**
+ * Section heading — the small-caps kicker from the rollout mock with the
+ * second word accented amber (e.g. "PROJECT OVERVIEW", "OUR PROCESS").
+ */
+function SectionHeading({ a, b }: { a: string; b: string }) {
+  return (
+    <h2 className="text-sm font-black uppercase tracking-[0.3em] text-text-primary sm:text-base">
+      {a} <span className="text-primary">{b}</span>
+    </h2>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* Brand case study                                                    */
 /* ------------------------------------------------------------------ */
 
@@ -196,8 +234,6 @@ export function BrandCaseStudy({
     locale
   );
   const challenge = resolveTranslation(project.challenge_translations, locale);
-  const approach = resolveTranslation(project.approach_translations, locale);
-  const solution = resolveTranslation(project.solution_translations, locale);
   const resultsText = resolveTranslation(project.results_translations, locale);
   const serviceTitle = resolveTranslation(project.service_titles, locale);
   const deliverablesRaw =
@@ -221,11 +257,8 @@ export function BrandCaseStudy({
   const categoryLabel =
     serviceTitle || deliverables[0] || t(locale, "workBrandIdentity");
 
-  // Story blocks — derived from the project's own content.
-  const problemHeading = challenge || brandStory || projectSummary;
-  const problemBody = brandStory || projectSummary;
-  const solutionBody = solution || approach || projectSummary;
-  const conceptBody = approach || brandStory || projectSummary;
+  // Project overview — the context paragraph above the "before" visual.
+  const overviewBody = challenge || brandStory || projectSummary;
 
   const metaItems: { label: string; value: string }[] = [
     { label: t(locale, "workClient"), value: clientName },
@@ -267,213 +300,106 @@ export function BrandCaseStudy({
   return (
     <>
       {/* ============================================================ */}
-      {/* Cover — header bar, category tag, title, metadata            */}
+      {/* Cover — brand lockup (monogram + wordmark) + metadata         */}
       {/* ============================================================ */}
       <section className="relative overflow-hidden border-b border-white/5">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-[360px] overflow-hidden"
+          className="pointer-events-none absolute inset-x-0 top-0 h-[420px] overflow-hidden"
         >
-          <div className="absolute left-1/2 top-0 h-[360px] w-[900px] -translate-x-1/2 rounded-full bg-primary/[0.06] blur-[140px]" />
+          <div className="absolute left-1/2 top-0 h-[420px] w-[900px] -translate-x-1/2 rounded-full bg-primary/[0.06] blur-[140px]" />
         </div>
 
         <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal immediate>
-            <div className="flex items-center justify-between gap-4 border-b border-white/10 py-5">
-              <Link
-                href="/work"
-                aria-label={t(locale, "workSelectedWork")}
-                className="group inline-flex items-center gap-3 rounded-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            <div className="flex flex-col items-center pb-12 pt-14 text-center md:pb-16 md:pt-20">
+              <HeroMonogram className="size-28 md:size-40" />
+              <h1
+                className="mt-6 font-display text-5xl font-black leading-none tracking-tight sm:text-6xl md:text-7xl"
+                style={{ color: BRAND_GREEN }}
               >
-                <CheckBadge />
-                <span className="font-display text-base font-black tracking-tight text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:text-primary">
-                  {wordmark}
-                </span>
-              </Link>
-              <span className="inline-flex shrink-0 items-center rounded-full border border-primary/40 bg-card-dark px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
-                {categoryLabel}
-              </span>
-            </div>
-          </Reveal>
-
-          <Reveal className="mt-6">
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-card-lg border border-primary/30 bg-card-dark px-4 py-3 sm:px-5">
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                {categoryLabel}
-              </span>
-              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-text-muted">
-                {t(locale, "workCaseStudy")}
-                {launchYear ? ` / ${launchYear}` : ""}
-              </span>
-            </div>
-          </Reveal>
-
-          <div className="pb-12 pt-10 md:pb-16 md:pt-14">
-            <Reveal>
-              <h1 className="font-display text-5xl font-black leading-[0.95] tracking-tight text-text-primary sm:text-6xl md:text-7xl lg:text-8xl">
-                {projectTitle || wordmark}
+                <BrandWordmark name={wordmark} />
               </h1>
               {projectSummary ? (
-                <p className="mt-6 max-w-2xl text-base leading-relaxed text-text-secondary sm:text-lg md:text-xl">
+                <p className="mt-4 max-w-xl text-base leading-relaxed text-text-secondary sm:text-lg md:text-xl">
                   {projectSummary}
                 </p>
               ) : null}
+              <span className="mt-7 inline-flex shrink-0 items-center rounded-full bg-primary px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-text-inverse">
+                {categoryLabel}
+              </span>
+            </div>
+          </Reveal>
+
+          {metaItems.length > 0 ? (
+            <Reveal className="pb-12 md:pb-16">
+              <dl className="grid grid-cols-3 divide-x divide-white/10 overflow-hidden rounded-card-lg border border-white/10 bg-card-dark">
+                {metaItems.map((item) => (
+                  <div key={item.label} className="px-4 py-5 sm:px-6 sm:py-6">
+                    <dt className="text-[9px] font-bold uppercase tracking-[0.2em] text-primary sm:text-[10px]">
+                      {item.label}
+                    </dt>
+                    <dd className="mt-1.5 truncate text-xs font-semibold leading-snug text-text-primary sm:text-sm">
+                      {item.value}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
             </Reveal>
+          ) : null}
+        </div>
+      </section>
 
-            {metaItems.length > 0 ? (
-              <Reveal className="mt-10">
-                <dl className="grid divide-y divide-white/10 overflow-hidden rounded-card-lg border border-white/10 bg-card-dark sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-                  {metaItems.map((item, index) => (
-                    <div
-                      key={item.label}
-                      className="flex items-center gap-4 p-5 sm:p-6"
-                    >
-                      <span
-                        className="flex size-11 shrink-0 items-center justify-center rounded-full border border-primary/25 bg-primary/10 text-primary"
-                        aria-hidden="true"
-                      >
-                        <ProcessIcon
-                          name={META_ICONS[index] ?? "user"}
-                          className="size-5"
-                        />
-                      </span>
-                      <div className="min-w-0">
-                        <dt className="text-[10px] font-bold uppercase tracking-[0.25em] text-primary">
-                          {item.label}
-                        </dt>
-                        <dd className="mt-1 truncate text-sm font-semibold leading-snug text-text-primary">
-                          {item.value}
-                        </dd>
-                      </div>
-                    </div>
-                  ))}
-                </dl>
-              </Reveal>
-            ) : null}
+      {/* ============================================================ */}
+      {/* Project overview — context + the previous identity            */}
+      {/* ============================================================ */}
+      {overviewBody || projectSummary ? (
+        <section className="py-14 md:py-20">
+          <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
+            <Reveal>
+              <SectionHeading
+                a={t(locale, "workOverviewA")}
+                b={t(locale, "workOverviewB")}
+              />
+              {overviewBody ? (
+                <p className="mt-5 max-w-2xl border-l-2 border-primary pl-4 text-base leading-relaxed text-text-primary sm:pl-6 md:text-lg">
+                  {overviewBody}
+                </p>
+              ) : null}
+            </Reveal>
+            <Reveal className="mt-10">
+              <figure>
+                <div className="relative aspect-[4/3] overflow-hidden rounded-card-lg border border-white/10 bg-card-dark">
+                  <BrandBoard
+                    variant="before"
+                    wordmark={wordmark}
+                    tagline={projectSummary || undefined}
+                    className="absolute inset-0"
+                  />
+                  <span className="absolute bottom-3 right-3 rounded-full border border-primary/50 bg-black/40 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-primary backdrop-blur-sm">
+                    {t(locale, "workBefore")}
+                  </span>
+                </div>
+              </figure>
+            </Reveal>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       {/* ============================================================ */}
-      {/* 01 — Brand guidelines — the identity document                 */}
-      {/* ============================================================ */}
-      <section className="py-14 md:py-20">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <SectionEyebrow index={nextIndex()} icon="layers">
-              {t(locale, "workBrandGuidelines")}
-            </SectionEyebrow>
-            <h2 className="mt-5 max-w-3xl font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl">
-              {t(locale, "workIdentitySystem")}
-            </h2>
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-text-muted md:text-lg">
-              {t(locale, "workGuidelinesIntro")}
-            </p>
-          </Reveal>
-          <Reveal className="mt-10">
-            <BrandGuidelinesDocument
-              guidelines={project.brand_guidelines}
-              wordmark={wordmark}
-              summary={projectSummary}
-              locale={locale}
-            />
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/* 02 — Project problem                                          */}
-      {/* ============================================================ */}
-      <section className="py-14 md:py-20">
-        <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <SectionEyebrow index={nextIndex()} icon="search">
-              {t(locale, "workProjectProblem")}
-            </SectionEyebrow>
-            {problemHeading ? (
-              <h2 className="mt-5 max-w-2xl font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl">
-                {problemHeading}
-              </h2>
-            ) : null}
-            {problemBody && problemBody !== problemHeading ? (
-              <p className="mt-5 max-w-2xl text-base leading-relaxed text-text-muted md:text-lg">
-                {problemBody}
-              </p>
-            ) : null}
-          </Reveal>
-          <Reveal className="mt-10">
-            <VisualBlock
-              board="before"
-              wordmark={wordmark}
-              caption={t(locale, "workProblemCaption")}
-              badge={t(locale, "workBefore")}
-            />
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/* 02 — Our solution                                             */}
-      {/* ============================================================ */}
-      <section className="py-14 md:py-20">
-        <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <SectionEyebrow index={nextIndex()} icon="lightbulb">
-              {t(locale, "workOurSolution")}
-            </SectionEyebrow>
-            {solutionBody ? (
-              <p className="mt-5 max-w-2xl text-base leading-relaxed text-text-muted md:text-lg">
-                {solutionBody}
-              </p>
-            ) : null}
-          </Reveal>
-          <Reveal className="mt-10">
-            <VisualBlock
-              board="solution"
-              wordmark={wordmark}
-              caption={t(locale, "workSolutionCaption")}
-              badge={t(locale, "workNewIdentity")}
-            />
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/* 03 — The concept                                              */}
-      {/* ============================================================ */}
-      <section className="py-14 md:py-20">
-        <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <SectionEyebrow index={nextIndex()} icon="rocket">
-              {t(locale, "workConcept")}
-            </SectionEyebrow>
-            {conceptBody ? (
-              <p className="mt-5 max-w-2xl text-base leading-relaxed text-text-muted md:text-lg">
-                {conceptBody}
-              </p>
-            ) : null}
-          </Reveal>
-          <Reveal className="mt-10">
-            <VisualBlock
-              board="concept"
-              wordmark={wordmark}
-              caption={t(locale, "workConceptCaption")}
-              badge={t(locale, "workConcept")}
-            />
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/* 04 — Our process — timeline rail + rollout card grid         */}
+      {/* Our process — timeline rail + rollout card grid              */}
       {/* ============================================================ */}
       {processSteps.length > 0 ? (
         <section className="py-14 md:py-20">
           <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <SectionEyebrow index={nextIndex()} icon="map">
-                {t(locale, "workOurProcess")}
-              </SectionEyebrow>
+              <SectionHeading
+                a={t(locale, "workProcessA")}
+                b={t(locale, "workProcessB")}
+              />
+              <p className="mt-5 max-w-2xl border-l-2 border-primary pl-4 text-base leading-relaxed text-text-primary sm:pl-6 md:text-lg">
+                {t(locale, "workProcessIntro")}
+              </p>
             </Reveal>
             <Reveal className="mt-10 grid gap-10 lg:grid-cols-[190px_1fr] lg:gap-14">
               <ProcessTimeline steps={processSteps} />

@@ -671,33 +671,80 @@ function ApplicationsBoard({ uid, wordmark, initial }: { uid: string; wordmark: 
 }
 
 /**
- * BeforeBoard — the "fragmented past" visual: a faint, faded wordmark with a
- * CONFIDENTIAL stamp, standing in for the old identity that the case study
- * replaced.
+ * BeforeBoard — the "previous identity" visual from the rollout mock: a solid
+ * client-brand green banner carrying the white wordmark and tagline, standing
+ * in for the old identity that the case study replaced.
  */
-function BeforeBoard({ uid, wordmark }: { uid: string; wordmark: string }) {
-  const faded = (wordmark || "Brand").toLowerCase();
+function BeforeBoard({
+  uid,
+  wordmark,
+  tagline,
+}: {
+  uid: string;
+  wordmark: string;
+  tagline?: string;
+}) {
+  const short =
+    tagline && tagline.length > 84
+      ? `${tagline.slice(0, 81).replace(/\s+\S*$/, "")}…`
+      : tagline;
   return (
     <g>
-      <Backdrop uid={uid} />
-      <Caps x={600} y={150} text="Previous Identity" size={15} fill={C.subtle} tracking={8} anchor="middle" />
+      <defs>
+        <linearGradient id={`${uid}-before`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#22C55E" />
+          <stop offset="1" stopColor="#15803D" />
+        </linearGradient>
+        <radialGradient id={`${uid}-before-glow`} cx="0.5" cy="0.3" r="0.65">
+          <stop offset="0" stopColor="#FFFFFF" stopOpacity="0.12" />
+          <stop offset="1" stopColor="#FFFFFF" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <rect width="1200" height="720" fill={`url(#${uid}-before)`} />
+      <rect width="1200" height="720" fill={`url(#${uid}-before-glow)`} />
+      <circle
+        cx={600}
+        cy={318}
+        r={196}
+        fill="none"
+        stroke="rgba(255,255,255,0.1)"
+        strokeWidth="1"
+      />
       <text
         x={600}
-        y={372}
+        y={306}
         textAnchor="middle"
         dominantBaseline="central"
         fontFamily={FONT_DISPLAY}
         fontWeight={900}
-        fontSize={150}
+        fontSize={96}
         letterSpacing={6}
-        fill="rgba(255,255,255,0.10)"
+        fill={C.white}
       >
-        {faded}
+        {wordmark}
       </text>
-      <line x1="430" y1="452" x2="770" y2="452" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
-      <Caps x={600} y={492} text="Confidential" size={14} fill={C.primary} tracking={6} anchor="middle" />
-      <rect x="578" y="520" width="8" height="8" fill={C.primary} transform="rotate(45 582 524)" />
-      <rect x="614" y="520" width="8" height="8" fill={C.primary} transform="rotate(45 618 524)" />
+      <line
+        x1="470"
+        y1="388"
+        x2="730"
+        y2="388"
+        stroke="rgba(255,255,255,0.25)"
+        strokeWidth="1"
+      />
+      {short ? (
+        <text
+          x={600}
+          y={434}
+          textAnchor="middle"
+          dominantBaseline="central"
+          fontFamily={FONT_BODY}
+          fontSize={22}
+          letterSpacing={0.5}
+          fill="rgba(255,255,255,0.8)"
+        >
+          {short}
+        </text>
+      ) : null}
     </g>
   );
 }
@@ -931,7 +978,7 @@ export function BrandBoard({
       ) : variant === "results" ? (
         <ResultsBoard uid={uid} wordmark={wordmark} initial={initial} metrics={metrics} />
       ) : variant === "before" ? (
-        <BeforeBoard uid={uid} wordmark={wordmark} />
+        <BeforeBoard uid={uid} wordmark={wordmark} tagline={tagline} />
       ) : variant === "solution" ? (
         <SolutionBoard uid={uid} wordmark={wordmark} initial={initial} />
       ) : variant === "concept" ? (
