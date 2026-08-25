@@ -80,6 +80,42 @@ function SectionChip({ icon }: { icon: string }) {
   );
 }
 
+/**
+ * Strategy block card — the phase-document detail blocks (Audience Insights,
+ * Brand Challenges, Positioning, Messaging, Identity) styled as professional
+ * cards matching the service-card anatomy: top hairline, circular icon chip,
+ * display title, and description.
+ */
+function StrategyCard({
+  icon,
+  title,
+  children,
+}: {
+  icon: string;
+  title: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="group relative flex h-full flex-col overflow-hidden rounded-card border border-card-border bg-card-dark p-6 shadow-xl sm:p-8">
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"
+      />
+      <div className="mb-6 flex items-center gap-4">
+        <div className="flex size-12 shrink-0 items-center justify-center rounded-full border border-primary/30 bg-primary/10 shadow-[0_0_15px_rgba(245,158,11,0.1)]">
+          <ProcessIcon name={icon} className="size-6 text-primary" />
+        </div>
+        <h3 className="font-display text-2xl font-bold tracking-tight text-text-primary">
+          {title}
+        </h3>
+      </div>
+      <p className="text-sm leading-relaxed text-text-secondary sm:text-base">
+        {children}
+      </p>
+    </div>
+  );
+}
+
 function ArrowIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -604,31 +640,28 @@ export function BrandCaseStudy({
                 </Reveal>
               ) : null}
 
-              {strategyAudience ? (
-                <Reveal className="mt-12">
-                  <div className="flex items-center gap-3">
-                    <SectionChip icon="user" />
-                    <h3 className="font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
-                      <TwoTone label={t(locale, "workAudienceInsights")} />
-                    </h3>
-                  </div>
-                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
-                    {strategyAudience}
-                  </p>
-                </Reveal>
-              ) : null}
-
-              {strategyChallenges ? (
-                <Reveal className="mt-10">
-                  <div className="flex items-center gap-3">
-                    <SectionChip icon="target" />
-                    <h3 className="font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
-                      <TwoTone label={t(locale, "workBrandChallenges")} />
-                    </h3>
-                  </div>
-                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
-                    {strategyChallenges}
-                  </p>
+              {strategyAudience || strategyChallenges ? (
+                <Reveal className="mt-12 grid gap-6 md:grid-cols-2">
+                  {strategyAudience ? (
+                    <StrategyCard
+                      icon="user"
+                      title={
+                        <TwoTone label={t(locale, "workAudienceInsights")} />
+                      }
+                    >
+                      {strategyAudience}
+                    </StrategyCard>
+                  ) : null}
+                  {strategyChallenges ? (
+                    <StrategyCard
+                      icon="target"
+                      title={
+                        <TwoTone label={t(locale, "workBrandChallenges")} />
+                      }
+                    >
+                      {strategyChallenges}
+                    </StrategyCard>
+                  ) : null}
                 </Reveal>
               ) : null}
 
@@ -645,48 +678,42 @@ export function BrandCaseStudy({
                 ) : null}
               </Reveal>
 
-              {strategyPositioning ? (
-                <Reveal className="mt-12">
-                  <div className="flex items-center gap-3">
-                    <SectionChip icon="chart" />
-                    <h3 className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
-                      <TwoTone label={t(locale, "workBrandPositioning")} />
-                    </h3>
-                  </div>
-                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
-                    {strategyPositioning}
-                  </p>
-                </Reveal>
-              ) : null}
-
-              {strategyMessaging ? (
-                <Reveal className="mt-10">
-                  <div className="flex items-center gap-3">
-                    <SectionChip icon="quote" />
-                    <h3 className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
-                      <TwoTone
-                        label={t(locale, "workMessagingDirection")}
-                        invert
-                      />
-                    </h3>
-                  </div>
-                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
-                    {strategyMessaging}
-                  </p>
+              {strategyPositioning || strategyMessaging ? (
+                <Reveal className="mt-12 grid gap-6 md:grid-cols-2">
+                  {strategyPositioning ? (
+                    <StrategyCard
+                      icon="chart"
+                      title={
+                        <TwoTone label={t(locale, "workBrandPositioning")} />
+                      }
+                    >
+                      {strategyPositioning}
+                    </StrategyCard>
+                  ) : null}
+                  {strategyMessaging ? (
+                    <StrategyCard
+                      icon="quote"
+                      title={
+                        <TwoTone
+                          label={t(locale, "workMessagingDirection")}
+                          invert
+                        />
+                      }
+                    >
+                      {strategyMessaging}
+                    </StrategyCard>
+                  ) : null}
                 </Reveal>
               ) : null}
 
               {strategyIdentity ? (
-                <Reveal className="mt-10">
-                  <div className="flex items-center gap-3">
-                    <SectionChip icon="sparkles" />
-                    <h3 className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
-                      {t(locale, "workIdentityDirection")}
-                    </h3>
-                  </div>
-                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
+                <Reveal className="mt-6">
+                  <StrategyCard
+                    icon="sparkles"
+                    title={t(locale, "workIdentityDirection")}
+                  >
                     {strategyIdentity}
-                  </p>
+                  </StrategyCard>
                 </Reveal>
               ) : null}
             </div>
