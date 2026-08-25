@@ -456,7 +456,10 @@ export function BrandCaseStudy({
         <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal immediate>
             <div className="flex flex-col items-center pb-12 pt-14 text-center md:pb-16 md:pt-20">
-              <HeroMonogram className="size-28 md:size-40" />
+              <span className="inline-flex shrink-0 items-center rounded-full bg-primary px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-text-inverse">
+                {categoryLabel}
+              </span>
+              <HeroMonogram className="mt-8 size-28 md:size-40" />
               <h1
                 className="mt-6 font-display text-5xl font-black leading-none tracking-tight sm:text-6xl md:text-7xl"
                 style={{ color: BRAND_GREEN }}
@@ -468,9 +471,6 @@ export function BrandCaseStudy({
                   {heroTagline}
                 </p>
               ) : null}
-              <span className="mt-7 inline-flex shrink-0 items-center rounded-full bg-primary px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-text-inverse">
-                {categoryLabel}
-              </span>
             </div>
           </Reveal>
 
