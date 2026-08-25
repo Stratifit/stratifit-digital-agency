@@ -14,6 +14,7 @@ import { cn } from "@/lib/cn";
 import { Reveal } from "@/components/ui/reveal";
 import { RelatedProjects } from "@/components/work/related-projects";
 import { BrandBoard } from "@/components/work/brand-board";
+import { OverviewSlider } from "@/components/work/overview-slider";
 import { ProcessCards, type ProcessStep } from "@/components/work/process-cards";
 import { ProcessIcon } from "@/components/ui/process-icon";
 
@@ -478,6 +479,32 @@ export function BrandCaseStudy({
     deliverables[index % deliverables.length] ??
     `${t(locale, "workBrandInAction")} ${String(index + 1).padStart(2, "0")}`;
 
+  // Project Overview slides — the previous identity first, then any gallery
+  // images, so the panel acts as a slider when more than one is present.
+  const overviewSlides = [
+    <div key="overview-before" className="absolute inset-0">
+      <BrandBoard
+        variant="before"
+        wordmark={wordmark}
+        tagline={heroTagline || undefined}
+        className="absolute inset-0"
+      />
+      <span className="absolute bottom-3 right-3 rounded-full border border-primary/50 bg-black/40 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-primary backdrop-blur-sm">
+        {t(locale, "workBefore")}
+      </span>
+    </div>,
+    ...gallery.map((url, index) => (
+      <Image
+        key={url}
+        src={url}
+        alt={`${wordmark} — ${galleryCaption(index)}`}
+        fill
+        sizes="(max-width: 1024px) 100vw, 50vw"
+        className="object-cover"
+      />
+    )),
+  ];
+
   const resolvedMetrics = project.metrics.map((metric) => ({
     value: metric.value,
     label: resolveTranslation(metric.label_translations, locale),
@@ -563,15 +590,10 @@ export function BrandCaseStudy({
             <Reveal>
               <figure>
                 <div className="relative aspect-[4/3] overflow-hidden rounded-card border border-white/10 bg-card-dark">
-                  <BrandBoard
-                    variant="before"
-                    wordmark={wordmark}
-                    tagline={heroTagline || undefined}
-                    className="absolute inset-0"
+                  <OverviewSlider
+                    slides={overviewSlides}
+                    counterLabel={`${wordmark} — ${t(locale, "workOverviewA")} ${t(locale, "workOverviewB")}`}
                   />
-                  <span className="absolute bottom-3 right-3 rounded-full border border-primary/50 bg-black/40 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-primary backdrop-blur-sm">
-                    {t(locale, "workBefore")}
-                  </span>
                 </div>
               </figure>
             </Reveal>
