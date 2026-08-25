@@ -65,6 +65,21 @@ function SectionEyebrow({
   );
 }
 
+/**
+ * Small amber icon chip used beside section headings and phase kickers so
+ * every section of the case study "speaks" with its own icon.
+ */
+function SectionChip({ icon }: { icon: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-primary/25 bg-primary/10 text-primary"
+    >
+      <ProcessIcon name={icon} className="size-4" />
+    </span>
+  );
+}
+
 function ArrowIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -249,7 +264,13 @@ function TouchpointCard({
     <figure>
       <div className="overflow-hidden rounded-card-lg border border-white/10 bg-card-dark">
         <div className="border-b border-white/10 px-5 py-3">
-          <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
+          <p className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
+            <span
+              aria-hidden="true"
+              className="flex size-6 shrink-0 items-center justify-center rounded-md border border-primary/25 bg-primary/10 text-primary"
+            >
+              <ProcessIcon name="grid" className="size-3.5" />
+            </span>
             {label}
           </p>
         </div>
@@ -479,10 +500,13 @@ export function BrandCaseStudy({
         <section className="py-14 md:py-20">
           <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <SectionHeading
-                a={t(locale, "workOverviewA")}
-                b={t(locale, "workOverviewB")}
-              />
+              <div className="flex items-center gap-3">
+                <SectionChip icon="briefcase" />
+                <SectionHeading
+                  a={t(locale, "workOverviewA")}
+                  b={t(locale, "workOverviewB")}
+                />
+              </div>
               {overviewBody ? (
                 <p className="mt-5 max-w-2xl border-l-2 border-primary pl-4 text-base leading-relaxed text-text-primary sm:pl-6 md:text-lg">
                   {overviewBody}
@@ -515,10 +539,13 @@ export function BrandCaseStudy({
         <section className="py-14 md:py-20">
           <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <SectionHeading
-                a={t(locale, "workProcessA")}
-                b={t(locale, "workProcessB")}
-              />
+              <div className="flex items-center gap-3">
+                <SectionChip icon="layers" />
+                <SectionHeading
+                  a={t(locale, "workProcessA")}
+                  b={t(locale, "workProcessB")}
+                />
+              </div>
               <p className="mt-5 max-w-2xl border-l-2 border-primary pl-4 text-base leading-relaxed text-text-primary sm:pl-6 md:text-lg">
                 {t(locale, "workProcessIntro")}
               </p>
@@ -545,7 +572,8 @@ export function BrandCaseStudy({
 
               {/* Phase 01 — Discovery */}
               <Reveal>
-                <p className="text-[11px] font-black uppercase tracking-[0.3em] text-primary">
+                <p className="flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-primary">
+                  <SectionChip icon="search" />
                   {t(locale, "workPhaseDiscovery")}
                 </p>
                 <h2 className="mt-3 font-display text-4xl font-black leading-none tracking-tight text-text-primary sm:text-5xl">
@@ -575,9 +603,12 @@ export function BrandCaseStudy({
 
               {strategyAudience ? (
                 <Reveal className="mt-12">
-                  <h3 className="font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
-                    <TwoTone label={t(locale, "workAudienceInsights")} />
-                  </h3>
+                  <div className="flex items-center gap-3">
+                    <SectionChip icon="user" />
+                    <h3 className="font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
+                      <TwoTone label={t(locale, "workAudienceInsights")} />
+                    </h3>
+                  </div>
                   <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
                     {strategyAudience}
                   </p>
@@ -586,9 +617,12 @@ export function BrandCaseStudy({
 
               {strategyChallenges ? (
                 <Reveal className="mt-10">
-                  <h3 className="font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
-                    <TwoTone label={t(locale, "workBrandChallenges")} />
-                  </h3>
+                  <div className="flex items-center gap-3">
+                    <SectionChip icon="target" />
+                    <h3 className="font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
+                      <TwoTone label={t(locale, "workBrandChallenges")} />
+                    </h3>
+                  </div>
                   <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
                     {strategyChallenges}
                   </p>
@@ -597,7 +631,8 @@ export function BrandCaseStudy({
 
               {/* Phase 02 — Strategy */}
               <Reveal className="mt-14">
-                <p className="text-[11px] font-black uppercase tracking-[0.3em] text-primary">
+                <p className="flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-primary">
+                  <SectionChip icon="map" />
                   {t(locale, "workPhaseStrategy")}
                 </p>
                 {strategyHeadline ? (
@@ -609,9 +644,12 @@ export function BrandCaseStudy({
 
               {strategyPositioning ? (
                 <Reveal className="mt-12">
-                  <h3 className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
-                    <TwoTone label={t(locale, "workBrandPositioning")} />
-                  </h3>
+                  <div className="flex items-center gap-3">
+                    <SectionChip icon="chart" />
+                    <h3 className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
+                      <TwoTone label={t(locale, "workBrandPositioning")} />
+                    </h3>
+                  </div>
                   <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
                     {strategyPositioning}
                   </p>
@@ -620,12 +658,15 @@ export function BrandCaseStudy({
 
               {strategyMessaging ? (
                 <Reveal className="mt-10">
-                  <h3 className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
-                    <TwoTone
-                      label={t(locale, "workMessagingDirection")}
-                      invert
-                    />
-                  </h3>
+                  <div className="flex items-center gap-3">
+                    <SectionChip icon="quote" />
+                    <h3 className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
+                      <TwoTone
+                        label={t(locale, "workMessagingDirection")}
+                        invert
+                      />
+                    </h3>
+                  </div>
                   <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
                     {strategyMessaging}
                   </p>
@@ -634,9 +675,12 @@ export function BrandCaseStudy({
 
               {strategyIdentity ? (
                 <Reveal className="mt-10">
-                  <h3 className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
-                    {t(locale, "workIdentityDirection")}
-                  </h3>
+                  <div className="flex items-center gap-3">
+                    <SectionChip icon="sparkles" />
+                    <h3 className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
+                      {t(locale, "workIdentityDirection")}
+                    </h3>
+                  </div>
                   <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
                     {strategyIdentity}
                   </p>
@@ -657,7 +701,8 @@ export function BrandCaseStudy({
             {typeface || typefaceDescription || subFonts.length > 0 ? (
               <Reveal>
                 <div className="rounded-card-lg border border-white/10 bg-card-dark p-6 sm:p-8">
-                  <p className="text-[11px] font-black uppercase tracking-[0.3em] text-text-primary">
+                  <p className="flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-text-primary">
+                    <SectionChip icon="type" />
                     {t(locale, "workTypography")}
                   </p>
                   <div className="mt-7 flex flex-col gap-6 sm:flex-row sm:items-end">
@@ -712,9 +757,12 @@ export function BrandCaseStudy({
             {identityAssets ? (
               <>
                 <Reveal className="mt-14">
-                  <h3 className="font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
-                    {t(locale, "workIdentityAssets")}
-                  </h3>
+                  <div className="flex items-center gap-3">
+                    <SectionChip icon="layout" />
+                    <h3 className="font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
+                      {t(locale, "workIdentityAssets")}
+                    </h3>
+                  </div>
                   <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
                     {identityAssets}
                   </p>
@@ -732,9 +780,12 @@ export function BrandCaseStudy({
             {visualApplications ? (
               <>
                 <Reveal className="mt-14">
-                  <h3 className="font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
-                    {t(locale, "workVisualApplications")}
-                  </h3>
+                  <div className="flex items-center gap-3">
+                    <SectionChip icon="image" />
+                    <h3 className="font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
+                      {t(locale, "workVisualApplications")}
+                    </h3>
+                  </div>
                   <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
                     {visualApplications}
                   </p>
@@ -763,7 +814,8 @@ export function BrandCaseStudy({
         <section className="border-t border-white/5 py-14 md:py-20">
           <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <p className="text-[11px] font-black uppercase tracking-[0.3em] text-primary">
+              <p className="flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-primary">
+                <SectionChip icon="rocket" />
                 {t(locale, "workPhaseLaunch")}
               </p>
               {launchHeadline ? (
@@ -790,9 +842,12 @@ export function BrandCaseStudy({
             {launchPhysical ? (
               <>
                 <Reveal className="mt-14">
-                  <h3 className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
-                    {t(locale, "workPhysicalTouchpoints")}
-                  </h3>
+                  <div className="flex items-center gap-3">
+                    <SectionChip icon="briefcase" />
+                    <h3 className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
+                      {t(locale, "workPhysicalTouchpoints")}
+                    </h3>
+                  </div>
                   <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
                     {launchPhysical}
                   </p>
@@ -809,9 +864,12 @@ export function BrandCaseStudy({
             {launchGuidelines ? (
               <>
                 <Reveal className="mt-14">
-                  <h3 className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
-                    {t(locale, "workBrandGuidelines")}
-                  </h3>
+                  <div className="flex items-center gap-3">
+                    <SectionChip icon="palette" />
+                    <h3 className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
+                      {t(locale, "workBrandGuidelines")}
+                    </h3>
+                  </div>
                   <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
                     {launchGuidelines}
                   </p>
@@ -835,9 +893,12 @@ export function BrandCaseStudy({
         <section className="border-t border-white/5 py-14 md:py-20">
           <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <h2 className="font-display text-2xl font-black uppercase tracking-tight text-text-primary sm:text-3xl md:text-4xl">
-                {t(locale, "workImpactResults")}
-              </h2>
+              <div className="flex items-center gap-3">
+                <SectionChip icon="trendingup" />
+                <h2 className="font-display text-2xl font-black uppercase tracking-tight text-text-primary sm:text-3xl md:text-4xl">
+                  {t(locale, "workImpactResults")}
+                </h2>
+              </div>
               {resultsText ? (
                 <p className="mt-4 max-w-2xl text-base leading-relaxed text-text-muted">
                   {resultsText}

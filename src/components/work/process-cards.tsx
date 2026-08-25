@@ -16,7 +16,7 @@ export interface ProcessStep {
  *
  * Matches the Figma rollout-process design: a plain breadcrumb row of step
  * names separated by ›, above a 2×2 grid of dark cards. Each card carries a
- * circular amber icon chip in the top corner; the final card is the
+ * circular amber icon chip inline with the step title; the final card is the
  * "highlight" card — amber glow shadow, amber border and an inverted solid
  * amber chip. Clicking a breadcrumb step highlights the matching card.
  */
@@ -72,21 +72,23 @@ export function ProcessCards({ steps }: { steps: ProcessStep[] }) {
                 selected && !highlight && "border-primary/50"
               )}
             >
-              <span
-                aria-hidden="true"
-                className={cn(
-                  "flex size-8 items-center justify-center rounded-full",
-                  highlight
-                    ? "bg-primary text-text-inverse"
-                    : "bg-primary/10 text-primary"
-                )}
-              >
-                <ProcessIcon name={step.icon_name} className="size-4" />
-              </span>
-              <h3 className="mt-4 font-display text-base font-bold leading-snug text-text-primary">
-                {step.title}
-              </h3>
-              <p className="mt-1.5 text-xs leading-relaxed text-text-muted">
+              <div className="flex items-center gap-3">
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "flex size-8 shrink-0 items-center justify-center rounded-full",
+                    highlight
+                      ? "bg-primary text-text-inverse"
+                      : "bg-primary/10 text-primary"
+                  )}
+                >
+                  <ProcessIcon name={step.icon_name} className="size-4" />
+                </span>
+                <h3 className="font-display text-base font-bold leading-snug text-text-primary">
+                  {step.title}
+                </h3>
+              </div>
+              <p className="mt-3 text-xs leading-relaxed text-text-muted">
                 {step.description}
               </p>
             </article>
