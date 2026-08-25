@@ -1939,6 +1939,7 @@ export type Database = {
           slug: string
           solution_translations: Json
           status: string
+          strategy_translations: Json | null
           summary_translations: Json
           testimonial_id: string | null
           title_translations: Json
@@ -1965,6 +1966,7 @@ export type Database = {
           slug: string
           solution_translations?: Json
           status?: string
+          strategy_translations?: Json | null
           summary_translations?: Json
           testimonial_id?: string | null
           title_translations?: Json
@@ -1991,6 +1993,7 @@ export type Database = {
           slug?: string
           solution_translations?: Json
           status?: string
+          strategy_translations?: Json | null
           summary_translations?: Json
           testimonial_id?: string | null
           title_translations?: Json

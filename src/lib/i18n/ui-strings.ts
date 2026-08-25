@@ -167,11 +167,15 @@ export type UiStringKey =
   | "trustQuickResponseDesc"
   | "workApplications"
   | "workAudience"
+  | "workAudienceInsights"
   | "workBefore"
   | "workBrandIdentity"
   | "workBrandInAction"
   | "workBrandInUse"
+  | "workBrandChallenges"
   | "workBrandGuidelines"
+  | "workBrandPositioning"
+  | "workIdentityDirection"
   | "workIdentitySystem"
   | "workGuidelinesIntro"
   | "workContents"
@@ -217,6 +221,8 @@ export type UiStringKey =
   | "workOverview"
   | "workOverviewA"
   | "workOverviewB"
+  | "workPhaseDiscovery"
+  | "workPhaseStrategy"
   | "workProcessA"
   | "workProcessB"
   | "workPositioning"
@@ -230,6 +236,7 @@ export type UiStringKey =
   | "workSolution"
   | "workSolutionCaption"
   | "workMark"
+  | "workMessagingDirection"
   | "workNewIdentity"
   | "workStrategy"
   | "workStrategyFoundation"
@@ -530,6 +537,13 @@ const en: UiStrings = {
   workPositioning: "Positioning",
   workProcessIntro:
     "A refined process that creates clarity and transforms it into real-world impact.",
+  workAudienceInsights: "Audience Insights",
+  workBrandChallenges: "Brand Challenges",
+  workBrandPositioning: "Brand Positioning",
+  workIdentityDirection: "Identity Direction",
+  workMessagingDirection: "Messaging Direction",
+  workPhaseDiscovery: "Discovery",
+  workPhaseStrategy: "Strategy",
   workResults: "Results",
   workSameRigor:
     "The same playbook, applied to your goals and your metrics.",
@@ -844,6 +858,13 @@ const de: UiStrings = {
   workPositioning: "Positionierung",
   workProcessIntro:
     "Ein durchdachter Prozess, der Klarheit schafft und sie in echte Wirkung verwandelt.",
+  workAudienceInsights: "Zielgruppen-Einblicke",
+  workBrandChallenges: "Marken-Herausforderungen",
+  workBrandPositioning: "Markenpositionierung",
+  workIdentityDirection: "Identitätsrichtung",
+  workMessagingDirection: "Messaging-Richtung",
+  workPhaseDiscovery: "Analyse",
+  workPhaseStrategy: "Strategie",
   workResults: "Ergebnisse",
   workSameRigor:
     "Dasselbe Vorgehen, angewendet auf Ihre Ziele und Kennzahlen.",
@@ -1158,6 +1179,13 @@ const fr: UiStrings = {
   workPositioning: "Positionnement",
   workProcessIntro:
     "Un processus raffiné qui crée de la clarté et la transforme en impact concret.",
+  workAudienceInsights: "Aperçus de l'audience",
+  workBrandChallenges: "Défis de marque",
+  workBrandPositioning: "Positionnement de marque",
+  workIdentityDirection: "Direction de l'identité",
+  workMessagingDirection: "Direction du message",
+  workPhaseDiscovery: "Découverte",
+  workPhaseStrategy: "Stratégie",
   workResults: "Résultats",
   workSameRigor:
     "La même méthode, appliquée à vos objectifs et vos indicateurs.",
@@ -1472,6 +1500,13 @@ const es: UiStrings = {
   workPositioning: "Posicionamiento",
   workProcessIntro:
     "Un proceso refinado que crea claridad y la convierte en un impacto real.",
+  workAudienceInsights: "Perspectivas de la audiencia",
+  workBrandChallenges: "Desafíos de marca",
+  workBrandPositioning: "Posicionamiento de marca",
+  workIdentityDirection: "Dirección de identidad",
+  workMessagingDirection: "Dirección del mensaje",
+  workPhaseDiscovery: "Descubrimiento",
+  workPhaseStrategy: "Estrategia",
   workResults: "Resultados",
   workSameRigor:
     "El mismo plan de juego, aplicado a tus objetivos y tus métricas.",

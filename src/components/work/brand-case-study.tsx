@@ -3,6 +3,7 @@ import Link from "next/link";
 import type {
   PublicPortfolioDetail,
   PublicPortfolioProject,
+  PublicPortfolioStrategy,
 } from "@/features/portfolio/queries";
 import type { PublicServiceDetail } from "@/features/services/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
@@ -210,6 +211,29 @@ function SectionHeading({ a, b }: { a: string; b: string }) {
   );
 }
 
+/**
+ * Two-tone label — first word in white, the rest accented amber (or inverted
+ * for the Messaging Direction heading), matching the phase document headings.
+ */
+function TwoTone({ label, invert }: { label: string; invert?: boolean }) {
+  const parts = label.split(" ");
+  const first = parts[0];
+  const rest = parts.slice(1).join(" ");
+  if (!rest) return <>{first}</>;
+  if (invert) {
+    return (
+      <>
+        <span className="text-primary">{first}</span> {rest}
+      </>
+    );
+  }
+  return (
+    <>
+      {first} <span className="text-primary">{rest}</span>
+    </>
+  );
+}
+
 /* ------------------------------------------------------------------ */
 /* Brand case study                                                    */
 /* ------------------------------------------------------------------ */
@@ -259,6 +283,35 @@ export function BrandCaseStudy({
 
   // Project overview — the context paragraph above the "before" visual.
   const overviewBody = challenge || brandStory || projectSummary;
+
+  // Discovery & Strategy phase document (per-project, per-locale).
+  const strategy = project.strategy_translations ?? null;
+  const strategyValue = (field: keyof PublicPortfolioStrategy): string => {
+    const entry = strategy?.[locale] ?? strategy?.en;
+    const value = entry?.[field];
+    return typeof value === "string" ? value : "";
+  };
+  const strategySubtitle = strategyValue("subtitle");
+  const strategyTagline = strategyValue("tagline");
+  const strategyHeadline = strategyValue("headline");
+  const strategyAudience = strategyValue("audience");
+  const strategyChallenges = strategyValue("challenges");
+  const strategyPositioning = strategyValue("positioning");
+  const strategyMessaging = strategyValue("messaging");
+  const strategyIdentity = strategyValue("identity");
+  const hasStrategySection = Boolean(
+    strategySubtitle ||
+      strategyHeadline ||
+      strategyAudience ||
+      strategyChallenges ||
+      strategyPositioning ||
+      strategyMessaging ||
+      strategyIdentity
+  );
+
+  // Brand tagline — the rollout mock shows it under the wordmark and on the
+  // green banner; falls back to the project summary when not authored.
+  const heroTagline = strategyTagline || projectSummary;
 
   const metaItems: { label: string; value: string }[] = [
     { label: t(locale, "workClient"), value: clientName },
@@ -320,9 +373,9 @@ export function BrandCaseStudy({
               >
                 <BrandWordmark name={wordmark} />
               </h1>
-              {projectSummary ? (
+              {heroTagline ? (
                 <p className="mt-4 max-w-xl text-base leading-relaxed text-text-secondary sm:text-lg md:text-xl">
-                  {projectSummary}
+                  {heroTagline}
                 </p>
               ) : null}
               <span className="mt-7 inline-flex shrink-0 items-center rounded-full bg-primary px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-text-inverse">
@@ -373,7 +426,7 @@ export function BrandCaseStudy({
                   <BrandBoard
                     variant="before"
                     wordmark={wordmark}
-                    tagline={projectSummary || undefined}
+                    tagline={heroTagline || undefined}
                     className="absolute inset-0"
                   />
                   <span className="absolute bottom-3 right-3 rounded-full border border-primary/50 bg-black/40 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-primary backdrop-blur-sm">
@@ -405,6 +458,122 @@ export function BrandCaseStudy({
               <ProcessTimeline steps={processSteps} />
               <ProcessCards steps={processSteps} />
             </Reveal>
+          </div>
+        </section>
+      ) : null}
+
+      {/* ============================================================ */}
+      {/* Discovery & Strategy — phase document                       */}
+      {/* ============================================================ */}
+      {hasStrategySection ? (
+        <section className="border-t border-white/5 py-14 md:py-20">
+          <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
+            <div className="relative pl-8 sm:pl-12">
+              <span
+                aria-hidden="true"
+                className="absolute bottom-0 left-0 top-0 w-px bg-gradient-to-b from-primary/50 via-primary/25 to-transparent"
+              />
+
+              {/* Phase 01 — Discovery */}
+              <Reveal>
+                <p className="text-[11px] font-black uppercase tracking-[0.3em] text-primary">
+                  {t(locale, "workPhaseDiscovery")}
+                </p>
+                <h2 className="mt-3 font-display text-4xl font-black leading-none tracking-tight text-text-primary sm:text-5xl">
+                  {clientName}
+                </h2>
+                {strategySubtitle ? (
+                  <p className="mt-5 max-w-2xl border-l-2 border-primary pl-4 text-base leading-relaxed text-text-secondary sm:pl-6">
+                    {strategySubtitle}
+                  </p>
+                ) : null}
+              </Reveal>
+
+              {strategySubtitle || strategyTagline ? (
+                <Reveal className="mt-10">
+                  <figure>
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-card-lg border border-white/10 bg-card-dark sm:aspect-[16/7]">
+                      <BrandBoard
+                        variant="before"
+                        wordmark={clientName}
+                        tagline={strategyTagline || undefined}
+                        className="absolute inset-0"
+                      />
+                    </div>
+                  </figure>
+                </Reveal>
+              ) : null}
+
+              {strategyAudience ? (
+                <Reveal className="mt-12">
+                  <h3 className="font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
+                    <TwoTone label={t(locale, "workAudienceInsights")} />
+                  </h3>
+                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
+                    {strategyAudience}
+                  </p>
+                </Reveal>
+              ) : null}
+
+              {strategyChallenges ? (
+                <Reveal className="mt-10">
+                  <h3 className="font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
+                    <TwoTone label={t(locale, "workBrandChallenges")} />
+                  </h3>
+                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
+                    {strategyChallenges}
+                  </p>
+                </Reveal>
+              ) : null}
+
+              {/* Phase 02 — Strategy */}
+              <Reveal className="mt-14">
+                <p className="text-[11px] font-black uppercase tracking-[0.3em] text-primary">
+                  {t(locale, "workPhaseStrategy")}
+                </p>
+                {strategyHeadline ? (
+                  <h2 className="mt-3 font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl">
+                    {strategyHeadline}
+                  </h2>
+                ) : null}
+              </Reveal>
+
+              {strategyPositioning ? (
+                <Reveal className="mt-12">
+                  <h3 className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
+                    <TwoTone label={t(locale, "workBrandPositioning")} />
+                  </h3>
+                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
+                    {strategyPositioning}
+                  </p>
+                </Reveal>
+              ) : null}
+
+              {strategyMessaging ? (
+                <Reveal className="mt-10">
+                  <h3 className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
+                    <TwoTone
+                      label={t(locale, "workMessagingDirection")}
+                      invert
+                    />
+                  </h3>
+                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
+                    {strategyMessaging}
+                  </p>
+                </Reveal>
+              ) : null}
+
+              {strategyIdentity ? (
+                <Reveal className="mt-10">
+                  <h3 className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
+                    {t(locale, "workIdentityDirection")}
+                  </h3>
+                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
+                    {strategyIdentity}
+                  </p>
+                </Reveal>
+              ) : null}
+            </div>
           </div>
         </section>
       ) : null}
