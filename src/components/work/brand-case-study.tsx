@@ -39,49 +39,6 @@ function initials(name: string): string {
 }
 
 /**
- * Numbered section label — e.g. "01 • Project Problem" — the amber eyebrow
- * that anchors every storytelling block of the case study. Each section
- * carries its own icon chip so the story blocks read like the sections of
- * the guidelines document above them.
- */
-function SectionEyebrow({
-  index,
-  icon,
-  children,
-}: {
-  index: number;
-  icon: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <p className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.3em] text-primary">
-      <span
-        className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-primary/25 bg-primary/10"
-        aria-hidden="true"
-      >
-        <ProcessIcon name={icon} className="size-4" />
-      </span>
-      {String(index).padStart(2, "0")} • {children}
-    </p>
-  );
-}
-
-/**
- * Small amber icon chip used beside section headings and phase kickers so
- * every section of the case study "speaks" with its own icon.
- */
-function SectionChip({ icon }: { icon: string }) {
-  return (
-    <span
-      aria-hidden="true"
-      className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-primary/25 bg-primary/10 text-primary"
-    >
-      <ProcessIcon name={icon} className="size-4" />
-    </span>
-  );
-}
-
-/**
  * Strategy block card — the phase-document detail blocks (Audience Insights,
  * Brand Challenges, Positioning, Messaging, Identity) styled as professional
  * cards matching the service-card anatomy: top hairline, circular icon chip,
@@ -261,9 +218,9 @@ function SectionHeader({
   description,
   className,
 }: {
-  kicker: string;
-  titleA: string;
-  titleB: string;
+  kicker?: string;
+  titleA?: string;
+  titleB?: string;
   description?: string;
   // Margin override — matches the homepage SectionHeader wrapper so the
   // case-study sections keep the same vertical rhythm as CMS sections.
@@ -271,12 +228,22 @@ function SectionHeader({
 }) {
   return (
     <div className={className ? className : "mb-10 md:mb-16"}>
-      <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-        {kicker}
-      </p>
-      <h2 className="font-display font-black leading-tight tracking-tight text-text-primary text-3xl sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
-        {titleA} <span className="text-primary">{titleB}</span>
-      </h2>
+      {kicker ? (
+        <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+          {kicker}
+        </p>
+      ) : null}
+      {titleA ? (
+        <h2 className="font-display font-black leading-tight tracking-tight text-text-primary text-3xl sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
+          {titleA}
+          {titleB ? (
+            <>
+              {" "}
+              <span className="text-primary">{titleB}</span>
+            </>
+          ) : null}
+        </h2>
+      ) : null}
       {description ? (
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
           {description}
@@ -522,11 +489,6 @@ export function BrandCaseStudy({
     : t(locale, "workStartCta");
   const servicesJoined = deliverables.join(" · ");
 
-  // Numbered sections — the counter advances only for rendered sections so
-  // numbering stays sequential when a section is missing content.
-  let sectionIndex = 0;
-  const nextIndex = () => ++sectionIndex;
-
   return (
     <>
       {/* ============================================================ */}
@@ -633,18 +595,12 @@ export function BrandCaseStudy({
 
               {/* Phase 01 — Discovery */}
               <Reveal>
-                <p className="flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-primary">
-                  <SectionChip icon="search" />
-                  {t(locale, "workPhaseDiscovery")}
-                </p>
-                <h2 className="mt-3 font-display text-4xl font-black leading-none tracking-tight text-text-primary sm:text-5xl">
-                  {clientName}
-                </h2>
-                {strategySubtitle ? (
-                  <p className="mt-5 max-w-2xl border-l-2 border-primary pl-4 text-base leading-relaxed text-text-secondary sm:pl-6">
-                    {strategySubtitle}
-                  </p>
-                ) : null}
+                <SectionHeader
+                  kicker={t(locale, "workPhaseDiscovery")}
+                  titleA={clientName}
+                  description={strategySubtitle || undefined}
+                  className="mb-0"
+                />
               </Reveal>
 
               {strategySubtitle || strategyTagline ? (
@@ -689,15 +645,11 @@ export function BrandCaseStudy({
 
               {/* Phase 02 — Strategy */}
               <Reveal className="mt-14">
-                <p className="flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-primary">
-                  <SectionChip icon="map" />
-                  {t(locale, "workPhaseStrategy")}
-                </p>
-                {strategyHeadline ? (
-                  <h2 className="mt-3 font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl">
-                    {strategyHeadline}
-                  </h2>
-                ) : null}
+                <SectionHeader
+                  kicker={t(locale, "workPhaseStrategy")}
+                  titleA={strategyHeadline || undefined}
+                  className="mb-0"
+                />
               </Reveal>
 
               {strategyPositioning || strategyMessaging ? (
@@ -753,8 +705,7 @@ export function BrandCaseStudy({
             {typeface || typefaceDescription || subFonts.length > 0 ? (
               <Reveal>
                 <div className="rounded-card border border-white/10 bg-card-dark p-6 sm:p-8">
-                  <p className="flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-text-primary">
-                    <SectionChip icon="type" />
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
                     {t(locale, "workTypography")}
                   </p>
                   <div className="mt-7 flex flex-col gap-6 sm:flex-row sm:items-end">
@@ -809,13 +760,10 @@ export function BrandCaseStudy({
             {identityAssets ? (
               <>
                 <Reveal className="mt-14">
-                  <div className="flex items-center gap-3">
-                    <SectionChip icon="layout" />
-                    <h3 className="font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
-                      {t(locale, "workIdentityAssets")}
-                    </h3>
-                  </div>
-                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
+                  <h3 className="font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl md:leading-none">
+                    <TwoTone label={t(locale, "workIdentityAssets")} />
+                  </h3>
+                  <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
                     {identityAssets}
                   </p>
                 </Reveal>
@@ -832,13 +780,10 @@ export function BrandCaseStudy({
             {visualApplications ? (
               <>
                 <Reveal className="mt-14">
-                  <div className="flex items-center gap-3">
-                    <SectionChip icon="image" />
-                    <h3 className="font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
-                      {t(locale, "workVisualApplications")}
-                    </h3>
-                  </div>
-                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
+                  <h3 className="font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl md:leading-none">
+                    <TwoTone label={t(locale, "workVisualApplications")} />
+                  </h3>
+                  <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
                     {visualApplications}
                   </p>
                 </Reveal>
@@ -866,20 +811,12 @@ export function BrandCaseStudy({
         <section className="border-t border-white/5 py-14 md:py-20">
           <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <p className="flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-primary">
-                <SectionChip icon="rocket" />
-                {t(locale, "workPhaseLaunch")}
-              </p>
-              {launchHeadline ? (
-                <h2 className="mt-3 whitespace-pre-line font-display text-3xl font-black uppercase leading-[1.05] tracking-tight text-text-primary sm:text-4xl md:text-5xl">
-                  {launchHeadline}
-                </h2>
-              ) : null}
-              {launchIntro ? (
-                <p className="mt-5 max-w-2xl text-base leading-relaxed text-text-muted">
-                  {launchIntro}
-                </p>
-              ) : null}
+              <SectionHeader
+                kicker={t(locale, "workPhaseLaunch")}
+                titleA={launchHeadline || undefined}
+                description={launchIntro || undefined}
+                className="mb-0"
+              />
             </Reveal>
 
             {launchIntro ? (
@@ -894,13 +831,10 @@ export function BrandCaseStudy({
             {launchPhysical ? (
               <>
                 <Reveal className="mt-14">
-                  <div className="flex items-center gap-3">
-                    <SectionChip icon="briefcase" />
-                    <h3 className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
-                      {t(locale, "workPhysicalTouchpoints")}
-                    </h3>
-                  </div>
-                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
+                  <h3 className="font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl md:leading-none">
+                    <TwoTone label={t(locale, "workPhysicalTouchpoints")} />
+                  </h3>
+                  <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
                     {launchPhysical}
                   </p>
                 </Reveal>
@@ -916,13 +850,10 @@ export function BrandCaseStudy({
             {launchGuidelines ? (
               <>
                 <Reveal className="mt-14">
-                  <div className="flex items-center gap-3">
-                    <SectionChip icon="palette" />
-                    <h3 className="font-display text-xl font-black uppercase tracking-tight text-text-primary sm:text-2xl">
-                      {t(locale, "workBrandGuidelines")}
-                    </h3>
-                  </div>
-                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
+                  <h3 className="font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl md:leading-none">
+                    <TwoTone label={t(locale, "workBrandGuidelines")} />
+                  </h3>
+                  <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
                     {launchGuidelines}
                   </p>
                 </Reveal>
@@ -986,16 +917,10 @@ export function BrandCaseStudy({
                     aria-hidden="true"
                     className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent"
                   />
-                  <p className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.3em] text-primary">
-                    <span
-                      className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-primary/25 bg-primary/10"
-                      aria-hidden="true"
-                    >
-                      <ProcessIcon name="rocket" className="size-4" />
-                    </span>
+                  <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
                     {t(locale, "workYourProjectNext")}
                   </p>
-                  <h2 className="mt-4 font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl">
+                  <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
                     {t(locale, "workWantOutcome")}
                   </h2>
                   <p className="mt-4 max-w-md text-base leading-relaxed text-text-muted">
@@ -1047,10 +972,10 @@ export function BrandCaseStudy({
         <section className="py-14 md:py-20">
           <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <SectionEyebrow index={nextIndex()} icon="image">
+              <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
                 {t(locale, "workBrandInAction")}
-              </SectionEyebrow>
-              <h2 className="mt-5 max-w-3xl font-display text-3xl font-black leading-[1.05] tracking-tight text-text-primary sm:text-4xl">
+              </p>
+              <h2 className="max-w-3xl font-display font-black leading-tight tracking-tight text-text-primary text-3xl sm:text-4xl md:text-5xl md:leading-none">
                 {t(locale, "workBrandInUse")}
               </h2>
             </Reveal>
@@ -1091,10 +1016,10 @@ export function BrandCaseStudy({
         <section className="border-t border-white/5 py-14 md:py-20">
           <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <SectionEyebrow index={nextIndex()} icon="quote">
+              <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
                 {t(locale, "workClientPerspective")}
-              </SectionEyebrow>
-              <blockquote className="mt-6 font-display text-2xl font-bold leading-snug tracking-tight text-text-primary sm:text-3xl md:text-4xl">
+              </p>
+              <blockquote className="font-display text-2xl font-bold leading-snug tracking-tight text-text-primary sm:text-3xl md:text-4xl">
                 &ldquo;
                 {resolveTranslation(
                   project.testimonial.quote_translations,
@@ -1132,20 +1057,10 @@ export function BrandCaseStudy({
         <section className="pt-16 md:pt-20">
           <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <div className="mb-4 flex items-center gap-3">
-                <div className="h-px flex-1 bg-gradient-to-r from-primary/40 to-transparent" />
-                <span
-                  className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-primary/25 bg-primary/10"
-                  aria-hidden="true"
-                >
-                  <ProcessIcon name="sparkles" className="size-4" />
-                </span>
-                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary">
-                  {t(locale, "workMoreWork")}
-                </span>
-                <div className="h-px flex-1 bg-gradient-to-l from-primary/40 to-transparent" />
-              </div>
-              <h2 className="mb-10 font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl">
+              <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+                {t(locale, "workMoreWork")}
+              </p>
+              <h2 className="mb-10 font-display font-black leading-tight tracking-tight text-text-primary text-3xl sm:text-4xl md:text-5xl md:leading-none">
                 {t(locale, "workSimilar")}{" "}
                 <span className="text-primary">
                   {t(locale, "workCaseStudies")}
