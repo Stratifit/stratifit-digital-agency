@@ -74,6 +74,58 @@ export function normalizeStrategyTranslations(
   return out;
 }
 
+export interface PublicPortfolioBrandSystemSubFont {
+  name: string;
+  usage: string;
+}
+
+export interface PublicPortfolioBrandSystem {
+  typeface: string;
+  typeface_description: string;
+  sub_fonts: PublicPortfolioBrandSystemSubFont[];
+  identity_assets: string;
+  visual_applications: string;
+}
+
+/**
+ * Normalizes the per-locale Identity & Assets phase document
+ * (portfolio_projects.brand_system_translations JSONB) into safe string
+ * fields. Each locale holds one object; missing locales/fields become empty.
+ */
+export function normalizeBrandSystemTranslations(
+  raw: unknown
+): Record<string, PublicPortfolioBrandSystem> | null {
+  if (!raw || typeof raw !== "object") return null;
+  const out: Record<string, PublicPortfolioBrandSystem> = {};
+  for (const locale of ["en", "de", "fr", "es"] as const) {
+    const entry = (raw as Record<string, unknown>)[locale];
+    if (!entry || typeof entry !== "object") continue;
+    const data = entry as Record<string, unknown>;
+    const str = (key: string): string =>
+      typeof data[key] === "string" ? (data[key] as string) : "";
+    const subFonts = Array.isArray(data.sub_fonts)
+      ? data.sub_fonts
+          .filter(
+            (f): f is { name: unknown; usage: unknown } =>
+              Boolean(f && typeof f === "object")
+          )
+          .map((f) => ({
+            name: typeof f.name === "string" ? f.name : "",
+            usage: typeof f.usage === "string" ? f.usage : "",
+          }))
+          .filter((f) => f.name || f.usage)
+      : [];
+    out[locale] = {
+      typeface: str("typeface"),
+      typeface_description: str("typeface_description"),
+      sub_fonts: subFonts,
+      identity_assets: str("identity_assets"),
+      visual_applications: str("visual_applications"),
+    };
+  }
+  return out;
+}
+
 export interface PublicPortfolioProject {
   slug: string;
   client_name: string;
@@ -288,6 +340,8 @@ export interface PublicPortfolioDetail {
   brand_guidelines: BrandGuidelines;
   /** Multilingual Discovery & Strategy phase document. */
   strategy_translations: Record<string, PublicPortfolioStrategy> | null;
+  /** Multilingual Identity & Assets phase document (type + applications). */
+  brand_system_translations: Record<string, PublicPortfolioBrandSystem> | null;
   challenge_translations: Record<string, string> | null;
   approach_translations: Record<string, string> | null;
   solution_translations: Record<string, string> | null;
@@ -315,7 +369,7 @@ export async function getPublicPortfolioDetail(
   const { data, error } = await supabase
     .from("portfolio_projects")
     .select(
-      "id, slug, client_name, title_translations, summary_translations, brand_story_translations, brand_guidelines, strategy_translations, challenge_translations, approach_translations, solution_translations, deliverables_translations, results_translations, metrics, featured_media_id, image_url, testimonial_id, seo_title_translations, seo_description_translations, published_at, year"
+      "id, slug, client_name, title_translations, summary_translations, brand_story_translations, brand_guidelines, strategy_translations, brand_system_translations, challenge_translations, approach_translations, solution_translations, deliverables_translations, results_translations, metrics, featured_media_id, image_url, testimonial_id, seo_title_translations, seo_description_translations, published_at, year"
     )
     .eq("slug", slug)
     .eq("status", "published")
@@ -422,6 +476,9 @@ export async function getPublicPortfolioDetail(
       (data.brand_story_translations as Record<string, string> | null) ?? null,
     brand_guidelines: normalizeBrandGuidelines(data.brand_guidelines),
     strategy_translations: normalizeStrategyTranslations(data.strategy_translations),
+    brand_system_translations: normalizeBrandSystemTranslations(
+      data.brand_system_translations
+    ),
     challenge_translations:
       data.challenge_translations as Record<string, string> | null,
     approach_translations:

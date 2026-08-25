@@ -1923,6 +1923,7 @@ export type Database = {
           approach_translations: Json
           brand_guidelines: Json
           brand_story_translations: Json | null
+          brand_system_translations: Json | null
           challenge_translations: Json
           client_name: string
           created_at: string
@@ -1950,6 +1951,7 @@ export type Database = {
           approach_translations?: Json
           brand_guidelines?: Json
           brand_story_translations?: Json | null
+          brand_system_translations?: Json | null
           challenge_translations?: Json
           client_name: string
           created_at?: string
@@ -1977,6 +1979,7 @@ export type Database = {
           approach_translations?: Json
           brand_guidelines?: Json
           brand_story_translations?: Json | null
+          brand_system_translations?: Json | null
           challenge_translations?: Json
           client_name?: string
           created_at?: string

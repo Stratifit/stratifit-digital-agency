@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type {
+  PublicPortfolioBrandSystem,
   PublicPortfolioDetail,
   PublicPortfolioProject,
   PublicPortfolioStrategy,
@@ -313,6 +314,29 @@ export function BrandCaseStudy({
   // green banner; falls back to the project summary when not authored.
   const heroTagline = strategyTagline || projectSummary;
 
+  // Identity & Assets phase document (per-project, per-locale).
+  const brandSystem = project.brand_system_translations ?? null;
+  const brandSystemValue = (
+    field: keyof PublicPortfolioBrandSystem
+  ): string => {
+    const entry = brandSystem?.[locale] ?? brandSystem?.en;
+    const value = entry?.[field];
+    return typeof value === "string" ? value : "";
+  };
+  const typeface = brandSystemValue("typeface");
+  const typefaceDescription = brandSystemValue("typeface_description");
+  const identityAssets = brandSystemValue("identity_assets");
+  const visualApplications = brandSystemValue("visual_applications");
+  const subFonts =
+    brandSystem?.[locale]?.sub_fonts ?? brandSystem?.en?.sub_fonts ?? [];
+  const hasBrandSystemSection = Boolean(
+    typeface ||
+      typefaceDescription ||
+      subFonts.length > 0 ||
+      identityAssets ||
+      visualApplications
+  );
+
   const metaItems: { label: string; value: string }[] = [
     { label: t(locale, "workClient"), value: clientName },
   ];
@@ -574,6 +598,114 @@ export function BrandCaseStudy({
                 </Reveal>
               ) : null}
             </div>
+          </div>
+        </section>
+      ) : null}
+
+      {/* ============================================================ */}
+      {/* Identity & Assets — typography, touchpoint, applications     */}
+      {/* ============================================================ */}
+      {hasBrandSystemSection ? (
+        <section className="border-t border-white/5 py-14 md:py-20">
+          <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
+            {/* Typography */}
+            {typeface || typefaceDescription || subFonts.length > 0 ? (
+              <Reveal>
+                <div className="rounded-card-lg border border-white/10 bg-card-dark p-6 sm:p-8">
+                  <p className="text-[11px] font-black uppercase tracking-[0.3em] text-text-primary">
+                    {t(locale, "workTypography")}
+                  </p>
+                  <div className="mt-7 flex flex-col gap-6 sm:flex-row sm:items-end">
+                    <span
+                      className="font-display text-7xl font-black leading-none text-primary sm:text-8xl"
+                      aria-hidden="true"
+                    >
+                      Aa
+                    </span>
+                    <div>
+                      {typeface ? (
+                        <h3 className="font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
+                          {typeface}
+                        </h3>
+                      ) : null}
+                      {typefaceDescription ? (
+                        <p className="mt-2 max-w-xl text-sm leading-relaxed text-text-muted">
+                          {typefaceDescription}
+                        </p>
+                      ) : null}
+                    </div>
+                  </div>
+                  {subFonts.length > 0 ? (
+                    <ul className="mt-8 space-y-5 border-t border-white/10 pt-6">
+                      {subFonts.map((font, index) => (
+                        <li key={index} className="flex items-start gap-4">
+                          <span
+                            className="font-display text-2xl font-black leading-none text-text-primary"
+                            aria-hidden="true"
+                          >
+                            Aa
+                          </span>
+                          <div className="min-w-0">
+                            <div className="text-sm font-bold text-text-primary">
+                              {font.name}
+                            </div>
+                            {font.usage ? (
+                              <div className="mt-1 whitespace-pre-line text-xs leading-relaxed text-text-muted">
+                                {font.usage}
+                              </div>
+                            ) : null}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
+              </Reveal>
+            ) : null}
+
+            {/* Identity assets */}
+            {identityAssets ? (
+              <>
+                <Reveal className="mt-14">
+                  <h3 className="font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
+                    {t(locale, "workIdentityAssets")}
+                  </h3>
+                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
+                    {identityAssets}
+                  </p>
+                </Reveal>
+                <Reveal className="mt-8">
+                  <figure>
+                    <div className="overflow-hidden rounded-card-lg border border-white/10 bg-card-dark">
+                      <div className="border-b border-white/10 px-5 py-3">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
+                          {t(locale, "workPhysicalTouchpoint")}
+                        </p>
+                      </div>
+                      <div className="relative aspect-[4/3] sm:aspect-[16/9]">
+                        <BrandBoard
+                          variant="businesscard"
+                          wordmark={clientName}
+                          className="absolute inset-0"
+                        />
+                      </div>
+                    </div>
+                  </figure>
+                </Reveal>
+              </>
+            ) : null}
+
+            {/* Visual applications */}
+            {visualApplications ? (
+              <Reveal className="mt-14">
+                <h3 className="font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
+                  {t(locale, "workVisualApplications")}
+                </h3>
+                <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
+                  {visualApplications}
+                </p>
+              </Reveal>
+            ) : null}
           </div>
         </section>
       ) : null}

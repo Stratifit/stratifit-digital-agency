@@ -24,6 +24,7 @@ export type BrandBoardVariant =
   | "results"
   | "cta"
   | "before"
+  | "businesscard"
   | "solution"
   | "concept";
 
@@ -851,6 +852,119 @@ function ConceptBoard({ uid, wordmark }: { uid: string; wordmark: string }) {
   );
 }
 
+/**
+ * BusinessCardBoard — the "physical touchpoint" mockup from the rollout doc:
+ * a dark-green card tucked diagonally behind a white business card carrying
+ * placeholder contact lines and the yellow check badge.
+ */
+function BusinessCardBoard({
+  uid,
+  wordmark,
+}: {
+  uid: string;
+  wordmark: string;
+}) {
+  return (
+    <g>
+      <Backdrop uid={uid} />
+      {/* Green card — offset behind the white card */}
+      <g transform="translate(46 66) rotate(-8 600 360)">
+        <rect x="330" y="180" width="560" height="360" rx="22" fill="#0B5329" />
+        <rect
+          x="330"
+          y="180"
+          width="560"
+          height="360"
+          rx="22"
+          fill="none"
+          stroke="rgba(255,255,255,0.08)"
+          strokeWidth="1"
+        />
+        <text
+          x={610}
+          y={372}
+          textAnchor="middle"
+          dominantBaseline="central"
+          fontFamily={FONT_DISPLAY}
+          fontWeight={900}
+          fontSize={44}
+          letterSpacing={8}
+          fill="rgba(255,255,255,0.85)"
+        >
+          {wordmark}
+        </text>
+      </g>
+      {/* White business card */}
+      <rect x="330" y="180" width="560" height="360" rx="18" fill="#FFFFFF" />
+      <rect
+        x="330"
+        y="180"
+        width="560"
+        height="360"
+        rx="18"
+        fill="none"
+        stroke="rgba(10,10,10,0.08)"
+        strokeWidth="1"
+      />
+      {/* Name + role */}
+      <text
+        x={382}
+        y={244}
+        dominantBaseline="central"
+        fontFamily={FONT_DISPLAY}
+        fontWeight={800}
+        fontSize={38}
+        fill="#0A0A0A"
+      >
+        Jane Doe
+      </text>
+      <text
+        x={382}
+        y={292}
+        dominantBaseline="central"
+        fontFamily={FONT_BODY}
+        fontWeight={600}
+        fontSize={21}
+        fill="#5B6472"
+      >
+        Service Director
+      </text>
+      {/* Contact */}
+      <text
+        x={382}
+        y={470}
+        dominantBaseline="central"
+        fontFamily={FONT_BODY}
+        fontWeight={600}
+        fontSize={23}
+        fill="#0A0A0A"
+      >
+        +1 234 567 8900
+      </text>
+      <text
+        x={382}
+        y={506}
+        dominantBaseline="central"
+        fontFamily={FONT_BODY}
+        fontSize={21}
+        fill="#5B6472"
+      >
+        jane@clenqo.com
+      </text>
+      {/* Yellow check badge */}
+      <rect x={770} y={448} width={88} height={88} rx={16} fill={C.primary} />
+      <path
+        d="M 794 500 l 18 18 l 38 -44"
+        stroke="#0A0A0A"
+        strokeWidth={9}
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </g>
+  );
+}
+
 function ResultsBoard({
   uid,
   wordmark,
@@ -979,6 +1093,8 @@ export function BrandBoard({
         <ResultsBoard uid={uid} wordmark={wordmark} initial={initial} metrics={metrics} />
       ) : variant === "before" ? (
         <BeforeBoard uid={uid} wordmark={wordmark} tagline={tagline} />
+      ) : variant === "businesscard" ? (
+        <BusinessCardBoard uid={uid} wordmark={wordmark} />
       ) : variant === "solution" ? (
         <SolutionBoard uid={uid} wordmark={wordmark} initial={initial} />
       ) : variant === "concept" ? (

@@ -175,6 +175,7 @@ export type UiStringKey =
   | "workBrandChallenges"
   | "workBrandGuidelines"
   | "workBrandPositioning"
+  | "workIdentityAssets"
   | "workIdentityDirection"
   | "workIdentitySystem"
   | "workGuidelinesIntro"
@@ -223,6 +224,7 @@ export type UiStringKey =
   | "workOverviewB"
   | "workPhaseDiscovery"
   | "workPhaseStrategy"
+  | "workPhysicalTouchpoint"
   | "workProcessA"
   | "workProcessB"
   | "workPositioning"
@@ -246,6 +248,7 @@ export type UiStringKey =
   | "workStartCta"
   | "workTheProblem"
   | "workVisual"
+  | "workVisualApplications"
   | "workVisuals"
   | "workWantOutcome"
   | "workWhatNeededToChange"
@@ -498,6 +501,9 @@ const en: UiStrings = {
   workColourPalette: "Colour Palette",
   workColourUsage: "Colour Usage",
   workTypography: "Typography",
+  workIdentityAssets: "Identity Assets",
+  workPhysicalTouchpoint: "Physical Touchpoint",
+  workVisualApplications: "Visual Applications",
   workTypeHierarchy: "Type Hierarchy",
   workHeading: "Heading",
   workBody: "Body",
@@ -819,6 +825,9 @@ const de: UiStrings = {
   workColourPalette: "Farbpalette",
   workColourUsage: "Farbeinsatz",
   workTypography: "Typografie",
+  workIdentityAssets: "Identitäts-Assets",
+  workPhysicalTouchpoint: "Physischer Touchpoint",
+  workVisualApplications: "Visuelle Anwendungen",
   workTypeHierarchy: "Typografische Hierarchie",
   workHeading: "Überschrift",
   workBody: "Fließtext",
@@ -1140,6 +1149,9 @@ const fr: UiStrings = {
   workColourPalette: "Palette de couleurs",
   workColourUsage: "Usage des couleurs",
   workTypography: "Typographie",
+  workIdentityAssets: "Actifs d'identité",
+  workPhysicalTouchpoint: "Point de contact physique",
+  workVisualApplications: "Applications visuelles",
   workTypeHierarchy: "Hiérarchie typographique",
   workHeading: "Titre",
   workBody: "Texte courant",
@@ -1461,6 +1473,9 @@ const es: UiStrings = {
   workColourPalette: "Paleta de colores",
   workColourUsage: "Uso del color",
   workTypography: "Tipografía",
+  workIdentityAssets: "Activos de identidad",
+  workPhysicalTouchpoint: "Punto de contacto físico",
+  workVisualApplications: "Aplicaciones visuales",
   workTypeHierarchy: "Jerarquía tipográfica",
   workHeading: "Encabezado",
   workBody: "Cuerpo",
