@@ -219,6 +219,40 @@ ON CONFLICT (section_key) DO UPDATE SET
   display_order = EXCLUDED.display_order;
 
 -- =============================================================================
+-- Similar Case Studies visibility (work detail pages)
+-- The section is opt-in and remains paused whenever the seed is applied.
+-- =============================================================================
+
+INSERT INTO public.section_settings (
+  section_key,
+  label,
+  eyebrow_translations,
+  title_translations,
+  highlight_translations,
+  description_translations,
+  is_visible,
+  display_order
+)
+VALUES (
+  'related-case-studies',
+  'Similar Case Studies',
+  '{"en":"More Work","de":"Weitere Projekte","fr":"Autres projets","es":"Más proyectos"}'::jsonb,
+  '{"en":"Similar","de":"Ähnliche","fr":"Études de","es":"Casos de"}'::jsonb,
+  '{"en":"Case Studies","de":"Fallstudien","fr":"cas","es":"estudio similares"}'::jsonb,
+  '{"en":"Related case studies shown at the end of a work detail page.","de":"Verwandte Fallstudien am Ende einer Projektdetailseite.","fr":"Études de cas similaires affichées à la fin d’une page projet.","es":"Casos de estudio relacionados al final de una página de proyecto."}'::jsonb,
+  false,
+  100
+)
+ON CONFLICT (section_key) DO UPDATE SET
+  label = EXCLUDED.label,
+  eyebrow_translations = EXCLUDED.eyebrow_translations,
+  title_translations = EXCLUDED.title_translations,
+  highlight_translations = EXCLUDED.highlight_translations,
+  description_translations = EXCLUDED.description_translations,
+  is_visible = EXCLUDED.is_visible,
+  display_order = EXCLUDED.display_order;
+
+-- =============================================================================
 -- Footer Groups
 -- Stable UUIDs for idempotent re-runs.
 -- =============================================================================
@@ -1515,6 +1549,40 @@ ON CONFLICT (section_key) DO UPDATE SET
   highlight_translations = EXCLUDED.highlight_translations,
   description_translations = EXCLUDED.description_translations,
   tech_stack = EXCLUDED.tech_stack,
+  is_visible = EXCLUDED.is_visible,
+  display_order = EXCLUDED.display_order;
+
+-- =============================================================================
+-- Similar Case Studies visibility (work detail pages)
+-- The section is opt-in and remains paused whenever the seed is applied.
+-- =============================================================================
+
+INSERT INTO public.section_settings (
+  section_key,
+  label,
+  eyebrow_translations,
+  title_translations,
+  highlight_translations,
+  description_translations,
+  is_visible,
+  display_order
+)
+VALUES (
+  'related-case-studies',
+  'Similar Case Studies',
+  '{"en":"More Work","de":"Weitere Projekte","fr":"Autres projets","es":"Más proyectos"}'::jsonb,
+  '{"en":"Similar","de":"Ähnliche","fr":"Études de","es":"Casos de"}'::jsonb,
+  '{"en":"Case Studies","de":"Fallstudien","fr":"cas","es":"estudio similares"}'::jsonb,
+  '{"en":"Related case studies shown at the end of a work detail page.","de":"Verwandte Fallstudien am Ende einer Projektdetailseite.","fr":"Études de cas similaires affichées à la fin d’une page projet.","es":"Casos de estudio relacionados al final de una página de proyecto."}'::jsonb,
+  false,
+  100
+)
+ON CONFLICT (section_key) DO UPDATE SET
+  label = EXCLUDED.label,
+  eyebrow_translations = EXCLUDED.eyebrow_translations,
+  title_translations = EXCLUDED.title_translations,
+  highlight_translations = EXCLUDED.highlight_translations,
+  description_translations = EXCLUDED.description_translations,
   is_visible = EXCLUDED.is_visible,
   display_order = EXCLUDED.display_order;
 

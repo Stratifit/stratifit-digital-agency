@@ -8,6 +8,7 @@ import {
 } from "@/features/portfolio/queries";
 import { getPublicServices } from "@/features/services/queries";
 import { getPublicProcessSteps } from "@/features/process/queries";
+import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { t, tWithValue } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
@@ -119,11 +120,18 @@ export default async function WorkDetailPage({
 }) {
   const { slug } = await params;
   const locale = await getLocale();
-  const [project, steps, relatedProjects, relatedServices] = await Promise.all([
+  const [
+    project,
+    steps,
+    relatedProjects,
+    relatedServices,
+    relatedCaseStudiesSetting,
+  ] = await Promise.all([
     getPublicPortfolioDetail(slug),
     getPublicProcessSteps(),
     getPublicPortfolioProjects(6),
     getPublicServices(),
+    getPublicSectionSetting("related-case-studies"),
   ]);
 
   if (!project) {
@@ -139,6 +147,8 @@ export default async function WorkDetailPage({
     )
     .slice(0, 3);
   const relatedVisible = related.length > 0 ? related : relatedProjects.filter((p) => p.slug !== slug).slice(0, 3);
+  // The CMS toggle is opt-in; a missing row keeps this optional detail section hidden.
+  const showRelatedCaseStudies = relatedCaseStudiesSetting !== null;
 
   // Brand design projects get a dedicated brand-story layout that walks
   // through the logo concept and shows the identity in use.
@@ -215,7 +225,7 @@ export default async function WorkDetailPage({
         <BrandCaseStudy
           project={project}
           steps={steps}
-          relatedVisible={relatedVisible}
+          relatedVisible={showRelatedCaseStudies ? relatedVisible : []}
           relatedServices={relatedServices}
           locale={locale}
         />
@@ -535,7 +545,7 @@ export default async function WorkDetailPage({
       ) : null}
 
       {/* More work */}
-      {relatedVisible.length > 0 ? (
+      {showRelatedCaseStudies && relatedVisible.length > 0 ? (
         <>
           <section className="pt-16 md:pt-20">
             <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">

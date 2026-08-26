@@ -176,6 +176,12 @@ A work detail page should support:
 - CTA
 - SEO metadata
 
+The optional **Similar Case Studies** section is controlled by the
+`related-case-studies` visibility setting in `section_settings`. It is seeded
+off and remains hidden until an administrator resumes it from **Admin →
+Website Sections**; this applies to both standard and brand-design work detail
+layouts.
+
 ### 5.5 Insights
 
 The insights page must:

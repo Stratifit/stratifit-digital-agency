@@ -18,6 +18,7 @@ export const EDITABLE_SECTION_KEYS = [
   "contact",
   "acquisition-cta",
   "tech-stack",
+  "related-case-studies",
 ] as const;
 
 export type EditableSectionKey = (typeof EDITABLE_SECTION_KEYS)[number];
@@ -45,6 +46,7 @@ export const SECTION_KEY_META: Record<
   faq: { label: "FAQ", displayOrder: 80 },
   contact: { label: "Contact", displayOrder: 95 },
   "acquisition-cta": { label: "Acquisition — Final CTA", displayOrder: 57 },
+  "related-case-studies": { label: "Similar Case Studies", displayOrder: 100 },
 };
 
 /** Tech-stack grid items reflecting the Stratifit approved technology stack
@@ -90,7 +92,7 @@ export function getDefaultAdminSectionSetting(
     title_translations: fallback?.title ?? {},
     highlight_translations: fallback?.highlight ?? {},
     description_translations: fallback?.description ?? {},
-    is_visible: true,
+    is_visible: sectionKey !== "related-case-studies",
     display_order: meta.displayOrder,
     updated_at: "",
   };

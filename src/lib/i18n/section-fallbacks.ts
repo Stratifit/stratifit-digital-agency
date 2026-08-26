@@ -182,6 +182,17 @@ export const SECTION_HEADER_FALLBACKS: Record<
       es: "Respuestas claras a preguntas frecuentes sobre nuestro proceso, precios, tecnología y soporte continuo.",
     },
   },
+  "related-case-studies": {
+    eyebrow: { en: "More Work", de: "Weitere Projekte", fr: "Autres projets", es: "Más proyectos" },
+    title: { en: "Similar", de: "Ähnliche", fr: "Études de", es: "Casos de" },
+    highlight: { en: "Case Studies", de: "Fallstudien", fr: "cas", es: "estudio similares" },
+    description: {
+      en: "Related case studies shown at the end of a work detail page.",
+      de: "Verwandte Fallstudien am Ende einer Projektdetailseite.",
+      fr: "Études de cas similaires affichées à la fin d’une page projet.",
+      es: "Casos de estudio relacionados al final de una página de proyecto.",
+    },
+  },
   contact: {
     eyebrow: { en: "Contact", de: "Kontakt", fr: "Contact", es: "Contacto" },
     title: {

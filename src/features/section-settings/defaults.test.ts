@@ -35,6 +35,13 @@ describe("getDefaultAdminSectionSetting", () => {
     expect(s.title_translations?.en).toBe("Our");
   });
 
+  it("defaults Similar Case Studies to paused", () => {
+    const settings = getDefaultAdminSectionSetting("related-case-studies");
+    expect(settings).not.toBeNull();
+    expect(settings?.label).toBe("Similar Case Studies");
+    expect(settings?.is_visible).toBe(false);
+  });
+
   it("pre-fills canonical header content for other sections", () => {
     const settings = getDefaultAdminSectionSetting("services");
     expect(settings).not.toBeNull();

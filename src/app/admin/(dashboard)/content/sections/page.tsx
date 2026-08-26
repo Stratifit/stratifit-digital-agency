@@ -48,7 +48,7 @@ export default async function AdminSectionsPage() {
     key: string;
     label: string;
     description: string;
-    editHref: string;
+    editHref: string | null;
   }[] = [
     { key: "tech-stack", label: "Tech Stack", description: "Scrolling technology marquee", editHref: "/admin/content/sections/tech-stack/edit" },
     { key: "services", label: "Services", description: "Core service cards", editHref: "/admin/content/services" },
@@ -56,6 +56,7 @@ export default async function AdminSectionsPage() {
     { key: "why-choose-us", label: "Why Choose Us", description: "Differentiators", editHref: "/admin/content/why-choose-us" },
     { key: "insights", label: "Insights & Expertise", description: "Latest articles", editHref: "/admin/content/insights" },
     { key: "portfolio", label: "Portfolio", description: "Selected work", editHref: "/admin/content/portfolio" },
+    { key: "related-case-studies", label: "Similar Case Studies", description: "Related work on case-study pages", editHref: null },
     { key: "testimonials", label: "Testimonials", description: "Client quotes", editHref: "/admin/content/testimonials" },
     { key: "pricing", label: "Pricing", description: "Package plans", editHref: "/admin/content/pricing" },
     { key: "faq", label: "FAQ", description: "Frequently asked questions", editHref: "/admin/content/faq" },
@@ -80,7 +81,9 @@ export default async function AdminSectionsPage() {
       label: s.label,
       description: s.description,
       status: "live",
-      isVisible: setting?.is_visible ?? true,
+      isVisible:
+        setting?.is_visible ??
+        (s.key === "related-case-studies" ? false : true),
       editHref: s.editHref,
       preview: {
         en: { eyebrow: eyebrow.en ?? "", title: title.en ?? "", highlight: highlight.en ?? "", description: description.en ?? "" },

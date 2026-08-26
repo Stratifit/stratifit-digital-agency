@@ -656,6 +656,11 @@ sections (problem → solution → concept → process → results), the client
 perspective, and the closing CTA. All other categories keep the standard
 editorial case-study layout.
 
+The **Similar Case Studies** section at the end of work detail pages is
+controlled from **Admin → Website Sections**. It is seeded as **Paused** and
+must be explicitly resumed before related-project cards appear on public case
+study pages.
+
 ---
 
 ## 15. Insight Management

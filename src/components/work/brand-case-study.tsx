@@ -576,7 +576,6 @@ export function BrandCaseStudy({
   const ctaLabel = serviceTitle
     ? tWithValue(locale, "ctaStartService", serviceTitle)
     : t(locale, "workStartCta");
-  const servicesJoined = deliverables.join(" · ");
 
   return (
     <>
@@ -1234,58 +1233,22 @@ export function BrandCaseStudy({
       <section className="py-16 md:py-24">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <div className="overflow-hidden rounded-card border border-white/10 bg-card-dark">
-              <div className="grid items-stretch lg:grid-cols-2">
-                <div className="relative flex flex-col justify-center p-8 sm:p-12 md:p-14">
-                  <div
-                    aria-hidden="true"
-                    className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent"
-                  />
-                  <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                    {t(locale, "workYourProjectNext")}
-                  </p>
-                  <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
-                    <HeadingTone text={t(locale, "workWantOutcome")} />
-                  </h2>
-                  <p className="mt-4 max-w-md text-base leading-relaxed text-text-muted">
-                    {t(locale, "workSameRigor")}
-                  </p>
-                  <div className="mt-8 flex flex-wrap gap-4">
-                    <Link
-                      href="/contact"
-                      className="inline-flex h-[52px] select-none items-center justify-center gap-2 whitespace-nowrap rounded-button border border-transparent bg-primary px-6 text-base font-medium text-text-inverse shadow-amber transition-[background-color,border-color,color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-hover focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 active:translate-y-0 active:border-primary/60 active:bg-primary-active"
-                    >
-                      {ctaLabel}
-                      <ArrowIcon className="size-4" />
-                    </Link>
-                    <Link
-                      href="/work"
-                      className="inline-flex h-[52px] items-center justify-center gap-2 rounded-button border border-card-border bg-card-dark px-6 text-base font-medium text-text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/30 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
-                    >
-                      {t(locale, "workViewCaseStudies")}
-                      <ArrowIcon className="size-4" />
-                    </Link>
-                  </div>
-                </div>
-                <div className="relative min-h-[320px] border-t border-white/10 lg:border-l lg:border-t-0">
-                  <BrandBoard
-                    variant="cta"
-                    wordmark={wordmark}
-                    label={categoryLabel}
-                    className="absolute inset-0"
-                  />
-                </div>
-              </div>
+            <div className="relative flex justify-center">
+              <div
+                aria-hidden="true"
+                className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-primary/35 to-transparent"
+              />
+              <Link
+                href="/contact"
+                className="group relative inline-flex min-h-14 max-w-full items-center gap-3 rounded-full border border-primary/60 bg-primary px-5 py-2.5 text-center text-sm font-bold text-text-inverse shadow-amber transition-[background-color,border-color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-1 hover:border-primary-light hover:bg-primary-light hover:shadow-[0_0_48px_rgba(245,158,11,0.32)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-4 active:translate-y-0 active:border-primary-active active:bg-primary-active sm:px-6 sm:text-base"
+              >
+                <span>{ctaLabel}</span>
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-black/15 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-0.5">
+                  <ArrowIcon className="size-4" />
+                </span>
+              </Link>
             </div>
           </Reveal>
-          {servicesJoined ? (
-            <Reveal>
-              <div className="mt-6 flex flex-wrap items-center justify-between gap-3 px-1 text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
-                <span>STRATIFIT</span>
-                <span>{servicesJoined}</span>
-              </div>
-            </Reveal>
-          ) : null}
         </div>
       </section>
 
