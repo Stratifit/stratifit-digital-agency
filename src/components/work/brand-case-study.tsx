@@ -616,6 +616,8 @@ export function BrandCaseStudy({
                 <OverviewSlider
                   slides={overviewSlides}
                   counterLabel={`${wordmark} — ${t(locale, "workOverviewA")} ${t(locale, "workOverviewB")}`}
+                  thumbnails={overviewThumbnails}
+                  thumbnailSlideOffset={1}
                   badge={t(locale, "workBefore")}
                 />
               </figure>
@@ -665,16 +667,40 @@ export function BrandCaseStudy({
 
               {strategySubtitle || strategyTagline ? (
                 <Reveal className="mt-10">
-                  <figure>
-                    <div className="relative aspect-[4/3] overflow-hidden rounded-card border border-white/10 bg-card-dark sm:aspect-[16/7]">
-                      <BrandBoard
-                        variant="before"
-                        wordmark={clientName}
-                        tagline={strategyTagline || undefined}
-                        className="absolute inset-0"
+                  <OverviewSlider
+                    slides={[
+                      <div key="discovery-before" className="absolute inset-0">
+                        <BrandBoard
+                          variant="before"
+                          wordmark={clientName}
+                          tagline={strategyTagline || undefined}
+                          className="absolute inset-0"
+                        />
+                      </div>,
+                      ...gallery.map((url, index) => (
+                        <Image
+                          key={`discovery-${url}`}
+                          src={url}
+                          alt={`${clientName} — ${galleryCaption(index)}`}
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                          className="object-cover"
+                        />
+                      )),
+                    ]}
+                    counterLabel={`${clientName} — ${t(locale, "workPhaseDiscovery")}`}
+                    thumbnails={gallery.map((url, index) => (
+                      <Image
+                        key={`discovery-thumb-${url}`}
+                        src={url}
+                        alt={`${clientName} — ${galleryCaption(index)}`}
+                        fill
+                        sizes="80px"
+                        className="object-cover"
                       />
-                    </div>
-                  </figure>
+                    ))}
+                    thumbnailSlideOffset={1}
+                  />
                 </Reveal>
               ) : null}
 
