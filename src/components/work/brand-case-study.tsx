@@ -573,13 +573,11 @@ export function BrandCaseStudy({
             </Reveal>
             <Reveal>
               <figure>
-                <div className="relative aspect-[4/3] overflow-hidden rounded-card border border-white/10 bg-card-dark">
-                  <OverviewSlider
-                    slides={overviewSlides}
-                    counterLabel={`${wordmark} — ${t(locale, "workOverviewA")} ${t(locale, "workOverviewB")}`}
-                    thumbnails={overviewThumbnails}
-                  />
-                </div>
+                <OverviewSlider
+                  slides={overviewSlides}
+                  counterLabel={`${wordmark} — ${t(locale, "workOverviewA")} ${t(locale, "workOverviewB")}`}
+                  thumbnails={overviewThumbnails}
+                />
               </figure>
             </Reveal>
           </div>

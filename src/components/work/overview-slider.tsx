@@ -32,6 +32,7 @@ export function OverviewSlider({
       role="region"
       aria-roledescription="carousel"
       aria-label={counterLabel}
+      className="w-full"
     >
       {/* Framed media area — one fully-visible slide at a time. */}
       <div className="relative aspect-[4/3] overflow-hidden rounded-card border border-white/10 bg-card-dark">
@@ -50,8 +51,6 @@ export function OverviewSlider({
             </div>
           ))}
         </div>
-
-
       </div>
 
       {/* Dot row below the panel — matches the process section indicator. */}
