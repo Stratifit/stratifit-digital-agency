@@ -16,9 +16,9 @@ export interface ProcessStep {
  *
  * Matches the Figma rollout-process design: a plain breadcrumb row of step
  * names separated by ›, above a 2×2 grid of dark cards. Each card carries a
- * circular amber icon chip inline with the step title; the final card is the
- * "highlight" card — amber glow shadow, amber border and an inverted solid
- * amber chip. Clicking a breadcrumb step highlights the matching card.
+ * consistent circular amber icon chip inline with the step title. Clicking a
+ * breadcrumb step updates the matching breadcrumb state without changing the
+ * shared card treatment.
  */
 export function ProcessCards({ steps }: { steps: ProcessStep[] }) {
   const [active, setActive] = React.useState(0);
@@ -58,42 +58,27 @@ export function ProcessCards({ steps }: { steps: ProcessStep[] }) {
       </nav>
 
       <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4">
-        {steps.map((step, index) => {
-          const highlight = index === steps.length - 1;
-          const selected = index === activeStep;
-          return (
-            <article
-              key={step.step_key}
-              className={cn(
-                "relative rounded-card border p-4 transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] sm:p-6",
-                highlight
-                  ? "border-primary/30 bg-card-dark shadow-[0_4px_10px_rgba(245,158,11,0.15)]"
-                  : "border-white/10 bg-card-dark",
-                selected && !highlight && "border-primary/50"
-              )}
-            >
-              <div className="flex items-center gap-3">
-                <span
-                  aria-hidden="true"
-                  className={cn(
-                    "flex size-8 shrink-0 items-center justify-center rounded-full",
-                    highlight
-                      ? "bg-primary text-text-inverse"
-                      : "bg-primary/10 text-primary"
-                  )}
-                >
-                  <ProcessIcon name={step.icon_name} className="size-4" />
-                </span>
-                <h3 className="font-display text-base font-bold leading-snug text-text-primary">
-                  {step.title}
-                </h3>
-              </div>
-              <p className="mt-3 text-xs leading-relaxed text-text-muted">
-                {step.description}
-              </p>
-            </article>
-          );
-        })}
+        {steps.map((step) => (
+          <article
+            key={step.step_key}
+            className="relative rounded-card border border-white/10 bg-card-dark p-4 transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] sm:p-6"
+          >
+            <div className="flex items-center gap-3">
+              <span
+                aria-hidden="true"
+                className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary"
+              >
+                <ProcessIcon name={step.icon_name} className="size-5" />
+              </span>
+              <h3 className="font-display text-base font-bold leading-snug text-text-primary">
+                {step.title}
+              </h3>
+            </div>
+            <p className="mt-3 text-xs leading-relaxed text-text-muted">
+              {step.description}
+            </p>
+          </article>
+        ))}
       </div>
     </div>
   );
