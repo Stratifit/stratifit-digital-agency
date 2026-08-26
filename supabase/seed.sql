@@ -1159,6 +1159,16 @@ ON CONFLICT (id) DO UPDATE SET
   display_order = EXCLUDED.display_order,
   is_featured = EXCLUDED.is_featured;
 
+-- Approved CLENQO Build copy for the Logo System heading and description.
+UPDATE public.portfolio_projects
+SET brand_story_translations = jsonb_set(
+  COALESCE(brand_story_translations, '{}'::jsonb),
+  '{en}',
+  to_jsonb('Develop a confident, scalable mark that reflects CLENQO’s professionalism and eco‑focused values. The logo system includes primary, secondary, and compact variations to ensure consistency across digital and physical applications.'::text),
+  true
+)
+WHERE slug = 'aura-cosmetics-identity';
+
 
 -- =============================================================================
 -- =============================================================================
@@ -2448,6 +2458,16 @@ ON CONFLICT (id) DO UPDATE SET
   display_order = EXCLUDED.display_order,
   is_featured = EXCLUDED.is_featured;
 
+-- Approved CLENQO Build copy for the Logo System heading and description.
+UPDATE public.portfolio_projects
+SET brand_story_translations = jsonb_set(
+  COALESCE(brand_story_translations, '{}'::jsonb),
+  '{en}',
+  to_jsonb('Develop a confident, scalable mark that reflects CLENQO’s professionalism and eco‑focused values. The logo system includes primary, secondary, and compact variations to ensure consistency across digital and physical applications.'::text),
+  true
+)
+WHERE slug = 'aura-cosmetics-identity';
+
 
 -- =============================================================================
 -- =============================================================================
@@ -2702,3 +2722,13 @@ ON CONFLICT (id) DO UPDATE SET
   image_url = EXCLUDED.image_url,
   display_order = EXCLUDED.display_order,
   is_featured = EXCLUDED.is_featured;
+
+-- Approved CLENQO Build copy for the Logo System heading and description.
+UPDATE public.portfolio_projects
+SET brand_story_translations = jsonb_set(
+  COALESCE(brand_story_translations, '{}'::jsonb),
+  '{en}',
+  to_jsonb('Develop a confident, scalable mark that reflects CLENQO’s professionalism and eco‑focused values. The logo system includes primary, secondary, and compact variations to ensure consistency across digital and physical applications.'::text),
+  true
+)
+WHERE slug = 'aura-cosmetics-identity';

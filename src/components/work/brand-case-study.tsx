@@ -719,8 +719,8 @@ export function BrandCaseStudy({
             <Reveal>
               <SectionHeader
                 kicker="BUILD"
-                titleA="Identity Creation & Visual System"
-                description={buildHeadline}
+                titleA={buildHeadline}
+                description={buildDescription}
               />
             </Reveal>
             <Reveal className="mt-10">
