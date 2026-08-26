@@ -390,49 +390,54 @@ function OverviewBoard({
   );
 }
 
-function PaletteBoard({ uid, wordmark }: { uid: string; wordmark: string }) {
+function PaletteBoard() {
   return (
     <g>
-      <defs>
-        <linearGradient id={`${uid}-palette-bg`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#202223" />
-          <stop offset="0.58" stopColor="#18211C" />
-          <stop offset="1" stopColor="#0E1411" />
-        </linearGradient>
-        <linearGradient id={`${uid}-palette-primary`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#0A8A3D" />
-          <stop offset="0.55" stopColor="#07742F" />
-          <stop offset="1" stopColor="#045B25" />
-        </linearGradient>
-        <clipPath id={`${uid}-palette-swatches`}>
-          <rect x="64" y="484" width="1072" height="164" rx="24" />
-        </clipPath>
-      </defs>
-
-      <rect width="1200" height="720" fill={`url(#${uid}-palette-bg)`} />
-      <Header index="02" text="Colour Palette" wordmark={wordmark} />
+      {/* The supplied palette reference uses a clean presentation board rather
+       * than the public site's dark decorative treatment. */}
+      <rect width="1200" height="720" fill="#FFFFFF" />
 
       <g>
-        <rect x="64" y="136" width="1072" height="328" rx="24" fill={`url(#${uid}-palette-primary)`} />
-        <circle cx="1010" cy="258" r="142" fill="none" stroke="#F3F8EE" strokeOpacity="0.18" strokeWidth="1" />
-        <circle cx="1010" cy="258" r="94" fill="none" stroke="#F2E543" strokeOpacity="0.45" strokeWidth="2" strokeDasharray="5 11" />
-        <path d="M760 160 1090 430M840 136 1136 380" stroke="#F3F8EE" strokeOpacity="0.1" strokeWidth="1" />
-        <text x={104} y={286} fontFamily={FONT_DISPLAY} fontWeight={900} fontSize={58} fill="#F3F8EE">Primary Green</text>
-        <text x={104} y={338} fontFamily={FONT_BODY} fontWeight={600} fontSize={25} letterSpacing={2} fill="#F2E543">#07742F</text>
-      </g>
+        <rect x="32" y="52" width="1136" height="616" fill="#6B6B6B" />
+        <rect x="54" y="74" width="1092" height="572" fill="#FFFFFF" />
 
-      <g clipPath={`url(#${uid}-palette-swatches)`}>
-        <rect x="64" y="484" width="357.333" height="164" fill="#F2E543" />
-        <rect x="421.333" y="484" width="357.334" height="164" fill="#F3F8EE" />
-        <rect x="778.667" y="484" width="357.333" height="164" fill="#18211C" />
-      </g>
-      <g>
-        <text x={92} y={556} fontFamily={FONT_BODY} fontWeight={700} fontSize={22} fill="#18211C">Fresh Lemon</text>
-        <text x={92} y={602} fontFamily="monospace" fontSize={18} fill="#18211C">#F2E543</text>
-        <text x={449} y={556} fontFamily={FONT_BODY} fontWeight={700} fontSize={22} fill="#18211C">Clean Mist</text>
-        <text x={449} y={602} fontFamily="monospace" fontSize={18} fill="#18211C">#F3F8EE</text>
-        <text x={806} y={556} fontFamily={FONT_BODY} fontWeight={700} fontSize={22} fill="#F3F8EE">Charcoal</text>
-        <text x={806} y={602} fontFamily="monospace" fontSize={18} fill="#F3F8EE">#18211C</text>
+        <rect x="62" y="82" width="1076" height="278" fill="#07742F" />
+        <rect x="62" y="366" width="1076" height="272" fill="#FFFFFF" />
+        <rect x="62" y="366" width="358.667" height="272" fill="#F2E543" />
+        <rect x="420.667" y="366" width="358.667" height="272" fill="#18211C" />
+        <rect x="779.333" y="366" width="358.667" height="272" fill="#F3F8EE" />
+
+        <text
+          x={88}
+          y={222}
+          fontFamily={FONT_BODY}
+          fontWeight={800}
+          fontSize={42}
+          fill="#FFFFFF"
+        >
+          Primary: Green
+        </text>
+        <text
+          x={88}
+          y={272}
+          fontFamily={FONT_BODY}
+          fontWeight={600}
+          fontSize={29}
+          fill="#F2E543"
+        >
+          #07742F
+        </text>
+
+        <g fontFamily={FONT_BODY} fontWeight={700} fontSize={32}>
+          <text x={80} y={494} fill="#18211C">Accent: Lemon</text>
+          <text x={438} y={494} fill="#F3F8EE">Background: Mist</text>
+          <text x={797} y={494} fill="#18211C">Text: Charcoal</text>
+        </g>
+        <g fontFamily={FONT_BODY} fontWeight={500} fontSize={28}>
+          <text x={80} y={548} fill="#18211C">#F2E543</text>
+          <text x={438} y={548} fill="#F3F8EE">#18211C</text>
+          <text x={797} y={548} fill="#18211C">#F3F8EE</text>
+        </g>
       </g>
     </g>
   );
@@ -1037,7 +1042,7 @@ export function BrandBoard({
       ) : variant === "overview" ? (
         <OverviewBoard uid={uid} wordmark={wordmark} initial={initial} />
       ) : variant === "palette" ? (
-        <PaletteBoard uid={uid} wordmark={wordmark} />
+        <PaletteBoard />
       ) : variant === "type" ? (
         <TypeBoard />
       ) : variant === "mark" ? (

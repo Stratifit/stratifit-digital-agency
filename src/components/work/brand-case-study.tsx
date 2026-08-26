@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type {
@@ -207,6 +208,41 @@ function BrandWordmark({ name }: { name: string }) {
   );
 }
 
+/** Normalize legacy all-caps editorial headings without changing normal casing. */
+function normalizeHeading(text: string): string {
+  const value = text.trim();
+  if (!value || value === value.toLowerCase() || value !== value.toUpperCase()) {
+    return value;
+  }
+
+  const sentence = value.toLocaleLowerCase();
+  return `${sentence.charAt(0).toLocaleUpperCase()}${sentence.slice(1)}`;
+}
+
+/** Render a heading with its main phrase highlighted in the brand amber. */
+function HeadingTone({ text }: { text: string }) {
+  const lines = normalizeHeading(text)
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  return (
+    <>
+      {lines.map((line, lineIndex) => {
+        const words = line.split(/\s+/);
+        const splitAt = words.length > 1 ? 1 : 0;
+        return (
+          <Fragment key={`${line}-${lineIndex}`}>
+            {lineIndex > 0 ? <br /> : null}
+            {splitAt > 0 ? `${words[0]} ` : null}
+            <span className="text-primary">{words.slice(splitAt).join(" ")}</span>
+          </Fragment>
+        );
+      })}
+    </>
+  );
+}
+
 /**
  * Section header — the homepage header anatomy: amber kicker, big two-tone
  * display title, and a description with the left amber accent bar.
@@ -234,14 +270,15 @@ function SectionHeader({
         </p>
       ) : null}
       {titleA ? (
-        <h2 className="font-display font-black leading-tight tracking-tight text-text-primary text-3xl sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
-          {titleA}
+        <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
           {titleB ? (
             <>
-              {" "}
-              <span className="text-primary">{titleB}</span>
+              {normalizeHeading(titleA)}{" "}
+              <span className="text-primary">{normalizeHeading(titleB)}</span>
             </>
-          ) : null}
+          ) : (
+            <HeadingTone text={titleA} />
+          )}
         </h2>
       ) : null}
       {description ? (
@@ -258,7 +295,7 @@ function SectionHeader({
  * for the Messaging Direction heading), matching the phase document headings.
  */
 function TwoTone({ label, invert }: { label: string; invert?: boolean }) {
-  const parts = label.split(" ");
+  const parts = normalizeHeading(label).split(" ");
   const first = parts[0];
   const rest = parts.slice(1).join(" ");
   if (!rest) return <>{first}</>;
@@ -797,9 +834,9 @@ export function BrandCaseStudy({
               />
             </Reveal>
             <Reveal className="mt-8">
-              <h3 className="font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl md:leading-none">
-                {buildHeadline}
-              </h3>
+              <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
+                <HeadingTone text={buildHeadline} />
+              </h2>
               <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
                 {buildDescription}
               </p>
@@ -822,7 +859,7 @@ export function BrandCaseStudy({
             </Reveal>
 
             <Reveal className="mt-14">
-              <h2 className="font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl md:leading-none">
+              <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
                 <TwoTone label={t(locale, "workColourPalette")} />
               </h2>
               <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
@@ -851,8 +888,8 @@ export function BrandCaseStudy({
             {typeface || typefaceDescription || subFonts.length > 0 ? (
               <>
                 <Reveal>
-                  <h2 className="font-display text-2xl font-black uppercase leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl md:leading-none">
-                    {t(locale, "workTypography")}
+                  <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
+                    <HeadingTone text={t(locale, "workTypography")} />
                   </h2>
                   {typefaceDescription ? (
                     <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
@@ -918,7 +955,7 @@ export function BrandCaseStudy({
             {identityAssets ? (
               <>
                 <Reveal className="mt-14">
-                  <h2 className="font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl md:leading-none">
+                  <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
                     <TwoTone label={t(locale, "workIdentityAssets")} />
                   </h2>
                   <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
@@ -967,7 +1004,7 @@ export function BrandCaseStudy({
             {visualApplications ? (
               <>
                 <Reveal className="mt-14">
-                  <h2 className="font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl md:leading-none">
+                  <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
                     <TwoTone label={t(locale, "workVisualApplications")} />
                   </h2>
                   <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
@@ -1070,7 +1107,7 @@ export function BrandCaseStudy({
             {launchPhysical ? (
               <>
                 <Reveal className="mt-14">
-                  <h2 className="font-display font-black leading-tight tracking-tight text-text-primary text-3xl sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
+                  <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
                     <TwoTone label={t(locale, "workPhysicalTouchpoints")} />
                   </h2>
                   <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
@@ -1118,7 +1155,7 @@ export function BrandCaseStudy({
             {launchGuidelines ? (
               <>
                 <Reveal className="mt-14">
-                  <h2 className="font-display font-black leading-tight tracking-tight text-text-primary text-3xl sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
+                  <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
                     <TwoTone label={t(locale, "workBrandGuidelines")} />
                   </h2>
                   <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
@@ -1218,7 +1255,7 @@ export function BrandCaseStudy({
                     {t(locale, "workYourProjectNext")}
                   </p>
                   <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
-                    {t(locale, "workWantOutcome")}
+                    <HeadingTone text={t(locale, "workWantOutcome")} />
                   </h2>
                   <p className="mt-4 max-w-md text-base leading-relaxed text-text-muted">
                     {t(locale, "workSameRigor")}
@@ -1272,8 +1309,8 @@ export function BrandCaseStudy({
               <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
                 {t(locale, "workBrandInAction")}
               </p>
-              <h2 className="max-w-3xl font-display font-black leading-tight tracking-tight text-text-primary text-3xl sm:text-4xl md:text-5xl md:leading-none">
-                {t(locale, "workBrandInUse")}
+              <h2 className="max-w-3xl font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
+                <HeadingTone text={t(locale, "workBrandInUse")} />
               </h2>
             </Reveal>
 
@@ -1357,10 +1394,10 @@ export function BrandCaseStudy({
               <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
                 {t(locale, "workMoreWork")}
               </p>
-              <h2 className="mb-10 font-display font-black leading-tight tracking-tight text-text-primary text-3xl sm:text-4xl md:text-5xl md:leading-none">
-                {t(locale, "workSimilar")}{" "}
+              <h2 className="mb-10 font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
+                {normalizeHeading(t(locale, "workSimilar"))}{" "}
                 <span className="text-primary">
-                  {t(locale, "workCaseStudies")}
+                  {normalizeHeading(t(locale, "workCaseStudies"))}
                 </span>
               </h2>
             </Reveal>
