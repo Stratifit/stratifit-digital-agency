@@ -588,7 +588,7 @@ export function BrandCaseStudy({
       {/* Our process — timeline rail + rollout card grid              */}
       {/* ============================================================ */}
       {processSteps.length > 0 ? (
-        <section className="py-14 md:py-20">
+        <section className="border-t border-white/5 py-14 md:py-20">
           <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
             <Reveal>
               <SectionHeader
