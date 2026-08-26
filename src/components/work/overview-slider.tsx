@@ -20,13 +20,26 @@ export function OverviewSlider({
   counterLabel: string;
   /** Optional thumbnail elements to display below the main image. */
   thumbnails?: React.ReactNode[];
-  /** Slide index offset when thumbnails omit a leading slide. */
+  /** Slide index offset for thumbnail arrays that omit leading slides. When
+   * positive, the first slide is automatically prepended as the first thumbnail. */
   thumbnailSlideOffset?: number;
   /** Optional badge label (e.g. "Before") shown on the main image. */
   badge?: string;
 }) {
   const [selectedIndex, setIndex] = React.useState(0);
   const count = slides.length;
+  const thumbnailItems =
+    thumbnails && thumbnailSlideOffset > 0
+      ? [slides[0], ...thumbnails]
+      : thumbnails ?? [];
+  const thumbnailGridClass =
+    thumbnailItems.length <= 2
+      ? "grid-cols-2"
+      : thumbnailItems.length === 3
+        ? "grid-cols-3"
+        : thumbnailItems.length === 4
+          ? "grid-cols-4"
+          : "grid-cols-5";
 
   // Clamp to a valid slide if the list shrinks (e.g. data changes).
   const index = count > 0 ? selectedIndex % count : 0;
@@ -68,10 +81,17 @@ export function OverviewSlider({
         </div>
 
         {/* Thumbnail strip — small clickable images directly below main image. */}
-        {thumbnails && thumbnails.length > 0 ? (
-          <div className="grid grid-cols-4 gap-2 border-t border-white/10 p-3 sm:flex sm:items-center sm:justify-center sm:gap-3">
-            {thumbnails.map((thumbnail, i) => {
-              const slideIndex = i + thumbnailSlideOffset;
+        {thumbnailItems.length > 0 ? (
+          <div
+            className={`grid ${thumbnailGridClass} gap-2 border-t border-white/10 p-3 sm:flex sm:items-center sm:justify-center sm:gap-3`}
+          >
+            {thumbnailItems.map((thumbnail, i) => {
+              const slideIndex =
+                thumbnailSlideOffset > 0
+                  ? i === 0
+                    ? 0
+                    : i - 1 + thumbnailSlideOffset
+                  : i + thumbnailSlideOffset;
               return (
                 <button
                   key={i}
