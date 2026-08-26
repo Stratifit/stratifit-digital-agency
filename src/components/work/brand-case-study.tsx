@@ -456,9 +456,6 @@ export function BrandCaseStudy({
         tagline={heroTagline || undefined}
         className="absolute inset-0"
       />
-      <span className="absolute bottom-3 right-3 rounded-full border border-primary/50 bg-black/40 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-primary backdrop-blur-sm">
-        {t(locale, "workBefore")}
-      </span>
     </div>,
     ...gallery.map((url, index) => (
       <Image
@@ -472,27 +469,17 @@ export function BrandCaseStudy({
     )),
   ];
 
-  // Thumbnails for the overview slider — small clickable images below the main image.
-  const overviewThumbnails = [
-    <div key="thumb-before" className="absolute inset-0 overflow-hidden">
-      <BrandBoard
-        variant="before"
-        wordmark={wordmark}
-        tagline={heroTagline || undefined}
-        className="absolute inset-0"
-      />
-    </div>,
-    ...gallery.map((url, index) => (
-      <Image
-        key={`thumb-${url}`}
-        src={url}
-        alt={`${wordmark} — ${galleryCaption(index)}`}
-        fill
-        sizes="80px"
-        className="object-cover"
-      />
-    )),
-  ];
+  // Thumbnails for the overview slider — only gallery images (not the "before" slide).
+  const overviewThumbnails = gallery.map((url, index) => (
+    <Image
+      key={`thumb-${url}`}
+      src={url}
+      alt={`${wordmark} — ${galleryCaption(index)}`}
+      fill
+      sizes="80px"
+      className="object-cover"
+    />
+  ));
 
   const resolvedMetrics = project.metrics.map((metric) => ({
     value: metric.value,
@@ -577,6 +564,7 @@ export function BrandCaseStudy({
                   slides={overviewSlides}
                   counterLabel={`${wordmark} — ${t(locale, "workOverviewA")} ${t(locale, "workOverviewB")}`}
                   thumbnails={overviewThumbnails}
+                  badge={t(locale, "workBefore")}
                 />
               </figure>
             </Reveal>

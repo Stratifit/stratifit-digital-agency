@@ -12,12 +12,15 @@ export function OverviewSlider({
   slides,
   counterLabel,
   thumbnails,
+  badge,
 }: {
   slides: React.ReactNode[];
   /** aria-label for the carousel region. */
   counterLabel: string;
   /** Optional thumbnail elements to display below the main image. */
   thumbnails?: React.ReactNode[];
+  /** Optional badge label (e.g. "Before") shown on the main image. */
+  badge?: string;
 }) {
   const [selectedIndex, setIndex] = React.useState(0);
   const count = slides.length;
@@ -53,11 +56,17 @@ export function OverviewSlider({
               </div>
             ))}
           </div>
+          {/* Badge label — always visible on main image. */}
+          {badge ? (
+            <span className="absolute bottom-3 right-3 rounded-full border border-primary/50 bg-black/40 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-primary backdrop-blur-sm">
+              {badge}
+            </span>
+          ) : null}
         </div>
 
         {/* Thumbnail strip — small clickable images directly below main image. */}
         {thumbnails && thumbnails.length > 0 ? (
-          <div className="flex items-center justify-center gap-2 border-t border-white/10 p-2">
+          <div className="flex items-center justify-center gap-3 border-t border-white/10 p-3">
             {thumbnails.map((thumbnail, i) => (
               <button
                 key={i}
@@ -65,7 +74,7 @@ export function OverviewSlider({
                 onClick={() => setIndex(i)}
                 aria-label={`Go to slide ${i + 1}`}
                 aria-current={i === index ? "true" : undefined}
-                className={`relative size-12 overflow-hidden rounded border-2 transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 sm:size-14 ${
+                className={`relative size-16 overflow-hidden rounded border-2 transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 sm:size-20 ${
                   i === index
                     ? "border-primary shadow-[0_0_8px_rgba(245,158,11,0.3)]"
                     : "border-white/20 opacity-60 hover:border-white/40 hover:opacity-100"
