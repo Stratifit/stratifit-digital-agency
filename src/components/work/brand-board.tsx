@@ -1033,7 +1033,7 @@ export function BrandBoard({
   return (
     <svg
       viewBox="0 0 1200 720"
-      preserveAspectRatio="xMidYMid slice"
+      preserveAspectRatio={variant === "palette" ? "none" : "xMidYMid slice"}
       aria-hidden="true"
       className={cn("h-full w-full", className)}
     >
