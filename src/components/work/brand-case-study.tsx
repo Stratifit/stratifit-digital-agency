@@ -515,6 +515,25 @@ export function BrandCaseStudy({
     )),
   ];
 
+  const conceptSlides = [
+    <BrandBoard
+      key="concept-main"
+      variant="concept"
+      wordmark={clientName}
+      className="absolute inset-0"
+    />,
+    ...gallery.map((url, index) => (
+      <Image
+        key={`concept-${url}`}
+        src={url}
+        alt={`${wordmark} — ${galleryCaption(index)}`}
+        fill
+        sizes="(max-width: 1024px) 100vw, 50vw"
+        className="object-cover"
+      />
+    )),
+  ];
+
   const resolvedMetrics = project.metrics.map((metric) => ({
     value: metric.value,
     label: resolveTranslation(metric.label_translations, locale),
@@ -763,13 +782,12 @@ export function BrandCaseStudy({
             </Reveal>
             <Reveal className="mt-10">
               <figure>
-                <div className="relative aspect-[4/3] overflow-hidden rounded-card border border-white/10 bg-card-dark sm:aspect-[16/7]">
-                  <BrandBoard
-                    variant="concept"
-                    wordmark={clientName}
-                    className="absolute inset-0"
-                  />
-                </div>
+                <OverviewSlider
+                  slides={conceptSlides}
+                  counterLabel={`${wordmark} — ${t(locale, "workConcept")}`}
+                  thumbnails={overviewThumbnails}
+                  thumbnailSlideOffset={1}
+                />
                 <figcaption className="mt-3 flex items-center justify-between gap-4 px-1 text-xs text-text-muted">
                   <span>{t(locale, "workConceptCaption")}</span>
                   <span className="rounded-full border border-primary/40 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.15em] text-primary">
