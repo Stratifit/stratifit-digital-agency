@@ -496,6 +496,25 @@ export function BrandCaseStudy({
     />
   ));
 
+  const paletteSlides = [
+    <BrandBoard
+      key="palette-main"
+      variant="palette"
+      wordmark={clientName}
+      className="absolute inset-0"
+    />,
+    ...gallery.map((url, index) => (
+      <Image
+        key={`palette-${url}`}
+        src={url}
+        alt={`${wordmark} — ${galleryCaption(index)}`}
+        fill
+        sizes="(max-width: 1024px) 100vw, 50vw"
+        className="object-cover"
+      />
+    )),
+  ];
+
   const resolvedMetrics = project.metrics.map((metric) => ({
     value: metric.value,
     label: resolveTranslation(metric.label_translations, locale),
@@ -579,6 +598,7 @@ export function BrandCaseStudy({
                   slides={overviewSlides}
                   counterLabel={`${wordmark} — ${t(locale, "workOverviewA")} ${t(locale, "workOverviewB")}`}
                   thumbnails={overviewThumbnails}
+                  thumbnailSlideOffset={1}
                   badge={t(locale, "workBefore")}
                 />
               </figure>
@@ -769,13 +789,12 @@ export function BrandCaseStudy({
             </Reveal>
             <Reveal className="mt-8">
               <figure>
-                <div className="relative aspect-[4/3] overflow-hidden rounded-card border border-white/10 bg-card-dark sm:aspect-[16/9]">
-                  <BrandBoard
-                    variant="palette"
-                    wordmark={clientName}
-                    className="absolute inset-0"
-                  />
-                </div>
+                <OverviewSlider
+                  slides={paletteSlides}
+                  counterLabel={`${wordmark} — ${t(locale, "workColourPalette")}`}
+                  thumbnails={overviewThumbnails}
+                  thumbnailSlideOffset={1}
+                />
               </figure>
             </Reveal>
           </div>

@@ -12,6 +12,7 @@ export function OverviewSlider({
   slides,
   counterLabel,
   thumbnails,
+  thumbnailSlideOffset = 0,
   badge,
 }: {
   slides: React.ReactNode[];
@@ -19,6 +20,8 @@ export function OverviewSlider({
   counterLabel: string;
   /** Optional thumbnail elements to display below the main image. */
   thumbnails?: React.ReactNode[];
+  /** Slide index offset when thumbnails omit a leading slide. */
+  thumbnailSlideOffset?: number;
   /** Optional badge label (e.g. "Before") shown on the main image. */
   badge?: string;
 }) {
@@ -67,22 +70,25 @@ export function OverviewSlider({
         {/* Thumbnail strip — small clickable images directly below main image. */}
         {thumbnails && thumbnails.length > 0 ? (
           <div className="grid grid-cols-4 gap-2 border-t border-white/10 p-3 sm:flex sm:items-center sm:justify-center sm:gap-3">
-            {thumbnails.map((thumbnail, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => setIndex(i)}
-                aria-label={`Go to slide ${i + 1}`}
-                aria-current={i === index ? "true" : undefined}
-                className={`relative aspect-square w-full min-w-0 overflow-hidden rounded border-2 transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 sm:size-20 sm:w-auto ${
-                  i === index
-                    ? "border-primary shadow-[0_0_8px_rgba(245,158,11,0.3)]"
-                    : "border-white/20 opacity-60 hover:border-white/40 hover:opacity-100"
-                }`}
-              >
-                {thumbnail}
-              </button>
-            ))}
+            {thumbnails.map((thumbnail, i) => {
+              const slideIndex = i + thumbnailSlideOffset;
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setIndex(slideIndex)}
+                  aria-label={`Go to slide ${slideIndex + 1}`}
+                  aria-current={slideIndex === index ? "true" : undefined}
+                  className={`relative aspect-square w-full min-w-0 overflow-hidden rounded border-2 transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 sm:size-20 sm:w-auto ${
+                    slideIndex === index
+                      ? "border-primary shadow-[0_0_8px_rgba(245,158,11,0.3)]"
+                      : "border-white/20 opacity-60 hover:border-white/40 hover:opacity-100"
+                  }`}
+                >
+                  {thumbnail}
+                </button>
+              );
+            })}
           </div>
         ) : null}
       </div>
