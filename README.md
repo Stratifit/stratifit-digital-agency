@@ -44,7 +44,10 @@ npx supabase start        # local stack (Docker)
 npx supabase db push      # apply pending migrations to linked project
 npx supabase gen types typescript --linked > src/types/database.types.ts
 npx supabase migration list
+npm run check:migrations -- --local-only
 ```
+
+CI compares the local migration versions with the linked Supabase project on pushes to `main` when the repository secrets `SUPABASE_ACCESS_TOKEN` and `SUPABASE_PROJECT_REF` are configured. Pull requests still run the local filename/version check without requiring remote credentials.
 
 ## Scripts
 
@@ -53,6 +56,8 @@ npm run dev      # development
 npm run build    # production build
 npm run start    # serve production build
 npm run lint     # eslint
+npm run validate:seed       # static-check supabase/seed.sql
+npm run check:migrations    # compare local and linked migration history
 ```
 
 ## Project Structure
