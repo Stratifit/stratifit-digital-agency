@@ -390,26 +390,65 @@ function OverviewBoard({
   );
 }
 
-function PaletteBoard() {
+function PaletteBoard({ uid, wordmark }: { uid: string; wordmark: string }) {
   return (
     <g>
-      <rect width="1200" height="720" fill="#202223" />
-      <rect x="105" y="92" width="990" height="58" rx="3" fill="#202223" stroke="#087BC1" strokeWidth="2" strokeDasharray="5 5" />
-      <Caps x={132} y={121} text="Brand Palette" size={19} fill="#D7C8B8" tracking={6} />
-      <rect x="105" y="210" width="990" height="270" fill="#08772F" stroke="#087BC1" strokeWidth="2" strokeDasharray="5 5" />
-      <text x="160" y="330" fontFamily={FONT_BODY} fontWeight={800} fontSize="42" fill={C.white}>Primary Green</text>
-      <text x="160" y="376" fontFamily={FONT_BODY} fontSize="25" fill={C.white}>#07742F</text>
-      <rect x="105" y="480" width="990" height="38" fill="#202223" />
+      <defs>
+        <linearGradient id={`${uid}-palette-bg`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#202223" />
+          <stop offset="0.58" stopColor="#18211C" />
+          <stop offset="1" stopColor="#0E1411" />
+        </linearGradient>
+        <linearGradient id={`${uid}-palette-primary`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#0A8A3D" />
+          <stop offset="0.55" stopColor="#07742F" />
+          <stop offset="1" stopColor="#045B25" />
+        </linearGradient>
+        <radialGradient id={`${uid}-palette-glow`} cx="0.7" cy="0.15" r="0.8">
+          <stop offset="0" stopColor="#F2E543" stopOpacity="0.14" />
+          <stop offset="0.42" stopColor="#22C55E" stopOpacity="0.08" />
+          <stop offset="1" stopColor="#22C55E" stopOpacity="0" />
+        </radialGradient>
+        <clipPath id={`${uid}-palette-swatches`}>
+          <rect x="64" y="500" width="1072" height="148" rx="24" />
+        </clipPath>
+      </defs>
+
+      <rect width="1200" height="720" fill={`url(#${uid}-palette-bg)`} />
+      <rect width="1200" height="720" fill={`url(#${uid}-palette-glow)`} />
+      <Header index="02" text="Colour Palette" wordmark={wordmark} />
+
       <g>
-        <rect x="105" y="518" width="330" height="150" fill="#F2E543" />
-        <rect x="435" y="518" width="330" height="150" fill="#F3F8EE" />
-        <rect x="765" y="518" width="330" height="150" fill="#18211C" />
-        <text x="132" y="592" fontFamily={FONT_BODY} fontSize="22" fill="#171717">Fresh Lemon</text>
-        <text x="132" y="625" fontFamily="monospace" fontSize="18" fill="#171717">#F2E543</text>
-        <text x="462" y="592" fontFamily={FONT_BODY} fontSize="22" fill="#171717">Clean Mist</text>
-        <text x="462" y="625" fontFamily="monospace" fontSize="18" fill="#171717">#F3F8EE</text>
-        <text x="792" y="592" fontFamily={FONT_BODY} fontSize="22" fill={C.white}>Charcoal</text>
-        <text x="792" y="625" fontFamily="monospace" fontSize="18" fill={C.white}>#18211C</text>
+        <rect x="64" y="136" width="1072" height="328" rx="24" fill={`url(#${uid}-palette-primary)`} />
+        <circle cx="1010" cy="258" r="190" fill="#22C55E" opacity="0.12" />
+        <circle cx="1010" cy="258" r="142" fill="none" stroke="#F3F8EE" strokeOpacity="0.18" strokeWidth="1" />
+        <circle cx="1010" cy="258" r="94" fill="none" stroke="#F2E543" strokeOpacity="0.45" strokeWidth="2" strokeDasharray="5 11" />
+        <path d="M760 160 1090 430M840 136 1136 380" stroke="#F3F8EE" strokeOpacity="0.1" strokeWidth="1" />
+        <Caps x={104} y={180} text="01 · Core Colour" size={14} fill="#F3F8EE" tracking={5} />
+        <text x={104} y={286} fontFamily={FONT_DISPLAY} fontWeight={900} fontSize={58} fill="#F3F8EE">Primary Green</text>
+        <text x={104} y={338} fontFamily={FONT_BODY} fontWeight={600} fontSize={25} letterSpacing={2} fill="#F2E543">#07742F</text>
+        <rect x="104" y="398" width="156" height="4" rx="2" fill="#F2E543" />
+        <Caps x={104} y={430} text="Growth · Trust · Renewal" size={13} fill="#F3F8EE" tracking={4} />
+        <text x="1068" y="410" textAnchor="end" fontFamily={FONT_DISPLAY} fontWeight={900} fontSize={74} fill="#F3F8EE" opacity="0.92">C</text>
+      </g>
+
+      <g clipPath={`url(#${uid}-palette-swatches)`}>
+        <rect x="64" y="500" width="357.333" height="148" fill="#F2E543" />
+        <rect x="421.333" y="500" width="357.334" height="148" fill="#F3F8EE" />
+        <rect x="778.667" y="500" width="357.333" height="148" fill="#18211C" />
+      </g>
+      <line x1="421.333" y1="500" x2="421.333" y2="648" stroke="#18211C" strokeOpacity="0.18" strokeWidth="1" />
+      <line x1="778.667" y1="500" x2="778.667" y2="648" stroke="#18211C" strokeOpacity="0.18" strokeWidth="1" />
+      <g>
+        <Caps x={92} y={536} text="02 · Accent" size={11} fill="#18211C" tracking={3} />
+        <text x={92} y={584} fontFamily={FONT_BODY} fontWeight={700} fontSize={21} fill="#18211C">Fresh Lemon</text>
+        <text x={92} y={620} fontFamily="monospace" fontSize={17} fill="#18211C">#F2E543</text>
+        <Caps x={449} y={536} text="03 · Neutral" size={11} fill="#18211C" tracking={3} />
+        <text x={449} y={584} fontFamily={FONT_BODY} fontWeight={700} fontSize={21} fill="#18211C">Clean Mist</text>
+        <text x={449} y={620} fontFamily="monospace" fontSize={17} fill="#18211C">#F3F8EE</text>
+        <Caps x={806} y={536} text="04 · Foundation" size={11} fill="#F3F8EE" tracking={3} />
+        <text x={806} y={584} fontFamily={FONT_BODY} fontWeight={700} fontSize={21} fill="#F3F8EE">Charcoal</text>
+        <text x={806} y={620} fontFamily="monospace" fontSize={17} fill="#F3F8EE">#18211C</text>
       </g>
     </g>
   );
@@ -1014,7 +1053,7 @@ export function BrandBoard({
       ) : variant === "overview" ? (
         <OverviewBoard uid={uid} wordmark={wordmark} initial={initial} />
       ) : variant === "palette" ? (
-        <PaletteBoard />
+        <PaletteBoard uid={uid} wordmark={wordmark} />
       ) : variant === "type" ? (
         <TypeBoard />
       ) : variant === "mark" ? (

@@ -82,6 +82,7 @@ export interface PublicPortfolioBrandSystemSubFont {
 export interface PublicPortfolioBrandSystem {
   typeface: string;
   typeface_description: string;
+  palette_description: string;
   sub_fonts: PublicPortfolioBrandSystemSubFont[];
   identity_assets: string;
   visual_applications: string;
@@ -118,6 +119,7 @@ export function normalizeBrandSystemTranslations(
     out[locale] = {
       typeface: str("typeface"),
       typeface_description: str("typeface_description"),
+      palette_description: str("palette_description"),
       sub_fonts: subFonts,
       identity_assets: str("identity_assets"),
       visual_applications: str("visual_applications"),

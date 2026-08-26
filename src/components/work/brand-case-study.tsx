@@ -404,6 +404,9 @@ export function BrandCaseStudy({
   };
   const typeface = brandSystemValue("typeface");
   const typefaceDescription = brandSystemValue("typeface_description");
+  const paletteDescription =
+    brandSystemValue("palette_description") ||
+    "Introduce a refined palette built around clean neutrals and eco‑driven accents. The colors reinforce trust, clarity, and sustainability while improving contrast and accessibility across all touchpoints.";
   const identityAssets = brandSystemValue("identity_assets");
   const visualApplications = brandSystemValue("visual_applications");
   const subFonts =
@@ -421,8 +424,9 @@ export function BrandCaseStudy({
   const buildSectionTitle = "Identity Creation & Visual System";
   const buildHeadline = "Logo System";
   const buildDescription = brandStory || strategyIdentity || projectSummary;
-  const buildTagline = strategyTagline || projectSummary;
-  const hasBuildSection = Boolean(buildDescription || buildTagline || buildHeadline);
+  const hasBuildSection = Boolean(
+    buildDescription || paletteDescription || buildHeadline
+  );
 
   // Launch & Activation phase document (per-project, per-locale).
   const launch = project.launch_translations ?? null;
@@ -760,7 +764,7 @@ export function BrandCaseStudy({
                 <TwoTone label={t(locale, "workColourPalette")} />
               </h2>
               <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
-                {buildTagline}
+                {paletteDescription}
               </p>
             </Reveal>
             <Reveal className="mt-8">
