@@ -928,9 +928,38 @@ export function BrandCaseStudy({
                   </p>
                 </Reveal>
                 <Reveal className="mt-8">
-                  <TouchpointCard
-                    label={t(locale, "workPhysicalTouchpoint")}
-                    wordmark={clientName}
+                  <OverviewSlider
+                    slides={[
+                      <div key="touchpoint-main" className="absolute inset-0">
+                        <BrandBoard
+                          variant="businesscard"
+                          wordmark={clientName}
+                          className="absolute inset-0"
+                        />
+                      </div>,
+                      ...gallery.map((url, index) => (
+                        <Image
+                          key={`touchpoint-${url}`}
+                          src={url}
+                          alt={`${clientName} — ${galleryCaption(index)}`}
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                          className="object-cover"
+                        />
+                      )),
+                    ]}
+                    counterLabel={`${clientName} — ${t(locale, "workPhysicalTouchpoint")}`}
+                    thumbnails={gallery.map((url, index) => (
+                      <Image
+                        key={`touchpoint-thumb-${url}`}
+                        src={url}
+                        alt={`${clientName} — ${galleryCaption(index)}`}
+                        fill
+                        sizes="80px"
+                        className="object-cover"
+                      />
+                    ))}
+                    thumbnailSlideOffset={1}
                   />
                 </Reveal>
               </>
@@ -948,28 +977,39 @@ export function BrandCaseStudy({
                   </p>
                 </Reveal>
                 <Reveal className="mt-8">
-                  <figure>
-                    <div className="overflow-hidden rounded-card border border-white/10 bg-card-dark">
-                      <div className="border-b border-white/10 px-5 py-3">
-                        <p className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
-                          <span
-                            aria-hidden="true"
-                            className="flex size-6 shrink-0 items-center justify-center rounded-md border border-primary/25 bg-primary/10 text-primary"
-                          >
-                            <ProcessIcon name="grid" className="size-3.5" />
-                          </span>
-                          {t(locale, "workVisualApplications")}
-                        </p>
-                      </div>
-                      <div className="relative aspect-[4/3] sm:aspect-[16/9]">
+                  <OverviewSlider
+                    slides={[
+                      <div key="applications-main" className="absolute inset-0">
                         <BrandBoard
                           variant="applications"
                           wordmark={clientName}
                           className="absolute inset-0"
                         />
-                      </div>
-                    </div>
-                  </figure>
+                      </div>,
+                      ...gallery.map((url, index) => (
+                        <Image
+                          key={`applications-${url}`}
+                          src={url}
+                          alt={`${clientName} — ${galleryCaption(index)}`}
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                          className="object-cover"
+                        />
+                      )),
+                    ]}
+                    counterLabel={`${clientName} — ${t(locale, "workVisualApplications")}`}
+                    thumbnails={gallery.map((url, index) => (
+                      <Image
+                        key={`applications-thumb-${url}`}
+                        src={url}
+                        alt={`${clientName} — ${galleryCaption(index)}`}
+                        fill
+                        sizes="80px"
+                        className="object-cover"
+                      />
+                    ))}
+                    thumbnailSlideOffset={1}
+                  />
                 </Reveal>
               </>
             ) : null}
