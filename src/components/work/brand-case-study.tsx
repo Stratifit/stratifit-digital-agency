@@ -540,16 +540,6 @@ export function BrandCaseStudy({
       wordmark={clientName}
       className="absolute inset-0"
     />,
-    ...gallery.map((url, index) => (
-      <Image
-        key={`palette-${url}`}
-        src={url}
-        alt={`${wordmark} — ${galleryCaption(index)}`}
-        fill
-        sizes="(max-width: 1024px) 100vw, 50vw"
-        className="object-cover"
-      />
-    )),
   ];
 
   const conceptSlides = [

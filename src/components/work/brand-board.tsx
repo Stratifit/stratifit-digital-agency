@@ -393,51 +393,42 @@ function OverviewBoard({
 function PaletteBoard() {
   return (
     <g>
-      {/* The supplied palette reference uses a clean presentation board rather
-       * than the public site's dark decorative treatment. */}
-      <rect width="1200" height="720" fill="#FFFFFF" />
+      {/* Full-bleed swatches keep the palette focused and remove the inset frame. */}
+      <rect width="1200" height="360" fill="#07742F" />
+      <rect y="360" width="400" height="360" fill="#F2E543" />
+      <rect x="400" y="360" width="400" height="360" fill="#18211C" />
+      <rect x="800" y="360" width="400" height="360" fill="#F3F8EE" />
 
-      <g>
-        <rect x="32" y="52" width="1136" height="616" fill="#6B6B6B" />
-        <rect x="54" y="74" width="1092" height="572" fill="#FFFFFF" />
+      <text
+        x={88}
+        y={222}
+        fontFamily={FONT_BODY}
+        fontWeight={800}
+        fontSize={42}
+        fill="#FFFFFF"
+      >
+        Primary: Green
+      </text>
+      <text
+        x={88}
+        y={272}
+        fontFamily={FONT_BODY}
+        fontWeight={600}
+        fontSize={29}
+        fill="#F2E543"
+      >
+        #07742F
+      </text>
 
-        <rect x="62" y="82" width="1076" height="278" fill="#07742F" />
-        <rect x="62" y="366" width="1076" height="272" fill="#FFFFFF" />
-        <rect x="62" y="366" width="358.667" height="272" fill="#F2E543" />
-        <rect x="420.667" y="366" width="358.667" height="272" fill="#18211C" />
-        <rect x="779.333" y="366" width="358.667" height="272" fill="#F3F8EE" />
-
-        <text
-          x={88}
-          y={222}
-          fontFamily={FONT_BODY}
-          fontWeight={800}
-          fontSize={42}
-          fill="#FFFFFF"
-        >
-          Primary: Green
-        </text>
-        <text
-          x={88}
-          y={272}
-          fontFamily={FONT_BODY}
-          fontWeight={600}
-          fontSize={29}
-          fill="#F2E543"
-        >
-          #07742F
-        </text>
-
-        <g fontFamily={FONT_BODY} fontWeight={700} fontSize={32}>
-          <text x={80} y={494} fill="#18211C">Accent: Lemon</text>
-          <text x={438} y={494} fill="#F3F8EE">Background: Mist</text>
-          <text x={797} y={494} fill="#18211C">Text: Charcoal</text>
-        </g>
-        <g fontFamily={FONT_BODY} fontWeight={500} fontSize={28}>
-          <text x={80} y={548} fill="#18211C">#F2E543</text>
-          <text x={438} y={548} fill="#F3F8EE">#18211C</text>
-          <text x={797} y={548} fill="#18211C">#F3F8EE</text>
-        </g>
+      <g fontFamily={FONT_BODY} fontWeight={700} fontSize={32}>
+        <text x={80} y={494} fill="#18211C">Accent: Lemon</text>
+        <text x={438} y={494} fill="#F3F8EE">Background: Mist</text>
+        <text x={797} y={494} fill="#18211C">Text: Charcoal</text>
+      </g>
+      <g fontFamily={FONT_BODY} fontWeight={500} fontSize={28}>
+        <text x={80} y={548} fill="#18211C">#F2E543</text>
+        <text x={438} y={548} fill="#F3F8EE">#18211C</text>
+        <text x={797} y={548} fill="#18211C">#F3F8EE</text>
       </g>
     </g>
   );
