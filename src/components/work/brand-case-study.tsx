@@ -472,6 +472,28 @@ export function BrandCaseStudy({
     )),
   ];
 
+  // Thumbnails for the overview slider — small clickable images below the main image.
+  const overviewThumbnails = [
+    <div key="thumb-before" className="absolute inset-0 overflow-hidden">
+      <BrandBoard
+        variant="before"
+        wordmark={wordmark}
+        tagline={heroTagline || undefined}
+        className="absolute inset-0"
+      />
+    </div>,
+    ...gallery.map((url, index) => (
+      <Image
+        key={`thumb-${url}`}
+        src={url}
+        alt={`${wordmark} — ${galleryCaption(index)}`}
+        fill
+        sizes="80px"
+        className="object-cover"
+      />
+    )),
+  ];
+
   const resolvedMetrics = project.metrics.map((metric) => ({
     value: metric.value,
     label: resolveTranslation(metric.label_translations, locale),
@@ -555,6 +577,7 @@ export function BrandCaseStudy({
                   <OverviewSlider
                     slides={overviewSlides}
                     counterLabel={`${wordmark} — ${t(locale, "workOverviewA")} ${t(locale, "workOverviewB")}`}
+                    thumbnails={overviewThumbnails}
                   />
                 </div>
               </figure>

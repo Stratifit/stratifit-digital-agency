@@ -4,18 +4,20 @@ import * as React from "react";
 
 /**
  * Lightweight slide showcase used in the case-study Project Overview panel.
- * Renders the framed media area with overlaid prev/next controls and a centered
- * dot row underneath (same treatment as the homepage process scroller). The
- * controls only appear when there are two or more slides, so a single-slide
- * panel reads as a static image.
+ * Renders the framed media area with optional thumbnail strip underneath.
+ * Clicking a thumbnail navigates to that slide. The dot indicators remain
+ * for accessibility. A single-slide panel reads as a static image.
  */
 export function OverviewSlider({
   slides,
   counterLabel,
+  thumbnails,
 }: {
   slides: React.ReactNode[];
   /** aria-label for the carousel region. */
   counterLabel: string;
+  /** Optional thumbnail elements to display below the main image. */
+  thumbnails?: React.ReactNode[];
 }) {
   const [selectedIndex, setIndex] = React.useState(0);
   const count = slides.length;
@@ -24,9 +26,6 @@ export function OverviewSlider({
   const index = count > 0 ? selectedIndex % count : 0;
 
   if (count === 0) return null;
-
-  const previous = () => setIndex((i) => (i - 1 + count) % count);
-  const next = () => setIndex((i) => (i + 1) % count);
 
   return (
     <div
@@ -52,48 +51,7 @@ export function OverviewSlider({
           ))}
         </div>
 
-        {count > 1 ? (
-          <div className="pointer-events-none absolute inset-x-0 bottom-3 top-3 flex items-center justify-between px-3">
-            <button
-              type="button"
-              onClick={previous}
-              aria-label={`Previous slide (${index + 1} of ${count})`}
-              className="pointer-events-auto flex size-9 shrink-0 items-center justify-center rounded-full border border-white/15 bg-black/45 text-white backdrop-blur-sm transition-colors hover:border-primary/50 hover:text-primary focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-                className="size-4 -translate-x-px"
-              >
-                <path d="m15 18-6-6 6-6" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              onClick={next}
-              aria-label={`Next slide (${index + 1} of ${count})`}
-              className="pointer-events-auto flex size-9 shrink-0 items-center justify-center rounded-full border border-white/15 bg-black/45 text-white backdrop-blur-sm transition-colors hover:border-primary/50 hover:text-primary focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-                className="size-4 translate-x-px"
-              >
-                <path d="m9 18 6-6-6-6" />
-              </svg>
-            </button>
-          </div>
-        ) : null}
+
       </div>
 
       {/* Dot row below the panel — matches the process section indicator. */}
@@ -110,6 +68,28 @@ export function OverviewSlider({
                 i === index ? "bg-primary" : "bg-white/20 hover:bg-white/40"
               }`}
             />
+          ))}
+        </div>
+      ) : null}
+
+      {/* Thumbnail strip — small clickable images below the main image. */}
+      {thumbnails && thumbnails.length > 0 ? (
+        <div className="mt-4 flex items-center justify-center gap-2">
+          {thumbnails.map((thumbnail, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setIndex(i)}
+              aria-label={`Go to slide ${i + 1}`}
+              aria-current={i === index ? "true" : undefined}
+              className={`relative size-16 overflow-hidden rounded-card border-2 transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 sm:size-20 ${
+                i === index
+                  ? "border-primary shadow-[0_0_10px_rgba(245,158,11,0.3)]"
+                  : "border-white/20 opacity-60 hover:border-white/40 hover:opacity-100"
+              }`}
+            >
+              {thumbnail}
+            </button>
           ))}
         </div>
       ) : null}
