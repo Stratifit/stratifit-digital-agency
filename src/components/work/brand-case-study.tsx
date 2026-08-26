@@ -871,8 +871,6 @@ export function BrandCaseStudy({
                 <OverviewSlider
                   slides={paletteSlides}
                   counterLabel={`${wordmark} — ${t(locale, "workColourPalette")}`}
-                  thumbnails={overviewThumbnails}
-                  thumbnailSlideOffset={1}
                 />
               </figure>
             </Reveal>
