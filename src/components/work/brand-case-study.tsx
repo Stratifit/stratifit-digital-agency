@@ -620,7 +620,6 @@ export function BrandCaseStudy({
                   kicker={t(locale, "workPhaseDiscovery")}
                   titleA={clientName}
                   description={strategySubtitle || undefined}
-                  className="mb-0"
                 />
               </Reveal>
 
@@ -669,7 +668,6 @@ export function BrandCaseStudy({
                 <SectionHeader
                   kicker={t(locale, "workPhaseStrategy")}
                   titleA={strategyHeadline || undefined}
-                  className="mb-0"
                 />
               </Reveal>
 
@@ -836,7 +834,6 @@ export function BrandCaseStudy({
                 kicker={t(locale, "workPhaseLaunch")}
                 titleA={launchHeadline || undefined}
                 description={launchIntro || undefined}
-                className="mb-0"
               />
             </Reveal>
 
