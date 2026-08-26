@@ -404,51 +404,35 @@ function PaletteBoard({ uid, wordmark }: { uid: string; wordmark: string }) {
           <stop offset="0.55" stopColor="#07742F" />
           <stop offset="1" stopColor="#045B25" />
         </linearGradient>
-        <radialGradient id={`${uid}-palette-glow`} cx="0.7" cy="0.15" r="0.8">
-          <stop offset="0" stopColor="#F2E543" stopOpacity="0.14" />
-          <stop offset="0.42" stopColor="#22C55E" stopOpacity="0.08" />
-          <stop offset="1" stopColor="#22C55E" stopOpacity="0" />
-        </radialGradient>
         <clipPath id={`${uid}-palette-swatches`}>
-          <rect x="64" y="500" width="1072" height="148" rx="24" />
+          <rect x="64" y="484" width="1072" height="164" rx="24" />
         </clipPath>
       </defs>
 
       <rect width="1200" height="720" fill={`url(#${uid}-palette-bg)`} />
-      <rect width="1200" height="720" fill={`url(#${uid}-palette-glow)`} />
       <Header index="02" text="Colour Palette" wordmark={wordmark} />
 
       <g>
         <rect x="64" y="136" width="1072" height="328" rx="24" fill={`url(#${uid}-palette-primary)`} />
-        <circle cx="1010" cy="258" r="190" fill="#22C55E" opacity="0.12" />
         <circle cx="1010" cy="258" r="142" fill="none" stroke="#F3F8EE" strokeOpacity="0.18" strokeWidth="1" />
         <circle cx="1010" cy="258" r="94" fill="none" stroke="#F2E543" strokeOpacity="0.45" strokeWidth="2" strokeDasharray="5 11" />
         <path d="M760 160 1090 430M840 136 1136 380" stroke="#F3F8EE" strokeOpacity="0.1" strokeWidth="1" />
-        <Caps x={104} y={180} text="01 · Core Colour" size={14} fill="#F3F8EE" tracking={5} />
         <text x={104} y={286} fontFamily={FONT_DISPLAY} fontWeight={900} fontSize={58} fill="#F3F8EE">Primary Green</text>
         <text x={104} y={338} fontFamily={FONT_BODY} fontWeight={600} fontSize={25} letterSpacing={2} fill="#F2E543">#07742F</text>
-        <rect x="104" y="398" width="156" height="4" rx="2" fill="#F2E543" />
-        <Caps x={104} y={430} text="Growth · Trust · Renewal" size={13} fill="#F3F8EE" tracking={4} />
-        <text x="1068" y="410" textAnchor="end" fontFamily={FONT_DISPLAY} fontWeight={900} fontSize={74} fill="#F3F8EE" opacity="0.92">C</text>
       </g>
 
       <g clipPath={`url(#${uid}-palette-swatches)`}>
-        <rect x="64" y="500" width="357.333" height="148" fill="#F2E543" />
-        <rect x="421.333" y="500" width="357.334" height="148" fill="#F3F8EE" />
-        <rect x="778.667" y="500" width="357.333" height="148" fill="#18211C" />
+        <rect x="64" y="484" width="357.333" height="164" fill="#F2E543" />
+        <rect x="421.333" y="484" width="357.334" height="164" fill="#F3F8EE" />
+        <rect x="778.667" y="484" width="357.333" height="164" fill="#18211C" />
       </g>
-      <line x1="421.333" y1="500" x2="421.333" y2="648" stroke="#18211C" strokeOpacity="0.18" strokeWidth="1" />
-      <line x1="778.667" y1="500" x2="778.667" y2="648" stroke="#18211C" strokeOpacity="0.18" strokeWidth="1" />
       <g>
-        <Caps x={92} y={536} text="02 · Accent" size={11} fill="#18211C" tracking={3} />
-        <text x={92} y={584} fontFamily={FONT_BODY} fontWeight={700} fontSize={21} fill="#18211C">Fresh Lemon</text>
-        <text x={92} y={620} fontFamily="monospace" fontSize={17} fill="#18211C">#F2E543</text>
-        <Caps x={449} y={536} text="03 · Neutral" size={11} fill="#18211C" tracking={3} />
-        <text x={449} y={584} fontFamily={FONT_BODY} fontWeight={700} fontSize={21} fill="#18211C">Clean Mist</text>
-        <text x={449} y={620} fontFamily="monospace" fontSize={17} fill="#18211C">#F3F8EE</text>
-        <Caps x={806} y={536} text="04 · Foundation" size={11} fill="#F3F8EE" tracking={3} />
-        <text x={806} y={584} fontFamily={FONT_BODY} fontWeight={700} fontSize={21} fill="#F3F8EE">Charcoal</text>
-        <text x={806} y={620} fontFamily="monospace" fontSize={17} fill="#F3F8EE">#18211C</text>
+        <text x={92} y={556} fontFamily={FONT_BODY} fontWeight={700} fontSize={22} fill="#18211C">Fresh Lemon</text>
+        <text x={92} y={602} fontFamily="monospace" fontSize={18} fill="#18211C">#F2E543</text>
+        <text x={449} y={556} fontFamily={FONT_BODY} fontWeight={700} fontSize={22} fill="#18211C">Clean Mist</text>
+        <text x={449} y={602} fontFamily="monospace" fontSize={18} fill="#18211C">#F3F8EE</text>
+        <text x={806} y={556} fontFamily={FONT_BODY} fontWeight={700} fontSize={22} fill="#F3F8EE">Charcoal</text>
+        <text x={806} y={602} fontFamily="monospace" fontSize={18} fill="#F3F8EE">#18211C</text>
       </g>
     </g>
   );
