@@ -1033,9 +1033,38 @@ export function BrandCaseStudy({
 
             {launchIntro ? (
               <Reveal className="mt-8">
-                <TouchpointCard
-                  label={t(locale, "workPhysicalTouchpoint")}
-                  wordmark={clientName}
+                <OverviewSlider
+                  slides={[
+                    <div key="launch-intro-main" className="absolute inset-0">
+                      <BrandBoard
+                        variant="businesscard"
+                        wordmark={clientName}
+                        className="absolute inset-0"
+                      />
+                    </div>,
+                    ...gallery.map((url, index) => (
+                      <Image
+                        key={`launch-intro-${url}`}
+                        src={url}
+                        alt={`${clientName} — ${galleryCaption(index)}`}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                        className="object-cover"
+                      />
+                    )),
+                  ]}
+                  counterLabel={`${clientName} — ${t(locale, "workPhysicalTouchpoint")}`}
+                  thumbnails={gallery.map((url, index) => (
+                    <Image
+                      key={`launch-intro-thumb-${url}`}
+                      src={url}
+                      alt={`${clientName} — ${galleryCaption(index)}`}
+                      fill
+                      sizes="80px"
+                      className="object-cover"
+                    />
+                  ))}
+                  thumbnailSlideOffset={1}
                 />
               </Reveal>
             ) : null}
@@ -1051,9 +1080,38 @@ export function BrandCaseStudy({
                   </p>
                 </Reveal>
                 <Reveal className="mt-8">
-                  <TouchpointCard
-                    label={t(locale, "workPhysicalTouchpoint")}
-                    wordmark={clientName}
+                  <OverviewSlider
+                    slides={[
+                      <div key="launch-physical-main" className="absolute inset-0">
+                        <BrandBoard
+                          variant="businesscard"
+                          wordmark={clientName}
+                          className="absolute inset-0"
+                        />
+                      </div>,
+                      ...gallery.map((url, index) => (
+                        <Image
+                          key={`launch-physical-${url}`}
+                          src={url}
+                          alt={`${clientName} — ${galleryCaption(index)}`}
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                          className="object-cover"
+                        />
+                      )),
+                    ]}
+                    counterLabel={`${clientName} — ${t(locale, "workPhysicalTouchpoints")}`}
+                    thumbnails={gallery.map((url, index) => (
+                      <Image
+                        key={`launch-physical-thumb-${url}`}
+                        src={url}
+                        alt={`${clientName} — ${galleryCaption(index)}`}
+                        fill
+                        sizes="80px"
+                        className="object-cover"
+                      />
+                    ))}
+                    thumbnailSlideOffset={1}
                   />
                 </Reveal>
               </>
@@ -1070,9 +1128,38 @@ export function BrandCaseStudy({
                   </p>
                 </Reveal>
                 <Reveal className="mt-8">
-                  <TouchpointCard
-                    label={t(locale, "workPhysicalTouchpoint")}
-                    wordmark={clientName}
+                  <OverviewSlider
+                    slides={[
+                      <div key="launch-guidelines-main" className="absolute inset-0">
+                        <BrandBoard
+                          variant="businesscard"
+                          wordmark={clientName}
+                          className="absolute inset-0"
+                        />
+                      </div>,
+                      ...gallery.map((url, index) => (
+                        <Image
+                          key={`launch-guidelines-${url}`}
+                          src={url}
+                          alt={`${clientName} — ${galleryCaption(index)}`}
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                          className="object-cover"
+                        />
+                      )),
+                    ]}
+                    counterLabel={`${clientName} — ${t(locale, "workBrandGuidelines")}`}
+                    thumbnails={gallery.map((url, index) => (
+                      <Image
+                        key={`launch-guidelines-thumb-${url}`}
+                        src={url}
+                        alt={`${clientName} — ${galleryCaption(index)}`}
+                        fill
+                        sizes="80px"
+                        className="object-cover"
+                      />
+                    ))}
+                    thumbnailSlideOffset={1}
                   />
                 </Reveal>
               </>
