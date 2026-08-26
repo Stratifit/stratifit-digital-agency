@@ -11,6 +11,7 @@
     "start": "next start",
     "lint": "eslint",
     "validate:seed": "node scripts/validate-seed.cjs",
+    "check:seed-rerun": "node scripts/check-seed-rerun.cjs",
     "check:migrations": "node scripts/check-migration-drift.cjs",
     "test": "vitest run"
   },

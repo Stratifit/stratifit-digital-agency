@@ -1711,7 +1711,11 @@ Seeds must not include:
 
 ### 31.1 Idempotency
 
-Seeds should be safe to rerun where practical.
+Seeds should be safe to rerun where practical. CI runs
+`npm run check:seed-rerun` to statically verify that every insert has an
+`ON CONFLICT` clause, updates are scoped, and destructive operations are
+limited to the explicitly approved insights reset. This check does not execute
+SQL or require database credentials.
 
 Use:
 

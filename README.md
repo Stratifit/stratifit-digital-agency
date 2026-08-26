@@ -57,6 +57,7 @@ npm run build    # production build
 npm run start    # serve production build
 npm run lint     # eslint
 npm run validate:seed       # static-check supabase/seed.sql
+npm run check:seed-rerun    # verify seed writes are safe to rerun
 npm run check:migrations    # compare local and linked migration history
 ```
 

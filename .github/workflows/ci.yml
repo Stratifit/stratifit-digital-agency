@@ -33,6 +33,9 @@ jobs:
       - name: Validate Supabase seed SQL
         run: npm run validate:seed
 
+      - name: Check Supabase seed rerun safety
+        run: npm run check:seed-rerun
+
       - name: Check local Supabase migration history
         run: npm run check:migrations -- --local-only
 
