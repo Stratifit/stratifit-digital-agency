@@ -768,7 +768,7 @@ export function BrandCaseStudy({
             {identityAssets ? (
               <>
                 <Reveal className="mt-14">
-                  <h2 className="font-display font-black leading-tight tracking-tight text-text-primary text-3xl sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
+                  <h2 className="font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl md:leading-none">
                     <TwoTone label={t(locale, "workIdentityAssets")} />
                   </h2>
                   <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
@@ -788,7 +788,7 @@ export function BrandCaseStudy({
             {visualApplications ? (
               <>
                 <Reveal className="mt-14">
-                  <h2 className="font-display font-black leading-tight tracking-tight text-text-primary text-3xl sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
+                  <h2 className="font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl md:leading-none">
                     <TwoTone label={t(locale, "workVisualApplications")} />
                   </h2>
                   <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
@@ -797,12 +797,25 @@ export function BrandCaseStudy({
                 </Reveal>
                 <Reveal className="mt-8">
                   <figure>
-                    <div className="relative aspect-[4/3] overflow-hidden rounded-card border border-white/10 bg-card-dark sm:aspect-[16/9]">
-                      <BrandBoard
-                        variant="applications"
-                        wordmark={clientName}
-                        className="absolute inset-0"
-                      />
+                    <div className="overflow-hidden rounded-card border border-white/10 bg-card-dark">
+                      <div className="border-b border-white/10 px-5 py-3">
+                        <p className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
+                          <span
+                            aria-hidden="true"
+                            className="flex size-6 shrink-0 items-center justify-center rounded-md border border-primary/25 bg-primary/10 text-primary"
+                          >
+                            <ProcessIcon name="grid" className="size-3.5" />
+                          </span>
+                          {t(locale, "workVisualApplications")}
+                        </p>
+                      </div>
+                      <div className="relative aspect-[4/3] sm:aspect-[16/9]">
+                        <BrandBoard
+                          variant="applications"
+                          wordmark={clientName}
+                          className="absolute inset-0"
+                        />
+                      </div>
                     </div>
                   </figure>
                 </Reveal>
