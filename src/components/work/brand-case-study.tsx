@@ -416,6 +416,13 @@ export function BrandCaseStudy({
       visualApplications
   );
 
+  // Build phase document — the construction and palette content shown before
+  // the typography section in the reference brand-guidelines layout.
+  const buildHeadline = strategyValue("headline") || t(locale, "workNewIdentity");
+  const buildDescription = brandStory || strategyIdentity || projectSummary;
+  const buildTagline = strategyTagline || projectSummary;
+  const hasBuildSection = Boolean(buildDescription || buildTagline || buildHeadline);
+
   // Launch & Activation phase document (per-project, per-locale).
   const launch = project.launch_translations ?? null;
   const launchValue = (field: keyof PublicPortfolioLaunch): string => {
@@ -699,6 +706,60 @@ export function BrandCaseStudy({
                 </Reveal>
               ) : null}
             </div>
+          </div>
+        </section>
+      ) : null}
+
+      {/* ============================================================ */}
+      {/* Build — logo system and colour palette                      */}
+      {/* ============================================================ */}
+      {hasBuildSection ? (
+        <section className="border-t border-white/5 py-14 md:py-20">
+          <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
+            <Reveal>
+              <SectionHeader
+                kicker={t(locale, "workNewIdentity")}
+                titleA={buildHeadline}
+                description={buildDescription || undefined}
+              />
+            </Reveal>
+            <Reveal className="mt-10">
+              <figure>
+                <div className="relative aspect-[4/3] overflow-hidden rounded-card border border-white/10 bg-card-dark sm:aspect-[16/7]">
+                  <BrandBoard
+                    variant="concept"
+                    wordmark={clientName}
+                    className="absolute inset-0"
+                  />
+                </div>
+                <figcaption className="mt-3 flex items-center justify-between gap-4 px-1 text-xs text-text-muted">
+                  <span>{t(locale, "workConceptCaption")}</span>
+                  <span className="rounded-full border border-primary/40 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.15em] text-primary">
+                    {t(locale, "workConcept")}
+                  </span>
+                </figcaption>
+              </figure>
+            </Reveal>
+
+            <Reveal className="mt-14">
+              <h2 className="font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl md:leading-none">
+                <TwoTone label={t(locale, "workColourPalette")} />
+              </h2>
+              <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
+                {buildTagline}
+              </p>
+            </Reveal>
+            <Reveal className="mt-8">
+              <figure>
+                <div className="relative aspect-[4/3] overflow-hidden rounded-card border border-white/10 bg-card-dark sm:aspect-[16/9]">
+                  <BrandBoard
+                    variant="palette"
+                    wordmark={clientName}
+                    className="absolute inset-0"
+                  />
+                </div>
+              </figure>
+            </Reveal>
           </div>
         </section>
       ) : null}
