@@ -661,6 +661,9 @@ export function BrandCaseStudy({
                 </Reveal>
               ) : null}
 
+              {/* Divider marking the transition from Discovery to Strategy. */}
+              <div aria-hidden="true" className="mt-14 border-t border-white/5" />
+
               {/* Phase 02 — Strategy */}
               <Reveal className="mt-14">
                 <SectionHeader
