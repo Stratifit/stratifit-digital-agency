@@ -680,6 +680,35 @@ export function BrandCaseStudy({
                 </Reveal>
               ) : null}
 
+              {/* 4 image cards grid */}
+              {gallery.length > 0 ? (
+                <Reveal className="mt-10">
+                  <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                    {gallery.slice(0, 4).map((url, index) => (
+                      <figure
+                        key={url}
+                        className="group relative overflow-hidden rounded-card border border-white/10 bg-card-dark"
+                      >
+                        <div className="relative aspect-square overflow-hidden">
+                          <Image
+                            src={url}
+                            alt={`${clientName} — ${galleryCaption(index)}`}
+                            fill
+                            sizes="(max-width: 768px) 50vw, 25vw"
+                            className="object-cover transition-transform duration-700 ease-[var(--ease-standard)] group-hover:scale-[1.02]"
+                          />
+                        </div>
+                        <figcaption className="border-t border-white/10 px-3 py-2">
+                          <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-text-muted">
+                            {galleryCaption(index)}
+                          </span>
+                        </figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                </Reveal>
+              ) : null}
+
               {strategyAudience || strategyChallenges ? (
                 <Reveal className="mt-12 grid gap-6 md:grid-cols-2">
                   {strategyAudience ? (
