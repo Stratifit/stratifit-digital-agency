@@ -420,15 +420,25 @@ function PaletteBoard() {
         #07742F
       </text>
 
-      <g fontFamily={FONT_BODY} fontWeight={700} fontSize={32}>
-        <text x={80} y={494} fill="#18211C">Accent: Lemon</text>
-        <text x={438} y={494} fill="#F3F8EE">Background: Mist</text>
-        <text x={797} y={494} fill="#18211C">Text: Charcoal</text>
+      <g
+        fontFamily={FONT_BODY}
+        fontWeight={700}
+        fontSize={32}
+        textAnchor="middle"
+      >
+        <text x={200} y={494} fill="#18211C">Accent: Lemon</text>
+        <text x={600} y={494} fill="#F3F8EE">Background: Mist</text>
+        <text x={1000} y={494} fill="#18211C">Text: Charcoal</text>
       </g>
-      <g fontFamily={FONT_BODY} fontWeight={500} fontSize={28}>
-        <text x={80} y={548} fill="#18211C">#F2E543</text>
-        <text x={438} y={548} fill="#F3F8EE">#18211C</text>
-        <text x={797} y={548} fill="#18211C">#F3F8EE</text>
+      <g
+        fontFamily={FONT_BODY}
+        fontWeight={500}
+        fontSize={28}
+        textAnchor="middle"
+      >
+        <text x={200} y={548} fill="#18211C">#F2E543</text>
+        <text x={600} y={548} fill="#F3F8EE">#18211C</text>
+        <text x={1000} y={548} fill="#18211C">#F3F8EE</text>
       </g>
     </g>
   );
