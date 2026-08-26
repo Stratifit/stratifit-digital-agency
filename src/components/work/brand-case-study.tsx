@@ -768,9 +768,9 @@ export function BrandCaseStudy({
             {identityAssets ? (
               <>
                 <Reveal className="mt-14">
-                  <h3 className="font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl md:leading-none">
+                  <h2 className="font-display font-black leading-tight tracking-tight text-text-primary text-3xl sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
                     <TwoTone label={t(locale, "workIdentityAssets")} />
-                  </h3>
+                  </h2>
                   <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
                     {identityAssets}
                   </p>
@@ -788,9 +788,9 @@ export function BrandCaseStudy({
             {visualApplications ? (
               <>
                 <Reveal className="mt-14">
-                  <h3 className="font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl md:leading-none">
+                  <h2 className="font-display font-black leading-tight tracking-tight text-text-primary text-3xl sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
                     <TwoTone label={t(locale, "workVisualApplications")} />
-                  </h3>
+                  </h2>
                   <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
                     {visualApplications}
                   </p>
@@ -838,9 +838,9 @@ export function BrandCaseStudy({
             {launchPhysical ? (
               <>
                 <Reveal className="mt-14">
-                  <h3 className="font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl md:leading-none">
+                  <h2 className="font-display font-black leading-tight tracking-tight text-text-primary text-3xl sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
                     <TwoTone label={t(locale, "workPhysicalTouchpoints")} />
-                  </h3>
+                  </h2>
                   <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
                     {launchPhysical}
                   </p>
@@ -857,9 +857,9 @@ export function BrandCaseStudy({
             {launchGuidelines ? (
               <>
                 <Reveal className="mt-14">
-                  <h3 className="font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl md:leading-none">
+                  <h2 className="font-display font-black leading-tight tracking-tight text-text-primary text-3xl sm:text-4xl md:text-5xl lg:text-6xl md:leading-none">
                     <TwoTone label={t(locale, "workBrandGuidelines")} />
-                  </h3>
+                  </h2>
                   <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
                     {launchGuidelines}
                   </p>
