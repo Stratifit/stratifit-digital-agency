@@ -1595,11 +1595,43 @@ Migration files live in:
 supabase/migrations/
 ```
 
-Naming:
+### 29.1 Filename convention
+
+Every migration filename must use a unique numeric version followed by a
+short lowercase snake-case description:
 
 ```text
 YYYYMMDDHHMMSS_description.sql
 ```
+
+Examples:
+
+```text
+20260825210344_portfolio_overview_copy.sql
+00099_add_example_table.sql
+```
+
+Rules:
+
+- The version prefix must contain digits only.
+- The version must be unique across `supabase/migrations/`.
+- Use lowercase `snake_case` for the description.
+- Keep the `.sql` extension.
+- Never rename a migration that has already been applied to a remote project;
+  if its local filename differs from the remote history, align the local
+  filename to the applied remote version before pushing new migrations.
+- Do not create a second file with the same version, even if the description
+  differs.
+
+Run the local convention check before opening a pull request:
+
+```bash
+npm run check:migrations -- --local-only
+```
+
+On pushes to `main`, CI also compares local versions with the linked Supabase
+project when `SUPABASE_ACCESS_TOKEN` and `SUPABASE_PROJECT_REF` repository
+secrets are configured. Any migration present on only one side fails the check.
 
 Workflow:
 

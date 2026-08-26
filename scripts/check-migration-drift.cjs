@@ -13,7 +13,7 @@ const path = require("path");
 const { spawnSync } = require("child_process");
 
 const MIGRATIONS_DIR = path.join(__dirname, "..", "supabase", "migrations");
-const MIGRATION_FILE = /^(\d+)(?:_.+)?\.sql$/;
+const MIGRATION_FILE = /^(\d+)_([a-z0-9]+(?:_[a-z0-9]+)*)\.sql$/;
 
 /**
  * @param {string[]} filenames

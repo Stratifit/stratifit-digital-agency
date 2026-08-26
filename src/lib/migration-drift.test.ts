@@ -35,10 +35,12 @@ describe("migration drift checks", () => {
         "00001_initial.sql",
         "00001_duplicate.sql",
         "not-a-migration.sql",
+        "00003_InvalidDescription.sql",
       ]).errors
     ).toEqual([
       "Duplicate migration version: 00001",
       "Invalid migration filename: not-a-migration.sql",
+      "Invalid migration filename: 00003_InvalidDescription.sql",
     ]);
   });
 
