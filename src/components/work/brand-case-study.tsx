@@ -656,6 +656,7 @@ export function BrandCaseStudy({
                 <SectionHeader
                   kicker={t(locale, "workPhaseStrategy")}
                   titleA={strategyHeadline || undefined}
+                  description={strategySubtitle || undefined}
                 />
               </Reveal>
 
