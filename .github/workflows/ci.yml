@@ -27,6 +27,9 @@ jobs:
       - name: Case-sensitivity import checks (Windows-safe, Linux-fatal)
         run: node scripts/check-imports.cjs
 
+      - name: Validate Supabase seed SQL
+        run: npm run validate:seed
+
       - name: Lint
         run: npm run lint
 
