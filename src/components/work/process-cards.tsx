@@ -44,12 +44,7 @@ export function ProcessCards({ steps }: { steps: ProcessStep[] }) {
               type="button"
               onClick={() => setActive(index)}
               aria-current={index === activeStep ? "step" : undefined}
-              className={cn(
-                "text-sm font-medium transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
-                index === activeStep
-                  ? "text-primary"
-                  : "text-text-muted hover:text-text-primary"
-              )}
+              className="text-sm font-medium transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary text-primary"
             >
               {step.title}
             </button>
