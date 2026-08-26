@@ -1226,7 +1226,7 @@ export function BrandCaseStudy({
                     key={metric.label}
                     className="rounded-card border border-white/10 bg-card-dark px-4 py-8 text-center sm:px-6 sm:py-12"
                   >
-                    <div className="font-display text-4xl font-black tracking-tight text-primary md:text-5xl">
+                    <div className="font-display text-3xl font-black tracking-tight text-primary md:text-4xl">
                       {metric.value}
                     </div>
                     <div className="mx-auto mt-3 max-w-[220px] text-[10px] font-bold uppercase leading-relaxed tracking-[0.2em] text-text-secondary">
