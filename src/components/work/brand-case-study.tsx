@@ -418,6 +418,7 @@ export function BrandCaseStudy({
 
   // Build phase document — the construction and palette content shown before
   // the typography section in the reference brand-guidelines layout.
+  const buildSectionTitle = "Identity Creation & Visual System";
   const buildHeadline = "Logo System";
   const buildDescription = brandStory || strategyIdentity || projectSummary;
   const buildTagline = strategyTagline || projectSummary;
@@ -725,9 +726,16 @@ export function BrandCaseStudy({
             <Reveal>
               <SectionHeader
                 kicker="BUILD"
-                titleA={buildHeadline}
-                description={buildDescription}
+                titleA={buildSectionTitle}
               />
+            </Reveal>
+            <Reveal className="mt-8">
+              <h3 className="font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl md:leading-none">
+                {buildHeadline}
+              </h3>
+              <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
+                {buildDescription}
+              </p>
             </Reveal>
             <Reveal className="mt-10">
               <figure>
