@@ -820,6 +820,25 @@ export function BrandCaseStudy({
                 </figcaption>
               </figure>
             </Reveal>
+
+            <Reveal className="mt-14">
+              <h2 className="font-display text-2xl font-black leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl md:leading-none">
+                <TwoTone label={t(locale, "workColourPalette")} />
+              </h2>
+              <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
+                {paletteDescription}
+              </p>
+            </Reveal>
+            <Reveal className="mt-8">
+              <figure>
+                <OverviewSlider
+                  slides={paletteSlides}
+                  counterLabel={`${wordmark} — ${t(locale, "workColourPalette")}`}
+                  thumbnails={overviewThumbnails}
+                  thumbnailSlideOffset={1}
+                />
+              </figure>
+            </Reveal>
           </div>
         </section>
       ) : null}
