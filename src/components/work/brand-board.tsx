@@ -390,112 +390,46 @@ function OverviewBoard({
   );
 }
 
-function PaletteBoard({ uid, wordmark }: { uid: string; wordmark: string }) {
-  const swatches = [
-    { name: "Background", hex: C.deep, color: C.deep },
-    { name: "Surface", hex: C.surface, color: C.surface },
-    { name: "Primary", hex: C.primary, color: C.primary },
-    { name: "Secondary", hex: C.secondary, color: C.secondary },
-    { name: "Text", hex: C.white, color: C.white },
-  ];
-  const step = 224;
+function PaletteBoard() {
   return (
     <g>
-      <Backdrop uid={uid} />
-      <Header index="02" text="Color System" wordmark={wordmark} />
-      {swatches.map((s, i) => {
-        const x = 64 + i * step;
-        return (
-          <g key={s.name}>
-            <rect x={x} y={150} width={200} height={380} rx={14} fill={s.color} stroke={s.color === C.white ? C.borderStrong : "rgba(255,255,255,0.12)"} strokeWidth="1" />
-            <Caps x={x + 100} y={566} text={s.name} size={14} fill={C.text2} tracking={3} anchor="middle" />
-            <text
-              x={x + 100}
-              y={596}
-              textAnchor="middle"
-              dominantBaseline="central"
-              fontFamily={FONT_BODY}
-              fontSize={19}
-              fontWeight={600}
-              fill={C.muted}
-            >
-              {s.hex}
-            </text>
-          </g>
-        );
-      })}
+      <rect width="1200" height="720" fill="#202223" />
+      <rect x="105" y="92" width="990" height="58" rx="3" fill="#202223" stroke="#087BC1" strokeWidth="2" strokeDasharray="5 5" />
+      <Caps x={132} y={121} text="Brand Palette" size={19} fill="#D7C8B8" tracking={6} />
+      <rect x="105" y="210" width="990" height="270" fill="#08772F" stroke="#087BC1" strokeWidth="2" strokeDasharray="5 5" />
+      <text x="160" y="330" fontFamily={FONT_BODY} fontWeight={800} fontSize="42" fill={C.white}>Primary Green</text>
+      <text x="160" y="376" fontFamily={FONT_BODY} fontSize="25" fill={C.white}>#07742F</text>
+      <rect x="105" y="480" width="990" height="38" fill="#202223" />
+      <g>
+        <rect x="105" y="518" width="330" height="150" fill="#F2E543" />
+        <rect x="435" y="518" width="330" height="150" fill="#F3F8EE" />
+        <rect x="765" y="518" width="330" height="150" fill="#18211C" />
+        <text x="132" y="592" fontFamily={FONT_BODY} fontSize="22" fill="#171717">Fresh Lemon</text>
+        <text x="132" y="625" fontFamily="monospace" fontSize="18" fill="#171717">#F2E543</text>
+        <text x="462" y="592" fontFamily={FONT_BODY} fontSize="22" fill="#171717">Clean Mist</text>
+        <text x="462" y="625" fontFamily="monospace" fontSize="18" fill="#171717">#F3F8EE</text>
+        <text x="792" y="592" fontFamily={FONT_BODY} fontSize="22" fill={C.white}>Charcoal</text>
+        <text x="792" y="625" fontFamily="monospace" fontSize="18" fill={C.white}>#18211C</text>
+      </g>
     </g>
   );
 }
 
-function TypeBoard({ uid, wordmark }: { uid: string; wordmark: string }) {
+function TypeBoard() {
   return (
     <g>
-      <Backdrop uid={uid} />
-      <Header index="03" text="Typography" wordmark={wordmark} />
-      {/* Display specimen */}
-      <text
-        x={250}
-        y={330}
-        textAnchor="middle"
-        dominantBaseline="central"
-        fontFamily={FONT_DISPLAY}
-        fontWeight={700}
-        fontSize={320}
-        fill={C.white}
-      >
-        Aa
-      </text>
-      <Caps x={250} y={556} text="Satoshi · Display" size={15} fill={C.text2} tracking={5} anchor="middle" />
-      {/* Wordmark + body sample */}
-      <Wordmark x={620} y={196} text={wordmark} size={72} anchor="start" tracking={0.04} />
-      <text
-        x={620}
-        y={272}
-        dominantBaseline="central"
-        fontFamily={FONT_BODY}
-        fontSize={24}
-        fill={C.text2}
-      >
-        Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm Nn
-      </text>
-      <text
-        x={620}
-        y={310}
-        dominantBaseline="central"
-        fontFamily={FONT_BODY}
-        fontSize={24}
-        fill={C.muted}
-      >
-        Oo Pp Qq Rr Ss Tt Uu Vv Ww Xx Yy Zz 0123456789
-      </text>
-      <Caps x={620} y={396} text="Inter · Body & UI" size={14} fill={C.text2} tracking={5} />
-      <text
-        x={620}
-        y={452}
-        dominantBaseline="central"
-        fontFamily={FONT_BODY}
-        fontSize={26}
-        fill={C.muted}
-      >
-        Clear, precise and human at every size.
-      </text>
-      {/* Letterform rail */}
-      <line x1="620" y1="512" x2="1136" y2="512" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
-      {["Aa", "Bb", "Cc", "Qq", "&", "01"].map((g, i) => (
-        <text
-          key={g}
-          x={620 + i * 88}
-          y={562}
-          dominantBaseline="central"
-          fontFamily={FONT_DISPLAY}
-          fontWeight={700}
-          fontSize={34}
-          fill={i === 3 ? C.primary : C.text2}
-        >
-          {g}
-        </text>
-      ))}
+      <rect width="1200" height="720" fill="#202223" />
+      <Caps x={105} y={78} text="Typography" size={19} fill="#D7C8B8" tracking={6} />
+      <text x={105} y={300} fontFamily={FONT_DISPLAY} fontWeight={900} fontSize="250" fill={C.primary}>Aa</text>
+      <text x={105} y={390} fontFamily={FONT_DISPLAY} fontWeight={900} fontSize="48" fill={C.white}>Clenqo Sans</text>
+      <text x={105} y={448} fontFamily={FONT_BODY} fontSize="24" fill="#AAA9A6">A custom-tuned grotesque typeface designed</text>
+      <text x={105} y={480} fontFamily={FONT_BODY} fontSize="24" fill="#AAA9A6">for maximum clarity in high-pressure service</text>
+      <text x={105} y={512} fontFamily={FONT_BODY} fontSize="24" fill="#AAA9A6">environments.</text>
+      <line x1="105" y1="570" x2="1095" y2="570" stroke="#171717" strokeWidth="2" />
+      <text x={105} y={630} fontFamily={FONT_DISPLAY} fontWeight={700} fontSize="56" fill="#E4E4E4">Aa</text>
+      <text x={360} y={606} fontFamily={FONT_BODY} fontWeight={700} fontSize="25" fill="#E4E4E4">Hanken Grotesk</text>
+      <text x={360} y={642} fontFamily={FONT_BODY} fontSize="21" fill="#D7C8B8">Primary Display / Bold, Modern, Sharp</text>
+      <line x1="105" y1="680" x2="1095" y2="680" stroke="#171717" strokeWidth="2" />
     </g>
   );
 }
@@ -1080,9 +1014,9 @@ export function BrandBoard({
       ) : variant === "overview" ? (
         <OverviewBoard uid={uid} wordmark={wordmark} initial={initial} />
       ) : variant === "palette" ? (
-        <PaletteBoard uid={uid} wordmark={wordmark} />
+        <PaletteBoard />
       ) : variant === "type" ? (
-        <TypeBoard uid={uid} wordmark={wordmark} />
+        <TypeBoard />
       ) : variant === "mark" ? (
         <MarkBoard uid={uid} wordmark={wordmark} initial={initial} />
       ) : variant === "pattern" ? (

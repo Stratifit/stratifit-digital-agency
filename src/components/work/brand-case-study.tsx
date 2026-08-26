@@ -772,7 +772,18 @@ export function BrandCaseStudy({
           <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
             {/* Typography */}
             {typeface || typefaceDescription || subFonts.length > 0 ? (
-              <Reveal>
+              <>
+                <Reveal>
+                  <h2 className="font-display text-2xl font-black uppercase leading-tight tracking-tight text-text-primary sm:text-3xl md:text-4xl md:leading-none">
+                    {t(locale, "workTypography")}
+                  </h2>
+                  {typefaceDescription ? (
+                    <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
+                      {typefaceDescription}
+                    </p>
+                  ) : null}
+                </Reveal>
+                <Reveal className="mt-8">
                 <div className="rounded-card border border-white/10 bg-card-dark p-6 sm:p-8">
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
                     {t(locale, "workTypography")}
@@ -822,7 +833,8 @@ export function BrandCaseStudy({
                     </ul>
                   ) : null}
                 </div>
-              </Reveal>
+                </Reveal>
+              </>
             ) : null}
 
             {/* Identity assets */}
