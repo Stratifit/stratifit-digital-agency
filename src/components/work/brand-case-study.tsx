@@ -448,7 +448,10 @@ export function BrandCaseStudy({
     metaItems.push({ label: t(locale, "workYear"), value: launchYear });
   }
 
-  const gallery = project.gallery_urls;
+  // Keep the brand case-study presentation focused on four selected visuals.
+  // The CMS may retain additional gallery assets for future use, but this
+  // public section should never render more than the approved four.
+  const gallery = project.gallery_urls.slice(0, 4);
   const galleryCaption = (index: number) =>
     deliverables[index % deliverables.length] ??
     `${t(locale, "workBrandInAction")} ${String(index + 1).padStart(2, "0")}`;

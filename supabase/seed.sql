@@ -1127,10 +1127,11 @@ FROM (VALUES
   ('55555555-5555-4555-8555-555555555507'::uuid, '11111111-1111-4111-8111-111111111103'::uuid, 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=800&fit=crop&auto=format', 1, true),
   ('55555555-5555-4555-8555-555555555508'::uuid, '11111111-1111-4111-8111-111111111103'::uuid, 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=800&fit=crop&auto=format', 2, false),
   ('55555555-5555-4555-8555-555555555509'::uuid, '11111111-1111-4111-8111-111111111103'::uuid, 'https://images.unsplash.com/photo-1567449303078-57ad995bd17b?w=1200&h=800&fit=crop&auto=format', 3, false),
-  -- Aura Cosmetics Rebrand
-  ('55555555-5555-4555-8555-555555555510'::uuid, '11111111-1111-4111-8111-111111111104'::uuid, 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1200&h=800&fit=crop&auto=format', 1, true),
-  ('55555555-5555-4555-8555-555555555511'::uuid, '11111111-1111-4111-8111-111111111104'::uuid, 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=800&fit=crop&auto=format', 2, false),
-  ('55555555-5555-4555-8555-555555555512'::uuid, '11111111-1111-4111-8111-111111111104'::uuid, 'https://images.unsplash.com/photo-1567449303078-57ad995bd17b?w=1200&h=800&fit=crop&auto=format', 3, false),
+  -- Aura Cosmetics Rebrand (the four approved uploaded visuals)
+  ('300de6e7-68e4-4d98-ad75-bb78439117ee'::uuid, '11111111-1111-4111-8111-111111111104'::uuid, 'https://dmkxvalcflotfekpxdfw.supabase.co/storage/v1/object/public/portfolio-images/whatsapp-image-2026-08-23-at-11.13.57-2--1787479045519.jpeg', 1, true),
+  ('53de3e36-5ce8-4884-bea6-052102c9577e'::uuid, '11111111-1111-4111-8111-111111111104'::uuid, 'https://dmkxvalcflotfekpxdfw.supabase.co/storage/v1/object/public/portfolio-images/whatsapp-image-2026-08-23-at-11.13.58-1787479052166.jpeg', 2, false),
+  ('f004aa98-3808-48ae-af37-fab5126fab9d'::uuid, '11111111-1111-4111-8111-111111111104'::uuid, 'https://dmkxvalcflotfekpxdfw.supabase.co/storage/v1/object/public/portfolio-images/whatsapp-image-2026-08-23-at-11.13.57-1--1787479057950.jpeg', 3, false),
+  ('7916ee23-2f90-4de9-a251-afa600b59a31'::uuid, '11111111-1111-4111-8111-111111111104'::uuid, 'https://dmkxvalcflotfekpxdfw.supabase.co/storage/v1/object/public/portfolio-images/whatsapp-image-2026-08-23-at-11.13.57-1787479063941.jpeg', 4, false),
   -- Nova Fintech Platform
   ('55555555-5555-4555-8555-555555555513'::uuid, '11111111-1111-4111-8111-111111111105'::uuid, 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=800&fit=crop&auto=format', 1, true),
   ('55555555-5555-4555-8555-555555555514'::uuid, '11111111-1111-4111-8111-111111111105'::uuid, 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=800&fit=crop&auto=format', 2, false),
@@ -2426,10 +2427,11 @@ FROM (VALUES
   ('55555555-5555-4555-8555-555555555507'::uuid, '11111111-1111-4111-8111-111111111103'::uuid, 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=800&fit=crop&auto=format', 1, true),
   ('55555555-5555-4555-8555-555555555508'::uuid, '11111111-1111-4111-8111-111111111103'::uuid, 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=800&fit=crop&auto=format', 2, false),
   ('55555555-5555-4555-8555-555555555509'::uuid, '11111111-1111-4111-8111-111111111103'::uuid, 'https://images.unsplash.com/photo-1567449303078-57ad995bd17b?w=1200&h=800&fit=crop&auto=format', 3, false),
-  -- Aura Cosmetics Rebrand
-  ('55555555-5555-4555-8555-555555555510'::uuid, '11111111-1111-4111-8111-111111111104'::uuid, 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1200&h=800&fit=crop&auto=format', 1, true),
-  ('55555555-5555-4555-8555-555555555511'::uuid, '11111111-1111-4111-8111-111111111104'::uuid, 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=800&fit=crop&auto=format', 2, false),
-  ('55555555-5555-4555-8555-555555555512'::uuid, '11111111-1111-4111-8111-111111111104'::uuid, 'https://images.unsplash.com/photo-1567449303078-57ad995bd17b?w=1200&h=800&fit=crop&auto=format', 3, false),
+  -- Aura Cosmetics Rebrand (the four approved uploaded visuals)
+  ('300de6e7-68e4-4d98-ad75-bb78439117ee'::uuid, '11111111-1111-4111-8111-111111111104'::uuid, 'https://dmkxvalcflotfekpxdfw.supabase.co/storage/v1/object/public/portfolio-images/whatsapp-image-2026-08-23-at-11.13.57-2--1787479045519.jpeg', 1, true),
+  ('53de3e36-5ce8-4884-bea6-052102c9577e'::uuid, '11111111-1111-4111-8111-111111111104'::uuid, 'https://dmkxvalcflotfekpxdfw.supabase.co/storage/v1/object/public/portfolio-images/whatsapp-image-2026-08-23-at-11.13.58-1787479052166.jpeg', 2, false),
+  ('f004aa98-3808-48ae-af37-fab5126fab9d'::uuid, '11111111-1111-4111-8111-111111111104'::uuid, 'https://dmkxvalcflotfekpxdfw.supabase.co/storage/v1/object/public/portfolio-images/whatsapp-image-2026-08-23-at-11.13.57-1--1787479057950.jpeg', 3, false),
+  ('7916ee23-2f90-4de9-a251-afa600b59a31'::uuid, '11111111-1111-4111-8111-111111111104'::uuid, 'https://dmkxvalcflotfekpxdfw.supabase.co/storage/v1/object/public/portfolio-images/whatsapp-image-2026-08-23-at-11.13.57-1787479063941.jpeg', 4, false),
   -- Nova Fintech Platform
   ('55555555-5555-4555-8555-555555555513'::uuid, '11111111-1111-4111-8111-111111111105'::uuid, 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=800&fit=crop&auto=format', 1, true),
   ('55555555-5555-4555-8555-555555555514'::uuid, '11111111-1111-4111-8111-111111111105'::uuid, 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=800&fit=crop&auto=format', 2, false),
@@ -2691,10 +2693,7 @@ FROM (VALUES
   ('55555555-5555-4555-8555-555555555607'::uuid, '11111111-1111-4111-8111-111111111103'::uuid, 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1200&h=800&fit=crop&auto=format', 4, false),
   ('55555555-5555-4555-8555-555555555608'::uuid, '11111111-1111-4111-8111-111111111103'::uuid, 'https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?w=1200&h=800&fit=crop&auto=format', 5, false),
   ('55555555-5555-4555-8555-555555555609'::uuid, '11111111-1111-4111-8111-111111111103'::uuid, 'https://images.unsplash.com/photo-1559028012-481c04fa702d?w=1200&h=800&fit=crop&auto=format', 6, false),
-  -- Aura Cosmetics Rebrand (slots 4-6)
-  ('55555555-5555-4555-8555-555555555610'::uuid, '11111111-1111-4111-8111-111111111104'::uuid, 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=800&fit=crop&auto=format', 4, false),
-  ('55555555-5555-4555-8555-555555555611'::uuid, '11111111-1111-4111-8111-111111111104'::uuid, 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1200&h=800&fit=crop&auto=format', 5, false),
-  ('55555555-5555-4555-8555-555555555612'::uuid, '11111111-1111-4111-8111-111111111104'::uuid, 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&h=800&fit=crop&auto=format', 6, false),
+
   -- Nova Fintech Platform (slots 4-6)
   ('55555555-5555-4555-8555-555555555613'::uuid, '11111111-1111-4111-8111-111111111105'::uuid, 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&h=800&fit=crop&auto=format', 4, false),
   ('55555555-5555-4555-8555-555555555614'::uuid, '11111111-1111-4111-8111-111111111105'::uuid, 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&h=800&fit=crop&auto=format', 5, false),
