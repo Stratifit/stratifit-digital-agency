@@ -19,8 +19,8 @@ import { EMAIL_PARTIALS } from "./partials";
 /**
  * Branded Stratifit email template built with React Email components. This is
  * the single source of truth for the visual design of every outbound email:
- * dark brand header (main logo + round favicon mark), amber accent bars, body,
- * amber CTA, and a dark footer with contact details and social icons. Content
+ * dark brand header (main logo), amber accent bars, body, amber CTA, and a
+ * dark footer with contact details and social icons. Content
  * (subject + body) is still CMS-editable in `email_templates`; this component
  * only supplies the chrome and layout.
  *
@@ -44,8 +44,6 @@ export interface StratifitEmailProps {
   };
   /** Absolute URL of the light Stratifit logo (rendered in the header). */
   logoUrl?: string;
-  /** Absolute URL of the round Stratifit favicon mark (header + footer). */
-  faviconUrl?: string;
   /** Social profile URLs, keyed like the site footer (linkedin, instagram…). */
   socialLinks?: Record<string, string>;
 }
@@ -68,7 +66,6 @@ export function StratifitEmail({
   language,
   contact,
   logoUrl = "https://www.stratifit.com/stratifit-main-logo.png",
-  faviconUrl = "https://www.stratifit.com/icon.png",
   socialLinks = {},
 }: StratifitEmailProps) {
   const p = EMAIL_PARTIALS[language] ?? EMAIL_PARTIALS.en;
@@ -102,7 +99,7 @@ export function StratifitEmail({
             overflow: "hidden",
           }}
         >
-          {/* Brand header — main logo + round favicon mark on the dark bar */}
+          {/* Brand header — main logo on the dark bar */}
           <Section
             style={{
               backgroundColor: INK,
@@ -111,20 +108,6 @@ export function StratifitEmail({
             }}
           >
             <Row>
-              <Column style={{ width: "52px", verticalAlign: "middle" }}>
-                <Img
-                  src={faviconUrl}
-                  alt="Stratifit"
-                  width={44}
-                  height={44}
-                  style={{
-                    display: "block",
-                    width: "44px",
-                    height: "44px",
-                    borderRadius: "50%",
-                  }}
-                />
-              </Column>
               <Column style={{ verticalAlign: "middle" }}>
                 <Img
                   src={logoUrl}

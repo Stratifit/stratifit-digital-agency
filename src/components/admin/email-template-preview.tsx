@@ -82,22 +82,14 @@ function EmailShell({
             light ? "border-border bg-white" : "border-card-border bg-card-dark"
           )}
         >
-          {/* Brand header — main logo + favicon mark on the dark bar */}
+          {/* Brand header — main logo on the dark bar */}
           <div className="border-b-4 border-primary bg-[#0B0F17] px-6 py-6 sm:px-8">
-            <div className="flex items-center gap-3">
-              {/* eslint-disable-next-line @next/next/no-img-element -- preview of the round favicon mark */}
-              <img
-                src="/icon.png"
-                alt="Stratifit"
-                className="size-10 shrink-0 rounded-full"
-              />
-              {/* eslint-disable-next-line @next/next/no-img-element -- preview of the main logo */}
-              <img
-                src="/stratifit-main-logo.png"
-                alt="Stratifit"
-                className="h-5 w-auto"
-              />
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element -- preview of the main logo */}
+            <img
+              src="/stratifit-main-logo.png"
+              alt="Stratifit"
+              className="h-5 w-auto"
+            />
           </div>
 
           {/* Body */}

@@ -60,12 +60,6 @@ export function getEmailLogoUrl(): string {
   return `${siteUrl || "https://www.stratifit.com"}/stratifit-main-logo.png`;
 }
 
-/** Absolute URL of the round favicon mark used in the email header. */
-export function getEmailFaviconUrl(): string {
-  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "").replace(/\/$/, "");
-  return `${siteUrl || "https://www.stratifit.com"}/icon.png`;
-}
-
 /**
  * Social profile URLs for the email footer, keyed like the site footer
  * (linkedin, instagram, facebook, tiktok). Read from site settings with the
@@ -105,7 +99,6 @@ export async function renderEmailHtml(input: {
       language: input.language,
       contact: input.contact,
       logoUrl: getEmailLogoUrl(),
-      faviconUrl: getEmailFaviconUrl(),
       socialLinks: await getEmailSocialLinks(),
     }),
     { pretty: true }

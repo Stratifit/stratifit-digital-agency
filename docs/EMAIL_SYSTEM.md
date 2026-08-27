@@ -208,8 +208,8 @@ The HTML shell of every email is a **React Email** template
 (`src/features/communication/templates/stratifit-email.tsx`) rendered with
 `render()` from **`@react-email/render`** — the Resend renderer — which
 produces inline-styled, email-client-safe markup. The layout (dark brand
-header with the main logo + round favicon mark, amber accent bars, body, CTA
-button, and a dark footer with contact details + social icons) is defined once
+header with the main logo, amber accent bars, body, CTA button, and a dark
+footer with contact details + social icons) is defined once
 in the component; the subject and body remain CMS-editable in
 `email_templates`. The footer social icons mirror the site footer (LinkedIn,
 Instagram, Facebook, TikTok) and use the same links from site settings
@@ -229,6 +229,42 @@ const html = await render(
 `render()` is async (streams via `react-dom/server`); `renderEmailHtml` in
 `renderer.ts` returns a `Promise<string>`. The rendered HTML is then sent
 through Nodemailer over SES SMTP — no third-party sending API is involved.
+
+---
+
+## 4c. Sender Avatar in Gmail (BIMI)
+
+Gmail generates a gray letter avatar ("S") for `hello@stratifit.com` because
+no sender identity is published for the domain. To make Gmail show the
+Stratifit favicon/logo instead, the sending domain must publish **BIMI**
+(Brand Indicators for Message Identification). This is DNS + certificate
+work — the app code cannot do it — but the steps are:
+
+1. **DMARC**: `stratifit.com` must publish DMARC at `p=quarantine` or
+   `p=reject` (check `_dmarc.stratifit.com`), and outbound mail must pass it.
+2. **BIMI logo SVG**: export the brand mark as a BIMI-compliant SVG
+   (SVG P/S profile: no scripts, no external references, transparent
+   background) and serve it at a public HTTPS URL — recommended path
+   `https://www.stratifit.com/bimi/stratifit-logo.svg` (commit the file at
+   `public/bimi/stratifit-logo.svg`). The favicon PNG cannot be used; BIMI
+   requires an SVG exported from the brand source. The repository currently
+   contains no SVG logo asset.
+3. **Certificate (Gmail requirement)**: Gmail only displays BIMI logos from a
+   TXT record that also carries an `a=` (authority) pointer to a **PEM**
+   file containing the logo — i.e. a Verified Mark Certificate (VMC) or
+   Common Mark Certificate (CMC) issued by a CA (DigiCert, Entrust).
+4. **DNS TXT record** at `default._bimi.stratifit.com`, TTL 3600:
+
+   ```
+   v=BIMI1;l=https://www.stratifit.com/bimi/stratifit-logo.svg;a=https://<ca-host>/certificate.pem
+   ```
+
+   Propagation can take up to 48 h.
+
+Quick alternative: register `hello@stratifit.com` on **Gravatar** with the
+favicon image — some clients (and Gmail in several surfaces) will then use it
+as the sender avatar without any certificate. BIMI remains the reliable way
+to get the brand mark into Gmail's sender-avatar slot.
 
 ---
 
