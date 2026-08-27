@@ -1269,7 +1269,10 @@ export function BrandCaseStudy({
                 {t(locale, "workBrandInAction")}
               </p>
               <h2 className="max-w-3xl font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
-                <HeadingTone text={t(locale, "workBrandInUse")} />
+                <HighlightWord
+                  text={t(locale, "workBrandInUse")}
+                  word={t(locale, "workBrandInUse").split(/\s+/)[1]}
+                />
               </h2>
             </Reveal>
 
