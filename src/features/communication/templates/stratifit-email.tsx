@@ -135,19 +135,6 @@ export function StratifitEmail({
                 />
               </Column>
             </Row>
-            <Text
-              style={{
-                margin: "14px 0 0",
-                color: "#F5F7FA",
-                fontSize: "12px",
-                fontWeight: 650,
-                letterSpacing: "0.055em",
-                lineHeight: 1.3,
-                textTransform: "uppercase",
-              }}
-            >
-              {p.tagline}
-            </Text>
           </Section>
 
           {/* Body */}

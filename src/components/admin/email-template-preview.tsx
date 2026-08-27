@@ -98,9 +98,6 @@ function EmailShell({
                 className="h-5 w-auto"
               />
             </div>
-            <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.055em] text-white/90">
-              Fit for Digital Excellence
-            </p>
           </div>
 
           {/* Body */}
