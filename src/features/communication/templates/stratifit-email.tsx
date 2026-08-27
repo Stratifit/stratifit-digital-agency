@@ -222,19 +222,6 @@ export function StratifitEmail({
             <Text
               style={{
                 margin: "15px 0 0",
-                color: AMBER,
-                fontSize: "10px",
-                fontWeight: 700,
-                letterSpacing: "0.035em",
-                lineHeight: 1.4,
-                textTransform: "uppercase",
-              }}
-            >
-              {p.tagline}
-            </Text>
-            <Text
-              style={{
-                margin: "7px 0 0",
                 color: "#B8C0CC",
                 fontSize: "13px",
                 lineHeight: 1.4,

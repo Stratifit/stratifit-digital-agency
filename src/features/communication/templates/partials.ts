@@ -8,9 +8,7 @@ import type { SupportedLanguage } from "../types";
 export interface EmailPartials {
   /** Small uppercase label above the subject (brand eyebrow). */
   eyebrow: string;
-  /** Brand mark shown next to the wordmark in the dark header. */
-  tagline: string;
-  /** Office location shown under the footer tagline. */
+  /** Office location shown in the footer. */
   location: string;
   /** Label for the amber CTA button below the body copy. */
   ctaLabel: string;
@@ -21,28 +19,24 @@ export interface EmailPartials {
 export const EMAIL_PARTIALS: Record<SupportedLanguage, EmailPartials> = {
   en: {
     eyebrow: "Stratifit Digital Agency",
-    tagline: "Fit for Digital Excellence",
     location: "Leipzig, Germany",
     ctaLabel: "Ask a Question",
     legalDisclaimer: "Stratifit Digital Agency. All rights reserved.",
   },
   de: {
     eyebrow: "Stratifit Digitalagentur",
-    tagline: "Fit für digitale Exzellenz",
     location: "Leipzig, Deutschland",
     ctaLabel: "Fragen stellen",
     legalDisclaimer: "Stratifit Digital Agency. Alle Rechte vorbehalten.",
   },
   fr: {
     eyebrow: "Agence digitale Stratifit",
-    tagline: "Conçu pour l'excellence digitale",
     location: "Leipzig, Allemagne",
     ctaLabel: "Poser une question",
     legalDisclaimer: "Stratifit Digital Agency. Tous droits réservés.",
   },
   es: {
     eyebrow: "Agencia digital Stratifit",
-    tagline: "Hecho para la excelencia digital",
     location: "Leipzig, Alemania",
     ctaLabel: "Haz una pregunta",
     legalDisclaimer: "Stratifit Digital Agency. Todos los derechos reservados.",

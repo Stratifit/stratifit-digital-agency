@@ -12,7 +12,6 @@ describe("StratifitEmail (React Email + Resend renderer)", () => {
     expect(html).toContain("Hello");
     expect(html).toContain("Line one");
     expect(html).toContain("Line two");
-    expect(html).toContain("Fit for Digital Excellence");
     expect(html).toContain("hello@stratifit.com");
   });
 
@@ -61,22 +60,20 @@ describe("StratifitEmail (React Email + Resend renderer)", () => {
     expect(html).toContain("&amp; co");
   });
 
-  it("uses the localized tagline for German", async () => {
+  it("uses the localized footer location for German", async () => {
     const html = await render(
       StratifitEmail({ subject: "Test", body: "Body", language: "de" }),
       { pretty: true }
     );
-    expect(html).toContain("Fit für digitale Exzellenz");
+    expect(html).toContain("Leipzig, Deutschland");
   });
 
-  it("uses the localized tagline for French", async () => {
+  it("uses the localized footer location for French", async () => {
     const html = await render(
       StratifitEmail({ subject: "Test", body: "Body", language: "fr" }),
       { pretty: true }
     );
-    // React escapes apostrophes in text nodes as &#x27;.
-    expect(html).toContain("Conçu pour l");
-    expect(html).toContain("excellence digitale");
+    expect(html).toContain("Leipzig, Allemagne");
   });
 
 

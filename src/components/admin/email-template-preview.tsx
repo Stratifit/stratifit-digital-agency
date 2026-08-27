@@ -139,10 +139,7 @@ function EmailShell({
             <p className="text-xs text-white">
               <span className="font-bold text-white">stratifit.com</span>
             </p>
-            <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.035em] text-primary">
-              Fit for Digital Excellence
-            </p>
-            <p className="mt-1.5 text-[11px] text-[#B8C0CC]">Leipzig, Germany</p>
+            <p className="mt-3 text-[11px] text-[#B8C0CC]">Leipzig, Germany</p>
 
             <div className="mt-3 flex items-center justify-center gap-2">
               {SOCIAL_ICONS.map(({ key, label }) => (
