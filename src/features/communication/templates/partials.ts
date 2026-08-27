@@ -12,7 +12,7 @@ export interface EmailPartials {
   location: string;
   /** Label for the amber CTA button below the body copy. */
   ctaLabel: string;
-  /** Copyright line without the "© year" prefix (added by the renderer). */
+  /** Company name for the copyright line (prefixed with "© year" by the template). */
   legalDisclaimer: string;
 }
 
@@ -21,24 +21,24 @@ export const EMAIL_PARTIALS: Record<SupportedLanguage, EmailPartials> = {
     eyebrow: "Stratifit Digital Agency",
     location: "Leipzig, Germany",
     ctaLabel: "Ask a Question",
-    legalDisclaimer: "Stratifit Digital Agency. All rights reserved.",
+    legalDisclaimer: "Stratifit Digital Agency.",
   },
   de: {
     eyebrow: "Stratifit Digitalagentur",
     location: "Leipzig, Deutschland",
     ctaLabel: "Fragen stellen",
-    legalDisclaimer: "Stratifit Digital Agency. Alle Rechte vorbehalten.",
+    legalDisclaimer: "Stratifit Digital Agency.",
   },
   fr: {
     eyebrow: "Agence digitale Stratifit",
     location: "Leipzig, Allemagne",
     ctaLabel: "Poser une question",
-    legalDisclaimer: "Stratifit Digital Agency. Tous droits réservés.",
+    legalDisclaimer: "Stratifit Digital Agency.",
   },
   es: {
     eyebrow: "Agencia digital Stratifit",
     location: "Leipzig, Alemania",
     ctaLabel: "Haz una pregunta",
-    legalDisclaimer: "Stratifit Digital Agency. Todos los derechos reservados.",
+    legalDisclaimer: "Stratifit Digital Agency.",
   },
 };

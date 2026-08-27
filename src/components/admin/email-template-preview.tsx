@@ -167,7 +167,7 @@ function EmailShell({
             </div>
 
             <p className="mt-3 text-[10px] text-[#AEB6C2]">
-              © {year} Stratifit Digital Agency. All rights reserved.
+              © {year} Stratifit Digital Agency.
             </p>
           </div>
         </div>
