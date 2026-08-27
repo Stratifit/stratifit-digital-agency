@@ -541,8 +541,11 @@ export function BrandCaseStudy({
     )),
   ];
 
-  // Thumbnails for the overview slider — only gallery images (not the "before" slide).
-  const overviewThumbnails = gallery.map((url, index) => (
+  // Thumbnails for the overview/concept sliders — only gallery images (not the
+  // "before"/"concept" BrandBoard lead slide). Capped at 3 so that, once the
+  // lead slide is prepended as the first thumbnail, each section shows exactly
+  // 4 thumbnails with the BrandBoard lead active as the main image.
+  const leadThumbnails = gallery.slice(0, 3).map((url, index) => (
     <Image
       key={`thumb-${url}`}
       src={url}
@@ -552,6 +555,7 @@ export function BrandCaseStudy({
       className="object-cover"
     />
   ));
+
 
   const paletteSlides = [
     <BrandBoard
@@ -662,7 +666,7 @@ export function BrandCaseStudy({
                 <OverviewSlider
                   slides={overviewSlides}
                   counterLabel={`${wordmark} — ${t(locale, "workOverviewA")} ${t(locale, "workOverviewB")}`}
-                  thumbnails={overviewThumbnails}
+                  thumbnails={leadThumbnails}
                   thumbnailSlideOffset={1}
                   badge={t(locale, "workBefore")}
                 />
@@ -736,16 +740,7 @@ export function BrandCaseStudy({
                       )),
                     ]}
                     counterLabel={`${clientName} — ${t(locale, "workPhaseDiscovery")}`}
-                    thumbnails={gallery.map((url, index) => (
-                      <Image
-                        key={`discovery-thumb-${url}`}
-                        src={url}
-                        alt={`${clientName} — ${galleryCaption(index)}`}
-                        fill
-                        sizes="80px"
-                        className="object-cover"
-                      />
-                    ))}
+                    thumbnails={leadThumbnails}
                     thumbnailSlideOffset={1}
                   />
                 </Reveal>
@@ -860,7 +855,7 @@ export function BrandCaseStudy({
                 <OverviewSlider
                   slides={conceptSlides}
                   counterLabel={`${wordmark} — ${t(locale, "workConcept")}`}
-                  thumbnails={overviewThumbnails}
+                  thumbnails={leadThumbnails}
                   thumbnailSlideOffset={1}
                 />
                 <figcaption className="mt-3 flex items-center justify-between gap-4 px-1 text-xs text-text-muted">
@@ -998,16 +993,7 @@ export function BrandCaseStudy({
                       )),
                     ]}
                     counterLabel={`${clientName} — ${t(locale, "workPhysicalTouchpoint")}`}
-                    thumbnails={gallery.map((url, index) => (
-                      <Image
-                        key={`touchpoint-thumb-${url}`}
-                        src={url}
-                        alt={`${clientName} — ${galleryCaption(index)}`}
-                        fill
-                        sizes="80px"
-                        className="object-cover"
-                      />
-                    ))}
+                    thumbnails={leadThumbnails}
                     thumbnailSlideOffset={1}
                   />
                 </Reveal>
@@ -1047,16 +1033,7 @@ export function BrandCaseStudy({
                       )),
                     ]}
                     counterLabel={`${clientName} — ${t(locale, "workVisualApplications")}`}
-                    thumbnails={gallery.map((url, index) => (
-                      <Image
-                        key={`applications-thumb-${url}`}
-                        src={url}
-                        alt={`${clientName} — ${galleryCaption(index)}`}
-                        fill
-                        sizes="80px"
-                        className="object-cover"
-                      />
-                    ))}
+                    thumbnails={leadThumbnails}
                     thumbnailSlideOffset={1}
                   />
                 </Reveal>
@@ -1116,16 +1093,7 @@ export function BrandCaseStudy({
                     )),
                   ]}
                   counterLabel={`${clientName} — ${t(locale, "workPhysicalTouchpoint")}`}
-                  thumbnails={gallery.map((url, index) => (
-                    <Image
-                      key={`launch-intro-thumb-${url}`}
-                      src={url}
-                      alt={`${clientName} — ${galleryCaption(index)}`}
-                      fill
-                      sizes="80px"
-                      className="object-cover"
-                    />
-                  ))}
+                  thumbnails={leadThumbnails}
                   thumbnailSlideOffset={1}
                 />
               </Reveal>
@@ -1164,16 +1132,7 @@ export function BrandCaseStudy({
                       )),
                     ]}
                     counterLabel={`${clientName} — ${t(locale, "workPhysicalTouchpoints")}`}
-                    thumbnails={gallery.map((url, index) => (
-                      <Image
-                        key={`launch-physical-thumb-${url}`}
-                        src={url}
-                        alt={`${clientName} — ${galleryCaption(index)}`}
-                        fill
-                        sizes="80px"
-                        className="object-cover"
-                      />
-                    ))}
+                    thumbnails={leadThumbnails}
                     thumbnailSlideOffset={1}
                   />
                 </Reveal>
@@ -1215,16 +1174,7 @@ export function BrandCaseStudy({
                       )),
                     ]}
                     counterLabel={`${clientName} — ${t(locale, "workBrandGuidelines")}`}
-                    thumbnails={gallery.map((url, index) => (
-                      <Image
-                        key={`launch-guidelines-thumb-${url}`}
-                        src={url}
-                        alt={`${clientName} — ${galleryCaption(index)}`}
-                        fill
-                        sizes="80px"
-                        className="object-cover"
-                      />
-                    ))}
+                    thumbnails={leadThumbnails}
                     thumbnailSlideOffset={1}
                   />
                 </Reveal>
