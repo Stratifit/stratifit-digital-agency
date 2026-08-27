@@ -253,6 +253,7 @@ function SectionHeader({
   description,
   titleVariant = "accent",
   className,
+  titleNode,
 }: {
   kicker?: string;
   titleA?: string;
@@ -260,11 +261,15 @@ function SectionHeader({
   description?: string;
   /** Title treatment: "accent" ambers the trailing phrase, "plain" renders
    * solid white as authored, "plainUppercase" is white capitals — for
-   * headings that are client names rather than editorial copy. */
-  titleVariant?: "accent" | "plain" | "plainUppercase";
+   * headings that are client names rather than editorial copy — and
+   * "toneLast" ambers only the final word of the title. */
+  titleVariant?: "accent" | "plain" | "plainUppercase" | "toneLast";
   // Margin override — matches the homepage SectionHeader wrapper so the
   // case-study sections keep the same vertical rhythm as CMS sections.
   className?: string;
+  /** Pre-composed title markup — overrides internal rendering when a heading
+   * needs a bespoke word-color treatment (e.g. a middle word in amber). */
+  titleNode?: React.ReactNode;
 }) {
   return (
     <div className={className ? className : "mb-10 md:mb-16"}>
@@ -273,20 +278,23 @@ function SectionHeader({
           {kicker}
         </p>
       ) : null}
-      {titleA ? (
+      {titleNode || titleA ? (
         <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
-          {titleB ? (
-            <>
-              {normalizeHeading(titleA)}{" "}
-              <span className="text-primary">{normalizeHeading(titleB)}</span>
-            </>
-          ) : titleVariant === "plain" ? (
-            <span>{titleA.trim()}</span>
-          ) : titleVariant === "plainUppercase" ? (
-            <span className="uppercase">{titleA.trim()}</span>
-          ) : (
-            <HeadingTone text={titleA} />
-          )}
+          {titleNode ??
+            (titleB ? (
+              <>
+                {normalizeHeading(titleA ?? "")}{" "}
+                <span className="text-primary">{normalizeHeading(titleB)}</span>
+              </>
+            ) : titleVariant === "plain" ? (
+              <span>{(titleA ?? "").trim()}</span>
+            ) : titleVariant === "plainUppercase" ? (
+              <span className="uppercase">{(titleA ?? "").trim()}</span>
+            ) : titleVariant === "toneLast" ? (
+              <ToneLastWord label={titleA ?? ""} />
+            ) : (
+              <HeadingTone text={titleA ?? ""} />
+            ))}
         </h2>
       ) : null}
       {description ? (
@@ -299,8 +307,8 @@ function SectionHeader({
 }
 
 /**
- * Two-tone label — first word in white, the rest accented amber (or inverted
- * for the Messaging Direction heading), matching the phase document headings.
+ * Two-tone label — first word in white, the rest accented amber, matching
+ * the phase document headings.
  */
 function TwoTone({ label, invert }: { label: string; invert?: boolean }) {
   const parts = normalizeHeading(label).split(" ");
@@ -344,6 +352,21 @@ function HighlightWord({
     ) : (
       <Fragment key={i}>{part}</Fragment>
     )
+  );
+}
+
+/** Render a heading with only its final word in brand amber while every
+ * other word stays white, per the approved case-study title treatments.
+ * Single-word labels render fully white — no amber without a contrast pair. */
+function ToneLastWord({ label }: { label: string }) {
+  const value = normalizeHeading(label);
+  const words = value.split(/\s+/);
+  if (words.length < 2) return <>{value}</>;
+  return (
+    <>
+      {words.slice(0, -1).join(" ")} {" "}
+      <span className="text-primary">{words[words.length - 1]}</span>
+    </>
   );
 }
 
@@ -454,7 +477,6 @@ export function BrandCaseStudy({
 
   // Build phase document — the construction and palette content shown before
   // the typography section in the reference brand-guidelines layout.
-  const buildSectionTitle = "Visual Identity System";
   const buildIntro = brandSystemValue("build_description");
   const buildHeadline = "Logo System";
   const buildDescription = brandStory || strategyIdentity || projectSummary;
@@ -761,7 +783,7 @@ export function BrandCaseStudy({
                 <SectionHeader
                   kicker={t(locale, "workPhaseStrategy")}
                   titleA={strategyHeadline || undefined}
-                  titleVariant="plain"
+                  titleVariant="toneLast"
                   description={strategySubtitle || undefined}
                 />
               </Reveal>
@@ -782,10 +804,7 @@ export function BrandCaseStudy({
                     <StrategyCard
                       icon="quote"
                       title={
-                        <TwoTone
-                          label={t(locale, "workMessagingDirection")}
-                          invert
-                        />
+                        <TwoTone label={t(locale, "workMessagingDirection")} />
                       }
                     >
                       {strategyMessaging}
@@ -798,7 +817,7 @@ export function BrandCaseStudy({
                 <Reveal className="mt-6">
                   <StrategyCard
                     icon="sparkles"
-                    title={t(locale, "workIdentityDirection")}
+                    title={<TwoTone label={t(locale, "workIdentityDirection")} />}
                   >
                     {strategyIdentity}
                   </StrategyCard>
@@ -818,14 +837,18 @@ export function BrandCaseStudy({
             <Reveal>
               <SectionHeader
                 kicker="BUILD"
-                titleA={buildSectionTitle}
-                titleVariant="plain"
+                titleNode={
+                  <>
+                    Visual <span className="text-primary">Identity</span>{" "}
+                    System
+                  </>
+                }
                 description={buildIntro || undefined}
               />
             </Reveal>
             <Reveal className="mt-8">
               <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
-                <HighlightWord text={buildHeadline} />
+                <ToneLastWord label={buildHeadline} />
               </h2>
               <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
                 {buildDescription}
@@ -946,7 +969,7 @@ export function BrandCaseStudy({
               <>
                 <Reveal className="mt-14">
                   <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
-                    <HighlightWord text={t(locale, "workIdentityAssets")} />
+                    <ToneLastWord label={t(locale, "workIdentityAssets")} />
                   </h2>
                   <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
                     {identityAssets}
@@ -995,7 +1018,7 @@ export function BrandCaseStudy({
               <>
                 <Reveal className="mt-14">
                   <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
-                    <HighlightWord text={t(locale, "workVisualApplications")} />
+                    <ToneLastWord label={t(locale, "workVisualApplications")} />
                   </h2>
                   <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
                     {visualApplications}
@@ -1052,7 +1075,7 @@ export function BrandCaseStudy({
               <SectionHeader
                 kicker={t(locale, "workPhaseLaunch")}
                 titleA={launchHeadline || undefined}
-                titleVariant="plain"
+                titleVariant="toneLast"
               />
             </Reveal>
 
@@ -1111,13 +1134,10 @@ export function BrandCaseStudy({
               <>
                 <Reveal className="mt-14">
                   <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
-                    <HighlightWord text={t(locale, "workPhysicalTouchpoints")} />
+                    <ToneLastWord label={t(locale, "workPhysicalTouchpoints")} />
                   </h2>
                   <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
-                    <HighlightWord
-                      text={launchPhysical}
-                      word={t(locale, "workPhysicalHighlight")}
-                    />
+                    {launchPhysical}
                   </p>
                 </Reveal>
                 <Reveal className="mt-8">

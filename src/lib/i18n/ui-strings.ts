@@ -171,7 +171,6 @@ export type UiStringKey =
   | "workBefore"
   | "workBrandIdentity"
   | "workDigitalPresence"
-  | "workPhysicalHighlight"
   | "workBrandInAction"
   | "workBrandInUse"
   | "workBrandChallenges"
@@ -500,7 +499,6 @@ const en: UiStrings = {
   workBrandInUse: "The Brand in Use",
   workBrandGuidelines: "Brand Guidelines",
   workDigitalPresence: "Digital Presence",
-  workPhysicalHighlight: "uniforms",
   workCtaTitle: "Make your brand stand out.",
   workCtaSubtitle:
     "Build a distinctive identity that works beautifully everywhere.",
@@ -835,7 +833,6 @@ const de: UiStrings = {
   workBrandInUse: "Die Marke im Einsatz",
   workBrandGuidelines: "Markenrichtlinien",
   workDigitalPresence: "Digitale Präsenz",
-  workPhysicalHighlight: "Uniformen",
   workCtaTitle: "Lassen Sie Ihre Marke herausstechen.",
   workCtaSubtitle:
     "Bauen Sie eine unverwechselbare Identität, die überall überzeugt.",
@@ -1170,7 +1167,6 @@ const fr: UiStrings = {
   workBrandInUse: "La marque en usage",
   workBrandGuidelines: "Charte graphique",
   workDigitalPresence: "Présence digitale",
-  workPhysicalHighlight: "uniformes",
   workCtaTitle: "Faites ressortir votre marque.",
   workCtaSubtitle:
     "Créez une identité distinctive qui s'impose partout avec élégance.",
@@ -1505,7 +1501,6 @@ const es: UiStrings = {
   workBrandInUse: "La marca en uso",
   workBrandGuidelines: "Manual de marca",
   workDigitalPresence: "Presencia digital",
-  workPhysicalHighlight: "uniformes",
   workCtaTitle: "Haga que su marca destaque.",
   workCtaSubtitle:
     "Cree una identidad distintiva que funcione bellamente en todas partes.",
