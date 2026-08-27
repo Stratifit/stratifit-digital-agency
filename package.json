@@ -10,6 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "icons:email": "node scripts/generate-email-icons.cjs",
     "validate:seed": "node scripts/validate-seed.cjs",
     "check:seed-rerun": "node scripts/check-seed-rerun.cjs",
     "check:migrations": "node scripts/check-migration-drift.cjs",

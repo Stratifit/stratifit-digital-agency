@@ -145,21 +145,24 @@ function EmailShell({
             <p className="mt-1.5 text-[11px] text-[#B8C0CC]">Leipzig, Germany</p>
 
             <div className="mt-3 flex items-center justify-center gap-2">
-              {SOCIAL_ICONS.map(({ key, label, viewBox, path }) => (
+              {SOCIAL_ICONS.map(({ key, label }) => (
                 <span
                   key={key}
                   title={label}
                   aria-label={label}
                   className={cn(
-                    "flex size-7 items-center justify-center border border-white/70 text-white",
+                    "flex size-7 items-center justify-center border border-white/70",
                     key === "facebook" || key === "tiktok"
                       ? "rounded-full"
                       : "rounded-md"
                   )}
                 >
-                  <svg viewBox={viewBox} className="size-3.5" fill="currentColor" aria-hidden="true">
-                    <path d={path} />
-                  </svg>
+                  {/* eslint-disable-next-line @next/next/no-img-element -- preview of the email footer icon */}
+                  <img
+                    src={`/email-icons/${key}.png`}
+                    alt=""
+                    className="size-3.5"
+                  />
                 </span>
               ))}
             </div>

@@ -36,9 +36,14 @@ describe("StratifitEmail (React Email + Resend renderer)", () => {
       "https://www.stratifit.com/stratifit-main-logo.png"
     );
     expect(html).toContain('alt="Stratifit"');
-    // Social icons use the site footer links.
+    // Social icons use the site footer links, rendered as PNG images
+    // (email clients strip inline SVG).
     expect(html).toContain("https://www.linkedin.com/company/stratifit");
     expect(html).toContain("https://www.tiktok.com/@stratifit");
+    expect(html).toContain(
+      "https://www.stratifit.com/email-icons/linkedin.png"
+    );
+    expect(html).toContain("https://www.stratifit.com/email-icons/tiktok.png");
   });
 
   it("escapes HTML in the subject and body", async () => {

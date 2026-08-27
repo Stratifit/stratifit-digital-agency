@@ -1,5 +1,6 @@
 import "server-only";
 import { render } from "@react-email/render";
+import { SOCIAL_ICONS } from "@/components/ui/social-icons";
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/service-role";
 import { autoFill, type AutoFillContext } from "./auto-fill";
 import { pickTranslation } from "./language";
@@ -60,6 +61,12 @@ export function getEmailLogoUrl(): string {
   return `${siteUrl || "https://www.stratifit.com"}/stratifit-main-logo.png`;
 }
 
+/** Absolute URL of a footer social icon (white PNG, keyed like the site footer). */
+export function getEmailIconUrl(key: string): string {
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "").replace(/\/$/, "");
+  return `${siteUrl || "https://www.stratifit.com"}/email-icons/${key}.png`;
+}
+
 /**
  * Social profile URLs for the email footer, keyed like the site footer
  * (linkedin, instagram, facebook, tiktok). Read from site settings with the
@@ -100,6 +107,9 @@ export async function renderEmailHtml(input: {
       contact: input.contact,
       logoUrl: getEmailLogoUrl(),
       socialLinks: await getEmailSocialLinks(),
+      iconUrls: Object.fromEntries(
+        SOCIAL_ICONS.map(({ key }) => [key, getEmailIconUrl(key)])
+      ),
     }),
     { pretty: true }
   );

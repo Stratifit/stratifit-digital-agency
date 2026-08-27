@@ -46,6 +46,12 @@ export interface StratifitEmailProps {
   logoUrl?: string;
   /** Social profile URLs, keyed like the site footer (linkedin, instagram…). */
   socialLinks?: Record<string, string>;
+  /**
+   * Absolute URLs of the footer social icon images (white PNGs, keyed like
+   * the site footer). Email clients strip inline SVG, so the icons render as
+   * <img> tags pointing at public/email-icons/<key>.png.
+   */
+  iconUrls?: Record<string, string>;
 }
 
 /** Strip the protocol for display (https://www.stratifit.com → www.stratifit.com). */
@@ -67,6 +73,7 @@ export function StratifitEmail({
   contact,
   logoUrl = "https://www.stratifit.com/stratifit-main-logo.png",
   socialLinks = {},
+  iconUrls = {},
 }: StratifitEmailProps) {
   const p = EMAIL_PARTIALS[language] ?? EMAIL_PARTIALS.en;
   const c = {
@@ -236,9 +243,11 @@ export function StratifitEmail({
               {p.location}
             </Text>
 
-            {/* Social icons — same icons and links as the site footer */}
+            {/* Social icons — same icons and links as the site footer, rendered
+                as PNG images because email clients (notably Gmail) strip
+                inline SVG from email HTML. */}
             <Section style={{ marginTop: "14px" }}>
-              {SOCIAL_ICONS.map(({ key, label, viewBox, path }) => {
+              {SOCIAL_ICONS.map(({ key, label }) => {
                 const href = socialLinks[key] ?? "#";
                 const round = key === "facebook" || key === "tiktok";
                 return (
@@ -255,22 +264,24 @@ export function StratifitEmail({
                       padding: "0",
                       border: "1px solid rgba(255,255,255,0.72)",
                       borderRadius: round ? "50%" : "7px",
-                      color: "#FFFFFF",
                       textDecoration: "none",
                       verticalAlign: "middle",
                       lineHeight: "28px",
                     }}
                   >
-                    <svg
-                      viewBox={viewBox}
-                      width="15"
-                      height="15"
-                      fill="currentColor"
-                      aria-hidden="true"
-                      style={{ verticalAlign: "middle" }}
-                    >
-                      <path d={path} />
-                    </svg>
+                    <Img
+                      src={
+                        iconUrls[key] ??
+                        `https://www.stratifit.com/email-icons/${key}.png`
+                      }
+                      alt=""
+                      width={15}
+                      height={15}
+                      style={{
+                        display: "inline-block",
+                        verticalAlign: "middle",
+                      }}
+                    />
                   </Link>
                 );
               })}

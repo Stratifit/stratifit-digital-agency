@@ -214,7 +214,11 @@ in the component; the subject and body remain CMS-editable in
 `email_templates`. The footer social icons mirror the site footer (LinkedIn,
 Instagram, Facebook, TikTok) and use the same links from site settings
 (`social_links`); the renderer resolves them server-side with the service-role
-client so cron/webhook sends outside a request context still get them.
+client so cron/webhook sends outside a request context still get them. The
+icons are rendered as **PNG images** (`public/email-icons/<key>.png`, white
+glyphs on transparent) because email clients — notably Gmail — strip inline
+`<svg>` from email HTML; regenerate them after changing an icon with
+`npm run icons:email`.
 
 ```ts
 import { render } from "@react-email/render";
