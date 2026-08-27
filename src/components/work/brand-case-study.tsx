@@ -251,12 +251,16 @@ function SectionHeader({
   titleA,
   titleB,
   description,
+  plainTitle,
   className,
 }: {
   kicker?: string;
   titleA?: string;
   titleB?: string;
   description?: string;
+  /** Render the title in solid white capitals without the amber accent
+   * (e.g. for headings that are client names rather than editorial copy). */
+  plainTitle?: boolean;
   // Margin override — matches the homepage SectionHeader wrapper so the
   // case-study sections keep the same vertical rhythm as CMS sections.
   className?: string;
@@ -275,6 +279,8 @@ function SectionHeader({
               {normalizeHeading(titleA)}{" "}
               <span className="text-primary">{normalizeHeading(titleB)}</span>
             </>
+          ) : plainTitle ? (
+            <span className="uppercase">{titleA.trim()}</span>
           ) : (
             <HeadingTone text={titleA} />
           )}
@@ -648,6 +654,7 @@ export function BrandCaseStudy({
                 <SectionHeader
                   kicker={t(locale, "workPhaseDiscovery")}
                   titleA={clientName}
+                  plainTitle
                   description={strategySubtitle || undefined}
                 />
               </Reveal>
