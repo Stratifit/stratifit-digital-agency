@@ -252,13 +252,14 @@ work — the app code cannot do it — but the steps are:
 
 1. **DMARC**: `stratifit.com` must publish DMARC at `p=quarantine` or
    `p=reject` (check `_dmarc.stratifit.com`), and outbound mail must pass it.
-2. **BIMI logo SVG**: export the brand mark as a BIMI-compliant SVG
-   (SVG P/S profile: no scripts, no external references, transparent
-   background) and serve it at a public HTTPS URL — recommended path
-   `https://www.stratifit.com/bimi/stratifit-logo.svg` (commit the file at
-   `public/bimi/stratifit-logo.svg`). The favicon PNG cannot be used; BIMI
-   requires an SVG exported from the brand source. The repository currently
-   contains no SVG logo asset.
+2. **BIMI logo SVG**: serve a BIMI-compliant SVG (SVG P/S profile: no
+   scripts, no external references, transparent background) at a public
+   HTTPS URL — `https://www.stratifit.com/bimi/stratifit-logo.svg` is
+   committed at `public/bimi/stratifit-logo.svg` (single amber color,
+   path-only). It is an **auto-traced approximation** of the favicon "S"
+   silhouette (the favicon is a gradient/glossy raster mark, so the trace
+   has a thin left stem and hairline junction gaps); replace it with the
+   true brand vector exported from the design source when one is available.
 3. **Certificate (Gmail requirement)**: Gmail only displays BIMI logos from a
    TXT record that also carries an `a=` (authority) pointer to a **PEM**
    file containing the logo — i.e. a Verified Mark Certificate (VMC) or
