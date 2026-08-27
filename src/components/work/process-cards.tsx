@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/lib/cn";
 import { ProcessIcon } from "@/components/ui/process-icon";
 
 export interface ProcessStep {

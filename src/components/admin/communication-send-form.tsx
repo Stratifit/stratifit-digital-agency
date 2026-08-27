@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { sendManualEmail } from "@/features/communication/mutations";
@@ -51,7 +51,7 @@ export function CommunicationSendForm({
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     setValue,
     reset,
     formState: { errors, isSubmitting },
@@ -69,9 +69,14 @@ export function CommunicationSendForm({
     },
   });
 
-  const language = (watch("language") ?? "en") as EditorLocale;
-  const variables = React.useMemo(() => watch("variables") ?? {}, [watch]);
-  const templateKey = watch("template_key");
+  // useWatch subscribes to field values (React Compiler compatible) and
+  // returns live values — unlike the memoized `watch` capture below, which
+  // previously went stale because `watch` itself never changes identity.
+  const language = (useWatch({ control, name: "language" }) ?? "en") as EditorLocale;
+  const watchedVariables = useWatch({ control, name: "variables" });
+  // Keep a stable object identity so the preview memo below has dependable deps.
+  const variables = React.useMemo(() => watchedVariables ?? {}, [watchedVariables]);
+  const templateKey = useWatch({ control, name: "template_key" });
 
   const selectedTemplate = templates.find((t) => t.key === templateKey);
 

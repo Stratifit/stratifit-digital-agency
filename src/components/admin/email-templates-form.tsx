@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
@@ -103,7 +103,7 @@ function TemplateEditorCard({
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<z.input<typeof emailTemplateSchema>, unknown, EmailTemplateInput>(
@@ -113,7 +113,10 @@ function TemplateEditorCard({
     }
   );
 
-  const isEnabled = watch("is_enabled");
+  // useWatch subscribes to field values (React Compiler compatible).
+  const isEnabled = useWatch({ control, name: "is_enabled" });
+  const subjectTranslations = useWatch({ control, name: "subject_translations" });
+  const bodyTranslations = useWatch({ control, name: "body_translations" });
 
   const fieldError = (path: string) => {
     const parts = path.split(".");
@@ -399,8 +402,8 @@ function TemplateEditorCard({
           {/* Live preview with sample variable injection */}
           <div className="lg:sticky lg:top-6 lg:self-start">
             <EmailTemplatePreview
-              subjectTranslations={watch("subject_translations")}
-              bodyTranslations={watch("body_translations")}
+              subjectTranslations={subjectTranslations}
+              bodyTranslations={bodyTranslations}
               locale={locale}
             />
           </div>

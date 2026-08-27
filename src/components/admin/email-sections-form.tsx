@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
@@ -102,7 +102,7 @@ function SectionEditorCard({
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<z.input<typeof emailSectionSchema>, unknown, EmailSectionInput>({
@@ -110,10 +110,14 @@ function SectionEditorCard({
     defaultValues: initial,
   });
 
-  const enabled = watch("enabled");
-  const autoReplyEnabled = watch("auto_reply_enabled");
-  const autoReplyTemplateId = watch("auto_reply_template_id");
-  const resolvedEmailEnabled = watch("resolved_email_enabled");
+  // useWatch subscribes to field values (React Compiler compatible).
+  const enabled = useWatch({ control, name: "enabled" });
+  const autoReplyEnabled = useWatch({ control, name: "auto_reply_enabled" });
+  const autoReplyTemplateId = useWatch({ control, name: "auto_reply_template_id" });
+  const resolvedEmailEnabled = useWatch({ control, name: "resolved_email_enabled" });
+  const resolvedTemplateId = useWatch({ control, name: "resolved_template_id" });
+  const routingAddresses = useWatch({ control, name: "routing_addresses" });
+  const selectedLanguage = useWatch({ control, name: "language" });
 
   const templateOptions = templates.map((t) => ({
     id: t.id,
@@ -163,7 +167,7 @@ function SectionEditorCard({
   }
 
   const routingValue =
-    (watch("routing_addresses") ?? []).join(", ") || "";
+    (routingAddresses ?? []).join(", ") || "";
 
   return (
     <form
@@ -333,7 +337,7 @@ function SectionEditorCard({
               <select
                 id={`resolved-template-${initial.slug}`}
                 className="h-11 w-full cursor-pointer rounded-input border border-field-border bg-field-bg px-3.5 text-sm font-medium text-field-text transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover focus-visible:border-primary focus-visible:outline-none"
-                value={watch("resolved_template_id") ?? ""}
+                value={resolvedTemplateId ?? ""}
                 onChange={(e) =>
                   setValue("resolved_template_id", e.target.value || null)
                 }
@@ -362,7 +366,7 @@ function SectionEditorCard({
           <select
             id={`language-${initial.slug}`}
             className="h-11 w-full cursor-pointer rounded-input border border-field-border bg-field-bg px-3.5 text-sm font-medium text-field-text transition-[border-color,background-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-field-border-hover focus-visible:border-primary focus-visible:outline-none"
-            value={watch("language") ?? ""}
+            value={selectedLanguage ?? ""}
             onChange={(e) =>
               setValue(
                 "language",

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { updateCookieSettings } from "@/features/cookie-settings/mutations";
@@ -134,7 +134,7 @@ export function CookieSettingsForm({
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<z.input<typeof formSchema>, unknown, CookieSettingsFormValues>({
@@ -142,7 +142,10 @@ export function CookieSettingsForm({
     defaultValues: buildDefaultValues(initial),
   });
 
-  const bannerEnabled = watch("banner_enabled");
+  const bannerEnabled = useWatch({ control, name: "banner_enabled" });
+  // One subscription for all categories keeps the per-row reads below
+  // hook-rule-safe without watching inside the map callback.
+  const categories = useWatch({ control, name: "categories" });
 
   async function onSubmit(values: CookieSettingsFormValues) {
     setServerError(null);
@@ -292,7 +295,7 @@ export function CookieSettingsForm({
         </p>
         <div className="space-y-4">
           {CATEGORY_DEFAULTS.map((def, index) => {
-            const enabled = watch(`categories.${index}.enabled`);
+            const enabled = categories?.[index]?.enabled ?? false;
             return (
               <div
                 key={def.key}
