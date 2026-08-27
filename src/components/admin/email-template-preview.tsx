@@ -137,7 +137,7 @@ function EmailShell({
           {/* Footer — dark bar with amber top border */}
           <div className="border-t-4 border-primary bg-[#0B0F17] px-5 py-5 text-center">
             <p className="text-xs text-white">
-              <span className="font-bold text-primary">stratifit.com</span>
+              <span className="font-bold text-white">stratifit.com</span>
             </p>
             <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.035em] text-primary">
               Fit for Digital Excellence

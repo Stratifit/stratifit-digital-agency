@@ -214,7 +214,7 @@ export function StratifitEmail({
               }}
             >
               <Link href={c.website} style={FOOTER_LINK}>
-                <span style={{ color: AMBER, fontWeight: 700 }}>
+                <span style={{ fontWeight: 700 }}>
                   {websiteLabel(c.website)}
                 </span>
               </Link>
@@ -223,7 +223,7 @@ export function StratifitEmail({
               style={{
                 margin: "15px 0 0",
                 color: AMBER,
-                fontSize: "12px",
+                fontSize: "10px",
                 fontWeight: 700,
                 letterSpacing: "0.035em",
                 lineHeight: 1.4,
