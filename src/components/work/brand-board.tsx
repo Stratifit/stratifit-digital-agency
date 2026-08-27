@@ -426,7 +426,9 @@ function PaletteBoard() {
         fontSize={32}
         textAnchor="middle"
       >
-        <text x={200} y={494} fill="#18211C">Accent: Lemon</text>
+        <text x={200} y={494} fill="#18211C">
+          <tspan fill="#F59E0B">Accent:</tspan> Lemon
+        </text>
         <text x={600} y={494} fill="#F3F8EE">Background: Mist</text>
         <text x={1000} y={494} fill="#18211C">Text: Charcoal</text>
       </g>
@@ -626,7 +628,15 @@ function ApplicationsBoard({ uid, wordmark, initial }: { uid: string; wordmark: 
                 <MarkGlyph x={40} y={12} r={16} initial={initial} ring="rgba(245,158,11,0.55)" letter={C.primary} />
               </g>
             ) : null}
-            <Caps x={tile.x + 20} y={tile.y + 170} text={tile.label} size={12} fill={C.text2} tracking={3} />
+            <Caps
+              x={tile.x + 20}
+              y={tile.y + 170}
+              text={tile.label}
+              size={12}
+              /* One accent category per the approved artwork spec: Uniform. */
+              fill={i === 0 ? C.primary : C.text2}
+              tracking={3}
+            />
           </g>
         );
       })}

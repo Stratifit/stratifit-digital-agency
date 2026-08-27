@@ -321,6 +321,32 @@ function TwoTone({ label, invert }: { label: string; invert?: boolean }) {
   );
 }
 
+/** Render a title or description with one keyword in brand amber while
+ * everything else stays white, per the approved case-study styling. */
+function HighlightWord({
+  text,
+  word,
+}: {
+  text: string;
+  /** Keyword to highlight (whole-word, case-insensitive). When omitted the
+   * full text renders plain white. */
+  word?: string;
+}) {
+  const value = text.trim();
+  if (!word) return <>{value}</>;
+  const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const parts = value.split(new RegExp(`(${escaped})`, "i"));
+  return parts.map((part, i) =>
+    part.toLowerCase() === word.toLowerCase() ? (
+      <span key={i} className="text-primary">
+        {part}
+      </span>
+    ) : (
+      <Fragment key={i}>{part}</Fragment>
+    )
+  );
+}
+
 /* ------------------------------------------------------------------ */
 /* Brand case study                                                    */
 /* ------------------------------------------------------------------ */
@@ -428,7 +454,8 @@ export function BrandCaseStudy({
 
   // Build phase document — the construction and palette content shown before
   // the typography section in the reference brand-guidelines layout.
-  const buildSectionTitle = "Identity Creation & Visual System";
+  const buildSectionTitle = "Visual Identity System";
+  const buildIntro = brandSystemValue("build_description");
   const buildHeadline = "Logo System";
   const buildDescription = brandStory || strategyIdentity || projectSummary;
   const hasBuildSection = Boolean(
@@ -792,11 +819,13 @@ export function BrandCaseStudy({
               <SectionHeader
                 kicker="BUILD"
                 titleA={buildSectionTitle}
+                titleVariant="plain"
+                description={buildIntro || undefined}
               />
             </Reveal>
             <Reveal className="mt-8">
               <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
-                <HeadingTone text={buildHeadline} />
+                <HighlightWord text={buildHeadline} />
               </h2>
               <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
                 {buildDescription}
@@ -850,7 +879,7 @@ export function BrandCaseStudy({
               <>
                 <Reveal>
                   <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
-                    <HeadingTone text={t(locale, "workTypography")} />
+                    <HighlightWord text={t(locale, "workTypography")} />
                   </h2>
                   {typefaceDescription ? (
                     <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
@@ -917,7 +946,7 @@ export function BrandCaseStudy({
               <>
                 <Reveal className="mt-14">
                   <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
-                    <TwoTone label={t(locale, "workIdentityAssets")} />
+                    <HighlightWord text={t(locale, "workIdentityAssets")} />
                   </h2>
                   <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
                     {identityAssets}
@@ -966,7 +995,7 @@ export function BrandCaseStudy({
               <>
                 <Reveal className="mt-14">
                   <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
-                    <TwoTone label={t(locale, "workVisualApplications")} />
+                    <HighlightWord text={t(locale, "workVisualApplications")} />
                   </h2>
                   <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
                     {visualApplications}
@@ -1023,12 +1052,24 @@ export function BrandCaseStudy({
               <SectionHeader
                 kicker={t(locale, "workPhaseLaunch")}
                 titleA={launchHeadline || undefined}
-                description={launchIntro || undefined}
+                titleVariant="plain"
               />
             </Reveal>
 
             {launchIntro ? (
-              <Reveal className="mt-8">
+              <>
+                <Reveal className="mt-14">
+                  <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
+                    <HighlightWord
+                      text={t(locale, "workDigitalPresence")}
+                      word={t(locale, "workDigitalPresence").split(/\s+/)[0]}
+                    />
+                  </h2>
+                  <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
+                    {launchIntro}
+                  </p>
+                </Reveal>
+                <Reveal className="mt-8">
                 <OverviewSlider
                   slides={[
                     <div key="launch-intro-main" className="absolute inset-0">
@@ -1063,16 +1104,20 @@ export function BrandCaseStudy({
                   thumbnailSlideOffset={1}
                 />
               </Reveal>
+              </>
             ) : null}
 
             {launchPhysical ? (
               <>
                 <Reveal className="mt-14">
                   <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
-                    <TwoTone label={t(locale, "workPhysicalTouchpoints")} />
+                    <HighlightWord text={t(locale, "workPhysicalTouchpoints")} />
                   </h2>
                   <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
-                    {launchPhysical}
+                    <HighlightWord
+                      text={launchPhysical}
+                      word={t(locale, "workPhysicalHighlight")}
+                    />
                   </p>
                 </Reveal>
                 <Reveal className="mt-8">
@@ -1117,7 +1162,10 @@ export function BrandCaseStudy({
               <>
                 <Reveal className="mt-14">
                   <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
-                    <TwoTone label={t(locale, "workBrandGuidelines")} />
+                    <HighlightWord
+                      text={t(locale, "workBrandGuidelines")}
+                      word={t(locale, "workBrandGuidelines").split(/\s+/)[1]}
+                    />
                   </h2>
                   <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
                     {launchGuidelines}
@@ -1171,12 +1219,23 @@ export function BrandCaseStudy({
         <section className="border-t border-white/5 py-14 md:py-20">
           <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
             <Reveal>
-              <SectionHeader
-                kicker={t(locale, "workResultsKicker")}
-                titleA={t(locale, "workImpactA")}
-                titleB={t(locale, "workImpactB")}
-                description={resultsText || undefined}
-              />
+              {/* Impact highlights its first word only; everything else white. */}
+              <div className="mb-10 md:mb-16">
+                <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+                  {t(locale, "workResultsKicker")}
+                </p>
+                <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-text-primary sm:text-4xl md:text-5xl md:leading-none">
+                  <HighlightWord
+                    text={`${t(locale, "workImpactA")} ${t(locale, "workImpactB")}`}
+                    word={t(locale, "workImpactA").split(/\s+/)[0]}
+                  />
+                </h2>
+                {resultsText ? (
+                  <p className="mt-3 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base md:text-lg ml-1.5 border-l-2 border-primary/50 pl-4 sm:ml-2 sm:pl-6">
+                    {resultsText}
+                  </p>
+                ) : null}
+              </div>
             </Reveal>
             {resolvedMetrics.length > 0 ? (
               <Reveal className="grid grid-cols-2 gap-3 sm:gap-4">
