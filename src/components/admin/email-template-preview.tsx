@@ -83,7 +83,7 @@ function EmailShell({
           )}
         >
           {/* Brand header — main logo on the dark bar */}
-          <div className="border-b border-primary bg-[#0B0F17] px-6 py-6 sm:px-8">
+          <div className="border-b border-primary bg-[#0B0F17] px-6 py-4 sm:px-8">
             {/* eslint-disable-next-line @next/next/no-img-element -- preview of the main logo */}
             <img
               src="/stratifit-main-logo.png"

@@ -117,7 +117,7 @@ export function StratifitEmail({
           <Section
             style={{
               backgroundColor: INK,
-              padding: "42px 42px 38px",
+              padding: "16px 42px",
               borderBottom: `1px solid ${AMBER}`,
             }}
           >
