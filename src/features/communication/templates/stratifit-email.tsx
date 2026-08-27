@@ -228,8 +228,6 @@ export function StratifitEmail({
                   {websiteLabel(c.website)}
                 </span>
               </Link>
-              <span style={{ color: "#FFFFFF", padding: "0 9px" }}>•</span>
-              <span style={{ color: "#FFFFFF" }}>{p.footerLabel}</span>
             </Text>
             <Text
               style={{
