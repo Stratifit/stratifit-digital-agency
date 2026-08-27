@@ -30,7 +30,7 @@ import { EMAIL_PARTIALS } from "./partials";
 
 const INK = "#000000";
 const AMBER = "#F59E0B";
-const CANVAS = "#F1F3F5";
+const CANVAS = "#FFFFFF";
 
 export interface StratifitEmailProps {
   subject: string;
@@ -133,7 +133,7 @@ export function StratifitEmail({
             </Row>
           </Section>
 
-          {/* Body — white content area with near-black text */}
+          {/* Body — white content area with black text */}
           <Section
             style={{ padding: "40px 42px 58px", backgroundColor: "#FFFFFF" }}
           >
@@ -191,7 +191,7 @@ export function StratifitEmail({
             </Section>
           </Section>
 
-          {/* Footer — dark bar with amber top border */}
+          {/* Footer — black bar */}
           <Section
             style={{
               backgroundColor: INK,
