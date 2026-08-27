@@ -1196,12 +1196,28 @@ ON CONFLICT (id) DO UPDATE SET
 
 -- Approved CLENQO Build copy for the Logo System heading and description.
 UPDATE public.portfolio_projects
-SET brand_story_translations = jsonb_set(
-  COALESCE(brand_story_translations, '{}'::jsonb),
-  '{en}',
-  to_jsonb('Develop a confident, scalable mark that reflects CLENQO’s professionalism and eco‑focused values. The logo system includes primary, secondary, and compact variations to ensure consistency across digital and physical touchpoints.'::text),
-  true
-)
+SET brand_story_translations =
+       jsonb_set(
+         jsonb_set(
+           jsonb_set(
+             jsonb_set(
+               COALESCE(brand_story_translations, '{}'::jsonb),
+               '{en}',
+               to_jsonb('Develop a confident, scalable mark that reflects CLENQO’s professionalism and eco‑focused values. The logo system includes primary, secondary, and compact variations to ensure consistency across digital and physical touchpoints.'::text),
+               true
+             ),
+             '{de}',
+             to_jsonb('Eine selbstbewusste, skalierbare Marke entwickeln, die die Professionalität von CLENQO und dessen ökologisch ausgerichtete Werte widerspiegelt. Das Logosystem umfasst primäre, sekundäre und kompakte Varianten, um Konsistenz über digitale und physische Touchpoints hinweg sicherzustellen.'::text),
+             true
+           ),
+           '{fr}',
+           to_jsonb('Développer un symbole confiant et évolutif qui reflète le professionnalisme de CLENQO et ses valeurs éco‑responsables. Le système de logo comprend des déclinaisons primaires, secondaires et compactes afin de garantir la cohérence sur les points de contact numériques et physiques.'::text),
+           true
+         ),
+         '{es}',
+         to_jsonb('Desarrollar un símbolo seguro y escalable que refleje el profesionalismo y los valores ecológicos de CLENQO. El sistema de logotipo incluye variaciones principales, secundarias y compactas para garantizar la coherencia en los puntos de contacto digitales y físicos.'::text),
+         true
+       )
 WHERE slug = 'aura-cosmetics-identity';
 
 -- Approved CLENQO Strategy phase-document headline/subtitle (idempotent).
@@ -2609,12 +2625,28 @@ ON CONFLICT (id) DO UPDATE SET
 
 -- Approved CLENQO Build copy for the Logo System heading and description.
 UPDATE public.portfolio_projects
-SET brand_story_translations = jsonb_set(
-  COALESCE(brand_story_translations, '{}'::jsonb),
-  '{en}',
-  to_jsonb('Develop a confident, scalable mark that reflects CLENQO’s professionalism and eco‑focused values. The logo system includes primary, secondary, and compact variations to ensure consistency across digital and physical touchpoints.'::text),
-  true
-)
+SET brand_story_translations =
+       jsonb_set(
+         jsonb_set(
+           jsonb_set(
+             jsonb_set(
+               COALESCE(brand_story_translations, '{}'::jsonb),
+               '{en}',
+               to_jsonb('Develop a confident, scalable mark that reflects CLENQO’s professionalism and eco‑focused values. The logo system includes primary, secondary, and compact variations to ensure consistency across digital and physical touchpoints.'::text),
+               true
+             ),
+             '{de}',
+             to_jsonb('Eine selbstbewusste, skalierbare Marke entwickeln, die die Professionalität von CLENQO und dessen ökologisch ausgerichtete Werte widerspiegelt. Das Logosystem umfasst primäre, sekundäre und kompakte Varianten, um Konsistenz über digitale und physische Touchpoints hinweg sicherzustellen.'::text),
+             true
+           ),
+           '{fr}',
+           to_jsonb('Développer un symbole confiant et évolutif qui reflète le professionnalisme de CLENQO et ses valeurs éco‑responsables. Le système de logo comprend des déclinaisons primaires, secondaires et compactes afin de garantir la cohérence sur les points de contact numériques et physiques.'::text),
+           true
+         ),
+         '{es}',
+         to_jsonb('Desarrollar un símbolo seguro y escalable que refleje el profesionalismo y los valores ecológicos de CLENQO. El sistema de logotipo incluye variaciones principales, secundarias y compactas para garantizar la coherencia en los puntos de contacto digitales y físicos.'::text),
+         true
+       )
 WHERE slug = 'aura-cosmetics-identity';
 
 -- Approved CLENQO Strategy phase-document headline/subtitle (idempotent).
@@ -2950,10 +2982,26 @@ ON CONFLICT (id) DO UPDATE SET
 
 -- Approved CLENQO Build copy for the Logo System heading and description.
 UPDATE public.portfolio_projects
-SET brand_story_translations = jsonb_set(
-  COALESCE(brand_story_translations, '{}'::jsonb),
-  '{en}',
-  to_jsonb('Develop a confident, scalable mark that reflects CLENQO’s professionalism and eco‑focused values. The logo system includes primary, secondary, and compact variations to ensure consistency across digital and physical touchpoints.'::text),
-  true
-)
+SET brand_story_translations =
+       jsonb_set(
+         jsonb_set(
+           jsonb_set(
+             jsonb_set(
+               COALESCE(brand_story_translations, '{}'::jsonb),
+               '{en}',
+               to_jsonb('Develop a confident, scalable mark that reflects CLENQO’s professionalism and eco‑focused values. The logo system includes primary, secondary, and compact variations to ensure consistency across digital and physical touchpoints.'::text),
+               true
+             ),
+             '{de}',
+             to_jsonb('Eine selbstbewusste, skalierbare Marke entwickeln, die die Professionalität von CLENQO und dessen ökologisch ausgerichtete Werte widerspiegelt. Das Logosystem umfasst primäre, sekundäre und kompakte Varianten, um Konsistenz über digitale und physische Touchpoints hinweg sicherzustellen.'::text),
+             true
+           ),
+           '{fr}',
+           to_jsonb('Développer un symbole confiant et évolutif qui reflète le professionnalisme de CLENQO et ses valeurs éco‑responsables. Le système de logo comprend des déclinaisons primaires, secondaires et compactes afin de garantir la cohérence sur les points de contact numériques et physiques.'::text),
+           true
+         ),
+         '{es}',
+         to_jsonb('Desarrollar un símbolo seguro y escalable que refleje el profesionalismo y los valores ecológicos de CLENQO. El sistema de logotipo incluye variaciones principales, secundarias y compactas para garantizar la coherencia en los puntos de contacto digitales y físicos.'::text),
+         true
+       )
 WHERE slug = 'aura-cosmetics-identity';
