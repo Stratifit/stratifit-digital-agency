@@ -67,6 +67,7 @@ function websiteLabel(website: string): string {
 const FOOTER_LINK: CSSProperties = {
   fontFamily: "Inter,Arial,sans-serif",
   fontSize: "12px",
+  lineHeight: "12px",
   color: "#FFFFFF",
   textDecoration: "none",
 };
