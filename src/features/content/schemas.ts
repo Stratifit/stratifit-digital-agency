@@ -94,6 +94,92 @@ export const brandGuidelinesSchema = z.object({
   components: z.array(brandGuidelineComponent).max(8).optional(),
 });
 
+/* ------------------------------------------------------------------ */
+/* Brand case-study phase documents                                    */
+/* ------------------------------------------------------------------ */
+
+/** Supporting sub-font entries (font family + usage note). */
+const phaseSubFont = z.object({
+  name: z.string().optional(),
+  usage: z.string().optional(),
+});
+
+/**
+ * Multilingual Discovery & Strategy phase document
+ * (portfolio_projects.strategy_translations JSONB). Each locale holds the
+ * phase subtitle/tagline/headline and the strategy detail blocks.
+ */
+const strategyLocales = () =>
+  z.object({
+    en: strategyLocale(),
+    de: strategyLocale(),
+    fr: strategyLocale(),
+    es: strategyLocale(),
+  });
+
+function strategyLocale() {
+  return z.object({
+    subtitle: z.string().optional(),
+    tagline: z.string().optional(),
+    headline: z.string().optional(),
+    audience: z.string().optional(),
+    challenges: z.string().optional(),
+    positioning: z.string().optional(),
+    messaging: z.string().optional(),
+    identity: z.string().optional(),
+  });
+}
+
+/**
+ * Multilingual Identity & Assets phase document
+ * (portfolio_projects.brand_system_translations JSONB). Each locale holds the
+ * build intro, primary typeface, supporting sub-fonts, identity assets intro,
+ * and visual applications intro.
+ */
+function brandSystemLocale() {
+  return z.object({
+    build_description: z.string().optional(),
+    typeface: z.string().optional(),
+    typeface_description: z.string().optional(),
+    palette_description: z.string().optional(),
+    sub_fonts: z.array(phaseSubFont).max(8).optional(),
+    identity_assets: z.string().optional(),
+    visual_applications: z.string().optional(),
+  });
+}
+
+const brandSystemLocales = () =>
+  z.object({
+    en: brandSystemLocale(),
+    de: brandSystemLocale(),
+    fr: brandSystemLocale(),
+    es: brandSystemLocale(),
+  });
+
+/**
+ * Multilingual Launch & Activation phase document
+ * (portfolio_projects.launch_translations JSONB). Each locale holds the
+ * headline, section description, digital presence intro, physical touchpoints
+ * intro, and brand guidelines intro.
+ */
+function launchLocale() {
+  return z.object({
+    headline: z.string().optional(),
+    description: z.string().optional(),
+    intro: z.string().optional(),
+    physical: z.string().optional(),
+    guidelines: z.string().optional(),
+  });
+}
+
+const launchLocales = () =>
+  z.object({
+    en: launchLocale(),
+    de: launchLocale(),
+    fr: launchLocale(),
+    es: launchLocale(),
+  });
+
 export const portfolioSchema = z.object({
   slug: z
     .string()
@@ -110,6 +196,12 @@ export const portfolioSchema = z.object({
   brand_story_translations: translations().optional(),
   /** Editable brand-guidelines document (logo, variants, colours, type, UI). */
   brand_guidelines: brandGuidelinesSchema.optional(),
+  /** Multilingual Discovery & Strategy phase document. */
+  strategy_translations: strategyLocales().optional(),
+  /** Multilingual Identity & Assets phase document. */
+  brand_system_translations: brandSystemLocales().optional(),
+  /** Multilingual Launch & Activation phase document. */
+  launch_translations: launchLocales().optional(),
   challenge_translations: translations().optional(),
   solution_translations: translations().optional(),
   results_translations: translations().optional(),

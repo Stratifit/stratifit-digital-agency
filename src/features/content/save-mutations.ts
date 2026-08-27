@@ -46,6 +46,50 @@ function formatError(error: { code?: string }) {
   return "Failed to save. Please try again.";
 }
 
+/**
+ * Flattens a per-locale phase-document form value into the stored JSONB shape.
+ * Each locale slice keeps only its non-empty string fields (and any non-empty
+ * sub-font rows); locale slices that carry no content are dropped entirely, so
+ * empty recurring edits never leave blank locales behind.
+ */
+function cleanPhaseLocales(
+  raw:
+    | Record<
+        string,
+        Record<string, unknown>
+      >
+    | undefined
+): Record<string, Record<string, unknown>> {
+  if (!raw || typeof raw !== "object") return {};
+  const out: Record<string, Record<string, unknown>> = {};
+  for (const locale of Object.keys(raw)) {
+    const slice = raw[locale];
+    if (!slice || typeof slice !== "object") continue;
+    const cleaned: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(slice)) {
+      if (Array.isArray(value)) {
+        // Sub-font rows: keep rows that carry a name or usage.
+        const rows = value
+          .map((row) => {
+            const r = (row ?? {}) as Record<string, unknown>;
+            const next: Record<string, unknown> = {};
+            for (const [k, v] of Object.entries(r)) {
+              const trimmed = typeof v === "string" ? v.trim() : v;
+              if (trimmed !== "") next[k] = trimmed;
+            }
+            return Object.keys(next).length > 0 ? next : null;
+          })
+          .filter((r) => r !== null) as Record<string, unknown>[];
+        if (rows.length > 0) cleaned[key] = rows;
+      } else if (typeof value === "string" && value.trim() !== "") {
+        cleaned[key] = value.trim();
+      }
+    }
+    if (Object.keys(cleaned).length > 0) out[locale] = cleaned;
+  }
+  return out;
+}
+
 export async function savePortfolio(
   input: PortfolioFormValues,
   slug?: string
@@ -82,6 +126,15 @@ export async function savePortfolio(
   // (variants/colors/weights/components) never reach the database.
   const brandGuidelines = normalizeBrandGuidelines(parsed.data.brand_guidelines);
 
+  // Phase documents: flatten the per-locale editors into the JSONB shape,
+  // dropping empty locales and empty fields while preserving every populated
+  // language.
+  const strategyTranslations = cleanPhaseLocales(parsed.data.strategy_translations);
+  const brandSystemTranslations = cleanPhaseLocales(
+    parsed.data.brand_system_translations
+  );
+  const launchTranslations = cleanPhaseLocales(parsed.data.launch_translations);
+
   // Slot 1 of the card-image gallery is the cover — mirror it into the legacy
   // image_url column so every reader of image_url (admin list, detail hero
   // fallback) stays consistent with what the editor shows.
@@ -97,6 +150,9 @@ export async function savePortfolio(
     deliverables_translations: cleanedDeliverables,
     brand_story_translations: parsed.data.brand_story_translations ?? {},
     brand_guidelines: brandGuidelines as unknown as Json,
+    strategy_translations: strategyTranslations as unknown as Json,
+    brand_system_translations: brandSystemTranslations as unknown as Json,
+    launch_translations: launchTranslations as unknown as Json,
     challenge_translations: parsed.data.challenge_translations ?? {},
     solution_translations: parsed.data.solution_translations ?? {},
     results_translations: parsed.data.results_translations ?? {},

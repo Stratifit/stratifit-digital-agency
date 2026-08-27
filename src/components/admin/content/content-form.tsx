@@ -41,6 +41,7 @@ import { uploadMediaAsset } from "@/features/media/mutations";
 import type { AdminServiceOption } from "@/features/content/admin-queries";
 import { normalizeBrandGuidelines } from "@/features/portfolio/brand-guidelines";
 import { BrandGuidelinesEditor } from "@/components/admin/content/brand-guidelines-editor";
+import { PhaseDocumentsEditor } from "@/components/admin/content/phase-documents-editor";
 
 export type ContentType = "portfolio" | "insights" | "testimonials" | "pricing" | "faq";
 
@@ -79,6 +80,25 @@ const TITLES: Record<ContentType, string> = {
   faq: "FAQ",
 };function tr(v: Record<string, string> | null | undefined) {
   return { en: v?.en ?? "", de: v?.de ?? "", fr: v?.fr ?? "", es: v?.es ?? "" };
+}
+
+/**
+ * Normalizes a per-locale JSONB phase document into the flat form shape
+ * `{ en, de, fr, es }`, filling any missing locale keys with an empty object so
+ * every language tab has a writable slice and untouched locales are preserved.
+ */
+function normalizePhaseLocales(
+  raw: Record<string, Record<string, unknown>> | null | undefined
+): Record<string, Record<string, unknown>> {
+  const base = raw ?? {};
+  const out: Record<string, Record<string, unknown>> = {};
+  for (const locale of ["en", "de", "fr", "es"] as const) {
+    out[locale] =
+      base[locale] && typeof base[locale] === "object"
+        ? { ...base[locale] }
+        : {};
+  }
+  return out;
 }
 
 type GalleryItem = { media_id?: string; image_url: string };
@@ -336,6 +356,7 @@ function PortfolioGalleryUploader({
 type EditorSectionKey =
   | "content"
   | "case-study"
+  | "phase-documents"
   | "brand-guidelines"
   | "publishing";
 
@@ -379,6 +400,26 @@ export function ContentForm({
         initial.brand_story_translations as Record<string, string> | null
       );
       d.brand_guidelines = normalizeBrandGuidelines(initial.brand_guidelines);
+      // Phase documents keep their per-locale object shape; missing locales are
+      // filled with empty slices so editors can write one language at a time.
+      d.strategy_translations = normalizePhaseLocales(
+        initial.strategy_translations as Record<
+          string,
+          Record<string, unknown>
+        > | null
+      );
+      d.brand_system_translations = normalizePhaseLocales(
+        initial.brand_system_translations as Record<
+          string,
+          Record<string, unknown>
+        > | null
+      );
+      d.launch_translations = normalizePhaseLocales(
+        initial.launch_translations as Record<
+          string,
+          Record<string, unknown>
+        > | null
+      );
       d.challenge_translations = tr(
         initial.challenge_translations as Record<string, string> | null
       );
@@ -511,6 +552,12 @@ export function ContentForm({
                   label: "Case study",
                   description:
                     "Facts, challenge, solution, results, and gallery shown on the public case study page.",
+                },
+                {
+                  key: "phase-documents" as const,
+                  label: "Phase narratives",
+                  description:
+                    "Discovery & Strategy, Identity & Assets, and Launch & Activation phase documents shown on brand case studies.",
                 },
                 {
                   key: "brand-guidelines" as const,
@@ -962,6 +1009,14 @@ export function ContentForm({
               </div>
             </div>
           </div>
+        ) : null}
+
+        {activeSection === "phase-documents" && type === "portfolio" ? (
+          <PhaseDocumentsEditor
+            control={control}
+            setValue={setValue}
+            locale={locale}
+          />
         ) : null}
 
         {activeSection === "brand-guidelines" && type === "portfolio" ? (
