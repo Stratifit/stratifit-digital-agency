@@ -99,7 +99,7 @@ function EmailShell({
             </p>
             <h2
               className={cn(
-                "mt-3 max-w-md text-[28px] font-extrabold leading-tight tracking-tight",
+                "mt-3 max-w-md text-[22px] font-extrabold leading-tight tracking-tight",
                 light ? "text-[#0B0F17]" : "text-white"
               )}
             >

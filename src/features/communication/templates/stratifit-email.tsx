@@ -155,12 +155,12 @@ export function StratifitEmail({
               as="h2"
               style={{
                 maxWidth: "540px",
-                margin: "0 0 28px",
+                margin: "0 0 20px",
                 color: INK,
-                fontSize: "28px",
+                fontSize: "22px",
                 fontWeight: 800,
-                letterSpacing: "-0.02em",
-                lineHeight: 1.2,
+                letterSpacing: "-0.01em",
+                lineHeight: 1.25,
               }}
             >
               {subject}
