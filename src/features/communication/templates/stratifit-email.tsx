@@ -47,7 +47,7 @@ export interface StratifitEmailProps {
   /** Social profile URLs, keyed like the site footer (linkedin, instagram…). */
   socialLinks?: Record<string, string>;
   /**
-   * Absolute URLs of the footer social icon images (white PNGs, keyed like
+   * Absolute URLs of the footer social icon images (amber PNGs, keyed like
    * the site footer). Email clients strip inline SVG, so the icons render as
    * <img> tags pointing at public/email-icons/<key>.png.
    */
@@ -262,8 +262,9 @@ export function StratifitEmail({
                       height: "28px",
                       margin: "0 5px",
                       padding: "0",
-                      border: "1px solid rgba(255,255,255,0.72)",
+                      border: "1px solid rgba(255,255,255,0.1)",
                       borderRadius: round ? "50%" : "7px",
+                      backgroundColor: "rgba(255,255,255,0.05)",
                       textDecoration: "none",
                       verticalAlign: "middle",
                       lineHeight: "28px",

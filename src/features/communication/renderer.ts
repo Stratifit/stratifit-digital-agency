@@ -61,7 +61,7 @@ export function getEmailLogoUrl(): string {
   return `${siteUrl || "https://www.stratifit.com"}/stratifit-main-logo.png`;
 }
 
-/** Absolute URL of a footer social icon (white PNG, keyed like the site footer). */
+/** Absolute URL of a footer social icon (amber PNG, keyed like the site footer). */
 export function getEmailIconUrl(key: string): string {
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "").replace(/\/$/, "");
   return `${siteUrl || "https://www.stratifit.com"}/email-icons/${key}.png`;

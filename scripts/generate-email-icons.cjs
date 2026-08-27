@@ -1,6 +1,7 @@
 /**
  * Renders the footer social icons (from `src/components/ui/social-icons.tsx`)
- * as white PNGs into `public/email-icons/`.
+ * as amber PNGs (brand primary #F59E0B, matching the site footer) into
+ * `public/email-icons/`.
  *
  * Email clients (notably Gmail) strip inline <svg> from email HTML, so the
  * email footer renders the same icons as <img> tags instead. Run after
@@ -35,8 +36,10 @@ if (icons.length === 0) {
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
 
+const AMBER = "#F59E0B";
+
 for (const icon of icons) {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${icon.viewBox}" width="64" height="64"><path fill="#FFFFFF" d="${icon.path}"/></svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${icon.viewBox}" width="64" height="64"><path fill="${AMBER}" d="${icon.path}"/></svg>`;
   const outFile = path.join(OUT_DIR, `${icon.key}.png`);
   sharp(Buffer.from(svg))
     .png()

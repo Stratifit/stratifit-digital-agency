@@ -151,7 +151,7 @@ function EmailShell({
                   title={label}
                   aria-label={label}
                   className={cn(
-                    "flex size-7 items-center justify-center border border-white/70",
+                    "flex size-7 items-center justify-center border border-white/10 bg-white/5",
                     key === "facebook" || key === "tiktok"
                       ? "rounded-full"
                       : "rounded-md"
