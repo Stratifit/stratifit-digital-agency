@@ -76,13 +76,6 @@ describe("StratifitEmail (React Email + Resend renderer)", () => {
     expect(html).toContain("excellence digitale");
   });
 
-  it("renders the custom admin name as the signature", async () => {
-    const html = await render(
-      StratifitEmail({ subject: "Test", body: "Body", language: "en", adminName: "Alex" }),
-      { pretty: true }
-    );
-    expect(html).toContain("Alex");
-  });
 
   it("produces a full inline-styled HTML document", async () => {
     const html = await render(

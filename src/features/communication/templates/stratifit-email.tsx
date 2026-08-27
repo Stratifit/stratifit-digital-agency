@@ -36,7 +36,6 @@ export interface StratifitEmailProps {
   subject: string;
   body: string;
   language: SupportedLanguage;
-  adminName?: string | null;
   /** Footer contact details; falls back to the Stratifit brand values. */
   contact?: {
     email?: string | null;
@@ -67,14 +66,12 @@ export function StratifitEmail({
   subject,
   body,
   language,
-  adminName,
   contact,
   logoUrl = "https://www.stratifit.com/stratifit-main-logo.png",
   faviconUrl = "https://www.stratifit.com/icon.png",
   socialLinks = {},
 }: StratifitEmailProps) {
   const p = EMAIL_PARTIALS[language] ?? EMAIL_PARTIALS.en;
-  const signatureName = adminName?.trim() || "The Stratifit Team";
   const c = {
     email: contact?.email || "hello@stratifit.com",
     phone: contact?.phone || "+49 152 1743 6830",
@@ -198,27 +195,6 @@ export function StratifitEmail({
                 </Text>
               ))}
             </Section>
-            <Text
-              style={{
-                margin: "28px 0 0",
-                color: "#303741",
-                fontSize: "15px",
-                lineHeight: 1.5,
-              }}
-            >
-              {p.questionsNote}
-            </Text>
-            <Text
-              style={{
-                margin: "4px 0 0",
-                color: INK,
-                fontSize: "16px",
-                fontWeight: 700,
-              }}
-            >
-              {signatureName}
-            </Text>
-
             {/* CTA row */}
             <Section style={{ paddingTop: "32px" }}>
               <Link

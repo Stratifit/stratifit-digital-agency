@@ -91,7 +91,6 @@ export async function renderEmailHtml(input: {
   subject: string;
   body: string;
   language: SupportedLanguage;
-  adminName?: string | null;
   /** Footer contact details; falls back to the Stratifit brand values. */
   contact?: {
     email?: string | null;
@@ -104,7 +103,6 @@ export async function renderEmailHtml(input: {
       subject: input.subject,
       body: input.body,
       language: input.language,
-      adminName: input.adminName,
       contact: input.contact,
       logoUrl: getEmailLogoUrl(),
       faviconUrl: getEmailFaviconUrl(),

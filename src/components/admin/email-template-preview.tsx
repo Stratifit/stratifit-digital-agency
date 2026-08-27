@@ -137,16 +137,6 @@ function EmailShell({
               )}
             </div>
 
-            {/* Sign-off */}
-            <div className="mt-5">
-              <p className="text-xs leading-relaxed text-text-muted">
-                Questions? Simply reply to this email.
-              </p>
-              <p className="mt-1 text-sm font-semibold text-text-primary">
-                The Stratifit Team
-              </p>
-            </div>
-
             {/* CTA button */}
             <div className="mt-6">
               <span className="inline-block min-w-[160px] rounded-md bg-primary px-5 py-3 text-center text-sm font-bold text-[#0B0F17]">

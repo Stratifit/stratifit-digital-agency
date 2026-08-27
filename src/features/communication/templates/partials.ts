@@ -16,8 +16,6 @@ export interface EmailPartials {
   location: string;
   /** Label for the amber CTA button below the body copy. */
   ctaLabel: string;
-  /** Sign-off prompt above the signature at the end of the body. */
-  questionsNote: string;
   /** Copyright line without the "© year" prefix (added by the renderer). */
   legalDisclaimer: string;
 }
@@ -29,7 +27,6 @@ export const EMAIL_PARTIALS: Record<SupportedLanguage, EmailPartials> = {
     footerLabel: "Digital Agency",
     location: "Leipzig, Germany",
     ctaLabel: "Ask a Question",
-    questionsNote: "Questions? Simply reply to this email.",
     legalDisclaimer: "Stratifit Digital Agency. All rights reserved.",
   },
   de: {
@@ -38,13 +35,11 @@ export const EMAIL_PARTIALS: Record<SupportedLanguage, EmailPartials> = {
     footerLabel: "Digitalagentur",
     location: "Leipzig, Deutschland",
     ctaLabel: "Fragen stellen",
-    questionsNote: "Fragen? Antworten Sie einfach auf diese E-Mail.",
     legalDisclaimer: "Stratifit Digital Agency. Alle Rechte vorbehalten.",
   },
   fr: {
     eyebrow: "Agence digitale Stratifit",
     tagline: "Conçu pour l'excellence digitale",
-    questionsNote: "Des questions ? Répondez simplement à cet e-mail.",
     footerLabel: "Agence digitale",
     location: "Leipzig, Allemagne",
     ctaLabel: "Poser une question",
@@ -56,7 +51,6 @@ export const EMAIL_PARTIALS: Record<SupportedLanguage, EmailPartials> = {
     footerLabel: "Agencia digital",
     location: "Leipzig, Alemania",
     ctaLabel: "Haz una pregunta",
-    questionsNote: "¿Preguntas? Simplemente responde a este correo.",
     legalDisclaimer: "Stratifit Digital Agency. Todos los derechos reservados.",
   },
 };

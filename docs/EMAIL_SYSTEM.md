@@ -221,7 +221,7 @@ import { render } from "@react-email/render";
 import { StratifitEmail } from "./templates/stratifit-email";
 
 const html = await render(
-  StratifitEmail({ subject, body, language, adminName, contact }),
+  StratifitEmail({ subject, body, language, contact }),
   { pretty: true }
 );
 ```
