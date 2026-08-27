@@ -245,6 +245,11 @@ Stratifit favicon/logo instead, the sending domain must publish **BIMI**
 (Brand Indicators for Message Identification). This is DNS + certificate
 work — the app code cannot do it — but the steps are:
 
+**Current status (verified Aug 2026):** DMARC is published and ready
+(`_dmarc.stratifit.com` = `p=quarantine`) and SPF includes `amazonses.com`;
+`default._bimi.stratifit.com` is **not** published and no Gravatar exists for
+`hello@stratifit.com` (404), which is why Gmail shows the letter avatar.
+
 1. **DMARC**: `stratifit.com` must publish DMARC at `p=quarantine` or
    `p=reject` (check `_dmarc.stratifit.com`), and outbound mail must pass it.
 2. **BIMI logo SVG**: export the brand mark as a BIMI-compliant SVG
