@@ -111,7 +111,7 @@ export function StratifitEmail({
             style={{
               backgroundColor: INK,
               padding: "42px 42px 38px",
-              borderBottom: `3px solid ${AMBER}`,
+              borderBottom: `1px solid ${AMBER}`,
             }}
           >
             <Row>
@@ -127,8 +127,10 @@ export function StratifitEmail({
             </Row>
           </Section>
 
-          {/* Body */}
-          <Section style={{ padding: "56px 42px 58px" }}>
+          {/* Body — white content area with near-black text */}
+          <Section
+            style={{ padding: "56px 42px 58px", backgroundColor: "#FFFFFF" }}
+          >
             <Text
               style={{
                 margin: "0 0 30px",
@@ -147,7 +149,7 @@ export function StratifitEmail({
               style={{
                 maxWidth: "540px",
                 margin: "0 0 28px",
-                color: "#111318",
+                color: INK,
                 fontSize: "28px",
                 fontWeight: 800,
                 letterSpacing: "-0.02em",
@@ -164,7 +166,7 @@ export function StratifitEmail({
                     maxWidth: "560px",
                     margin: "0 0 24px",
                     lineHeight: 1.75,
-                    color: "#2F343B",
+                    color: INK,
                     fontSize: "16px",
                   }}
                 >
@@ -201,7 +203,7 @@ export function StratifitEmail({
             style={{
               backgroundColor: INK,
               padding: "28px 30px 26px",
-              borderTop: `3px solid ${AMBER}`,
+              borderTop: `1px solid ${AMBER}`,
               textAlign: "center",
             }}
           >

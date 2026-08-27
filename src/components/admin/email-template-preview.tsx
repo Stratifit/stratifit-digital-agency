@@ -83,7 +83,7 @@ function EmailShell({
           )}
         >
           {/* Brand header — main logo on the dark bar */}
-          <div className="border-b-4 border-primary bg-[#0B0F17] px-6 py-6 sm:px-8">
+          <div className="border-b border-primary bg-[#0B0F17] px-6 py-6 sm:px-8">
             {/* eslint-disable-next-line @next/next/no-img-element -- preview of the main logo */}
             <img
               src="/stratifit-main-logo.png"
@@ -100,7 +100,7 @@ function EmailShell({
             <h2
               className={cn(
                 "mt-3 max-w-md text-[28px] font-extrabold leading-tight tracking-tight",
-                light ? "text-[#111318]" : "text-white"
+                light ? "text-[#0B0F17]" : "text-white"
               )}
             >
               {subject || "—"}
@@ -113,7 +113,7 @@ function EmailShell({
                     key={index}
                     className={cn(
                       "text-sm leading-relaxed",
-                      light ? "text-text-secondary" : "text-[#B8C0CC]"
+                      light ? "text-[#0B0F17]" : "text-[#B8C0CC]"
                     )}
                   >
                     {line}
@@ -135,7 +135,7 @@ function EmailShell({
           </div>
 
           {/* Footer — dark bar with amber top border */}
-          <div className="border-t-4 border-primary bg-[#0B0F17] px-5 py-5 text-center">
+          <div className="border-t border-primary bg-[#0B0F17] px-5 py-5 text-center">
             <p className="text-xs text-white">
               <span className="font-bold text-white">stratifit.com</span>
             </p>
