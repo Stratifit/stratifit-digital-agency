@@ -87,7 +87,7 @@ describe("StratifitEmail (React Email + Resend renderer)", () => {
     );
     expect(html.startsWith("<!DOCTYPE")).toBe(true);
     expect(html).toContain('style="');
-    expect(html).toContain("#0B0F17");
+    expect(html).toContain("#000000");
     expect(html).toContain("#F59E0B");
     expect(html).toContain('lang="en"');
   });
