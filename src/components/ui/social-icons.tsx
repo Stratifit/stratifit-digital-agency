@@ -1,6 +1,6 @@
 import { t } from "@/lib/i18n/ui-strings";
 
-const SOCIAL_ICONS: {
+export const SOCIAL_ICONS: {
   key: string;
   label: string;
   viewBox: string;

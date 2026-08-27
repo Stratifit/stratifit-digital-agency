@@ -1,5 +1,6 @@
 import "server-only";
 import { render } from "@react-email/render";
+import { createSupabaseServiceRoleClient } from "@/lib/supabase/service-role";
 import { autoFill, type AutoFillContext } from "./auto-fill";
 import { pickTranslation } from "./language";
 import { StratifitEmail } from "./templates/stratifit-email";
@@ -59,6 +60,33 @@ export function getEmailLogoUrl(): string {
   return `${siteUrl || "https://www.stratifit.com"}/stratifit-main-logo.png`;
 }
 
+/** Absolute URL of the round favicon mark used in the email header. */
+export function getEmailFaviconUrl(): string {
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "").replace(/\/$/, "");
+  return `${siteUrl || "https://www.stratifit.com"}/icon.png`;
+}
+
+/**
+ * Social profile URLs for the email footer, keyed like the site footer
+ * (linkedin, instagram, facebook, tiktok). Read from site settings with the
+ * service-role client because emails can be sent outside a request context
+ * (cron, webhooks); the site footer uses the same keys.
+ */
+async function getEmailSocialLinks(): Promise<Record<string, string>> {
+  try {
+    const supabase = createSupabaseServiceRoleClient();
+    const { data } = await supabase
+      .from("site_settings")
+      .select("social_links")
+      .single();
+    const links = (data as { social_links?: Record<string, string> | null })
+      ?.social_links;
+    return links ?? {};
+  } catch {
+    return {};
+  }
+}
+
 export async function renderEmailHtml(input: {
   subject: string;
   body: string;
@@ -79,6 +107,8 @@ export async function renderEmailHtml(input: {
       adminName: input.adminName,
       contact: input.contact,
       logoUrl: getEmailLogoUrl(),
+      faviconUrl: getEmailFaviconUrl(),
+      socialLinks: await getEmailSocialLinks(),
     }),
     { pretty: true }
   );

@@ -16,20 +16,31 @@ describe("StratifitEmail (React Email + Resend renderer)", () => {
     expect(html).toContain("hello@stratifit.com");
   });
 
-  it("renders the Stratifit logo in the header", async () => {
+  it("renders the Stratifit logo and favicon mark in the header", async () => {
     const html = await render(
       StratifitEmail({
         subject: "Test",
         body: "Body",
         language: "en",
         logoUrl: "https://www.stratifit.com/stratifit-main-logo.png",
+        faviconUrl: "https://www.stratifit.com/icon.png",
+        socialLinks: {
+          linkedin: "https://www.linkedin.com/company/stratifit",
+          instagram: "https://www.instagram.com/stratifit",
+          facebook: "https://www.facebook.com/stratifit",
+          tiktok: "https://www.tiktok.com/@stratifit",
+        },
       }),
       { pretty: true }
     );
     expect(html).toContain(
       "https://www.stratifit.com/stratifit-main-logo.png"
     );
+    expect(html).toContain("https://www.stratifit.com/icon.png");
     expect(html).toContain('alt="Stratifit"');
+    // Social icons use the site footer links.
+    expect(html).toContain("https://www.linkedin.com/company/stratifit");
+    expect(html).toContain("https://www.tiktok.com/@stratifit");
   });
 
   it("escapes HTML in the subject and body", async () => {
@@ -80,7 +91,7 @@ describe("StratifitEmail (React Email + Resend renderer)", () => {
     );
     expect(html.startsWith("<!DOCTYPE")).toBe(true);
     expect(html).toContain('style="');
-    expect(html).toContain("#080B10");
+    expect(html).toContain("#0B0F17");
     expect(html).toContain("#F59E0B");
     expect(html).toContain('lang="en"');
   });

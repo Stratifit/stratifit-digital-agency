@@ -12,13 +12,15 @@ import {
   Text,
 } from "@react-email/components";
 import type { CSSProperties } from "react";
+import { SOCIAL_ICONS } from "@/components/ui/social-icons";
 import type { SupportedLanguage } from "../types";
 import { EMAIL_PARTIALS } from "./partials";
 
 /**
  * Branded Stratifit email template built with React Email components. This is
- * the single source of truth for the visual design of every outbound email
- * (dark brand header, amber accent bar, body, sign-off, dark footer). Content
+ * the single source of truth for the visual design of every outbound email:
+ * dark brand header (main logo + round favicon mark), amber accent bars, body,
+ * amber CTA, and a dark footer with contact details and social icons. Content
  * (subject + body) is still CMS-editable in `email_templates`; this component
  * only supplies the chrome and layout.
  *
@@ -26,10 +28,9 @@ import { EMAIL_PARTIALS } from "./partials";
  * renderer) in `renderer.ts`, then sent through Nodemailer over AWS SES SMTP.
  */
 
-const INK = "#080B10";
+const INK = "#0B0F17";
 const AMBER = "#F59E0B";
-const AMBER_BAR = "#FF9D00";
-const CANVAS = "#EEF0F3";
+const CANVAS = "#F1F3F5";
 
 export interface StratifitEmailProps {
   subject: string;
@@ -44,10 +45,10 @@ export interface StratifitEmailProps {
   };
   /** Absolute URL of the light Stratifit logo (rendered in the header). */
   logoUrl?: string;
-}
-
-function telHref(phone: string): string {
-  return `tel:${phone.replace(/[^+\d]/g, "")}`;
+  /** Absolute URL of the round Stratifit favicon mark (header + footer). */
+  faviconUrl?: string;
+  /** Social profile URLs, keyed like the site footer (linkedin, instagram…). */
+  socialLinks?: Record<string, string>;
 }
 
 /** Strip the protocol for display (https://www.stratifit.com → www.stratifit.com). */
@@ -55,12 +56,11 @@ function websiteLabel(website: string): string {
   return website.replace(/^https?:\/\//i, "").replace(/\/$/, "");
 }
 
-const LINK_STYLE: CSSProperties = {
+const FOOTER_LINK: CSSProperties = {
   fontFamily: "Inter,Arial,sans-serif",
-  fontSize: "11px",
+  fontSize: "14px",
   color: "#FFFFFF",
   textDecoration: "none",
-  padding: "0 10px",
 };
 
 export function StratifitEmail({
@@ -70,6 +70,8 @@ export function StratifitEmail({
   adminName,
   contact,
   logoUrl = "https://www.stratifit.com/stratifit-main-logo.png",
+  faviconUrl = "https://www.stratifit.com/icon.png",
+  socialLinks = {},
 }: StratifitEmailProps) {
   const p = EMAIL_PARTIALS[language] ?? EMAIL_PARTIALS.en;
   const signatureName = adminName?.trim() || "The Stratifit Team";
@@ -94,71 +96,73 @@ export function StratifitEmail({
   return (
     <Html lang={language}>
       <Preview>{preheader}</Preview>
-      <Body
-        style={{
-          ...bodyStyle,
-          background: `radial-gradient(circle at 50% -15%,rgba(245,158,11,.08),transparent 34rem),${CANVAS}`,
-        }}
-      >
+      <Body style={bodyStyle}>
         <Container
           style={{
-            maxWidth: "640px",
-            backgroundColor: "#FFFFFF",
-            border: "1px solid #E1E3E6",
-            borderRadius: "16px",
-            overflow: "hidden",
+            maxWidth: "680px",
             margin: "32px auto",
+            backgroundColor: "#FFFFFF",
+            overflow: "hidden",
           }}
         >
-          {/* Brand header — light logo + tagline on the dark brand bar */}
-          <Section style={{ backgroundColor: INK, padding: "26px 34px" }}>
+          {/* Brand header — main logo + round favicon mark on the dark bar */}
+          <Section
+            style={{
+              backgroundColor: INK,
+              padding: "42px 42px 38px",
+              borderBottom: `3px solid ${AMBER}`,
+            }}
+          >
             <Row>
+              <Column style={{ width: "52px", verticalAlign: "middle" }}>
+                <Img
+                  src={faviconUrl}
+                  alt="Stratifit"
+                  width={44}
+                  height={44}
+                  style={{
+                    display: "block",
+                    width: "44px",
+                    height: "44px",
+                    borderRadius: "50%",
+                  }}
+                />
+              </Column>
               <Column style={{ verticalAlign: "middle" }}>
                 <Img
                   src={logoUrl}
                   alt="Stratifit"
-                  width={168}
+                  width={170}
                   height={24}
-                  style={{ display: "block", width: "168px", height: "auto" }}
+                  style={{ display: "block", width: "170px", height: "auto" }}
                 />
               </Column>
-              <Column align="right" style={{ verticalAlign: "middle" }}>
-                <Text
-                  style={{
-                    margin: 0,
-                    fontFamily: "Inter,Arial,sans-serif",
-                    fontSize: "10px",
-                    fontWeight: 800,
-                    letterSpacing: "0.16em",
-                    textTransform: "uppercase",
-                    color: AMBER,
-                  }}
-                >
-                  {p.tagline}
-                </Text>
-              </Column>
             </Row>
-          </Section>
-
-          {/* Amber accent bar */}
-          <Section
-            style={{
-              height: "2px",
-              fontSize: "0",
-              lineHeight: "0",
-              backgroundColor: AMBER_BAR,
-            }}
-          />
-
-          {/* Body */}
-          <Section style={{ padding: "34px 46px 26px" }}>
             <Text
               style={{
-                margin: "0 0 10px",
-                color: "#717986",
-                fontSize: "10px",
-                fontWeight: 800,
-                letterSpacing: "0.14em",
+                margin: "14px 0 0",
+                color: "#F5F7FA",
+                fontSize: "12px",
+                fontWeight: 650,
+                letterSpacing: "0.055em",
+                lineHeight: 1.3,
+                textTransform: "uppercase",
+              }}
+            >
+              {p.tagline}
+            </Text>
+          </Section>
+
+          {/* Body */}
+          <Section style={{ padding: "56px 42px 58px" }}>
+            <Text
+              style={{
+                margin: "0 0 30px",
+                color: AMBER,
+                fontSize: "13px",
+                fontWeight: 750,
+                letterSpacing: "0.045em",
+                lineHeight: 1.35,
                 textTransform: "uppercase",
               }}
             >
@@ -167,24 +171,27 @@ export function StratifitEmail({
             <Heading
               as="h2"
               style={{
-                margin: 0,
-                fontSize: "28px",
-                lineHeight: 1.15,
-                letterSpacing: "-0.02em",
-                color: INK,
+                maxWidth: "540px",
+                margin: "0 0 38px",
+                color: "#111318",
+                fontSize: "40px",
+                fontWeight: 800,
+                letterSpacing: "-0.045em",
+                lineHeight: 1.08,
               }}
             >
               {subject}
             </Heading>
-            <Section style={{ marginTop: "20px" }}>
+            <Section style={{ marginTop: "0" }}>
               {paragraphs.map((line, index) => (
                 <Text
                   key={index}
                   style={{
-                    margin: "0 0 12px",
-                    lineHeight: 1.7,
-                    color: "#2D333C",
-                    fontSize: "15px",
+                    maxWidth: "560px",
+                    margin: "0 0 24px",
+                    lineHeight: 1.75,
+                    color: "#2F343B",
+                    fontSize: "16px",
                   }}
                 >
                   {line}
@@ -193,9 +200,9 @@ export function StratifitEmail({
             </Section>
             <Text
               style={{
-                margin: "20px 0 0",
+                margin: "28px 0 0",
                 color: "#303741",
-                fontSize: "13px",
+                fontSize: "15px",
                 lineHeight: 1.5,
               }}
             >
@@ -205,54 +212,132 @@ export function StratifitEmail({
               style={{
                 margin: "4px 0 0",
                 color: INK,
-                fontSize: "14px",
+                fontSize: "16px",
                 fontWeight: 700,
               }}
             >
               {signatureName}
             </Text>
+
+            {/* CTA row */}
+            <Section style={{ paddingTop: "32px" }}>
+              <Link
+                href={`mailto:${c.email}`}
+                style={{
+                  display: "inline-block",
+                  minWidth: "176px",
+                  padding: "15px 22px",
+                  border: `1px solid ${AMBER}`,
+                  borderRadius: "6px",
+                  backgroundColor: AMBER,
+                  color: `${INK} !important`,
+                  fontSize: "15px",
+                  fontWeight: 750,
+                  lineHeight: 1.15,
+                  textAlign: "center",
+                  textDecoration: "none",
+                }}
+              >
+                {p.ctaLabel}
+              </Link>
+            </Section>
           </Section>
 
-          {/* Footer */}
-          <Section style={{ backgroundColor: INK, padding: "20px 28px" }}>
-            <Text
-              style={{
-                margin: "0 0 12px",
-                textAlign: "center",
-                color: "rgba(255,255,255,.72)",
-                fontSize: "11px",
-                lineHeight: 1.5,
-              }}
-            >
-              {p.footerNote}
-            </Text>
+          {/* Footer — dark bar with amber top border */}
+          <Section
+            style={{
+              backgroundColor: INK,
+              padding: "28px 30px 26px",
+              borderTop: `3px solid ${AMBER}`,
+              textAlign: "center",
+            }}
+          >
             <Text
               style={{
                 margin: 0,
-                textAlign: "center",
-                fontFamily: "Inter,Arial,sans-serif",
-                fontSize: "11px",
                 color: "#FFFFFF",
+                fontSize: "14px",
+                lineHeight: 1.4,
               }}
             >
-              <Link href={`mailto:${c.email}`} style={LINK_STYLE}>
-                {c.email}
+              <Link href={c.website} style={FOOTER_LINK}>
+                <span style={{ color: AMBER, fontWeight: 700 }}>
+                  {websiteLabel(c.website)}
+                </span>
               </Link>
-              <span style={{ color: AMBER, padding: 0 }}>·</span>
-              <Link href={telHref(c.phone)} style={LINK_STYLE}>
-                {c.phone}
-              </Link>
-              <span style={{ color: AMBER, padding: 0 }}>·</span>
-              <Link href={c.website} style={LINK_STYLE}>
-                {websiteLabel(c.website)}
-              </Link>
+              <span style={{ color: "#FFFFFF", padding: "0 9px" }}>•</span>
+              <span style={{ color: "#FFFFFF" }}>{p.footerLabel}</span>
             </Text>
             <Text
               style={{
-                margin: "14px 0 0",
-                textAlign: "center",
-                color: "rgba(255,255,255,.5)",
+                margin: "15px 0 0",
+                color: AMBER,
+                fontSize: "12px",
+                fontWeight: 700,
+                letterSpacing: "0.035em",
+                lineHeight: 1.4,
+                textTransform: "uppercase",
+              }}
+            >
+              {p.tagline}
+            </Text>
+            <Text
+              style={{
+                margin: "7px 0 0",
+                color: "#B8C0CC",
+                fontSize: "13px",
+                lineHeight: 1.4,
+              }}
+            >
+              {p.location}
+            </Text>
+
+            {/* Social icons — same icons and links as the site footer */}
+            <Section style={{ marginTop: "14px" }}>
+              {SOCIAL_ICONS.map(({ key, label, viewBox, path }) => {
+                const href = socialLinks[key] ?? "#";
+                const round = key === "facebook" || key === "tiktok";
+                return (
+                  <Link
+                    key={key}
+                    href={href}
+                    aria-label={label}
+                    title={label}
+                    style={{
+                      display: "inline-block",
+                      width: "28px",
+                      height: "28px",
+                      margin: "0 5px",
+                      padding: "0",
+                      border: "1px solid rgba(255,255,255,0.72)",
+                      borderRadius: round ? "50%" : "7px",
+                      color: "#FFFFFF",
+                      textDecoration: "none",
+                      verticalAlign: "middle",
+                      lineHeight: "28px",
+                    }}
+                  >
+                    <svg
+                      viewBox={viewBox}
+                      width="15"
+                      height="15"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      style={{ verticalAlign: "middle" }}
+                    >
+                      <path d={path} />
+                    </svg>
+                  </Link>
+                );
+              })}
+            </Section>
+
+            <Text
+              style={{
+                margin: "17px 0 0",
+                color: "#AEB6C2",
                 fontSize: "11px",
+                lineHeight: 1.45,
               }}
             >
               © {year} {p.legalDisclaimer}

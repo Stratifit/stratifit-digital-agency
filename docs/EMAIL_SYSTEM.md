@@ -208,8 +208,13 @@ The HTML shell of every email is a **React Email** template
 (`src/features/communication/templates/stratifit-email.tsx`) rendered with
 `render()` from **`@react-email/render`** — the Resend renderer — which
 produces inline-styled, email-client-safe markup. The layout (dark brand
-header, amber accent bar, body, sign-off, footer) is defined once in the
-component; the subject and body remain CMS-editable in `email_templates`.
+header with the main logo + round favicon mark, amber accent bars, body, CTA
+button, and a dark footer with contact details + social icons) is defined once
+in the component; the subject and body remain CMS-editable in
+`email_templates`. The footer social icons mirror the site footer (LinkedIn,
+Instagram, Facebook, TikTok) and use the same links from site settings
+(`social_links`); the renderer resolves them server-side with the service-role
+client so cron/webhook sends outside a request context still get them.
 
 ```ts
 import { render } from "@react-email/render";

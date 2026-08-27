@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Moon, Sun } from "lucide-react";
+import { SOCIAL_ICONS } from "@/components/ui/social-icons";
 import { renderTemplateText } from "@/features/email-inbox/language";
 import { cn } from "@/lib/cn";
 import type { EditorLocale } from "./locale-tabs";
@@ -70,44 +71,53 @@ function EmailShell({
     <div
       className={cn(
         "overflow-hidden rounded-xl border transition-colors",
-        light ? "border-border bg-[#F3F4F6]" : "border-card-border bg-background"
+        light ? "border-border bg-[#F1F3F5]" : "border-card-border bg-background"
       )}
     >
       {/* Email canvas */}
       <div className="p-4 sm:p-5">
         <div
           className={cn(
-            "mx-auto max-w-[480px] overflow-hidden rounded-lg border shadow-sm",
+            "mx-auto max-w-[500px] overflow-hidden rounded-lg border shadow-sm",
             light ? "border-border bg-white" : "border-card-border bg-card-dark"
           )}
         >
-          {/* Brand header (dark in both themes, matching the sent email) */}
-          <div className="flex items-center justify-between gap-3 bg-[#080B10] px-5 py-4">
-            <span className="text-base font-extrabold tracking-tight text-white">
-              Stratifit
-            </span>
-            <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-primary">
+          {/* Brand header — main logo + favicon mark on the dark bar */}
+          <div className="border-b-4 border-primary bg-[#0B0F17] px-6 py-6 sm:px-8">
+            <div className="flex items-center gap-3">
+              {/* eslint-disable-next-line @next/next/no-img-element -- preview of the round favicon mark */}
+              <img
+                src="/icon.png"
+                alt="Stratifit"
+                className="size-10 shrink-0 rounded-full"
+              />
+              {/* eslint-disable-next-line @next/next/no-img-element -- preview of the main logo */}
+              <img
+                src="/stratifit-main-logo.png"
+                alt="Stratifit"
+                className="h-5 w-auto"
+              />
+            </div>
+            <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.055em] text-white/90">
               Fit for Digital Excellence
-            </span>
+            </p>
           </div>
-          {/* Amber accent bar */}
-          <div className="h-0.5 bg-primary" aria-hidden="true" />
 
           {/* Body */}
-          <div className="p-5 sm:p-6">
-            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-text-muted">
+          <div className="px-6 py-8 sm:px-8 sm:py-9">
+            <p className="text-[11px] font-bold uppercase tracking-[0.045em] text-primary">
               Stratifit Digital Agency
             </p>
             <h2
               className={cn(
-                "mt-1.5 text-xl font-bold leading-snug",
-                light ? "text-[#080B10]" : "text-white"
+                "mt-3 max-w-md text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl",
+                light ? "text-[#111318]" : "text-white"
               )}
             >
               {subject || "—"}
             </h2>
 
-            <div className="mt-4 space-y-3">
+            <div className="mt-5 space-y-3">
               {paragraphs.length > 0 ? (
                 paragraphs.map((line, index) => (
                   <p
@@ -136,17 +146,50 @@ function EmailShell({
                 The Stratifit Team
               </p>
             </div>
+
+            {/* CTA button */}
+            <div className="mt-6">
+              <span className="inline-block min-w-[160px] rounded-md bg-primary px-5 py-3 text-center text-sm font-bold text-[#0B0F17]">
+                Ask a Question
+              </span>
+            </div>
           </div>
 
-          {/* Footer (dark in both themes, matching the sent email) */}
-          <div className="bg-[#080B10] px-5 py-4 text-center">
-            <p className="text-[10px] leading-relaxed text-text-muted">
-              This is an automated message from Stratifit Digital Agency.
+          {/* Footer — dark bar with amber top border */}
+          <div className="border-t-4 border-primary bg-[#0B0F17] px-5 py-5 text-center">
+            <p className="text-xs text-white">
+              <span className="font-bold text-primary">stratifit.com</span>
+              <span className="px-2 text-white" aria-hidden="true">
+                •
+              </span>
+              <span className="text-white">Digital Agency</span>
             </p>
-            <p className="mt-1.5 text-[10px] text-text-muted">
-              hello@stratifit.com · +49 152 1743 6830 · www.stratifit.com
+            <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.035em] text-primary">
+              Fit for Digital Excellence
             </p>
-            <p className="mt-1.5 text-[10px] text-text-muted">
+            <p className="mt-1.5 text-[11px] text-[#B8C0CC]">Leipzig, Germany</p>
+
+            <div className="mt-3 flex items-center justify-center gap-2">
+              {SOCIAL_ICONS.map(({ key, label, viewBox, path }) => (
+                <span
+                  key={key}
+                  title={label}
+                  aria-label={label}
+                  className={cn(
+                    "flex size-7 items-center justify-center border border-white/70 text-white",
+                    key === "facebook" || key === "tiktok"
+                      ? "rounded-full"
+                      : "rounded-md"
+                  )}
+                >
+                  <svg viewBox={viewBox} className="size-3.5" fill="currentColor" aria-hidden="true">
+                    <path d={path} />
+                  </svg>
+                </span>
+              ))}
+            </div>
+
+            <p className="mt-3 text-[10px] text-[#AEB6C2]">
               © {year} Stratifit Digital Agency. All rights reserved.
             </p>
           </div>
