@@ -492,6 +492,7 @@ export function BrandCaseStudy({
     return typeof value === "string" ? value : "";
   };
   const launchHeadline = launchValue("headline");
+  const launchDescription = launchValue("description");
   const launchIntro = launchValue("intro");
   const launchPhysical = launchValue("physical");
   const launchGuidelines = launchValue("guidelines");
@@ -1076,6 +1077,7 @@ export function BrandCaseStudy({
                 kicker={t(locale, "workPhaseLaunch")}
                 titleA={launchHeadline || undefined}
                 titleVariant="toneLast"
+                description={launchDescription || undefined}
               />
             </Reveal>
 

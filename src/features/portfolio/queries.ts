@@ -132,6 +132,8 @@ export function normalizeBrandSystemTranslations(
 
 export interface PublicPortfolioLaunch {
   headline: string;
+  /** Section-level description under the phase headline. */
+  description: string;
   intro: string;
   physical: string;
   guidelines: string;
@@ -155,6 +157,7 @@ export function normalizeLaunchTranslations(
       typeof data[key] === "string" ? (data[key] as string) : "";
     out[locale] = {
       headline: str("headline"),
+      description: str("description"),
       intro: str("intro"),
       physical: str("physical"),
       guidelines: str("guidelines"),

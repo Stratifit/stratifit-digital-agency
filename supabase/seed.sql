@@ -1286,6 +1286,23 @@ SET launch_translations = (
 )
 WHERE slug = 'aura-cosmetics-identity';
 
+-- Approved CLENQO Launch section description (idempotent).
+UPDATE public.portfolio_projects
+SET launch_translations = (
+  SELECT jsonb_object_agg(
+    locale,
+    COALESCE(launch_translations -> locale, '{}'::jsonb)
+      || jsonb_build_object('description', v.description)
+  )
+  FROM (VALUES
+    ('en', 'Introduce CLENQO’s refreshed identity across all core brand channels, ensuring a consistent and confident transition into the new system.'),
+    ('de', 'Führen Sie CLENQOs erneuerte Identität über alle zentralen Markenkanäle ein und sorgen Sie für einen konsistenten und selbstbewussten Übergang in das neue System.'),
+    ('fr', 'Présentez l’identité renouvelée de CLENQO sur l’ensemble des canaux de marque, garantissant une transition cohérente et confiante vers le nouveau système.'),
+    ('es', 'Presenta la identidad renovada de CLENQO en todos los canales de marca principales, garantizando una transición consistente y segura hacia el nuevo sistema.')
+  ) AS v(locale, description)
+)
+WHERE slug = 'aura-cosmetics-identity';
+
 -- Approved CLENQO Strategy phase-document headline/subtitle (idempotent).
 UPDATE public.portfolio_projects
 SET strategy_translations = (
@@ -2778,6 +2795,23 @@ SET launch_translations = (
     ('fr', 'Brand Rollout'),
     ('es', 'Brand Rollout')
   ) AS v(locale, headline)
+)
+WHERE slug = 'aura-cosmetics-identity';
+
+-- Approved CLENQO Launch section description (idempotent).
+UPDATE public.portfolio_projects
+SET launch_translations = (
+  SELECT jsonb_object_agg(
+    locale,
+    COALESCE(launch_translations -> locale, '{}'::jsonb)
+      || jsonb_build_object('description', v.description)
+  )
+  FROM (VALUES
+    ('en', 'Introduce CLENQO’s refreshed identity across all core brand channels, ensuring a consistent and confident transition into the new system.'),
+    ('de', 'Führen Sie CLENQOs erneuerte Identität über alle zentralen Markenkanäle ein und sorgen Sie für einen konsistenten und selbstbewussten Übergang in das neue System.'),
+    ('fr', 'Présentez l’identité renouvelée de CLENQO sur l’ensemble des canaux de marque, garantissant une transition cohérente et confiante vers le nouveau système.'),
+    ('es', 'Presenta la identidad renovada de CLENQO en todos los canales de marca principales, garantizando una transición consistente y segura hacia el nuevo sistema.')
+  ) AS v(locale, description)
 )
 WHERE slug = 'aura-cosmetics-identity';
 
