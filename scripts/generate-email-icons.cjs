@@ -52,3 +52,17 @@ for (const icon of icons) {
       process.exitCode = 1;
     });
 }
+
+// Globe mark for the footer website link (white stroke icon, lucide "globe").
+const GLOBE_SVG =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>';
+sharp(Buffer.from(GLOBE_SVG))
+  .png()
+  .toFile(path.join(OUT_DIR, "globe.png"))
+  .then((info) => {
+    console.log(`✓ globe.png (${info.width}x${info.height})`);
+  })
+  .catch((err) => {
+    console.error(`✗ globe.png: ${err.message}`);
+    process.exitCode = 1;
+  });

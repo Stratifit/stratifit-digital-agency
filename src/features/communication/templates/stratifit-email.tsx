@@ -52,16 +52,21 @@ export interface StratifitEmailProps {
    * <img> tags pointing at public/email-icons/<key>.png.
    */
   iconUrls?: Record<string, string>;
+  /** Absolute URL of the small globe icon next to the footer website link. */
+  globeIconUrl?: string;
 }
 
-/** Strip the protocol for display (https://www.stratifit.com → www.stratifit.com). */
+/** Strip the protocol and www for display (https://www.stratifit.com → stratifit.com). */
 function websiteLabel(website: string): string {
-  return website.replace(/^https?:\/\//i, "").replace(/\/$/, "");
+  return website
+    .replace(/^https?:\/\//i, "")
+    .replace(/\/$/, "")
+    .replace(/^www\./i, "");
 }
 
 const FOOTER_LINK: CSSProperties = {
   fontFamily: "Inter,Arial,sans-serif",
-  fontSize: "14px",
+  fontSize: "12px",
   color: "#FFFFFF",
   textDecoration: "none",
 };
@@ -74,6 +79,7 @@ export function StratifitEmail({
   logoUrl = "https://www.stratifit.com/stratifit-main-logo.png",
   socialLinks = {},
   iconUrls = {},
+  globeIconUrl = "https://www.stratifit.com/email-icons/globe.png",
 }: StratifitEmailProps) {
   const p = EMAIL_PARTIALS[language] ?? EMAIL_PARTIALS.en;
   const c = {
@@ -211,11 +217,22 @@ export function StratifitEmail({
               style={{
                 margin: 0,
                 color: "#FFFFFF",
-                fontSize: "14px",
+                fontSize: "12px",
                 lineHeight: 1.4,
               }}
             >
               <Link href={c.website} style={FOOTER_LINK}>
+                <Img
+                  src={globeIconUrl}
+                  alt=""
+                  width={12}
+                  height={12}
+                  style={{
+                    display: "inline-block",
+                    verticalAlign: "middle",
+                    marginRight: "6px",
+                  }}
+                />
                 <span style={{ fontWeight: 700 }}>
                   {websiteLabel(c.website)}
                 </span>
@@ -223,7 +240,7 @@ export function StratifitEmail({
             </Text>
             <Text
               style={{
-                margin: "15px 0 0",
+                margin: "10px 0 0",
                 color: "#B8C0CC",
                 fontSize: "13px",
                 lineHeight: 1.4,

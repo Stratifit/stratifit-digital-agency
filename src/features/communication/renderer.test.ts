@@ -43,6 +43,9 @@ describe("StratifitEmail (React Email + Resend renderer)", () => {
       "https://www.stratifit.com/email-icons/linkedin.png"
     );
     expect(html).toContain("https://www.stratifit.com/email-icons/tiktok.png");
+    // Footer website link uses the globe icon and strips the www prefix.
+    expect(html).toContain("https://www.stratifit.com/email-icons/globe.png");
+    expect(html).toContain(">stratifit.com<");
   });
 
   it("escapes HTML in the subject and body", async () => {

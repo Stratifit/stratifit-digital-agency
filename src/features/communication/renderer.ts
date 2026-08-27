@@ -110,6 +110,7 @@ export async function renderEmailHtml(input: {
       iconUrls: Object.fromEntries(
         SOCIAL_ICONS.map(({ key }) => [key, getEmailIconUrl(key)])
       ),
+      globeIconUrl: getEmailIconUrl("globe"),
     }),
     { pretty: true }
   );

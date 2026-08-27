@@ -136,10 +136,12 @@ function EmailShell({
 
           {/* Footer — dark bar with amber top border */}
           <div className="border-t border-primary bg-[#0B0F17] px-5 py-5 text-center">
-            <p className="text-xs text-white">
+            <p className="flex items-center justify-center gap-1.5 text-xs text-white">
+              {/* eslint-disable-next-line @next/next/no-img-element -- preview of the footer globe icon */}
+              <img src="/email-icons/globe.png" alt="" className="size-3" />
               <span className="font-bold text-white">stratifit.com</span>
             </p>
-            <p className="mt-3 text-[11px] text-[#B8C0CC]">Leipzig, Germany</p>
+            <p className="mt-2.5 text-[11px] text-[#B8C0CC]">Leipzig, Germany</p>
 
             <div className="mt-3 flex items-center justify-center gap-2">
               {SOCIAL_ICONS.map(({ key, label }) => (
