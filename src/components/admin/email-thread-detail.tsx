@@ -318,7 +318,7 @@ export function EmailThreadDetailView({
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <p className="text-sm font-medium text-text-primary">
-                    {inbound ? message.from_email : `Stratifit → ${message.to_email}`}
+                    {inbound ? message.from_email : "Stratifit"}
                   </p>
                   <Badge variant={inbound ? "information" : "success"}>
                     {inbound ? "Inbound" : "Sent"}
