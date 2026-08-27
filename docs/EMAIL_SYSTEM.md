@@ -185,7 +185,13 @@ registered elsewhere):
 | TXT | `bounce` | `v=spf1 include:amazonses.com ~all` | SPF for the SES MAIL FROM domain (AWS requires it) |
 | TXT | `@` | `v=spf1 include:amazonses.com include:zoho.eu -all` | SPF — authorizes SES + Zoho senders |
 | TXT | `zoho._domainkey` | `<ZOHO_DKIM_KEY>` from the Zoho admin console | DKIM — signs Zoho-sent mail |
-| TXT | `_dmarc` | `v=DMARC1; p=quarantine; rua=mailto:postmaster@stratifit.com; ruf=mailto:postmaster@stratifit.com; fo=1` | DMARC policy |
+| TXT | `_dmarc` | `v=DMARC1; p=quarantine; rua=mailto:postmaster@stratifit.com; ruf=mailto:postmaster@stratifit.com; fo=1` | DMARC policy (BIMI requires `p=quarantine`/`reject`) |
+| TXT | `default._bimi` | `v=BIMI1;l=https://www.stratifit.com/bimi/stratifit-logo.svg;a=https://www.stratifit.com/bimi/certificate.pem` | BIMI — brand logo as the Gmail sender avatar (see §4c; `a=` needs a VMC/CMC, Gmail-only) |
+| TXT or CNAME | `<selector>._domainkey` | 3 values generated in the SES console (Identity → `stratifit.com` → Authentication → DKIM): Easy DKIM publishes 3 CNAMEs to `*.dkim.amazonses.com`; BYODKIM publishes 3 TXT keys | DKIM — signs SES-sent mail (recommended for deliverability) |
+
+Verified live (Aug 2026): MX, SPF, DMARC, and the Zoho DKIM selector are
+published; **BIMI (`default._bimi`) and SES DKIM are not yet published** —
+add them to enable the Gmail brand avatar and SES DKIM signing.
 
 Wait up to 24h for propagation. The admin dashboard has a **"Run DNS check"**
 panel (`DnsCheckPanel`) that resolves these records live and reports what is
