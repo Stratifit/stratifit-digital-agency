@@ -135,21 +135,8 @@ export function StratifitEmail({
 
           {/* Body — white content area with near-black text */}
           <Section
-            style={{ padding: "56px 42px 58px", backgroundColor: "#FFFFFF" }}
+            style={{ padding: "40px 42px 58px", backgroundColor: "#FFFFFF" }}
           >
-            <Text
-              style={{
-                margin: "0 0 30px",
-                color: AMBER,
-                fontSize: "13px",
-                fontWeight: 750,
-                letterSpacing: "0.045em",
-                lineHeight: 1.35,
-                textTransform: "uppercase",
-              }}
-            >
-              {p.eyebrow}
-            </Text>
             <Heading
               as="h2"
               style={{

@@ -94,9 +94,6 @@ function EmailShell({
 
           {/* Body */}
           <div className="px-6 py-8 sm:px-8 sm:py-9">
-            <p className="text-[11px] font-bold uppercase tracking-[0.045em] text-primary">
-              Stratifit Digital Agency
-            </p>
             <h2
               className={cn(
                 "mt-3 max-w-md text-[22px] font-extrabold leading-tight tracking-tight",
