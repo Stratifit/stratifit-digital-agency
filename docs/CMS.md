@@ -608,7 +608,7 @@ public `/work/[slug]` page in full:
 
 - **Services / deliverables** — one per line per language; rendered in the
   Services fact (joined with `·`), as the category badge fallback, and as
-  captions on the brand-in-use tiles of brand case studies.
+  captions in the Brand in Action thumbnail carousel on brand case studies.
 - **Logo story / concept** — the thinking behind the mark (monogram
   rationale, e.g. why the icon is what it is), per language; rendered as the
   "Why This Mark" section (01) on brand design case studies and stored in

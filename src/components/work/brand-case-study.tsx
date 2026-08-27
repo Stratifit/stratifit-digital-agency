@@ -11,7 +11,6 @@ import type {
 import type { PublicServiceDetail } from "@/features/services/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { t, tWithValue } from "@/lib/i18n/ui-strings";
-import { cn } from "@/lib/cn";
 import { Reveal } from "@/components/ui/reveal";
 import { RelatedProjects } from "@/components/work/related-projects";
 import { BrandBoard } from "@/components/work/brand-board";
@@ -310,44 +309,6 @@ function TwoTone({ label, invert }: { label: string; invert?: boolean }) {
     <>
       {first} <span className="text-primary">{rest}</span>
     </>
-  );
-}
-
-/**
- * Physical-touchpoint preview — the dark card with an uppercase label bar and
- * the generated business-card mockup inside (used for the touchpoint slots of
- * the rollout document).
- */
-function TouchpointCard({
-  label,
-  wordmark,
-}: {
-  label: string;
-  wordmark: string;
-}) {
-  return (
-    <figure>
-      <div className="overflow-hidden rounded-card border border-white/10 bg-card-dark">
-        <div className="border-b border-white/10 px-5 py-3">
-          <p className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.25em] text-text-subtle">
-            <span
-              aria-hidden="true"
-              className="flex size-6 shrink-0 items-center justify-center rounded-md border border-primary/25 bg-primary/10 text-primary"
-            >
-              <ProcessIcon name="grid" className="size-3.5" />
-            </span>
-            {label}
-          </p>
-        </div>
-        <div className="relative aspect-[4/3] sm:aspect-[16/9]">
-          <BrandBoard
-            variant="businesscard"
-            wordmark={wordmark}
-            className="absolute inset-0"
-          />
-        </div>
-      </div>
-    </figure>
   );
 }
 
@@ -1228,32 +1189,7 @@ export function BrandCaseStudy({
       ) : null}
 
       {/* ============================================================ */}
-      {/* Final CTA                                                     */}
-      {/* ============================================================ */}
-      <section className="py-16 md:py-24">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <div className="relative flex justify-center">
-              <div
-                aria-hidden="true"
-                className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-primary/35 to-transparent"
-              />
-              <Link
-                href="/contact"
-                className="group relative inline-flex min-h-14 max-w-full items-center gap-3 rounded-full border border-primary/60 bg-primary px-5 py-2.5 text-center text-sm font-bold text-text-inverse shadow-amber transition-[background-color,border-color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-1 hover:border-primary-light hover:bg-primary-light hover:shadow-[0_0_48px_rgba(245,158,11,0.32)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-4 active:translate-y-0 active:border-primary-active active:bg-primary-active sm:px-6 sm:text-base"
-              >
-                <span>{ctaLabel}</span>
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-black/15 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-0.5">
-                  <ArrowIcon className="size-4" />
-                </span>
-              </Link>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/* 06 — Brand in action — gallery grid                          */}
+      {/* 06 — Brand in action — image carousel                       */}
       {/* ============================================================ */}
       {gallery.length > 0 || deliverables.length > 0 ? (
         <section className="py-14 md:py-20">
@@ -1267,34 +1203,69 @@ export function BrandCaseStudy({
               </h2>
             </Reveal>
 
-            <div className="mt-10 grid gap-4 md:grid-cols-2">
-              {gallery.map((url, index) => (
-                <Reveal key={url} className={cn(gallery.length % 2 === 1 && index === 0 && "md:col-span-2")}>
-                  <figure className="group relative overflow-hidden rounded-card border border-white/10 bg-card-dark">
-                    <div className="relative aspect-[4/3] w-full overflow-hidden">
-                      <Image
-                        src={url}
-                        alt={`${wordmark} — ${galleryCaption(index)}`}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        className="object-cover transition-transform duration-700 ease-[var(--ease-standard)] group-hover:scale-[1.02]"
-                      />
-                    </div>
-                    <figcaption className="flex items-center justify-between gap-4 border-t border-white/10 px-5 py-4">
-                      <span className="text-xs font-bold uppercase tracking-[0.18em] text-text-primary">
-                        {galleryCaption(index)}
-                      </span>
-                      <span className="font-display text-xs font-black text-primary/50">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                    </figcaption>
-                  </figure>
-                </Reveal>
-              ))}
+            <div className="mt-10">
+              <OverviewSlider
+                slides={gallery.map((url, index) => (
+                  <Image
+                    key={`brand-action-${index}-${url}`}
+                    src={url}
+                    alt={`${wordmark} — ${galleryCaption(index)}`}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
+                  />
+                ))}
+                counterLabel={`${wordmark} — ${t(locale, "workBrandInUse")}`}
+                thumbnails={gallery.map((url, index) => (
+                  <Image
+                    key={`brand-action-thumb-${index}-${url}`}
+                    src={url}
+                    alt={`${wordmark} — ${galleryCaption(index)}`}
+                    fill
+                    sizes="80px"
+                    className="object-cover"
+                  />
+                ))}
+                showDots={false}
+              />
             </div>
           </div>
         </section>
       ) : null}
+
+      {/* ============================================================ */}
+      {/* Final CTA                                                     */}
+      {/* ============================================================ */}
+      <section className="py-16 md:py-24">
+        <div className="mx-auto w-full max-w-2xl px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <div className="relative overflow-hidden rounded-card border border-primary/20 bg-card-dark px-5 py-6 text-center shadow-xl sm:px-8 sm:py-8">
+              <div aria-hidden="true" className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
+                {t(locale, "servicesStartProject")}
+              </p>
+              <h2 className="mt-2 font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
+                {t(locale, "workCtaTitle")}
+              </h2>
+              <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-text-muted">
+                {t(locale, "workCtaSubtitle")}
+              </p>
+              <div className="relative mt-6 flex justify-center">
+                <div aria-hidden="true" className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-primary/35 to-transparent" />
+                <Link
+                  href="/contact"
+                  className="group relative inline-flex min-h-14 max-w-full items-center gap-3 rounded-full border border-primary/60 bg-primary px-5 py-2.5 text-center text-sm font-bold text-text-inverse shadow-amber transition-[background-color,border-color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-1 hover:border-primary-light hover:bg-primary-light hover:shadow-[0_0_48px_rgba(245,158,11,0.32)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-4 active:translate-y-0 active:border-primary-active active:bg-primary-active sm:px-6 sm:text-base"
+                >
+                  <span>{ctaLabel}</span>
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-black/15 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-0.5">
+                    <ArrowIcon className="size-4" />
+                  </span>
+                </Link>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
 
       {/* ============================================================ */}
       {/* 07 — Client perspective                                      */}

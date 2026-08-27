@@ -5,8 +5,9 @@ import * as React from "react";
 /**
  * Lightweight slide showcase used in the case-study Project Overview panel.
  * Renders the framed media area with optional thumbnail strip underneath.
- * Clicking a thumbnail navigates to that slide. The dot indicators remain
- * for accessibility. A single-slide panel reads as a static image.
+ * Clicking a thumbnail navigates to that slide. Dot indicators can be hidden
+ * when the thumbnail strip is the only desired navigation. A single-slide
+ * panel reads as a static image.
  */
 export function OverviewSlider({
   slides,
@@ -14,6 +15,7 @@ export function OverviewSlider({
   thumbnails,
   thumbnailSlideOffset = 0,
   badge,
+  showDots = true,
 }: {
   slides: React.ReactNode[];
   /** aria-label for the carousel region. */
@@ -25,6 +27,8 @@ export function OverviewSlider({
   thumbnailSlideOffset?: number;
   /** Optional badge label (e.g. "Before") shown on the main image. */
   badge?: string;
+  /** Whether to render dot navigation below the thumbnail strip. */
+  showDots?: boolean;
 }) {
   const [selectedIndex, setIndex] = React.useState(0);
   const count = slides.length;
@@ -114,7 +118,7 @@ export function OverviewSlider({
       </div>
 
       {/* Dot row below the thumbnails — matches the process section indicator. */}
-      {count > 1 ? (
+      {showDots && count > 1 ? (
         <div className="mt-4 flex items-center justify-center gap-1.5">
           {slides.map((_, i) => (
             <button

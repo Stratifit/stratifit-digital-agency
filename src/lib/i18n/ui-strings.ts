@@ -174,6 +174,8 @@ export type UiStringKey =
   | "workBrandInUse"
   | "workBrandChallenges"
   | "workBrandGuidelines"
+  | "workCtaSubtitle"
+  | "workCtaTitle"
   | "workBrandPositioning"
   | "workIdentityAssets"
   | "workIdentityDirection"
@@ -495,6 +497,9 @@ const en: UiStrings = {
   workBrandInAction: "Brand in Action",
   workBrandInUse: "The Brand in Use",
   workBrandGuidelines: "Brand Guidelines",
+  workCtaTitle: "Make your brand stand out.",
+  workCtaSubtitle:
+    "Build a distinctive identity that works beautifully everywhere.",
   workIdentitySystem: "The identity system.",
   workGuidelinesIntro:
     "One coherent system — logo, colour, typography, and application — carried across every touchpoint.",
@@ -825,6 +830,9 @@ const de: UiStrings = {
   workBrandInAction: "Marke in Aktion",
   workBrandInUse: "Die Marke im Einsatz",
   workBrandGuidelines: "Markenrichtlinien",
+  workCtaTitle: "Lassen Sie Ihre Marke herausstechen.",
+  workCtaSubtitle:
+    "Bauen Sie eine unverwechselbare Identität, die überall überzeugt.",
   workIdentitySystem: "Das Identitätssystem.",
   workGuidelinesIntro:
     "Ein kohärentes System aus Logo, Farbe, Typografie und Anwendung — konsistent an jedem Berührungspunkt.",
@@ -1155,6 +1163,9 @@ const fr: UiStrings = {
   workBrandInAction: "La marque en action",
   workBrandInUse: "La marque en usage",
   workBrandGuidelines: "Charte graphique",
+  workCtaTitle: "Faites ressortir votre marque.",
+  workCtaSubtitle:
+    "Créez une identité distinctive qui s'impose partout avec élégance.",
   workIdentitySystem: "Le système d'identité.",
   workGuidelinesIntro:
     "Un système cohérent — logo, couleur, typographie et application — décliné sur chaque point de contact.",
@@ -1485,6 +1496,9 @@ const es: UiStrings = {
   workBrandInAction: "La marca en acción",
   workBrandInUse: "La marca en uso",
   workBrandGuidelines: "Manual de marca",
+  workCtaTitle: "Haga que su marca destaque.",
+  workCtaSubtitle:
+    "Cree una identidad distintiva que funcione bellamente en todas partes.",
   workIdentitySystem: "El sistema de identidad.",
   workGuidelinesIntro:
     "Un sistema coherente — logotipo, color, tipografía y aplicación — presente en cada punto de contacto.",
