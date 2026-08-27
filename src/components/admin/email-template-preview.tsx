@@ -83,7 +83,7 @@ function EmailShell({
           )}
         >
           {/* Brand header — main logo on the dark bar */}
-          <div className="bg-black px-6 py-4 sm:px-8">
+          <div className="border-b border-primary bg-[#070A10] px-6 py-4 sm:px-8">
             {/* eslint-disable-next-line @next/next/no-img-element -- preview of the main logo */}
             <img
               src="/stratifit-main-logo.png"
@@ -97,7 +97,7 @@ function EmailShell({
             <h2
               className={cn(
                 "mt-3 max-w-md text-[22px] font-extrabold leading-tight tracking-tight",
-                light ? "text-black" : "text-white"
+                light ? "text-[#070A10]" : "text-white"
               )}
             >
               {subject || "—"}
@@ -110,7 +110,7 @@ function EmailShell({
                     key={index}
                     className={cn(
                       "text-sm leading-relaxed",
-                      light ? "text-black" : "text-[#B8C0CC]"
+                      light ? "text-[#070A10]" : "text-[#B8C0CC]"
                     )}
                   >
                     {line}
@@ -124,15 +124,14 @@ function EmailShell({
             </div>
 
             {/* CTA button */}
-            <div className="mt-6">
-              <span className="inline-block min-w-[160px] rounded-md bg-primary px-5 py-3 text-center text-sm font-bold text-[#0B0F17]">
+            <div className="mt-6">                <span className="inline-block min-w-[160px] rounded-md bg-primary px-5 py-3 text-center text-sm font-bold text-[#070A10]">
                 Ask a Question
               </span>
             </div>
           </div>
 
           {/* Footer — dark bar with amber top border */}
-          <div className="bg-black px-5 py-5 text-center">
+          <div className="border-t border-primary bg-[#070A10] px-5 py-5 text-center">
             <p className="flex items-center justify-center gap-1.5 text-xs text-white">
               {/* eslint-disable-next-line @next/next/no-img-element -- preview of the footer globe icon */}
               <img src="/email-icons/globe.png" alt="" className="size-3" />

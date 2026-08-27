@@ -28,7 +28,7 @@ import { EMAIL_PARTIALS } from "./partials";
  * renderer) in `renderer.ts`, then sent through Nodemailer over AWS SES SMTP.
  */
 
-const INK = "#000000";
+const INK = "#070A10";
 const AMBER = "#F59E0B";
 const CANVAS = "#FFFFFF";
 
@@ -118,6 +118,7 @@ export function StratifitEmail({
             style={{
               backgroundColor: INK,
               padding: "16px 42px",
+              borderBottom: `1px solid ${AMBER}`,
             }}
           >
             <Row>
@@ -191,11 +192,12 @@ export function StratifitEmail({
             </Section>
           </Section>
 
-          {/* Footer — black bar */}
+          {/* Footer — dark brand bar */}
           <Section
             style={{
               backgroundColor: INK,
               padding: "28px 30px 26px",
+              borderTop: `1px solid ${AMBER}`,
               textAlign: "center",
             }}
           >
