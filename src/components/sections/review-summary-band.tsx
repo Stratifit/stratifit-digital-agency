@@ -109,7 +109,7 @@ export function ReviewSummaryBand({
   locale,
 }: Partial<ReviewSummaryValues> & { locale: string }) {
   return (
-    <div className="flex items-stretch divide-x divide-primary/15 overflow-hidden rounded-card border border-primary/25 bg-card-dark">
+    <div className="flex items-stretch divide-x divide-card-border overflow-hidden rounded-card border border-card-border bg-card-dark">
       {/* Client satisfaction — rating and stars on one line, description under */}
       <div className="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 px-2 py-3 text-center sm:px-4">
         <div className="flex items-center gap-1">

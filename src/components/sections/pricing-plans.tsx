@@ -53,10 +53,10 @@ export function PlanCard({
   return (
     <div
       className={cn(
-        "relative flex flex-col rounded-card border bg-card-dark p-6 transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] md:p-8",
+        "relative flex h-full min-h-0 flex-col rounded-card border bg-card-dark p-6 transition-all duration-[var(--motion-medium)] ease-[var(--ease-standard)] md:p-8",
         mobile
           ? "min-w-[280px] w-[80vw] max-w-[320px] h-[500px] shrink-0 snap-center"
-          : "h-full",
+          : "h-full min-h-[28rem]",
         plan.is_featured
           ? "border-primary shadow-[0_0_30px_rgba(245,158,11,0.15)]"
           : "border-card-border hover:border-primary/20"
@@ -81,11 +81,11 @@ export function PlanCard({
           </span>
         ) : null}
       </div>
-      <p className={cn("text-sm text-text-muted", mobile ? "mb-6" : "mb-8")}>
+      <p className={cn("text-sm text-text-muted", mobile ? "mb-6" : "mb-8 min-h-[3rem]")}>
         {description}
       </p>
       <div className={cn("h-px w-full bg-white/5", mobile ? "mb-5" : "mb-6")} />
-      <ul className={cn("flex-1 space-y-3", mobile ? "mb-6 space-y-2.5" : "mb-8")}>
+      <ul className={cn("flex-1 space-y-3", mobile ? "mb-6 space-y-2.5" : "mb-8 min-h-[12rem]")}>
         {features.map((feature, index) => (
           <li
             key={index}

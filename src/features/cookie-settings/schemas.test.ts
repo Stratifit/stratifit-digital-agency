@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { cookieSettingsSchema } from "@/features/cookie-settings/schemas";
+import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 
 const tr = (en: string) => ({ en, de: "", fr: "", es: "" });
 
@@ -40,6 +41,15 @@ const valid = {
 describe("cookieSettingsSchema", () => {
   it("accepts valid settings", () => {
     expect(cookieSettingsSchema.safeParse(valid).success).toBe(true);
+  });
+
+  it("supports every public cookie locale and falls back to English", () => {
+    const translations = { en: "Cookie preferences", de: "Cookie-Einstellungen", fr: "Préférences de cookies", es: "Preferencias de cookies" };
+    expect(resolveTranslation(translations, "en")).toBe("Cookie preferences");
+    expect(resolveTranslation(translations, "de")).toBe("Cookie-Einstellungen");
+    expect(resolveTranslation(translations, "fr")).toBe("Préférences de cookies");
+    expect(resolveTranslation(translations, "es")).toBe("Preferencias de cookies");
+    expect(resolveTranslation({ en: "Cookie preferences", de: "" }, "de")).toBe("Cookie preferences");
   });
 
   it("rejects a missing English title", () => {

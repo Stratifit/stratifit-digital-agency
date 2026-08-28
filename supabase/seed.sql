@@ -20,34 +20,34 @@ INSERT INTO public.cookie_settings (
 )
 VALUES (
   true,
-  '{"en": "Cookie Preferences"}'::jsonb,
-  '{"en": "We use cookies to enhance your browsing experience, analyze site traffic, and deliver personalized content. By clicking “Accept All”, you consent to our use of cookies. You can learn more in our"}'::jsonb,
-  '{"en": "Accept All"}'::jsonb,
-  '{"en": "Essential Only"}'::jsonb,
-  '{"en": "Settings"}'::jsonb,
-  '{"en": "Save Preferences"}'::jsonb,
+  '{"en": "Cookie Preferences", "de": "Cookie-Einstellungen", "fr": "Préférences de cookies", "es": "Preferencias de cookies"}'::jsonb,
+  '{"en": "We use cookies to improve your browsing experience and understand site usage.", "de": "Wir verwenden Cookies, um Ihr Surferlebnis zu verbessern und die Nutzung der Website zu verstehen.", "fr": "Nous utilisons des cookies pour améliorer votre expérience de navigation et comprendre l’utilisation du site.", "es": "Usamos cookies para mejorar su experiencia de navegación y comprender el uso del sitio."}'::jsonb,
+  '{"en": "Accept All", "de": "Alle akzeptieren", "fr": "Tout accepter", "es": "Aceptar todo"}'::jsonb,
+  '{"en": "Essential Only", "de": "Nur erforderliche", "fr": "Nécessaires uniquement", "es": "Solo esenciales"}'::jsonb,
+  '{"en": "Settings", "de": "Einstellungen", "fr": "Paramètres", "es": "Configuración"}'::jsonb,
+  '{"en": "Save Preferences", "de": "Einstellungen speichern", "fr": "Enregistrer les préférences", "es": "Guardar preferencias"}'::jsonb,
   '/cookie-policy',
   '[
     {
       "key": "essential",
       "essential": true,
       "enabled": true,
-      "name_translations": { "en": "Essential cookies" },
-      "description_translations": { "en": "Required for the website to function. Cannot be switched off." }
+      "name_translations": { "en": "Essential cookies", "de": "Erforderliche Cookies", "fr": "Cookies nécessaires", "es": "Cookies esenciales" },
+      "description_translations": { "en": "Required for the website to function.", "de": "Für die Funktion der Website erforderlich.", "fr": "Nécessaires au fonctionnement du site.", "es": "Necesarias para que el sitio funcione." }
     },
     {
       "key": "analytics",
       "essential": false,
       "enabled": true,
-      "name_translations": { "en": "Analytics cookies" },
-      "description_translations": { "en": "Help us understand how visitors interact with the site. All data is aggregated and anonymous." }
+      "name_translations": { "en": "Analytics cookies", "de": "Analyse-Cookies", "fr": "Cookies analytiques", "es": "Cookies analíticas" },
+      "description_translations": { "en": "Help us understand anonymous site usage.", "de": "Helfen uns, die anonyme Nutzung der Website zu verstehen.", "fr": "Nous aident à comprendre l’utilisation anonyme du site.", "es": "Nos ayudan a comprender el uso anónimo del sitio." }
     },
     {
       "key": "marketing",
       "essential": false,
       "enabled": false,
-      "name_translations": { "en": "Marketing cookies" },
-      "description_translations": { "en": "Used to show relevant advertising. Currently not in use unless you consent." }
+      "name_translations": { "en": "Marketing cookies", "de": "Marketing-Cookies", "fr": "Cookies marketing", "es": "Cookies de marketing" },
+      "description_translations": { "en": "Used for relevant advertising when enabled.", "de": "Bei Aktivierung für relevante Werbung verwendet.", "fr": "Utilisés pour des publicités pertinentes lorsqu’ils sont activés.", "es": "Se usan para publicidad relevante cuando están activadas." }
     }
   ]'::jsonb
 )
@@ -1218,7 +1218,7 @@ SET brand_story_translations =
          to_jsonb('Desarrollar un símbolo seguro y escalable que refleje el profesionalismo y los valores ecológicos de CLENQO. El sistema de logotipo incluye variaciones principales, secundarias y compactas para garantizar la coherencia en los puntos de contacto digitales y físicos.'::text),
          true
        )
-WHERE slug = 'aura-cosmetics-identity';
+WHERE slug = 'clenqo';
 
 -- Approved CLENQO final strategy / launch copy (idempotent).
 -- Launch headline renames to "Brand Rollout"; Strategic Foundation gets the
@@ -1268,7 +1268,7 @@ SET strategy_translations = (
     )
   ) AS v(locale, headline, subtitle, identity, messaging)
 )
-WHERE slug = 'aura-cosmetics-identity';
+WHERE slug = 'clenqo';
 
 UPDATE public.portfolio_projects
 SET launch_translations = (
@@ -1284,7 +1284,7 @@ SET launch_translations = (
     ('es', 'Brand Rollout')
   ) AS v(locale, headline)
 )
-WHERE slug = 'aura-cosmetics-identity';
+WHERE slug = 'clenqo';
 
 -- Approved CLENQO Launch section description (idempotent).
 UPDATE public.portfolio_projects
@@ -1301,7 +1301,7 @@ SET launch_translations = (
     ('es', 'Presenta la identidad renovada de CLENQO en todos los canales de marca principales, garantizando una transición consistente y segura hacia el nuevo sistema.')
   ) AS v(locale, description)
 )
-WHERE slug = 'aura-cosmetics-identity';
+WHERE slug = 'clenqo';
 
 -- Approved CLENQO Strategy phase-document headline/subtitle (idempotent).
 UPDATE public.portfolio_projects
@@ -1318,7 +1318,7 @@ SET strategy_translations = (
     ('es', 'Fundamento estratégico', 'Una dirección estratégica clara que define cómo CLENQO posiciona, comunica y expresa su identidad en todos los puntos de contacto.')
   ) AS v(locale, headline, subtitle)
 )
-WHERE slug = 'aura-cosmetics-identity';
+WHERE slug = 'clenqo';
 
 -- Approved CLENQO Identity System copy and Launch headlines (idempotent).
 UPDATE public.portfolio_projects
@@ -1364,7 +1364,7 @@ SET brand_system_translations = (
     )
   ) AS v(locale, build_description, typeface_description, palette_description, visual_applications)
 )
-WHERE slug = 'aura-cosmetics-identity';
+WHERE slug = 'clenqo';
 
 UPDATE public.portfolio_projects
 SET launch_translations = (
@@ -1380,7 +1380,7 @@ SET launch_translations = (
     ('es', 'Despliegue real y activación')
   ) AS v(locale, headline)
 )
-WHERE slug = 'aura-cosmetics-identity';
+WHERE slug = 'clenqo';
 
 
 -- =============================================================================
@@ -1532,34 +1532,34 @@ INSERT INTO public.cookie_settings (
 )
 VALUES (
   true,
-  '{"en": "Cookie Preferences"}'::jsonb,
-  '{"en": "We use cookies to enhance your browsing experience, analyze site traffic, and deliver personalized content. By clicking “Accept All”, you consent to our use of cookies. You can learn more in our"}'::jsonb,
-  '{"en": "Accept All"}'::jsonb,
-  '{"en": "Essential Only"}'::jsonb,
-  '{"en": "Settings"}'::jsonb,
-  '{"en": "Save Preferences"}'::jsonb,
+  '{"en": "Cookie Preferences", "de": "Cookie-Einstellungen", "fr": "Préférences de cookies", "es": "Preferencias de cookies"}'::jsonb,
+  '{"en": "We use cookies to improve your browsing experience and understand site usage.", "de": "Wir verwenden Cookies, um Ihr Surferlebnis zu verbessern und die Nutzung der Website zu verstehen.", "fr": "Nous utilisons des cookies pour améliorer votre expérience de navigation et comprendre l’utilisation du site.", "es": "Usamos cookies para mejorar su experiencia de navegación y comprender el uso del sitio."}'::jsonb,
+  '{"en": "Accept All", "de": "Alle akzeptieren", "fr": "Tout accepter", "es": "Aceptar todo"}'::jsonb,
+  '{"en": "Essential Only", "de": "Nur erforderliche", "fr": "Nécessaires uniquement", "es": "Solo esenciales"}'::jsonb,
+  '{"en": "Settings", "de": "Einstellungen", "fr": "Paramètres", "es": "Configuración"}'::jsonb,
+  '{"en": "Save Preferences", "de": "Einstellungen speichern", "fr": "Enregistrer les préférences", "es": "Guardar preferencias"}'::jsonb,
   '/cookie-policy',
   '[
     {
       "key": "essential",
       "essential": true,
       "enabled": true,
-      "name_translations": { "en": "Essential cookies" },
-      "description_translations": { "en": "Required for the website to function. Cannot be switched off." }
+      "name_translations": { "en": "Essential cookies", "de": "Erforderliche Cookies", "fr": "Cookies nécessaires", "es": "Cookies esenciales" },
+      "description_translations": { "en": "Required for the website to function.", "de": "Für die Funktion der Website erforderlich.", "fr": "Nécessaires au fonctionnement du site.", "es": "Necesarias para que el sitio funcione." }
     },
     {
       "key": "analytics",
       "essential": false,
       "enabled": true,
-      "name_translations": { "en": "Analytics cookies" },
-      "description_translations": { "en": "Help us understand how visitors interact with the site. All data is aggregated and anonymous." }
+      "name_translations": { "en": "Analytics cookies", "de": "Analyse-Cookies", "fr": "Cookies analytiques", "es": "Cookies analíticas" },
+      "description_translations": { "en": "Help us understand anonymous site usage.", "de": "Helfen uns, die anonyme Nutzung der Website zu verstehen.", "fr": "Nous aident à comprendre l’utilisation anonyme du site.", "es": "Nos ayudan a comprender el uso anónimo del sitio." }
     },
     {
       "key": "marketing",
       "essential": false,
       "enabled": false,
-      "name_translations": { "en": "Marketing cookies" },
-      "description_translations": { "en": "Used to show relevant advertising. Currently not in use unless you consent." }
+      "name_translations": { "en": "Marketing cookies", "de": "Marketing-Cookies", "fr": "Cookies marketing", "es": "Cookies de marketing" },
+      "description_translations": { "en": "Used for relevant advertising when enabled.", "de": "Bei Aktivierung für relevante Werbung verwendet.", "fr": "Utilisés pour des publicités pertinentes lorsqu’ils sont activés.", "es": "Se usan para publicidad relevante cuando están activadas." }
     }
   ]'::jsonb
 )
@@ -2730,7 +2730,7 @@ SET brand_story_translations =
          to_jsonb('Desarrollar un símbolo seguro y escalable que refleje el profesionalismo y los valores ecológicos de CLENQO. El sistema de logotipo incluye variaciones principales, secundarias y compactas para garantizar la coherencia en los puntos de contacto digitales y físicos.'::text),
          true
        )
-WHERE slug = 'aura-cosmetics-identity';
+WHERE slug = 'clenqo';
 
 -- Approved CLENQO final strategy / launch copy (idempotent).
 -- Launch headline renames to "Brand Rollout"; Strategic Foundation gets the
@@ -2780,7 +2780,7 @@ SET strategy_translations = (
     )
   ) AS v(locale, headline, subtitle, identity, messaging)
 )
-WHERE slug = 'aura-cosmetics-identity';
+WHERE slug = 'clenqo';
 
 UPDATE public.portfolio_projects
 SET launch_translations = (
@@ -2796,7 +2796,7 @@ SET launch_translations = (
     ('es', 'Brand Rollout')
   ) AS v(locale, headline)
 )
-WHERE slug = 'aura-cosmetics-identity';
+WHERE slug = 'clenqo';
 
 -- Approved CLENQO Launch section description (idempotent).
 UPDATE public.portfolio_projects
@@ -2813,7 +2813,7 @@ SET launch_translations = (
     ('es', 'Presenta la identidad renovada de CLENQO en todos los canales de marca principales, garantizando una transición consistente y segura hacia el nuevo sistema.')
   ) AS v(locale, description)
 )
-WHERE slug = 'aura-cosmetics-identity';
+WHERE slug = 'clenqo';
 
 -- Approved CLENQO Strategy phase-document headline/subtitle (idempotent).
 UPDATE public.portfolio_projects
@@ -2830,7 +2830,7 @@ SET strategy_translations = (
     ('es', 'Fundamento estratégico', 'Una dirección estratégica clara que define cómo CLENQO posiciona, comunica y expresa su identidad en todos los puntos de contacto.')
   ) AS v(locale, headline, subtitle)
 )
-WHERE slug = 'aura-cosmetics-identity';
+WHERE slug = 'clenqo';
 
 -- Approved CLENQO Identity System copy and Launch headlines (idempotent).
 UPDATE public.portfolio_projects
@@ -2876,7 +2876,7 @@ SET brand_system_translations = (
     )
   ) AS v(locale, build_description, typeface_description, palette_description, visual_applications)
 )
-WHERE slug = 'aura-cosmetics-identity';
+WHERE slug = 'clenqo';
 
 UPDATE public.portfolio_projects
 SET launch_translations = (
@@ -2892,7 +2892,7 @@ SET launch_translations = (
     ('es', 'Despliegue real y activación')
   ) AS v(locale, headline)
 )
-WHERE slug = 'aura-cosmetics-identity';
+WHERE slug = 'clenqo';
 
 
 -- =============================================================================
@@ -3170,7 +3170,7 @@ SET brand_story_translations =
          to_jsonb('Desarrollar un símbolo seguro y escalable que refleje el profesionalismo y los valores ecológicos de CLENQO. El sistema de logotipo incluye variaciones principales, secundarias y compactas para garantizar la coherencia en los puntos de contacto digitales y físicos.'::text),
          true
        )
-WHERE slug = 'aura-cosmetics-identity';
+WHERE slug = 'clenqo';
 
 -- Approved CLENQO final strategy / launch copy (idempotent).
 -- Launch headline renames to "Brand Rollout"; Strategic Foundation gets the
@@ -3220,7 +3220,7 @@ SET strategy_translations = (
     )
   ) AS v(locale, headline, subtitle, identity, messaging)
 )
-WHERE slug = 'aura-cosmetics-identity';
+WHERE slug = 'clenqo';
 
 UPDATE public.portfolio_projects
 SET launch_translations = (
@@ -3236,4 +3236,4 @@ SET launch_translations = (
     ('es', 'Brand Rollout')
   ) AS v(locale, headline)
 )
-WHERE slug = 'aura-cosmetics-identity';
+WHERE slug = 'clenqo';
