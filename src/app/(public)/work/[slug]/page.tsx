@@ -297,6 +297,19 @@ export default async function WorkDetailPage({
                 );
               })}
             </Reveal>
+          ) : galleryCount === 0 && project.image_url ? (
+            <Reveal className="mt-10 md:mt-12">
+              <div className="overflow-hidden rounded-card border border-white/5 bg-surface-soft">
+                <Image
+                  src={project.image_url}
+                  alt={`${projectTitle} ${t(locale, "workVisual")}`}
+                  width={1600}
+                  height={1200}
+                  priority
+                  className="aspect-[21/9] w-full object-cover"
+                />
+              </div>
+            </Reveal>
           ) : null}
         </div>
       </section>

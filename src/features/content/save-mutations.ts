@@ -141,13 +141,6 @@ export async function savePortfolio(
   );
   const launchTranslations = cleanPhaseLocales(parsed.data.launch_translations);
 
-  // Slot 1 of the card-image gallery is the cover — mirror it into the legacy
-  // image_url column so every reader of image_url (admin list, detail hero
-  // fallback) stays consistent with what the editor shows.
-  const firstGalleryImage = (parsed.data.gallery ?? []).find((item) =>
-    item.image_url.trim()
-  )?.image_url.trim();
-
   const generatedPortfolioSlug = portfolioSlugFromClientName(parsed.data.client_name);
   const portfolioSlug = generatedPortfolioSlug || parsed.data.slug;
 
@@ -170,7 +163,7 @@ export async function savePortfolio(
     testimonial_id: parsed.data.testimonial_id?.trim()
       ? parsed.data.testimonial_id
       : null,
-    image_url: firstGalleryImage || parsed.data.image_url.trim() || null,
+    image_url: parsed.data.image_url.trim() || null,
     case_study_section_media: normalizeCaseStudySectionMedia(
       parsed.data.case_study_section_media
     ) as unknown as Json,
@@ -216,32 +209,6 @@ export async function savePortfolio(
       }
     }
 
-    // Gallery: replace rows so ordering and removals stay consistent.
-    const { error: galleryClearError } = await supabase
-      .from("portfolio_media")
-      .delete()
-      .eq("portfolio_id", projectId);
-    if (galleryClearError) {
-      return { success: false, error: "Failed to save the project gallery." };
-    }
-    const galleryRows = (parsed.data.gallery ?? [])
-      .map((item, index) => ({
-        portfolio_id: projectId,
-        media_id: item.media_id?.trim() ? item.media_id : null,
-        image_url: item.image_url.trim() || null,
-        caption_translations: {},
-        display_order: index + 1,
-        is_featured: index === 0,
-      }))
-      .filter((g) => g.image_url);
-    if (galleryRows.length > 0) {
-      const { error: galleryError } = await supabase
-        .from("portfolio_media")
-        .insert(galleryRows);
-      if (galleryError) {
-        return { success: false, error: "Failed to save the project gallery." };
-      }
-    }
   }
 
   await recordAuditLog({

@@ -23,12 +23,6 @@ const caseStudySectionMedia = z.object({
 
 const caseStudySectionMediaMap = z.record(z.string(), caseStudySectionMedia);
 
-const portfolioGalleryItem = z.object({
-  /** Uploaded media asset id (empty when a direct URL is used). */
-  media_id: z.string().optional(),
-  image_url: z.string(),
-});
-
 const translationsArrays = () =>
   z.object({
     en: z.array(z.string()),
@@ -201,8 +195,6 @@ export const portfolioSchema = z.object({
   client_name: z.string().min(1, "Client name is required"),
   /** Primary category = linked service slug (empty means no category). */
   service_slug: z.string().optional(),
-  /** Gallery images in display order (up to 6, matching the card grid). */
-  gallery: z.array(portfolioGalleryItem).max(6).optional(),
   /** Case study fields shown on the public /work/[slug] page. */
   deliverables_translations: translationsArrays().optional(),
   /** Logo concept / monogram rationale for brand case studies ("Why This Mark"). */

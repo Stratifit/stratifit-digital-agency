@@ -319,10 +319,9 @@ export async function getPublicPortfolioProjects(
         ? (mediaById.get(mediaId) ?? null)
         : null;
 
-    // The editor's 6-slot gallery is the source of truth: slot 1 (display
-    // order 1) is the card cover, so gallery rows come first. The legacy
-    // image_url / featured media only fills in when a project has no gallery
-    // rows (deduped, capped at 6).
+    // The project hero image (image_url) is the source of truth for the
+    // card cover; legacy gallery rows fill the remaining slots (deduped,
+    // capped at 6).
     const cardImages: string[] = [];
     const seen = new Set<string>();
     const pushCardImage = (url: string | null | undefined) => {
@@ -330,13 +329,13 @@ export async function getPublicPortfolioProjects(
       seen.add(url);
       cardImages.push(url);
     };
+    pushCardImage(featuredMediaUrl);
     for (const gallery of galleryByProject.get(projectId) ?? []) {
       pushCardImage(
         gallery.image_url ??
           (gallery.media_id ? mediaById.get(gallery.media_id) : null)
       );
     }
-    pushCardImage(featuredMediaUrl);
 
     return {
       slug: project.slug as string,

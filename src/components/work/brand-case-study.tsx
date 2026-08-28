@@ -811,6 +811,18 @@ export function BrandCaseStudy({
               <span className="inline-flex shrink-0 items-center rounded-full bg-primary px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-text-inverse">
                 {categoryLabel}
               </span>
+              {project.image_url ? (
+                <div className="mt-8 w-full max-w-4xl overflow-hidden rounded-card border border-white/10 bg-card-dark shadow-xl">
+                  <Image
+                    src={project.image_url}
+                    alt={`${wordmark}, ${t(locale, "workCaseStudy")}`}
+                    width={1600}
+                    height={1200}
+                    priority
+                    className="h-auto w-full object-cover"
+                  />
+                </div>
+              ) : null}
               <HeroMonogram className="mt-8 size-28 md:size-40" />
               <h1
                 className="mt-6 font-display text-5xl font-black leading-none tracking-tight sm:text-6xl md:text-7xl"

@@ -110,8 +110,6 @@ function normalizePhaseLocales(
   return out;
 }
 
-type GalleryItem = { media_id?: string; image_url: string };
-
 type MetricItem = {
   value: string;
   label_translations: Record<string, string>;
@@ -226,35 +224,34 @@ function PortfolioMetricsEditor({
 }
 
 /**
- * 6-slot image uploader for the work card grid. Uploads go to the
- * `portfolio-images` storage bucket; filled slots show a thumbnail with a
- * remove button, empty slots show a file picker.
+ * Single main-image uploader for the project hero. Uploads go to the
+ * `portfolio-images` storage bucket; the public URL is stored in the
+ * project`s `image_url` column, which powers the case-study hero banner
+ * and the work card cover.
  */
-function PortfolioGalleryUploader({
+function PortfolioHeroImageUploader({
   control,
   setValue,
 }: {
   control: Control<FieldValues>;
   setValue: UseFormSetValue<FieldValues>;
 }) {
-  const gallery = (useWatch({ control, name: "gallery" }) ?? []) as GalleryItem[];
-  const [uploadingIndex, setUploadingIndex] = React.useState<number | null>(null);
-  const [uploadError, setUploadError] = React.useState<string | null>(null);
-  const [aspectWarning, setAspectWarning] = React.useState<string | null>(null);
-  const addInputRefs = React.useRef<Array<HTMLInputElement | null>>([]);
-  const replaceInputRefs = React.useRef<Array<HTMLInputElement | null>>([]);
+  const imageUrl = (useWatch({ control, name: "image_url" }) ?? "") as string;
+  const [uploading, setUploading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const [warning, setWarning] = React.useState<string | null>(null);
 
-  async function handleFile(index: number, e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    setUploadingIndex(index);
-    setUploadError(null);
-    setAspectWarning(null);
+    setUploading(true);
+    setError(null);
+    setWarning(null);
     try {
       const size = await readImageSize(file);
       if (size && !aspectMatches(size, { width: 4, height: 3 })) {
-        setAspectWarning(
-          `This image is ${formatAspect(size.width, size.height)} — it will be cropped to 4:3 in the work grid. Recommended: ${recommendedSizeLabel(1600, 1200)}.`
+        setWarning(
+          `This image is ${formatAspect(size.width, size.height)} — it will be cropped to 4:3 in the case-study hero and work card. Recommended: ${recommendedSizeLabel(1600, 1200)}.`
         );
       }
       const formData = new FormData();
@@ -263,111 +260,55 @@ function PortfolioGalleryUploader({
       formData.set("alt_text", file.name);
       const result = await uploadMediaAsset(formData);
       if (result.success) {
-        const next = [...gallery];
-        while (next.length < 6) next.push({ image_url: "" });
-        next[index] = { media_id: result.data.id, image_url: result.data.url };
-        setValue("gallery", next);
-        if (addInputRefs.current[index]) addInputRefs.current[index]!.value = "";
-        if (replaceInputRefs.current[index]) replaceInputRefs.current[index]!.value = "";
+        setValue("image_url", result.data.url, { shouldDirty: true });
       } else {
-        setUploadError(result.error);
+        setError(result.error);
       }
     } catch {
       // Server actions can reject despite uploadMediaAsset returning results
       // (request body limits, network errors) — surface a message instead of
       // leaving the spinner stuck.
-      setUploadError("Upload failed. Please try again.");
+      setError("Upload failed. Please try again.");
     } finally {
-      setUploadingIndex(null);
+      setUploading(false);
     }
   }
 
-  function handleRemove(index: number) {
-    const next = [...gallery];
-    next[index] = { image_url: "" };
-    setValue("gallery", next);
-    setUploadError(null);
-  }
-
   return (
-    <div>
-      <div className="grid grid-cols-3 gap-3">
-        {Array.from({ length: 6 }, (_, index) => gallery[index]).map(
-          (slot, index) => (
-            <div
-              key={index}
-              className="relative aspect-square overflow-hidden rounded-input border border-card-border bg-background"
-            >
-              {slot?.image_url ? (
-                <>
-                  {/* eslint-disable-next-line @next/next/no-img-element -- admin thumbnail preview */}
-                  <img
-                    src={slot.image_url}
-                    alt=""
-                    className="h-full w-full object-cover"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleRemove(index)}
-                    className="absolute right-1.5 top-1.5 rounded-sm bg-black/70 px-2 py-0.5 text-[10px] font-medium text-white transition-colors hover:bg-error focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                  >
-                    Remove
-                  </button>
-                  <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-1 bg-gradient-to-t from-black/75 to-transparent px-1.5 pb-1.5 pt-5">
-                    <label className="cursor-pointer rounded-sm bg-black/70 px-1.5 py-0.5 text-[10px] font-medium text-white transition-colors hover:bg-primary hover:text-text-inverse focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
-                      Replace
-                      <input
-                        ref={(el) => {
-                          replaceInputRefs.current[index] = el;
-                        }}
-                        type="file"
-                        accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml,image/avif"
-                        onChange={(e) => handleFile(index, e)}
-                        className="sr-only"
-                      />
-                    </label>
-                    <span className="rounded-sm bg-black/70 px-1.5 py-0.5 text-[10px] font-medium text-white">
-                      {index + 1}
-                    </span>
-                  </div>
-                </>
-              ) : (
-                <label className="flex h-full w-full cursor-pointer flex-col items-center justify-center gap-1 text-center transition-colors hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
-                  <input
-                    ref={(el) => {
-                      addInputRefs.current[index] = el;
-                    }}
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml,image/avif"
-                    onChange={(e) => handleFile(index, e)}
-                    className="sr-only"
-                  />
-                  <span className="text-[10px] font-medium text-text-muted">
-                    Add image
-                  </span>
-                </label>
-              )}
-              {uploadingIndex === index ? (
-                <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/60 text-[10px] font-medium text-white">
-                  Uploading…
-                </span>
-              ) : null}
-            </div>
-          )
-        )}
-      </div>
-      {uploadError ? <p className="mt-2 text-xs text-error">{uploadError}</p> : null}
-      {aspectWarning ? (
-        <p className="mt-2 rounded-sm border border-primary/30 bg-primary/10 px-3 py-2 text-xs text-primary">{aspectWarning}</p>
+    <div className="space-y-3">
+      {imageUrl ? (
+        <div className="relative aspect-[4/3] overflow-hidden rounded-input border border-card-border bg-background">
+          {/* eslint-disable-next-line @next/next/no-img-element -- admin preview */}
+          <img src={imageUrl} alt="" className="h-full w-full object-cover" />
+          <button
+            type="button"
+            onClick={() => setValue("image_url", "", { shouldDirty: true })}
+            className="absolute right-2 top-2 rounded-sm bg-black/70 px-2 py-1 text-[10px] font-medium text-white transition-colors hover:bg-error focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            Remove
+          </button>
+        </div>
+      ) : (
+        <label className="flex aspect-[4/3] cursor-pointer items-center justify-center rounded-input border border-dashed border-card-border bg-background text-sm text-text-muted transition-colors hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml,image/avif"
+            onChange={handleFile}
+            className="sr-only"
+            disabled={uploading}
+          />
+          {uploading ? "Uploading…" : "Add hero image"}
+        </label>
+      )}
+      {warning ? (
+        <p className="rounded-sm border border-primary/30 bg-primary/10 px-2 py-1.5 text-xs text-primary">
+          {warning}
+        </p>
       ) : null}
-      <p className="mt-2 text-xs text-text-muted">
-        Up to 6 images for the work card grid. The first image is the card
-        cover; brand-design projects show a 2×2 grid of the first four.
-      </p>
-      <p className="mt-1.5 rounded-sm border border-primary/20 bg-primary/5 px-3 py-2 text-xs text-text-muted">
-        Recommended size: <span className="font-semibold text-primary">{recommendedSizeLabel(1600, 1200)}</span> —
-        it fits the work card grid and the case-study page without cutting out
-        important detail.
+      {error ? <p className="text-xs text-error">{error}</p> : null}
+      <p className="text-xs text-text-muted">
+        Recommended: <span className="font-semibold text-primary">{recommendedSizeLabel(1600, 1200)}</span> — it fits
+        the case-study hero banner and the work card without cutting out important detail.
       </p>
     </div>
   );
@@ -413,7 +354,6 @@ export function ContentForm({
     if (type === "portfolio") {
       d.client_name = initial.client_name ?? "";
       d.service_slug = initial.service_slug ?? "";
-      d.gallery = initial.gallery ?? [];
       d.case_study_section_media = normalizeCaseStudySectionMedia(
         initial.case_study_section_media
       );
@@ -636,21 +576,6 @@ export function ContentForm({
             </div>
           ) : null}
 
-          {type === "portfolio" ? (
-            <div className="space-y-2">
-              <Label htmlFor="image_url">Cover Image URL (optional)</Label>
-              <Input
-                id="image_url"
-                placeholder="https://images.unsplash.com/…"
-                {...register("image_url")}
-              />
-              <p className="text-xs text-text-muted">
-                Used only when no card images are uploaded below. The first
-                card image always becomes the cover.
-              </p>
-            </div>
-          ) : null}
-
           {type === "portfolio" || type === "insights" ? (
             <div className="space-y-2">
               <Label htmlFor={`title-${locale}`}>Title ({LOCALE_NAMES[locale]})</Label>
@@ -816,9 +741,9 @@ export function ContentForm({
         {type === "portfolio" ? (
           <div className="mt-5 rounded-card border border-white/5 bg-background p-4">
             <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-text-subtle">
-              Card images
+              Main hero image
             </p>
-            <PortfolioGalleryUploader control={control} setValue={setValue} />
+            <PortfolioHeroImageUploader control={control} setValue={setValue} />
           </div>
         ) : null}
 

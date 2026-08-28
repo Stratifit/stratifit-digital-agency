@@ -55,43 +55,20 @@ describe("portfolioSchema", () => {
     expect(result.success).toBe(false);
   });
 
-  it("accepts a service slug and gallery images", () => {
+  it("accepts a service slug and a hero image", () => {
     const result = portfolioSchema.safeParse({
       slug: "aura-cosmetics-identity",
       client_name: "Aura Cosmetics",
       service_slug: "brand-design",
-      gallery: [
-        { media_id: "11111111-1111-4111-8111-111111111111", image_url: "https://example.com/1.jpg" },
-        { image_url: "https://example.com/2.jpg" },
-        { image_url: "https://example.com/3.jpg" },
-        { image_url: "https://example.com/4.jpg" },
-        { image_url: "https://example.com/5.jpg" },
-        { image_url: "https://example.com/6.jpg" },
-      ],
       title_translations: fullTranslations,
       summary_translations: fullTranslations,
-      image_url: "https://example.com/cover.jpg",
+      image_url: "https://example.com/hero.jpg",
       status: "published",
     });
     expect(result.success).toBe(true);
   });
 
-  it("rejects more than six gallery images", () => {
-    const result = portfolioSchema.safeParse({
-      slug: "aura-cosmetics-identity",
-      client_name: "Aura Cosmetics",
-      gallery: Array.from({ length: 7 }, (_, i) => ({
-        image_url: `https://example.com/${i}.jpg`,
-      })),
-      title_translations: fullTranslations,
-      summary_translations: fullTranslations,
-      image_url: "",
-      status: "draft",
-    });
-    expect(result.success).toBe(false);
-  });
-
-  it("accepts a project without a category or gallery", () => {
+  it("accepts a project without a category or hero image", () => {
     const result = portfolioSchema.safeParse({
       slug: "vertex-saas-landing",
       client_name: "Vertex SaaS",
