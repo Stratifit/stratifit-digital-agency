@@ -207,7 +207,7 @@ export function InsightsCarousel({
                 <div
                   key={insight.slug}
                   data-insight-card
-                  className="w-[80vw] min-w-[280px] max-w-[340px] shrink-0 snap-center sm:w-[360px] sm:min-w-[360px] sm:max-w-none md:w-[380px]"
+                  className="w-[80vw] min-w-[280px] max-w-[340px] shrink-0 snap-center sm:w-[360px] sm:min-w-[360px] sm:max-w-none lg:w-[calc((100%-4.5rem)/4)] lg:min-w-0 lg:max-w-none"
                 >
                   <InsightCard
                     insight={insight}
@@ -236,40 +236,34 @@ export function InsightsCarousel({
             </button>
           </div>
 
-          <div className="relative mt-6 flex items-center justify-center gap-1.5">
-            {pills.length > 1
-              ? pills.map((pill) => (
-                  <span
-                    key={pill.slug}
-                    aria-hidden="true"
-                    className="size-1.5 rounded-full bg-white/20 transition-colors duration-200 ease-out"
-                  />
-                ))
-              : null}
-          </div>
-          <div className="mt-4 flex justify-end md:hidden">
+          <div className="mt-6 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-1.5" aria-label="Insight carousel pagination">
+              {filtered.length > 1
+                ? filtered.map((insight, index) => (
+                    <span
+                      key={insight.slug}
+                      aria-hidden="true"
+                      className={cn(
+                        "size-1.5 rounded-full transition-colors duration-200 ease-out",
+                        index === active ? "bg-primary" : "bg-white/20"
+                      )}
+                    />
+                  ))
+                : null}
+            </div>
             <Link
               href="/insights"
-              className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110"
+              className="group inline-flex shrink-0 items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110 md:text-sm"
             >
-              {t(locale, "viewAllInsights")}
-              <ArrowIcon />
+              {t(locale, "viewAll")}
+              <span className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1">
+                <ArrowIcon />
+              </span>
             </Link>
           </div>
         </>
       )}
 
-      <div className="mt-8 hidden justify-end md:flex">
-        <Link
-          href="/insights"
-          className="group inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110"
-        >
-          {t(locale, "viewAllInsights")}
-          <span className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1">
-            <ArrowIcon />
-          </span>
-        </Link>
-      </div>
     </div>
   );
 }
