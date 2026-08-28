@@ -132,9 +132,10 @@ export function InsightsCarousel({
   const [active, setActive] = React.useState(0);
   const [activeFilter, setActiveFilter] = React.useState("all");
 
+  const visibleCategories = categories.slice(0, 7);
   const pills = [
     { slug: "all", label: t(locale, "filterAll") },
-    ...categories.map((category) => ({
+    ...visibleCategories.map((category) => ({
       slug: category.slug,
       label:
         resolveTranslation(category.name_translations, locale) ||
@@ -144,10 +145,9 @@ export function InsightsCarousel({
 
   const filtered =
     activeFilter === "all"
-      ? insights
-      : insights.filter((insight) =>
-          insight.category_slugs.includes(activeFilter)
-        );
+      ? insights        : insights.filter((insight) =>
+            insight.category_slugs.includes(activeFilter)
+          );
 
   function selectFilter(slug: string) {
     setActiveFilter(slug);
@@ -237,25 +237,23 @@ export function InsightsCarousel({
           </div>
 
           <div className="relative mt-6 flex items-center justify-center gap-1.5">
-            {filtered.length > 1
-              ? filtered.map((insight, index) => (
+            {pills.length > 1
+              ? pills.map((pill) => (
                   <span
-                    key={insight.slug}
-                    className={cn(
-                      "size-1.5 rounded-full transition-colors duration-200 ease-out",
-                      index === active ? "bg-primary" : "bg-white/20"
-                    )}
+                    key={pill.slug}
+                    aria-hidden="true"
+                    className="size-1.5 rounded-full bg-white/20 transition-colors duration-200 ease-out"
                   />
                 ))
               : null}
+          </div>
+          <div className="mt-4 flex justify-end md:hidden">
             <Link
               href="/insights"
-              className="absolute right-0 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110 md:hidden"
+              className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110"
             >
-              Insights
-              <span className="text-[10px]">
-                <ArrowIcon />
-              </span>
+              {t(locale, "viewAllInsights")}
+              <ArrowIcon />
             </Link>
           </div>
         </>

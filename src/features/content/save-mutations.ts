@@ -18,6 +18,7 @@ import {
   type FaqFormValues,
 } from "./schemas";
 import { normalizeBrandGuidelines } from "@/features/portfolio/brand-guidelines";
+import { portfolioSlugFromClientName } from "@/features/portfolio/slug";
 import type { Json } from "@/types/database.types";
 
 async function requireAdmin() {
@@ -142,8 +143,11 @@ export async function savePortfolio(
     item.image_url.trim()
   )?.image_url.trim();
 
+  const generatedPortfolioSlug = portfolioSlugFromClientName(parsed.data.client_name);
+  const portfolioSlug = generatedPortfolioSlug || parsed.data.slug;
+
   const row = {
-    slug: parsed.data.slug,
+    slug: portfolioSlug,
     client_name: parsed.data.client_name,
     title_translations: parsed.data.title_translations,
     summary_translations: parsed.data.summary_translations,
@@ -175,7 +179,7 @@ export async function savePortfolio(
   const { data: projectRow } = await supabase
     .from("portfolio_projects")
     .select("id")
-    .eq("slug", parsed.data.slug)
+    .eq("slug", portfolioSlug)
     .single();
   const projectId = projectRow?.id as string | undefined;
   if (projectId) {
@@ -240,7 +244,7 @@ export async function savePortfolio(
   });
   revalidatePath("/admin/content/portfolio");
   revalidatePath("/");
-  revalidatePath(`/work/${parsed.data.slug}`);
+  revalidatePath(`/work/${portfolioSlug}`);
   return { success: true };
 }
 

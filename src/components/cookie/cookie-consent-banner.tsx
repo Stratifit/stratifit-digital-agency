@@ -81,16 +81,14 @@ function defaultChoices(settings: PublicCookieSettings) {
 }
 
 export function CookieConsentBanner({ settings, locale = "en" }: { settings: PublicCookieSettings | null; locale?: string }) {
-  const [consent, setConsent] = React.useState<ConsentRecord | null>(null);
-  const [checked, setChecked] = React.useState(false);
+  const [consent, setConsent] = React.useState<ConsentRecord | null>(() => readConsent());
+  const [checked] = React.useState(true);
   const [editing, setEditing] = React.useState(false);
   const [settingsView, setSettingsView] = React.useState(false);
   const [choices, setChoices] = React.useState<Record<string, boolean>>({});
   const firstControlRef = React.useRef<HTMLButtonElement>(null);
 
   React.useEffect(() => {
-    setConsent(readConsent());
-    setChecked(true);
     const handleEdit = () => {
       const current = readConsent();
       setChoices(current ? { essential: true, analytics: current.analytics, marketing: current.marketing } : settings ? defaultChoices(settings) : { essential: true });
@@ -118,10 +116,12 @@ export function CookieConsentBanner({ settings, locale = "en" }: { settings: Pub
   }
 
   function acceptAll() {
+    if (!settings) return;
     save(Object.fromEntries(settings.categories.map((category) => [category.key, true])));
   }
 
   function essentialOnly() {
+    if (!settings) return;
     save(defaultChoices(settings));
   }
 

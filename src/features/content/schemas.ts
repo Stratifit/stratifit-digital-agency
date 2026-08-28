@@ -183,8 +183,9 @@ const launchLocales = () =>
 export const portfolioSchema = z.object({
   slug: z
     .string()
-    .min(1, "Slug is required")
-    .regex(/^[a-z0-9-]+$/, "Lowercase letters, numbers, hyphens only"),
+    .optional()
+    .default("")
+    .refine((slug) => slug === "" || /^[a-z0-9-]+$/.test(slug), "Lowercase letters, numbers, hyphens only"),
   client_name: z.string().min(1, "Client name is required"),
   /** Primary category = linked service slug (empty means no category). */
   service_slug: z.string().optional(),

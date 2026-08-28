@@ -40,6 +40,7 @@ import { LocaleTabs, type EditorLocale } from "@/components/admin/locale-tabs";
 import { uploadMediaAsset } from "@/features/media/mutations";
 import type { AdminServiceOption } from "@/features/content/admin-queries";
 import { normalizeBrandGuidelines } from "@/features/portfolio/brand-guidelines";
+import { portfolioSlugFromClientName } from "@/features/portfolio/slug";
 import { BrandGuidelinesEditor } from "@/components/admin/content/brand-guidelines-editor";
 import { PhaseDocumentsEditor } from "@/components/admin/content/phase-documents-editor";
 
@@ -537,7 +538,7 @@ export function ContentForm({
     return loc?.message;
   };
 
-  const showSlug = type === "portfolio" || type === "insights" || type === "pricing";
+  const showSlug = type === "insights" || type === "pricing";
   const showStatus = type !== "testimonials";
 
   return (
@@ -1030,7 +1031,22 @@ export function ContentForm({
         {activeSection === "publishing" ? (
           <div className="space-y-6">
             <div className="grid gap-5 md:grid-cols-2">
-              {showSlug ? (
+              {type === "portfolio" ? (
+                <div className="space-y-2">
+                  <Label htmlFor="slug">URL Slug</Label>
+                  <Input
+                    id="slug"
+                    value={portfolioSlugFromClientName(
+                      String((getValues("client_name") as string | undefined) ?? "")
+                    )}
+                    readOnly
+                    aria-describedby="slug-help"
+                  />
+                  <p id="slug-help" className="text-xs text-text-muted">
+                    Generated automatically from the client name.
+                  </p>
+                </div>
+              ) : showSlug ? (
                 <div className="space-y-2">
                   <Label htmlFor="slug">Slug</Label>
                   <Input id="slug" placeholder="my-item" disabled={isEdit} {...register("slug")} />
