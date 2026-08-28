@@ -26,6 +26,49 @@ async function requireAdmin() {
   return supabase;
 }
 
+export async function updateHeroMainImage(mediaId: string | null): Promise<ActionResult> {
+  const supabase = await requireAdmin();
+  const normalizedMediaId = mediaId?.trim() || null;
+  const { data: existingHero, error: lookupError } = await supabase
+    .from("hero")
+    .select("singleton_key")
+    .eq("singleton_key", true)
+    .maybeSingle();
+
+  if (lookupError) {
+    console.error("Failed to find hero for image save", {
+      code: lookupError.code,
+      message: lookupError.message,
+    });
+    return { success: false, error: "Could not save the Hero image." };
+  }
+
+  const result = existingHero
+    ? await supabase
+        .from("hero")
+        .update({ media_id: normalizedMediaId })
+        .eq("singleton_key", true)
+    : await supabase.from("hero").insert({ singleton_key: true, media_id: normalizedMediaId });
+
+  if (result.error) {
+    console.error("Failed to save hero image", {
+      code: result.error.code,
+      message: result.error.message,
+    });
+    return { success: false, error: "Could not save the Hero image." };
+  }
+
+  await recordAuditLog({
+    action: "update",
+    target_table: "hero",
+    target_id: "singleton",
+    metadata: { media_id: normalizedMediaId },
+  });
+  revalidatePath("/");
+  revalidatePath("/admin/content/hero");
+  return { success: true };
+}
+
 export async function updateHero(input: HeroFormValues): Promise<ActionResult> {
   const supabase = await requireAdmin();
   const parsed = heroSchema.safeParse(input);
@@ -48,30 +91,35 @@ export async function updateHero(input: HeroFormValues): Promise<ActionResult> {
     icon: item.icon,
     media_id: item.media_id || null,
   }));
+  const heroPayload = {
+    singleton_key: true,
+    media_id: parsed.data.media_id || null,
+    eyebrow_translations: parsed.data.eyebrow_translations,
+    title_translations: parsed.data.title_translations,
+    highlight_translations: parsed.data.highlight_translations,
+    description_translations: parsed.data.description_translations,
+    primary_cta_label_translations: parsed.data.primary_cta_label_translations,
+    primary_cta_url: parsed.data.primary_cta_url || null,
+    secondary_cta_label_translations: parsed.data.secondary_cta_label_translations,
+    secondary_cta_url: parsed.data.secondary_cta_url || null,
+    metrics: parsed.data.metrics,
+    trusted_by: trustedBy,
+    trusted_by_label_translations: parsed.data.trusted_by_label_translations,
+    is_visible: parsed.data.is_visible,
+  };
+
   const { error } = await supabase
     .from("hero")
     .upsert(
       {
-        singleton_key: true,
-        media_id: parsed.data.media_id || null,
-        eyebrow_translations: parsed.data.eyebrow_translations,
-        title_translations: parsed.data.title_translations,
-        highlight_translations: parsed.data.highlight_translations,
-        description_translations: parsed.data.description_translations,
-        primary_cta_label_translations: parsed.data.primary_cta_label_translations,
-        primary_cta_url: parsed.data.primary_cta_url || null,
-        secondary_cta_label_translations: parsed.data.secondary_cta_label_translations,
-        secondary_cta_url: parsed.data.secondary_cta_url || null,
-        metrics: parsed.data.metrics,
-        trusted_by: trustedBy,
-        trusted_by_label_translations: parsed.data.trusted_by_label_translations,
-        is_visible: parsed.data.is_visible,
+        ...heroPayload,
       },
       { onConflict: "singleton_key" }
     );
 
   if (error) {
-    return { success: false, error: "Failed to save hero." };
+    console.error("Failed to save hero", { code: error.code, message: error.message });
+    return { success: false, error: "Failed to save hero. Please check the Hero fields and try again." };
   }
 
   await recordAuditLog({

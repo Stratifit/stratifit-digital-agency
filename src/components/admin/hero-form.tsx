@@ -10,7 +10,10 @@ import {
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { heroSchema, type HeroFormValues } from "@/features/hero/admin-schemas";
-import { updateHero } from "@/features/hero/admin-mutations";
+import {
+  updateHero,
+  updateHeroMainImage,
+} from "@/features/hero/admin-mutations";
 import type { AdminHero } from "@/features/hero/admin-queries";
 import { DEFAULT_TRUSTED_BY } from "@/features/hero/defaults";
 import { uploadMediaAsset } from "@/features/media/mutations";
@@ -189,6 +192,7 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
 
   const isVisible = useWatch({ control, name: "is_visible" });
   const heroImageUrl = useWatch({ control, name: "image_url" });
+  const heroMediaId = useWatch({ control, name: "media_id" });
   const [uploadingHeroImage, setUploadingHeroImage] = React.useState(false);
   const [heroImageError, setHeroImageError] = React.useState<string | null>(null);
   const heroImageInput = React.useRef<HTMLInputElement>(null);
@@ -205,8 +209,14 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
       formData.set("alt_text", "Hero main image");
       const result = await uploadMediaAsset(formData);
       if (result.success) {
-        setValue("media_id", result.data.id, { shouldDirty: true });
-        setValue("image_url", result.data.url, { shouldDirty: true });
+        const saveResult = await updateHeroMainImage(result.data.id);
+        if (!saveResult.success) {
+          setHeroImageError(saveResult.error);
+          return;
+        }
+        setValue("media_id", result.data.id, { shouldDirty: false, shouldValidate: true });
+        setValue("image_url", result.data.url, { shouldDirty: false, shouldValidate: true });
+        setSaved(true);
         if (heroImageInput.current) heroImageInput.current.value = "";
       } else setHeroImageError(result.error);
     } catch {
@@ -216,9 +226,15 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
     }
   }
 
-  function removeHeroImage() {
-    setValue("media_id", "", { shouldDirty: true });
-    setValue("image_url", "", { shouldDirty: true });
+  async function removeHeroImage() {
+    const result = await updateHeroMainImage(null);
+    if (!result.success) {
+      setHeroImageError(result.error);
+      return;
+    }
+    setValue("media_id", "", { shouldDirty: false, shouldValidate: true });
+    setValue("image_url", "", { shouldDirty: false, shouldValidate: true });
+    setSaved(true);
   }
   const metricFields = useFieldArray({ control, name: "metrics" });
   const trustedFields = useFieldArray({ control, name: "trusted_by" });
@@ -341,10 +357,14 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
             </div>
             <div className="space-y-2">
               <Label>Hero main image</Label>
-              {heroImageUrl ? (
+              {heroImageUrl || heroMediaId ? (
                 <div className="space-y-3">
-                  {/* eslint-disable-next-line @next/next/no-img-element -- admin preview */}
-                  <img src={heroImageUrl} alt="Hero main image preview" className="max-h-72 w-full rounded-card border border-card-border bg-background object-cover" />
+                  {heroImageUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element -- admin preview
+                    <img src={heroImageUrl} alt="Hero main image preview" className="max-h-72 w-full rounded-card border border-card-border bg-background object-cover" />
+                  ) : (
+                    <div className="flex min-h-48 items-center justify-center rounded-card border border-card-border bg-background text-sm text-text-muted">Image uploaded — save to refresh preview</div>
+                  )}
                   <button type="button" onClick={removeHeroImage} className="text-xs text-text-muted hover:text-error">Remove image</button>
                 </div>
               ) : (
