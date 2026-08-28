@@ -201,13 +201,13 @@ export function InsightsCarousel({
             <div
               ref={scrollRef}
               onScroll={handleScroll}
-              className="-mx-6 flex touch-pan-x touch-pan-y overscroll-x-contain snap-x snap-proximity gap-4 overflow-x-auto px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:gap-8 lg:-mx-8 lg:px-8"
+              className="-mx-6 flex touch-pan-x touch-pan-y overscroll-x-contain snap-x snap-proximity gap-4 overflow-x-auto px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:gap-8 lg:-mx-8 lg:px-8 lg:gap-6"
             >
               {filtered.map((insight) => (
                 <div
                   key={insight.slug}
                   data-insight-card
-                  className="w-[80vw] min-w-[280px] max-w-[340px] shrink-0 snap-center sm:w-[360px] sm:min-w-[360px] sm:max-w-none lg:w-[calc((100%-4.5rem)/4)] lg:min-w-0 lg:max-w-none"
+                  className="w-[80vw] min-w-[280px] max-w-[340px] shrink-0 snap-center sm:w-[360px] sm:min-w-[360px] sm:max-w-none lg:w-[calc((100%_-_4.5rem)/4)] lg:min-w-0 lg:max-w-none"
                 >
                   <InsightCard
                     insight={insight}
