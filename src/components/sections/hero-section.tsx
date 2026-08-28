@@ -110,8 +110,8 @@ export async function HeroSection() {
     resolveTranslation(hero.primary_cta_label_translations, locale) ||
     resolveTranslation(FALLBACK_HERO.primaryCta, locale);
   const secondaryLabel =
-    resolveTranslation(hero.secondary_cta_label_translations, locale) ||      resolveTranslation(FALLBACK_HERO.secondaryCta, locale);
-
+    resolveTranslation(hero.secondary_cta_label_translations, locale) ||
+    resolveTranslation(FALLBACK_HERO.secondaryCta, locale);
 
   const dbMetrics = (hero.metrics as HeroMetric[] | null) ?? [];
   const stats = dbMetrics.length > 0 ? dbMetrics : FALLBACK_STATS;
@@ -139,7 +139,7 @@ export async function HeroSection() {
         >
           <span className="block">{title}</span>
           {highlight ? (
-            <span className="mt-1 block text-[#ffb300] lg:mt-2">
+            <span className="mt-1 block text-primary-light lg:mt-2">
               {highlight}
             </span>
           ) : null}
@@ -185,7 +185,7 @@ export async function HeroSection() {
                 href={hero.secondary_cta_url}
                 variant="tertiary"
                 size="medium"
-                className="group !h-12 w-full !text-base !font-semibold !rounded-[6px] sm:w-[370px] sm:flex-none"
+                className="group !h-12 w-full !text-base !font-semibold !rounded-button sm:w-[370px] sm:flex-none"
               >
                 <svg
                   viewBox="0 0 24 24"
