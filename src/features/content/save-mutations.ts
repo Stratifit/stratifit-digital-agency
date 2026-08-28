@@ -41,10 +41,14 @@ async function requireAdmin() {
   return supabase;
 }
 
-function formatError(error: { code?: string }) {
+function formatError(error: { code?: string; message?: string }) {
   if (error.code === "23505") {
     return "An item with this slug already exists.";
   }
+  // Log the real failure server-side — the admin UI intentionally shows a
+  // generic message, so logs are the only place to diagnose DB issues
+  // (e.g. missing columns, RLS violations) without leaking details publicly.
+  console.error("[content/save] save failed", error.code, error.message);
   return "Failed to save. Please try again.";
 }
 
