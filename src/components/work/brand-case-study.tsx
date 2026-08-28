@@ -1,6 +1,5 @@
 import { Fragment } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import type {
   PublicPortfolioBrandSystem,
   PublicPortfolioDetail,
@@ -13,6 +12,9 @@ import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/publi
 import { sanitizePublicText } from "@/lib/i18n/public-text";
 import { t, tWithValue } from "@/lib/i18n/ui-strings";
 import { Reveal } from "@/components/ui/reveal";
+import { Container } from "@/components/ui/container";
+import { Section } from "@/components/ui/section";
+import { CtaCard } from "@/components/sections/cta-card";
 import { RelatedProjects } from "@/components/work/related-projects";
 import { BrandBoard } from "@/components/work/brand-board";
 import { OverviewSlider } from "@/components/work/overview-slider";
@@ -73,23 +75,6 @@ function StrategyCard({
         {children}
       </p>
     </div>
-  );
-}
-
-function ArrowIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className={className}
-    >
-      <path d="M5 12h14m-5-5 5 5-5 5" />
-    </svg>
   );
 }
 
@@ -1294,36 +1279,21 @@ export function BrandCaseStudy({
       ) : null}
 
       {/* ============================================================ */}
-      {/* Final CTA                                                     */}
+      {/* Final CTA — shared CtaCard, same design as services/about    */}
       {/* ============================================================ */}
-      <section className="py-16 md:py-24">
-        <div className="mx-auto w-full max-w-2xl px-4 sm:px-6 lg:px-8">
+      <Section>
+        <Container>
           <Reveal>
-            <div className="relative overflow-hidden rounded-card border border-primary/20 bg-card-dark px-5 py-6 text-center shadow-xl sm:px-8 sm:py-8">
-              <div aria-hidden="true" className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                {t(locale, "servicesStartProject")}
-              </p>
-              <h2 className="mt-2 font-display text-xl font-black tracking-tight text-text-primary sm:text-2xl">
-                {t(locale, "workCtaTitle")}
-              </h2>
-              <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-text-muted">
-                {t(locale, "workCtaSubtitle")}
-              </p>
-              <div className="relative mt-6 flex justify-center">
-                <div aria-hidden="true" className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-primary/35 to-transparent" />
-                <Link
-                  href="/contact"
-                  className="group relative inline-flex min-h-14 max-w-full items-center gap-3 rounded-button border border-primary/60 bg-primary px-5 py-2.5 text-center text-sm font-bold text-text-inverse shadow-amber transition-[background-color,border-color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-1 hover:border-primary-light hover:bg-primary-light hover:shadow-[0_0_48px_rgba(245,158,11,0.32)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-4 active:translate-y-0 active:border-primary-active active:bg-primary-active sm:px-6 sm:text-base"
-                >
-                  <span>{ctaLabel}</span>
-                  <ArrowIcon className="size-4 text-text-inverse transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1" />
-                </Link>
-              </div>
-            </div>
+            <CtaCard
+              title={t(locale, "workCtaTitle")}
+              description={t(locale, "workCtaSubtitle")}
+              label={ctaLabel}
+              href="/contact"
+              locale={locale}
+            />
           </Reveal>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
       {/* ============================================================ */}
       {/* 07 — Client perspective                                      */}
