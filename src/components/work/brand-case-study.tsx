@@ -807,7 +807,7 @@ export function BrandCaseStudy({
       <section className="relative overflow-hidden border-b border-white/5">
         <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal immediate>
-            <div className="flex flex-col items-center pb-12 pt-14 text-center md:pb-16 md:pt-20">
+            <div className="flex flex-col items-center pb-[38px] pt-14 text-center md:pb-[54px] md:pt-20">
               {project.image_url ? (
                 <div className="flex w-full max-w-4xl flex-col items-start">
                   <div className="w-full overflow-hidden rounded-card border border-white/10 bg-card-dark shadow-xl">
