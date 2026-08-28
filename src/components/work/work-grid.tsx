@@ -184,7 +184,7 @@ export function WorkGrid({
 
       {visible.length === 0 ? (
         <p className="py-20 text-center text-sm text-text-muted">
-          No projects in this category yet.
+          {t(locale, "noProjectsInCategory")}
         </p>
       ) : (
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">

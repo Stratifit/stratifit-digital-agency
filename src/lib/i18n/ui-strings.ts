@@ -316,7 +316,9 @@ export type UiStringKey =
   | "insightsEyebrow"
   | "insightsTitleFallback"
   | "insightsHighlightFallback"
-  | "insightsDescriptionFallback";
+  | "insightsDescriptionFallback"
+  | "relatedInsights"
+  | "noProjectsInCategory";
 
 type UiStrings = Record<UiStringKey, string>;
 type UiDictionary = Record<(typeof SUPPORTED_LOCALES)[number], UiStrings>;
@@ -663,6 +665,8 @@ const en: UiStrings = {
   insightsHighlightFallback: "Digital Growth",
   insightsDescriptionFallback:
     "Thought leadership, industry perspectives, and actionable strategies from our team of strategists, designers, and engineers.",
+  relatedInsights: "Related insights",
+  noProjectsInCategory: "No projects in this category yet.",
 };
 
 const de: UiStrings = {
@@ -1008,6 +1012,8 @@ const de: UiStrings = {
   insightsHighlightFallback: "digitales Wachstum",
   insightsDescriptionFallback:
     "Thought Leadership, Branchenperspektiven und umsetzbare Strategien von unserem Team aus Strategen, Designern und Ingenieuren.",
+  relatedInsights: "Ähnliche Beiträge",
+  noProjectsInCategory: "Noch keine Projekte in dieser Kategorie.",
 };
 
 const fr: UiStrings = {
@@ -1353,6 +1359,8 @@ const fr: UiStrings = {
   insightsHighlightFallback: "croissance numérique",
   insightsDescriptionFallback:
     "Leadership éclairé, perspectives sectorielles et stratégies concrètes de notre équipe de stratèges, designers et ingénieurs.",
+  relatedInsights: "Analyses similaires",
+  noProjectsInCategory: "Aucun projet dans cette catégorie pour le moment.",
 };
 
 const es: UiStrings = {
@@ -1698,6 +1706,8 @@ const es: UiStrings = {
   insightsHighlightFallback: "digital más inteligente",
   insightsDescriptionFallback:
     "Liderazgo de pensamiento, perspectivas del sector y estrategias accionables de nuestro equipo de estrategas, diseñadores e ingenieros.",
+  relatedInsights: "Artículos relacionados",
+  noProjectsInCategory: "Aún no hay proyectos en esta categoría.",
 };
 
 const dictionary: UiDictionary = { en, de, fr, es };

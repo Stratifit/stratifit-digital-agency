@@ -221,10 +221,10 @@ export default async function InsightDetailPage({
           <Container>
             <Reveal variant="fade">
               <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                Insights
+                {t(locale, "insightsEyebrow")}
               </p>
               <h2 className="font-display text-3xl font-black tracking-tight text-text-primary sm:text-4xl">
-                Related insights
+                {t(locale, "relatedInsights")}
               </h2>
             </Reveal>
             <Reveal variant="card" className="mt-10" cardSelector="[data-insight-card]">
