@@ -98,14 +98,17 @@ export function CookieConsentBanner({
   locale?: string;
 }) {
   const [consent, setConsent] = React.useState<ConsentRecord | null>(() =>
-    readConsent()
+    typeof window === "undefined" ? null : readConsent()
   );
+  const [consentChecked] = React.useState(() => typeof window !== "undefined");
   const [view, setView] = React.useState<"main" | "settings">("main");
   const [choices, setChoices] = React.useState<Record<string, boolean>>({});
   const firstControlRef = React.useRef<HTMLButtonElement>(null);
 
-  // Derived: the banner shows only when enabled and no choice has been made.
-  const show = Boolean(settings?.banner_enabled && consent === null);
+  // The initializer reads browser storage before the first client render,
+  // while the server render remains hidden. This prevents the banner from
+  // flashing before an existing consent choice is restored.
+  const show = consentChecked && Boolean(settings?.banner_enabled && consent === null);
 
   React.useEffect(() => {
     if (show) {
