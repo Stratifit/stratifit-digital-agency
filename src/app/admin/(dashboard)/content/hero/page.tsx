@@ -18,6 +18,7 @@ export default async function AdminHeroPage() {
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <AdminPageHeader
+        backHref="/admin/content/sections"
         title="Hero"
         description="Headline, call-to-action buttons, stat metrics, and trusted-by logos shown at the top of the homepage."
       />

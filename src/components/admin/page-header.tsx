@@ -1,4 +1,5 @@
 import * as React from "react";
+import Link from "next/link";
 import { cn } from "@/lib/cn";
 
 export function AdminPageHeader({
@@ -6,12 +7,16 @@ export function AdminPageHeader({
   title,
   description,
   actions,
+  backHref,
+  backLabel = "Back to content",
   className,
 }: {
   eyebrow?: string;
   title: string;
   description?: React.ReactNode;
   actions?: React.ReactNode;
+  backHref?: string;
+  backLabel?: string;
   className?: string;
 }) {
   return (
@@ -22,6 +27,15 @@ export function AdminPageHeader({
       )}
     >
       <div className="min-w-0">
+        {backHref ? (
+          <Link
+            href={backHref}
+            className="mb-3 inline-flex items-center gap-1.5 text-xs font-medium text-text-muted transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            <span aria-hidden="true">←</span>
+            {backLabel}
+          </Link>
+        ) : null}
         {eyebrow ? (
           <p className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.28em] text-text-muted">
             <span aria-hidden="true" className="h-px w-4 bg-primary/50" />

@@ -17,6 +17,7 @@ export default async function AdminAcquisitionPage() {
   return (
     <div className="space-y-6">
       <AdminPageHeader
+        backHref="/admin/content/sections"
         title="Buy a Business"
         description="Marketplace heading and the business listings shown on the homepage and /buy-business."
       />

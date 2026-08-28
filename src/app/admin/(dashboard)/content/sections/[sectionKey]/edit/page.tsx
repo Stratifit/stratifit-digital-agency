@@ -26,6 +26,7 @@ export default async function EditSectionSettingsPage({
   return (
     <div className="mx-auto max-w-4xl space-y-6">
       <AdminPageHeader
+        backHref="/admin/content/sections"
         eyebrow={settings.section_key}
         title={`Edit ${settings.label}`}
         description={
