@@ -854,7 +854,7 @@ export function BrandCaseStudy({
               <dl className="grid grid-cols-3 divide-x divide-white/10 overflow-hidden rounded-card border border-white/10 bg-card-dark">
                 {metaItems.map((item) => (
                   <div key={item.label} className="px-4 py-5 sm:px-6 sm:py-6">
-                    <dt className="text-[9px] font-bold uppercase tracking-[0.2em] text-primary sm:text-[10px]">
+                    <dt className="text-[9px] font-extrabold uppercase tracking-[0.2em] text-primary sm:text-[10px]">
                       {item.label}
                     </dt>
                     <dd className="mt-1.5 truncate text-xs font-semibold leading-snug text-text-primary sm:text-sm">
