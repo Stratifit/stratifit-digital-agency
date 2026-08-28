@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { getLocale } from "@/lib/i18n/get-locale";
@@ -25,6 +25,9 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  if (slug === "aura-cosmetics-identity") {
+    permanentRedirect("/work/clenqo");
+  }
   const locale = await getLocale();
   const project = await getPublicPortfolioDetail(slug);
   if (!project) return {};
@@ -119,6 +122,9 @@ export default async function WorkDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  if (slug === "aura-cosmetics-identity") {
+    permanentRedirect("/work/clenqo");
+  }
   const locale = await getLocale();
   const [
     project,
