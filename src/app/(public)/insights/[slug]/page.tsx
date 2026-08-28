@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import {
   getPublicInsightCategories,
   getPublicInsightDetail,
+  getRelatedPublicInsights,
 } from "@/features/insights/queries";
 import {
   formatInsightDate,
@@ -17,6 +18,7 @@ import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import Image from "next/image";
 import Link from "next/link";
+import { InsightsCarousel } from "@/components/sections/insights-carousel";
 
 /** Render `**bold**` inline markers as <strong>. */
 function renderInline(text: string) {
@@ -101,7 +103,10 @@ export default async function InsightDetailPage({
     notFound();
   }
 
-  const categories = await getPublicInsightCategories();
+  const [categories, relatedInsights] = await Promise.all([
+    getPublicInsightCategories(),
+    getRelatedPublicInsights(insight, 3),
+  ]);
 
   const content = resolveTranslation(insight.content_translations, locale) || "";
   const insightTitle = resolveTranslation(insight.title_translations, locale);
@@ -210,6 +215,28 @@ export default async function InsightDetailPage({
           </Reveal>
         </Container>
       </section>
+
+      {relatedInsights.length > 0 ? (
+        <section className="border-t border-white/5 py-16 md:py-24">
+          <Container>
+            <Reveal variant="fade">
+              <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+                Insights
+              </p>
+              <h2 className="font-display text-3xl font-black tracking-tight text-text-primary sm:text-4xl">
+                Related insights
+              </h2>
+            </Reveal>
+            <Reveal variant="card" className="mt-10" cardSelector="[data-insight-card]">
+              <InsightsCarousel
+                insights={relatedInsights}
+                categories={categories}
+                locale={locale}
+              />
+            </Reveal>
+          </Container>
+        </section>
+      ) : null}
     </>
   );
 }

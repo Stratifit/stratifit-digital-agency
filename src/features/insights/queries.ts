@@ -199,3 +199,20 @@ export async function getPublicInsightDetail(
       (data.seo_description_translations as Record<string, string> | null) ?? null,
   };
 }
+
+export async function getRelatedPublicInsights(
+  insight: PublicInsightDetail,
+  limit = 3
+): Promise<PublicInsight[]> {
+  const categorySlug = insight.category_slugs[0];
+  if (!categorySlug) return [];
+
+  const insights = await getPublicInsights(100);
+  return insights
+    .filter(
+      (candidate) =>
+        candidate.slug !== insight.slug &&
+        candidate.category_slugs.includes(categorySlug)
+    )
+    .slice(0, limit);
+}
