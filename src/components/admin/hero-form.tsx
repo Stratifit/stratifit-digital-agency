@@ -17,6 +17,12 @@ import {
 import type { AdminHero } from "@/features/hero/admin-queries";
 import { DEFAULT_TRUSTED_BY } from "@/features/hero/defaults";
 import { uploadMediaAsset } from "@/features/media/mutations";
+import {
+  aspectMatches,
+  formatAspect,
+  readImageSize,
+  recommendedSizeLabel,
+} from "@/lib/image-dimensions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -195,6 +201,7 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
   const heroMediaId = useWatch({ control, name: "media_id" });
   const [uploadingHeroImage, setUploadingHeroImage] = React.useState(false);
   const [heroImageError, setHeroImageError] = React.useState<string | null>(null);
+  const [heroImageWarning, setHeroImageWarning] = React.useState<string | null>(null);
   const heroImageInput = React.useRef<HTMLInputElement>(null);
 
   async function uploadHeroImage(e: React.ChangeEvent<HTMLInputElement>) {
@@ -202,7 +209,14 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
     if (!file) return;
     setUploadingHeroImage(true);
     setHeroImageError(null);
+    setHeroImageWarning(null);
     try {
+      const size = await readImageSize(file);
+      if (size && !aspectMatches(size, { width: 16, height: 9 })) {
+        setHeroImageWarning(
+          `This image is ${formatAspect(size.width, size.height)} — it will be cropped to 16:9 in the hero. Recommended: ${recommendedSizeLabel(1600, 900)}.`
+        );
+      }
       const formData = new FormData();
       formData.set("file", file);
       formData.set("bucket", "portfolio-images");
@@ -373,8 +387,9 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
                   {uploadingHeroImage ? "Uploading…" : "Add Hero image"}
                 </label>
               )}
+              {heroImageWarning ? <p className="rounded-sm border border-primary/30 bg-primary/10 px-2 py-1.5 text-xs text-primary">{heroImageWarning}</p> : null}
               {heroImageError ? <p className="text-xs text-error">{heroImageError}</p> : null}
-              <p className="text-xs text-text-muted">Recommended: 1600 × 900 px or larger. The existing Hero layout remains unchanged.</p>
+              <p className="text-xs text-text-muted">Recommended: 1600 × 900 px (16:9) or larger. The existing Hero layout remains unchanged.</p>
             </div>
           </div>
         ) : null}

@@ -3,6 +3,13 @@
 import * as React from "react";
 import { useWatch, type Control, type FieldValues, type UseFormSetValue } from "react-hook-form";
 import { uploadMediaAsset } from "@/features/media/mutations";
+import {
+  aspectMatches,
+  formatAspect,
+  readImageSize,
+  recommendedSizeLabel,
+  type AspectTarget,
+} from "@/lib/image-dimensions";
 import { Label } from "@/components/ui/label";
 import {
   CASE_STUDY_MEDIA_SECTIONS,
@@ -23,19 +30,36 @@ const LABELS: Record<string, string> = {
 
 const ACCEPT = "image/jpeg,image/png,image/webp,image/gif,image/svg+xml,image/avif";
 
+// Render targets for each asset type — main images display in a 4:3 frame on
+// the public case-study page, thumbnails in square strips.
+const MAIN_IMAGE_TARGET: AspectTarget = { width: 4, height: 3 };
+const THUMBNAIL_TARGET: AspectTarget = { width: 1, height: 1 };
+
 function AssetPicker({
   value,
   onChange,
+  target,
+  recommended,
 }: {
   value: CaseStudyMediaAsset;
   onChange: (value: CaseStudyMediaAsset) => void;
+  target: AspectTarget;
+  recommended: string;
 }) {
   const [uploading, setUploading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [warning, setWarning] = React.useState<string | null>(null);
   async function upload(file: File) {
     setUploading(true);
     setError(null);
+    setWarning(null);
     try {
+      const size = await readImageSize(file);
+      if (size && !aspectMatches(size, target)) {
+        setWarning(
+          `This image is ${formatAspect(size.width, size.height)} — it will be cropped to ${formatAspect(target.width, target.height)} in the section. Recommended: ${recommended}.`
+        );
+      }
       const formData = new FormData();
       formData.set("file", file);
       formData.set("bucket", "portfolio-images");
@@ -65,6 +89,7 @@ function AssetPicker({
         )}
         {uploading ? <span className="absolute inset-0 flex items-center justify-center bg-black/60 text-xs text-white">Uploading…</span> : null}
       </div>
+      {warning ? <p className="rounded-sm border border-primary/30 bg-primary/10 px-2 py-1.5 text-xs text-primary">{warning}</p> : null}
       {error ? <p className="text-xs text-error">{error}</p> : null}
     </div>
   );
@@ -87,11 +112,19 @@ export function CaseStudyMediaEditor({ control, setValue }: { control: Control<F
           <div key={section} className="rounded-card border border-white/5 bg-background p-4 space-y-4">
             <div><h3 className="font-display text-lg font-bold text-text-primary">{LABELS[section]}</h3><p className="mt-1 text-xs text-text-muted">Main visual and supporting thumbnail images shown in this section.</p></div>
             <div className="grid gap-4 md:grid-cols-[minmax(220px,1fr)_minmax(0,1.4fr)]">
-              <div className="space-y-2"><Label>Main image</Label><AssetPicker value={value.main} onChange={(main) => patch(section, { main })} /></div>
-              <div className="space-y-2"><Label>Thumbnails</Label><div className="grid grid-cols-3 gap-2">{Array.from({ length: 6 }, (_, index) => {
-                const thumb = value.thumbnails[index] ?? { media_id: "", image_url: "" };
-                return <AssetPicker key={index} value={thumb} onChange={(next) => { const thumbnails = [...value.thumbnails]; thumbnails[index] = next; patch(section, { thumbnails }); }} />;
-              })}</div></div>
+              <div className="space-y-2">
+                <Label>Main image</Label>
+                <p className="text-[11px] text-text-muted">Recommended: <span className="font-semibold text-primary">{recommendedSizeLabel(1600, 1200)}</span> — fits the 4:3 section frame without cutting.</p>
+                <AssetPicker value={value.main} target={MAIN_IMAGE_TARGET} recommended={recommendedSizeLabel(1600, 1200)} onChange={(main) => patch(section, { main })} />
+              </div>
+              <div className="space-y-2">
+                <Label>Thumbnails</Label>
+                <p className="text-[11px] text-text-muted">Recommended: <span className="font-semibold text-primary">{recommendedSizeLabel(400, 400)}</span> — square thumbnails are never cropped.</p>
+                <div className="grid grid-cols-3 gap-2">{Array.from({ length: 6 }, (_, index) => {
+                  const thumb = value.thumbnails[index] ?? { media_id: "", image_url: "" };
+                  return <AssetPicker key={index} value={thumb} target={THUMBNAIL_TARGET} recommended={recommendedSizeLabel(400, 400)} onChange={(next) => { const thumbnails = [...value.thumbnails]; thumbnails[index] = next; patch(section, { thumbnails }); }} />;
+                })}</div>
+              </div>
             </div>
           </div>
         );

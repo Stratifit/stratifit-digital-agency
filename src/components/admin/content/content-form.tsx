@@ -38,6 +38,12 @@ import { Select } from "@/components/ui/select";
 import { EditorSectionSwitcher } from "@/components/admin/editor-section-switcher";
 import { LocaleTabs, type EditorLocale } from "@/components/admin/locale-tabs";
 import { uploadMediaAsset } from "@/features/media/mutations";
+import {
+  aspectMatches,
+  formatAspect,
+  readImageSize,
+  recommendedSizeLabel,
+} from "@/lib/image-dimensions";
 import type { AdminServiceOption } from "@/features/content/admin-queries";
 import { normalizeBrandGuidelines } from "@/features/portfolio/brand-guidelines";
 import { portfolioSlugFromClientName } from "@/features/portfolio/slug";
@@ -234,6 +240,7 @@ function PortfolioGalleryUploader({
   const gallery = (useWatch({ control, name: "gallery" }) ?? []) as GalleryItem[];
   const [uploadingIndex, setUploadingIndex] = React.useState<number | null>(null);
   const [uploadError, setUploadError] = React.useState<string | null>(null);
+  const [aspectWarning, setAspectWarning] = React.useState<string | null>(null);
   const addInputRefs = React.useRef<Array<HTMLInputElement | null>>([]);
   const replaceInputRefs = React.useRef<Array<HTMLInputElement | null>>([]);
 
@@ -242,7 +249,14 @@ function PortfolioGalleryUploader({
     if (!file) return;
     setUploadingIndex(index);
     setUploadError(null);
+    setAspectWarning(null);
     try {
+      const size = await readImageSize(file);
+      if (size && !aspectMatches(size, { width: 4, height: 3 })) {
+        setAspectWarning(
+          `This image is ${formatAspect(size.width, size.height)} — it will be cropped to 4:3 in the work grid. Recommended: ${recommendedSizeLabel(1600, 1200)}.`
+        );
+      }
       const formData = new FormData();
       formData.set("file", file);
       formData.set("bucket", "portfolio-images");
@@ -343,13 +357,16 @@ function PortfolioGalleryUploader({
         )}
       </div>
       {uploadError ? <p className="mt-2 text-xs text-error">{uploadError}</p> : null}
+      {aspectWarning ? (
+        <p className="mt-2 rounded-sm border border-primary/30 bg-primary/10 px-3 py-2 text-xs text-primary">{aspectWarning}</p>
+      ) : null}
       <p className="mt-2 text-xs text-text-muted">
         Up to 6 images for the work card grid. The first image is the card
         cover; brand-design projects show a 2×2 grid of the first four.
       </p>
       <p className="mt-1.5 rounded-sm border border-primary/20 bg-primary/5 px-3 py-2 text-xs text-text-muted">
-        Recommended size: <span className="font-semibold text-primary">1500 × 1000 px (3:2)</span> —
-        it fits the card grid and the case-study page without cutting out
+        Recommended size: <span className="font-semibold text-primary">{recommendedSizeLabel(1600, 1200)}</span> —
+        it fits the work card grid and the case-study page without cutting out
         important detail.
       </p>
     </div>
