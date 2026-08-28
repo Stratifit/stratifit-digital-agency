@@ -55,7 +55,7 @@ export function TestimonialCard({ testimonial, locale, className }: { testimonia
         </div>
         {testimonial.source === "google" ? <GoogleIcon className="size-6 shrink-0" /> : null}
       </div>
-      <blockquote className="mt-5 font-display text-lg font-semibold leading-snug tracking-tight text-text-primary sm:text-xl">
+      <blockquote className="mt-5 font-display text-base font-medium leading-relaxed tracking-tight text-text-primary sm:text-lg">
         {resolveTranslation(testimonial.quote_translations, locale)}
       </blockquote>
       <div className="mt-auto">
