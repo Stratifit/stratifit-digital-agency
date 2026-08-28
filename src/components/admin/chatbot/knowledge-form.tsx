@@ -7,7 +7,6 @@ import {
   knowledgeEntrySchema,
   KNOWLEDGE_CATEGORIES,
   KNOWLEDGE_SOURCE_TYPES,
-  SUPPORTED_LOCALES,
   type KnowledgeEntryFormValues,
 } from "@/features/chat/chat-admin-schemas";
 import {
@@ -21,6 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { LocaleTabs, type EditorLocale } from "@/components/admin/locale-tabs";
 
 const LOCALE_NAMES: Record<string, string> = {
   en: "English",
@@ -81,6 +81,7 @@ export function KnowledgeForm({
   const isEdit = Boolean(entry);
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [saved, setSaved] = React.useState(false);
+  const [locale, setLocale] = React.useState<EditorLocale>("en");
 
   const {
     register,
@@ -217,42 +218,40 @@ export function KnowledgeForm({
         </div>
       </div>
 
-      {/* Locale fieldsets */}
-      <div className="space-y-6">
-        {SUPPORTED_LOCALES.map((locale) => (
-          <fieldset
-            key={locale}
-            className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm"
-          >
-            <legend className="px-2 text-[10px] font-bold uppercase tracking-[0.28em] text-primary">
-              {LOCALE_NAMES[locale]}
-            </legend>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor={`title-${locale}`}>Title</Label>
-                <Input
-                  key={locale} id={`title-${locale}`}
-                  placeholder="How long does delivery take?"
-                  {...register(`title_translations.${locale}`)}
-                />
-                {locale === "en" && errors.title_translations?.en?.message ? (
-                  <p className="mt-1 text-xs text-error">
-                    {errors.title_translations.en.message}
-                  </p>
-                ) : null}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor={`content-${locale}`}>Content</Label>
-                <Textarea
-                  key={locale} id={`content-${locale}`}
-                  rows={5}
-                  placeholder="The factual answer the AI should give…"
-                  {...register(`content_translations.${locale}`)}
-                />
-              </div>
-            </div>
-          </fieldset>
-        ))}
+      {/* Answer content */}
+      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="font-display text-sm font-bold text-text-primary">Question and answer</p>
+            <p className="mt-0.5 text-xs text-text-muted">Write the question and the factual answer the main chatbot should use.</p>
+          </div>
+          <LocaleTabs value={locale} onChange={setLocale} />
+        </div>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor={`title-${locale}`}>Question ({LOCALE_NAMES[locale]})</Label>
+            <Input
+              key={locale}
+              id={`title-${locale}`}
+              placeholder="How long does delivery take?"
+              {...register(`title_translations.${locale}`)}
+            />
+            {locale === "en" && errors.title_translations?.en?.message ? (
+              <p className="mt-1 text-xs text-error">{errors.title_translations.en.message}</p>
+            ) : null}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor={`content-${locale}`}>Answer ({LOCALE_NAMES[locale]})</Label>
+            <Textarea
+              key={locale}
+              id={`content-${locale}`}
+              rows={7}
+              placeholder="The factual answer the AI should give…"
+              {...register(`content_translations.${locale}`)}
+            />
+          </div>
+        </div>
+        <p className="mt-4 text-xs text-text-muted">Switch languages above to add translations. English is required; the bot falls back safely when another language is empty.</p>
       </div>
 
       {serverError ? (

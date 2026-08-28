@@ -17,6 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/cn";
+import { LocaleTabs, type EditorLocale } from "@/components/admin/locale-tabs";
 
 const LOCALE_NAMES: Record<string, string> = {
   en: "English",
@@ -84,6 +85,7 @@ export function FaqBotSettingsForm({
 }) {
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [saved, setSaved] = React.useState(false);
+  const [locale, setLocale] = React.useState<EditorLocale>("en");
 
   const {
     register,
@@ -214,38 +216,38 @@ export function FaqBotSettingsForm({
         </div>
       </div>
 
-      {/* Locale fieldsets */}
-      <div className="space-y-6">
-        {SUPPORTED_LOCALES.map((locale) => (
-          <fieldset
-            key={locale}
-            className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm"
-          >
-            <legend className="px-2 text-[10px] font-bold uppercase tracking-[0.28em] text-primary">
-              {LOCALE_NAMES[locale]}
-            </legend>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor={`welcome-${locale}`}>Welcome message</Label>
-                <Textarea
-                  key={locale} id={`welcome-${locale}`}
-                  rows={2}
-                  placeholder="👋 Hi! Ask me anything about Stratifit…"
-                  {...register(`welcome_message_translations.${locale}`)}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor={`fallback-${locale}`}>Fallback message</Label>
-                <Textarea
-                  key={locale} id={`fallback-${locale}`}
-                  rows={2}
-                  placeholder="I couldn't find an answer to that…"
-                  {...register(`faq_bot_fallback_translations.${locale}`)}
-                />
-              </div>
-            </div>
-          </fieldset>
-        ))}
+      {/* Bot messages */}
+      <div className="rounded-card border border-card-border bg-card-dark p-5 shadow-sm">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="font-display text-sm font-bold text-text-primary">Bot messages</p>
+            <p className="mt-0.5 text-xs text-text-muted">Set what visitors see when the FAQ bot opens and when it cannot find an answer.</p>
+          </div>
+          <LocaleTabs value={locale} onChange={setLocale} />
+        </div>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor={`welcome-${locale}`}>Welcome message ({LOCALE_NAMES[locale]})</Label>
+            <Textarea
+              key={locale}
+              id={`welcome-${locale}`}
+              rows={3}
+              placeholder="👋 Hi! Ask me anything about Stratifit…"
+              {...register(`welcome_message_translations.${locale}`)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor={`fallback-${locale}`}>No-answer message ({LOCALE_NAMES[locale]})</Label>
+            <Textarea
+              key={locale}
+              id={`fallback-${locale}`}
+              rows={3}
+              placeholder="I couldn't find an answer to that…"
+              {...register(`faq_bot_fallback_translations.${locale}`)}
+            />
+          </div>
+        </div>
+        <p className="mt-4 text-xs text-text-muted">Switch languages above to translate these messages. English remains the fallback language.</p>
       </div>
 
       {serverError ? (
