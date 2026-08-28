@@ -9,7 +9,7 @@ function StarIcon() {
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden="true"
-      className="size-4 text-primary"
+      className="size-5 text-primary"
     >
       <path
         fillRule="evenodd"
@@ -53,14 +53,14 @@ export function TestimonialCard({ testimonial, locale, className }: { testimonia
         <div className="flex gap-1" role="img" aria-label={tWithNumber(locale, "starsOutOfFive", 5)}>
           {Array.from({ length: 5 }).map((_, i) => <StarIcon key={i} />)}
         </div>
-        {testimonial.source === "google" ? <GoogleIcon className="size-5 shrink-0" /> : null}
+        {testimonial.source === "google" ? <GoogleIcon className="size-6 shrink-0" /> : null}
       </div>
-      <blockquote className="mt-5 font-display text-lg font-bold leading-snug tracking-tight text-text-primary sm:text-xl">
+      <blockquote className="mt-5 font-display text-lg font-semibold leading-snug tracking-tight text-text-primary sm:text-xl">
         {resolveTranslation(testimonial.quote_translations, locale)}
       </blockquote>
       <div className="mt-auto">
-        <div className="mt-6 border-t border-card-border" aria-hidden="true" />
-        <footer className="mt-5 flex items-center gap-3">
+        <div className="mt-[30px] border-t border-card-border" aria-hidden="true" />
+        <footer className="mt-3 flex items-center gap-3">
           <div className="flex size-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br from-surface-hover to-surface-active text-xs font-bold text-white">{initials(name)}</div>
           <div className="min-w-0 flex-1">
             <div className="truncate font-display font-bold text-text-primary">{name}</div>

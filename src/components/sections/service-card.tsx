@@ -8,7 +8,7 @@ import { t } from "@/lib/i18n/ui-strings";
 
 /** Full-width CTA — spans the entire card. */
 export const FULL_CTA_CLASS =
-  "group/link inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-full border border-primary/60 bg-primary px-5 py-2.5 text-center text-base font-bold text-text-inverse shadow-amber transition-[background-color,border-color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-1 hover:border-primary-light hover:bg-primary-light hover:shadow-[0_0_48px_rgba(245,158,11,0.32)] active:translate-y-0 active:border-primary-active active:bg-primary-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-4 sm:px-6";
+  "group/link inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-button border border-primary/60 bg-primary px-5 py-2.5 text-center text-base font-bold text-text-inverse shadow-amber transition-[background-color,border-color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-1 hover:border-primary-light hover:bg-primary-light hover:shadow-[0_0_48px_rgba(245,158,11,0.32)] active:translate-y-0 active:border-primary-active active:bg-primary-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-4 sm:px-6";
 
 /** Compact CTA — smaller, left-aligned, no arrow. */
 export const COMPACT_CTA_CLASS =
