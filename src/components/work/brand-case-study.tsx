@@ -808,21 +808,27 @@ export function BrandCaseStudy({
         <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal immediate>
             <div className="flex flex-col items-center pb-12 pt-14 text-center md:pb-16 md:pt-20">
-              <span className="inline-flex shrink-0 items-center rounded-full bg-primary px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-text-inverse">
-                {categoryLabel}
-              </span>
               {project.image_url ? (
-                <div className="mt-8 w-full max-w-4xl overflow-hidden rounded-card border border-white/10 bg-card-dark shadow-xl">
-                  <Image
-                    src={project.image_url}
-                    alt={`${wordmark}, ${t(locale, "workCaseStudy")}`}
-                    width={1600}
-                    height={1200}
-                    priority
-                    className="h-auto w-full object-cover"
-                  />
+                <div className="flex w-full max-w-4xl flex-col items-start">
+                  <div className="w-full overflow-hidden rounded-card border border-white/10 bg-card-dark shadow-xl">
+                    <Image
+                      src={project.image_url}
+                      alt={`${wordmark}, ${t(locale, "workCaseStudy")}`}
+                      width={1600}
+                      height={1200}
+                      priority
+                      className="h-auto w-full object-cover"
+                    />
+                  </div>
+                  <span className="mt-5 inline-flex shrink-0 items-center rounded-full bg-primary px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-text-inverse">
+                    {categoryLabel}
+                  </span>
                 </div>
-              ) : null}
+              ) : (
+                <span className="inline-flex shrink-0 items-center rounded-full bg-primary px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-text-inverse">
+                  {categoryLabel}
+                </span>
+              )}
               <HeroMonogram className="mt-8 size-28 md:size-40" />
               <h1
                 className="mt-6 font-display text-5xl font-black leading-none tracking-tight sm:text-6xl md:text-7xl"
