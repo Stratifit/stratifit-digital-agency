@@ -829,13 +829,19 @@ export function BrandCaseStudy({
                   {categoryLabel}
                 </span>
               )}
-              {/* The generated monogram is only a fallback — when a hero image
-                  exists (set in the CMS), it is the single visual of the cover. */}
+              {/* When a hero image is set in the CMS it is the single visual of
+                  the cover — the generated monogram and wordmark stay hidden so
+                  the authored brand artwork is not duplicated. The title remains
+                  as a screen-reader-only heading for document structure. */}
               {!project.image_url ? (
                 <HeroMonogram className="mt-8 size-28 md:size-40" />
               ) : null}
               <h1
-                className="mt-6 font-display text-5xl font-black leading-none tracking-tight sm:text-6xl md:text-7xl"
+                className={
+                  project.image_url
+                    ? "sr-only"
+                    : "mt-6 font-display text-5xl font-black leading-none tracking-tight sm:text-6xl md:text-7xl"
+                }
                 style={{ color: BRAND_GREEN }}
               >
                 <BrandWordmark name={wordmark} />
