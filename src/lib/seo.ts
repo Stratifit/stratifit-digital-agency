@@ -60,15 +60,17 @@ export function pageMetadata(input: {
   };
 }
 
-export function organizationJsonLd() {
+export function organizationJsonLd(input?: {
+  name?: string;
+  description?: string;
+}) {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Stratifit",
+    name: input?.name || "Stratifit",
     url: getSiteUrl(),
     logo: canonical("/icon.png"),
-    description:
-      "Premium digital agency specializing in brand design, website development, AI automation, and growth marketing.",
+    description: input?.description || "",
   };
 }
 

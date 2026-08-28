@@ -14,17 +14,16 @@ export async function generateMetadata(): Promise<Metadata> {
     seoTitleTranslations: page?.seo_title_translations,
     seoDescriptionTranslations: page?.seo_description_translations,
     locale,
-    fallbackTitle: "Imprint Stratifit",
-    fallbackDescription: "Imprint and legal information for Stratifit.",
+    fallbackTitle: page?.title_translations?.[locale] || "Imprint",
+    fallbackDescription: page?.description_translations?.[locale] || "",
   });
   return pageMetadata({ title, description, path: "/imprint" });
 }
 
-const FALLBACK_EYEBROW = "Legal";
-const FALLBACK_TITLE = "Imprint";
-const FALLBACK_DESCRIPTION =
-  "Legal notice / Impressum, company information for Stratifit in accordance with applicable law.";
-const FALLBACK_SUBTITLE = "Legal notice / Impressum";
+const FALLBACK_EYEBROW = "";
+const FALLBACK_TITLE = "";
+const FALLBACK_DESCRIPTION = "";
+const FALLBACK_SUBTITLE = "";
 
 export default async function ImprintPage() {
   const locale = await getLocale();

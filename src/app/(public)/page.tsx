@@ -12,10 +12,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const settings = await getPublicSiteSettings();
   const seo = settings?.default_seo?.[locale] ?? settings?.default_seo?.en ?? null;
   return pageMetadata({
-    title: seo?.title || "Stratifit Digital Agency",
-    description:
-      seo?.description ||
-      "Stratifit is a premium multilingual digital agency delivering websites, web applications, e-commerce, and AI solutions.",
+    title: seo?.title || settings?.site_name || "Stratifit",
+    description: seo?.description || settings?.site_description_translations?.[locale] || settings?.site_description_translations?.en || "",
     path: "/",
   });
 }

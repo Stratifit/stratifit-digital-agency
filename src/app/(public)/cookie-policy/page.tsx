@@ -14,17 +14,16 @@ export async function generateMetadata(): Promise<Metadata> {
     seoTitleTranslations: page?.seo_title_translations,
     seoDescriptionTranslations: page?.seo_description_translations,
     locale,
-    fallbackTitle: "Cookie Policy Stratifit",
-    fallbackDescription: "How Stratifit uses cookies.",
+    fallbackTitle: page?.title_translations?.[locale] || "Cookie Policy",
+    fallbackDescription: page?.description_translations?.[locale] || "",
   });
   return pageMetadata({ title, description, path: "/cookie-policy" });
 }
 
-const FALLBACK_EYEBROW = "Legal";
-const FALLBACK_TITLE = "Cookie Policy";
-const FALLBACK_DESCRIPTION =
-  "Cookies help us deliver a better experience. This policy explains what cookies we use and how you can control them.";
-const FALLBACK_SUBTITLE = "Last updated: July 2026";
+const FALLBACK_EYEBROW = "";
+const FALLBACK_TITLE = "";
+const FALLBACK_DESCRIPTION = "";
+const FALLBACK_SUBTITLE = "";
 
 export default async function CookiePolicyPage() {
   const locale = await getLocale();

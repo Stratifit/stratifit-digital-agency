@@ -14,17 +14,16 @@ export async function generateMetadata(): Promise<Metadata> {
     seoTitleTranslations: page?.seo_title_translations,
     seoDescriptionTranslations: page?.seo_description_translations,
     locale,
-    fallbackTitle: "Privacy Policy Stratifit",
-    fallbackDescription: "How Stratifit collects, uses, and protects personal data.",
+    fallbackTitle: page?.title_translations?.[locale] || "Privacy Policy",
+    fallbackDescription: page?.description_translations?.[locale] || "",
   });
   return pageMetadata({ title, description, path: "/privacy" });
 }
 
-const FALLBACK_EYEBROW = "Legal";
-const FALLBACK_TITLE = "Privacy Policy";
-const FALLBACK_DESCRIPTION =
-  "Your privacy matters to us. This policy explains how Stratifit collects, uses, and protects your personal information.";
-const FALLBACK_SUBTITLE = "Last updated: July 2026";
+const FALLBACK_EYEBROW = "";
+const FALLBACK_TITLE = "";
+const FALLBACK_DESCRIPTION = "";
+const FALLBACK_SUBTITLE = "";
 
 export default async function PrivacyPage() {
   const locale = await getLocale();

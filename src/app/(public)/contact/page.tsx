@@ -12,9 +12,8 @@ export async function generateMetadata(): Promise<Metadata> {
     seoTitleTranslations: setting?.seo_title_translations,
     seoDescriptionTranslations: setting?.seo_description_translations,
     locale,
-    fallbackTitle: "Contact Stratifit",
-    fallbackDescription:
-      "Get in touch with Stratifit. We reply to every enquiry within 24 hours.",
+    fallbackTitle: setting?.title_translations?.[locale] || "Contact",
+    fallbackDescription: setting?.description_translations?.[locale] || "",
   });
   return pageMetadata({ title, description, path: "/contact" });
 }

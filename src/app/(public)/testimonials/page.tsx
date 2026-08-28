@@ -23,9 +23,8 @@ export async function generateMetadata(): Promise<Metadata> {
     seoTitleTranslations: setting?.seo_title_translations,
     seoDescriptionTranslations: setting?.seo_description_translations,
     locale,
-    fallbackTitle: "Testimonials Stratifit",
-    fallbackDescription:
-      "Don't take our word for it, hear from the brands we've helped scale.",
+    fallbackTitle: setting?.title_translations?.[locale] || "Testimonials",
+    fallbackDescription: setting?.description_translations?.[locale] || "",
   });
   return pageMetadata({ title, description, path: "/testimonials" });
 }

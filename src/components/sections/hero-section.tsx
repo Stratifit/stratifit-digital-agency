@@ -110,8 +110,8 @@ export async function HeroSection() {
     resolveTranslation(hero.primary_cta_label_translations, locale) ||
     resolveTranslation(FALLBACK_HERO.primaryCta, locale);
   const secondaryLabel =
-    resolveTranslation(hero.secondary_cta_label_translations, locale) ||
-    resolveTranslation(FALLBACK_HERO.secondaryCta, locale);
+    resolveTranslation(hero.secondary_cta_label_translations, locale) ||      resolveTranslation(FALLBACK_HERO.secondaryCta, locale);
+
 
   const dbMetrics = (hero.metrics as HeroMetric[] | null) ?? [];
   const stats = dbMetrics.length > 0 ? dbMetrics : FALLBACK_STATS;
@@ -227,7 +227,7 @@ export async function HeroSection() {
 
         {trustedByItems.length > 0 ? (
           <div data-hero className="mt-[30px] w-full">
-            <TrustedByStrip items={trustedByItems} label={trustedByLabel} />
+            <TrustedByStrip items={trustedByItems} label={trustedByLabel} locale={locale} />
           </div>
         ) : null}
         </HeroEntrance>

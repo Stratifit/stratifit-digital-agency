@@ -3,6 +3,7 @@
 import * as React from "react";
 import type { PublicProcessStep } from "@/features/process/queries";
 import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
+import { t } from "@/lib/i18n/ui-strings";
 import { ProcessIcon } from "@/components/ui/process-icon";
 
 function StepCard({
@@ -16,7 +17,7 @@ function StepCard({
     <div className="relative flex h-full w-[80vw] min-w-[280px] max-w-[320px] shrink-0 snap-center flex-col overflow-hidden rounded-card border border-card-border bg-card-dark p-6">
       <div className="absolute right-0 top-0 rounded-bl-xl bg-primary px-3 py-1">
         <span className="text-[10px] font-black uppercase tracking-widest text-text-inverse">
-          STEP {step.number.toString().padStart(2, "0")}
+          {t(locale, "stepLabel")} {step.number.toString().padStart(2, "0")}
         </span>
       </div>
       <div className="mb-4 flex size-12 items-center justify-center rounded-full border border-primary/30 bg-gradient-to-br from-primary/20 to-primary/5 shadow-[0_0_15px_rgba(245,158,11,0.1)]">

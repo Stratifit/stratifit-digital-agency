@@ -14,18 +14,16 @@ export async function generateMetadata(): Promise<Metadata> {
     seoTitleTranslations: page?.seo_title_translations,
     seoDescriptionTranslations: page?.seo_description_translations,
     locale,
-    fallbackTitle: "We're Hiring Stratifit",
-    fallbackDescription:
-      "Open roles at Stratifit. We hire strategists, designers, engineers, and marketers on a rolling basis.",
+    fallbackTitle: page?.title_translations?.[locale] || "Hiring",
+    fallbackDescription: page?.description_translations?.[locale] || "",
   });
   return pageMetadata({ title, description, path: "/hiring" });
 }
 
-const FALLBACK_EYEBROW = "Careers";
-const FALLBACK_TITLE = "We're Hiring";
-const FALLBACK_DESCRIPTION =
-  "We're always looking for exceptional people to join our team. Here's how we hire and how to apply.";
-const FALLBACK_SUBTITLE = "Open roles & hiring process";
+const FALLBACK_EYEBROW = "";
+const FALLBACK_TITLE = "";
+const FALLBACK_DESCRIPTION = "";
+const FALLBACK_SUBTITLE = "";
 
 export default async function HiringPage() {
   const locale = await getLocale();

@@ -251,7 +251,7 @@ export function PortfolioGallery({
 
         <button
           type="button"
-          aria-label="Scroll portfolio left"
+          aria-label={t(locale, "scrollLeft")}
           onClick={() => scrollByCard(-1)}
           className="absolute -left-20 top-1/2 z-10 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/70 text-white shadow-lg backdrop-blur-sm transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary hover:text-black md:flex disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-black/70 disabled:hover:text-white"
         >
@@ -259,7 +259,7 @@ export function PortfolioGallery({
         </button>
         <button
           type="button"
-          aria-label="Scroll portfolio right"
+          aria-label={t(locale, "scrollRight")}
           onClick={() => scrollByCard(1)}
           className="absolute -right-20 top-1/2 z-10 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/70 text-white shadow-lg backdrop-blur-sm transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-primary hover:text-black md:flex"
         >
@@ -281,7 +281,7 @@ export function PortfolioGallery({
           href="/work"
           className="absolute right-0 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110"
         >
-          View All
+          {t(locale, "viewAll")}
           <span className="text-[10px]">
             <ArrowIcon />
           </span>
@@ -293,7 +293,7 @@ export function PortfolioGallery({
           href="/work"
           className="group inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110"
         >
-          View All Projects
+          {t(locale, "viewAllProjects")}
           <span className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1">
             <ArrowIcon />
           </span>

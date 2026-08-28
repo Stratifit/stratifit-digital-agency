@@ -14,17 +14,16 @@ export async function generateMetadata(): Promise<Metadata> {
     seoTitleTranslations: page?.seo_title_translations,
     seoDescriptionTranslations: page?.seo_description_translations,
     locale,
-    fallbackTitle: "Terms of Service Stratifit",
-    fallbackDescription: "Terms and conditions for using the Stratifit website.",
+    fallbackTitle: page?.title_translations?.[locale] || "Terms",
+    fallbackDescription: page?.description_translations?.[locale] || "",
   });
   return pageMetadata({ title, description, path: "/terms-conditions" });
 }
 
-const FALLBACK_EYEBROW = "Legal";
-const FALLBACK_TITLE = "Terms of Service";
-const FALLBACK_DESCRIPTION =
-  "These terms set out the rules for using the Stratifit website and the services we provide.";
-const FALLBACK_SUBTITLE = "Last updated: July 2026";
+const FALLBACK_EYEBROW = "";
+const FALLBACK_TITLE = "";
+const FALLBACK_DESCRIPTION = "";
+const FALLBACK_SUBTITLE = "";
 
 export default async function TermsConditionsPage() {
   const locale = await getLocale();

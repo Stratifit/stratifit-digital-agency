@@ -22,9 +22,8 @@ export async function generateMetadata(): Promise<Metadata> {
     seoTitleTranslations: setting?.seo_title_translations,
     seoDescriptionTranslations: setting?.seo_description_translations,
     locale,
-    fallbackTitle: "Buy a Business Stratifit",
-    fallbackDescription:
-      "Skip the startup grind. Browse our curated marketplace of profitable, turnkey businesses across seven high-demand niches.",
+    fallbackTitle: setting?.title_translations?.[locale] || "Acquisition",
+    fallbackDescription: setting?.description_translations?.[locale] || "",
   });
   return pageMetadata({ title, description, path: "/buy-business" });
 }

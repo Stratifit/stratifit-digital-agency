@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { t } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
 
 interface TrustedByItem {
@@ -126,10 +127,12 @@ function TrustedByLogo({ item }: { item: TrustedByItem }) {
 export function TrustedByStrip({
   items,
   label = "Trusted by <Growing> Companies",
+  locale,
 }: {
   items: TrustedByItem[];
   /** Full strip label; the amber word is wrapped in <angle brackets>. */
   label?: string;
+  locale: string;
 }) {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const [active, setActive] = React.useState(0);
@@ -183,7 +186,7 @@ export function TrustedByStrip({
         {showDots ? (
           <div
             className="mt-3 flex items-center justify-center gap-1.5"
-            aria-label="Scroll position"
+            aria-label={t(locale, "scrollPosition")}
           >
             {items.map((item, index) => (
               <span

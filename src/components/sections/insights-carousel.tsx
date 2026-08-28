@@ -238,7 +238,7 @@ export function InsightsCarousel({
           </div>
 
           <div className="relative mt-6 flex items-center justify-center gap-1.5 md:hidden">
-            <div className="flex items-center justify-center gap-1.5" aria-label="Insight carousel pagination">
+            <div className="flex items-center justify-center gap-1.5" aria-label={t(locale, "carouselPagination")}>
               {filtered.length > 1
                 ? mobileDots.map((insight, index) => (
                     <span
