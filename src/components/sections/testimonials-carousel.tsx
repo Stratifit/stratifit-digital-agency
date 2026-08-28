@@ -49,7 +49,7 @@ export function TestimonialsCarousel({ testimonials, locale }: { testimonials: P
     </div>
     <div className="relative mt-6 flex items-center justify-center gap-1.5">
       {testimonials.length > 1 ? testimonials.map((testimonial, index) => <span key={index} className={cn("size-2 rounded-full transition-colors duration-200 ease-out", index === active ? "bg-primary" : "border border-white/30 bg-transparent")} />) : null}
-      <Link href="/testimonials" className="group absolute right-0 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110 sm:text-xs">{t(locale, "viewAllStories")}<span className="transition-transform group-hover:translate-x-0.5"><ArrowIcon className="size-4" /></span></Link>
+      <Link href="/testimonials" className="group absolute right-0 inline-flex items-center text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110 sm:text-xs">{t(locale, "viewAllStories")}</Link>
     </div>
   </div>;
 }

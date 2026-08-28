@@ -237,7 +237,7 @@ export function InsightsCarousel({
             </button>
           </div>
 
-          <div className="mt-6 flex items-center justify-center gap-4">
+          <div className="relative mt-6 flex items-center justify-center gap-1.5 md:hidden">
             <div className="flex items-center justify-center gap-1.5" aria-label="Insight carousel pagination">
               {filtered.length > 1
                 ? mobileDots.map((insight, index) => (
@@ -254,7 +254,19 @@ export function InsightsCarousel({
             </div>
             <Link
               href="/insights"
-              className="group inline-flex shrink-0 items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110 md:text-sm"
+              className="absolute right-0 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110"
+            >
+              {t(locale, "viewAll")}
+              <span className="text-[10px]">
+                <ArrowIcon />
+              </span>
+            </Link>
+          </div>
+
+          <div className="mt-8 hidden justify-end md:flex">
+            <Link
+              href="/insights"
+              className="group inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110"
             >
               {t(locale, "viewAll")}
               <span className="transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1">

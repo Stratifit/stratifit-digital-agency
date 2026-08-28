@@ -45,20 +45,43 @@ function parseConsent(raw: string | null): ConsentRecord | null {
 
 function readConsent(): ConsentRecord | null {
   if (typeof window === "undefined") return null;
+
   try {
     const stored = parseConsent(window.localStorage.getItem(STORAGE_KEY));
     if (stored) return stored;
-    if (window.localStorage.getItem(CONSENT_MARKER) === "1") return reviewedConsent();
   } catch {
     // Continue with the cookie fallback.
   }
+
   try {
-    const value = document.cookie.split(";").map((entry) => entry.trim()).find((entry) => entry.startsWith(`${CONSENT_COOKIE}=`));
+    const value = document.cookie
+      .split(";")
+      .map((entry) => entry.trim())
+      .find((entry) => entry.startsWith(`${CONSENT_COOKIE}=`));
     if (!value) return null;
-    return parseConsent(decodeURIComponent(value.slice(CONSENT_COOKIE.length + 1))) ?? reviewedConsent();
+
+    const parsed = parseConsent(
+      decodeURIComponent(value.slice(CONSENT_COOKIE.length + 1))
+    );
+    if (parsed) return parsed;
   } catch {
-    return null;
+    // Treat unreadable consent as unreviewed rather than assuming consent.
   }
+
+  // Older releases wrote this marker without a complete consent record. Keep
+  // those visitors from seeing the banner again, but migrate them to the
+  // explicit essential-only record so future renders are deterministic.
+  try {
+    if (window.localStorage.getItem(CONSENT_MARKER) === "1") {
+      const migrated = reviewedConsent();
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+      return migrated;
+    }
+  } catch {
+    // If storage is unavailable, the current session can still continue.
+  }
+
+  return null;
 }
 
 function writeConsent(record: ConsentRecord) {
@@ -81,8 +104,10 @@ function defaultChoices(settings: PublicCookieSettings) {
 }
 
 export function CookieConsentBanner({ settings, locale = "en" }: { settings: PublicCookieSettings | null; locale?: string }) {
-  const [consent, setConsent] = React.useState<ConsentRecord | null>(() => readConsent());
-  const [checked] = React.useState(true);
+  const [consent, setConsent] = React.useState<ConsentRecord | null>(() =>
+    typeof window === "undefined" ? null : readConsent()
+  );
+  const [checked] = React.useState(() => typeof window !== "undefined");
   const [editing, setEditing] = React.useState(false);
   const [settingsView, setSettingsView] = React.useState(false);
   const [choices, setChoices] = React.useState<Record<string, boolean>>({});
@@ -104,6 +129,10 @@ export function CookieConsentBanner({ settings, locale = "en" }: { settings: Pub
   React.useEffect(() => {
     if (visible) firstControlRef.current?.focus();
   }, [visible, settingsView]);
+
+  // Do not render the banner during SSR or hydration. This prevents a saved
+  // visitor's consent prompt from flashing for a frame on every page load.
+  if (!checked) return null;
 
   if (!settings || !visible) return null;
 
