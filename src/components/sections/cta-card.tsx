@@ -104,7 +104,7 @@ export function CtaCard({
           className="w-full justify-center md:w-auto md:shrink-0"
         >
           {label}
-          <ArrowRightIcon className="size-4 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1" />
+          <ArrowRightIcon className="size-4 shrink-0 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1" />
         </ContactAwareLink>
       </div>
     </div>

@@ -196,7 +196,7 @@ export default async function ServicePage({
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       aria-hidden="true"
-                      className="size-4 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1"
+                      className="size-4 shrink-0 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1"
                     >
                       <path d="M5 12h14m-5-5 5 5-5 5" />
                     </svg>
