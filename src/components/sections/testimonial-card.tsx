@@ -82,7 +82,7 @@ export function TestimonialCard({
   return (
     <article
       className={cn(
-        "relative flex h-full flex-col rounded-card border border-primary/25 bg-card-dark p-6 transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/40 hover:shadow-[0_0_30px_-10px_rgba(245,158,11,0.25)] md:p-8",
+        "relative flex h-full flex-col rounded-card border border-card-border bg-card-dark p-6 transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover md:p-8",
         className
       )}
     >
@@ -109,7 +109,7 @@ export function TestimonialCard({
 
       {/* Divider + author footer pinned to the bottom */}
       <div className="mt-auto">
-        <div className="mt-6 border-t border-primary/10" aria-hidden="true" />
+        <div className="mt-6 border-t border-card-border" aria-hidden="true" />
 
         <footer className="mt-5 flex items-center gap-3">
           <div className="flex size-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br from-surface-hover to-surface-active text-xs font-bold text-white">
@@ -126,7 +126,7 @@ export function TestimonialCard({
             ) : null}
           </div>
           {testimonial.is_verified ? (
-            <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-primary/25 bg-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-primary">
+            <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-card-border bg-white/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-text-muted">
               <CheckIcon />
               {t(locale, "verified")}
             </span>
