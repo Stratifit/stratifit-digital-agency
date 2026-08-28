@@ -182,8 +182,24 @@ export default async function ServicePage({
               ) : null}
               <Reveal>
                 <div className="flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4">
-                  <ContactAwareLink href="/contact" size="large" className="w-full sm:w-auto">
+                  <ContactAwareLink
+                    href="/contact"
+                    size="large"
+                    className="group w-full justify-center shadow-[0_0_40px_-8px_rgba(245,158,11,0.3)] hover:shadow-[0_0_48px_-8px_rgba(245,158,11,0.38)] sm:w-auto"
+                  >
                     {ctaButton || t(locale, "servicesStartProject")}
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                      className="size-4 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:translate-x-1"
+                    >
+                      <path d="M5 12h14m-5-5 5 5-5 5" />
+                    </svg>
                   </ContactAwareLink>
                   {process.length > 0 ? (
                     <LinkButton

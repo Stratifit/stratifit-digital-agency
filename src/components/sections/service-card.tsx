@@ -8,7 +8,7 @@ import { t } from "@/lib/i18n/ui-strings";
 
 /** Full-width CTA — spans the entire card. */
 export const FULL_CTA_CLASS =
-  "group/link flex w-full items-center justify-center gap-3 rounded-button border border-primary/60 bg-primary py-3.5 text-sm font-bold text-text-inverse shadow-amber transition-[background-color,border-color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary-light hover:bg-primary-light hover:shadow-[0_0_32px_rgba(245,158,11,0.28)] active:translate-y-0 active:border-primary-active active:bg-primary-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2";
+  "group/link inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-button border border-transparent bg-primary px-6 py-3 text-sm font-bold text-text-inverse shadow-amber transition-[background-color,border-color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-hover hover:shadow-[0_0_40px_-8px_rgba(245,158,11,0.3)] active:translate-y-0 active:border-primary/60 active:bg-primary-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 sm:text-base";
 
 /** Compact CTA — smaller, left-aligned, no arrow. */
 export const COMPACT_CTA_CLASS =
@@ -16,20 +16,18 @@ export const COMPACT_CTA_CLASS =
 
 export function ServiceCtaArrowIcon() {
   return (
-    <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-black transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover/link:translate-x-0.5">
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-        className="size-4 text-primary"
-      >
-        <path d="M5 12h14m-5-5 5 5-5 5" />
-      </svg>
-    </span>
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="size-4 text-text-inverse transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover/link:translate-x-1"
+    >
+      <path d="M5 12h14m-5-5 5 5-5 5" />
+    </svg>
   );
 }
 
