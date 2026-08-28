@@ -8,7 +8,7 @@ import { t } from "@/lib/i18n/ui-strings";
 
 /** Full-width CTA — spans the entire card. */
 export const FULL_CTA_CLASS =
-  "group/link flex w-full items-center justify-center gap-2 rounded-button border border-transparent bg-primary py-4 text-sm font-bold text-text-inverse transition-[background-color,border-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-hover active:translate-y-0 active:border-primary/60 active:bg-primary-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2";
+  "group/link flex w-full items-center justify-center gap-3 rounded-button border border-primary/60 bg-primary py-3.5 text-sm font-bold text-text-inverse shadow-amber transition-[background-color,border-color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:-translate-y-0.5 hover:border-primary-light hover:bg-primary-light hover:shadow-[0_0_32px_rgba(245,158,11,0.28)] active:translate-y-0 active:border-primary-active active:bg-primary-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2";
 
 /** Compact CTA — smaller, left-aligned, no arrow. */
 export const COMPACT_CTA_CLASS =
@@ -16,18 +16,20 @@ export const COMPACT_CTA_CLASS =
 
 export function ServiceCtaArrowIcon() {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-      className="size-[18px] transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover/link:translate-x-1"
-    >
-      <path
-        fillRule="evenodd"
-        d="M12.97 3.97a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06l6.22-6.22H3a.75.75 0 0 1 0-1.5h16.19l-6.22-6.22a.75.75 0 0 1 0-1.06Z"
-        clipRule="evenodd"
-      />
-    </svg>
+    <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-black transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover/link:translate-x-0.5">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+        className="size-4 text-primary"
+      >
+        <path d="M5 12h14m-5-5 5 5-5 5" />
+      </svg>
+    </span>
   );
 }
 
