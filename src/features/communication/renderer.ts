@@ -29,18 +29,26 @@ export function escapeHtml(value: string): string {
  * Render a template's subject and body for a language (English fallback),
  * with {{placeholders}} auto-filled.
  */
+function removeEmailEmDashes(value: string): string {
+  return value.replace(/\s*—\s*/g, ", ");
+}
+
 export function renderTemplateContent(
   template: RenderableTemplate,
   language: string,
   context: AutoFillContext
 ): { subject: string; body: string } {
-  const subject = autoFill(
-    pickTranslation(template.subject_translations, language),
-    context
+  const subject = removeEmailEmDashes(
+    autoFill(
+      pickTranslation(template.subject_translations, language),
+      context
+    )
   );
-  const body = autoFill(
-    pickTranslation(template.body_translations, language),
-    context
+  const body = removeEmailEmDashes(
+    autoFill(
+      pickTranslation(template.body_translations, language),
+      context
+    )
   );
   return { subject, body };
 }

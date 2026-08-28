@@ -335,7 +335,7 @@ insert into public.email_templates (key, template_type, category, name_translati
 
   ('document_needed', 'auto', 'lifecycle',
    '{"en": "Document Needed", "de": "Dokument benötigt", "fr": "Document requis", "es": "Documento necesario"}'::jsonb,
-   '{"en": "Document needed — {{project_name}}", "de": "Dokument benötigt — {{project_name}}", "fr": "Document requis — {{project_name}}", "es": "Documento necesario — {{project_name}}"}'::jsonb,
+   '{"en": "Document needed: {{project_name}}", "de": "Dokument benötigt: {{project_name}}", "fr": "Document requis: {{project_name}}", "es": "Documento necesario: {{project_name}}"}'::jsonb,
    '{"en": "Hi {{name}},\n\nTo keep {{project_name}} moving forward, we need one more document from you: {{issue_description}}\n\nOnce we receive it, we will continue with the {{project_stage}} stage right away.\n\nBest regards,\nThe Stratifit Team",
      "de": "Hallo {{name}},\n\num {{project_name}} voranzubringen, benötigen wir noch ein Dokument von Ihnen: {{issue_description}}\n\nSobald wir es erhalten haben, setzen wir die Phase {{project_stage}} sofort fort.\n\nMit freundlichen Grüßen\nIhr Stratifit-Team",
      "fr": "Bonjour {{name}},\n\npour faire avancer {{project_name}}, nous avons besoin d''un document supplémentaire de votre part : {{issue_description}}\n\nDès réception, nous poursuivrons immédiatement l''étape {{project_stage}}.\n\nCordialement,\nL''équipe Stratifit",
@@ -344,9 +344,9 @@ insert into public.email_templates (key, template_type, category, name_translati
 
   ('approval_needed', 'auto', 'lifecycle',
    '{"en": "Approval Needed", "de": "Freigabe erforderlich", "fr": "Approbation requise", "es": "Aprobación necesaria"}'::jsonb,
-   '{"en": "Your approval is needed — {{project_name}}", "de": "Ihre Freigabe ist erforderlich — {{project_name}}", "fr": "Votre approbation est requise — {{project_name}}", "es": "Necesitamos tu aprobación — {{project_name}}"}'::jsonb,
+   '{"en": "Your approval is needed: {{project_name}}", "de": "Ihre Freigabe ist erforderlich: {{project_name}}", "fr": "Votre approbation est requise: {{project_name}}", "es": "Necesitamos tu aprobación: {{project_name}}"}'::jsonb,
    '{"en": "Hi {{name}},\n\nWe need your approval to continue with {{project_name}}. Please review the latest {{project_stage}} deliverables and confirm by replying to this email with your approval or your feedback.\n\nWe will proceed as soon as we hear from you.\n\nBest regards,\nThe Stratifit Team",
-     "de": "Hallo {{name}},\n\nwir benötigen Ihre Freigabe, um mit {{project_name}} fortzufahren. Bitte prüfen Sie die aktuellen Ergebnisse der Phase {{project_stage}} und bestätigen Sie per Antwort auf diese E-Mail — mit Ihrer Freigabe oder Ihrem Feedback.\n\nSobald wir von Ihnen hören, machen wir weiter.\n\nMit freundlichen Grüßen\nIhr Stratifit-Team",
+     "de": "Hallo {{name}},\n\nwir benötigen Ihre Freigabe, um mit {{project_name}} fortzufahren. Bitte prüfen Sie die aktuellen Ergebnisse der Phase {{project_stage}} und bestätigen Sie per Antwort auf diese E-Mail, mit Ihrer Freigabe oder Ihrem Feedback.\n\nSobald wir von Ihnen hören, machen wir weiter.\n\nMit freundlichen Grüßen\nIhr Stratifit-Team",
      "fr": "Bonjour {{name}},\n\nnous avons besoin de votre approbation pour poursuivre avec {{project_name}}. Merci de consulter les dernières livrables de l''étape {{project_stage}} et de confirmer en répondant à cet e-mail avec votre accord ou vos commentaires.\n\nNous poursuivrons dès que nous aurons de vos nouvelles.\n\nCordialement,\nL''équipe Stratifit",
      "es": "Hola {{name}},\n\nnecesitamos tu aprobación para continuar con {{project_name}}. Revisa los últimos entregables de la fase {{project_stage}} y confirma respondiendo a este correo con tu aprobación o tus comentarios.\n\nContinuaremos en cuanto tengamos noticias tuyas.\n\nUn saludo,\nEl equipo de Stratifit"}'::jsonb,
    'Automatic request for client approval on a project stage.', 'on_inbound_email', true, 19),
