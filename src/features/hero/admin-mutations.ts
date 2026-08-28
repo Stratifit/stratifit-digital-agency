@@ -29,31 +29,15 @@ async function requireAdmin() {
 export async function updateHeroMainImage(mediaId: string | null): Promise<ActionResult> {
   const supabase = await requireAdmin();
   const normalizedMediaId = mediaId?.trim() || null;
-  const { data: existingHero, error: lookupError } = await supabase
+  const { error } = await supabase
     .from("hero")
-    .select("singleton_key")
-    .eq("singleton_key", true)
-    .maybeSingle();
+    .update({ media_id: normalizedMediaId })
+    .eq("singleton_key", true);
 
-  if (lookupError) {
-    console.error("Failed to find hero for image save", {
-      code: lookupError.code,
-      message: lookupError.message,
-    });
-    return { success: false, error: "Could not save the Hero image." };
-  }
-
-  const result = existingHero
-    ? await supabase
-        .from("hero")
-        .update({ media_id: normalizedMediaId })
-        .eq("singleton_key", true)
-    : await supabase.from("hero").insert({ singleton_key: true, media_id: normalizedMediaId });
-
-  if (result.error) {
+  if (error) {
     console.error("Failed to save hero image", {
-      code: result.error.code,
-      message: result.error.message,
+      code: error.code,
+      message: error.message,
     });
     return { success: false, error: "Could not save the Hero image." };
   }
