@@ -4,5 +4,7 @@
  * normalized.
  */
 export function sanitizePublicText(value: string): string {
-  return value.replaceAll(/\s*—\s*/g, ", ");
+  return value
+    .replaceAll(/\s*[—–]\s*/g, ", ")
+    .replaceAll(/\s+-\s+/g, ", ");
 }

@@ -27,9 +27,9 @@ describe("resolveTranslation", () => {
     expect(resolveTranslation({}, "en")).toBe("");
   });
 
-  it("removes em dashes only for public translations", () => {
-    const translations = { en: "Strategy — design — growth" };
-    expect(resolvePublicTranslation(translations, "en")).toBe("Strategy, design, growth");
-    expect(resolveTranslation(translations, "en")).toBe("Strategy — design — growth");
+  it("removes dash separators only for public translations", () => {
+    const translations = { en: "Strategy — design – growth - scale" };
+    expect(resolvePublicTranslation(translations, "en")).toBe("Strategy, design, growth, scale");
+    expect(resolveTranslation(translations, "en")).toBe("Strategy — design – growth - scale");
   });
 });
