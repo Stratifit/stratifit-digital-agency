@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import type { PublicProcessStep } from "@/features/process/queries";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import { ProcessIcon } from "@/components/ui/process-icon";
 
 function StepCard({

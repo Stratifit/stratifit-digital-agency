@@ -4,7 +4,7 @@ import type {
   DetailPageBlockType,
   DetailPageListItem,
 } from "@/features/detail-pages/queries";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import { cn } from "@/lib/cn";
 
 /** Minimal translation-carrying block shape accepted by `resolveDetailBlocks`. */

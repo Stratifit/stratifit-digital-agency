@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { PublicPortfolioProject } from "@/features/portfolio/queries";
 import type { PublicServiceDetail } from "@/features/services/queries";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import { t } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
 import { FilterPills } from "@/components/ui/filter-pills";

@@ -1,5 +1,5 @@
 ﻿import { getPublicAnnouncement } from "@/features/announcement/queries";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { AnnouncementBarView } from "./announcement-bar-view";
 

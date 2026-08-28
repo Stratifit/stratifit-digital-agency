@@ -1,6 +1,6 @@
 import { cn } from "@/lib/cn";
 import type { PublicSectionSettings } from "@/features/section-settings/queries";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import {
   SECTION_HEADER_FALLBACKS,
   type LocaleMap,

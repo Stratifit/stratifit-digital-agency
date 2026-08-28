@@ -8,7 +8,7 @@ import type {
   PublicPortfolioMetric,
 } from "@/features/portfolio/queries";
 import type { PublicServiceDetail } from "@/features/services/queries";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import { t } from "@/lib/i18n/ui-strings";
 import { FilterPills } from "@/components/ui/filter-pills";
 

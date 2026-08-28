@@ -4,7 +4,7 @@ import { getPublicNavigation } from "@/features/navigation/queries";
 import { getPublicSiteSettings } from "@/features/site-settings/queries";
 import { getPublicServices } from "@/features/services/queries";
 import { getPublicServicePages } from "@/features/service-pages/queries";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import { t } from "@/lib/i18n/ui-strings";
 import { ContactTrigger } from "@/components/contact/contact-trigger";
 import { Container } from "@/components/ui/container";

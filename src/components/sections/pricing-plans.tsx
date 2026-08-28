@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import type { PublicPricingPlan } from "@/features/pricing/queries";
 import { ContactTrigger } from "@/components/contact/contact-trigger";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import { cn } from "@/lib/cn";
 import { t } from "@/lib/i18n/ui-strings";
 

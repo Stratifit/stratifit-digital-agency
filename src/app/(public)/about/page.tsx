@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { pageMetadata, resolveSeoMetadata } from "@/lib/seo";
 import { getLocale } from "@/lib/i18n/get-locale";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import { t } from "@/lib/i18n/ui-strings";
 import { getPublicAboutPage } from "@/features/about/queries";
 import { Container } from "@/components/ui/container";

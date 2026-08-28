@@ -16,7 +16,7 @@ import { cn } from "@/lib/cn";
 import { useRouter } from "next/navigation";
 import { setLocale } from "@/actions/locale";
 import Link from "next/link";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import { ServiceCard } from "@/components/sections/service-card";
 import { PlanCard } from "@/components/sections/pricing-plans";
 import { FaqAccordion, type FaqItem } from "@/components/sections/faq-accordion";

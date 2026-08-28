@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import type { WhyChooseUsItem } from "@/features/why-choose-us/queries";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import { WhyChooseUsIcon } from "@/components/ui/why-choose-us-icon";
 
 function FeatureCard({

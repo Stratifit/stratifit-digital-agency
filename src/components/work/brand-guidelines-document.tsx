@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { BrandGuidelines } from "@/features/portfolio/brand-guidelines";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import { t } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
 import { BrandBoard, type BrandBoardVariant } from "@/components/work/brand-board";

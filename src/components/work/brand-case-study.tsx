@@ -9,7 +9,7 @@ import type {
   PublicPortfolioStrategy,
 } from "@/features/portfolio/queries";
 import type { PublicServiceDetail } from "@/features/services/queries";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import { t, tWithValue } from "@/lib/i18n/ui-strings";
 import { Reveal } from "@/components/ui/reveal";
 import { RelatedProjects } from "@/components/work/related-projects";

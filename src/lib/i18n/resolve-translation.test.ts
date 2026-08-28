@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation } from "@/lib/i18n/public-translation";
 
 describe("resolveTranslation", () => {
   it("returns the requested locale when present", () => {
@@ -24,5 +25,11 @@ describe("resolveTranslation", () => {
 
   it("returns empty string when no usable value exists", () => {
     expect(resolveTranslation({}, "en")).toBe("");
+  });
+
+  it("removes em dashes only for public translations", () => {
+    const translations = { en: "Strategy — design — growth" };
+    expect(resolvePublicTranslation(translations, "en")).toBe("Strategy, design, growth");
+    expect(resolveTranslation(translations, "en")).toBe("Strategy — design — growth");
   });
 });

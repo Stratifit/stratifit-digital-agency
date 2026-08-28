@@ -9,7 +9,7 @@ import { BrandLogo } from "@/components/ui/brand-logo";
 import { SocialIcons } from "@/components/ui/social-icons";
 import type { PublicNavigationItem } from "@/features/navigation/queries";
 import type { PublicServiceDetail } from "@/features/services/queries";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import { t } from "@/lib/i18n/ui-strings";
 
 interface MobileNavProps {

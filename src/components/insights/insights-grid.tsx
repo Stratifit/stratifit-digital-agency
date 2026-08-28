@@ -12,7 +12,7 @@ import {
   getCategoryLabel,
   getInsightImage,
 } from "@/features/insights/display";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import { t, tWithNumber } from "@/lib/i18n/ui-strings";
 import { FilterPills } from "@/components/ui/filter-pills";
 

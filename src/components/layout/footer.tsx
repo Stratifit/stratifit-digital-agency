@@ -2,7 +2,7 @@ import { getPublicFooterGroups } from "@/features/footer/queries";
 import { mergeFooterGroups } from "@/features/footer/fallbacks";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { getPublicSiteSettings } from "@/features/site-settings/queries";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import { FooterContent } from "./footer-content";
 
 export async function Footer() {

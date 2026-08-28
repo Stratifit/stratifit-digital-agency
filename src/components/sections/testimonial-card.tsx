@@ -1,5 +1,5 @@
 import type { PublicTestimonial } from "@/features/testimonials/queries";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import { cn } from "@/lib/cn";
 import { t, tWithNumber } from "@/lib/i18n/ui-strings";
 

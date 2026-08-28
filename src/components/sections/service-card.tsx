@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { PublicServiceDetail } from "@/features/services/queries";
 import { ServiceIcon } from "@/components/ui/service-icon";
 import { ContactTrigger } from "@/components/contact/contact-trigger";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import { t } from "@/lib/i18n/ui-strings";
 
 /** Full-width CTA — spans the entire card. */

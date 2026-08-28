@@ -6,7 +6,7 @@ import Image from "next/image";
 import type { PublicInsight } from "@/features/insights/queries";
 import type { PublicInsightCategory } from "@/features/insights/queries";
 import { getInsightImage } from "@/features/insights/display";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import { t } from "@/lib/i18n/ui-strings";
 import { cn } from "@/lib/cn";
 import { FilterPills } from "@/components/ui/filter-pills";

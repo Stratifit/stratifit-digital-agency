@@ -4,7 +4,7 @@ import {
   FALLBACK_TRUSTED_BY_LABEL,
 } from "@/features/hero/defaults";
 import { getLocale } from "@/lib/i18n/get-locale";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import { ContactAwareLink } from "@/components/contact/contact-aware-link";
 import { CountUp } from "@/components/ui/count-up";
 import { HeroEntrance } from "./hero-entrance";

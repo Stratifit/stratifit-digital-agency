@@ -1,7 +1,7 @@
 import { getPublicWhyChooseUs } from "@/features/why-choose-us/queries";
 import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { getLocale } from "@/lib/i18n/get-locale";
-import { resolveTranslation } from "@/lib/i18n/resolve-translation";
+import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
