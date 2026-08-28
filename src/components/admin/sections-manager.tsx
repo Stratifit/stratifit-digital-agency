@@ -22,6 +22,8 @@ export interface SectionPreview {
   title: string;
   highlight: string;
   description: string;
+  imageUrl?: string | null;
+  thumbnailUrls?: string[];
 }
 
 export interface SectionManagerRow {
@@ -98,8 +100,38 @@ function SectionCard({
         ))}
       </div>
 
-      {/* Preview */}
-      <div className="flex-1 space-y-2 px-4 py-4">
+      {/* Visual preview */}
+      <div className="flex-1 space-y-3 px-4 py-4">
+        <div className="grid grid-cols-[minmax(0,1fr)_72px] gap-3">
+          <div className="relative aspect-[16/9] overflow-hidden rounded-input border border-border bg-background">
+            {preview.imageUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element -- compact admin preview
+              <img src={preview.imageUrl} alt="" className="h-full w-full object-cover" />
+            ) : (
+              <div className="flex h-full items-center justify-center bg-gradient-to-br from-primary/10 via-background to-surface-soft px-4 text-center text-[10px] font-medium uppercase tracking-wider text-text-muted">
+                Text-led section
+              </div>
+            )}
+            <span className="absolute bottom-2 left-2 rounded-full border border-primary/30 bg-black/70 px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-primary">
+              Main image
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-1.5 content-start">
+            {(preview.thumbnailUrls ?? []).slice(0, 4).map((url, index) => (
+              <div key={`${url}-${index}`} className="aspect-square overflow-hidden rounded-sm border border-border bg-background">
+                {/* eslint-disable-next-line @next/next/no-img-element -- compact admin thumbnail */}
+                <img src={url} alt="" className="h-full w-full object-cover" />
+              </div>
+            ))}
+            {!preview.thumbnailUrls?.length ? (
+              <div className="col-span-2 flex aspect-square items-center justify-center rounded-sm border border-dashed border-border px-1 text-center text-[9px] text-text-subtle">
+                No thumbnails
+              </div>
+            ) : null}
+          </div>
+        </div>
+
+        {/* Editable content preview */}
         {preview.eyebrow ? (
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
             {preview.eyebrow}
