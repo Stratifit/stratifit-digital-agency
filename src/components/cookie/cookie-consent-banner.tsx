@@ -100,7 +100,9 @@ export function CookieConsentBanner({
         const current = readConsent();
         return current
           ? { essential: true, analytics: current.analytics, marketing: current.marketing }
-          : buildDefaultChoices(settings ?? { categories: [] } as PublicCookieSettings);
+          : settings
+            ? buildDefaultChoices(settings)
+            : { essential: true };
       });
       setEditing(true);
       setView("settings");
