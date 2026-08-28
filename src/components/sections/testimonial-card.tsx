@@ -9,7 +9,7 @@ function StarIcon() {
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden="true"
-      className="size-4 text-primary"
+      className="size-3 text-primary"
     >
       <path
         fillRule="evenodd"
@@ -82,7 +82,7 @@ export function TestimonialCard({
   return (
     <article
       className={cn(
-        "relative flex h-full min-h-[300px] flex-col rounded-card border border-card-border bg-card-dark p-5 transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover sm:min-h-[280px] sm:p-6 md:min-h-[260px] md:p-6",
+        "relative flex h-full min-h-[300px] flex-col justify-between rounded-card border border-card-border bg-card-dark p-5 transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover sm:min-h-[280px] sm:p-6 md:min-h-[260px] md:p-6",
         className
       )}
     >
@@ -98,18 +98,20 @@ export function TestimonialCard({
           ))}
         </div>
         {testimonial.source === "google" ? (
-          <GoogleIcon className="size-5 shrink-0" />
+          <GoogleIcon className="size-4 shrink-0" />
         ) : null}
       </div>
 
-      {/* Quote */}
-      <blockquote className="mt-4 font-display text-base font-bold leading-snug tracking-tight text-text-primary sm:text-lg">
-        {resolveTranslation(testimonial.quote_translations, locale)}
-      </blockquote>
+      {/* Keep the quote centered in the flexible middle so cards share balanced space. */}
+      <div className="flex flex-1 items-center justify-center py-5 text-center sm:py-6">
+        <blockquote className="font-display text-sm font-bold leading-snug tracking-tight text-text-primary sm:text-base">
+          {resolveTranslation(testimonial.quote_translations, locale)}
+        </blockquote>
+      </div>
 
-      {/* Divider + author footer pinned to the bottom */}
-      <div className="mt-auto">
-        <div className="mt-4 border-t border-card-border" aria-hidden="true" />
+      {/* Divider + author footer stays anchored to the bottom. */}
+      <div>
+        <div className="border-t border-card-border" aria-hidden="true" />
 
         <footer className="mt-4 flex items-center gap-3">
           <div className="flex size-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br from-surface-hover to-surface-active text-xs font-bold text-white">

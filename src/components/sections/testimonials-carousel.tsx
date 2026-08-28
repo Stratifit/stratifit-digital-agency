@@ -86,13 +86,13 @@ export function TestimonialsCarousel({
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="-mx-6 flex touch-pan-x touch-pan-y overscroll-x-contain snap-x snap-proximity gap-8 overflow-x-auto px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:-mx-8 lg:px-8"
+          className="-mx-6 flex touch-pan-x touch-pan-y overscroll-x-contain snap-x snap-proximity gap-8 overflow-x-auto px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:-mx-8 lg:px-8 lg:gap-8"
         >
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
               data-testimonial-card
-              className="w-[300px] min-w-[300px] shrink-0 snap-center sm:w-[360px] md:w-[400px]"
+              className="w-[300px] min-w-[300px] shrink-0 snap-center sm:w-[360px] md:w-[400px] lg:w-[calc((100%-6rem)/4)] lg:min-w-0 lg:max-w-none"
             >
               <TestimonialCard testimonial={testimonial} locale={locale} />
             </div>
@@ -117,13 +117,15 @@ export function TestimonialsCarousel({
         </button>
       </div>
 
-      <div className="relative mt-6 flex items-center justify-center gap-1.5">
+      <div className="relative mt-6 flex min-h-4 items-center gap-1.5">
+        <div className="absolute left-1/2 flex -translate-x-1/2 items-center gap-1.5">
         {testimonials.length > 1
           ? testimonials.map((testimonial, index) => (
               <span
                 key={index}
                 className={cn(
                   "size-2 rounded-full transition-colors duration-200 ease-out",
+                  index >= 7 ? "hidden sm:block" : "",
                   index === active
                     ? "bg-primary"
                     : "border border-white/30 bg-transparent"
@@ -131,6 +133,7 @@ export function TestimonialsCarousel({
               />
             ))
           : null}
+        </div>
         <Link
           href="/testimonials"
           className="group absolute right-0 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:brightness-110 sm:text-xs"
