@@ -92,7 +92,9 @@ export class KnowledgeChatProvider implements ChatProvider {
 }
 
 export async function getChatProvider(): Promise<ChatProvider> {
-  if (process.env.AI_API_KEY) {
+  // Groq uses the OpenAI-compatible API. Prefer the explicit Groq key while
+  // retaining AI_API_KEY for existing deployments and local fallback support.
+  if (process.env.GROQ_API_KEY || process.env.AI_API_KEY) {
     const { RemoteChatProvider } = await import("./ai-remote");
     return new RemoteChatProvider();
   }

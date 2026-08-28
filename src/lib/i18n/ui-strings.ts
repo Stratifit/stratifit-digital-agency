@@ -73,6 +73,7 @@ export type UiStringKey =
   | "mostPopular"
   | "keyDeliverables"
   | "learnMore"
+  | "stepLabel"
   | "howWeWork"
   | "followUs"
   | "backToTop"
@@ -85,6 +86,8 @@ export type UiStringKey =
   | "imprint"
   | "scrollLeft"
   | "scrollRight"
+  | "scrollPosition"
+  | "carouselPagination"
   | "categoryEcommerce"
   | "categorySaaS"
   | "categoryAgency"
@@ -396,6 +399,7 @@ const en: UiStrings = {
   mostPopular: "Most Popular",
   keyDeliverables: "Key Deliverables",
   learnMore: "Learn More",
+  stepLabel: "Step",
   howWeWork: "How We Work",
   followUs: "Follow Us",
   backToTop: "Back to Top",
@@ -408,6 +412,8 @@ const en: UiStrings = {
   imprint: "Imprint",
   scrollLeft: "Scroll left",
   scrollRight: "Scroll right",
+  scrollPosition: "Scroll position",
+  carouselPagination: "Insight carousel pagination",
   categoryEcommerce: "Ecommerce",
   categorySaaS: "SaaS",
   categoryAgency: "Agency",
@@ -738,6 +744,7 @@ const de: UiStrings = {
   mostPopular: "Am beliebtesten",
   keyDeliverables: "Wichtigste Leistungen",
   learnMore: "Mehr erfahren",
+  stepLabel: "Schritt",
   howWeWork: "Unsere Arbeitsweise",
   followUs: "Folgen Sie uns",
   backToTop: "Nach oben",
@@ -750,6 +757,8 @@ const de: UiStrings = {
   imprint: "Impressum",
   scrollLeft: "Nach links scrollen",
   scrollRight: "Nach rechts scrollen",
+  scrollPosition: "Scrollposition",
+  carouselPagination: "Seitennavigation der Einblicke",
   categoryEcommerce: "E-Commerce",
   categorySaaS: "SaaS",
   categoryAgency: "Agentur",
@@ -1080,6 +1089,7 @@ const fr: UiStrings = {
   mostPopular: "Le plus populaire",
   keyDeliverables: "Livrables clés",
   learnMore: "En savoir plus",
+  stepLabel: "Étape",
   howWeWork: "Découvrir notre méthode",
   followUs: "Suivez-nous",
   backToTop: "Haut de page",
@@ -1092,6 +1102,8 @@ const fr: UiStrings = {
   imprint: "Mentions légales",
   scrollLeft: "Faire défiler à gauche",
   scrollRight: "Faire défiler à droite",
+  scrollPosition: "Position de défilement",
+  carouselPagination: "Pagination des analyses",
   categoryEcommerce: "E-commerce",
   categorySaaS: "SaaS",
   categoryAgency: "Agence",
@@ -1422,6 +1434,7 @@ const es: UiStrings = {
   mostPopular: "Más popular",
   keyDeliverables: "Entregables clave",
   learnMore: "Saber más",
+  stepLabel: "Paso",
   howWeWork: "Conocer nuestro proceso",
   followUs: "Síguenos",
   backToTop: "Volver arriba",
@@ -1434,6 +1447,8 @@ const es: UiStrings = {
   imprint: "Aviso legal",
   scrollLeft: "Desplazarse a la izquierda",
   scrollRight: "Desplazarse a la derecha",
+  scrollPosition: "Posición de desplazamiento",
+  carouselPagination: "Paginación de artículos",
   categoryEcommerce: "Ecommerce",
   categorySaaS: "SaaS",
   categoryAgency: "Agencia",

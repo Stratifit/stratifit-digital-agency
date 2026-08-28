@@ -176,6 +176,8 @@ export async function sendVisitorMessage(
 
   const escalated = ai.escalated;
 
+  // Persist the provider answer once. Unknown questions that Groq can answer
+  // are returned as a normal AI reply instead of being shown as a human handoff.
   if (ai.content) {
     await supabase.from("chat_messages").insert({
       conversation_id: conversation.id,

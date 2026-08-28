@@ -64,9 +64,15 @@ export function normalizeBaseUrl(raw?: string): string {
  */
 export class RemoteChatProvider implements ChatProvider {
   async generateResponse(input: ChatRequest): Promise<ChatResponse> {
-    const apiKey = process.env.AI_API_KEY;
-    const baseUrl = normalizeBaseUrl(process.env.AI_BASE_URL);
-    const model = process.env.AI_MODEL ?? "gpt-4o-mini";
+    const apiKey = process.env.GROQ_API_KEY ?? process.env.AI_API_KEY;
+    const baseUrl = normalizeBaseUrl(
+      process.env.GROQ_BASE_URL ??
+        process.env.AI_BASE_URL ??
+        (process.env.GROQ_API_KEY
+          ? "https://api.groq.com/openai/v1"
+          : "https://api.openai.com/v1")
+    );
+    const model = process.env.GROQ_MODEL ?? process.env.AI_MODEL ?? "llama-3.3-70b-versatile";
 
     if (!apiKey) {
       return matchKnowledge(input);
