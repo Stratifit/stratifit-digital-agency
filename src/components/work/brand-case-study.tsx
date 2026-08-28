@@ -643,6 +643,28 @@ export function BrandCaseStudy({
     </div>,
     clientName
   );
+  const launchPhysicalSlider = sectionSlider(
+    "launch-physical",
+    <div key="launch-physical-main" className="absolute inset-0">
+      <BrandBoard
+        variant="businesscard"
+        wordmark={clientName}
+        className="absolute inset-0"
+      />
+    </div>,
+    clientName
+  );
+  const launchGuidelinesSlider = sectionSlider(
+    "launch-guidelines",
+    <div key="launch-guidelines-main" className="absolute inset-0">
+      <BrandBoard
+        variant="businesscard"
+        wordmark={clientName}
+        className="absolute inset-0"
+      />
+    </div>,
+    clientName
+  );
 
   // Brand in action carousel — reads only the admin "Section images" media
   // for the brand-in-action section; legacy gallery images are never mixed in.
@@ -1162,16 +1184,9 @@ export function BrandCaseStudy({
                 </Reveal>
                 <Reveal className="mt-8">
                   <OverviewSlider
-                    slides={[
-                      <div key="launch-physical-main" className="absolute inset-0">
-                        <BrandBoard
-                          variant="businesscard"
-                          wordmark={clientName}
-                          className="absolute inset-0"
-                        />
-                      </div>,
-                    ]}
+                    slides={launchPhysicalSlider.slides}
                     counterLabel={`${clientName}, ${t(locale, "workPhysicalTouchpoints")}`}
+                    thumbnails={launchPhysicalSlider.thumbnails}
                   />
                 </Reveal>
               </>
@@ -1192,16 +1207,9 @@ export function BrandCaseStudy({
                 </Reveal>
                 <Reveal className="mt-8">
                   <OverviewSlider
-                    slides={[
-                      <div key="launch-guidelines-main" className="absolute inset-0">
-                        <BrandBoard
-                          variant="businesscard"
-                          wordmark={clientName}
-                          className="absolute inset-0"
-                        />
-                      </div>,
-                    ]}
+                    slides={launchGuidelinesSlider.slides}
                     counterLabel={`${clientName}, ${t(locale, "workBrandGuidelines")}`}
+                    thumbnails={launchGuidelinesSlider.thumbnails}
                   />
                 </Reveal>
               </>

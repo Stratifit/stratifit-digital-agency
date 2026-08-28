@@ -5,6 +5,8 @@ export const CASE_STUDY_MEDIA_SECTIONS = [
   "identity-assets",
   "visual-applications",
   "launch",
+  "launch-physical",
+  "launch-guidelines",
   "brand-in-action",
 ] as const;
 

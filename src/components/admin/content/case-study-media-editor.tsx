@@ -25,6 +25,8 @@ const LABELS: Record<string, string> = {
   "identity-assets": "Identity assets",
   "visual-applications": "Visual applications",
   launch: "Launch & activation",
+  "launch-physical": "Physical touchpoints",
+  "launch-guidelines": "Brand guidelines",
   "brand-in-action": "Brand in action",
 };
 
