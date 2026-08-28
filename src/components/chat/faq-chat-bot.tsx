@@ -573,7 +573,7 @@ export function FaqChatBot({
                     <ChevronDownIcon className="size-3" />
                   </button>
                   {langOpen ? (
-                    <div className="absolute right-0 top-[calc(100%+6px)] z-20 min-w-[120px] overflow-hidden rounded-[10px] border border-border bg-field-bg shadow-2xl">
+                    <div className="absolute right-0 top-[calc(100%+6px)] z-20 min-w-[120px] overflow-hidden rounded-md border border-border bg-field-bg shadow-2xl">
                       {SUPPORTED_LANGS.map((code) => (
                         <button
                           key={code}
@@ -763,7 +763,7 @@ export function FaqChatBot({
             {/* Input */}
             <footer className="flex-none border-t border-border">
               <form onSubmit={handleSubmit} className="flex items-center gap-2 px-3 py-2.5">
-                <div className="flex flex-1 items-center gap-2 rounded-[10px] border border-border bg-field-bg px-2 transition-colors focus-within:border-primary/40 focus-within:outline focus-within:outline-2 focus-within:outline-primary/60 focus-within:outline-offset-2">
+                <div className="flex flex-1 items-center gap-2 rounded-md border border-border bg-field-bg px-2 transition-colors focus-within:border-primary/40 focus-within:outline focus-within:outline-2 focus-within:outline-primary/60 focus-within:outline-offset-2">
                   <input
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
@@ -776,7 +776,7 @@ export function FaqChatBot({
                   type="submit"
                   disabled={!input.trim() || loading}
                   aria-label={t(locale, "chatSend")}
-                  className="flex size-9 shrink-0 items-center justify-center rounded-[10px] bg-primary text-text-inverse transition-all hover:bg-primary-hover active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
+                  className="flex size-9 shrink-0 items-center justify-center rounded-md bg-primary text-text-inverse transition-all hover:bg-primary-hover active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
                 >
                   <SendIcon className="size-5" />
                 </button>

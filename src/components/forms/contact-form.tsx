@@ -568,7 +568,7 @@ export function ContactForm({
       {serverError ? (
         <p
           role="alert"
-          className="rounded-[10px] bg-error-soft px-3 py-2 text-sm text-error"
+          className="rounded-md bg-error-soft px-3 py-2 text-sm text-error"
         >
           {serverError}
         </p>

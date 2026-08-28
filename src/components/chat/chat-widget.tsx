@@ -319,7 +319,7 @@ const TOPIC_CHIPS: {
 function PanelHeading({ title, icon }: { title: string; icon: React.ReactNode }) {
   return (
     <div className="mb-3 flex items-center gap-2">
-      <span className="flex size-7 shrink-0 items-center justify-center rounded-[10px] border border-primary/20 bg-primary/10 text-primary">
+      <span className="flex size-7 shrink-0 items-center justify-center rounded-md border border-primary/20 bg-primary/10 text-primary">
         {icon}
       </span>
       <p className="font-display text-sm font-black tracking-tight text-text-primary">
@@ -1438,7 +1438,7 @@ export function ChatWidget({
                   <ChevronDownIcon className="size-3" />
                 </button>
                 {langOpen ? (
-                  <div className="absolute right-0 top-[calc(100%+6px)] z-20 min-w-[120px] overflow-hidden rounded-[10px] border border-border bg-field-bg shadow-2xl">
+                  <div className="absolute right-0 top-[calc(100%+6px)] z-20 min-w-[120px] overflow-hidden rounded-md border border-border bg-field-bg shadow-2xl">
                     {SUPPORTED_LANGS.map((code) => (
                       <button
                         key={code}
@@ -1494,7 +1494,7 @@ export function ChatWidget({
                       aria-pressed={isActive}
                       onClick={() => switchView(chip.view)}
                       className={cn(
-                        "flex shrink-0 items-center gap-1.5 rounded-[10px] border px-3.5 py-2 text-xs font-medium transition-all active:scale-[0.98]",
+                        "flex shrink-0 items-center gap-1.5 rounded-md border px-3.5 py-2 text-xs font-medium transition-all active:scale-[0.98]",
                         isActive
                           ? "border-primary bg-primary text-text-inverse"
                           : "border-border bg-white/5 text-text-secondary hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
@@ -1537,7 +1537,7 @@ export function ChatWidget({
               <button
                 type="button"
                 onClick={() => setVisibleGroupCount((c) => c + 2)}
-                className="mx-auto mb-3 flex items-center gap-1 rounded-[10px] border border-border bg-card-dark px-2.5 py-1 text-[9px] font-medium uppercase tracking-wide text-text-muted transition-colors hover:border-primary/30 hover:text-text-secondary"
+                className="mx-auto mb-3 flex items-center gap-1 rounded-md border border-border bg-card-dark px-2.5 py-1 text-[9px] font-medium uppercase tracking-wide text-text-muted transition-colors hover:border-primary/30 hover:text-text-secondary"
               >
                 <ChevronDownIcon className="size-2.5 rotate-180" />
                 {t(locale, "chatShowEarlier")}
@@ -1594,7 +1594,7 @@ export function ChatWidget({
                         </button>
                       </div>
                       {showPrivacyNote ? (
-                        <div className="chat-msg-in relative mt-2.5 rounded-[10px] border border-border bg-surface-soft/60 px-3 py-2">
+                        <div className="chat-msg-in relative mt-2.5 rounded-md border border-border bg-surface-soft/60 px-3 py-2">
                           <p className="text-[11px] leading-relaxed text-text-muted">
                             {t(locale, "chatPrivacyNote")}
                           </p>
@@ -1637,7 +1637,7 @@ export function ChatWidget({
                                         placeholder={
                                           visitor.name ? undefined : t(locale, "chatVisitor")
                                         }
-                                        className="w-full min-w-0 rounded-[10px] border border-primary/40 bg-card-dark px-2.5 py-2 text-sm font-medium text-text-primary placeholder:text-text-muted outline-none transition-colors focus:border-primary"
+                                        className="w-full min-w-0 rounded-md border border-primary/40 bg-card-dark px-2.5 py-2 text-sm font-medium text-text-primary placeholder:text-text-muted outline-none transition-colors focus:border-primary"
                                       />
                                       <button
                                         type="button"
@@ -1895,7 +1895,7 @@ export function ChatWidget({
                 className="px-4 pb-2 pt-3"
               >
                 {/* Single merged box: input + upload + send all inside one container */}
-                <div className="flex items-center gap-1 rounded-[10px] border border-card-border bg-card-dark py-1 pl-1.5 pr-1.5 transition-all focus-within:border-primary/60 focus-within:ring-2 focus-within:ring-primary/25 focus-within:outline-none has-[:disabled]:opacity-60">
+                <div className="flex items-center gap-1 rounded-md border border-card-border bg-card-dark py-1 pl-1.5 pr-1.5 transition-all focus-within:border-primary/60 focus-within:ring-2 focus-within:ring-primary/25 focus-within:outline-none has-[:disabled]:opacity-60">
                   <div className="relative min-w-0 flex-1">
                     {stage === "name" ? (
                       <UserIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-text-muted" />
@@ -1947,7 +1947,7 @@ export function ChatWidget({
                     type="button"
                     aria-label={t(locale, "chatUploadFile")}
                     disabled
-                    className="flex size-9 shrink-0 items-center justify-center rounded-[10px] text-text-muted transition-colors hover:bg-white/5 hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-40"
+                    className="flex size-9 shrink-0 items-center justify-center rounded-md text-text-muted transition-colors hover:bg-white/5 hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <PaperclipIcon className="size-4" />
                   </button>
@@ -1955,7 +1955,7 @@ export function ChatWidget({
                     type="submit"
                     disabled={!input.trim() || loading || stage === "loading"}
                     aria-label={t(locale, "chatSend")}
-                    className="flex size-9 shrink-0 items-center justify-center rounded-[10px] bg-primary text-text-inverse transition-all hover:bg-primary-hover active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
+                    className="flex size-9 shrink-0 items-center justify-center rounded-md bg-primary text-text-inverse transition-all hover:bg-primary-hover active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
                   >
                     <SendIcon />
                   </button>
@@ -1990,7 +1990,7 @@ export function ChatWidget({
           type="button"
           aria-label={t(locale, "chatOpen")}
           onClick={() => setOpen(true)}
-          className="fixed bottom-4 right-4 z-50 hidden size-14 items-center justify-center rounded-[10px] border border-primary/50 bg-primary/10 text-primary shadow-amber transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/70 hover:bg-primary/15 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:bottom-6 lg:right-6 lg:flex"
+          className="fixed bottom-4 right-4 z-50 hidden size-14 items-center justify-center rounded-md border border-primary/50 bg-primary/10 text-primary shadow-amber transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/70 hover:bg-primary/15 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:bottom-6 lg:right-6 lg:flex"
         >
           <ChatIcon className="size-6" />
         </button>

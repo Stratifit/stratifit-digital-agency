@@ -62,7 +62,7 @@ export function LanguageSwitcher({
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
         className={cn(
-          "flex cursor-pointer items-center gap-1.5 rounded-[10px] border px-3 py-1.5 text-[13px] font-semibold text-text-primary transition-[background-color,border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-surface-hover hover:border-card-border-hover active:bg-card-active active:border-card-border-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2",
+          "flex cursor-pointer items-center gap-1.5 rounded-md border px-3 py-1.5 text-[13px] font-semibold text-text-primary transition-[background-color,border-color] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-surface-hover hover:border-card-border-hover active:bg-card-active active:border-card-border-active focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2",
           open ? "border-card-border-active bg-card-active" : "border-card-border"
         )}
       >
@@ -105,7 +105,7 @@ export function LanguageSwitcher({
             className={cn(
               "flex items-center gap-2 rounded-xs border px-3 py-2 text-left text-sm transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-card-focus focus-visible:outline-offset-2",
               locale === currentLocale
-                ? "mx-1 w-auto rounded-[8px] border-card-border-active bg-card-active font-medium text-primary"
+                ? "mx-1 w-auto rounded-sm border-card-border-active bg-card-active font-medium text-primary"
                 : "w-full border-transparent text-text-secondary hover:bg-primary/8 hover:text-primary"
             )}
           >

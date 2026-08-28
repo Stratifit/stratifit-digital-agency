@@ -306,7 +306,7 @@ export default async function ServicePage({
                       return (
                         <div
                           key={index}
-                          className="flex flex-col items-center gap-1.5 rounded-card border border-card-border bg-[#1E1E1E] p-3 text-center transition-all duration-300 hover:border-primary/30 sm:p-4"
+                          className="flex flex-col items-center gap-1.5 rounded-card border border-card-border bg-card-dark p-3 text-center transition-all duration-300 hover:border-primary/30 sm:p-4"
                         >
                           {numeric ? (
                             <>
@@ -400,7 +400,7 @@ export default async function ServicePage({
                           {capability.steps.map((step, stepIndex) => (
                             <div
                               key={stepIndex}
-                              className="flex flex-col items-center justify-center gap-2 rounded-card border border-card-border bg-[#1E1E1E] p-4 text-center transition-colors hover:bg-surface-hover"
+                              className="flex flex-col items-center justify-center gap-2 rounded-card border border-card-border bg-card-dark p-4 text-center transition-colors hover:bg-surface-hover"
                             >
                               <ServicePageIcon
                                 name={step.icon ?? "spark"}
@@ -444,7 +444,7 @@ export default async function ServicePage({
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
               {deliverables.map((item, index) => (
                 <Reveal key={index} variant="card" className="h-full">
-                  <div className="group/card flex h-full flex-col rounded-card border border-card-border bg-[#1E1E1E] p-6 shadow-lg transition-all duration-300 hover:border-primary/30 sm:p-8">
+                  <div className="group/card flex h-full flex-col rounded-card border border-card-border bg-card-dark p-6 shadow-lg transition-all duration-300 hover:border-primary/30 sm:p-8">
                     <div className="mb-2 flex items-center gap-2">
                       <ServicePageIcon
                         name={item.icon ?? "folder"}
@@ -496,7 +496,7 @@ export default async function ServicePage({
                         <ServicePageIcon name="arrow" className="size-5" />
                       </span>
                     ) : null}
-                    <div className="flex h-full flex-col rounded-card border border-card-border bg-[#1E1E1E] p-6 shadow-lg transition-all duration-300 hover:border-primary/30 sm:p-8">
+                    <div className="flex h-full flex-col rounded-card border border-card-border bg-card-dark p-6 shadow-lg transition-all duration-300 hover:border-primary/30 sm:p-8">
                       <div className="flex items-start gap-4">
                         <div className="mt-0.5 shrink-0 font-display text-2xl font-black leading-none text-primary opacity-30 sm:text-3xl">
                           {String(step.number).padStart(2, "0")}

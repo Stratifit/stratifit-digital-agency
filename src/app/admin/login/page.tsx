@@ -207,7 +207,7 @@ export default function AdminLoginPage() {
             type="button"
             onClick={handleGoogleSignIn}
             disabled={isGoogleLoading}
-            className="flex h-12 w-full items-center justify-center gap-3 rounded-button border border-white/10 bg-white text-sm font-semibold text-[#1f1f1f] transition-[background-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-white/90 active:scale-[0.98] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex h-12 w-full items-center justify-center gap-3 rounded-button border border-white/10 bg-white text-sm font-semibold text-text-inverse transition-[background-color,transform] duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:bg-white/90 active:scale-[0.98] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary/35 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <GoogleIcon />
             {isGoogleLoading ? "Redirecting…" : "Continue with Google"}
