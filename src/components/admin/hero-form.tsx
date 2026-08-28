@@ -28,7 +28,7 @@ import {
   type EditorLocale,
 } from "@/components/admin/locale-tabs";
 
-type SectionKey = "headline" | "cta" | "metrics" | "trusted";
+type SectionKey = "headline" | "cta" | "media" | "metrics" | "trusted";
 
 const emptyTr = () => ({ en: "", de: "", fr: "", es: "" });
 
@@ -162,6 +162,8 @@ function toFormValues(hero: AdminHero): HeroFormValues {
     // explicitly cleared strip stays empty.
     trusted_by: hero.trusted_by ?? DEFAULT_TRUSTED_BY,
     trusted_by_label_translations: tr(hero.trusted_by_label_translations),
+    media_id: hero.media_id ?? "",
+    image_url: hero.image_url ?? "",
     is_visible: hero.is_visible,
   };
 }
@@ -186,6 +188,38 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
   });
 
   const isVisible = useWatch({ control, name: "is_visible" });
+  const heroImageUrl = useWatch({ control, name: "image_url" });
+  const [uploadingHeroImage, setUploadingHeroImage] = React.useState(false);
+  const [heroImageError, setHeroImageError] = React.useState<string | null>(null);
+  const heroImageInput = React.useRef<HTMLInputElement>(null);
+
+  async function uploadHeroImage(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingHeroImage(true);
+    setHeroImageError(null);
+    try {
+      const formData = new FormData();
+      formData.set("file", file);
+      formData.set("bucket", "portfolio-images");
+      formData.set("alt_text", "Hero main image");
+      const result = await uploadMediaAsset(formData);
+      if (result.success) {
+        setValue("media_id", result.data.id, { shouldDirty: true });
+        setValue("image_url", result.data.url, { shouldDirty: true });
+        if (heroImageInput.current) heroImageInput.current.value = "";
+      } else setHeroImageError(result.error);
+    } catch {
+      setHeroImageError("Upload failed. Please try again.");
+    } finally {
+      setUploadingHeroImage(false);
+    }
+  }
+
+  function removeHeroImage() {
+    setValue("media_id", "", { shouldDirty: true });
+    setValue("image_url", "", { shouldDirty: true });
+  }
   const metricFields = useFieldArray({ control, name: "metrics" });
   const trustedFields = useFieldArray({ control, name: "trusted_by" });
 
@@ -206,6 +240,11 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
       label: "Headline",
       description: "Eyebrow, title, amber highlight, and description.",
       hasError: Boolean(errors.title_translations?.en),
+    },
+    {
+      key: "media",
+      label: "Hero main image",
+      description: "Upload the primary visual displayed in the Hero section.",
     },
     {
       key: "cta",
@@ -291,6 +330,31 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
             <div className="space-y-2">
               <Label htmlFor={`description-${locale}`}>Description</Label>
               <Textarea key={locale} id={`description-${locale}`} rows={3} placeholder="We help startups and growing businesses…" {...register(`description_translations.${locale}`)} />
+            </div>
+          </div>
+        ) : null}
+
+        {activeSection === "media" ? (
+          <div className="space-y-4">
+            <div className="rounded-card border border-primary/20 bg-primary/5 p-4 text-sm text-text-secondary">
+              This image is stored in Supabase Storage and appears as the main Hero visual. Save the Hero after uploading.
+            </div>
+            <div className="space-y-2">
+              <Label>Hero main image</Label>
+              {heroImageUrl ? (
+                <div className="space-y-3">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- admin preview */}
+                  <img src={heroImageUrl} alt="Hero main image preview" className="max-h-72 w-full rounded-card border border-card-border bg-background object-cover" />
+                  <button type="button" onClick={removeHeroImage} className="text-xs text-text-muted hover:text-error">Remove image</button>
+                </div>
+              ) : (
+                <label className="flex min-h-48 cursor-pointer items-center justify-center rounded-card border border-dashed border-card-border bg-background text-sm text-text-muted hover:bg-surface-hover">
+                  <input ref={heroImageInput} type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml,image/avif" onChange={uploadHeroImage} className="sr-only" />
+                  {uploadingHeroImage ? "Uploading…" : "Add Hero image"}
+                </label>
+              )}
+              {heroImageError ? <p className="text-xs text-error">{heroImageError}</p> : null}
+              <p className="text-xs text-text-muted">Recommended: 1600 × 900 px or larger. The existing Hero layout remains unchanged.</p>
             </div>
           </div>
         ) : null}

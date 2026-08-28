@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getPublicHero } from "@/features/hero/queries";
 import {
   DEFAULT_TRUSTED_BY,
@@ -202,6 +203,19 @@ export async function HeroSection() {
                 {secondaryLabel}
               </ContactAwareLink>
             ) : null}
+          </div>
+        ) : null}
+
+        {hero.image_url ? (
+          <div data-hero className="mx-auto mt-8 w-full max-w-3xl overflow-hidden rounded-card border border-card-border bg-card-dark shadow-xl">
+            <Image
+              src={hero.image_url}
+              alt={`${title} ${highlight}`.trim()}
+              width={1600}
+              height={900}
+              className="h-auto max-h-[420px] w-full object-cover"
+              priority
+            />
           </div>
         ) : null}
 

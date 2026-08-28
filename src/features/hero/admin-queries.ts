@@ -25,10 +25,12 @@ export interface AdminHero {
   metrics: HeroMetric[] | null;
   trusted_by: HeroTrustedByItem[] | null;
   trusted_by_label_translations: Record<string, string> | null;
+  media_id: string | null;
+  image_url: string | null;
 }
 
 const SELECT_FIELDS =
-  "is_visible, eyebrow_translations, title_translations, highlight_translations, description_translations, primary_cta_label_translations, primary_cta_url, secondary_cta_label_translations, secondary_cta_url, metrics, trusted_by, trusted_by_label_translations";
+  "is_visible, media_id, eyebrow_translations, title_translations, highlight_translations, description_translations, primary_cta_label_translations, primary_cta_url, secondary_cta_label_translations, secondary_cta_url, metrics, trusted_by, trusted_by_label_translations";
 
 /** Same fields without `trusted_by` / `trusted_by_label_translations`, for
  *  databases that haven't applied migration 00058 / 00085 yet (the columns
@@ -67,6 +69,17 @@ export async function getAdminHero(): Promise<AdminHero | null> {
   }
 
   const trustedBy = parseJsonArray<HeroTrustedByItem>(data.trusted_by);
+  let imageUrl: string | null = null;
+  if (data.media_id) {
+    const { data: media } = await supabase
+      .from("media_assets")
+      .select("bucket_name, storage_path")
+      .eq("id", data.media_id)
+      .maybeSingle();
+    if (media) {
+      imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${media.bucket_name}/${media.storage_path}`;
+    }
+  }
 
   return {
     ...data,
@@ -74,5 +87,6 @@ export async function getAdminHero(): Promise<AdminHero | null> {
     trusted_by: trustedBy
       ? await resolveTrustedByImages(supabase, trustedBy)
       : null,
+    image_url: imageUrl,
   };
 }

@@ -53,6 +53,7 @@ export async function updateHero(input: HeroFormValues): Promise<ActionResult> {
     .upsert(
       {
         singleton_key: true,
+        media_id: parsed.data.media_id || null,
         eyebrow_translations: parsed.data.eyebrow_translations,
         title_translations: parsed.data.title_translations,
         highlight_translations: parsed.data.highlight_translations,

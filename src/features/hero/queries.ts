@@ -1,4 +1,5 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { getMediaPublicUrl } from "@/lib/media";
 import {
   resolveTrustedByImages,
   type TrustedByMediaItem,
@@ -16,10 +17,12 @@ export interface PublicHero {
   metrics: unknown[] | null;
   trusted_by: TrustedByMediaItem[] | null;
   trusted_by_label_translations: Record<string, string> | null;
+  media_id: string | null;
+  image_url: string | null;
 }
 
 const SELECT_FIELDS =
-  "eyebrow_translations, title_translations, highlight_translations, description_translations, primary_cta_label_translations, primary_cta_url, secondary_cta_label_translations, secondary_cta_url, metrics, trusted_by, trusted_by_label_translations";
+  "media_id, eyebrow_translations, title_translations, highlight_translations, description_translations, primary_cta_label_translations, primary_cta_url, secondary_cta_label_translations, secondary_cta_url, metrics, trusted_by, trusted_by_label_translations";
 
 /** Same fields without `trusted_by` / `trusted_by_label_translations`, for
  *  databases that haven't applied migration 00058 / 00085 yet (the columns
@@ -61,6 +64,16 @@ export async function getPublicHero(): Promise<PublicHero | null> {
   }
 
   const hero = data as unknown as PublicHero & { trusted_by?: unknown };
+  let imageUrl: string | null = null;
+  if (hero.media_id) {
+    const { data: media } = await supabase
+      .from("media_assets")
+      .select("bucket_name, storage_path")
+      .eq("id", hero.media_id)
+      .maybeSingle();
+    if (media) imageUrl = getMediaPublicUrl(media.bucket_name, media.storage_path);
+  }
+
   const rawTrustedBy = Array.isArray(hero.trusted_by)
     ? (hero.trusted_by as TrustedByMediaItem[])
     : null;
@@ -73,5 +86,6 @@ export async function getPublicHero(): Promise<PublicHero | null> {
     trusted_by: rawTrustedBy
       ? await resolveTrustedByImages(supabase, rawTrustedBy)
       : null,
+    image_url: imageUrl,
   };
 }
