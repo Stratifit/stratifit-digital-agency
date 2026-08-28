@@ -148,6 +148,7 @@ export function InsightsCarousel({
       ? insights        : insights.filter((insight) =>
             insight.category_slugs.includes(activeFilter)
           );
+  const mobileDots = filtered.slice(0, 7);
 
   function selectFilter(slug: string) {
     setActiveFilter(slug);
@@ -236,10 +237,10 @@ export function InsightsCarousel({
             </button>
           </div>
 
-          <div className="mt-6 flex items-center justify-between gap-4">
-            <div className="flex items-center gap-1.5" aria-label="Insight carousel pagination">
+          <div className="mt-6 flex items-center justify-center gap-4">
+            <div className="flex items-center justify-center gap-1.5" aria-label="Insight carousel pagination">
               {filtered.length > 1
-                ? filtered.map((insight, index) => (
+                ? mobileDots.map((insight, index) => (
                     <span
                       key={insight.slug}
                       aria-hidden="true"
