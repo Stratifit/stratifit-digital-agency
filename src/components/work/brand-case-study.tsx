@@ -512,34 +512,17 @@ export function BrandCaseStudy({
     metaItems.push({ label: t(locale, "workYear"), value: launchYear });
   }
 
-  // Keep the brand case-study presentation focused on four selected visuals.
-  // The CMS may retain additional gallery assets for future use, but this
-  // public section should never render more than the approved four.
-  const gallery = project.gallery_urls.slice(0, 4);
   const galleryCaption = (index: number) =>
     deliverables[index % deliverables.length] ??
     `${t(locale, "workBrandInAction")} ${String(index + 1).padStart(2, "0")}`;
 
-  // Thumbnails for the overview/concept sliders — only gallery images (not the
-  // "before"/"concept" BrandBoard lead slide). Capped at 3 so that, once the
-  // lead slide is prepended as the first thumbnail, each section shows exactly
-  // 4 thumbnails with the BrandBoard lead active as the main image.
-  const leadThumbnails = gallery.slice(0, 3).map((url, index) => (
-    <Image
-      key={`thumb-${url}`}
-      src={url}
-      alt={`${wordmark}, ${galleryCaption(index)}`}
-      fill
-      sizes="80px"
-      className="object-cover"
-    />
-  ));
-
   /**
-   * Builds the slides + thumbnail strip for one case-study section. Uploaded
-   * media from the admin "Section images" tab (main image + thumbnails)
-   * replaces the generated BrandBoard lead; the card gallery fills the
-   * remaining slots, so sections without uploads keep the approved artwork.
+   * Builds the slides + thumbnail strip for one case-study section. Only media
+   * uploaded in the admin "Section images" tab (main image + thumbnails) is
+   * used — legacy gallery images are never mixed in. The generated BrandBoard
+   * lead renders as a single static frame only when the section has no
+   * uploads. Dots and thumbnails mirror the uploaded image count: one image
+   * shows no navigation, two images show two thumbnails and two dots, etc.
    */
   function sectionSlider(
     section: keyof CaseStudySectionMediaMap,
@@ -556,56 +539,29 @@ export function BrandCaseStudy({
       .map((thumb) => thumb.image_url?.trim() ?? "")
       .filter(Boolean);
 
-    const used = new Set<string>();
-    if (mainUrl) used.add(mainUrl);
-    thumbs.forEach((url) => used.add(url));
+    const imageUrls = mainUrl
+      ? [mainUrl, ...thumbs.filter((url) => url !== mainUrl)]
+      : thumbs;
 
-    const slides: React.ReactNode[] = [];
-    if (mainUrl) {
-      slides.push(
-        <Image
-          key={`${section}-main`}
-          src={mainUrl}
-          alt={`${altPrefix}, ${t(locale, "workCaseStudy")}`}
-          fill
-          sizes="(max-width: 1024px) 100vw, 50vw"
-          className="object-cover"
-        />
-      );
-    } else {
-      slides.push(lead);
-    }
-    thumbs.forEach((url, index) => {
-      slides.push(
-        <Image
-          key={`${section}-thumb-${index}-${url}`}
-          src={url}
-          alt={`${altPrefix}, ${galleryCaption(index)}`}
-          fill
-          sizes="(max-width: 1024px) 100vw, 50vw"
-          className="object-cover"
-        />
-      );
-    });
-    gallery.forEach((url, index) => {
-      if (used.has(url)) return;
-      slides.push(
-        <Image
-          key={`${section}-gallery-${url}`}
-          src={url}
-          alt={`${altPrefix}, ${galleryCaption(index)}`}
-          fill
-          sizes="(max-width: 1024px) 100vw, 50vw"
-          className="object-cover"
-        />
-      );
-    });
-
-    const thumbnails =
-      thumbs.length > 0
-        ? thumbs.map((url, index) => (
+    const slides: React.ReactNode[] =
+      imageUrls.length > 0
+        ? imageUrls.map((url, index) => (
             <Image
-              key={`${section}-thumbnav-${index}-${url}`}
+              key={`${section}-slide-${index}-${url}`}
+              src={url}
+              alt={`${altPrefix}, ${galleryCaption(index)}`}
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
+            />
+          ))
+        : [lead];
+
+    const thumbnails: React.ReactNode[] =
+      imageUrls.length > 1
+        ? imageUrls.map((url, index) => (
+            <Image
+              key={`${section}-thumb-${index}-${url}`}
               src={url}
               alt={`${altPrefix}, ${galleryCaption(index)}`}
               fill
@@ -613,7 +569,7 @@ export function BrandCaseStudy({
               className="object-cover"
             />
           ))
-        : leadThumbnails;
+        : [];
 
     return { slides, thumbnails, hasUploadedMain: Boolean(mainUrl) };
   }
@@ -688,78 +644,26 @@ export function BrandCaseStudy({
     clientName
   );
 
-  // Brand in action carousel — uploaded section media when present, otherwise
-  // the gallery (kept as a plain image carousel, no BrandBoard lead).
+  // Brand in action carousel — reads only the admin "Section images" media
+  // for the brand-in-action section; legacy gallery images are never mixed in.
+  const brandInActionSlider = sectionSlider(
+    "brand-in-action",
+    <div key="brand-in-action-main" className="absolute inset-0">
+      <BrandBoard
+        variant="applications"
+        wordmark={wordmark}
+        className="absolute inset-0"
+      />
+    </div>,
+    wordmark
+  );
   const brandMedia = project.case_study_section_media["brand-in-action"];
-  const brandMain = brandMedia?.main?.image_url?.trim() ?? "";
-  const brandThumbs = (brandMedia?.thumbnails ?? [])
-    .map((thumb) => thumb.image_url?.trim() ?? "")
-    .filter(Boolean);
-  const hasBrandMedia = Boolean(brandMain || brandThumbs.length > 0);
-  const brandSlides: React.ReactNode[] = brandMain
-    ? [
-        <Image
-          key="brand-main"
-          src={brandMain}
-          alt={`${wordmark}, ${t(locale, "workBrandInUse")}`}
-          fill
-          sizes="(max-width: 1024px) 100vw, 50vw"
-          className="object-cover"
-        />,
-        ...brandThumbs.map((url, index) => (
-          <Image
-            key={`brand-thumb-${index}-${url}`}
-            src={url}
-            alt={`${wordmark}, ${galleryCaption(index)}`}
-            fill
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover"
-          />
-        )),
-        ...gallery
-          .filter((url) => url !== brandMain && !brandThumbs.includes(url))
-          .map((url, index) => (
-            <Image
-              key={`brand-gallery-${url}`}
-              src={url}
-              alt={`${wordmark}, ${galleryCaption(index)}`}
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
-            />
-          )),
-      ]
-    : gallery.map((url, index) => (
-        <Image
-          key={`brand-action-${index}-${url}`}
-          src={url}
-          alt={`${wordmark}, ${galleryCaption(index)}`}
-          fill
-          sizes="(max-width: 1024px) 100vw, 50vw"
-          className="object-cover"
-        />
-      ));
-  const brandThumbnails: React.ReactNode[] = brandMain
-    ? brandThumbs.map((url, index) => (
-        <Image
-          key={`brand-thumbnav-${index}-${url}`}
-          src={url}
-          alt={`${wordmark}, ${galleryCaption(index)}`}
-          fill
-          sizes="80px"
-          className="object-cover"
-        />
-      ))
-    : gallery.map((url, index) => (
-        <Image
-          key={`brand-action-thumb-${index}-${url}`}
-          src={url}
-          alt={`${wordmark}, ${galleryCaption(index)}`}
-          fill
-          sizes="80px"
-          className="object-cover"
-        />
-      ));
+  const hasBrandMedia = Boolean(
+    brandMedia?.main?.image_url?.trim() ||
+      (brandMedia?.thumbnails ?? []).some(
+        (thumb) => (thumb.image_url ?? "").trim()
+      )
+  );
 
 
   const paletteLabels = {
@@ -888,7 +792,6 @@ export function BrandCaseStudy({
                   slides={overviewSlider.slides}
                   counterLabel={`${wordmark}, ${t(locale, "workOverviewA")} ${t(locale, "workOverviewB")}`}
                   thumbnails={overviewSlider.thumbnails}
-                  thumbnailSlideOffset={1}
                   badge={
                     overviewSlider.hasUploadedMain
                       ? undefined
@@ -947,7 +850,6 @@ export function BrandCaseStudy({
                     slides={discoverySlider.slides}
                     counterLabel={`${clientName}, ${t(locale, "workPhaseDiscovery")}`}
                     thumbnails={discoverySlider.thumbnails}
-                    thumbnailSlideOffset={1}
                   />
                 </Reveal>
               ) : null}
@@ -1062,7 +964,6 @@ export function BrandCaseStudy({
                   slides={conceptSlider.slides}
                   counterLabel={`${wordmark}, ${t(locale, "workConcept")}`}
                   thumbnails={conceptSlider.thumbnails}
-                  thumbnailSlideOffset={1}
                 />
                 <figcaption className="mt-3 flex items-center justify-between gap-4 px-1 text-xs text-text-muted">
                   <span>{t(locale, "workConceptCaption")}</span>
@@ -1182,7 +1083,6 @@ export function BrandCaseStudy({
                     slides={identityAssetsSlider.slides}
                     counterLabel={`${clientName}, ${t(locale, "workPhysicalTouchpoint")}`}
                     thumbnails={identityAssetsSlider.thumbnails}
-                    thumbnailSlideOffset={1}
                   />
                 </Reveal>
               </>
@@ -1204,7 +1104,6 @@ export function BrandCaseStudy({
                     slides={visualApplicationsSlider.slides}
                     counterLabel={`${clientName}, ${t(locale, "workVisualApplications")}`}
                     thumbnails={visualApplicationsSlider.thumbnails}
-                    thumbnailSlideOffset={1}
                   />
                 </Reveal>
               </>
@@ -1246,7 +1145,6 @@ export function BrandCaseStudy({
                   slides={launchSlider.slides}
                   counterLabel={`${clientName}, ${t(locale, "workPhysicalTouchpoint")}`}
                   thumbnails={launchSlider.thumbnails}
-                  thumbnailSlideOffset={1}
                 />
               </Reveal>
               </>
@@ -1272,20 +1170,8 @@ export function BrandCaseStudy({
                           className="absolute inset-0"
                         />
                       </div>,
-                      ...gallery.map((url, index) => (
-                        <Image
-                          key={`launch-physical-${url}`}
-                          src={url}
-                          alt={`${clientName}, ${galleryCaption(index)}`}
-                          fill
-                          sizes="(max-width: 1024px) 100vw, 50vw"
-                          className="object-cover"
-                        />
-                      )),
                     ]}
                     counterLabel={`${clientName}, ${t(locale, "workPhysicalTouchpoints")}`}
-                    thumbnails={leadThumbnails}
-                    thumbnailSlideOffset={1}
                   />
                 </Reveal>
               </>
@@ -1314,20 +1200,8 @@ export function BrandCaseStudy({
                           className="absolute inset-0"
                         />
                       </div>,
-                      ...gallery.map((url, index) => (
-                        <Image
-                          key={`launch-guidelines-${url}`}
-                          src={url}
-                          alt={`${clientName}, ${galleryCaption(index)}`}
-                          fill
-                          sizes="(max-width: 1024px) 100vw, 50vw"
-                          className="object-cover"
-                        />
-                      )),
                     ]}
                     counterLabel={`${clientName}, ${t(locale, "workBrandGuidelines")}`}
-                    thumbnails={leadThumbnails}
-                    thumbnailSlideOffset={1}
                   />
                 </Reveal>
               </>
@@ -1385,7 +1259,7 @@ export function BrandCaseStudy({
       {/* ============================================================ */}
       {/* 06 — Brand in action — image carousel                       */}
       {/* ============================================================ */}
-      {gallery.length > 0 || deliverables.length > 0 || hasBrandMedia ? (
+      {deliverables.length > 0 || hasBrandMedia ? (
         <section className="py-14 md:py-20">
           <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
             <Reveal>
@@ -1402,11 +1276,9 @@ export function BrandCaseStudy({
 
             <div className="mt-10">
               <OverviewSlider
-                slides={brandSlides}
+                slides={brandInActionSlider.slides}
                 counterLabel={`${wordmark}, ${t(locale, "workBrandInUse")}`}
-                thumbnails={brandThumbnails}
-                thumbnailSlideOffset={brandMain ? 1 : 0}
-                showDots={false}
+                thumbnails={brandInActionSlider.thumbnails}
               />
             </div>
           </div>
