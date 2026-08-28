@@ -1922,6 +1922,7 @@ export type Database = {
         Row: {
           approach_translations: Json
           brand_guidelines: Json
+          case_study_section_media: Json
           brand_story_translations: Json | null
           brand_system_translations: Json | null
           challenge_translations: Json
@@ -1951,6 +1952,7 @@ export type Database = {
         Insert: {
           approach_translations?: Json
           brand_guidelines?: Json
+          case_study_section_media?: Json
           brand_story_translations?: Json | null
           brand_system_translations?: Json | null
           challenge_translations?: Json
@@ -1980,6 +1982,7 @@ export type Database = {
         Update: {
           approach_translations?: Json
           brand_guidelines?: Json
+          case_study_section_media?: Json
           brand_story_translations?: Json | null
           brand_system_translations?: Json | null
           challenge_translations?: Json

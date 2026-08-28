@@ -42,6 +42,8 @@ import type { AdminServiceOption } from "@/features/content/admin-queries";
 import { normalizeBrandGuidelines } from "@/features/portfolio/brand-guidelines";
 import { portfolioSlugFromClientName } from "@/features/portfolio/slug";
 import { BrandGuidelinesEditor } from "@/components/admin/content/brand-guidelines-editor";
+import { CaseStudyMediaEditor } from "@/components/admin/content/case-study-media-editor";
+import { normalizeCaseStudySectionMedia } from "@/features/portfolio/case-study-media";
 import { PhaseDocumentsEditor } from "@/components/admin/content/phase-documents-editor";
 
 export type ContentType = "portfolio" | "insights" | "testimonials" | "pricing" | "faq";
@@ -357,6 +359,7 @@ function PortfolioGalleryUploader({
 type EditorSectionKey =
   | "content"
   | "case-study"
+  | "case-study-media"
   | "phase-documents"
   | "brand-guidelines"
   | "publishing";
@@ -394,6 +397,9 @@ export function ContentForm({
       d.client_name = initial.client_name ?? "";
       d.service_slug = initial.service_slug ?? "";
       d.gallery = initial.gallery ?? [];
+      d.case_study_section_media = normalizeCaseStudySectionMedia(
+        initial.case_study_section_media
+      );
       d.deliverables_translations = trArr(
         initial.deliverables_translations as Record<string, string[]> | null
       );
@@ -553,6 +559,12 @@ export function ContentForm({
                   label: "Case study",
                   description:
                     "Facts, challenge, solution, results, and gallery shown on the public case study page.",
+                },
+                {
+                  key: "case-study-media" as const,
+                  label: "Section images",
+                  description:
+                    "Replace the main image and thumbnails used by each public case-study section.",
                 },
                 {
                   key: "phase-documents" as const,
@@ -1010,6 +1022,10 @@ export function ContentForm({
               </div>
             </div>
           </div>
+        ) : null}
+
+        {activeSection === "case-study-media" && type === "portfolio" ? (
+          <CaseStudyMediaEditor control={control} setValue={setValue} />
         ) : null}
 
         {activeSection === "phase-documents" && type === "portfolio" ? (

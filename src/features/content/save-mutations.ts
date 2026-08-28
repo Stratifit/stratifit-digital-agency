@@ -20,6 +20,7 @@ import {
 import { normalizeBrandGuidelines } from "@/features/portfolio/brand-guidelines";
 import { portfolioSlugFromClientName } from "@/features/portfolio/slug";
 import type { Json } from "@/types/database.types";
+import { normalizeCaseStudySectionMedia } from "@/features/portfolio/case-study-media";
 
 async function requireAdmin() {
   const supabase = await createSupabaseServerClient();
@@ -166,6 +167,9 @@ export async function savePortfolio(
       ? parsed.data.testimonial_id
       : null,
     image_url: firstGalleryImage || parsed.data.image_url.trim() || null,
+    case_study_section_media: normalizeCaseStudySectionMedia(
+      parsed.data.case_study_section_media
+    ) as unknown as Json,
     seo_title_translations: parsed.data.seo_title_translations ?? {},
     seo_description_translations: parsed.data.seo_description_translations ?? {},
     status: parsed.data.status,

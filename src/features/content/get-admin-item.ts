@@ -48,7 +48,7 @@ export async function getContentItem(
         image_url: (row.image_url as string | null) ?? "",
       }));
 
-      return { ...project, service_slug: serviceSlug ?? "", gallery };
+      return { ...project, service_slug: serviceSlug ?? "", gallery, case_study_section_media: project.case_study_section_media ?? {} };
     }
     case "insights": {
       const { data } = await supabase.from("insights").select("*").eq("slug", key).single();

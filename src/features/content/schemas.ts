@@ -11,6 +11,18 @@ const translations = () =>
 const englishRequired = (message: string) =>
   translations().refine((t) => t.en.trim().length > 0, message);
 
+const caseStudyMediaAsset = z.object({
+  media_id: z.string().optional(),
+  image_url: z.string(),
+});
+
+const caseStudySectionMedia = z.object({
+  main: caseStudyMediaAsset,
+  thumbnails: z.array(caseStudyMediaAsset).max(6),
+});
+
+const caseStudySectionMediaMap = z.record(z.string(), caseStudySectionMedia);
+
 const portfolioGalleryItem = z.object({
   /** Uploaded media asset id (empty when a direct URL is used). */
   media_id: z.string().optional(),
@@ -197,6 +209,8 @@ export const portfolioSchema = z.object({
   brand_story_translations: translations().optional(),
   /** Editable brand-guidelines document (logo, variants, colours, type, UI). */
   brand_guidelines: brandGuidelinesSchema.optional(),
+  /** Dedicated media for each public case-study section. */
+  case_study_section_media: caseStudySectionMediaMap.optional(),
   /** Multilingual Discovery & Strategy phase document. */
   strategy_translations: strategyLocales().optional(),
   /** Multilingual Identity & Assets phase document. */

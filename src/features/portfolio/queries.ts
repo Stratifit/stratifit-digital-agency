@@ -1,7 +1,6 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { getMediaPublicUrl } from "@/lib/media";
-import {
-  normalizeBrandGuidelines,
+import { getMediaPublicUrl } from "@/lib/media";import { normalizeCaseStudySectionMedia, type CaseStudySectionMediaMap } from "@/features/portfolio/case-study-media";
+import { normalizeBrandGuidelines,
   type BrandGuidelines,
 } from "@/features/portfolio/brand-guidelines";
 
@@ -376,6 +375,8 @@ export interface PublicPortfolioDetail {
   summary_translations: Record<string, string> | null;
   /** Logo concept / monogram rationale for brand case studies. */
   brand_story_translations: Record<string, string> | null;
+  /** Dedicated media per public case-study section. */
+  case_study_section_media: CaseStudySectionMediaMap;
   /** Editable brand-guidelines document (normalized for rendering). */
   brand_guidelines: BrandGuidelines;
   /** Multilingual Discovery & Strategy phase document. */
@@ -410,8 +411,7 @@ export async function getPublicPortfolioDetail(
 
   const { data, error } = await supabase
     .from("portfolio_projects")
-    .select(
-      "id, slug, client_name, title_translations, summary_translations, brand_story_translations, brand_guidelines, strategy_translations, brand_system_translations, launch_translations, challenge_translations, approach_translations, solution_translations, deliverables_translations, results_translations, metrics, featured_media_id, image_url, testimonial_id, seo_title_translations, seo_description_translations, published_at, year"
+    .select(        "id, slug, client_name, title_translations, summary_translations, brand_story_translations, brand_guidelines, case_study_section_media, strategy_translations, brand_system_translations, launch_translations, challenge_translations, approach_translations, solution_translations, deliverables_translations, results_translations, metrics, featured_media_id, image_url, testimonial_id, seo_title_translations, seo_description_translations, published_at, year"
     )
     .eq("slug", slug)
     .eq("status", "published")
@@ -516,6 +516,9 @@ export async function getPublicPortfolioDetail(
       data.summary_translations as Record<string, string> | null,
     brand_story_translations:
       (data.brand_story_translations as Record<string, string> | null) ?? null,
+    case_study_section_media: normalizeCaseStudySectionMedia(
+      data.case_study_section_media
+    ),
     brand_guidelines: normalizeBrandGuidelines(data.brand_guidelines),
     strategy_translations: normalizeStrategyTranslations(data.strategy_translations),
     brand_system_translations: normalizeBrandSystemTranslations(
