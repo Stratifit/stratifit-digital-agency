@@ -38,6 +38,16 @@ interface BrandBoardProps {
   tagline?: string;
   /** Resolved metric pairs for the results board. */
   metrics?: { value: string; label: string }[];
+  paletteLabels?: {
+    primary: string;
+    accent: string;
+    background: string;
+    text: string;
+    green: string;
+    lemon: string;
+    mist: string;
+    charcoal: string;
+  };
   className?: string;
 }
 
@@ -390,7 +400,29 @@ function OverviewBoard({
   );
 }
 
-function PaletteBoard() {
+function PaletteBoard({
+  labels = {
+    primary: "Primary",
+    accent: "Accent",
+    background: "Background",
+    text: "Text",
+    green: "Green",
+    lemon: "Lemon",
+    mist: "Mist",
+    charcoal: "Charcoal",
+  },
+}: {
+  labels?: {
+    primary: string;
+    accent: string;
+    background: string;
+    text: string;
+    green: string;
+    lemon: string;
+    mist: string;
+    charcoal: string;
+  };
+}) {
   return (
     <g>
       {/* Full-bleed swatches keep the palette focused and remove the inset frame. */}
@@ -407,7 +439,7 @@ function PaletteBoard() {
         fontSize={42}
         fill="#FFFFFF"
       >
-        Primary: Green
+        {labels.primary}: {labels.green}
       </text>
       <text
         x={88}
@@ -427,10 +459,10 @@ function PaletteBoard() {
         textAnchor="middle"
       >
         <text x={200} y={494} fill="#18211C">
-          <tspan fill="#F59E0B">Accent:</tspan> Lemon
+          <tspan fill="#F59E0B">{labels.accent}:</tspan> {labels.lemon}
         </text>
-        <text x={600} y={494} fill="#F3F8EE">Background: Mist</text>
-        <text x={1000} y={494} fill="#18211C">Text: Charcoal</text>
+        <text x={600} y={494} fill="#F3F8EE">{labels.background}: {labels.mist}</text>
+        <text x={1000} y={494} fill="#18211C">{labels.text}: {labels.charcoal}</text>
       </g>
       <g
         fontFamily={FONT_BODY}
@@ -1036,6 +1068,7 @@ export function BrandBoard({
   label,
   tagline,
   metrics,
+  paletteLabels,
   className,
 }: BrandBoardProps) {
   const uid = useId().replace(/[^a-zA-Z0-9]/g, "");
@@ -1053,7 +1086,7 @@ export function BrandBoard({
       ) : variant === "overview" ? (
         <OverviewBoard uid={uid} wordmark={wordmark} initial={initial} />
       ) : variant === "palette" ? (
-        <PaletteBoard />
+        <PaletteBoard labels={paletteLabels} />
       ) : variant === "type" ? (
         <TypeBoard />
       ) : variant === "mark" ? (

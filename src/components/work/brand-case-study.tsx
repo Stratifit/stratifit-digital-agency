@@ -558,11 +558,23 @@ export function BrandCaseStudy({
   ));
 
 
+  const paletteLabels = {
+    primary: t(locale, "workPalettePrimary"),
+    accent: t(locale, "workPaletteAccent"),
+    background: t(locale, "workPaletteBackground"),
+    text: t(locale, "workPaletteText"),
+    green: t(locale, "workPaletteGreen"),
+    lemon: t(locale, "workPaletteLemon"),
+    mist: t(locale, "workPaletteMist"),
+    charcoal: t(locale, "workPaletteCharcoal"),
+  };
+
   const paletteSlides = [
     <BrandBoard
       key="palette-main"
       variant="palette"
       wordmark={clientName}
+      paletteLabels={paletteLabels}
       className="absolute inset-0"
     />,
   ];

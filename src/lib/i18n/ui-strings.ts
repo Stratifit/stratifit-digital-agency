@@ -190,6 +190,14 @@ export type UiStringKey =
   | "workLogoVariations"
   | "workColourPalette"
   | "workColourUsage"
+  | "workPalettePrimary"
+  | "workPaletteAccent"
+  | "workPaletteBackground"
+  | "workPaletteText"
+  | "workPaletteGreen"
+  | "workPaletteLemon"
+  | "workPaletteMist"
+  | "workPaletteCharcoal"
   | "workTypography"
   | "workTypeHierarchy"
   | "workHeading"
@@ -513,6 +521,14 @@ const en: UiStrings = {
   workLogoVariations: "Logo Variations",
   workColourPalette: "Colour Palette",
   workColourUsage: "Colour Usage",
+  workPalettePrimary: "Primary",
+  workPaletteAccent: "Accent",
+  workPaletteBackground: "Background",
+  workPaletteText: "Text",
+  workPaletteGreen: "Green",
+  workPaletteLemon: "Lemon",
+  workPaletteMist: "Mist",
+  workPaletteCharcoal: "Charcoal",
   workTypography: "Typography",
   workIdentityAssets: "Identity Assets",
   workPhysicalTouchpoint: "Physical Touchpoint",
@@ -847,6 +863,14 @@ const de: UiStrings = {
   workLogoVariations: "Logo-Varianten",
   workColourPalette: "Farbpalette",
   workColourUsage: "Farbeinsatz",
+  workPalettePrimary: "Primär",
+  workPaletteAccent: "Akzent",
+  workPaletteBackground: "Hintergrund",
+  workPaletteText: "Text",
+  workPaletteGreen: "Grün",
+  workPaletteLemon: "Zitrone",
+  workPaletteMist: "Nebel",
+  workPaletteCharcoal: "Anthrazit",
   workTypography: "Typografie",
   workIdentityAssets: "Identitäts-Assets",
   workPhysicalTouchpoint: "Physischer Touchpoint",
@@ -1181,6 +1205,14 @@ const fr: UiStrings = {
   workLogoVariations: "Déclinaisons du logo",
   workColourPalette: "Palette de couleurs",
   workColourUsage: "Usage des couleurs",
+  workPalettePrimary: "Primaire",
+  workPaletteAccent: "Accent",
+  workPaletteBackground: "Arrière-plan",
+  workPaletteText: "Texte",
+  workPaletteGreen: "Vert",
+  workPaletteLemon: "Citron",
+  workPaletteMist: "Brume",
+  workPaletteCharcoal: "Anthracite",
   workTypography: "Typographie",
   workIdentityAssets: "Actifs d'identité",
   workPhysicalTouchpoint: "Point de contact physique",
@@ -1515,6 +1547,14 @@ const es: UiStrings = {
   workLogoVariations: "Variaciones del logo",
   workColourPalette: "Paleta de colores",
   workColourUsage: "Uso del color",
+  workPalettePrimary: "Principal",
+  workPaletteAccent: "Acento",
+  workPaletteBackground: "Fondo",
+  workPaletteText: "Texto",
+  workPaletteGreen: "Verde",
+  workPaletteLemon: "Limón",
+  workPaletteMist: "Niebla",
+  workPaletteCharcoal: "Carbón",
   workTypography: "Tipografía",
   workIdentityAssets: "Activos de identidad",
   workPhysicalTouchpoint: "Punto de contacto físico",
