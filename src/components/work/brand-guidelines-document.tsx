@@ -133,7 +133,7 @@ function LogoSection({
         {logoUrl ? (
           <Image
             src={logoUrl}
-            alt={`${wordmark} — ${t(locale, "workPrimaryLogo")}`}
+            alt={`${wordmark}, ${t(locale, "workPrimaryLogo")}`}
             fill
             sizes="(max-width: 1024px) 100vw, 55vw"
             className="object-contain p-8 sm:p-12"
@@ -180,7 +180,7 @@ function VariantsSection({
             {tile.url ? (
               <Image
                 src={tile.url}
-                alt={`${wordmark} — ${tile.label}`}
+                alt={`${wordmark}, ${tile.label}`}
                 fill
                 sizes="(max-width: 640px) 50vw, 25vw"
                 className="object-cover"
@@ -270,11 +270,11 @@ function ClearspaceSection({
 }
 
 const FALLBACK_COLORS = [
-  { name: "Primary", hex: "#F59E0B", usage: "Accent — buttons, links, highlights" },
-  { name: "Deep", hex: "#070A10", usage: "Background — hero and dark sections" },
-  { name: "Surface", hex: "#111827", usage: "Surface — cards and panels" },
-  { name: "Secondary", hex: "#4F46E5", usage: "Supporting accent — limited use" },
-  { name: "Text", hex: "#FFFFFF", usage: "Text — primary copy on dark" },
+  { name: "Primary", hex: "#F59E0B", usage: "Accent, buttons, links, highlights" },
+  { name: "Deep", hex: "#070A10", usage: "Background, hero and dark sections" },
+  { name: "Surface", hex: "#111827", usage: "Surface, cards and panels" },
+  { name: "Secondary", hex: "#4F46E5", usage: "Supporting accent, limited use" },
+  { name: "Text", hex: "#FFFFFF", usage: "Text, primary copy on dark" },
 ];
 
 function ColorsSection({

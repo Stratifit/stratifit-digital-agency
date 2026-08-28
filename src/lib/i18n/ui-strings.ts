@@ -504,7 +504,7 @@ const en: UiStrings = {
     "Build a distinctive identity that works beautifully everywhere.",
   workIdentitySystem: "The identity system.",
   workGuidelinesIntro:
-    "One coherent system — logo, colour, typography, and application — carried across every touchpoint.",
+    "One coherent system, logo, colour, typography, and application, carried across every touchpoint.",
   workContents: "Contents",
   workPrimaryLogo: "Primary Logo",
   workProblemCaption: "Fragmented look & weak contrast",
@@ -635,7 +635,7 @@ const en: UiStrings = {
   testimonialsEyebrow: "Testimonials",
   testimonialsTitle: "What Our Clients",
   testimonialsDescription:
-    "Don't take our word for it — hear from the brands we've helped scale.",
+    "Don't take our word for it. Hear from the brands we've helped scale.",
   insightsEyebrow: "Insights",
   insightsTitleFallback: "Ideas for Smarter",
   insightsHighlightFallback: "Digital Growth",
@@ -838,7 +838,7 @@ const de: UiStrings = {
     "Bauen Sie eine unverwechselbare Identität, die überall überzeugt.",
   workIdentitySystem: "Das Identitätssystem.",
   workGuidelinesIntro:
-    "Ein kohärentes System aus Logo, Farbe, Typografie und Anwendung — konsistent an jedem Berührungspunkt.",
+    "Ein kohärentes System aus Logo, Farbe, Typografie und Anwendung, konsistent an jedem Berührungspunkt.",
   workContents: "Inhalt",
   workPrimaryLogo: "Primärlogo",
   workProblemCaption: "Fragmentierter Look & schwacher Kontrast",
@@ -1172,7 +1172,7 @@ const fr: UiStrings = {
     "Créez une identité distinctive qui s'impose partout avec élégance.",
   workIdentitySystem: "Le système d'identité.",
   workGuidelinesIntro:
-    "Un système cohérent — logo, couleur, typographie et application — décliné sur chaque point de contact.",
+    "Un système cohérent, logo, couleur, typographie et application, décliné sur chaque point de contact.",
   workContents: "Sommaire",
   workPrimaryLogo: "Logo principal",
   workProblemCaption: "Image fragmentée & faible contraste",
@@ -1506,7 +1506,7 @@ const es: UiStrings = {
     "Cree una identidad distintiva que funcione bellamente en todas partes.",
   workIdentitySystem: "El sistema de identidad.",
   workGuidelinesIntro:
-    "Un sistema coherente — logotipo, color, tipografía y aplicación — presente en cada punto de contacto.",
+    "Un sistema coherente, logotipo, color, tipografía y aplicación, presente en cada punto de contacto.",
   workContents: "Contenido",
   workPrimaryLogo: "Logotipo principal",
   workProblemCaption: "Aspecto fragmentado y contraste débil",

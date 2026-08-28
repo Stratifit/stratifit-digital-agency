@@ -144,7 +144,7 @@ export const SECTION_HEADER_FALLBACKS: Record<
     },
     highlight: { en: "Say", de: "", fr: "", es: "" },
     description: {
-      en: "Don't take our word for it — hear from the brands we've helped scale.",
+      en: "Don't take our word for it. Hear from the brands we've helped scale.",
       de: "Erfahren Sie direkt von unseren Kunden, wie sie die Zusammenarbeit mit STRATIFIT erlebt haben.",
       fr: "Découvrez directement l'expérience des clients qui ont travaillé avec STRATIFIT.",
       es: "Conozca directamente la experiencia de los clientes que han trabajado con STRATIFIT.",

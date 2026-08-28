@@ -85,7 +85,7 @@ function initials(name: string): string {
 }
 
 /**
- * Numbered section label — e.g. "01 — Challenge" — matching the editorial
+ * Numbered section label, for example "01. Challenge", matching the editorial
  * case-study layout (numbered story blocks from start to finish).
  */
 function NumberedLabel({

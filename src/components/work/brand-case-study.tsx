@@ -113,7 +113,7 @@ function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
             className="relative z-10 size-2.5 shrink-0 rounded-full bg-primary shadow-[0_0_0_4px_rgba(245,158,11,0.15)]"
           />
           <span className="text-[11px] font-black uppercase tracking-[0.3em] text-primary">
-            {String(index + 1).padStart(2, "0")} — {step.title}
+            {String(index + 1).padStart(2, "0")}. {step.title}
           </span>
         </li>
       ))}
@@ -533,7 +533,7 @@ export function BrandCaseStudy({
       <Image
         key={url}
         src={url}
-        alt={`${wordmark} — ${galleryCaption(index)}`}
+        alt={`${wordmark}, ${galleryCaption(index)}`}
         fill
         sizes="(max-width: 1024px) 100vw, 50vw"
         className="object-cover"
@@ -549,7 +549,7 @@ export function BrandCaseStudy({
     <Image
       key={`thumb-${url}`}
       src={url}
-      alt={`${wordmark} — ${galleryCaption(index)}`}
+      alt={`${wordmark}, ${galleryCaption(index)}`}
       fill
       sizes="80px"
       className="object-cover"
@@ -577,7 +577,7 @@ export function BrandCaseStudy({
       <Image
         key={`concept-${url}`}
         src={url}
-        alt={`${wordmark} — ${galleryCaption(index)}`}
+        alt={`${wordmark}, ${galleryCaption(index)}`}
         fill
         sizes="(max-width: 1024px) 100vw, 50vw"
         className="object-cover"
@@ -665,7 +665,7 @@ export function BrandCaseStudy({
               <figure>
                 <OverviewSlider
                   slides={overviewSlides}
-                  counterLabel={`${wordmark} — ${t(locale, "workOverviewA")} ${t(locale, "workOverviewB")}`}
+                  counterLabel={`${wordmark}, ${t(locale, "workOverviewA")} ${t(locale, "workOverviewB")}`}
                   thumbnails={leadThumbnails}
                   thumbnailSlideOffset={1}
                   badge={t(locale, "workBefore")}
@@ -732,14 +732,14 @@ export function BrandCaseStudy({
                         <Image
                           key={`discovery-${url}`}
                           src={url}
-                          alt={`${clientName} — ${galleryCaption(index)}`}
+                          alt={`${clientName}, ${galleryCaption(index)}`}
                           fill
                           sizes="(max-width: 1024px) 100vw, 50vw"
                           className="object-cover"
                         />
                       )),
                     ]}
-                    counterLabel={`${clientName} — ${t(locale, "workPhaseDiscovery")}`}
+                    counterLabel={`${clientName}, ${t(locale, "workPhaseDiscovery")}`}
                     thumbnails={leadThumbnails}
                     thumbnailSlideOffset={1}
                   />
@@ -854,7 +854,7 @@ export function BrandCaseStudy({
               <figure>
                 <OverviewSlider
                   slides={conceptSlides}
-                  counterLabel={`${wordmark} — ${t(locale, "workConcept")}`}
+                  counterLabel={`${wordmark}, ${t(locale, "workConcept")}`}
                   thumbnails={leadThumbnails}
                   thumbnailSlideOffset={1}
                 />
@@ -879,7 +879,7 @@ export function BrandCaseStudy({
               <figure>
                 <OverviewSlider
                   slides={paletteSlides}
-                  counterLabel={`${wordmark} — ${t(locale, "workColourPalette")}`}
+                  counterLabel={`${wordmark}, ${t(locale, "workColourPalette")}`}
                 />
               </figure>
             </Reveal>
@@ -985,14 +985,14 @@ export function BrandCaseStudy({
                         <Image
                           key={`touchpoint-${url}`}
                           src={url}
-                          alt={`${clientName} — ${galleryCaption(index)}`}
+                          alt={`${clientName}, ${galleryCaption(index)}`}
                           fill
                           sizes="(max-width: 1024px) 100vw, 50vw"
                           className="object-cover"
                         />
                       )),
                     ]}
-                    counterLabel={`${clientName} — ${t(locale, "workPhysicalTouchpoint")}`}
+                    counterLabel={`${clientName}, ${t(locale, "workPhysicalTouchpoint")}`}
                     thumbnails={leadThumbnails}
                     thumbnailSlideOffset={1}
                   />
@@ -1025,14 +1025,14 @@ export function BrandCaseStudy({
                         <Image
                           key={`applications-${url}`}
                           src={url}
-                          alt={`${clientName} — ${galleryCaption(index)}`}
+                          alt={`${clientName}, ${galleryCaption(index)}`}
                           fill
                           sizes="(max-width: 1024px) 100vw, 50vw"
                           className="object-cover"
                         />
                       )),
                     ]}
-                    counterLabel={`${clientName} — ${t(locale, "workVisualApplications")}`}
+                    counterLabel={`${clientName}, ${t(locale, "workVisualApplications")}`}
                     thumbnails={leadThumbnails}
                     thumbnailSlideOffset={1}
                   />
@@ -1085,14 +1085,14 @@ export function BrandCaseStudy({
                       <Image
                         key={`launch-intro-${url}`}
                         src={url}
-                        alt={`${clientName} — ${galleryCaption(index)}`}
+                        alt={`${clientName}, ${galleryCaption(index)}`}
                         fill
                         sizes="(max-width: 1024px) 100vw, 50vw"
                         className="object-cover"
                       />
                     )),
                   ]}
-                  counterLabel={`${clientName} — ${t(locale, "workPhysicalTouchpoint")}`}
+                  counterLabel={`${clientName}, ${t(locale, "workPhysicalTouchpoint")}`}
                   thumbnails={leadThumbnails}
                   thumbnailSlideOffset={1}
                 />
@@ -1124,14 +1124,14 @@ export function BrandCaseStudy({
                         <Image
                           key={`launch-physical-${url}`}
                           src={url}
-                          alt={`${clientName} — ${galleryCaption(index)}`}
+                          alt={`${clientName}, ${galleryCaption(index)}`}
                           fill
                           sizes="(max-width: 1024px) 100vw, 50vw"
                           className="object-cover"
                         />
                       )),
                     ]}
-                    counterLabel={`${clientName} — ${t(locale, "workPhysicalTouchpoints")}`}
+                    counterLabel={`${clientName}, ${t(locale, "workPhysicalTouchpoints")}`}
                     thumbnails={leadThumbnails}
                     thumbnailSlideOffset={1}
                   />
@@ -1166,14 +1166,14 @@ export function BrandCaseStudy({
                         <Image
                           key={`launch-guidelines-${url}`}
                           src={url}
-                          alt={`${clientName} — ${galleryCaption(index)}`}
+                          alt={`${clientName}, ${galleryCaption(index)}`}
                           fill
                           sizes="(max-width: 1024px) 100vw, 50vw"
                           className="object-cover"
                         />
                       )),
                     ]}
-                    counterLabel={`${clientName} — ${t(locale, "workBrandGuidelines")}`}
+                    counterLabel={`${clientName}, ${t(locale, "workBrandGuidelines")}`}
                     thumbnails={leadThumbnails}
                     thumbnailSlideOffset={1}
                   />
@@ -1254,18 +1254,18 @@ export function BrandCaseStudy({
                   <Image
                     key={`brand-action-${index}-${url}`}
                     src={url}
-                    alt={`${wordmark} — ${galleryCaption(index)}`}
+                    alt={`${wordmark}, ${galleryCaption(index)}`}
                     fill
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover"
                   />
                 ))}
-                counterLabel={`${wordmark} — ${t(locale, "workBrandInUse")}`}
+                counterLabel={`${wordmark}, ${t(locale, "workBrandInUse")}`}
                 thumbnails={gallery.map((url, index) => (
                   <Image
                     key={`brand-action-thumb-${index}-${url}`}
                     src={url}
-                    alt={`${wordmark} — ${galleryCaption(index)}`}
+                    alt={`${wordmark}, ${galleryCaption(index)}`}
                     fill
                     sizes="80px"
                     className="object-cover"
