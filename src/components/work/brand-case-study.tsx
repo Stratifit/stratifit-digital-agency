@@ -846,11 +846,6 @@ export function BrandCaseStudy({
               >
                 <BrandWordmark name={wordmark} />
               </h1>
-              {heroTagline ? (
-                <p className="mt-4 max-w-xl text-base leading-relaxed text-text-secondary sm:text-lg md:text-xl">
-                  {heroTagline}
-                </p>
-              ) : null}
             </div>
           </Reveal>
 
