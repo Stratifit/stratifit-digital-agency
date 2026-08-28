@@ -34,33 +34,33 @@ export const FALLBACK_IMAGES: Record<string, string> = {
   "digital-maturity-audit":
     "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop",
   "market-entry-playbook":
-    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop",
   "strategy-before-tactics":
-    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop",
   "design-systems-that-scale":
     "https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop",
   "ux-research-on-a-budget":
-    "https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1559028012-481c04fa702d?auto=format&fit=crop",
   "accessibility-as-advantage":
-    "https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop",
   "core-web-vitals":
     "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop",
   "headless-vs-traditional":
-    "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop",
   "website-security-basics":
-    "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop",
   "ai-for-customer-service":
     "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop",
   "human-in-the-loop":
-    "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop",
   "ai-content-workflows":
-    "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop",
   "brand-voice-guide":
     "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop",
   "rebrand-without-losing-customers":
-    "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop",
   "brand-consistency-and-conversion":
-    "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop",
   "seo-in-the-age-of-ai":
     "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop",
   "paid-media-funnel":
