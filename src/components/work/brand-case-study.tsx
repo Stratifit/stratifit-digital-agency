@@ -820,7 +820,7 @@ export function BrandCaseStudy({
                       className="h-auto w-full object-cover"
                     />
                   </div>
-                  <span className="mt-5 inline-flex shrink-0 items-center rounded-button bg-primary px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-text-inverse">
+                  <span className="mt-8 inline-flex shrink-0 items-center rounded-button bg-primary px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-text-inverse">
                     {categoryLabel}
                   </span>
                 </div>
