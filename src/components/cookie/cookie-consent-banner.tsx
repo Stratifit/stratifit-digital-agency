@@ -7,8 +7,11 @@ import { t } from "@/lib/i18n/ui-strings";
 import { Switch } from "@/components/ui/switch";
 
 const STORAGE_KEY = "stratifit_cookie_consent";
+const CONSENT_COOKIE = "stratifit_cookie_consent";
+const CONSENT_VERSION = 1;
 
 interface ConsentRecord {
+  version: number;
   essential: boolean;
   analytics: boolean;
   marketing: boolean;
@@ -21,18 +24,44 @@ function readConsent(): ConsentRecord | null {
   }
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
+    if (raw) {
+      const parsed = JSON.parse(raw) as Partial<ConsentRecord>;
+      if (
+        parsed.version === CONSENT_VERSION &&
+        typeof parsed.essential === "boolean" &&
+        typeof parsed.updatedAt === "string"
+      ) {
+        return {
+          version: CONSENT_VERSION,
+          essential: true,
+          analytics: parsed.analytics === true,
+          marketing: parsed.marketing === true,
+          updatedAt: parsed.updatedAt,
+        };
+      }
+    }
+
+    const cookie = document.cookie
+      .split("; ")
+      .find((entry) => entry.startsWith(`${CONSENT_COOKIE}=`))
+      ?.slice(CONSENT_COOKIE.length + 1);
+    if (!cookie) {
       return null;
     }
-    const parsed = JSON.parse(raw) as Partial<ConsentRecord>;
-    if (typeof parsed.essential !== "boolean") {
+    const parsed = JSON.parse(decodeURIComponent(cookie)) as Partial<ConsentRecord>;
+    if (
+      parsed.version !== CONSENT_VERSION ||
+      typeof parsed.essential !== "boolean" ||
+      typeof parsed.updatedAt !== "string"
+    ) {
       return null;
     }
     return {
-      essential: parsed.essential ?? true,
-      analytics: parsed.analytics ?? false,
-      marketing: parsed.marketing ?? false,
-      updatedAt: parsed.updatedAt ?? new Date().toISOString(),
+      version: CONSENT_VERSION,
+      essential: true,
+      analytics: parsed.analytics === true,
+      marketing: parsed.marketing === true,
+      updatedAt: parsed.updatedAt,
     };
   } catch {
     return null;
@@ -40,11 +69,16 @@ function readConsent(): ConsentRecord | null {
 }
 
 function writeConsent(record: ConsentRecord) {
+  const serialized = JSON.stringify(record);
   try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(record));
+    window.localStorage.setItem(STORAGE_KEY, serialized);
   } catch {
-    // Storage unavailable (private mode / disabled); banner hides for the
-    // session only.
+    // Continue with the cookie fallback when localStorage is unavailable.
+  }
+  try {
+    document.cookie = `${CONSENT_COOKIE}=${encodeURIComponent(serialized)}; Max-Age=31536000; Path=/; SameSite=Lax`;
+  } catch {
+    // Cookie storage may also be disabled; state still hides for this session.
   }
 }
 
@@ -87,6 +121,7 @@ export function CookieConsentBanner({
 
   function save(chosen: Record<string, boolean>) {
     const record: ConsentRecord = {
+      version: CONSENT_VERSION,
       essential: true,
       analytics: chosen.analytics ?? false,
       marketing: chosen.marketing ?? false,
