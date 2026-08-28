@@ -30,10 +30,11 @@ const LABELS: Record<string, string> = {
 
 const ACCEPT = "image/jpeg,image/png,image/webp,image/gif,image/svg+xml,image/avif";
 
-// Render targets for each asset type — main images display in a 4:3 frame on
-// the public case-study page, thumbnails in square strips.
+// Render targets for each asset type — the main image and every thumbnail
+// display as full-size slides in the same 4:3 frame on the public
+// case-study page (the small square strip below is just navigation).
 const MAIN_IMAGE_TARGET: AspectTarget = { width: 4, height: 3 };
-const THUMBNAIL_TARGET: AspectTarget = { width: 1, height: 1 };
+const THUMBNAIL_TARGET: AspectTarget = { width: 4, height: 3 };
 
 function AssetPicker({
   value,
@@ -119,10 +120,10 @@ export function CaseStudyMediaEditor({ control, setValue }: { control: Control<F
               </div>
               <div className="space-y-2">
                 <Label>Thumbnails</Label>
-                <p className="text-[11px] text-text-muted">Recommended: <span className="font-semibold text-primary">{recommendedSizeLabel(400, 400)}</span> — square thumbnails are never cropped.</p>
+                <p className="text-[11px] text-text-muted">Recommended: same as the main image, <span className="font-semibold text-primary">{recommendedSizeLabel(1600, 1200)}</span> — thumbnails also fill the 4:3 frame as full slides.</p>
                 <div className="grid grid-cols-3 gap-2">{Array.from({ length: 6 }, (_, index) => {
                   const thumb = value.thumbnails[index] ?? { media_id: "", image_url: "" };
-                  return <AssetPicker key={index} value={thumb} target={THUMBNAIL_TARGET} recommended={recommendedSizeLabel(400, 400)} onChange={(next) => { const thumbnails = [...value.thumbnails]; thumbnails[index] = next; patch(section, { thumbnails }); }} />;
+                  return <AssetPicker key={index} value={thumb} target={THUMBNAIL_TARGET} recommended={recommendedSizeLabel(1600, 1200)} onChange={(next) => { const thumbnails = [...value.thumbnails]; thumbnails[index] = next; patch(section, { thumbnails }); }} />;
                 })}</div>
               </div>
             </div>
