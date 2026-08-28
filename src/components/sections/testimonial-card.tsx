@@ -66,7 +66,7 @@ export function TestimonialCard({ testimonial, locale, className }: { testimonia
             <div className="truncate font-display font-bold text-text-primary">{name}</div>
             {role ? <div className="mt-0.5 truncate text-xs text-text-subtle">{role}</div> : null}
           </div>
-          {testimonial.is_verified ? <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-card-border bg-white/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-text-muted"><CheckIcon />{t(locale, "verified")}</span> : null}
+          {testimonial.is_verified ? <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-primary"><CheckIcon />{t(locale, "verified")}</span> : null}
         </footer>
       </div>
     </article>
