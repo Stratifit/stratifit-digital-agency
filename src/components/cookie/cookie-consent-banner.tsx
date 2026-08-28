@@ -10,6 +10,7 @@ const STORAGE_KEY = "stratifit_cookie_consent";
 const CONSENT_COOKIE = "stratifit_cookie_consent";
 const EDIT_EVENT = "stratifit:edit-cookie-consent";
 const CONSENT_VERSION = 1;
+const CONSENT_MARKER = "stratifit_cookie_consent_saved";
 
 type ConsentRecord = {
   version: number;
@@ -43,6 +44,15 @@ function readConsent(): ConsentRecord | null {
   try {
     const stored = parseConsent(window.localStorage.getItem(STORAGE_KEY));
     if (stored) return stored;
+    if (window.localStorage.getItem(CONSENT_MARKER) === "1") {
+      return {
+        version: CONSENT_VERSION,
+        essential: true,
+        analytics: false,
+        marketing: false,
+        updatedAt: new Date(0).toISOString(),
+      };
+    }
   } catch {
     // Use the cookie fallback.
   }
@@ -51,7 +61,9 @@ function readConsent(): ConsentRecord | null {
       .split(";")
       .map((entry) => entry.trim())
       .find((entry) => entry.startsWith(`${CONSENT_COOKIE}=`));
-    return parseConsent(cookie ? decodeURIComponent(cookie.slice(CONSENT_COOKIE.length + 1)) : null);
+    const parsed = parseConsent(cookie ? decodeURIComponent(cookie.slice(CONSENT_COOKIE.length + 1)) : null);
+    if (parsed) return parsed;
+    return cookie ? { version: CONSENT_VERSION, essential: true, analytics: false, marketing: false, updatedAt: new Date(0).toISOString() } : null;
   } catch {
     return null;
   }
@@ -61,6 +73,7 @@ function writeConsent(record: ConsentRecord) {
   const serialized = JSON.stringify(record);
   try {
     window.localStorage.setItem(STORAGE_KEY, serialized);
+    window.localStorage.setItem(CONSENT_MARKER, "1");
   } catch {
     // Cookie fallback below remains available.
   }
