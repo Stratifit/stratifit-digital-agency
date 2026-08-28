@@ -82,7 +82,7 @@ export function TestimonialCard({
   return (
     <article
       className={cn(
-        "relative flex h-full flex-col rounded-card border border-card-border bg-card-dark p-6 transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover md:p-8",
+        "relative flex h-full min-h-[300px] flex-col rounded-card border border-card-border bg-card-dark p-5 transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-card-border-hover sm:min-h-[280px] sm:p-6 md:min-h-[260px] md:p-6",
         className
       )}
     >
@@ -103,15 +103,15 @@ export function TestimonialCard({
       </div>
 
       {/* Quote */}
-      <blockquote className="mt-5 font-display text-lg font-bold leading-snug tracking-tight text-text-primary sm:text-xl">
+      <blockquote className="mt-4 font-display text-base font-bold leading-snug tracking-tight text-text-primary sm:text-lg">
         {resolveTranslation(testimonial.quote_translations, locale)}
       </blockquote>
 
       {/* Divider + author footer pinned to the bottom */}
       <div className="mt-auto">
-        <div className="mt-6 border-t border-card-border" aria-hidden="true" />
+        <div className="mt-4 border-t border-card-border" aria-hidden="true" />
 
-        <footer className="mt-5 flex items-center gap-3">
+        <footer className="mt-4 flex items-center gap-3">
           <div className="flex size-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br from-surface-hover to-surface-active text-xs font-bold text-white">
             {initials(name)}
           </div>
