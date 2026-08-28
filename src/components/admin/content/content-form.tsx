@@ -38,6 +38,7 @@ import { Select } from "@/components/ui/select";
 import { EditorSectionSwitcher } from "@/components/admin/editor-section-switcher";
 import { LocaleTabs, type EditorLocale } from "@/components/admin/locale-tabs";
 import { uploadMediaAsset } from "@/features/media/mutations";
+import { updatePortfolioHeroImage } from "@/features/content/mutations";
 import {
   aspectMatches,
   formatAspect,
@@ -232,14 +233,31 @@ function PortfolioMetricsEditor({
 function PortfolioHeroImageUploader({
   control,
   setValue,
+  slug,
 }: {
   control: Control<FieldValues>;
   setValue: UseFormSetValue<FieldValues>;
+  /** Project slug — when present the upload persists immediately. */
+  slug?: string;
 }) {
   const imageUrl = (useWatch({ control, name: "image_url" }) ?? "") as string;
   const [uploading, setUploading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [warning, setWarning] = React.useState<string | null>(null);
+  const [saved, setSaved] = React.useState(false);
+
+  /** Persists the URL to the database right away when editing an existing
+   * project, so the public page updates without a full Save Changes. */
+  async function persist(url: string | null) {
+    if (!slug) return true;
+    const result = await updatePortfolioHeroImage(slug, url);
+    if (!result.success) {
+      setError(result.error);
+      return false;
+    }
+    setSaved(true);
+    return true;
+  }
 
   async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -247,6 +265,7 @@ function PortfolioHeroImageUploader({
     setUploading(true);
     setError(null);
     setWarning(null);
+    setSaved(false);
     try {
       const size = await readImageSize(file);
       if (size && !aspectMatches(size, { width: 4, height: 3 })) {
@@ -260,7 +279,10 @@ function PortfolioHeroImageUploader({
       formData.set("alt_text", file.name);
       const result = await uploadMediaAsset(formData);
       if (result.success) {
-        setValue("image_url", result.data.url, { shouldDirty: true });
+        const ok = await persist(result.data.url);
+        if (ok) {
+          setValue("image_url", result.data.url, { shouldDirty: true });
+        }
       } else {
         setError(result.error);
       }
@@ -274,6 +296,13 @@ function PortfolioHeroImageUploader({
     }
   }
 
+  async function handleRemove() {
+    setError(null);
+    setSaved(false);
+    const ok = await persist(null);
+    if (ok) setValue("image_url", "", { shouldDirty: true });
+  }
+
   return (
     <div className="space-y-3">
       {imageUrl ? (
@@ -282,7 +311,7 @@ function PortfolioHeroImageUploader({
           <img src={imageUrl} alt="" className="h-full w-full object-cover" />
           <button
             type="button"
-            onClick={() => setValue("image_url", "", { shouldDirty: true })}
+            onClick={handleRemove}
             className="absolute right-2 top-2 rounded-sm bg-black/70 px-2 py-1 text-[10px] font-medium text-white transition-colors hover:bg-error focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             Remove
@@ -306,6 +335,9 @@ function PortfolioHeroImageUploader({
         </p>
       ) : null}
       {error ? <p className="text-xs text-error">{error}</p> : null}
+      {saved ? (
+        <p className="text-xs text-success">Saved — the public page now shows this image.</p>
+      ) : null}
       <p className="text-xs text-text-muted">
         Recommended: <span className="font-semibold text-primary">{recommendedSizeLabel(1600, 1200)}</span> — it fits
         the case-study hero banner and the work card without cutting out important detail.
@@ -743,7 +775,7 @@ export function ContentForm({
             <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-text-subtle">
               Main hero image
             </p>
-            <PortfolioHeroImageUploader control={control} setValue={setValue} />
+            <PortfolioHeroImageUploader control={control} setValue={setValue} slug={id} />
           </div>
         ) : null}
 

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { recordAuditLog } from "@/lib/audit";
+import type { ActionResult } from "@/types/action-result";
 
 async function requireAdmin() {
   const supabase = await createSupabaseServerClient();
@@ -29,6 +30,39 @@ export async function deletePortfolioProject(slug: string): Promise<void> {
   await supabase.from("portfolio_projects").delete().eq("slug", slug);
   await recordAuditLog({ action: "delete", target_table: "portfolio_projects", metadata: { slug } });
   revalidatePath("/admin/content/portfolio");
+}
+
+/**
+ * Persists the project hero image immediately on upload/remove, mirroring
+ * the Hero editor behaviour — the public page reflects the new image right
+ * away without requiring a full Save Changes.
+ */
+export async function updatePortfolioHeroImage(
+  slug: string,
+  imageUrl: string | null
+): Promise<ActionResult> {
+  const supabase = await requireAdmin();
+  const normalizedUrl = imageUrl?.trim() || null;
+  const { error } = await supabase
+    .from("portfolio_projects")
+    .update({ image_url: normalizedUrl })
+    .eq("slug", slug);
+  if (error) {
+    console.error("Failed to save portfolio hero image", {
+      code: error.code,
+      message: error.message,
+    });
+    return { success: false, error: "Could not save the hero image." };
+  }
+  await recordAuditLog({
+    action: "save",
+    target_table: "portfolio_projects",
+    metadata: { slug, image_url: normalizedUrl },
+  });
+  revalidatePath("/");
+  revalidatePath(`/work/${slug}`);
+  revalidatePath("/admin/content/portfolio");
+  return { success: true };
 }
 
 /**
