@@ -53,19 +53,26 @@ set title_translations = public._content_remove_dash_separators(title_translatio
     summary_translations = public._content_remove_dash_separators(summary_translations),
     brand_story_translations = public._content_remove_dash_separators(brand_story_translations),
     challenge_translations = public._content_remove_dash_separators(challenge_translations),
+    approach_translations = public._content_remove_dash_separators(approach_translations),
     solution_translations = public._content_remove_dash_separators(solution_translations),
+    deliverables_translations = public._content_remove_dash_separators(deliverables_translations),
     results_translations = public._content_remove_dash_separators(results_translations),
+    metrics = public._content_remove_dash_separators(metrics),
     strategy_translations = public._content_remove_dash_separators(strategy_translations),
     brand_system_translations = public._content_remove_dash_separators(brand_system_translations),
-    launch_translations = public._content_remove_dash_separators(launch_translations)
-where (title_translations || summary_translations || brand_story_translations || challenge_translations || solution_translations || results_translations || strategy_translations || brand_system_translations || launch_translations)::text ~ '[—–]';
+    launch_translations = public._content_remove_dash_separators(launch_translations),
+    seo_title_translations = public._content_remove_dash_separators(seo_title_translations),
+    seo_description_translations = public._content_remove_dash_separators(seo_description_translations)
+where (title_translations || summary_translations || brand_story_translations || challenge_translations || approach_translations || solution_translations || deliverables_translations || results_translations || metrics || strategy_translations || brand_system_translations || launch_translations || seo_title_translations || seo_description_translations)::text ~ '[—–]';
 
 update public.detail_pages
 set eyebrow_translations = public._content_remove_dash_separators(eyebrow_translations),
     title_translations = public._content_remove_dash_separators(title_translations),
     description_translations = public._content_remove_dash_separators(description_translations),
     subtitle_translations = public._content_remove_dash_separators(subtitle_translations),
-    content_translations = public._content_remove_dash_separators(content_translations)
-where (eyebrow_translations || title_translations || description_translations || subtitle_translations || content_translations)::text ~ '[—–]';
+    content_translations = public._content_remove_dash_separators(content_translations),
+    seo_title_translations = public._content_remove_dash_separators(seo_title_translations),
+    seo_description_translations = public._content_remove_dash_separators(seo_description_translations)
+where (eyebrow_translations || title_translations || description_translations || subtitle_translations || content_translations || seo_title_translations || seo_description_translations)::text ~ '[—–]';
 
 drop function public._content_remove_dash_separators(jsonb);

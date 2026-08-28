@@ -28,8 +28,8 @@ describe("resolveTranslation", () => {
   });
 
   it("removes dash separators only for public translations", () => {
-    const translations = { en: "Strategy — design – growth - scale" };
-    expect(resolvePublicTranslation(translations, "en")).toBe("Strategy, design, growth, scale");
-    expect(resolveTranslation(translations, "en")).toBe("Strategy — design – growth - scale");
+    const translations = { en: "Strategy — design – growth - scale €1k–€3k" };
+    expect(resolvePublicTranslation(translations, "en")).toBe("Strategy, design, growth, scale €1k–€3k");
+    expect(resolveTranslation(translations, "en")).toBe("Strategy — design – growth - scale €1k–€3k");
   });
 });

@@ -10,6 +10,7 @@ import type {
 } from "@/features/portfolio/queries";
 import type { PublicServiceDetail } from "@/features/services/queries";
 import { resolvePublicTranslation as resolveTranslation } from "@/lib/i18n/public-translation";
+import { sanitizePublicText } from "@/lib/i18n/public-text";
 import { t, tWithValue } from "@/lib/i18n/ui-strings";
 import { Reveal } from "@/components/ui/reveal";
 import { RelatedProjects } from "@/components/work/related-projects";
@@ -425,7 +426,7 @@ export function BrandCaseStudy({
   const strategyValue = (field: keyof PublicPortfolioStrategy): string => {
     const entry = strategy?.[locale] ?? strategy?.en;
     const value = entry?.[field];
-    return typeof value === "string" ? value : "";
+    return typeof value === "string" ? sanitizePublicText(value) : "";
   };
   const strategySubtitle = strategyValue("subtitle");
   const strategyTagline = strategyValue("tagline");
@@ -456,7 +457,7 @@ export function BrandCaseStudy({
   ): string => {
     const entry = brandSystem?.[locale] ?? brandSystem?.en;
     const value = entry?.[field];
-    return typeof value === "string" ? value : "";
+    return typeof value === "string" ? sanitizePublicText(value) : "";
   };
   const typeface = brandSystemValue("typeface");
   const typefaceDescription = brandSystemValue("typeface_description");
@@ -489,7 +490,7 @@ export function BrandCaseStudy({
   const launchValue = (field: keyof PublicPortfolioLaunch): string => {
     const entry = launch?.[locale] ?? launch?.en;
     const value = entry?.[field];
-    return typeof value === "string" ? value : "";
+    return typeof value === "string" ? sanitizePublicText(value) : "";
   };
   const launchHeadline = launchValue("headline");
   const launchDescription = launchValue("description");
