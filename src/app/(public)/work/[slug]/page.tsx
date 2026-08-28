@@ -18,6 +18,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { ProcessIcon } from "@/components/ui/process-icon";
 import { RelatedProjects } from "@/components/work/related-projects";
 import { BrandCaseStudy } from "@/components/work/brand-case-study";
+import { getLegacyPortfolioRedirect } from "@/features/portfolio/legacy-redirects";
 
 export async function generateMetadata({
   params,
@@ -25,8 +26,9 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  if (slug === "aura-cosmetics-identity") {
-    permanentRedirect("/work/clenqo");
+  const legacyRedirect = getLegacyPortfolioRedirect(slug);
+  if (legacyRedirect) {
+    permanentRedirect(legacyRedirect);
   }
   const locale = await getLocale();
   const project = await getPublicPortfolioDetail(slug);
@@ -122,8 +124,9 @@ export default async function WorkDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  if (slug === "aura-cosmetics-identity") {
-    permanentRedirect("/work/clenqo");
+  const legacyRedirect = getLegacyPortfolioRedirect(slug);
+  if (legacyRedirect) {
+    permanentRedirect(legacyRedirect);
   }
   const locale = await getLocale();
   const [
