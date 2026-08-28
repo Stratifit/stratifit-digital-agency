@@ -1,13 +1,30 @@
 import Link from "next/link";
-import { getAdminPortfolio } from "@/features/content/admin-queries";
+import {
+  getAdminPortfolio,
+  getAdminServices,
+} from "@/features/content/admin-queries";
 import { deletePortfolioProject } from "@/features/content/mutations";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { AdminList } from "@/components/admin/admin-list";
 import { ConfirmDelete } from "@/components/admin/confirm-delete";
 import { Badge } from "@/components/ui/badge";
+import { PortfolioCategoryFilter } from "@/components/admin/content/portfolio-category-filter";
+import { PortfolioVisibilityToggle } from "@/components/admin/content/portfolio-visibility-toggle";
 
-export default async function AdminPortfolioPage() {
-  const rows = await getAdminPortfolio();
+export default async function AdminPortfolioPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}) {
+  const [{ category }, rows, services] = await Promise.all([
+    searchParams,
+    getAdminPortfolio(),
+    getAdminServices(),
+  ]);
+
+  const filtered = category
+    ? rows.filter((r) => r.category_slug === category)
+    : rows;
 
   return (
     <AdminList
@@ -15,7 +32,7 @@ export default async function AdminPortfolioPage() {
       description="Manage case studies and project showcases."
       createHref="/admin/content/portfolio/new"
       createLabel="New Project"
-      rows={rows}
+      rows={filtered}
       rowKey={(r) => r.slug}
       columns={[
         {
@@ -30,9 +47,17 @@ export default async function AdminPortfolioPage() {
         { header: "Slug", render: (r) => <code className="text-text-muted">{r.slug}</code> },
         { header: "Category", render: (r) => r.category ?? "—" },
         {
-          header: "Status",
+          header: "Visible",
           render: (r) => (
-            <Badge variant={r.status === "published" ? "success" : "warning"}>{r.status}</Badge>
+            <div className="flex items-center gap-2">
+              <PortfolioVisibilityToggle
+                slug={r.slug}
+                visible={r.status === "published"}
+              />
+              <Badge variant={r.status === "published" ? "success" : "warning"}>
+                {r.status}
+              </Badge>
+            </div>
           ),
         },
       ]}
@@ -51,8 +76,19 @@ export default async function AdminPortfolioPage() {
           />
         </div>
       )}
-    />
+    >
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-card border border-card-border bg-card-dark px-4 py-3 shadow-sm">
+        <PortfolioCategoryFilter services={services} />
+        {category ? (
+          <p className="text-xs text-text-muted">
+            Showing {filtered.length} project{filtered.length === 1 ? "" : "s"} in this section.
+          </p>
+        ) : (
+          <p className="text-xs text-text-muted">
+            {rows.length} project{rows.length === 1 ? "" : "s"} total.
+          </p>
+        )}
+      </div>
+    </AdminList>
   );
-}
-
-
+}

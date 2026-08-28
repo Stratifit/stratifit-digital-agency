@@ -8,6 +8,8 @@ export interface AdminPortfolioRow {
   status: string;
   /** Primary category label (first linked service, EN title or slug). */
   category: string | null;
+  /** Primary category slug (first linked service), used for filtering. */
+  category_slug: string | null;
 }
 
 export interface AdminServiceOption {
@@ -88,7 +90,7 @@ export async function getAdminPortfolio(): Promise<AdminPortfolioRow[]> {
     : { data: [] };
   const servicesResult = servicesData ?? [];
 
-  const serviceByProject = new Map<string, string | null>();
+  const serviceByProject = new Map<string, { slug: string | null; label: string | null }>();
   const rows = data as (typeof data)[number][];
   for (const row of rows) {
     const pid = row.id as string;
@@ -98,24 +100,29 @@ export async function getAdminPortfolio(): Promise<AdminPortfolioRow[]> {
     const service = firstServiceId
       ? servicesResult.find((s) => s.id === firstServiceId)
       : undefined;
-    serviceByProject.set(
-      pid,
-      service
+    serviceByProject.set(pid, {
+      slug: service?.slug ? (service.slug as string) : null,
+      label: service
         ? (((service.title_translations as Record<string, string> | null)?.en as
             | string
             | undefined) ?? service.slug)
-        : null
-    );
+        : null,
+    });
   }
 
-  return rows.map((row) => ({
-    id: row.id as string,
-    slug: row.slug as string,
-    client_name: row.client_name as string,
-    title_translations: row.title_translations as Record<string, string> | null,
-    status: row.status as string,
-    category: serviceByProject.get(row.id as string) ?? null,
-  }));
+  return rows.map((row) => {
+    const pid = row.id as string;
+    const entry = serviceByProject.get(pid);
+    return {
+      id: pid,
+      slug: row.slug as string,
+      client_name: row.client_name as string,
+      title_translations: row.title_translations as Record<string, string> | null,
+      status: row.status as string,
+      category: entry?.label ?? null,
+      category_slug: entry?.slug ?? null,
+    };
+  });
 }
 
 export interface AdminPortfolioCardImage {

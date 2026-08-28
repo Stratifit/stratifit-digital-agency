@@ -31,6 +31,30 @@ export async function deletePortfolioProject(slug: string): Promise<void> {
   revalidatePath("/admin/content/portfolio");
 }
 
+/**
+ * Flips a project's public visibility. ON = published (shown on the public
+ * site), OFF = draft (hidden everywhere). Public queries only read published
+ * rows, so this is the single source of truth for show/hide.
+ */
+export async function setPortfolioVisibility(
+  slug: string,
+  visible: boolean
+): Promise<void> {
+  const supabase = await requireAdmin();
+  await supabase
+    .from("portfolio_projects")
+    .update({ status: visible ? "published" : "draft" })
+    .eq("slug", slug);
+  await recordAuditLog({
+    action: visible ? "publish" : "save",
+    target_table: "portfolio_projects",
+    metadata: { slug, status: visible ? "published" : "draft" },
+  });
+  revalidatePath("/admin/content/portfolio");
+  revalidatePath("/");
+  revalidatePath(`/work/${slug}`);
+}
+
 export async function deleteInsight(slug: string): Promise<void> {
   const supabase = await requireAdmin();
   await supabase.from("insights").delete().eq("slug", slug);
