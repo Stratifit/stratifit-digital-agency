@@ -140,7 +140,7 @@ export async function HeroSection() {
         >
           <span className="block">{title}</span>
           {highlight ? (
-            <span className="mt-1 block text-primary-light lg:mt-2">
+            <span className="mt-1 block text-primary lg:mt-2">
               {highlight}
             </span>
           ) : null}
