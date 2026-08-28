@@ -107,7 +107,15 @@ export function CookieConsentBanner({ settings, locale = "en" }: { settings: Pub
   const [consent, setConsent] = React.useState<ConsentRecord | null>(() =>
     typeof window === "undefined" ? null : readConsent()
   );
-  const [checked] = React.useState(() => typeof window !== "undefined");
+  // Hydration-safe mounted flag: the banner must not render during SSR or
+  // hydration, otherwise the client HTML diverges from the server and React
+  // logs a hydration mismatch on every public page. useSyncExternalStore
+  // renders the server snapshot (false) until hydration completes.
+  const mounted = React.useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
   const [editing, setEditing] = React.useState(false);
   const [settingsView, setSettingsView] = React.useState(false);
   const [choices, setChoices] = React.useState<Record<string, boolean>>({});
@@ -124,7 +132,7 @@ export function CookieConsentBanner({ settings, locale = "en" }: { settings: Pub
     return () => window.removeEventListener(EDIT_EVENT, handleEdit);
   }, [settings]);
 
-  const visible = Boolean(settings?.banner_enabled && checked && (consent === null || editing));
+  const visible = Boolean(settings?.banner_enabled && mounted && (consent === null || editing));
 
   React.useEffect(() => {
     if (visible) firstControlRef.current?.focus();
@@ -132,7 +140,7 @@ export function CookieConsentBanner({ settings, locale = "en" }: { settings: Pub
 
   // Do not render the banner during SSR or hydration. This prevents a saved
   // visitor's consent prompt from flashing for a frame on every page load.
-  if (!checked) return null;
+  if (!mounted) return null;
 
   if (!settings || !visible) return null;
 
