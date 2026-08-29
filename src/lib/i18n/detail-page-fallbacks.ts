@@ -33,10 +33,19 @@ export const PRIVACY_FALLBACK_BLOCKS: DetailPageBlock[] = [
   {
     type: "paragraph",
     text_translations: tr(
-      "Stratifit (\"we,\" \"our,\" or \"us\") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website [stratifit.com](https://stratifit.com) or use any of our digital services. Please read this policy carefully. By accessing or using our services, you acknowledge that you have read, understood, and agree to the terms of this Privacy Policy.",
-      "Stratifit („wir“ oder „uns“) verpflichtet sich zum Schutz Ihrer Privatsphäre. Diese Datenschutzerklärung erläutert, wie wir Ihre Informationen erfassen, verwenden, offenlegen und schützen, wenn Sie unsere Website [stratifit.com](https://stratifit.com) besuchen oder unsere digitalen Dienste nutzen. Bitte lesen Sie diese Richtlinie sorgfältig. Durch den Zugriff auf oder die Nutzung unserer Dienste bestätigen Sie, dass Sie diese Datenschutzerklärung gelesen, verstanden und ihr zugestimmt haben.",
-      "Stratifit (« nous », « notre » ou « nos ») s'engage à protéger votre vie privée. Cette politique de confidentialité explique comment nous collectons, utilisons, divulguons et protégeons vos informations lorsque vous visitez notre site web [stratifit.com](https://stratifit.com) ou utilisez l'un de nos services numériques. Veuillez lire cette politique attentivement. En accédant à nos services ou en les utilisant, vous reconnaissez avoir lu, compris et accepté les termes de cette politique de confidentialité.",
-      "Stratifit («nosotros», «nuestro» o «nos») se compromete a proteger su privacidad. Esta Política de Privacidad explica cómo recopilamos, utilizamos, divulgamos y protegemos su información cuando visita nuestro sitio web [stratifit.com](https://stratifit.com) o utiliza cualquiera de nuestros servicios digitales. Lea esta política atentamente. Al acceder o utilizar nuestros servicios, reconoce que ha leído, comprendido y aceptado los términos de esta Política de Privacidad."
+      "Stratifit (\"we,\" \"our,\" or \"us\") is committed to protecting your privacy and handling personal information responsibly.",
+      "Stratifit („wir“, „uns“ oder „unser“) verpflichtet sich zum Schutz Ihrer Privatsphäre und zu einem verantwortungsvollen Umgang mit personenbezogenen Daten.",
+      "Stratifit (« nous », « notre » ou « nos ») s'engage à protéger votre vie privée et à traiter vos informations personnelles de manière responsable.",
+      "Stratifit («nosotros», «nuestro» o «nos») se compromete a proteger su privacidad y a tratar la información personal de forma responsable."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "This Privacy Policy explains how we collect, use, disclose, and protect information when you visit [https://stratifit.com](https://stratifit.com) or use our digital services.",
+      "Diese Datenschutzerklärung erläutert, wie wir Informationen erheben, verwenden, offenlegen und schützen, wenn Sie [https://stratifit.com](https://stratifit.com) besuchen oder unsere digitalen Dienstleistungen nutzen.",
+      "Cette Politique de confidentialité explique comment nous collectons, utilisons, divulguons et protégeons les informations lorsque vous visitez [https://stratifit.com](https://stratifit.com) ou utilisez nos services numériques.",
+      "Esta Política de Privacidad explica cómo recopilamos, utilizamos, divulgamos y protegemos la información cuando visita [https://stratifit.com](https://stratifit.com) o utiliza nuestros servicios digitales."
     ),
   },
   {
@@ -44,7 +53,7 @@ export const PRIVACY_FALLBACK_BLOCKS: DetailPageBlock[] = [
     icon: "eye",
     text_translations: tr(
       "2. Information We Collect",
-      "2. Welche Informationen wir erfassen",
+      "2. Welche Informationen wir erheben",
       "2. Informations que nous collectons",
       "2. Información que recopilamos"
     ),
@@ -53,7 +62,7 @@ export const PRIVACY_FALLBACK_BLOCKS: DetailPageBlock[] = [
     type: "subheading",
     text_translations: tr(
       "Personal Information",
-      "Persönliche Informationen",
+      "Personenbezogene Daten",
       "Informations personnelles",
       "Información personal"
     ),
@@ -61,51 +70,211 @@ export const PRIVACY_FALLBACK_BLOCKS: DetailPageBlock[] = [
   {
     type: "paragraph",
     text_translations: tr(
-      "When you contact us through our website forms, we may collect your name, email address, phone number, company name, and any other information you voluntarily provide in your message.",
-      "Wenn Sie uns über die Formulare auf unserer Website kontaktieren, können wir Ihren Namen, Ihre E-Mail-Adresse, Ihre Telefonnummer, Ihren Firmennamen und alle anderen Informationen erfassen, die Sie in Ihrer Nachricht freiwillig angeben.",
-      "Lorsque vous nous contactez via les formulaires de notre site web, nous pouvons collecter votre nom, votre adresse e-mail, votre numéro de téléphone, le nom de votre entreprise et toute autre information que vous fournissez volontairement dans votre message.",
-      "Cuando nos contacta a través de los formularios de nuestro sitio web, podemos recopilar su nombre, dirección de correo electrónico, número de teléfono, nombre de la empresa y cualquier otra información que proporcione voluntariamente en su mensaje."
+      "When you contact us through our website, we may collect information that you voluntarily provide, including:",
+      "Wenn Sie uns über unsere Website kontaktieren, können wir die von Ihnen freiwillig bereitgestellten Informationen erfassen, darunter:",
+      "Lorsque vous nous contactez via notre site web, nous pouvons collecter les informations que vous fournissez volontairement, notamment :",
+      "Cuando se pone en contacto con nosotros a través de nuestro sitio web, podemos recopilar la información que proporciona voluntariamente, incluyendo:"
+    ),
+  },
+  {
+    type: "list",
+    items: [
+      {
+        text_translations: tr(
+          "Name",
+          "Name",
+          "Nom",
+          "Nombre"
+        ),
+      },
+      {
+        text_translations: tr(
+          "Email address",
+          "E-Mail-Adresse",
+          "Adresse e-mail",
+          "Dirección de correo electrónico"
+        ),
+      },
+      {
+        text_translations: tr(
+          "Phone number",
+          "Telefonnummer",
+          "Numéro de téléphone",
+          "Número de teléfono"
+        ),
+      },
+      {
+        text_translations: tr(
+          "Company or organization name",
+          "Name des Unternehmens oder der Organisation",
+          "Nom de l'entreprise ou de l'organisation",
+          "Nombre de la empresa u organización"
+        ),
+      },
+      {
+        text_translations: tr(
+          "Information included in your message",
+          "Angaben in Ihrer Nachricht",
+          "Informations incluses dans votre message",
+          "Información incluida en su mensaje"
+        ),
+      },
+      {
+        text_translations: tr(
+          "Other information you choose to provide",
+          "Weitere Informationen, die Sie freiwillig bereitstellen",
+          "Toute autre information que vous choisissez de fournir",
+          "Cualquier otra información que decida proporcionar"
+        ),
+      },
+    ],
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "We use this information to respond to your inquiries, provide requested services, communicate with you, and manage our business relationship.",
+      "Wir verwenden diese Informationen, um Ihre Anfragen zu beantworten, angeforderte Dienstleistungen bereitzustellen, mit Ihnen zu kommunizieren und unsere Geschäftsbeziehung zu verwalten.",
+      "Nous utilisons ces informations pour répondre à vos demandes, fournir les services demandés, communiquer avec vous et gérer notre relation commerciale.",
+      "Utilizamos esta información para responder a sus consultas, proporcionar los servicios solicitados, comunicarnos con usted y gestionar nuestra relación comercial."
     ),
   },
   {
     type: "subheading",
     text_translations: tr(
-      "Automatically Collected Information",
-      "Automatisch erfasste Informationen",
-      "Informations collectées automatiquement",
-      "Información recopilada automáticamente"
+      "Technical Information",
+      "Technische Informationen",
+      "Informations techniques",
+      "Información técnica"
     ),
   },
   {
     type: "paragraph",
     text_translations: tr(
-      "When you visit our website, we automatically collect certain information including your IP address, browser type, operating system, referring URLs, device information, and browsing behavior. This is collected through cookies and similar tracking technologies.",
-      "Wenn Sie unsere Website besuchen, erfassen wir automatisch bestimmte Informationen, darunter Ihre IP-Adresse, den Browsertyp, das Betriebssystem, Referrer-URLs, Geräteinformationen und Ihr Surfverhalten. Dies erfolgt über Cookies und ähnliche Tracking-Technologien.",
-      "Lorsque vous visitez notre site web, nous collectons automatiquement certaines informations, notamment votre adresse IP, le type de navigateur, le système d'exploitation, les URL de référence, les informations sur l'appareil et le comportement de navigation. Ces informations sont collectées via des cookies et des technologies de suivi similaires.",
-      "Cuando visita nuestro sitio web, recopilamos automáticamente cierta información, incluida su dirección IP, tipo de navegador, sistema operativo, URL de referencia, información del dispositivo y comportamiento de navegación. Esto se recopila mediante cookies y tecnologías de seguimiento similares."
+      "When you access our website, certain technical information may be processed as part of operating, securing, and maintaining the website. This may include:",
+      "Beim Besuch unserer Website können bestimmte technische Informationen verarbeitet werden, die für den Betrieb, die Sicherheit und die Wartung der Website erforderlich sind. Dazu können gehören:",
+      "Lorsque vous accédez à notre site web, certaines informations techniques peuvent être traitées afin d'assurer son fonctionnement, sa sécurité et sa maintenance. Il peut notamment s'agir de :",
+      "Cuando accede a nuestro sitio web, cierta información técnica puede ser procesada como parte del funcionamiento, la seguridad y el mantenimiento del sitio. Esto puede incluir:"
+    ),
+  },
+  {
+    type: "list",
+    items: [
+      {
+        text_translations: tr(
+          "IP address",
+          "IP-Adresse",
+          "Adresse IP",
+          "Dirección IP"
+        ),
+      },
+      {
+        text_translations: tr(
+          "Browser and device information",
+          "Browser- und Geräteinformationen",
+          "Informations relatives au navigateur et à l'appareil",
+          "Información del navegador y dispositivo"
+        ),
+      },
+      {
+        text_translations: tr(
+          "Operating system",
+          "Betriebssystem",
+          "Système d'exploitation",
+          "Sistema operativo"
+        ),
+      },
+      {
+        text_translations: tr(
+          "Referring URL",
+          "Verweisende URL",
+          "URL de provenance",
+          "URL de referencia"
+        ),
+      },
+      {
+        text_translations: tr(
+          "Date and time of access",
+          "Datum und Uhrzeit des Zugriffs",
+          "Date et heure d'accès",
+          "Fecha y hora de acceso"
+        ),
+      },
+      {
+        text_translations: tr(
+          "Technical information relating to your visit",
+          "Technische Informationen über Ihren Besuch",
+          "Informations techniques relatives à votre visite",
+          "Información técnica relacionada con su visita"
+        ),
+      },
+    ],
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "Some technical information may be processed by our hosting and infrastructure providers where necessary to operate and secure the website.",
+      "Bestimmte technische Informationen können von unseren Hosting- und Infrastruktur-Anbietern verarbeitet werden, soweit dies für den Betrieb und die Sicherheit der Website erforderlich ist.",
+      "Certaines informations techniques peuvent être traitées par nos fournisseurs d'hébergement et d'infrastructure lorsque cela est nécessaire au fonctionnement et à la sécurité du site.",
+      "Parte de esta información técnica puede ser procesada por nuestros proveedores de alojamiento e infraestructura cuando sea necesario para operar y proteger el sitio web."
     ),
   },
   {
     type: "subheading",
     text_translations: tr(
-      "Analytics Data",
-      "Analysedaten",
-      "Données d'analyse",
-      "Datos analíticos"
+      "Analytics Information",
+      "Analyseinformationen",
+      "Informations analytiques",
+      "Información analítica"
     ),
   },
   {
     type: "paragraph",
     text_translations: tr(
-      "We use analytics tools to understand how visitors interact with our website. This includes page views, time spent on pages, click patterns, and navigation paths. This data is anonymized and aggregated.",
-      "Wir verwenden Analysetools, um zu verstehen, wie Besucher mit unserer Website interagieren. Dazu gehören Seitenaufrufe, Verweildauer, Klickmuster und Navigationspfade. Diese Daten werden anonymisiert und aggregiert.",
-      "Nous utilisons des outils d'analyse pour comprendre comment les visiteurs interagissent avec notre site web. Cela comprend les pages vues, le temps passé sur les pages, les schémas de clics et les parcours de navigation. Ces données sont anonymisées et agrégées.",
-      "Utilizamos herramientas de análisis para comprender cómo interactúan los visitantes con nuestro sitio web. Esto incluye vistas de página, tiempo en las páginas, patrones de clics y rutas de navegación. Estos datos se anonimizan y agregan."
+      "With your consent where required, we use analytics technologies to understand how visitors use our website and to measure website traffic and performance.",
+      "Soweit Ihre Einwilligung erforderlich ist, verwenden wir Analysetechnologien, um zu verstehen, wie Besucher unsere Website nutzen und um den Website-Traffic sowie die Leistung zu messen.",
+      "Lorsque votre consentement est requis, nous utilisons des technologies d'analyse pour comprendre comment les visiteurs utilisent notre site web et mesurer son trafic et ses performances.",
+      "Cuando sea necesario obtener su consentimiento, utilizamos tecnologías de análisis para comprender cómo los visitantes utilizan nuestro sitio web y medir el tráfico y el rendimiento."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "We use Google Analytics 4 (GA4) for detailed website analytics. Depending on your consent and settings, GA4 may process information such as pages viewed, interactions, device and browser information, approximate geographic information, and other usage data.",
+      "Wir verwenden Google Analytics 4 (GA4) für detaillierte Website-Analysen. Abhängig von Ihrer Einwilligung und Ihren Einstellungen kann GA4 Informationen wie aufgerufene Seiten, Interaktionen, Geräte- und Browserinformationen, ungefähre geografische Informationen und weitere Nutzungsdaten verarbeiten.",
+      "Nous utilisons Google Analytics 4 (GA4) pour les analyses détaillées du site. Selon votre consentement et vos paramètres, GA4 peut traiter des informations telles que les pages consultées, les interactions, les informations relatives à l'appareil et au navigateur, des informations géographiques approximatives et d'autres données d'utilisation.",
+      "Utilizamos Google Analytics 4 (GA4) para realizar análisis detallados del sitio web. Dependiendo de su consentimiento y configuración, GA4 puede procesar información como páginas visitadas, interacciones, información del dispositivo y navegador, información geográfica aproximada y otros datos de uso."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "If you reject Analytics consent, our GA4 tracking is not activated for your visit.",
+      "Wenn Sie der Analyse nicht zustimmen, wird das GA4-Tracking für Ihren Besuch nicht aktiviert.",
+      "Si vous refusez le consentement aux analyses, le suivi GA4 n'est pas activé lors de votre visite.",
+      "Si rechaza el consentimiento para Analytics, el seguimiento de GA4 no se activa durante su visita."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "We also use Vercel Web Analytics to obtain aggregated and privacy-focused information about website usage and performance.",
+      "Wir verwenden außerdem Vercel Web Analytics, um aggregierte und datenschutzorientierte Informationen über die Nutzung und Leistung unserer Website zu erhalten.",
+      "Nous utilisons également Vercel Web Analytics pour obtenir des informations agrégées et respectueuses de la vie privée sur l'utilisation et les performances du site.",
+      "También utilizamos Vercel Web Analytics para obtener información agregada y orientada a la privacidad sobre el uso y el rendimiento del sitio web."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "For more information about cookies and analytics technologies, please see our [Cookie Policy](/cookie-policy).",
+      "Weitere Informationen zu Cookies und Analysetechnologien finden Sie in unserer [Cookie-Richtlinie](/cookie-policy).",
+      "Pour plus d'informations sur les cookies et les technologies d'analyse, veuillez consulter notre [Politique de cookies](/cookie-policy).",
+      "Para obtener más información sobre las cookies y las tecnologías de análisis, consulte nuestra [Política de Cookies](/cookie-policy)."
     ),
   },
   {
     type: "heading",
-    icon: "shield-check",
+    icon: "clipboard-check",
     text_translations: tr(
       "3. How We Use Your Information",
       "3. Wie wir Ihre Informationen verwenden",
@@ -116,10 +285,10 @@ export const PRIVACY_FALLBACK_BLOCKS: DetailPageBlock[] = [
   {
     type: "paragraph",
     text_translations: tr(
-      "We use the information we collect for the following purposes:",
-      "Wir verwenden die erfassten Informationen für folgende Zwecke:",
-      "Nous utilisons les informations que nous collectons aux fins suivantes :",
-      "Utilizamos la información que recopilamos para los siguientes fines:"
+      "We may use information for the following purposes:",
+      "Wir können Informationen für folgende Zwecke verwenden:",
+      "Nous pouvons utiliser les informations pour :",
+      "Podemos utilizar la información para:"
     ),
   },
   {
@@ -127,79 +296,149 @@ export const PRIVACY_FALLBACK_BLOCKS: DetailPageBlock[] = [
     items: [
       {
         text_translations: tr(
-          "To respond to your inquiries and provide services you request",
-          "Um auf Ihre Anfragen zu antworten und die von Ihnen angeforderten Dienste bereitzustellen",
-          "Pour répondre à vos demandes et fournir les services que vous demandez",
-          "Para responder a sus consultas y proporcionar los servicios que solicita"
+          "To respond to inquiries and contact requests",
+          "Beantwortung von Anfragen und Kontaktanfragen",
+          "Répondre aux demandes et aux messages de contact",
+          "Responder a consultas y solicitudes de contacto"
+        ),
+      },
+      {
+        text_translations: tr(
+          "To provide and manage our services",
+          "Bereitstellung und Verwaltung unserer Dienstleistungen",
+          "Fournir et gérer nos services",
+          "Proporcionar y gestionar nuestros servicios"
+        ),
+      },
+      {
+        text_translations: tr(
+          "To communicate with you about our services",
+          "Kommunikation über unsere Dienstleistungen",
+          "Communiquer avec vous concernant nos services",
+          "Comunicarnos con usted sobre nuestros servicios"
         ),
       },
       {
         text_translations: tr(
           "To improve our website, services, and user experience",
-          "Um unsere Website, Dienste und das Nutzererlebnis zu verbessern",
-          "Pour améliorer notre site web, nos services et l'expérience utilisateur",
-          "Para mejorar nuestro sitio web, nuestros servicios y la experiencia del usuario"
+          "Verbesserung unserer Website, Dienstleistungen und Nutzererfahrung",
+          "Améliorer notre site web, nos services et l'expérience utilisateur",
+          "Mejorar nuestro sitio web, servicios y experiencia del usuario"
         ),
       },
       {
         text_translations: tr(
-          "To send relevant marketing communications (with your consent)",
-          "Um relevante Marketingmitteilungen zu senden (mit Ihrer Einwilligung)",
-          "Pour envoyer des communications marketing pertinentes (avec votre consentement)",
-          "Para enviar comunicaciones de marketing relevantes (con su consentimiento)"
+          "To understand website traffic and usage",
+          "Analyse des Website-Traffics und der Nutzung",
+          "Comprendre le trafic et l'utilisation du site",
+          "Comprender el tráfico y el uso del sitio web"
         ),
       },
       {
         text_translations: tr(
-          "To analyze website traffic and usage patterns",
-          "Um Website-Traffic und Nutzungsmuster zu analysieren",
-          "Pour analyser le trafic du site web et les modèles d'utilisation",
-          "Para analizar el tráfico del sitio web y los patrones de uso"
+          "To maintain the security and functionality of our website",
+          "Aufrechterhaltung der Sicherheit und Funktionsfähigkeit unserer Website",
+          "Maintenir la sécurité et le fonctionnement du site",
+          "Mantener la seguridad y funcionalidad del sitio"
         ),
       },
       {
         text_translations: tr(
-          "To protect against fraudulent or unauthorized activity",
-          "Um vor betrügerischen oder unbefugten Aktivitäten zu schützen",
-          "Pour vous protéger contre les activités frauduleuses ou non autorisées",
-          "Para proteger contra actividades fraudulentas o no autorizadas"
+          "To prevent fraud, abuse, or unauthorized activity",
+          "Verhinderung von Betrug, Missbrauch oder unbefugten Aktivitäten",
+          "Prévenir la fraude, les abus ou les activités non autorisées",
+          "Prevenir fraudes, abusos o actividades no autorizadas"
         ),
       },
       {
         text_translations: tr(
-          "To comply with legal obligations and enforce our terms",
-          "Um gesetzlichen Verpflichtungen nachzukommen und unsere Bedingungen durchzusetzen",
-          "Pour respecter les obligations légales et faire appliquer nos conditions",
-          "Para cumplir con las obligaciones legales y hacer cumplir nuestros términos"
+          "To comply with legal obligations",
+          "Erfüllung gesetzlicher Verpflichtungen",
+          "Respecter nos obligations légales",
+          "Cumplir obligaciones legales"
+        ),
+      },
+      {
+        text_translations: tr(
+          "To establish, exercise, or defend legal claims",
+          "Geltendmachung, Ausübung oder Verteidigung rechtlicher Ansprüche",
+          "Établir, exercer ou défendre des droits en justice",
+          "Establecer, ejercer o defender reclamaciones legales"
+        ),
+      },
+    ],
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "Where processing is based on your consent, you may withdraw that consent at any time.",
+      "Wenn die Verarbeitung auf Ihrer Einwilligung beruht, können Sie diese jederzeit widerrufen.",
+      "Lorsque le traitement repose sur votre consentement, vous pouvez retirer ce consentement à tout moment.",
+      "Cuando el tratamiento se base en su consentimiento, puede retirar dicho consentimiento en cualquier momento."
+    ),
+  },
+  {
+    type: "heading",
+    icon: "shield-check",
+    text_translations: tr(
+      "4. Legal Bases for Processing",
+      "4. Rechtsgrundlagen der Verarbeitung",
+      "4. Bases légales du traitement",
+      "4. Bases legales para el tratamiento"
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "Depending on the circumstances, we process personal information on the following legal bases under applicable data protection law, including the EU General Data Protection Regulation (GDPR):",
+      "Je nach Situation verarbeiten wir personenbezogene Daten auf Grundlage der geltenden Datenschutzgesetze, einschließlich der Datenschutz-Grundverordnung (DSGVO):",
+      "Selon les circonstances, nous traitons les informations personnelles sur les bases juridiques prévues par la législation applicable en matière de protection des données, notamment le Règlement général sur la protection des données (RGPD) :",
+      "Dependiendo de las circunstancias, tratamos la información personal sobre las siguientes bases legales previstas por la legislación aplicable en materia de protección de datos, incluido el Reglamento General de Protección de Datos (RGPD):"
+    ),
+  },
+  {
+    type: "list",
+    items: [
+      {
+        text_translations: tr(
+          "Consent — for optional analytics or other processing where consent is required.",
+          "Einwilligung — für optionale Analysen oder andere Verarbeitungsvorgänge, für die eine Einwilligung erforderlich ist.",
+          "Consentement — pour les analyses facultatives ou tout autre traitement nécessitant un consentement.",
+          "Consentimiento — para análisis opcionales u otros tratamientos que requieran consentimiento."
+        ),
+      },
+      {
+        text_translations: tr(
+          "Contract or steps prior to entering into a contract — when necessary to provide requested services or respond to a service request.",
+          "Vertrag oder vorvertragliche Maßnahmen — wenn dies zur Erbringung angeforderter Dienstleistungen erforderlich ist.",
+          "Contrat ou mesures précontractuelles — lorsque cela est nécessaire pour fournir les services demandés.",
+          "Contrato o medidas precontractuales — cuando sea necesario para proporcionar servicios solicitados."
+        ),
+      },
+      {
+        text_translations: tr(
+          "Legitimate interests — where necessary to operate, secure, maintain, and improve our services, provided that these interests do not override your rights and freedoms.",
+          "Berechtigte Interessen — wenn dies für den Betrieb, die Sicherheit, die Wartung und Verbesserung unserer Dienstleistungen erforderlich ist und Ihre Rechte und Freiheiten nicht überwiegen.",
+          "Intérêts légitimes — lorsque cela est nécessaire pour exploiter, sécuriser, maintenir et améliorer nos services, sous réserve que ces intérêts ne prévalent pas sur vos droits et libertés.",
+          "Intereses legítimos — cuando sea necesario para operar, proteger, mantener y mejorar nuestros servicios, siempre que dichos intereses no prevalezcan sobre sus derechos y libertades."
+        ),
+      },
+      {
+        text_translations: tr(
+          "Legal obligation — where processing is required by applicable law.",
+          "Gesetzliche Verpflichtung — wenn die Verarbeitung gesetzlich vorgeschrieben ist.",
+          "Obligation légale — lorsque le traitement est requis par la loi.",
+          "Obligación legal — cuando el tratamiento sea exigido por la legislación aplicable."
         ),
       },
     ],
   },
   {
     type: "heading",
-    icon: "lock",
-    text_translations: tr(
-      "4. Data Protection & Security",
-      "4. Datenschutz & Sicherheit",
-      "4. Protection des données et sécurité",
-      "4. Protección de datos y seguridad"
-    ),
-  },
-  {
-    type: "paragraph",
-    text_translations: tr(
-      "We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. These measures include encryption, firewalls, secure server infrastructure, and regular security assessments. However, no method of transmission over the Internet or electronic storage is 100% secure, and we cannot guarantee absolute security.",
-      "Wir implementieren angemessene technische und organisatorische Sicherheitsmaßnahmen, um Ihre persönlichen Informationen vor unbefugtem Zugriff, Veränderung, Offenlegung oder Zerstörung zu schützen. Dazu gehören Verschlüsselung, Firewalls, sichere Serverinfrastruktur und regelmäßige Sicherheitsüberprüfungen. Keine Übertragung über das Internet oder elektronische Speicherung ist jedoch zu 100 % sicher, und wir können keine absolute Sicherheit garantieren.",
-      "Nous mettons en œuvre des mesures de sécurité techniques et organisationnelles appropriées pour protéger vos informations personnelles contre tout accès, modification, divulgation ou destruction non autorisés. Ces mesures comprennent le chiffrement, les pare-feu, une infrastructure de serveurs sécurisée et des évaluations de sécurité régulières. Cependant, aucune méthode de transmission sur Internet ou de stockage électronique n'est sécurisée à 100 %, et nous ne pouvons pas garantir une sécurité absolue.",
-      "Implementamos medidas de seguridad técnicas y organizativas adecuadas para proteger su información personal contra accesos, alteraciones, divulgaciones o destrucciones no autorizadas. Estas medidas incluyen cifrado, cortafuegos, infraestructura de servidores segura y evaluaciones de seguridad periódicas. Sin embargo, ningún método de transmisión por Internet o almacenamiento electrónico es 100 % seguro, y no podemos garantizar una seguridad absoluta."
-    ),
-  },
-  {
-    type: "heading",
     icon: "cookie",
     text_translations: tr(
-      "5. Cookies & Tracking Technologies",
-      "5. Cookies & Tracking-Technologien",
+      "5. Cookies and Tracking Technologies",
+      "5. Cookies und Tracking-Technologien",
       "5. Cookies et technologies de suivi",
       "5. Cookies y tecnologías de seguimiento"
     ),
@@ -207,48 +446,270 @@ export const PRIVACY_FALLBACK_BLOCKS: DetailPageBlock[] = [
   {
     type: "paragraph",
     text_translations: tr(
-      "Our website uses cookies and similar tracking technologies to enhance your browsing experience, analyze site traffic, and deliver personalized content. For detailed information about the cookies we use and how you can manage your preferences, please see our [Cookie Policy](/cookie-policy).",
-      "Unsere Website verwendet Cookies und ähnliche Tracking-Technologien, um Ihr Surferlebnis zu verbessern, Website-Traffic zu analysieren und personalisierte Inhalte bereitzustellen. Detaillierte Informationen zu den von uns verwendeten Cookies und zur Verwaltung Ihrer Präferenzen finden Sie in unserer [Cookie-Richtlinie](/cookie-policy).",
-      "Notre site web utilise des cookies et des technologies de suivi similaires pour améliorer votre expérience de navigation, analyser le trafic du site et fournir un contenu personnalisé. Pour plus d'informations sur les cookies que nous utilisons et sur la gestion de vos préférences, veuillez consulter notre [politique de cookies](/cookie-policy).",
-      "Nuestro sitio web utiliza cookies y tecnologías de seguimiento similares para mejorar su experiencia de navegación, analizar el tráfico del sitio y ofrecer contenido personalizado. Para obtener información detallada sobre las cookies que utilizamos y cómo gestionar sus preferencias, consulte nuestra [Política de Cookies](/cookie-policy)."
+      "Our website uses cookies and similar technologies for essential functionality, preferences, and, where you provide the appropriate consent, analytics.",
+      "Unsere Website verwendet Cookies und ähnliche Technologien für wesentliche Funktionen, Präferenzen und, sofern Sie die erforderliche Einwilligung erteilen, für Analysezwecke.",
+      "Notre site utilise des cookies et des technologies similaires pour assurer les fonctionnalités essentielles, mémoriser certaines préférences et, lorsque vous donnez votre consentement approprié, effectuer des analyses.",
+      "Nuestro sitio web utiliza cookies y tecnologías similares para funciones esenciales, preferencias y, cuando proporciona el consentimiento correspondiente, análisis."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "Optional analytics tracking is not activated before the required consent is provided.",
+      "Optionales Analytics-Tracking wird nicht aktiviert, bevor die erforderliche Einwilligung erteilt wurde.",
+      "Le suivi analytique facultatif n'est pas activé avant l'obtention du consentement requis.",
+      "El seguimiento analítico opcional no se activa antes de obtener el consentimiento requerido."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "You can change or withdraw your optional cookie preferences at any time through Cookie Settings in the website footer.",
+      "Sie können Ihre optionalen Cookie-Einstellungen jederzeit über Cookie Settings in der Fußzeile unserer Website ändern oder widerrufen.",
+      "Vous pouvez modifier ou retirer vos préférences à tout moment en sélectionnant Cookie Settings dans le pied de page du site.",
+      "Puede cambiar o retirar sus preferencias de cookies opcionales en cualquier momento seleccionando Cookie Settings en el pie de página del sitio web."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "For detailed information about the technologies we use and how to manage your choices, please see our [Cookie Policy](/cookie-policy).",
+      "Weitere Informationen finden Sie in unserer [Cookie-Richtlinie](/cookie-policy).",
+      "Pour plus d'informations, veuillez consulter notre [Politique de cookies](/cookie-policy).",
+      "Para obtener información detallada, consulte nuestra [Política de Cookies](/cookie-policy)."
+    ),
+  },
+  {
+    type: "heading",
+    icon: "settings",
+    text_translations: tr(
+      "6. Google Analytics 4",
+      "6. Google Analytics 4",
+      "6. Google Analytics 4",
+      "6. Google Analytics 4"
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "We use Google Analytics 4 (GA4) to understand website traffic and how visitors interact with our website.",
+      "Wir verwenden Google Analytics 4 (GA4), um den Website-Traffic zu verstehen und zu analysieren, wie Besucher mit unserer Website interagieren.",
+      "Nous utilisons Google Analytics 4 (GA4) afin de comprendre le trafic du site et la manière dont les visiteurs interagissent avec celui-ci.",
+      "Utilizamos Google Analytics 4 (GA4) para comprender el tráfico del sitio web y cómo interactúan los visitantes con nuestro sitio."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "GA4 analytics tracking is activated only when the appropriate Analytics consent has been provided through our consent mechanism.",
+      "Das GA4-Tracking wird nur aktiviert, wenn die entsprechende Einwilligung für Analytics erteilt wurde.",
+      "Le suivi GA4 n'est activé qu'après l'obtention du consentement analytique approprié.",
+      "El seguimiento de GA4 solo se activa cuando se ha proporcionado el consentimiento correspondiente para Analytics."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "GA4 may process information relating to website interactions, device and browser characteristics, approximate geographic information, and other measurement data.",
+      "GA4 kann Informationen über Website-Interaktionen, Geräte- und Browsereigenschaften, ungefähre geografische Informationen und andere Messdaten verarbeiten.",
+      "GA4 peut traiter des informations relatives aux interactions avec le site, aux caractéristiques de l'appareil et du navigateur, à la localisation géographique approximative et à d'autres données de mesure.",
+      "GA4 puede procesar información relacionada con las interacciones con el sitio, las características del dispositivo y navegador, información geográfica aproximada y otros datos de medición."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "For users in the European Union, Google states that individual IP addresses are not logged or stored by Google Analytics. IP information may be used to derive coarse geographic information before being discarded.",
+      "Für Nutzer in der Europäischen Union gibt Google an, dass individuelle IP-Adressen von Google Analytics nicht protokolliert oder gespeichert werden. IP-Informationen können verwendet werden, um ungefähre geografische Informationen abzuleiten, bevor sie verworfen werden.",
+      "Pour les utilisateurs situés dans l'Union européenne, Google indique que les adresses IP individuelles ne sont pas enregistrées ni stockées par Google Analytics. Les informations IP peuvent être utilisées pour déterminer une localisation géographique approximative avant d'être supprimées.",
+      "Para los usuarios de la Unión Europea, Google indica que las direcciones IP individuales no se registran ni almacenan en Google Analytics. La información de IP puede utilizarse para obtener información geográfica aproximada antes de ser descartada."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "For further information about Google's privacy practices, please refer to Google's privacy documentation.",
+      "Weitere Informationen zu den Datenschutzpraktiken von Google finden Sie in der Datenschutzdokumentation von Google.",
+      "Pour plus d'informations sur les pratiques de confidentialité de Google, veuillez consulter sa documentation relative à la confidentialité.",
+      "Para obtener más información sobre las prácticas de privacidad de Google, consulte su documentación de privacidad."
     ),
   },
   {
     type: "heading",
     icon: "globe",
     text_translations: tr(
-      "6. Third-Party Sharing",
-      "6. Weitergabe an Dritte",
-      "6. Partage avec des tiers",
-      "6. Compartir con terceros"
+      "7. Vercel Analytics",
+      "7. Vercel Analytics",
+      "7. Vercel Analytics",
+      "7. Vercel Analytics"
     ),
   },
   {
     type: "paragraph",
     text_translations: tr(
-      "We do not sell, trade, or rent your personal information to third parties. We may share information with trusted service providers who assist us in operating our website and conducting our business, provided they agree to keep this information confidential. We may also disclose information when required by law or to protect our rights.",
-      "Wir verkaufen, handeln oder vermieten Ihre persönlichen Informationen nicht an Dritte. Wir können Informationen mit vertrauenswürdigen Dienstleistern teilen, die uns beim Betrieb unserer Website und unseres Geschäfts unterstützen, sofern diese sich zur Vertraulichkeit verpflichten. Wir können Informationen auch offenlegen, wenn dies gesetzlich vorgeschrieben ist oder zum Schutz unserer Rechte erforderlich ist.",
-      "Nous ne vendons, n'échangeons ni ne louons vos informations personnelles à des tiers. Nous pouvons partager des informations avec des prestataires de services de confiance qui nous aident à exploiter notre site web et à mener nos activités, à condition qu'ils acceptent de garder ces informations confidentielles. Nous pouvons également divulguer des informations lorsque la loi l'exige ou pour protéger nos droits.",
-      "No vendemos, intercambiamos ni alquilamos su información personal a terceros. Podemos compartir información con proveedores de servicios de confianza que nos ayudan a operar nuestro sitio web y a realizar nuestro negocio, siempre que acepten mantener esta información confidencial. También podemos divulgar información cuando lo exija la ley o para proteger nuestros derechos."
+      "We use Vercel Web Analytics to understand aggregated website usage and performance.",
+      "Wir verwenden Vercel Web Analytics, um aggregierte Informationen über die Nutzung und Leistung unserer Website zu erhalten.",
+      "Nous utilisons Vercel Web Analytics pour comprendre de manière agrégée l'utilisation et les performances du site.",
+      "Utilizamos Vercel Web Analytics para comprender de forma agregada el uso y el rendimiento del sitio web."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "Vercel describes its analytics information as anonymized, statistical, aggregated, and de-identified in its privacy documentation.",
+      "Vercel beschreibt seine Analytics-Informationen in seiner Datenschutzerklärung als anonymisiert, statistisch, aggregiert und de-identifiziert.",
+      "Vercel décrit les informations analytiques comme anonymisées, statistiques, agrégées et désidentifiées dans sa documentation relative à la confidentialité.",
+      "Vercel describe la información analítica en su documentación de privacidad como anonimizada, estadística, agregada y desidentificada."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "Vercel Web Analytics does not rely on traditional cookies for its analytics measurement.",
+      "Vercel Web Analytics verwendet keine herkömmlichen Cookies für seine Web-Analytics-Messungen.",
+      "Vercel Web Analytics ne repose pas sur des cookies traditionnels pour ses mesures analytiques.",
+      "Vercel Web Analytics no utiliza cookies tradicionales para sus mediciones analíticas."
+    ),
+  },
+  {
+    type: "heading",
+    icon: "globe",
+    text_translations: tr(
+      "8. Third-Party Service Providers",
+      "8. Drittanbieter",
+      "8. Fournisseurs de services tiers",
+      "8. Proveedores de servicios externos"
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "We may use trusted third-party providers to help operate our website and business.",
+      "Wir können vertrauenswürdige Drittanbieter einsetzen, die uns beim Betrieb unserer Website und unseres Unternehmens unterstützen.",
+      "Nous pouvons utiliser des prestataires tiers de confiance pour exploiter notre site web et nos activités.",
+      "Podemos utilizar proveedores externos de confianza para ayudarnos a operar nuestro sitio web y nuestro negocio."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "These may include:",
+      "Dazu gehören unter anderem:",
+      "Ils peuvent notamment inclure :",
+      "Estos pueden incluir:"
+    ),
+  },
+  {
+    type: "list",
+    items: [
+      {
+        text_translations: tr(
+          "Vercel — website hosting, infrastructure, and analytics services.",
+          "Vercel — Hosting, Infrastruktur und Analytics-Dienste.",
+          "Vercel — hébergement, infrastructure et services d'analyse.",
+          "Vercel — alojamiento, infraestructura y servicios de análisis."
+        ),
+      },
+      {
+        text_translations: tr(
+          "Google — Google Analytics 4 analytics services.",
+          "Google — Google-Analytics-4-Dienste.",
+          "Google — services Google Analytics 4.",
+          "Google — servicios de Google Analytics 4."
+        ),
+      },
+      {
+        text_translations: tr(
+          "Other service providers necessary to operate our website, communicate with customers, process forms, or provide requested services.",
+          "Weitere Dienstleister, die für den Betrieb unserer Website, die Kommunikation, die Verarbeitung von Formularen oder die Erbringung angeforderter Dienstleistungen erforderlich sind.",
+          "D'autres prestataires nécessaires au fonctionnement du site, aux communications, au traitement des formulaires ou à la fourniture des services demandés.",
+          "Otros proveedores necesarios para operar nuestro sitio web, comunicarnos con los clientes, procesar formularios o proporcionar los servicios solicitados."
+        ),
+      },
+    ],
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "We do not sell your personal information.",
+      "Wir verkaufen Ihre personenbezogenen Daten nicht.",
+      "Nous ne vendons pas vos informations personnelles.",
+      "No vendemos su información personal."
+    ),
+  },
+  {
+    type: "heading",
+    icon: "refresh",
+    text_translations: tr(
+      "9. Data Retention",
+      "9. Speicherung und Aufbewahrung",
+      "9. Conservation des données",
+      "9. Conservación de datos"
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "We retain personal information only for as long as reasonably necessary for the purposes described in this Privacy Policy, to provide our services, maintain appropriate business records, resolve disputes, enforce agreements, or comply with legal obligations.",
+      "Wir speichern personenbezogene Daten nur so lange, wie dies für die in dieser Datenschutzerklärung beschriebenen Zwecke, die Erbringung unserer Dienstleistungen, geschäftliche Aufzeichnungen, die Beilegung von Streitigkeiten, die Durchsetzung von Vereinbarungen oder die Erfüllung gesetzlicher Verpflichtungen angemessen erforderlich ist.",
+      "Nous conservons les informations personnelles uniquement pendant la durée raisonnablement nécessaire aux finalités décrites dans cette Politique de confidentialité, à la fourniture de nos services, à la tenue de documents commerciaux, au règlement des litiges, à l'application de nos accords ou au respect des obligations légales.",
+      "Conservamos la información personal únicamente durante el tiempo razonablemente necesario para los fines descritos en esta Política de Privacidad, proporcionar nuestros servicios, mantener registros comerciales, resolver disputas, hacer cumplir acuerdos o cumplir obligaciones legales."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "Analytics data may be retained according to the retention settings configured in our analytics services.",
+      "Analytics-Daten können entsprechend den in unseren Analytics-Diensten konfigurierten Aufbewahrungseinstellungen gespeichert werden.",
+      "Les données analytiques peuvent être conservées conformément aux paramètres de conservation configurés dans nos services d'analyse.",
+      "Los datos analíticos pueden conservarse de acuerdo con la configuración de conservación establecida en nuestros servicios de análisis."
+    ),
+  },
+  {
+    type: "heading",
+    icon: "lock",
+    text_translations: tr(
+      "10. Data Security",
+      "10. Datensicherheit",
+      "10. Sécurité des données",
+      "10. Seguridad de los datos"
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "We implement appropriate technical and organizational measures designed to protect personal information against unauthorized access, loss, misuse, alteration, or disclosure.",
+      "Wir setzen angemessene technische und organisatorische Maßnahmen ein, um personenbezogene Daten vor unbefugtem Zugriff, Verlust, Missbrauch, Veränderung oder Offenlegung zu schützen.",
+      "Nous mettons en œuvre des mesures techniques et organisationnelles appropriées destinées à protéger les informations personnelles contre tout accès non autorisé, perte, utilisation abusive, modification ou divulgation.",
+      "Implementamos medidas técnicas y organizativas apropiadas destinadas a proteger la información personal contra el acceso no autorizado, pérdida, uso indebido, modificación o divulgación."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "However, no method of transmission or electronic storage is completely secure, and we cannot guarantee absolute security.",
+      "Keine Übertragung über das Internet und keine elektronische Speicherung kann jedoch vollständig sicher garantiert werden.",
+      "Toutefois, aucune transmission sur Internet ou aucun stockage électronique n'est totalement sécurisé.",
+      "Sin embargo, ningún método de transmisión por Internet o almacenamiento electrónico es completamente seguro."
     ),
   },
   {
     type: "heading",
     icon: "clipboard-check",
     text_translations: tr(
-      "7. Your Rights",
-      "7. Ihre Rechte",
-      "7. Vos droits",
-      "7. Sus derechos"
+      "11. Your Privacy Rights",
+      "11. Ihre Rechte",
+      "11. Vos droits",
+      "11. Sus derechos"
     ),
   },
   {
     type: "paragraph",
     text_translations: tr(
-      "Depending on your location, you may have the following rights regarding your personal data:",
-      "Je nach Ihrem Standort haben Sie möglicherweise die folgenden Rechte in Bezug auf Ihre personenbezogenen Daten:",
-      "Selon votre lieu de résidence, vous pouvez disposer des droits suivants concernant vos données personnelles :",
-      "Según su ubicación, es posible que tenga los siguientes derechos con respecto a sus datos personales:"
+      "Depending on applicable law, including the GDPR where applicable, you may have rights including:",
+      "Je nach geltendem Recht, insbesondere nach der DSGVO, können Sie folgende Rechte haben:",
+      "Selon la législation applicable, notamment le RGPD, vous pouvez disposer des droits suivants :",
+      "Dependiendo de la legislación aplicable, incluido el RGPD, puede tener los siguientes derechos:"
     ),
   },
   {
@@ -257,49 +718,57 @@ export const PRIVACY_FALLBACK_BLOCKS: DetailPageBlock[] = [
       {
         text_translations: tr(
           "The right to access your personal data",
-          "Das Recht auf Zugriff auf Ihre personenbezogenen Daten",
-          "Le droit d'accéder à vos données personnelles",
-          "El derecho a acceder a sus datos personales"
+          "Recht auf Auskunft",
+          "Droit d'accès à vos données personnelles",
+          "Derecho de acceso a sus datos personales"
         ),
       },
       {
         text_translations: tr(
-          "The right to rectify inaccurate or incomplete data",
-          "Das Recht auf Berichtigung unrichtiger oder unvollständiger Daten",
-          "Le droit de rectifier des données inexactes ou incomplètes",
-          "El derecho a rectificar datos inexactos o incompletos"
+          "The right to correct inaccurate or incomplete data",
+          "Recht auf Berichtigung",
+          "Droit de rectification",
+          "Derecho de rectificación"
         ),
       },
       {
         text_translations: tr(
-          "The right to request deletion of your data",
-          "Das Recht auf Löschung Ihrer Daten",
-          "Le droit de demander la suppression de vos données",
-          "El derecho a solicitar la eliminación de sus datos"
+          "The right to request deletion of your personal data",
+          "Recht auf Löschung",
+          "Droit à l'effacement",
+          "Derecho de supresión"
         ),
       },
       {
         text_translations: tr(
-          "The right to restrict or object to processing",
-          "Das Recht auf Einschränkung der Verarbeitung oder Widerspruch",
-          "Le droit de restreindre ou de vous opposer au traitement",
-          "El derecho a restringir u oponerse al procesamiento"
+          "The right to restrict certain processing",
+          "Recht auf Einschränkung der Verarbeitung",
+          "Droit à la limitation du traitement",
+          "Derecho a limitar el tratamiento"
+        ),
+      },
+      {
+        text_translations: tr(
+          "The right to object to certain processing",
+          "Recht auf Widerspruch",
+          "Droit d'opposition",
+          "Derecho de oposición"
         ),
       },
       {
         text_translations: tr(
           "The right to data portability",
-          "Das Recht auf Datenübertragbarkeit",
-          "Le droit à la portabilité des données",
-          "El derecho a la portabilidad de los datos"
+          "Recht auf Datenübertragbarkeit",
+          "Droit à la portabilité des données",
+          "Derecho a la portabilidad de los datos"
         ),
       },
       {
         text_translations: tr(
-          "The right to withdraw consent at any time",
-          "Das Recht, Ihre Einwilligung jederzeit zu widerrufen",
-          "Le droit de retirer votre consentement à tout moment",
-          "El derecho a retirar el consentimiento en cualquier momento"
+          "The right to withdraw consent where processing is based on consent",
+          "Recht auf Widerruf einer Einwilligung, wenn die Verarbeitung darauf beruht",
+          "Droit de retirer votre consentement lorsque le traitement repose sur celui-ci",
+          "Derecho a retirar el consentimiento cuando el tratamiento se base en este"
         ),
       },
     ],
@@ -307,29 +776,103 @@ export const PRIVACY_FALLBACK_BLOCKS: DetailPageBlock[] = [
   {
     type: "paragraph",
     text_translations: tr(
-      "To exercise any of these rights, please contact us at [privacy@stratifit.com](mailto:privacy@stratifit.com).",
-      "Um eines dieser Rechte auszuüben, kontaktieren Sie uns bitte unter [privacy@stratifit.com](mailto:privacy@stratifit.com).",
-      "Pour exercer l'un de ces droits, veuillez nous contacter à [privacy@stratifit.com](mailto:privacy@stratifit.com).",
-      "Para ejercer cualquiera de estos derechos, contáctenos en [privacy@stratifit.com](mailto:privacy@stratifit.com)."
+      "You can exercise applicable rights by contacting us at [privacy@stratifit.com](mailto:privacy@stratifit.com).",
+      "Zur Ausübung Ihrer Rechte kontaktieren Sie uns unter [privacy@stratifit.com](mailto:privacy@stratifit.com).",
+      "Pour exercer vos droits, contactez-nous à [privacy@stratifit.com](mailto:privacy@stratifit.com).",
+      "Para ejercer sus derechos, puede ponerse en contacto con nosotros en [privacy@stratifit.com](mailto:privacy@stratifit.com)."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "You also have the right to lodge a complaint with a competent data protection supervisory authority.",
+      "Sie haben außerdem das Recht, sich bei einer zuständigen Datenschutzaufsichtsbehörde zu beschweren.",
+      "Vous avez également le droit d'introduire une réclamation auprès d'une autorité de contrôle compétente.",
+      "También tiene derecho a presentar una reclamación ante una autoridad de protección de datos competente."
+    ),
+  },
+  {
+    type: "heading",
+    icon: "shield-check",
+    text_translations: tr(
+      "12. Children's Privacy",
+      "12. Datenschutz von Kindern",
+      "12. Protection des enfants",
+      "12. Privacidad de los menores"
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "Our website and services are not specifically directed at children. We do not knowingly collect personal information from children where such collection is prohibited by applicable law.",
+      "Unsere Website und Dienstleistungen richten sich nicht speziell an Kinder. Wir erheben nicht wissentlich personenbezogene Daten von Kindern, soweit deren Erhebung nach geltendem Recht unzulässig ist.",
+      "Notre site et nos services ne sont pas spécifiquement destinés aux enfants. Nous ne collectons pas sciemment de données personnelles d'enfants lorsque leur collecte est interdite par la législation applicable.",
+      "Nuestro sitio web y nuestros servicios no están dirigidos específicamente a menores. No recopilamos conscientemente información personal de menores cuando dicha recopilación esté prohibida por la legislación aplicable."
+    ),
+  },
+  {
+    type: "heading",
+    icon: "globe",
+    text_translations: tr(
+      "13. International Data Transfers",
+      "13. Internationale Datenübermittlungen",
+      "13. Transferts internationaux de données",
+      "13. Transferencias internacionales de datos"
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "Some of our service providers may process information in countries outside your country of residence.",
+      "Einige unserer Dienstleister können Informationen in Ländern außerhalb Ihres Wohnsitzlandes verarbeiten.",
+      "Certains de nos prestataires peuvent traiter des informations dans des pays situés en dehors de votre pays de résidence.",
+      "Algunos de nuestros proveedores de servicios pueden procesar información en países situados fuera de su país de residencia."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "Where personal information is transferred internationally, we rely on appropriate safeguards required by applicable data protection law.",
+      "Bei internationalen Übermittlungen personenbezogener Daten verwenden wir die nach geltendem Datenschutzrecht erforderlichen geeigneten Schutzmaßnahmen.",
+      "Lorsque des données personnelles sont transférées à l'international, nous mettons en place les garanties appropriées requises par la législation applicable.",
+      "Cuando se transfieren datos personales internacionalmente, utilizamos las garantías adecuadas exigidas por la legislación aplicable en materia de protección de datos."
     ),
   },
   {
     type: "heading",
     icon: "refresh",
     text_translations: tr(
-      "8. Changes to This Policy",
-      "8. Änderungen dieser Richtlinie",
-      "8. Modifications de cette politique",
-      "8. Cambios en esta política"
+      "14. Changes to This Privacy Policy",
+      "14. Änderungen dieser Datenschutzerklärung",
+      "14. Modifications de cette Politique de confidentialité",
+      "14. Cambios en esta Política de Privacidad"
     ),
   },
   {
     type: "paragraph",
     text_translations: tr(
-      "We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated revision date. We encourage you to review this policy periodically. Continued use of our services after changes constitutes acceptance of the updated policy.",
-      "Wir können diese Datenschutzerklärung von Zeit zu Zeit aktualisieren. Änderungen werden auf dieser Seite mit einem aktualisierten Revisionsdatum veröffentlicht. Wir empfehlen Ihnen, diese Richtlinie regelmäßig zu überprüfen. Die weitere Nutzung unserer Dienste nach Änderungen gilt als Zustimmung zur aktualisierten Richtlinie.",
-      "Nous pouvons mettre à jour cette politique de confidentialité de temps à autre. Les modifications seront publiées sur cette page avec une date de révision mise à jour. Nous vous encourageons à consulter cette politique périodiquement. L'utilisation continue de nos services après les modifications constitue une acceptation de la politique mise à jour.",
-      "Podemos actualizar esta Política de Privacidad de vez en cuando. Los cambios se publicarán en esta página con una fecha de revisión actualizada. Le recomendamos revisar esta política periódicamente. El uso continuado de nuestros servicios después de los cambios constituye la aceptación de la política actualizada."
+      "We may update this Privacy Policy from time to time to reflect changes to our services, technologies, data practices, or legal requirements.",
+      "Wir können diese Datenschutzerklärung von Zeit zu Zeit aktualisieren, um Änderungen unserer Dienstleistungen, Technologien, Datenverarbeitungspraktiken oder gesetzlichen Anforderungen zu berücksichtigen.",
+      "Nous pouvons mettre à jour cette Politique de confidentialité afin de refléter les changements concernant nos services, technologies, pratiques de traitement des données ou obligations légales.",
+      "Podemos actualizar esta Política de Privacidad periódicamente para reflejar cambios en nuestros servicios, tecnologías, prácticas de tratamiento de datos o requisitos legales."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "When we make changes, we will update the Last updated date on this page.",
+      "Bei Änderungen wird das Datum der letzten Aktualisierung angepasst.",
+      "La date de mise à jour sera modifiée lorsque des changements seront apportés.",
+      "Cuando realicemos cambios, actualizaremos la fecha de Última actualización de esta página."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "We encourage you to review this Privacy Policy periodically.",
+      "Wir empfehlen Ihnen, diese Datenschutzerklärung regelmäßig zu überprüfen.",
+      "Nous vous encourageons à consulter régulièrement cette Politique de confidentialité.",
+      "Le recomendamos revisar periódicamente esta Política de Privacidad."
     ),
   },
   {
@@ -345,10 +888,28 @@ export const PRIVACY_FALLBACK_BLOCKS: DetailPageBlock[] = [
   {
     type: "paragraph",
     text_translations: tr(
-      "If you have any questions about this Privacy Policy, please contact us at [privacy@stratifit.com](mailto:privacy@stratifit.com).",
-      "Wenn Sie Fragen zu dieser Datenschutzerklärung haben, kontaktieren Sie uns bitte unter [privacy@stratifit.com](mailto:privacy@stratifit.com).",
-      "Si vous avez des questions concernant cette politique de confidentialité, veuillez nous contacter à [privacy@stratifit.com](mailto:privacy@stratifit.com).",
-      "Si tiene alguna pregunta sobre esta Política de Privacidad, contáctenos en [privacy@stratifit.com](mailto:privacy@stratifit.com)."
+      "Stratifit",
+      "Stratifit",
+      "Stratifit",
+      "Stratifit"
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "Email: [privacy@stratifit.com](mailto:privacy@stratifit.com)",
+      "E-Mail: [privacy@stratifit.com](mailto:privacy@stratifit.com)",
+      "E-mail : [privacy@stratifit.com](mailto:privacy@stratifit.com)",
+      "Correo electrónico: [privacy@stratifit.com](mailto:privacy@stratifit.com)"
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "Website: [https://stratifit.com](https://stratifit.com)",
+      "Website: [https://stratifit.com](https://stratifit.com)",
+      "Site web : [https://stratifit.com](https://stratifit.com)",
+      "Sitio web: [https://stratifit.com](https://stratifit.com)"
     ),
   },
 ];
