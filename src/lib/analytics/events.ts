@@ -20,3 +20,35 @@ export function trackEvent(name: string, params?: Record<string, unknown>) {
     sendGAEvent("event", name);
   }
 }
+
+/**
+ * Classifies an outbound href as a WhatsApp, email, or phone contact link.
+ * Returns `null` for anything else (e.g. social networks or internal links).
+ */
+export function getContactLinkType(
+  href: string
+): "whatsapp" | "email" | "phone" | null {
+  if (/^(https?:)?\/\/wa\.me\//i.test(href) || /whatsapp/i.test(href)) {
+    return "whatsapp";
+  }
+  if (/^mailto:/i.test(href)) return "email";
+  if (/^tel:/i.test(href)) return "phone";
+  return null;
+}
+
+/**
+ * Sends the appropriate GA4 event for a contact link click:
+ * `whatsapp_click`, `email_click`, or `phone_click`. For non-contact
+ * outbound links (e.g. social networks), falls back to `social_click` with
+ * the network name. All events are dropped unless analytics consent is set.
+ */
+export function trackContactLink(href: string, network?: string) {
+  const type = getContactLinkType(href);
+  if (type) {
+    trackEvent(`${type}_click`, { method: network ?? type });
+    return;
+  }
+  if (network) {
+    trackEvent("social_click", { network });
+  }
+}

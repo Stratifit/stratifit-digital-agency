@@ -11,6 +11,7 @@ import { submitLead } from "@/features/leads/mutations";
 import type { PublicServiceDetail } from "@/features/services/queries";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { t, tWithNumber, translateValidation } from "@/lib/i18n/ui-strings";
+import { trackEvent } from "@/lib/analytics/events";
 import { cn } from "@/lib/cn";
 
 const BUDGET_RANGES = ["€1k–€3k", "€3k–€5k", "€5k–€10k", "€10k+"];
@@ -270,6 +271,8 @@ export function ContactForm({
       setSelectedServiceIds([]);
       setBudgetRange("");
       reset();
+      // Conversion event — never includes form contents or PII.
+      trackEvent("contact_form_submit");
     } else {
       setServerError(result.error);
     }

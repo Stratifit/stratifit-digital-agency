@@ -81,6 +81,7 @@ export type UiStringKey =
   | "privacyPolicy"
   | "termsOfService"
   | "cookiePolicy"
+  | "cookieSettings"
   | "alwaysActive"
   | "back"
   | "imprint"
@@ -409,6 +410,7 @@ const en: UiStrings = {
   privacyPolicy: "Privacy Policy",
   termsOfService: "Terms of Service",
   cookiePolicy: "Cookie Policy",
+  cookieSettings: "Cookie Settings",
   alwaysActive: "Always active",
   back: "Back",
   imprint: "Imprint",
@@ -756,6 +758,7 @@ const de: UiStrings = {
   privacyPolicy: "Datenschutzerklärung",
   termsOfService: "Nutzungsbedingungen",
   cookiePolicy: "Cookie-Richtlinie",
+  cookieSettings: "Cookie-Einstellungen",
   alwaysActive: "Immer aktiv",
   back: "Zurück",
   imprint: "Impressum",
@@ -1103,6 +1106,7 @@ const fr: UiStrings = {
   privacyPolicy: "Politique de confidentialité",
   termsOfService: "Conditions d'utilisation",
   cookiePolicy: "Politique de cookies",
+  cookieSettings: "Paramètres de cookies",
   alwaysActive: "Toujours actifs",
   back: "Retour",
   imprint: "Mentions légales",
@@ -1450,6 +1454,7 @@ const es: UiStrings = {
   privacyPolicy: "Política de privacidad",
   termsOfService: "Términos del servicio",
   cookiePolicy: "Política de cookies",
+  cookieSettings: "Configuración de cookies",
   alwaysActive: "Siempre activas",
   back: "Volver",
   imprint: "Aviso legal",

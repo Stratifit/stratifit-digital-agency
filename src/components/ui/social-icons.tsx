@@ -1,4 +1,5 @@
 import { t } from "@/lib/i18n/ui-strings";
+import { trackContactLink } from "@/lib/analytics/events";
 
 export const SOCIAL_ICONS: {
   key: string;
@@ -54,6 +55,11 @@ export function SocialIcons({
               target={href !== "#" ? "_blank" : undefined}
               rel={href !== "#" ? "noopener noreferrer" : undefined}
               aria-label={label}
+              onClick={
+                href !== "#"
+                  ? () => trackContactLink(href, key)
+                  : undefined
+              }
               className="group flex size-8 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               <svg

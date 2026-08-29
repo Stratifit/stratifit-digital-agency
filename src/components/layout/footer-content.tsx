@@ -9,6 +9,7 @@ import { ArrowUp } from "lucide-react";
 import { BrandLogo } from "@/components/ui/brand-logo";
 import { SocialIcons } from "@/components/ui/social-icons";
 import { Reveal } from "@/components/ui/reveal";
+import { requestCookieSettingsEdit } from "@/components/cookie/cookie-consent-banner";
 
 // Track the in-flight scroll so a second click cleanly restarts it.
 let cancelScrollToTop: (() => void) | undefined;
@@ -148,7 +149,14 @@ export function FooterContent({
         <div className="h-px w-full bg-primary/30" />
         <div className="flex items-center justify-between">
           <p className="text-[10px] font-medium text-text-subtle sm:text-xs">
-            © {currentYear} {siteName}. {t(locale, "allRightsReserved")}
+            © {currentYear} {siteName}. {t(locale, "allRightsReserved")}{" "}
+            <button
+              type="button"
+              onClick={requestCookieSettingsEdit}
+              className="ml-1 inline font-bold uppercase tracking-wider text-primary underline underline-offset-2 transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              {t(locale, "cookieSettings")}
+            </button>
           </p>
           <button
             type="button"
