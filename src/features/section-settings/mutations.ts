@@ -5,7 +5,12 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { recordAuditLog } from "@/lib/audit";
-import { sectionSettingsSchema, type SectionSettingsFormValues } from "./schemas";
+import {
+  reviewSummarySchema,
+  sectionSettingsSchema,
+  type ReviewSummaryFormValues,
+  type SectionSettingsFormValues,
+} from "./schemas";
 import {
   isEditableSectionKey,
   SECTION_KEY_META,
@@ -164,6 +169,52 @@ export async function updateSectionSettings(
   revalidatePath("/buy-business");
   revalidatePath("/testimonials");
   revalidatePath("/admin/content/sections");
+  return { success: true };
+}
+
+/**
+ * Focused save for the reviews summary band (ratings + review counts shown at
+ * the top of the reviews page). Saves only the `review_summary` column on the
+ * testimonials section row; everything else on the row is left untouched.
+ */
+export async function updateReviewSummary(
+  input: ReviewSummaryFormValues
+): Promise<ActionResult> {
+  const supabase = await requireAdmin();
+
+  const parsed = reviewSummarySchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: "Please check the form for errors.",
+      fieldErrors: parsed.error.flatten().fieldErrors,
+    };
+  }
+
+  const meta = SECTION_KEY_META["testimonials"];
+  const { error } = await supabase
+    .from("section_settings")
+    .upsert(
+      {
+        section_key: "testimonials",
+        label: meta.label,
+        display_order: meta.displayOrder,
+        review_summary: {
+          ...parsed.data,
+          googleReviewsUrl: parsed.data.googleReviewsUrl.trim(),
+        },
+      },
+      { onConflict: "section_key" }
+    );
+
+  if (error) {
+    return { success: false, error: "Failed to save review summary." };
+  }
+
+  revalidatePath("/");
+  revalidatePath("/testimonials");
+  revalidatePath("/admin/content/sections");
+  revalidatePath("/admin/content/testimonials");
   return { success: true };
 }
 

@@ -1,13 +1,42 @@
 import Link from "next/link";
 import { getAdminTestimonials } from "@/features/content/admin-queries";
 import { deleteTestimonial } from "@/features/content/mutations";
+import {
+  getAdminSectionSetting,
+  type AdminSectionSettings,
+} from "@/features/section-settings/queries";
+import type { ReviewSummaryFormValues } from "@/features/section-settings/schemas";
+import { ReviewSummaryEditor } from "@/components/admin/review-summary-editor";
 import { resolveTranslation } from "@/lib/i18n/resolve-translation";
 import { AdminList } from "@/components/admin/admin-list";
 import { ConfirmDelete } from "@/components/admin/confirm-delete";
 import { Badge } from "@/components/ui/badge";
 
+function toReviewSummaryFormValues(
+  summary: AdminSectionSettings["review_summary"]
+): ReviewSummaryFormValues | null {
+  if (!summary) return null;
+  const touched =
+    Boolean(summary.rating?.trim()) ||
+    Boolean(summary.googleRating?.trim()) ||
+    Boolean(summary.googleReviewsUrl?.trim()) ||
+    (summary.verifiedReviews ?? 0) > 0 ||
+    (summary.googleReviews ?? 0) > 0;
+  if (!touched) return null;
+  return {
+    rating: summary.rating ?? "",
+    verifiedReviews: summary.verifiedReviews ?? 0,
+    googleRating: summary.googleRating ?? "",
+    googleReviews: summary.googleReviews ?? 0,
+    googleReviewsUrl: summary.googleReviewsUrl ?? "",
+  };
+}
+
 export default async function AdminTestimonialsPage() {
-  const rows = await getAdminTestimonials();
+  const [rows, settings] = await Promise.all([
+    getAdminTestimonials(),
+    getAdminSectionSetting("testimonials"),
+  ]);
 
   return (
     <AdminList
@@ -51,7 +80,11 @@ export default async function AdminTestimonialsPage() {
           />
         </div>
       )}
-    />
+    >
+      <ReviewSummaryEditor
+        current={toReviewSummaryFormValues(settings?.review_summary)}
+      />
+    </AdminList>
   );
 }
 

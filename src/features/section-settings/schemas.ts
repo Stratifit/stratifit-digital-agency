@@ -46,7 +46,7 @@ const portfolioCard = z.object({
  * valid so sections that don't use the band never fail validation; once any
  * field is filled, the two ratings become required.
  */
-const reviewSummary = z
+export const reviewSummarySchema = z
   .object({
     rating: z.string(),
     verifiedReviews: z.number().int().min(0),
@@ -79,6 +79,8 @@ const reviewSummary = z
     }
   });
 
+export type ReviewSummaryFormValues = z.infer<typeof reviewSummarySchema>;
+
 export const sectionSettingsSchema = z.object({
   eyebrow_translations: translations(),
   title_translations: translations().refine(
@@ -95,7 +97,7 @@ export const sectionSettingsSchema = z.object({
   /** Optional stats band (used by the /work page via the portfolio section). */
   stats: z.array(statsItem).optional(),
   /** Optional review summary band (used by the /testimonials page). */
-  review_summary: reviewSummary.optional(),
+  review_summary: reviewSummarySchema.optional(),
   /** Optional tech-stack marquee items (used by the tech-stack section). */
   tech_stack: z.array(techStackItem).optional(),
   /** Optional portfolio card images (used by the portfolio section editor). */
