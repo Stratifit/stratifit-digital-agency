@@ -239,7 +239,7 @@ export async function HeroSection() {
           </div>
         ) : null}
 
-        {trustedByItems.length > 0 ? (
+        {hero.trusted_by_enabled !== false && trustedByItems.length > 0 ? (
           <div data-hero className="mt-[30px] w-full">
             <TrustedByStrip items={trustedByItems} label={trustedByLabel} locale={locale} />
           </div>

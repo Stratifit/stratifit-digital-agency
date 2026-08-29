@@ -107,6 +107,7 @@ export async function updateHero(input: HeroFormValues): Promise<ActionResult> {
     secondary_cta_url: parsed.data.secondary_cta_url || null,
     metrics: parsed.data.metrics,
     trusted_by: trustedBy,
+    trusted_by_enabled: parsed.data.trusted_by_enabled,
     trusted_by_label_translations: parsed.data.trusted_by_label_translations,
     is_visible: parsed.data.is_visible,
   };

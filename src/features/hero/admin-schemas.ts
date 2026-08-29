@@ -36,6 +36,8 @@ export const heroSchema = z.object({
   secondary_cta_url: z.string(),
   metrics: z.array(heroMetricSchema),
   trusted_by: z.array(heroTrustedByItemSchema),
+  /** Toggles whether the trusted-by logo strip shows in the hero. */
+  trusted_by_enabled: z.boolean(),
   /** Media-library id for the Hero main image. */
   media_id: z.string().nullish(),
   /** Resolved public URL for the Hero main image. */
@@ -44,5 +46,6 @@ export const heroSchema = z.object({
   trusted_by_label_translations: translations(),
   is_visible: z.boolean(),
 });
+
 
 export type HeroFormValues = z.infer<typeof heroSchema>;

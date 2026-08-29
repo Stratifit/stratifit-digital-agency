@@ -24,18 +24,20 @@ export interface AdminHero {
   secondary_cta_url: string | null;
   metrics: HeroMetric[] | null;
   trusted_by: HeroTrustedByItem[] | null;
+  trusted_by_enabled: boolean;
   trusted_by_label_translations: Record<string, string> | null;
   media_id: string | null;
   image_url: string | null;
 }
 
 const SELECT_FIELDS =
-  "is_visible, media_id, eyebrow_translations, title_translations, highlight_translations, description_translations, primary_cta_label_translations, primary_cta_url, secondary_cta_label_translations, secondary_cta_url, metrics, trusted_by, trusted_by_label_translations";
+  "is_visible, media_id, eyebrow_translations, title_translations, highlight_translations, description_translations, primary_cta_label_translations, primary_cta_url, secondary_cta_label_translations, secondary_cta_url, metrics, trusted_by, trusted_by_enabled, trusted_by_label_translations";
 
 /** Same fields without `trusted_by` / `trusted_by_label_translations`, for
  *  databases that haven't applied migration 00058 / 00085 yet (the columns
  *  don't exist there). */
 const LEGACY_SELECT_FIELDS = SELECT_FIELDS
+  .replace(", trusted_by_enabled", "")
   .replace(", trusted_by_label_translations", "")
   .replace(", trusted_by", "");
 

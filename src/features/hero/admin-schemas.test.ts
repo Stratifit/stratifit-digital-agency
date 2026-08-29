@@ -23,6 +23,7 @@ const valid = {
     { name: "NOVUS", icon: "novus" },
   ],
   trusted_by_label_translations: tr("Trusted by <Growing> Companies"),
+  trusted_by_enabled: true,
   is_visible: true,
 };
 

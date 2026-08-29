@@ -170,6 +170,7 @@ function toFormValues(hero: AdminHero): HeroFormValues {
     // Pre-fill the canonical logos while migration 00058 is pending; an
     // explicitly cleared strip stays empty.
     trusted_by: hero.trusted_by ?? DEFAULT_TRUSTED_BY,
+    trusted_by_enabled: hero.trusted_by_enabled ?? true,
     trusted_by_label_translations: tr(hero.trusted_by_label_translations),
     media_id: hero.media_id ?? "",
     image_url: hero.image_url ?? "",
@@ -197,6 +198,7 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
   });
 
   const isVisible = useWatch({ control, name: "is_visible" });
+  const isTrustedByEnabled = useWatch({ control, name: "trusted_by_enabled" });
   const heroImageUrl = useWatch({ control, name: "image_url" });
   const heroMediaId = useWatch({ control, name: "media_id" });
   const [uploadingHeroImage, setUploadingHeroImage] = React.useState(false);
@@ -448,6 +450,19 @@ export function HeroForm({ hero }: { hero: AdminHero }) {
 
         {activeSection === "trusted" ? (
           <div className="space-y-4">
+            <div className="flex items-center justify-between rounded-card border border-card-border bg-card-dark px-4 py-3.5 shadow-sm">
+              <div>
+                <p className="text-sm font-medium text-text-primary">Show trusted-by logos</p>
+                <p className="mt-0.5 text-xs text-text-muted">Turn the logo strip under the hero stats on or off.</p>
+              </div>
+              <Switch
+                checked={isTrustedByEnabled}
+                onCheckedChange={(checked) =>
+                  setValue("trusted_by_enabled", checked)
+                }
+                aria-label="Trusted-by logos visible"
+              />
+            </div>
             {trustedFields.fields.map((field, index) => (
               <div key={field.id} className="rounded-card border border-border bg-background p-4">
                 <div className="mb-3 flex items-center justify-end">

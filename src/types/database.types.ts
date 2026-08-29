@@ -1500,6 +1500,7 @@ export type Database = {
           tech_stack_heading_translations: Json
           title_translations: Json
           trusted_by: Json
+          trusted_by_enabled: boolean
           trusted_by_label_translations: Json
           updated_at: string
           variant: string
@@ -1523,6 +1524,7 @@ export type Database = {
           tech_stack_heading_translations?: Json
           title_translations?: Json
           trusted_by?: Json
+          trusted_by_enabled?: boolean
           trusted_by_label_translations?: Json
           updated_at?: string
           variant?: string
@@ -1546,6 +1548,7 @@ export type Database = {
           tech_stack_heading_translations?: Json
           title_translations?: Json
           trusted_by?: Json
+          trusted_by_enabled?: boolean
           trusted_by_label_translations?: Json
           updated_at?: string
           variant?: string
@@ -1922,9 +1925,9 @@ export type Database = {
         Row: {
           approach_translations: Json
           brand_guidelines: Json
-          case_study_section_media: Json
           brand_story_translations: Json | null
           brand_system_translations: Json | null
+          case_study_section_media: Json
           challenge_translations: Json
           client_name: string
           created_at: string
@@ -1952,9 +1955,9 @@ export type Database = {
         Insert: {
           approach_translations?: Json
           brand_guidelines?: Json
-          case_study_section_media?: Json
           brand_story_translations?: Json | null
           brand_system_translations?: Json | null
+          case_study_section_media?: Json
           challenge_translations?: Json
           client_name: string
           created_at?: string
@@ -1982,9 +1985,9 @@ export type Database = {
         Update: {
           approach_translations?: Json
           brand_guidelines?: Json
-          case_study_section_media?: Json
           brand_story_translations?: Json | null
           brand_system_translations?: Json | null
+          case_study_section_media?: Json
           challenge_translations?: Json
           client_name?: string
           created_at?: string
