@@ -149,27 +149,29 @@ export function FooterContent({
         <div className="h-px w-full bg-primary/30" />
         <div className="flex items-center justify-between">
           <p className="text-[10px] font-medium text-text-subtle sm:text-xs">
-            © {currentYear} {siteName}. {t(locale, "allRightsReserved")}{" "}
+            © {currentYear} {siteName}. {t(locale, "allRightsReserved")}
+          </p>
+          <div className="flex items-center gap-4">
             <button
               type="button"
               onClick={requestCookieSettingsEdit}
-              className="ml-1 inline text-[9px] font-medium text-primary underline underline-offset-2 transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:text-[10px]"
+              className="inline text-[11px] font-medium text-primary underline underline-offset-2 transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:text-xs"
             >
               {t(locale, "cookieSettings")}
             </button>
-          </p>
-          <button
-            type="button"
-            onClick={handleBackToTop}
-            className="group inline-flex items-center gap-1.5 text-[9px] font-medium text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:text-[10px]"
-          >
-            <ArrowUp
-              aria-hidden="true"
-              className="size-3 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:-translate-y-0.5"
-              strokeWidth={2.5}
-            />
-            {t(locale, "backToTop")}
-          </button>
+            <button
+              type="button"
+              onClick={handleBackToTop}
+              aria-label={t(locale, "backToTop")}
+              className="group inline-flex items-center text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              <ArrowUp
+                aria-hidden="true"
+                className="size-3.5 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:-translate-y-0.5"
+                strokeWidth={2.5}
+              />
+            </button>
+          </div>
         </div>
       </div>
     </Reveal>
