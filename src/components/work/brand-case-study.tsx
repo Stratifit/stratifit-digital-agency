@@ -434,7 +434,6 @@ export function BrandCaseStudy({
 
   // Brand tagline — the rollout mock shows it under the wordmark and on the
   // green banner; falls back to the project summary when not authored.
-  const heroTagline = strategyTagline || projectSummary;
 
   // Identity & Assets phase document (per-project, per-locale).
   const brandSystem = project.brand_system_translations ?? null;
@@ -501,17 +500,24 @@ export function BrandCaseStudy({
     deliverables[index % deliverables.length] ??
     `${t(locale, "workBrandInAction")} ${String(index + 1).padStart(2, "0")}`;
 
+  // The project's own media (hero image + gallery) is the default source for
+  // every case-study section, used whenever the section has no custom uploads
+  // from the admin "Section images" tab.
+  const projectImages = [
+    ...(project.image_url ? [project.image_url] : []),
+    ...(project.gallery_urls ?? []),
+  ].filter((url, index, all) => url && all.indexOf(url) === index);
+
   /**
-   * Builds the slides + thumbnail strip for one case-study section. Only media
-   * uploaded in the admin "Section images" tab (main image + thumbnails) is
-   * used — legacy gallery images are never mixed in. The generated BrandBoard
-   * lead renders as a single static frame only when the section has no
-   * uploads. Dots and thumbnails mirror the uploaded image count: one image
-   * shows no navigation, two images show two thumbnails and two dots, etc.
+   * Builds the slides + thumbnail strip for one case-study section. Media
+   * uploaded in the admin "Section images" tab (main image + thumbnails) wins
+   * per section; when the section has no uploads it falls back to the
+   * project's own hero image + gallery. No generated/placeholder frames are
+   * rendered. Dots and thumbnails mirror the image count: one image shows no
+   * navigation, two images show two thumbnails and two dots, etc.
    */
   function sectionSlider(
     section: keyof CaseStudySectionMediaMap,
-    lead: React.ReactNode,
     altPrefix: string
   ): {
     slides: React.ReactNode[];
@@ -524,23 +530,22 @@ export function BrandCaseStudy({
       .map((thumb) => thumb.image_url?.trim() ?? "")
       .filter(Boolean);
 
-    const imageUrls = mainUrl
+    const uploaded = mainUrl
       ? [mainUrl, ...thumbs.filter((url) => url !== mainUrl)]
       : thumbs;
 
-    const slides: React.ReactNode[] =
-      imageUrls.length > 0
-        ? imageUrls.map((url, index) => (
-            <Image
-              key={`${section}-slide-${index}-${url}`}
-              src={url}
-              alt={`${altPrefix}, ${galleryCaption(index)}`}
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
-            />
-          ))
-        : [lead];
+    const imageUrls = uploaded.length > 0 ? uploaded : projectImages;
+
+    const slides: React.ReactNode[] = imageUrls.map((url, index) => (
+      <Image
+        key={`${section}-slide-${index}-${url}`}
+        src={url}
+        alt={`${altPrefix}, ${galleryCaption(index)}`}
+        fill
+        sizes="(max-width: 1024px) 100vw, 50vw"
+        className="object-cover"
+      />
+    ));
 
     const thumbnails: React.ReactNode[] =
       imageUrls.length > 1
@@ -559,119 +564,27 @@ export function BrandCaseStudy({
     return { slides, thumbnails, hasUploadedMain: Boolean(mainUrl) };
   }
 
-  // Per-section sliders — uploaded section media replaces the BrandBoard lead
-  // for the matching public case-study section (admin "Section images" tab).
-  const overviewSlider = sectionSlider(
-    "overview",
-    <div key="overview-before" className="absolute inset-0">
-      <BrandBoard
-        variant="before"
-        wordmark={wordmark}
-        tagline={heroTagline || undefined}
-        className="absolute inset-0"
-      />
-    </div>,
-    wordmark
-  );
-  const discoverySlider = sectionSlider(
-    "discovery",
-    <div key="discovery-before" className="absolute inset-0">
-      <BrandBoard
-        variant="before"
-        wordmark={clientName}
-        tagline={strategyTagline || undefined}
-        className="absolute inset-0"
-      />
-    </div>,
-    clientName
-  );
-  const conceptSlider = sectionSlider(
-    "concept",
-    <BrandBoard
-      key="concept-main"
-      variant="concept"
-      wordmark={clientName}
-      className="absolute inset-0"
-    />,
-    wordmark
-  );
-  const identityAssetsSlider = sectionSlider(
-    "identity-assets",
-    <div key="touchpoint-main" className="absolute inset-0">
-      <BrandBoard
-        variant="businesscard"
-        wordmark={clientName}
-        className="absolute inset-0"
-      />
-    </div>,
-    clientName
-  );
+  // Per-section sliders — uploaded section media (admin "Section images" tab)
+  // is used when present, otherwise each section falls back to the project's
+  // own hero image + gallery.
+  const overviewSlider = sectionSlider("overview", wordmark);
+  const discoverySlider = sectionSlider("discovery", clientName);
+  const conceptSlider = sectionSlider("concept", wordmark);
+  const identityAssetsSlider = sectionSlider("identity-assets", clientName);
   const visualApplicationsSlider = sectionSlider(
     "visual-applications",
-    <div key="applications-main" className="absolute inset-0">
-      <BrandBoard
-        variant="applications"
-        wordmark={clientName}
-        className="absolute inset-0"
-      />
-    </div>,
     clientName
   );
-  const launchSlider = sectionSlider(
-    "launch",
-    <div key="launch-intro-main" className="absolute inset-0">
-      <BrandBoard
-        variant="businesscard"
-        wordmark={clientName}
-        className="absolute inset-0"
-      />
-    </div>,
-    clientName
-  );
-  const launchPhysicalSlider = sectionSlider(
-    "launch-physical",
-    <div key="launch-physical-main" className="absolute inset-0">
-      <BrandBoard
-        variant="businesscard"
-        wordmark={clientName}
-        className="absolute inset-0"
-      />
-    </div>,
-    clientName
-  );
+  const launchSlider = sectionSlider("launch", clientName);
+  const launchPhysicalSlider = sectionSlider("launch-physical", clientName);
   const launchGuidelinesSlider = sectionSlider(
     "launch-guidelines",
-    <div key="launch-guidelines-main" className="absolute inset-0">
-      <BrandBoard
-        variant="businesscard"
-        wordmark={clientName}
-        className="absolute inset-0"
-      />
-    </div>,
     clientName
   );
 
-  // Brand in action carousel — reads only the admin "Section images" media
-  // for the brand-in-action section; legacy gallery images are never mixed in.
-  const brandInActionSlider = sectionSlider(
-    "brand-in-action",
-    <div key="brand-in-action-main" className="absolute inset-0">
-      <BrandBoard
-        variant="applications"
-        wordmark={wordmark}
-        className="absolute inset-0"
-      />
-    </div>,
-    wordmark
-  );
-  const brandMedia = project.case_study_section_media["brand-in-action"];
-  const hasBrandMedia = Boolean(
-    brandMedia?.main?.image_url?.trim() ||
-      (brandMedia?.thumbnails ?? []).some(
-        (thumb) => (thumb.image_url ?? "").trim()
-      )
-  );
-
+  // Brand in action carousel — reads the brand-in-action section media, or
+  // falls back to the project's hero image + gallery.
+  const brandInActionSlider = sectionSlider("brand-in-action", wordmark);
 
   const paletteLabels = {
     primary: t(locale, "workPalettePrimary"),
@@ -1252,7 +1165,7 @@ export function BrandCaseStudy({
       {/* ============================================================ */}
       {/* 06 — Brand in action — image carousel                       */}
       {/* ============================================================ */}
-      {deliverables.length > 0 || hasBrandMedia ? (
+      {deliverables.length > 0 || brandInActionSlider.slides.length > 0 ? (
         <section className="py-14 md:py-20">
           <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
             <Reveal>
