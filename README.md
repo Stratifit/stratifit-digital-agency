@@ -32,6 +32,7 @@ See `.env.example`. Key groups:
 - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `COMMUNICATION_FROM_EMAIL` — Communication Engine (AWS SES SMTP)
 - `AI_API_KEY`, `AI_BASE_URL`, `AI_MODEL` — AI chatbot provider (OpenAI-compatible)
 - `NEXT_PUBLIC_SITE_URL` — canonical site URL for SEO
+- `NEXT_PUBLIC_GA_MEASUREMENT_ID` — GA4 measurement ID (e.g. `G-XXXXXXXXXX`); GA4 loads only after the visitor grants the analytics cookie category
 
 Never commit `.env.local`.
 

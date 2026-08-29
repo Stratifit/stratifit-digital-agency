@@ -12,6 +12,7 @@ import { getPublicFaqs } from "@/features/faq/queries";
 import { getPublicSectionSetting } from "@/features/section-settings/queries";
 import { getPublicCookieSettings } from "@/features/cookie-settings/queries";
 import { CookieConsentBanner } from "@/components/cookie/cookie-consent-banner";
+import { GATracker } from "@/components/analytics/ga-tracker";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { t } from "@/lib/i18n/ui-strings";
 
@@ -68,6 +69,7 @@ export default async function PublicLayout({
       />
       <ContactPopup services={services} locale={locale} />
       <CookieConsentBanner settings={cookieSettings} locale={locale} />
+      <GATracker />
     </>
   );
 }

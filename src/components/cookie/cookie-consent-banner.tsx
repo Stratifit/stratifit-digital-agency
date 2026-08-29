@@ -6,88 +6,26 @@ import type { PublicCookieSettings } from "@/features/cookie-settings/queries";
 import { t } from "@/lib/i18n/ui-strings";
 import { Switch } from "@/components/ui/switch";
 
-const STORAGE_KEY = "stratifit_cookie_consent";
-const CONSENT_COOKIE = "stratifit_cookie_consent";
+import {
+  CONSENT_CHANGED_EVENT,
+  CONSENT_COOKIE,
+  CONSENT_MARKER,
+  CONSENT_STORAGE_KEY,
+  CONSENT_VERSION,
+  readConsentRecord,
+  type ConsentRecord,
+} from "@/lib/analytics/consent";
+
 const EDIT_EVENT = "stratifit:edit-cookie-consent";
-const CONSENT_VERSION = 1;
-const CONSENT_MARKER = "stratifit_cookie_consent_saved";
-
-type ConsentRecord = {
-  version: number;
-  essential: true;
-  analytics: boolean;
-  marketing: boolean;
-  updatedAt: string;
-};
-
-function reviewedConsent(): ConsentRecord {
-  return {
-    version: CONSENT_VERSION,
-    essential: true,
-    analytics: false,
-    marketing: false,
-    updatedAt: new Date(0).toISOString(),
-  };
-}
-
-function parseConsent(raw: string | null): ConsentRecord | null {
-  if (!raw) return null;
-  try {
-    const parsed = JSON.parse(raw) as Partial<ConsentRecord>;
-    if (parsed.version !== CONSENT_VERSION || parsed.essential !== true) return null;
-    if (typeof parsed.analytics !== "boolean" || typeof parsed.marketing !== "boolean") return null;
-    if (typeof parsed.updatedAt !== "string" || !parsed.updatedAt) return null;
-    return { version: CONSENT_VERSION, essential: true, analytics: parsed.analytics, marketing: parsed.marketing, updatedAt: parsed.updatedAt };
-  } catch {
-    return null;
-  }
-}
 
 function readConsent(): ConsentRecord | null {
-  if (typeof window === "undefined") return null;
-
-  try {
-    const stored = parseConsent(window.localStorage.getItem(STORAGE_KEY));
-    if (stored) return stored;
-  } catch {
-    // Continue with the cookie fallback.
-  }
-
-  try {
-    const value = document.cookie
-      .split(";")
-      .map((entry) => entry.trim())
-      .find((entry) => entry.startsWith(`${CONSENT_COOKIE}=`));
-    if (!value) return null;
-
-    const parsed = parseConsent(
-      decodeURIComponent(value.slice(CONSENT_COOKIE.length + 1))
-    );
-    if (parsed) return parsed;
-  } catch {
-    // Treat unreadable consent as unreviewed rather than assuming consent.
-  }
-
-  // Older releases wrote this marker without a complete consent record. Keep
-  // those visitors from seeing the banner again, but migrate them to the
-  // explicit essential-only record so future renders are deterministic.
-  try {
-    if (window.localStorage.getItem(CONSENT_MARKER) === "1") {
-      const migrated = reviewedConsent();
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
-      return migrated;
-    }
-  } catch {
-    // If storage is unavailable, the current session can still continue.
-  }
-
-  return null;
+  return readConsentRecord();
 }
 
 function writeConsent(record: ConsentRecord) {
   const serialized = JSON.stringify(record);
   try {
-    window.localStorage.setItem(STORAGE_KEY, serialized);
+    window.localStorage.setItem(CONSENT_STORAGE_KEY, serialized);
     window.localStorage.setItem(CONSENT_MARKER, "1");
   } catch {
     // Cookie fallback below remains available.
@@ -150,6 +88,9 @@ export function CookieConsentBanner({ settings, locale = "en" }: { settings: Pub
     setConsent(next);
     setEditing(false);
     setSettingsView(false);
+    // Notify analytics (and any future integrations) so they can load or
+    // stop immediately without requiring a page reload.
+    window.dispatchEvent(new CustomEvent<ConsentRecord>(CONSENT_CHANGED_EVENT, { detail: next }));
   }
 
   function acceptAll() {
