@@ -1,9 +1,13 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { ServiceForm } from "@/components/admin/services/service-form";
 import type { ServiceFormValues } from "@/features/services/schemas";
 import { AdminPageHeader } from "@/components/admin/page-header";
 import { FormCard } from "@/components/admin/form-card";
+import { getAdminServicePage } from "@/features/service-pages/queries";
+import { toServicePageFormValues } from "@/features/service-pages/form-values";
+import { ServicePageForm } from "@/components/admin/service-page-form";
 
 function translations(
   v: unknown
@@ -75,12 +79,52 @@ export default async function EditServicePage({
     notFound();
   }
 
+  const page = await getAdminServicePage(slug);
+
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
+    <div className="mx-auto max-w-4xl space-y-6">
       <AdminPageHeader title="Edit Service" description={slug} />
       <FormCard>
         <ServiceForm slug={slug} initial={toFormValues(data)} />
       </FormCard>
+
+      <div className="border-t border-border pt-6">
+        <div className="mb-1 flex items-center justify-between gap-3">
+          <h2 className="font-display text-xl font-bold text-text-primary">
+            Service Page (frontend sections)
+          </h2>
+          <a
+            href={`/services/${slug}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-button border border-border bg-card-dark px-3.5 py-2 text-sm text-text-secondary transition-colors hover:border-primary/30 hover:text-text-primary"
+          >
+            View page ↗
+          </a>
+        </div>
+        <p className="mb-4 text-sm text-text-secondary">
+          Edit the hero stats, Why It Matters numbers, and every other section
+          of the public service page.
+        </p>
+        {page ? (
+          <FormCard>
+            <ServicePageForm slug={slug} initial={toServicePageFormValues(page)} />
+          </FormCard>
+        ) : (
+          <FormCard>
+            <p className="text-sm text-text-secondary">
+              This service does not have a dedicated service page yet. Service
+              pages are managed separately.
+            </p>
+            <Link
+              href="/admin/content/service-pages"
+              className="mt-3 inline-flex rounded-sm bg-primary px-3 py-2 text-sm font-medium text-text-inverse transition-colors hover:bg-primary-bright"
+            >
+              Manage Service Pages
+            </Link>
+          </FormCard>
+        )}
+      </div>
     </div>
   );
 }
