@@ -130,7 +130,7 @@ export async function HeroSection() {
   return (
     <>
     <section
-      className="relative flex min-h-[calc(100svh-4rem)] items-start justify-center overflow-hidden bg-background pb-16 pt-16 sm:min-h-[calc(100svh-5rem)] md:pb-24 md:pt-24 lg:pb-24 lg:pt-24"
+      className="relative flex items-start justify-center overflow-hidden bg-background pb-10 pt-16 sm:min-h-[60svh] md:pb-14 md:pt-24 lg:pb-14 lg:pt-24"
     >
       <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center px-4 text-center lg:px-8">
         <HeroEntrance>
