@@ -1034,6 +1034,15 @@ export const TERMS_FALLBACK_BLOCKS: DetailPageBlock[] = [
     ),
   },
   {
+    type: "paragraph",
+    text_translations: tr(
+      "These Terms work together with our [Privacy Policy](/privacy) and [Cookie Policy](/cookie-policy). Please read them alongside these Terms to understand how we handle your information.",
+      "Diese Bedingungen gelten zusammen mit unserer [Datenschutzerklärung](/privacy) und [Cookie-Richtlinie](/cookie-policy). Bitte lesen Sie diese zusammen mit diesen Bedingungen, um zu verstehen, wie wir mit Ihren Informationen umgehen.",
+      "Ces Conditions s'appliquent conjointement avec notre [Politique de confidentialité](/privacy) et notre [Politique de cookies](/cookie-policy). Veuillez les lire parallèlement à ces Conditions pour comprendre comment nous traitons vos informations.",
+      "Estos Términos se aplican conjuntamente con nuestra [Política de Privacidad](/privacy) y [Política de Cookies](/cookie-policy). Léalas junto con estos Términos para entender cómo tratamos su información."
+    ),
+  },
+  {
     type: "subheading",
     divider: true,
     text_translations: tr("Contact Us", "Kontakt", "Contact", "Contacto"),
