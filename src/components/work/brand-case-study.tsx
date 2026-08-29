@@ -500,21 +500,13 @@ export function BrandCaseStudy({
     deliverables[index % deliverables.length] ??
     `${t(locale, "workBrandInAction")} ${String(index + 1).padStart(2, "0")}`;
 
-  // The project's own media (hero image + gallery) is the default source for
-  // every case-study section, used whenever the section has no custom uploads
-  // from the admin "Section images" tab.
-  const projectImages = [
-    ...(project.image_url ? [project.image_url] : []),
-    ...(project.gallery_urls ?? []),
-  ].filter((url, index, all) => url && all.indexOf(url) === index);
-
   /**
-   * Builds the slides + thumbnail strip for one case-study section. Media
-   * uploaded in the admin "Section images" tab (main image + thumbnails) wins
-   * per section; when the section has no uploads it falls back to the
-   * project's own hero image + gallery. No generated/placeholder frames are
-   * rendered. Dots and thumbnails mirror the image count: one image shows no
-   * navigation, two images show two thumbnails and two dots, etc.
+   * Builds the slides + thumbnail strip for one case-study section. Only media
+   * uploaded for this section in the admin "Section images" tab (main image +
+   * thumbnails) is rendered — there is no fallback to the project gallery,
+   * hero image, or any generated/placeholder frame. A section with no uploads
+   * stays empty. Dots and thumbnails mirror the uploaded image count: one
+   * image shows no navigation, two images show two thumbnails and two dots.
    */
   function sectionSlider(
     section: keyof CaseStudySectionMediaMap,
@@ -530,11 +522,9 @@ export function BrandCaseStudy({
       .map((thumb) => thumb.image_url?.trim() ?? "")
       .filter(Boolean);
 
-    const uploaded = mainUrl
+    const imageUrls = mainUrl
       ? [mainUrl, ...thumbs.filter((url) => url !== mainUrl)]
       : thumbs;
-
-    const imageUrls = uploaded.length > 0 ? uploaded : projectImages;
 
     const slides: React.ReactNode[] = imageUrls.map((url, index) => (
       <Image
@@ -564,9 +554,9 @@ export function BrandCaseStudy({
     return { slides, thumbnails, hasUploadedMain: Boolean(mainUrl) };
   }
 
-  // Per-section sliders — uploaded section media (admin "Section images" tab)
-  // is used when present, otherwise each section falls back to the project's
-  // own hero image + gallery.
+  // Per-section sliders — only the media uploaded for each section in the
+  // admin "Section images" tab is rendered; sections with no uploads stay
+  // empty.
   const overviewSlider = sectionSlider("overview", wordmark);
   const discoverySlider = sectionSlider("discovery", clientName);
   const conceptSlider = sectionSlider("concept", wordmark);
@@ -582,8 +572,7 @@ export function BrandCaseStudy({
     clientName
   );
 
-  // Brand in action carousel — reads the brand-in-action section media, or
-  // falls back to the project's hero image + gallery.
+  // Brand in action carousel — reads only the brand-in-action section media.
   const brandInActionSlider = sectionSlider("brand-in-action", wordmark);
 
   const paletteLabels = {
