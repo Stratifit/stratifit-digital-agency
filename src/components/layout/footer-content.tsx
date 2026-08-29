@@ -153,7 +153,7 @@ export function FooterContent({
             <button
               type="button"
               onClick={requestCookieSettingsEdit}
-              className="ml-1 inline font-bold uppercase tracking-wider text-primary underline underline-offset-2 transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className="ml-1 inline text-[9px] font-medium text-primary underline underline-offset-2 transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:text-[10px]"
             >
               {t(locale, "cookieSettings")}
             </button>
@@ -161,11 +161,11 @@ export function FooterContent({
           <button
             type="button"
             onClick={handleBackToTop}
-            className="group inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:text-xs"
+            className="group inline-flex items-center gap-1.5 text-[9px] font-medium text-primary transition-colors duration-[var(--motion-fast)] ease-[var(--ease-standard)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:text-[10px]"
           >
             <ArrowUp
               aria-hidden="true"
-              className="size-3.5 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:-translate-y-0.5"
+              className="size-3 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-standard)] group-hover:-translate-y-0.5"
               strokeWidth={2.5}
             />
             {t(locale, "backToTop")}
