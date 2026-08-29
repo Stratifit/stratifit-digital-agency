@@ -102,7 +102,7 @@ export async function updateNavItem(
     };
   }
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("navigation_items")
     .update({
       location: parsed.data.location,
@@ -113,10 +113,21 @@ export async function updateNavItem(
       display_order: parsed.data.display_order,
       is_visible: parsed.data.is_visible,
     })
-    .eq("id", id);
+    .eq("id", id)
+    .select("id");
 
   if (error) {
     return { success: false, error: "Failed to update navigation item." };
+  }
+
+  // A silent zero-row update means the write was filtered (for example by
+  // RLS) and nothing actually persisted — treat it as a failure instead of
+  // reporting success while the UI shows a state the DB never stored.
+  if (!data || data.length === 0) {
+    return {
+      success: false,
+      error: "The link could not be updated. Please try again.",
+    };
   }
 
   await recordAuditLog({

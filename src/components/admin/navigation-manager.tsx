@@ -180,18 +180,28 @@ export function NavigationManager({
   async function toggleVisibility(item: AdminNavigationItem, checked: boolean) {
     // Optimistically flip the switch straight away.
     setVisibilityOverrides((prev) => ({ ...prev, [item.id]: checked }));
-    const result = await updateNavItem(item.id, {
-      ...valuesFrom(item),
-      is_visible: checked,
-    });
-    if (!result.success) {
-      // Persist failed — roll the switch back and surface the error.
+    try {
+      const result = await updateNavItem(item.id, {
+        ...valuesFrom(item),
+        is_visible: checked,
+      });
+      if (!result.success) {
+        // Persist failed — roll the switch back and surface the error.
+        setVisibilityOverrides((prev) => ({
+          ...prev,
+          [item.id]: item.is_visible,
+        }));
+        setError(result.error ?? "Failed to update visibility.");
+        return;
+      }
+      setError(null);
+      router.refresh();
+    } catch {
+      // A thrown server action (for example a redirect) must not leave the
+      // optimistic state stuck — roll back and tell the user.
       setVisibilityOverrides((prev) => ({ ...prev, [item.id]: item.is_visible }));
-      setError(result.error ?? "Failed to update visibility.");
-      return;
+      setError("Could not update this link. Please try again.");
     }
-    setError(null);
-    router.refresh();
   }
 
   async function handleSubmit(values: NavItemFormValues) {
