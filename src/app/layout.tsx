@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/next";
 import { Inter } from "next/font/google";
+import { VercelAnalytics } from "@/components/analytics/vercel-tracker";
 import "./globals.css";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { getSiteUrl, organizationJsonLd } from "@/lib/seo";
@@ -41,7 +41,7 @@ export default async function RootLayout({
           }}
         />
         {children}
-        <Analytics />
+        <VercelAnalytics />
       </body>
     </html>
   );
