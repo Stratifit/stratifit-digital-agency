@@ -163,8 +163,36 @@ export function NavigationManager({
   const [error, setError] = React.useState<string | null>(null);
   const [busy, setBusy] = React.useState(false);
 
+  // Toggled visibility keyed by nav item id. Lets the switches react
+  // immediately instead of waiting on (and depending on) a router refresh
+  // round-trip; the server's value (from `items`) is used when not overridden.
+  const [visibilityOverrides, setVisibilityOverrides] = React.useState<
+    Record<string, boolean>
+  >({});
+
   const headerItems = items.filter((i) => i.location === "header");
   const footerItems = items.filter((i) => i.location === "footer");
+
+  function effectiveVisible(item: AdminNavigationItem): boolean {
+    return visibilityOverrides[item.id] ?? item.is_visible;
+  }
+
+  async function toggleVisibility(item: AdminNavigationItem, checked: boolean) {
+    // Optimistically flip the switch straight away.
+    setVisibilityOverrides((prev) => ({ ...prev, [item.id]: checked }));
+    const result = await updateNavItem(item.id, {
+      ...valuesFrom(item),
+      is_visible: checked,
+    });
+    if (!result.success) {
+      // Persist failed — roll the switch back and surface the error.
+      setVisibilityOverrides((prev) => ({ ...prev, [item.id]: item.is_visible }));
+      setError(result.error ?? "Failed to update visibility.");
+      return;
+    }
+    setError(null);
+    router.refresh();
+  }
 
   async function handleSubmit(values: NavItemFormValues) {
     setBusy(true);
@@ -256,17 +284,15 @@ export function NavigationManager({
                     {resolveTranslation(item.label_translations, "en") || "—"}
                   </span>
                   <span className="font-mono text-xs text-text-muted">{item.href}</span>
-                  {!item.is_visible ? <Badge variant="neutral">Hidden</Badge> : null}
+                  {!effectiveVisible(item) ? (
+                    <Badge variant="neutral">Hidden</Badge>
+                  ) : null}
                   <div className="ml-auto flex items-center gap-3">
                     <Switch
-                      checked={item.is_visible}
-                      onCheckedChange={async (checked) => {
-                        await updateNavItem(item.id, {
-                          ...valuesFrom(item),
-                          is_visible: checked,
-                        });
-                        router.refresh();
-                      }}
+                      checked={effectiveVisible(item)}
+                      onCheckedChange={(checked) =>
+                        toggleVisibility(item, checked)
+                      }
                       aria-label={`${item.href} visibility`}
                     />
                     <button
