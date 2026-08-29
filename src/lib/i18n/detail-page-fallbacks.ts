@@ -499,17 +499,17 @@ export const COOKIE_FALLBACK_BLOCKS: DetailPageBlock[] = [
     text_translations: tr(
       "1. What Are Cookies",
       "1. Was sind Cookies",
-      "1. Que sont les cookies",
+      "1. Que sont les cookies ?",
       "1. Qué son las cookies"
     ),
   },
   {
     type: "paragraph",
     text_translations: tr(
-      "Cookies are small text files stored on your device when you visit a website. They help the website remember your preferences, understand how you use the site, and improve your browsing experience.",
-      "Cookies sind kleine Textdateien, die beim Besuch einer Website auf Ihrem Gerät gespeichert werden. Sie helfen der Website, Ihre Präferenzen zu speichern, zu verstehen, wie Sie die Seite nutzen, und Ihr Surferlebnis zu verbessern.",
-      "Les cookies sont de petits fichiers texte stockés sur votre appareil lorsque vous visitez un site web. Ils aident le site à mémoriser vos préférences, à comprendre comment vous utilisez le site et à améliorer votre expérience de navigation.",
-      "Las cookies son pequeños archivos de texto almacenados en su dispositivo cuando visita un sitio web. Ayudan al sitio a recordar sus preferencias, comprender cómo utiliza el sitio y mejorar su experiencia de navegación."
+      "Cookies are small text files and similar technologies used by websites to store information on your device. They help websites function properly, remember preferences, and understand how visitors use the site.",
+      "Cookies sind kleine Textdateien und ähnliche Technologien, die von Websites verwendet werden, um Informationen auf Ihrem Gerät zu speichern. Sie ermöglichen den ordnungsgemäßen Betrieb der Website, speichern bestimmte Einstellungen und helfen uns zu verstehen, wie Besucher die Website nutzen.",
+      "Les cookies sont de petits fichiers texte et des technologies similaires utilisés par les sites web pour stocker des informations sur votre appareil. Ils permettent au site de fonctionner correctement, de mémoriser certaines préférences et de comprendre comment les visiteurs utilisent le site.",
+      "Las cookies son pequeños archivos de texto y tecnologías similares que utilizan los sitios web para almacenar información en su dispositivo. Ayudan a que el sitio web funcione correctamente, recuerdan determinadas preferencias y permiten comprender cómo los visitantes utilizan el sitio."
     ),
   },
   {
@@ -517,9 +517,9 @@ export const COOKIE_FALLBACK_BLOCKS: DetailPageBlock[] = [
     icon: "settings",
     text_translations: tr(
       "2. How We Use Cookies",
-      "2. Wie wir Cookies verwenden",
-      "2. Comment nous utilisons les cookies",
-      "2. Cómo utilizamos las cookies"
+      "2. Wie verwenden wir Cookies?",
+      "2. Comment utilisons-nous les cookies ?",
+      "2. ¿Cómo utilizamos las cookies?"
     ),
   },
   {
@@ -536,26 +536,26 @@ export const COOKIE_FALLBACK_BLOCKS: DetailPageBlock[] = [
     items: [
       {
         text_translations: tr(
-          "Essential functionality, keeping the website secure and usable",
-          "Grundfunktionen, Sicherheit und Nutzbarkeit der Website gewährleisten",
-          "Fonctionnalités essentielles, maintenir le site sécurisé et utilisable",
-          "Funcionalidad esencial: mantener el sitio seguro y utilizable"
+          "Essential functionality — to keep the website secure, functional, and usable.",
+          "Erforderliche Funktionen — um die Website sicher, funktionsfähig und nutzbar zu halten.",
+          "Fonctionnalités essentielles — pour assurer la sécurité, le fonctionnement et l'utilisation correcte du site.",
+          "Funcionalidad esencial — para mantener el sitio web seguro, funcional y utilizable."
         ),
       },
       {
         text_translations: tr(
-          "Analytics, understanding how visitors use the site",
-          "Analyse, verstehen, wie Besucher die Website nutzen",
-          "Analyse, comprendre comment les visiteurs utilisent le site",
-          "Análisis: comprender cómo usan el sitio los visitantes"
+          "Analytics — to understand website traffic and how visitors interact with our website.",
+          "Analyse — um den Website-Traffic und die Nutzung unserer Website zu verstehen.",
+          "Analyse — pour comprendre le trafic du site et la manière dont les visiteurs l'utilisent.",
+          "Análisis — para comprender el tráfico del sitio web y cómo interactúan los visitantes con él."
         ),
       },
       {
         text_translations: tr(
-          "Preferences, remembering your language and display settings",
-          "Präferenzen, Sprache und Anzeigeeinstellungen speichern",
-          "Préférences, mémoriser votre langue et vos paramètres d'affichage",
-          "Preferencias: recordar su idioma y configuración de visualización"
+          "Preferences — to remember settings such as language and display preferences.",
+          "Präferenzen — um Einstellungen wie Sprache und Anzeigeoptionen zu speichern.",
+          "Préférences — pour mémoriser certains paramètres, tels que la langue et les préférences d'affichage.",
+          "Preferencias — para recordar configuraciones como el idioma y las preferencias de visualización."
         ),
       },
     ],
@@ -574,7 +574,7 @@ export const COOKIE_FALLBACK_BLOCKS: DetailPageBlock[] = [
     type: "panel",
     title_translations: tr(
       "Essential cookies",
-      "Notwendige Cookies",
+      "Erforderliche Cookies",
       "Cookies essentiels",
       "Cookies esenciales"
     ),
@@ -585,10 +585,10 @@ export const COOKIE_FALLBACK_BLOCKS: DetailPageBlock[] = [
       "Siempre activas"
     ),
     body_translations: tr(
-      "These cookies are required for the website to function and cannot be switched off. They are usually only set in response to actions made by you, such as setting your privacy preferences or filling in forms.",
-      "Diese Cookies sind für den Betrieb der Website erforderlich und können nicht deaktiviert werden. Sie werden in der Regel nur als Reaktion auf Ihre Aktionen gesetzt, etwa wenn Sie Datenschutzeinstellungen festlegen oder Formulare ausfüllen.",
-      "Ces cookies sont nécessaires au fonctionnement du site et ne peuvent pas être désactivés. Ils ne sont généralement définis qu'en réponse à vos actions, comme la définition de vos préférences de confidentialité ou le remplissage de formulaires.",
-      "Estas cookies son necesarias para que el sitio web funcione y no se pueden desactivar. Por lo general, solo se establecen en respuesta a acciones realizadas por usted, como configurar sus preferencias de privacidad o completar formularios."
+      "These cookies are necessary for the website to function properly. They may be used for essential features such as security, consent preferences, and other functions you request. Because these cookies are necessary for the operation of the website, they cannot be disabled through our cookie settings.",
+      "Diese Cookies sind für den ordnungsgemäßen Betrieb der Website erforderlich. Sie können für wesentliche Funktionen wie Sicherheit, die Speicherung Ihrer Einwilligungspräferenzen und von Ihnen angeforderte Funktionen verwendet werden. Da diese Cookies für den Betrieb der Website erforderlich sind, können sie über unsere Cookie-Einstellungen nicht deaktiviert werden.",
+      "Ces cookies sont nécessaires au bon fonctionnement du site. Ils peuvent être utilisés pour des fonctions essentielles telles que la sécurité, la gestion de vos préférences de consentement et les fonctionnalités que vous demandez. Comme ces cookies sont nécessaires au fonctionnement du site, ils ne peuvent pas être désactivés dans les paramètres de cookies.",
+      "Estas cookies son necesarias para que el sitio web funcione correctamente. Pueden utilizarse para funciones esenciales como la seguridad, el almacenamiento de sus preferencias de consentimiento y otras funciones que usted solicite. Dado que estas cookies son necesarias para el funcionamiento del sitio web, no pueden desactivarse mediante nuestra configuración de cookies."
     ),
   },
   {
@@ -599,12 +599,12 @@ export const COOKIE_FALLBACK_BLOCKS: DetailPageBlock[] = [
       "Cookies d'analyse",
       "Cookies de análisis"
     ),
-    tag_translations: tr("Optional", "Optional", "Facultatif", "Opcional"),
+    tag_translations: tr("Optional", "Optional", "Facultatif", "Opcionales"),
     body_translations: tr(
-      "These cookies help us understand how visitors interact with the website by collecting and reporting information anonymously. All data is aggregated and does not identify you personally.",
-      "Diese Cookies helfen uns zu verstehen, wie Besucher mit der Website interagieren, indem sie Informationen anonym sammeln und melden. Alle Daten werden aggregiert und identifizieren Sie nicht persönlich.",
-      "Ces cookies nous aident à comprendre comment les visiteurs interagissent avec le site en collectant et en rapportant des informations de manière anonyme. Toutes les données sont agrégées et ne vous identifient pas personnellement.",
-      "Estas cookies nos ayudan a comprender cómo interactúan los visitantes con el sitio mediante la recopilación y el informe anónimo de información. Todos los datos se agregan y no lo identifican personalmente."
+      "With your consent, we use analytics technologies to understand how visitors use our website, measure traffic, and improve our services. We use Google Analytics 4 (GA4) for detailed website analytics. Analytics tracking is only activated when you give the appropriate consent. If you reject Analytics cookies, we do not activate GA4 analytics tracking for your visit.",
+      "Mit Ihrer Einwilligung verwenden wir Analysetechnologien, um zu verstehen, wie Besucher unsere Website nutzen, den Website-Traffic zu messen und unsere Dienstleistungen zu verbessern. Wir verwenden Google Analytics 4 (GA4) für detaillierte Website-Analysen. Die Analyse wird nur aktiviert, wenn Sie die entsprechende Einwilligung erteilen. Wenn Sie Analyse-Cookies ablehnen, aktivieren wir Google Analytics 4 nicht für Ihren Besuch.",
+      "Avec votre consentement, nous utilisons des technologies d'analyse afin de comprendre comment les visiteurs utilisent notre site, de mesurer le trafic et d'améliorer nos services. Nous utilisons Google Analytics 4 (GA4) pour les analyses détaillées du site. Le suivi analytique n'est activé qu'après l'obtention de votre consentement approprié. Si vous refusez les cookies analytiques, nous n'activons pas le suivi Google Analytics 4 pour votre visite.",
+      "Con su consentimiento, utilizamos tecnologías de análisis para comprender cómo los visitantes utilizan nuestro sitio web, medir el tráfico y mejorar nuestros servicios. Utilizamos Google Analytics 4 (GA4) para realizar análisis detallados del sitio web. El seguimiento analítico solo se activa cuando usted proporciona el consentimiento correspondiente. Si rechaza las cookies de análisis, no activamos el seguimiento de Google Analytics 4 durante su visita."
     ),
   },
   {
@@ -615,64 +615,145 @@ export const COOKIE_FALLBACK_BLOCKS: DetailPageBlock[] = [
       "Cookies marketing",
       "Cookies de marketing"
     ),
-    tag_translations: tr("Optional", "Optional", "Facultatif", "Opcional"),
+    tag_translations: tr(
+      "Not currently used",
+      "Derzeit nicht verwendet",
+      "Non utilisés actuellement",
+      "Actualmente no utilizadas"
+    ),
     body_translations: tr(
-      "These cookies may be set through our site by our advertising partners. They may be used to build a profile of your interests and show you relevant advertisements on other sites. We do not currently use marketing cookies unless you consent.",
-      "Diese Cookies können über unsere Website von unseren Werbepartnern gesetzt werden. Sie können verwendet werden, um ein Profil Ihrer Interessen zu erstellen und Ihnen relevante Werbung auf anderen Websites anzuzeigen. Wir verwenden derzeit keine Marketing-Cookies, es sei denn, Sie stimmen zu.",
-      "Ces cookies peuvent être définis via notre site par nos partenaires publicitaires. Ils peuvent être utilisés pour créer un profil de vos intérêts et vous montrer des publicités pertinentes sur d'autres sites. Nous n'utilisons actuellement pas de cookies marketing, sauf si vous y consentez.",
-      "Estas cookies pueden establecerse a través de nuestro sitio por parte de nuestros socios publicitarios. Pueden utilizarse para crear un perfil de sus intereses y mostrarle anuncios relevantes en otros sitios. Actualmente no utilizamos cookies de marketing a menos que usted dé su consentimiento."
+      "We do not currently use marketing or advertising cookies to track visitors for targeted advertising. If this changes in the future, we will update this Cookie Policy and request the appropriate consent before using optional marketing technologies.",
+      "Wir verwenden derzeit keine Marketing- oder Werbe-Cookies, um Besucher für gezielte Werbung zu verfolgen. Sollte sich dies ändern, werden wir diese Cookie-Richtlinie aktualisieren und die erforderliche Einwilligung einholen, bevor optionale Marketing-Technologien eingesetzt werden.",
+      "Nous n'utilisons actuellement pas de cookies marketing ou publicitaires pour suivre les visiteurs à des fins de publicité ciblée. Si cette situation change, nous mettrons à jour la présente Politique de cookies et demanderons le consentement approprié avant d'utiliser des technologies marketing facultatives.",
+      "Actualmente no utilizamos cookies de marketing o publicidad para realizar un seguimiento de los visitantes con fines de publicidad personalizada. Si esto cambia en el futuro, actualizaremos esta Política de Cookies y solicitaremos el consentimiento correspondiente antes de utilizar tecnologías de marketing opcionales."
     ),
   },
   {
     type: "heading",
     icon: "smartphone",
     text_translations: tr(
-      "4. Managing Cookies",
-      "4. Cookies verwalten",
-      "4. Gestion des cookies",
-      "4. Gestión de cookies"
+      "4. Managing Your Cookie Preferences",
+      "4. Verwaltung Ihrer Cookie-Einstellungen",
+      "4. Gestion de vos préférences en matière de cookies",
+      "4. Gestión de sus preferencias de cookies"
     ),
   },
   {
     type: "paragraph",
     text_translations: tr(
-      "You can control and delete cookies through your browser settings at any time. Most browsers allow you to block or remove cookies, and you can set your browser to alert you before a cookie is placed. Disabling essential cookies may affect site functionality.",
-      "Sie können Cookies jederzeit über die Einstellungen Ihres Browsers steuern und löschen. Die meisten Browser ermöglichen es Ihnen, Cookies zu blockieren oder zu entfernen und Ihren Browser so einzustellen, dass er Sie vor dem Setzen eines Cookies warnt. Das Deaktivieren notwendiger Cookies kann die Funktionalität der Website beeinträchtigen.",
-      "Vous pouvez contrôler et supprimer les cookies via les paramètres de votre navigateur à tout moment. La plupart des navigateurs vous permettent de bloquer ou de supprimer les cookies et de définir des alertes avant qu'un cookie ne soit placé. La désactivation des cookies essentiels peut affecter le fonctionnement du site.",
-      "Puede controlar y eliminar las cookies a través de la configuración de su navegador en cualquier momento. La mayoría de los navegadores le permiten bloquear o eliminar cookies y configurar alertas antes de que se coloque una cookie. Deshabilitar las cookies esenciales puede afectar el funcionamiento del sitio."
+      "You can change or withdraw your optional cookie preferences at any time by selecting Cookie Settings in the website footer.",
+      "Sie können Ihre Einstellungen für optionale Cookies jederzeit ändern oder widerrufen, indem Sie Cookie Settings in der Fußzeile der Website auswählen.",
+      "Vous pouvez modifier ou retirer vos préférences concernant les cookies facultatifs à tout moment en sélectionnant Cookie Settings dans le pied de page du site.",
+      "Puede cambiar o retirar sus preferencias sobre las cookies opcionales en cualquier momento seleccionando Cookie Settings en el pie de página del sitio web."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "You can also manage or delete cookies through your browser settings. Most browsers allow you to block or remove cookies and may allow you to choose whether to accept cookies.",
+      "Sie können Cookies außerdem über die Einstellungen Ihres Browsers verwalten oder löschen.",
+      "Vous pouvez également gérer ou supprimer les cookies via les paramètres de votre navigateur.",
+      "También puede administrar o eliminar las cookies mediante la configuración de su navegador."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "Please note that disabling essential cookies or certain browser storage technologies may affect the functionality of the website.",
+      "Bitte beachten Sie, dass die Deaktivierung erforderlicher Cookies oder bestimmter Browser-Speichertechnologien die Funktionalität der Website beeinträchtigen kann.",
+      "Veuillez noter que la désactivation des cookies essentiels ou de certaines technologies de stockage du navigateur peut affecter le fonctionnement du site.",
+      "Tenga en cuenta que desactivar las cookies esenciales o determinadas tecnologías de almacenamiento del navegador puede afectar al funcionamiento del sitio web."
+    ),
+  },
+  {
+    type: "heading",
+    icon: "globe",
+    text_translations: tr(
+      "5. Third-Party Services",
+      "5. Dienste von Drittanbietern",
+      "5. Services tiers",
+      "5. Servicios de terceros"
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "We use third-party services that may process information when you interact with our website.",
+      "Wir verwenden Dienste von Drittanbietern, die Informationen verarbeiten können, wenn Sie unsere Website nutzen.",
+      "Nous utilisons certains services tiers susceptibles de traiter des informations lorsque vous utilisez notre site.",
+      "Utilizamos servicios de terceros que pueden procesar información cuando interactúa con nuestro sitio web."
+    ),
+  },
+  {
+    type: "list",
+    items: [
+      {
+        text_translations: tr(
+          "Google Analytics 4: Used to measure website traffic and understand how visitors use our website. GA4 analytics tracking is subject to your consent.",
+          "Google Analytics 4: Wird verwendet, um den Website-Traffic zu messen und zu verstehen, wie Besucher unsere Website nutzen. Die Nutzung von GA4 unterliegt Ihrer Einwilligung.",
+          "Google Analytics 4 : utilisé pour mesurer le trafic et comprendre comment les visiteurs utilisent notre site. Le suivi GA4 est soumis à votre consentement.",
+          "Google Analytics 4: Se utiliza para medir el tráfico del sitio web y comprender cómo lo utilizan los visitantes. El seguimiento de GA4 está sujeto a su consentimiento."
+        ),
+      },
+      {
+        text_translations: tr(
+          "Vercel Analytics: Used to provide privacy-focused, aggregated information about website usage and performance. Vercel Analytics Web Analytics does not rely on cookies.",
+          "Vercel Analytics: Wird verwendet, um datenschutzfreundliche, aggregierte Informationen über die Nutzung und Leistung der Website bereitzustellen. Vercel Analytics Web Analytics verwendet keine Cookies.",
+          "Vercel Analytics : utilisé pour obtenir des informations agrégées et respectueuses de la vie privée sur l'utilisation et les performances du site. Vercel Analytics Web Analytics n'utilise pas de cookies.",
+          "Vercel Analytics: Se utiliza para proporcionar información agregada y orientada a la privacidad sobre el uso y el rendimiento del sitio web. Vercel Analytics Web Analytics no utiliza cookies."
+        ),
+      },
+    ],
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "For more information about how these services process information, please refer to their respective privacy documentation.",
+      "Weitere Informationen zur Verarbeitung von Daten durch diese Dienste finden Sie in den jeweiligen Datenschutzerklärungen.",
+      "Pour plus d'informations sur le traitement des données par ces services, veuillez consulter leurs politiques de confidentialité respectives.",
+      "Para obtener más información sobre cómo estos servicios procesan la información, consulte sus respectivas políticas de privacidad."
     ),
   },
   {
     type: "heading",
     icon: "refresh",
     text_translations: tr(
-      "5. Changes to This Policy",
-      "5. Änderungen dieser Richtlinie",
-      "5. Modifications de cette politique",
-      "5. Cambios en esta política"
+      "6. Changes to This Cookie Policy",
+      "6. Änderungen dieser Cookie-Richtlinie",
+      "6. Modifications de cette Politique de cookies",
+      "6. Cambios en esta Política de Cookies"
     ),
   },
   {
     type: "paragraph",
     text_translations: tr(
-      "We may update this Cookie Policy from time to time. Changes will be posted on this page with an updated revision date. Continued use of our website after changes constitutes acceptance of the updated policy.",
-      "Wir können diese Cookie-Richtlinie von Zeit zu Zeit aktualisieren. Änderungen werden auf dieser Seite mit einem aktualisierten Revisionsdatum veröffentlicht. Die weitere Nutzung unserer Website nach Änderungen gilt als Zustimmung zur aktualisierten Richtlinie.",
-      "Nous pouvons mettre à jour cette politique de cookies de temps à autre. Les modifications seront publiées sur cette page avec une date de révision mise à jour. L'utilisation continue de notre site web après les modifications constitue une acceptation de la politique mise à jour.",
-      "Podemos actualizar esta Política de Cookies de vez en cuando. Los cambios se publicarán en esta página con una fecha de revisión actualizada. El uso continuado de nuestro sitio web después de los cambios constituye la aceptación de la política actualizada."
+      "We may update this Cookie Policy from time to time to reflect changes to our website, technologies, services, or legal requirements.",
+      "Wir können diese Cookie-Richtlinie von Zeit zu Zeit aktualisieren, um Änderungen an unserer Website, unseren Technologien, Dienstleistungen oder gesetzlichen Anforderungen zu berücksichtigen.",
+      "Nous pouvons modifier cette Politique de cookies afin de tenir compte des évolutions de notre site, de nos technologies, de nos services ou des exigences légales.",
+      "Podemos actualizar esta Política de Cookies periódicamente para reflejar cambios en nuestro sitio web, tecnologías, servicios o requisitos legales."
+    ),
+  },
+  {
+    type: "paragraph",
+    text_translations: tr(
+      "Any changes will be posted on this page with an updated Last updated date.",
+      "Änderungen werden auf dieser Seite mit einem aktualisierten Datum veröffentlicht.",
+      "Toute modification sera publiée sur cette page avec une nouvelle date de mise à jour.",
+      "Cualquier cambio se publicará en esta página con una fecha de actualización modificada."
     ),
   },
   {
     type: "subheading",
     divider: true,
-    text_translations: tr("Contact Us", "Kontakt", "Contact", "Contacto"),
+    text_translations: tr("Contact Us", "Kontakt", "Nous contacter", "Contacto"),
   },
   {
     type: "paragraph",
     text_translations: tr(
       "If you have any questions about this Cookie Policy, please contact us at [hello@stratifit.com](mailto:hello@stratifit.com).",
       "Wenn Sie Fragen zu dieser Cookie-Richtlinie haben, kontaktieren Sie uns bitte unter [hello@stratifit.com](mailto:hello@stratifit.com).",
-      "Si vous avez des questions concernant cette politique de cookies, veuillez nous contacter à [hello@stratifit.com](mailto:hello@stratifit.com).",
-      "Si tiene alguna pregunta sobre esta Política de Cookies, contáctenos en [hello@stratifit.com](mailto:hello@stratifit.com)."
+      "Si vous avez des questions concernant cette Politique de cookies, veuillez nous contacter à [hello@stratifit.com](mailto:hello@stratifit.com).",
+      "Si tiene alguna pregunta sobre esta Política de Cookies, puede ponerse en contacto con nosotros en [hello@stratifit.com](mailto:hello@stratifit.com)."
     ),
   },
 ];
