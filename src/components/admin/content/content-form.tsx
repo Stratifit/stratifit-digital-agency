@@ -489,6 +489,11 @@ export function ContentForm({
     ),
     defaultValues,
   });
+
+  // "google" when the Google icon toggle is on — drives the Source field.
+  const googleIconOn =
+    (useWatch({ control, name: "source" }) as string | undefined) === "google";
+
   async function onSubmit(values: unknown) {
     setServerError(null);
     let result;
@@ -634,13 +639,23 @@ export function ContentForm({
                 <Input id="company_name" placeholder="Company" {...register("company_name")} />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="source">Source</Label>
-                <Select id="source" {...register("source")}>
-                  <option value="website">Website</option>
-                  <option value="google">Google</option>
-                </Select>
+                <Label>Google icon</Label>
+                <label className="flex cursor-pointer items-center gap-2 rounded-card border border-card-border bg-card-dark px-3.5 py-2.5 transition-colors hover:border-card-border-hover">
+                  <input
+                    type="checkbox"
+                    checked={googleIconOn}
+                    onChange={(e) =>
+                      setValue("source", e.target.checked ? "google" : "website")
+                    }
+                    className="size-4 accent-primary"
+                  />
+                  <span className="text-sm text-text-primary">
+                    Show Google icon on this review
+                  </span>
+                </label>
                 <p className="text-xs text-text-muted">
-                  Google reviews show a Google icon on the card.
+                  Turn this on for reviews that came from Google — the card
+                  shows the Google logo instead of a plain review.
                 </p>
               </div>
             </>
